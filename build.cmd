@@ -22,10 +22,12 @@ if not "%ALLFOUND%"=="1" goto :eof
 @rem --- figure out what to do based on input parameters
 @set MAKEPARAMS=-j %NUMBER_OF_PROCESSORS%
 @set RESUME=0
-@if "%3"=="resume" (set RESUME=1 && echo Resuming from previous attempt....)
+@set REVISION=%1
+@if "%4"=="resume" (set RESUME=1 && echo Resuming from previous attempt....)
 @if "%1"=="" goto :usage
-@if "%2"=="" goto :makefull
-@if "%2"=="0" goto :makefull
+@if "%2"=="" goto :usage
+@if "%3"=="" goto :makefull
+@if "%3"=="0" goto :makefull
 goto :build
 
 
@@ -37,17 +39,17 @@ goto :build
 :build
 
 @rem --- set up variables for a "u" update
-set DIFFNAME=%1u%2.diff
-set DIFFZIP=%1u%2_diff.zip
-set WHATSNEWNAME=whatsnew_%1u%2.txt
+set DIFFNAME=%2u%3.diff
+set DIFFZIP=%2u%3_diff.zip
+set WHATSNEWNAME=whatsnew_%2u%3.txt
 set WHATSNEW=whatsnew\%WHATSNEWNAME%
-set SRCBRANCH=mame%1
+set SRCBRANCH=mame%2
 set SRCSUFFIX=
-if not "%2"=="1" set /a SRCSUFFIX=%2-1
-if not "%2"=="1" set SRCBRANCH=mame%1u%SRCSUFFIX%
-set DSTBRANCH=mame%1u%2
-set TEMP=%1
-set VERSION=%temp:~0,1%.%temp:~1%u%2
+if not "%3"=="1" set /a SRCSUFFIX=%3-1
+if not "%3"=="1" set SRCBRANCH=mame%2u%SRCSUFFIX%
+set DSTBRANCH=mame%2u%3
+set TEMP=%2
+set VERSION=%temp:~0,1%.%temp:~1%u%3
 
 @echo Creating u release between %SRCBRANCH% and %DSTBRANCH% to %DIFFNAME%
 
@@ -59,25 +61,32 @@ svn list svn://mamedev.org/mame/tags/%DSTBRANCH% >nul 2>nul && goto :destexists
 
 
 @rem --- ensure everything is up-to-date
-svn update .
-svn update ..\trunk
+svn update -r %REVISION% .
+svn update -r %REVISION% ..\trunk
 
 
 @rem --- perform validation steps
 set VALIDATED=0
-call :dovalidate %3
+call :dovalidate
 if "%VALIDATED%"=="0" goto :eof
 
 
 @rem --- all systems go, create the branch
 @echo Creating target branch %DESTBRANCH%....
-svn copy svn://mamedev.org/mame/trunk svn://mamedev.org/mame/tags/%DSTBRANCH% -m "MAME %VERSION% tag"
+svn copy svn://mamedev.org/mame/trunk -r %REVISION% svn://mamedev.org/mame/tags/%DSTBRANCH% -m "MAME %VERSION% tag"
 
 
 @rem --- now do the diff
 :destexists
 @echo Generating the full diff....
-svn diff svn://mamedev.org/mame/tags/%SRCBRANCH% svn://mamedev.org/mame/tags/%DSTBRANCH% >%DIFFNAME%
+if exist temp rd /s/q temp
+if exist %DIFFNAME% del %DIFFNAME%
+svn export svn://mamedev.org/mame/tags/%SRCBRANCH% temp\%SRCBRANCH%
+svn export svn://mamedev.org/mame/tags/%DSTBRANCH% temp\%DSTBRANCH%
+cd temp
+for /f "usebackq" %%i in (`dir /b %SRCBRANCH%`) do ( move %SRCBRANCH%\%%i %%i-old && move %DSTBRANCH%\%%i %%i && diff -Nru %%i-old %%i >>..\%DIFFNAME% )
+cd ..
+@rem svn diff svn://mamedev.org/mame/tags/%SRCBRANCH% svn://mamedev.org/mame/tags/%DSTBRANCH% >%DIFFNAME%
 
 
 @rem --- now package the diff
@@ -100,11 +109,11 @@ if exist %WHATSNEWNAME% del %WHATSNEWNAME%
 :makefull
 
 @rem --- set up variables for a full update
-set WHATSNEW=whatsnew\whatsnew_%1.txt
-set DSTBRANCH=mame%1
-set FINALZIP=mame%1s
-set FINALBINZIP=mame%1b
-set TEMP=%1
+set WHATSNEW=whatsnew\whatsnew_%2.txt
+set DSTBRANCH=mame%2
+set FINALZIP=mame%2s
+set FINALBINZIP=mame%2b
+set TEMP=%2
 set VERSION=%temp:~0,1%.%temp:~1%
 
 @echo Creating full release for %DSTBRANCH%
@@ -116,19 +125,19 @@ svn list svn://mamedev.org/mame/tags/%DSTBRANCH% >nul 2>nul && goto :destexistsf
 
 
 @rem --- ensure everything is up-to-date
-svn update .
-svn update ..\trunk
+svn update -r %REVISION% .
+svn update -r %REVISION% ..\trunk
 
 
 @rem --- perform validation steps
 set VALIDATED=0
-call :dovalidate %2
+call :dovalidate
 if "%VALIDATED%"=="0" goto :eof
 
 
 @rem --- all systems go, create the branch
 @echo Creating target branch %DESTBRANCH%....
-svn copy svn://mamedev.org/mame/trunk svn://mamedev.org/mame/tags/%DSTBRANCH% -m "MAME %VERSION% tag"
+svn copy svn://mamedev.org/mame/trunk -r %REVISION% svn://mamedev.org/mame/tags/%DSTBRANCH% -m "MAME %VERSION% tag"
 goto :alreadybuilt
 
 
@@ -391,7 +400,7 @@ set VALIDATED=1
 
 :usage
 @echo Usage:
-@echo   build ^<primaryver^> ^<unum^> [resume]
+@echo   build ^<revision^> ^<primaryver^> ^<unum^> [resume]
 @goto :eof
 
 :nowhatsnew
