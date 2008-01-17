@@ -325,14 +325,6 @@ if not exist %WHATSNEW% goto :nowhatsnew
 findstr 123456789 %WHATSNEW% >nul && goto :junkinwhatsnew
 
 
-@rem --- look for junk files
-@echo Deleting junk files....
-del /s ..\trunk\*.rej
-del /s ..\trunk\*~
-del /s ..\trunk\*#
-del /s ..\trunk\*.s
-
-
 @rem --- make sure all filenames are lowercase
 @echo Ensuring all filenames are lowercase....
 dir /s /b ..\trunk\src | findstr "[ABCDEFGHIJKLOPQRSTUVWXYZ]" && goto :uppercasenames
@@ -341,24 +333,6 @@ dir /s /b ..\trunk\src | findstr "[ABCDEFGHIJKLOPQRSTUVWXYZ]" && goto :uppercase
 @rem --- verify the version on the top of tree
 @echo Verifying version.c....
 findstr %VERSION% ..\trunk\src\version.c >nul || goto :wrongversion
-
-
-@rem --- run a cleanup pass
-@if not exist ..\trunk\srcclean.exe (
-pushd ..\trunk
-mingw32-make srcclean.exe
-popd
-)
-@echo Cleaning up tabs/spaces/end of lines....
-for /r ..\trunk\src %%i in (*.c) do ..\trunk\srcclean %%i || goto :cleanupfailed
-for /r ..\trunk\src %%i in (*.h) do ..\trunk\srcclean %%i || goto :cleanupfailed
-for /r ..\trunk\src %%i in (*.mak) do ..\trunk\srcclean %%i || goto :cleanupfailed
-
-
-@rem --- verify that all the games are referenced
-set MISSING=0
-call :finddrivers
-if not "%MISSING%"=="0" goto :drivmissing
 
 
 @rem --- verify that everything is checked in
