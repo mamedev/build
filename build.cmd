@@ -148,7 +148,7 @@ set ARCHOPTS=
 set SUFFIX=
 set MSVC_BUILD=
 set PTR64=
-set DEBUG=1
+set DEBUGGER=1
 call :performbuild mamed || goto :eof
 
 
@@ -158,7 +158,7 @@ set ARCHOPTS=
 set SUFFIX=
 set MSVC_BUILD=
 set PTR64=
-set DEBUG=
+set DEBUGGER=
 call :performbuild mame || goto :eof
 
 
@@ -169,7 +169,7 @@ set ARCHOPTS=-march=pentiumpro
 set SUFFIX=pp
 set MSVC_BUILD=
 set PTR64=
-set DEBUG=
+set DEBUGGER=
 call :performbuild mamepp || goto :eof
 
 
@@ -179,7 +179,7 @@ set ARCHOPTS=
 set SUFFIX=64
 set MSVC_BUILD=1
 set PTR64=1
-set DEBUG=
+set DEBUGGER=
 call :performbuild vmame64 || goto :eof
 
 
@@ -347,9 +347,9 @@ set ARCHOPTS=
 set SUFFIX=
 set MSVC_BUILD=
 set PTR64=
-set DEBUG=1
+set DEBUGGER=1
 call :performbuild mamed || goto :eof
-set DEBUG=
+set DEBUGGER=
 
 @echo Verifying validation....
 ..\trunk\mamed -valid >nul || goto :validationerror
@@ -359,7 +359,7 @@ set ARCHOPTS=
 set SUFFIX=
 set MSVC_BUILD=
 set PTR64=
-set DEBUG=
+set DEBUGGER=
 call :performbuild mame || goto :eof
 
 set VALIDATED=1
