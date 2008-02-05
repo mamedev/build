@@ -138,18 +138,25 @@ if "%VALIDATED%"=="0" goto :eof
 @rem --- all systems go, create the branch
 @echo Creating target branch %DESTBRANCH%....
 svn copy svn://mamedev.org/mame/trunk -r %REVISION% svn://mamedev.org/mame/tags/%DSTBRANCH% -m "MAME %VERSION% tag"
-goto :alreadybuilt
+
+
+@rem --- export the tree for building
+:destexistsfull
+@echo Checking out a temp copy....
+if exist tempbuild rd /s/q tempbuild
+svn export svn://mamedev.org/mame/tags/%DSTBRANCH% tempbuild >nul
 
 
 @rem --- build the debug version
-:destexistsfull
 @echo Building debug version....
 set ARCHOPTS=
 set SUFFIX=
 set MSVC_BUILD=
 set PTR64=
 set DEBUGGER=1
+pushd tempbuild
 call :performbuild mamed || goto :eof
+popd
 
 
 @rem --- build the release version
@@ -159,7 +166,9 @@ set SUFFIX=
 set MSVC_BUILD=
 set PTR64=
 set DEBUGGER=
+pushd tempbuild
 call :performbuild mame || goto :eof
+popd
 
 
 @rem --- build the p6-optimized version
@@ -170,7 +179,9 @@ set SUFFIX=pp
 set MSVC_BUILD=
 set PTR64=
 set DEBUGGER=
+pushd tempbuild
 call :performbuild mamepp || goto :eof
+popd
 
 
 @rem --- build the 64-bit version
@@ -180,7 +191,9 @@ set SUFFIX=64
 set MSVC_BUILD=1
 set PTR64=1
 set DEBUGGER=
+pushd tempbuild
 call :performbuild vmame64 || goto :eof
+popd
 
 
 @rem --- now export the actual tree
@@ -219,7 +232,7 @@ call :buildbinary mamed %FINALBINZIP%_debug.exe
 call :buildbinary mamepp %FINALBINZIP%_i686.exe
 
 @echo Building official 64-bit binary....
-call :buildbinary v64mame %FINALBINZIP%_64bit.exe
+call :buildbinary vmame64 %FINALBINZIP%_64bit.exe
 
 goto :eof
 
@@ -238,13 +251,13 @@ if exist %2 del %2
 mkdir tempbin
 pushd tempbin
 copy ..\%WHATSNEW% whatsnew.txt
-copy ..\..\trunk\%1.exe
-copy ..\..\trunk\obj\windows\%1\chdman.exe
-copy ..\..\trunk\obj\windows\%1\romcmp.exe
-copy ..\..\trunk\obj\windows\%1\jedutil.exe
-copy ..\..\trunk\obj\windows\%1\ledutil.exe
+copy ..\tempbuild\%1.exe
+copy ..\tempbuild\obj\windows\%1\chdman.exe
+copy ..\tempbuild\obj\windows\%1\romcmp.exe
+copy ..\tempbuild\obj\windows\%1\jedutil.exe
+copy ..\tempbuild\obj\windows\%1\ledutil.exe
 mkdir docs
-copy ..\..\trunk\docs\*.* docs
+copy ..\tempbuild\docs\*.* docs
 7za x ..\mamedirs.zip
 7za a -mx=9 -y -r -t7z -sfx7z.sfx ..\%2
 popd
@@ -261,11 +274,9 @@ goto :eof
 @rem -----------------------------------------------------------
 
 :performbuild
-pushd ..\trunk
-
 
 @rem --- First cleanup old files
-if "%RESUME%"=="0" rd /s/q ..\trunk\obj\windows\%1
+if "%RESUME%"=="0" rd /s/q obj\windows\%1
 if exist %1.exe del %1.exe
 if exist chdman.exe del chdman.exe
 if exist romcmp.exe del romcmp.exe
@@ -286,30 +297,6 @@ move /y romcmp.exe obj\windows\%1\
 move /y jedutil.exe obj\windows\%1\
 move /y ledutil.exe obj\windows\%1\
 
-
-popd
-goto :eof
-
-
-
-@rem -----------------------------------------------------------
-@rem 	Find drivers
-@rem -----------------------------------------------------------
-
-:finddrivers
-@echo Finding all GAME macros in drivers....
-findstr "\<GAME.*\([^,]*,[^,]*,[^,]*,[^,]*,[^,]*,.*\)" ..\trunk\src\mame\drivers\*.c >gamelist.txt
-
-@echo Pruning commented drivers....
-findstr /v "\/\/.*GAME" gamelist.txt >gamelist2.txt
-findstr /v "\/\*[^*]*GAME" gamelist2.txt >gamelist3.txt
-
-@echo Scanning for missing entries....
-for /f "delims=:,( tokens=1-4" %%i in (gamelist3.txt) do ( findstr " %%l " ..\trunk\src\mame\mamedriv.c >nul || ( set MISSING=1 && echo %%l - %%i ) )
-
-del gamelist.txt
-del gamelist2.txt
-del gamelist3.txt
 goto :eof
 
 
@@ -348,7 +335,9 @@ set SUFFIX=
 set MSVC_BUILD=
 set PTR64=
 set DEBUGGER=1
+pushd ..\trunk
 call :performbuild mamed || goto :eof
+popd
 set DEBUGGER=
 
 @echo Verifying validation....
@@ -360,7 +349,9 @@ set SUFFIX=
 set MSVC_BUILD=
 set PTR64=
 set DEBUGGER=
+pushd ..\trunk
 call :performbuild mame || goto :eof
+popd
 
 set VALIDATED=1
 @goto :eof
