@@ -7,6 +7,7 @@ cd %~dp0
 
 
 @rem --- validate that we can do 64-bit builds in this environment
+goto :configok
 @echo %path% | findstr amd64 >nul && goto :configok
 @echo Error - must run under a build prompt configured for MSVC x64 building.
 goto :eof
