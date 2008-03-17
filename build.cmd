@@ -7,7 +7,6 @@ cd %~dp0
 
 
 @rem --- validate that we can do 64-bit builds in this environment
-goto :configok
 @echo %path% | findstr amd64 >nul && goto :configok
 @echo Error - must run under a build prompt configured for MSVC x64 building.
 goto :eof
@@ -154,6 +153,7 @@ set ARCHOPTS=
 set SUFFIX=
 set MSVC_BUILD=
 set PTR64=
+set DEBUG=1
 set DEBUGGER=1
 pushd tempbuild
 call :performbuild mamed || goto :eof
@@ -166,6 +166,7 @@ set ARCHOPTS=
 set SUFFIX=
 set MSVC_BUILD=
 set PTR64=
+set DEBUG=
 set DEBUGGER=
 pushd tempbuild
 call :performbuild mame || goto :eof
@@ -179,6 +180,7 @@ set ARCHOPTS=-march=pentiumpro
 set SUFFIX=pp
 set MSVC_BUILD=
 set PTR64=
+set DEBUG=
 set DEBUGGER=
 pushd tempbuild
 call :performbuild mamepp || goto :eof
@@ -191,6 +193,7 @@ set ARCHOPTS=
 set SUFFIX=64
 set MSVC_BUILD=1
 set PTR64=1
+set DEBUG=
 set DEBUGGER=
 pushd tempbuild
 call :performbuild vmame64 || goto :eof
@@ -335,11 +338,11 @@ set ARCHOPTS=
 set SUFFIX=
 set MSVC_BUILD=
 set PTR64=
+set DEBUG=1
 set DEBUGGER=1
 pushd ..\trunk
 call :performbuild mamed || goto :eof
 popd
-set DEBUGGER=
 
 @echo Verifying validation....
 ..\trunk\mamed -valid >nul || goto :validationerror
@@ -349,6 +352,7 @@ set ARCHOPTS=
 set SUFFIX=
 set MSVC_BUILD=
 set PTR64=
+set DEBUG=
 set DEBUGGER=
 pushd ..\trunk
 call :performbuild mame || goto :eof
