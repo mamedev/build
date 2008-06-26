@@ -154,7 +154,6 @@ set SUFFIX=
 set MSVC_BUILD=
 set PTR64=
 set DEBUG=1
-set DEBUGGER=1
 pushd tempbuild
 call :performbuild mamed || goto :eof
 popd
@@ -167,7 +166,6 @@ set SUFFIX=
 set MSVC_BUILD=
 set PTR64=
 set DEBUG=
-set DEBUGGER=
 pushd tempbuild
 call :performbuild mame || goto :eof
 popd
@@ -181,7 +179,6 @@ set SUFFIX=pp
 set MSVC_BUILD=
 set PTR64=
 set DEBUG=
-set DEBUGGER=
 pushd tempbuild
 call :performbuild mamepp || goto :eof
 popd
@@ -194,7 +191,6 @@ set SUFFIX=64
 set MSVC_BUILD=1
 set PTR64=1
 set DEBUG=
-set DEBUGGER=
 pushd tempbuild
 call :performbuild vmame64 || goto :eof
 popd
@@ -339,7 +335,6 @@ set SUFFIX=
 set MSVC_BUILD=
 set PTR64=
 set DEBUG=1
-set DEBUGGER=1
 pushd ..\trunk
 call :performbuild mamed || goto :eof
 popd
@@ -353,7 +348,6 @@ set SUFFIX=
 set MSVC_BUILD=
 set PTR64=
 set DEBUG=
-set DEBUGGER=
 pushd ..\trunk
 call :performbuild mame || goto :eof
 popd
