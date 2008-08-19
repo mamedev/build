@@ -253,6 +253,7 @@ pushd tempbin
 copy ..\%WHATSNEW% whatsnew.txt
 copy ..\tempbuild\%1.exe
 copy ..\tempbuild\obj\windows\%1\chdman.exe
+copy ..\tempbuild\obj\windows\%1\ldverify.exe
 copy ..\tempbuild\obj\windows\%1\romcmp.exe
 copy ..\tempbuild\obj\windows\%1\jedutil.exe
 copy ..\tempbuild\obj\windows\%1\ledutil.exe
@@ -279,6 +280,7 @@ goto :eof
 if "%RESUME%"=="0" rd /s/q obj\windows\%1
 if exist %1.exe del %1.exe
 if exist chdman.exe del chdman.exe
+if exist ldverify.exe del ldverify.exe
 if exist romcmp.exe del romcmp.exe
 if exist jedutil.exe del jedutil.exe
 if exist ledutil.exe del ledutil.exe
@@ -293,6 +295,7 @@ mingw32-make %MAKEPARAMS% %~2 %~3 %~4 %~5 || goto :builderror %1
 
 @rem --- Stash the specific binaries
 move /y chdman.exe obj\windows\%1\
+move /y ldverify.exe obj\windows\%1\
 move /y romcmp.exe obj\windows\%1\
 move /y jedutil.exe obj\windows\%1\
 move /y ledutil.exe obj\windows\%1\
