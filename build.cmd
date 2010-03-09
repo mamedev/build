@@ -6,21 +6,23 @@
 cd %~dp0
 
 
-@rem --- validate that we can do 64-bit builds in this environment
-@echo %path% | findstr amd64 >nul && goto :configok
-@echo Error - must run under a build prompt configured for MSVC x64 building.
+@rem --- validate that we have a config script
+if exist ..\trunk\config.cmd goto :configok
+@echo Error - no config.cmd present; make sure there is a config.cmd that accepts both "32" and "64" as parameters
 goto :eof
 
 
 @rem --- ensure we have all the necessary tools
 :configok
+call ..\trunk\config 32
 set ALLFOUND=1
-for %%i in (mingw32-make svn 7za) do ( where /q %%i || ( set ALLFOUND=0 && echo Missing required tool %%i ) )
+for %%i in (make svn 7za) do ( where /q %%i || ( set ALLFOUND=0 && echo Missing required tool %%i ) )
 if not "%ALLFOUND%"=="1" goto :eof
 
 
 @rem --- figure out what to do based on input parameters
-@set MAKEPARAMS=-j %NUMBER_OF_PROCESSORS%
+@set /a PROCS=%NUMBER_OF_PROCESSORS% + 1
+@set MAKEPARAMS=-j %PROCS%
 @set RESUME=0
 @set REVISION=%1
 @if "%4"=="resume" (set RESUME=1 && echo Resuming from previous attempt....)
@@ -149,25 +151,20 @@ svn export svn://mamedev.org/mame/tags/%DSTBRANCH% tempbuild >nul
 
 @rem --- build the debug version
 @echo Building debug version....
+
 set ARCHOPTS=
-set SUFFIX=
-set MSVC_BUILD=
-set PTR64=
 set DEBUG=1
 pushd tempbuild
-call :performbuild mamed || goto :eof
+call :performbuild windows\mamed || goto :eof
 popd
 
 
 @rem --- build the release version
 @echo Building release version....
 set ARCHOPTS=
-set SUFFIX=
-set MSVC_BUILD=
-set PTR64=
 set DEBUG=
 pushd tempbuild
-call :performbuild mame || goto :eof
+call :performbuild windows\mame || goto :eof
 popd
 
 
@@ -175,24 +172,18 @@ popd
 :alreadybuilt
 @echo Building p6 version....
 set ARCHOPTS=-march=pentiumpro
-set SUFFIX=pp
-set MSVC_BUILD=
-set PTR64=
 set DEBUG=
 pushd tempbuild
-call :performbuild mamepp || goto :eof
+call :performbuild windows\mamepp || goto :eof
 popd
 
 
 @rem --- build the 64-bit version
 @echo Building 64-bit version....
 set ARCHOPTS=
-set SUFFIX=64
-set MSVC_BUILD=1
-set PTR64=1
 set DEBUG=
 pushd tempbuild
-call :performbuild vmame64 || goto :eof
+call :performbuild windows\mame64 || goto :eof
 popd
 
 
@@ -232,7 +223,7 @@ call :buildbinary mamed %FINALBINZIP%_debug.exe
 call :buildbinary mamepp %FINALBINZIP%_i686.exe
 
 @echo Building official 64-bit binary....
-call :buildbinary vmame64 %FINALBINZIP%_64bit.exe
+call :buildbinary mame64 %FINALBINZIP%_64bit.exe
 
 goto :eof
 
@@ -258,6 +249,7 @@ copy ..\tempbuild\obj\windows\%1\ldresample.exe
 copy ..\tempbuild\obj\windows\%1\romcmp.exe
 copy ..\tempbuild\obj\windows\%1\jedutil.exe
 copy ..\tempbuild\obj\windows\%1\ledutil.exe
+copy ..\tempbuild\obj\windows\%1\unidasm.exe
 mkdir docs
 copy ..\tempbuild\docs\*.* docs
 7za x ..\mamedirs.zip
@@ -278,7 +270,7 @@ goto :eof
 :performbuild
 
 @rem --- First cleanup old files
-if "%RESUME%"=="0" rd /s/q obj\windows\%1
+if "%RESUME%"=="0" rd /s/q obj\%1
 if exist %1.exe del %1.exe
 if exist chdman.exe del chdman.exe
 if exist ldverify.exe del ldverify.exe
@@ -286,22 +278,24 @@ if exist ldresample.exe del ldresample.exe
 if exist romcmp.exe del romcmp.exe
 if exist jedutil.exe del jedutil.exe
 if exist ledutil.exe del ledutil.exe
+if exist unidasm.exe del unidasm.exe
 
 
 @rem --- Do the build
-@echo mingw32-make buildtools %~2 %~3 %~4 %~5
-mingw32-make buildtools %~2 %~3 %~4 %~5 || goto :builderror %1
-@echo mingw32-make %MAKEPARAMS% %~2 %~3 %~4 %~5
-mingw32-make %MAKEPARAMS% %~2 %~3 %~4 %~5 || goto :builderror %1
+@echo make buildtools %~2 %~3 %~4 %~5
+make buildtools %~2 %~3 %~4 %~5 || goto :builderror %1
+@echo make all %MAKEPARAMS% %~2 %~3 %~4 %~5
+make all %MAKEPARAMS% %~2 %~3 %~4 %~5 || goto :builderror %1
 
 
 @rem --- Stash the specific binaries
-move /y chdman.exe obj\windows\%1\
-move /y ldverify.exe obj\windows\%1\
-move /y ldresample.exe obj\windows\%1\
-move /y romcmp.exe obj\windows\%1\
-move /y jedutil.exe obj\windows\%1\
-move /y ledutil.exe obj\windows\%1\
+move /y chdman.exe obj\%1\
+move /y ldverify.exe obj\%1\
+move /y ldresample.exe obj\%1\
+move /y romcmp.exe obj\%1\
+move /y jedutil.exe obj\%1\
+move /y ledutil.exe obj\%1\
+move /y unidasm.exe obj\%1\
 
 goto :eof
 
@@ -320,7 +314,7 @@ findstr 123456789 %WHATSNEW% >nul && goto :junkinwhatsnew
 
 @rem --- make sure all filenames are lowercase
 @echo Ensuring all filenames are lowercase....
-dir /s /b ..\trunk\src | findstr "[ABCDEFGHIJKLOPQRSTUVWXYZ]" && goto :uppercasenames
+dir /s /b ..\trunk\src | findstr /v /c:"\\sdl\\" | findstr /v README | findstr "[ABCDEFGHIJKLOPQRSTUVWXYZ]" && goto :uppercasenames
 
 
 @rem --- verify the version on the top of tree
@@ -335,27 +329,67 @@ svn status ..\trunk\src | findstr trunk >nul && goto :notcheckedin
 svn status ..\trunk\makefile | findstr trunk >nul && goto :notcheckedin
 
 
-@echo Verifying debug build....
+@echo Verifying 32-bit Windows debug build....
 set ARCHOPTS=
-set SUFFIX=
-set MSVC_BUILD=
-set PTR64=
 set DEBUG=1
+set OSD=
 pushd ..\trunk
-call :performbuild mamed || goto :eof
+call config 32
+call :performbuild windows\mamed || goto :eof
 popd
 
 @echo Verifying validation....
 ..\trunk\mamed -valid >nul || goto :validationerror
 
-@echo Verifying release build....
-set ARCHOPTS=
-set SUFFIX=
-set MSVC_BUILD=
-set PTR64=
-set DEBUG=
+@echo Verifying 64-bit debug build....
 pushd ..\trunk
-call :performbuild mame || goto :eof
+call config 64
+call :performbuild windows\mame64d || goto :eof
+popd
+
+@echo Verifying 32-bit SDL debug build....
+set ARCHOPTS=
+set DEBUG=1
+set OSD=sdl
+pushd ..\trunk
+call config 32
+call :performbuild sdl\sdlmamed || goto :eof
+popd
+
+@echo Verifying 64-bit SDL debug build....
+pushd ..\trunk
+call config 64
+call :performbuild sdl\sdlmame64d || goto :eof
+popd
+
+@echo Verifying 32-bit Windows release build....
+set ARCHOPTS=
+set DEBUG=
+set OSD=
+pushd ..\trunk
+call config 32
+call :performbuild windows\mame || goto :eof
+popd
+
+@echo Verifying 64-bit Windows release build....
+pushd ..\trunk
+call config 64
+call :performbuild windows\mame64 || goto :eof
+popd
+
+@echo Verifying 32-bit SDL release build....
+set ARCHOPTS=
+set DEBUG=
+set OSD=sdl
+pushd ..\trunk
+call config 32
+call :performbuild sdl\sdlmame || goto :eof
+popd
+
+@echo Verifying 64-bit SDL release build....
+pushd ..\trunk
+call config 64
+call :performbuild sdl\sdlmame64 || goto :eof
 popd
 
 set VALIDATED=1
@@ -417,4 +451,3 @@ mamed -valid
 :cleanupfailed
 @echo Cleanup failed!
 @goto :eof
-
