@@ -152,8 +152,12 @@ svn export svn://mamedev.org/mame/tags/%DSTBRANCH% tempbuild >nul
 @rem --- build the debug version
 @echo Building debug version....
 
+call ..\trunk\config 32
 set ARCHOPTS=
 set DEBUG=1
+set MAP=1
+set PROFILER=
+set OSD=
 pushd tempbuild
 call :performbuild windows\mamed || goto :eof
 popd
@@ -163,6 +167,7 @@ popd
 @echo Building release version....
 set ARCHOPTS=
 set DEBUG=
+set PROFILER=
 pushd tempbuild
 call :performbuild windows\mame || goto :eof
 popd
@@ -173,15 +178,21 @@ popd
 @echo Building p6 version....
 set ARCHOPTS=-march=pentiumpro
 set DEBUG=
+set PROFILER=
+set SUFFIX=pp
 pushd tempbuild
 call :performbuild windows\mamepp || goto :eof
 popd
+set SUFFIX=
 
 
 @rem --- build the 64-bit version
 @echo Building 64-bit version....
+call ..\trunk\config 64
 set ARCHOPTS=
 set DEBUG=
+set MAP=1
+set PROFILER=
 pushd tempbuild
 call :performbuild windows\mame64 || goto :eof
 popd

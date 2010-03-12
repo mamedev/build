@@ -154,8 +154,8 @@ int main(int argc, char *argv[])
 		while (end > buffer && isspace(*end))
 			*end-- = 0;
 	
-		// dashed line always ends previous state
-		if (strncmp(buffer, "--------------------------------------------------", 50) == 0)
+		// long dashed line always ends previous state
+		if (strncmp(buffer, "----------------------------------------------------------------------", 70) == 0)
 		{
 			flush_paragraph_newline(paragraph);
 			state = 0;
