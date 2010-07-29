@@ -155,11 +155,16 @@ svn export svn://mamedev.org/mame/tags/%DSTBRANCH% tempbuild >nul
 call ..\trunk\config 32
 set ARCHOPTS=
 set DEBUG=1
-set MAP=1
+set GTK_INSTALL_ROOT=
+set MAP=
+set OPTIMIZE=3
+set OSD=
 set PROFILER=
+set SYMBOLS=1
+set SYMLEVEL=1
 set OSD=
 pushd tempbuild
-call :performbuild windows\mamed || goto :eof
+call :performbuild mamed windows\mamed || goto :eof
 popd
 
 
@@ -167,9 +172,16 @@ popd
 @echo Building release version....
 set ARCHOPTS=
 set DEBUG=
+set GTK_INSTALL_ROOT=
+set MAP=
+set OPTIMIZE=3
+set OSD=
 set PROFILER=
+set SYMBOLS=1
+set SYMLEVEL=1
+set SUFFIX=
 pushd tempbuild
-call :performbuild windows\mame || goto :eof
+call :performbuild mame windows\mame || goto :eof
 popd
 
 
@@ -178,12 +190,17 @@ popd
 @echo Building p6 version....
 set ARCHOPTS=-march=pentiumpro
 set DEBUG=
+set GTK_INSTALL_ROOT=
+set MAP=
+set OPTIMIZE=3
+set OSD=
 set PROFILER=
+set SYMBOLS=1
+set SYMLEVEL=1
 set SUFFIX=pp
 pushd tempbuild
-call :performbuild windows\mamepp || goto :eof
+call :performbuild mamepp windows\mamepp || goto :eof
 popd
-set SUFFIX=
 
 
 @rem --- build the 64-bit version
@@ -191,10 +208,16 @@ set SUFFIX=
 call ..\trunk\config 64
 set ARCHOPTS=
 set DEBUG=
-set MAP=1
+set GTK_INSTALL_ROOT=
+set MAP=
+set OPTIMIZE=3
+set OSD=
 set PROFILER=
+set SYMBOLS=1
+set SYMLEVEL=1
+set SUFFIX=
 pushd tempbuild
-call :performbuild windows\mame64 || goto :eof
+call :performbuild mame64 windows\mame64 || goto :eof
 popd
 
 
@@ -254,6 +277,7 @@ mkdir tempbin
 pushd tempbin
 copy ..\%WHATSNEW% whatsnew.txt
 copy ..\tempbuild\%1.exe
+copy ..\tempbuild\%1.sym
 copy ..\tempbuild\obj\windows\%1\chdman.exe
 copy ..\tempbuild\obj\windows\%1\ldverify.exe
 copy ..\tempbuild\obj\windows\%1\ldresample.exe
@@ -274,14 +298,15 @@ goto :eof
 @rem -----------------------------------------------------------
 @rem 	Perform a build
 @rem 	
-@rem    %1 = object directory/filename
-@rem 	%2..%5 = build options
+@rem    %1 = filename
+@rem    %2 = object directory/filename
+@rem 	%3..%6 = build options
 @rem -----------------------------------------------------------
 
 :performbuild
 
 @rem --- First cleanup old files
-if "%RESUME%"=="0" rd /s/q obj\%1
+if "%RESUME%"=="0" rd /s/q obj\%2
 if exist %1.exe del %1.exe
 if exist chdman.exe del chdman.exe
 if exist ldverify.exe del ldverify.exe
@@ -293,20 +318,21 @@ if exist unidasm.exe del unidasm.exe
 
 
 @rem --- Do the build
-@echo make buildtools %~2 %~3 %~4 %~5
-make buildtools %~2 %~3 %~4 %~5 || goto :builderror %1
-@echo make all %MAKEPARAMS% %~2 %~3 %~4 %~5
-make all %MAKEPARAMS% %~2 %~3 %~4 %~5 || goto :builderror %1
+@echo make buildtools %~3 %~4 %~5 %~6
+make buildtools %~3 %~4 %~5 %~6 || goto :builderror %1
+@echo make all %MAKEPARAMS% %~3 %~4 %~5 %~6
+make all %MAKEPARAMS% %~3 %~4 %~5 %~6 || goto :builderror %1
+if exist %1.exe strip -s %1.exe
 
 
 @rem --- Stash the specific binaries
-move /y chdman.exe obj\%1\
-move /y ldverify.exe obj\%1\
-move /y ldresample.exe obj\%1\
-move /y romcmp.exe obj\%1\
-move /y jedutil.exe obj\%1\
-move /y ledutil.exe obj\%1\
-move /y unidasm.exe obj\%1\
+move /y chdman.exe obj\%2\
+move /y ldverify.exe obj\%2\
+move /y ldresample.exe obj\%2\
+move /y romcmp.exe obj\%2\
+move /y jedutil.exe obj\%2\
+move /y ledutil.exe obj\%2\
+move /y unidasm.exe obj\%2
 
 goto :eof
 
@@ -340,12 +366,26 @@ svn status ..\trunk\src | findstr trunk >nul && goto :notcheckedin
 svn status ..\trunk\makefile | findstr trunk >nul && goto :notcheckedin
 
 
+@rem --- remove all object directories
+if not "%RESUME%"=="0" goto :skipremove
+@echo Removing old objects...
+if exist ..\trunk\obj rd /s/q ..\trunk\obj
+:skipremove
+
+
 @echo Verifying 32-bit Windows debug build....
-set ARCHOPTS=
-set DEBUG=1
-set OSD=
 pushd ..\trunk
 call config 32
+set ARCHOPTS=
+set DEBUG=1
+set GTK_INSTALL_ROOT=
+set MAP=
+set OPTIMIZE=0
+set OSD=
+set PROFILER=
+set SYMBOLS=1
+set SYMLEVEL=1
+set SUFFIX=
 call :performbuild windows\mamed || goto :eof
 popd
 
@@ -355,51 +395,112 @@ popd
 @echo Verifying 64-bit debug build....
 pushd ..\trunk
 call config 64
+set ARCHOPTS=
+set DEBUG=1
+set GTK_INSTALL_ROOT=
+set MAP=
+set OPTIMIZE=0
+set OSD=
+set PROFILER=
+set SYMBOLS=
+set SYMLEVEL=
+set SUFFIX=
 call :performbuild windows\mame64d || goto :eof
 popd
 
 @echo Verifying 32-bit SDL debug build....
-set ARCHOPTS=
-set DEBUG=1
-set OSD=sdl
 pushd ..\trunk
 call config 32
+set ARCHOPTS=
+set DEBUG=1
+set GTK_INSTALL_ROOT=
+set MAP=
+set OPTIMIZE=0
+set OSD=sdl
+set PROFILER=
+set SYMBOLS=
+set SYMLEVEL=
+set SUFFIX=
 call :performbuild sdl\sdlmamed || goto :eof
 popd
 
 @echo Verifying 64-bit SDL debug build....
 pushd ..\trunk
 call config 64
+set ARCHOPTS=
+set DEBUG=1
+set GTK_INSTALL_ROOT=
+set MAP=
+set OPTIMIZE=0
+set OSD=sdl
+set PROFILER=
+set SYMBOLS=
+set SYMLEVEL=
+set SUFFIX=
 call :performbuild sdl\sdlmame64d || goto :eof
 popd
 
 @echo Verifying 32-bit Windows release build....
-set ARCHOPTS=
-set DEBUG=
-set OSD=
 pushd ..\trunk
 call config 32
+set ARCHOPTS=
+set DEBUG=
+set GTK_INSTALL_ROOT=
+set MAP=
+set OPTIMIZE=3
+set OSD=
+set PROFILER=
+set SYMBOLS=
+set SYMLEVEL=
+set SUFFIX=
 call :performbuild windows\mame || goto :eof
 popd
 
 @echo Verifying 64-bit Windows release build....
 pushd ..\trunk
 call config 64
+set ARCHOPTS=
+set DEBUG=
+set GTK_INSTALL_ROOT=
+set MAP=
+set OPTIMIZE=3
+set OSD=
+set PROFILER=
+set SYMBOLS=
+set SYMLEVEL=
+set SUFFIX=
 call :performbuild windows\mame64 || goto :eof
 popd
 
 @echo Verifying 32-bit SDL release build....
-set ARCHOPTS=
-set DEBUG=
-set OSD=sdl
 pushd ..\trunk
 call config 32
+set ARCHOPTS=
+set DEBUG=
+set GTK_INSTALL_ROOT=
+set MAP=
+set OPTIMIZE=3
+set OSD=sdl
+set PROFILER=
+set SYMBOLS=
+set SYMLEVEL=
+set SUFFIX=
 call :performbuild sdl\sdlmame || goto :eof
 popd
 
 @echo Verifying 64-bit SDL release build....
 pushd ..\trunk
 call config 64
+set ARCHOPTS=
+set DEBUG=
+set GTK_INSTALL_ROOT=
+set MAP=
+set OPTIMIZE=3
+set OSD=sdl
+set PROFILER=
+set SYMBOLS=
+set SYMLEVEL=
+set SUFFIX=
 call :performbuild sdl\sdlmame64 || goto :eof
 popd
 
