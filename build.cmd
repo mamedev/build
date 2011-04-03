@@ -287,6 +287,8 @@ copy ..\tempbuild\obj\windows\%1\ledutil.exe
 copy ..\tempbuild\obj\windows\%1\unidasm.exe
 mkdir docs
 copy ..\tempbuild\docs\*.* docs
+mkdir hash
+copy ..\tempbuild\hash\*.* hash
 7za x ..\mamedirs.zip
 7za a -mx=9 -y -r -t7z -sfx7z.sfx ..\%2
 popd
