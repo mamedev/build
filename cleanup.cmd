@@ -22,8 +22,8 @@ dir /s /b src | findstr /v /c:"\\sdl\\" | findstr /v README | findstr "[ABCDEFGH
 
 @rem --- run a cleanup pass
 @if not exist srcclean.exe (
-mingw32-make maketree
-mingw32-make srcclean.exe
+make maketree
+make srcclean.exe
 )
 @echo Cleaning up tabs/spaces/end of lines....
 for /r src %%i in (*.c) do srcclean %%i || goto :cleanupfailed
