@@ -29,6 +29,8 @@ make srcclean.exe
 for /r src %%i in (*.c) do srcclean %%i || goto :cleanupfailed
 for /r src %%i in (*.h) do srcclean %%i || goto :cleanupfailed
 for /r src %%i in (*.mak) do srcclean %%i || goto :cleanupfailed
+for /r src %%i in (*.lst) do srcclean %%i || goto :cleanupfailed
+for /r src %%i in (*.lay) do srcclean %%i || goto :cleanupfailed
 
 
 @rem --- verify that all the games are referenced
@@ -54,7 +56,7 @@ findstr /v "\/\/.*GAME" gamelist.txt >gamelist2.txt
 findstr /v "\/\*[^*]*GAME" gamelist2.txt >gamelist3.txt
 
 @echo Scanning for missing entries....
-for /f "delims=:,( tokens=1-4" %%i in (gamelist3.txt) do ( findstr " %%l " src\mame\mamedriv.c >nul || ( set MISSING=1 && echo %%l - %%i ) )
+for /f "delims=:,( tokens=1-4" %%i in (gamelist3.txt) do ( findstr " %%l " src\mame\mame.lst >nul || ( set MISSING=1 && echo %%l - %%i ) )
 
 del gamelist.txt
 del gamelist2.txt
