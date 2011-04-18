@@ -1,6 +1,16 @@
 @echo off
 @setlocal
 
+@rem --- set to 1 to enable testing; otherwise, leave blank
+@set TEST=1
+
+
+@rem --- use these macros to redirect to NUL so that they don't redirect
+@rem --- when testing
+@set NULLOUT=^>nul
+@set NULLERR=2^>nul
+@if not "%TEST%" == "" echo on& set NULLOUT=&set NULLERR=2^>^&1
+
 
 @rem --- switch to the script's directory
 cd %~dp0
@@ -15,21 +25,23 @@ goto :eof
 @rem --- ensure we have all the necessary tools
 :configok
 call ..\trunk\config 32
+@if not "%TEST%" == "" echo on
+@if not "%TEST%" == "" set
 set ALLFOUND=1
 for %%i in (make svn 7za) do ( where /q %%i || ( set ALLFOUND=0 && echo Missing required tool %%i ) )
 if not "%ALLFOUND%"=="1" goto :eof
 
 
 @rem --- figure out what to do based on input parameters
-@set /a PROCS=%NUMBER_OF_PROCESSORS% + 1
-@set MAKEPARAMS=-j %PROCS%
-@set RESUME=0
-@set REVISION=%1
-@if "%4"=="resume" (set RESUME=1 && echo Resuming from previous attempt....)
-@if "%1"=="" goto :usage
-@if "%2"=="" goto :usage
-@if "%3"=="" goto :makefull
-@if "%3"=="0" goto :makefull
+set /a PROCS=%NUMBER_OF_PROCESSORS% + 1
+set MAKEPARAMS=-j %PROCS%
+set RESUME=0
+set REVISION=%1
+if "%4"=="resume" (set RESUME=1 && echo Resuming from previous attempt....)
+if "%1"=="" goto :usage
+if "%2"=="" goto :usage
+if "%3"=="" goto :makefull
+if "%3"=="0" goto :makefull
 goto :build
 
 
@@ -57,8 +69,8 @@ set VERSION=%temp:~0,1%.%temp:~1%u%3
 
 
 @rem --- see if the branch exists
-svn list svn://mamedev.org/mame/tags/%SRCBRANCH% >nul 2>nul || goto :nosourcebranch
-svn list svn://mamedev.org/mame/tags/%DSTBRANCH% >nul 2>nul && goto :destexists
+svn list svn://mamedev.org/mame/tags/%SRCBRANCH% %NULLOUT% %NULLERR% || goto :nosourcebranch
+svn list svn://mamedev.org/mame/tags/%DSTBRANCH% %NULLOUT% %NULLERR% && goto :destexists
 @echo Target branch %DSTBRANCH% doesn't exist; promoting main branch....
 
 
@@ -75,7 +87,7 @@ if "%VALIDATED%"=="0" goto :eof
 
 @rem --- all systems go, create the branch
 @echo Creating target branch %DESTBRANCH%....
-svn copy svn://mamedev.org/mame/trunk -r %REVISION% svn://mamedev.org/mame/tags/%DSTBRANCH% -m "MAME %VERSION% tag"
+if "%TEST%" == "" svn copy svn://mamedev.org/mame/trunk -r %REVISION% svn://mamedev.org/mame/tags/%DSTBRANCH% -m "MAME %VERSION% tag"
 
 
 @rem --- now do the diff
@@ -95,7 +107,7 @@ cd ..
 @echo Zipping the results....
 if exist %DIFFZIP% del %DIFFZIP%
 if exist %WHATSNEWNAME% del %WHATSNEWNAME%
-copy %WHATSNEW% %WHATSNEWNAME% >nul
+copy %WHATSNEW% %WHATSNEWNAME% %NULLOUT%
 7za a -mpass=4 -mfb=255 -y -tzip %DIFFZIP% %DIFFNAME% %WHATSNEWNAME%
 if exist %WHATSNEWNAME% del %WHATSNEWNAME%
 
@@ -122,7 +134,7 @@ set VERSION=%temp:~0,1%.%temp:~1%
 
 
 @rem --- see if the branch exists
-svn list svn://mamedev.org/mame/tags/%DSTBRANCH% >nul 2>nul && goto :destexistsfull
+svn list svn://mamedev.org/mame/tags/%DSTBRANCH% %NULLOUT% %NULLERR% && goto :destexistsfull
 @echo Target branch %DSTBRANCH% doesn't exist; promoting main branch....
 
 
@@ -139,20 +151,21 @@ if "%VALIDATED%"=="0" goto :eof
 
 @rem --- all systems go, create the branch
 @echo Creating target branch %DESTBRANCH%....
-svn copy svn://mamedev.org/mame/trunk -r %REVISION% svn://mamedev.org/mame/tags/%DSTBRANCH% -m "MAME %VERSION% tag"
+if "%TEST%" == "" svn copy svn://mamedev.org/mame/trunk -r %REVISION% svn://mamedev.org/mame/tags/%DSTBRANCH% -m "MAME %VERSION% tag"
 
 
 @rem --- export the tree for building
 :destexistsfull
 @echo Checking out a temp copy....
 if exist tempbuild rd /s/q tempbuild
-svn export svn://mamedev.org/mame/tags/%DSTBRANCH% tempbuild >nul
+svn export svn://mamedev.org/mame/tags/%DSTBRANCH% tempbuild %NULLOUT%
 
 
 @rem --- build the debug version
 @echo Building debug version....
 
 call ..\trunk\config 32
+@if not "%TEST%" == "" echo on
 set ARCHOPTS=
 set DEBUG=1
 set GTK_INSTALL_ROOT=
@@ -206,6 +219,7 @@ popd
 @rem --- build the 64-bit version
 @echo Building 64-bit version....
 call ..\trunk\config 64
+@if not "%TEST%" == "" echo on
 set ARCHOPTS=
 set DEBUG=
 set GTK_INSTALL_ROOT=
@@ -224,7 +238,7 @@ popd
 @rem --- now export the actual tree
 @echo Checking out a temp copy....
 if exist tempexport rd /s/q tempexport
-svn export svn://mamedev.org/mame/tags/%DSTBRANCH% tempexport >nul
+svn export svn://mamedev.org/mame/tags/%DSTBRANCH% tempexport %NULLOUT%
 
 
 @rem --- copy in the whatsnew file
@@ -237,12 +251,12 @@ if exist %FINALZIP%.zip del %FINALZIP%.zip
 if exist %FINALZIP%.exe del %FINALZIP%.exe
 pushd tempexport
 @echo Creating 7zip archive....
-7za a -mx=9 -y -r -t7z -sfx7z.sfx ..\%FINALZIP%.exe * >nul
+7za a -mx=9 -y -r -t7z -sfx7z.sfx ..\%FINALZIP%.exe * %NULLOUT%
 @echo Creating raw ZIP....
-7za a -mx=0 -y -r -tzip ..\mame.zip * >nul
+7za a -mx=0 -y -r -tzip ..\mame.zip * %NULLOUT%
 popd
 @echo Creating final ZIP....
-7za a -mpass=4 -mfb=255 -y -tzip %FINALZIP%.zip mame.zip >nul
+7za a -mpass=4 -mfb=255 -y -tzip %FINALZIP%.zip mame.zip %NULLOUT%
 del mame.zip
 
 
@@ -348,7 +362,7 @@ goto :eof
 
 @rem --- see if the whatsnew exists
 if not exist %WHATSNEW% goto :nowhatsnew
-findstr 123456789 %WHATSNEW% >nul && goto :junkinwhatsnew
+findstr 123456789 %WHATSNEW% %NULLOUT% && goto :junkinwhatsnew
 
 
 @rem --- make sure all filenames are lowercase
@@ -358,14 +372,14 @@ dir /s /b ..\trunk\src | findstr /v /c:"\\sdl\\" | findstr /v README | findstr "
 
 @rem --- verify the version on the top of tree
 @echo Verifying version.c....
-findstr %VERSION% ..\trunk\src\version.c >nul || goto :wrongversion
+findstr %VERSION% ..\trunk\src\version.c %NULLOUT% || goto :wrongversion
 
 
 @rem --- verify that everything is checked in
 @echo Verifying that everything is checked in....
-svn status %WHATSNEW% | findstr whatsnew >nul && goto :notcheckedin
-svn status ..\trunk\src | findstr trunk >nul && goto :notcheckedin
-svn status ..\trunk\makefile | findstr trunk >nul && goto :notcheckedin
+svn status %WHATSNEW% | findstr whatsnew %NULLOUT% && goto :notcheckedin
+svn status ..\trunk\src | findstr trunk %NULLOUT% && goto :notcheckedin
+svn status ..\trunk\makefile | findstr trunk %NULLOUT% && goto :notcheckedin
 
 
 @rem --- remove all object directories
@@ -392,7 +406,7 @@ call :performbuild windows\mamed || goto :eof
 popd
 
 @echo Verifying validation....
-..\trunk\mamed -valid >nul || goto :validationerror
+..\trunk\mamed -valid %NULLOUT% || goto :validationerror
 
 @echo Verifying 64-bit debug build....
 pushd ..\trunk
