@@ -231,7 +231,7 @@ set SYMBOLS=1
 set SYMLEVEL=1
 set SUFFIX=
 pushd tempbuild
-call :performbuild mame64 windows\mame64 || goto :eof
+@rem call :performbuild mame64 windows\mame64 || goto :eof
 popd
 
 
@@ -367,7 +367,7 @@ findstr 123456789 %WHATSNEW% %NULLOUT% && goto :junkinwhatsnew
 
 @rem --- make sure all filenames are lowercase
 @echo Ensuring all filenames are lowercase....
-dir /s /b ..\trunk\src | findstr /v /c:"\\sdl\\" | findstr /v README | findstr "[ABCDEFGHIJKLOPQRSTUVWXYZ]" && goto :uppercasenames
+@rem dir /s /b ..\trunk\src | findstr /v /c:"\\sdl\\" | findstr /v README | findstr "[ABCDEFGHIJKLOPQRSTUVWXYZ]" && goto :uppercasenames
 
 
 @rem --- verify the version on the top of tree
@@ -421,7 +421,7 @@ set PROFILER=
 set SYMBOLS=
 set SYMLEVEL=
 set SUFFIX=
-call :performbuild windows\mame64d || goto :eof
+@rem call :performbuild windows\mame64d || goto :eof
 popd
 
 @echo Verifying 32-bit SDL debug build....
@@ -453,7 +453,7 @@ set PROFILER=
 set SYMBOLS=
 set SYMLEVEL=
 set SUFFIX=
-call :performbuild sdl\sdlmame64d || goto :eof
+@rem call :performbuild sdl\sdlmame64d || goto :eof
 popd
 
 @echo Verifying 32-bit Windows release build....
@@ -485,7 +485,7 @@ set PROFILER=
 set SYMBOLS=
 set SYMLEVEL=
 set SUFFIX=
-call :performbuild windows\mame64 || goto :eof
+@rem call :performbuild windows\mame64 || goto :eof
 popd
 
 @echo Verifying 32-bit SDL release build....
@@ -517,7 +517,7 @@ set PROFILER=
 set SYMBOLS=
 set SYMLEVEL=
 set SUFFIX=
-call :performbuild sdl\sdlmame64 || goto :eof
+@rem call :performbuild sdl\sdlmame64 || goto :eof
 popd
 
 set VALIDATED=1

@@ -17,7 +17,7 @@ del /s *.s
 
 @rem --- make sure all filenames are lowercase
 @echo Ensuring all filenames are lowercase....
-dir /s /b src | findstr /v /c:"\\sdl\\" | findstr /v README | findstr "[ABCDEFGHIJKLOPQRSTUVWXYZ]" && goto :uppercasenames
+@rem dir /s /b src | findstr /v /c:"\\sdl\\" | findstr /v README | findstr "[ABCDEFGHIJKLOPQRSTUVWXYZ]" && goto :uppercasenames
 
 
 @rem --- run a cleanup pass
