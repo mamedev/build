@@ -303,6 +303,8 @@ mkdir docs
 copy ..\tempbuild\docs\*.* docs
 mkdir hash
 copy ..\tempbuild\hash\*.* hash
+mkdir hlsl
+copy ..\tempbuild\hlsl\*.* hlsl
 7za x ..\mamedirs.zip
 7za a -mx=9 -y -r -t7z -sfx7z.sfx ..\%2
 popd
