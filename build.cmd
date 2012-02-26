@@ -292,13 +292,13 @@ pushd tempbin
 copy ..\%WHATSNEW% whatsnew.txt
 copy ..\tempbuild\%1.exe
 copy ..\tempbuild\%1.sym
-copy ..\tempbuild\obj\windows\%1\chdman.exe
-copy ..\tempbuild\obj\windows\%1\ldverify.exe
-copy ..\tempbuild\obj\windows\%1\ldresample.exe
-copy ..\tempbuild\obj\windows\%1\romcmp.exe
-copy ..\tempbuild\obj\windows\%1\jedutil.exe
-copy ..\tempbuild\obj\windows\%1\ledutil.exe
-copy ..\tempbuild\obj\windows\%1\unidasm.exe
+copy ..\tempbuild\obj\windowsd\%1\chdman.exe
+copy ..\tempbuild\obj\windowsd\%1\ldverify.exe
+copy ..\tempbuild\obj\windowsd\%1\ldresample.exe
+copy ..\tempbuild\obj\windowsd\%1\romcmp.exe
+copy ..\tempbuild\obj\windowsd\%1\jedutil.exe
+copy ..\tempbuild\obj\windowsd\%1\ledutil.exe
+copy ..\tempbuild\obj\windowsd\%1\unidasm.exe
 mkdir docs
 copy ..\tempbuild\docs\*.* docs
 mkdir hash
