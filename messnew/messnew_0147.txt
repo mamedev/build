@@ -1,0 +1,825 @@
+0.147
+-------
+
+
+MAMETesters Bugs Fixed
+----------------------
+- 04981: [Graphics] (coleco.c) coleco: [frogger] Blinking graphic 
+  glitches across top half of screen (hap)
+
+New System Drivers Supported:
+-----------------------------
+(none)
+
+Systems Promoted from GAME_NOT_WORKING:
+---------------------------------------
+(none)
+
+Skeleton drivers:
+-----------------
+- AlphaSmart Pro [JCCyC]
+
+System Driver Changes:
+----------------------
+-mz2000: added and hooked up software lists for tapes and
+ floppies. tapes do not work, and we need proper dumps of the cassette
+ BASIC. [Fabio Priuli]
+
+-vip: Fixed VP-700 Tiny BASIC ROM mapping and VP-620 ASCII
+ keyboard. [Curt Coder]
+
+-i8550021: Added keyboard ROM. [John Elliott]
+
+-hr16: Added preliminary sound emulation. [Sandro Ronco]
+
+-vboy: Improved framebuffer busy / drawing flags for Virtual Boy, golf
+ doesn't crash anymore and nesterfb does a bit more [Angelo Salese]
+
+-vboy: correct timer handling, gives proper sound/music. [R. Belmont]
+
+-VK100 IO mirroring, also a lot of prom tracing and comment
+ updates [Lord Nightmare]
+
+-c64: Added floating bus read support to cartridge interface. [Curt Coder] 
+
+-plus4: Added floating bus read support to TED and
+ cartridge interface. Implemented some Diag264 test cartridge loopback
+ connectors. [Curt Coder]
+
+-c64: Fixed CPU port, tsuit215 CPUPORT test passes now. [Curt Coder]
+
+-VK100: Correctly hooked up vsync interrupt to crtc instead of
+ video subsystem; Figured out the low two bits of SYSTAT_A from tracing
+ and hooked both up, and updated the SYSTAT_A documentation comments.
+ Additional documentation comments for the SMC COM5016T baud rate
+ divider. Made the DU/DVM/DIR/WOPS 8*4bit register file an actual
+ 4-entry array, to simplify address decoding later. [Lord Nightmare]
+
+-VK100: simplification of the code by emulating the register
+ file as an array. [Lord Nightmare]
+
+-apple2gs: Save states now officially supported. [R. Belmont]
+
+
+Software Lists:
+----------------
+-vic1001_cart.xml: Added a few more carts. [K1W1]
+
+-ibm5170.xml: Added some more disks. [Kaylee]
+
+-pcw.xml: Dumped UK and FR system disks. [breiztiger]
+
+-mz700: added a software list to document tape dumps [FatArnold]
+
+-channelf.xml: added a bunch of proto carts dumped a few years
+ ago. [K1W1]
+
+-snes.xml:
+ * Huge prototype update, tons of invaluable documentation added
+    [ReadOnly] Many thanks to all the contributors, in no particular
+    order: TheRedEye, Adam K, Van Halen, Mike, JackHead, badinsults,
+    Yakushi~Kabuto
+ * New dumps deluge
+    [JachHead, Mike, Yakushi~Kabuto, badinsults, RedScorpion]
+ * Many new carts profiles added, thanks to RedScorpion’s donation
+    [ReadOnly]
+ * Rationalization of the undumped list [ReadOnly]
+ * Plethora of fixes and additions [ReadOnly]
+
+Source Changes:
+----------------
+-Fixed vertical sprite wrap-around in SNES driver [Angelo Salese]
+
+-Rewritten cycle steal code from scratch and nailed it directly
+ in the G65816 CPU core [Angelo Salese, byuu]
+
+-Added PET cassette port slot interface to vic20, c64, and
+ plus4. Implemented 1530/1531 datassette as slot devices. Converted
+ MOS6581 interface to devcb. [Curt Coder] 
+
+-vic20: Added floating bus read support to VIC and cartridge interface. 
+ [Curt Coder]
+
+-vic10: Added floating bus read support to VIC-II and cartridge interface. 
+ [Curt Coder]
+
+-Fixed incorrect SPC700 IPL ROM behaviour in SNES driver(s),
+ fixes some (not all) crashes at soft reset [Angelo Salese]
+
+-Added Sound Blaster 16, and proper 16 bit ISA DMA handling [Carl]
+
+-Added IBM VGA card [Carl]
+
+-m6502: Fixed CPU peripheral port behavior by introducing pull-up and
+ pull-down masks to the CPU interface. [Curt Coder] 
+
+-isa_blaster: Adds 2,3 and 4bit ADPCM support [Carl]
+
+-Preliminary support for cassette images in MZ-2000
+ [Angelo Salese]
+
+-Added keyboard inputs for Pasopia and Pasopia 7, z80pio irq
+ still doesn't work [Angelo Salese]
+
+-Added paddles and light pen VCS control devices. [Curt Coder]
+
+-support for writing to compressed hard drives using diff files. [smf]
+
+-pc hardware: cleanup the end-of-dma notifications [O. Galibert]
+
+-isa_blaster: improves the adpcm and simplifies the dsp
+ protection, based on the ATI Stereo FX rom. [Carl] 
+
+-pc_joy: made pc joystick a device for the many isa audio adapters with 
+ joy ports to share. [Carl]
+
+-cbmb: Added PLA dumps. [Edward Shockley]
+
+
+
+0.146u5
+
+MAMETesters Bugs Fixed
+----------------------
+(none)
+
+New System Drivers Supported:
+-----------------------------
+(none)
+
+Systems Promoted from GAME_NOT_WORKING:
+---------------------------------------
+- SBC6510 [Robbbert]
+
+Skeleton drivers:
+-----------------
+- VAX 785 (LSI-11 board only) [Miodrag Milanovic]
+
+- Elektronika MS-0515 [KokaF77, Miodrag Milanovic]
+
+System Driver Changes:
+----------------------
+
+-llc1: fixed monitor keyboard LLC2: added speaker and annoying keyclick
+ [Robbbert]
+
+-vidbrain: Added expansion port interface. [Curt Coder]
+
+-vidbrain: Added expansion port pinout. (nw)
+
+-llc: modernised ; LLC2 added support for reverse video & added missing
+ pio. [Robbbert]
+
+-vk100: Some improvement to the HLE vector generator, now properly
+ emulates the down counter so the "blue screen" part of the POST looks
+ correct, as does the cursor width. [Lord Nightmare]
+
+-vk100: broke the vram access logic/math out of the vector generator
+ callback and into its own functions; fixed? the systat_a register to
+ read the vram nybble the x and y regs are currently pointing to.
+ [Lord Nightmare]
+
+-abc800c: Added character display, promoted driver to working.
+ [Curt Coder]
+
+-pcm: connected the k7659 keyboard, fixed screen size [Robbbert]
+
+-abc800c: Added high resolution graphics. [Curt Coder]
+
+-abc80: Added serial interface. [Curt Coder]
+
+-a6809: Added ASCII keyboard. [Curt Coder]
+
+-abc806: Used correct HRUII PROM. [Curt Coder]
+
+-socrates: document that an MCU dump is missing of the 4-bit TMP42C40P
+ that decodes the IR signal from the keyboard and buffers the 'second
+ stage' of the keyboard input. Changed code slightly to reflect this.
+ [Lord Nightmare, Balrog]
+
+-z9001 : added 2xpio, ctc, daisy-chain, beeper-sound, cassout
+ [Robbbert]
+
+-v6809 : various video improvements. [Robbbert]
+
+-abc80: Refactored legacy code, moved DOS ROMs to ABC bus DOS card,
+ added BASIC V1 dump, added ABC 890 bus expander device. [Curt Coder]
+
+-abc80x: Refactored legacy code, cleaned up keyboard interface, added
+ ABC894 bus expander device, added ABC 55 keyboard for ABC 802.
+ [Curt Coder]
+
+-vt100: add the GPO (aka VT125 mono board) roms and proms as a mix of
+ NO_DUMP and copies of the vk100 ones where identical [Lord Nightmare]
+
+-vk100: further comment updates, got rid of LASTVRAM in favor of doing
+ a single read at the current nybble pointed to by the X and Y
+ registers. [Lord Nightmare]
+
+-vk100: Implemented baud generator LUT for i8251, not hooked up yet;
+ added RTS callback which doesn't seem to work yet. [Lord Nightmare]
+
+-vk100: Doing further vector rom tracing with a meter on the board
+ using the vt125 schematics as a guide, figured out what all the vector
+ rom pins do (except perhaps D LOAD). [Lord Nightmare]
+
+-vip: Added VP-620 ASCII keyboard cable, VP-570 RAM expansion board,
+ and VP-575 bus expander board. [Curt Coder]
+
+-plus4: Rewrite of the C16/Plus+4 driver with improved memory mapping
+ and cartridge support. Refactored the Commodore 1551 floppy drive to
+ connect to the expansion port. [Curt Coder]
+
+-vk100: Documented all the inputs and enables of the RAS/ERASE prom
+ through tracing. Documented that the MSB bit of the SYNC prom is ...
+ SYNC. The VT125 Schematics were invaluable for this.
+ [Lord Nightmare, Al Kossow]
+
+-sbc6510: Connected up the keyboard and added ay-3-8910 chip [Robbbert]
+
+-vii: Fixing some warnings. Not 100% sure of the intended
+ functionality, but IRQ & IRQ_MASK & line seems probable and seems to
+ work. [MooglyGuy]
+
+-c64: Fixed C1541 and FSD-2, added Dolphin DOS 2.0 and
+ Professional-DOS V1 hardware. [Curt Coder] 
+
+-plus4: Added SID card emulation. [Curt Coder]
+
+-c64: Emulated the digital read circuitry of the Commodore 1541 disk
+ drive according to the long board schematics. This will allow
+ independent setting of the bitrate of incoming data and the sample
+ rate. Passing more advanced copy protections require a cycle exact
+ rewrite of the 6502 and VIA, but this is the first step toward proper
+ emulation. [Curt Coder]
+
+-vip: Added VP-700 Tiny BASIC board. [ekeefe, Curt Coder]
+
+-c64: Added support for per-byte speed zones in G64 images.
+ [Curt Coder]
+
+-sacstate: Added comments. Fixed input ports. [Robbbert]
+
+-hr16: Hooked up LCD controller and added keypad inputs. [Sandro Ronco]
+
+-rainbow:
+ * Get closer to LK201 emulation [R. Belmont, Lord Nightmare, Balrog]
+ * Add documentation for system error codes and diagnostic LEDs
+    [rfka01]
+
+-vboy: various driver improvements [Angelo Salese]
+
+-vboy: preliminary audio hookup [Richard Bannister, Gil Pedersen, R. Belmont]
+
+-x1: added support for old TAP format to the driver, so that all newly 
+ added tapes work (high sample rate tapes are still not supported, though) 
+ [Fabio Priuli]
+
+
+Software Lists:
+----------------
+-pico.xml: added new Jpn dumps [TeamEurope] 
+
+-pico.xml: started documenting PCBs and ROM labels [TeamEurope]
+
+-x1_flop: first round of new dumps [Starscreamer the 2nd]
+
+-x1_cass: some more new dumps [Starscreamer the 2nd]
+
+Source Changes:
+----------------
+-new device k7659 keyboard; modified LLC2 to work with it [Robbbert]
+
+-k7659kb - added more keys, added port_char, added return value when no
+ key pressed [Robbbert]
+
+-terminal: Replaced internal keyboard with the Ascii keyboard, since
+ they were identical. [Robbbert]
+
+-nscsi: documentation [O. Galibert]
+
+-rp5c15: Initialize at power-on (makes the x68k boot reliable) [O. Galibert]
+
+-roc10935/7: correct an error in the lookup table for the '7' character [Lord Nightmare]
+
+
+0.146u4
+
+MAMETesters Bugs Fixed
+----------------------
+(none)
+
+New System Drivers Supported:
+-----------------------------
+(none)
+
+Systems Promoted from GAME_NOT_WORKING:
+---------------------------------------
+(none)
+
+Skeleton drivers:
+-----------------
+(none)
+
+
+System Driver Changes:
+----------------------
+-vt100: Fix vt100 to use beep instead of speaker. Some work still needs to be
+ done to beep.c since the phase needs to be reset in such a way that
+ keyclicks work consistently, in addition to beeps. [Lord Nightmare]
+
+-vt100: Added missing dot stretching to the DEC VT100's dc012 emulation. See
+ EK-VT100-TM-003 page 4-76 for a description. Note the stretching takes
+ place after the character rom but before invert or other attributes.
+ [Lord Nightmare]
+
+-vk100: hook up vblank interrupt (critical selftest now passes); add
+ layout for LEDS, beginning of skeleton keyboard support.
+ [Lord Nightmare]
+
+-exelvision: use correct vsm rom [robcfg, kevtris]
+
+-vk100: Correct the labels of several proms which were unreadable on the vk100
+ that they were dumped from [nigwil]
+
+-vk100: attach keyboard [Lord Nightmare]
+
+-vk100: miscellaneous progress, slight cleanup to keyboard, stubbed and
+ implemented a bunch of vector generator addresses [Lord Nightmare]
+
+-vk100: figured out pattern rom addressing [Lord Nightmare]
+
+-vk100: implemented stubs for the rest of the VG registers
+ [Lord Nightmare]
+
+-vk100: implemented or stubbed the rest of the io registers, left
+ SYSTAT_A commented for now since its behavior is unclear. Added and
+ attached the dipswitches to SYSTAT_B (though this may well be wrong)
+ Hooked up the i8251 uart preliminarily (ints not hooked up yet)
+ [Lord Nightmare]
+
+-mc1502: added cassette input, keyboard input fix. [shattered]
+
+-iskr1031, ec1841: split machine descriptions from pc16, remove hacks
+ from pc16 and ibm5550. [shattered]
+
+-ec1841: mirror chargen memory at b800:1000 -- fixes video test 501 on
+ TPS (diagnostics) disk. [shattered]
+
+-ec1841: implement memory controller (only for 1 board yet), no support
+ for remapping banks inside the board.  Memory test in POST passes.
+ [shattered]
+
+-vk100: WIP: preliminary gfx rendering; hooked up the i8251 interrupts.
+ Corrected dipswitch locations. [Lord Nightmare]
+
+-vk100: Initial implementation of the vector generator. Rather buggy, and not
+ really readable yet, but it definitely shows something on screen, and
+ you can type and see things change! (and you see a blinking cursor
+ too!) [Lord Nightmare]
+
+-vk100: further improvements to the vector generator, still not
+ completely correct. [Lord Nightmare]
+
+-vk100: FINALLY fixed the vector generator. Display looks relatively
+ sane now. Fixed shift and capslock being reversed and added
+ port_toggle to capslock. [Lord Nightmare]
+
+-vk100: preliminary direction support for basic vectors. doesn't quite
+ work right yet. [Lord Nightmare]
+
+-vk100: Add more debugging defines, remove some unneeded code, and
+ added more comments to TODO and to some registers. [Lord Nightmare]
+
+-vk100: vector generator uses "real" timing instead of drawing the
+ vector instantly. [Lord Nightmare]
+
+-vk100: update comments to reflect that the pr1 prom is clearly the
+ VECTOR ROM. Add notes about what each address bit does or is thought
+ to do. (the tech manual documentation is lousy, but is better than
+ nothing). [Lord Nightmare]
+
+-geniusiq: Added PCB layout for the German Version. [TeamEurope]
+
+-vk100: minor cleanups to variable names, documented as much of the
+ address info of the sync and direction proms as I could figure so far.
+ [Lord Nightmare]
+
+-vk100: vector timing callback rate is now definitely correct; the tech
+ manual had an annoying error which made this hard to figure out.
+ [Lord Nightmare]
+
+-vk100: figured out bits 3,2,1 of SOPS register and implemented
+ blinking and documented serial multiplexer based on these findings.
+ Also fixed a stupid bug in the display code which broke the reverse
+ video bit. [Lord Nightmare]
+
+-vk100: properly hooked up dipswitches through the SYSTAT_A register
+ bit d2. Got rid of some dead palette code. [Lord Nightmare]
+
+-vk100: Fixed the weird ordering of the dipswitches, so everything now
+ controls what it should. [Lord Nightmare]
+
+-vk100: Add the two previously-missing PROMs (not hooked up yet);
+ Update notes a bit, correct location for the main roms according to
+ tech manual (it turns out you count from the lower right corner
+ upward, not upper right downward). [Lord Nightmare, Balrog, Andy V.]
+
+-vk100: Comment wrangling and some analysis of the newly dumped proms.
+ Still some work to be done here especially on the vector prom.
+ [Lord Nightmare]
+
+-vidbrain: Fixed graphics corruption in Lemonade Stand. [Sean Riddle]
+
+-vidbrain: Fixed memory map, improved colors. [Sean Riddle]
+
+-mc1502: preliminary floppy support. Still not functional [shattered]
+
+-pc: fixes the sound in Arkanoid, which doesn't use the 8253 at all.
+ [shattered]
+
+-llc1:  [Robbbert]
+ * Identified monitor keys
+ * Turns out new monitor rom is also a bad dump
+ * Added patches to make the system usable
+
+-vk100: more comment updates based on shared info from VT125 tech
+ manual [Lord Nightmare]
+
+-vk100: slight documentation updates, traced sync rom A4 completely.
+ [Lord Nightmare]
+
+
+Software Lists:
+----------------
+-pico.xml: added more Japanese dumps [TeamEurope]
+
+-a800.xml: Another small addition to the a800 softlist. [K1W1]
+
+-apple1.xml: Added proper wav for aslite [Anon]
+
+Source Changes:
+----------------
+-m68k: Handle higher-value constants in FMOVECR [R. Belmont]
+
+-Moved TMS9901/9902 from mess/machine to emu/machine [Michael Zapf]
+
+-AM9517 DMA controller enhancements, adapted PC drivers to use it
+ [Carl]
+
+-pccga: ec1841 not only mirrors the chargen buffer, but also
+ byte-swaps it [shattered]
+
+
+0.146u3
+
+MAMETesters Bugs Fixed
+----------------------
+- 04926: [Speed] (pce.c) tg16, pce: Slowdown when playing CD based games (Angelo Salese)
+
+New System Drivers Supported:
+-----------------------------
+(none)
+
+Systems Promoted from GAME_NOT_WORKING:
+---------------------------------------
+(none)
+
+Skeleton drivers:
+-----------------
+(none)
+
+
+System Driver Changes:
+----------------------
+-dmv: Added keyboard mcu rom content [rfka01]
+
+-intellivision: update comments and fix rom locations on intv1
+ hardware. Note the intv1 exec.bin still needs to be split to the two
+ separate roms that the real hardware used. [Lord Nightmare]
+
+-intellivision: enabled the c000-cfff area for cart rom access; while
+ no commercial carts used this afaik, at least one homebrew cart does
+ and won't work without it. (actually this was in the previous commit
+ by accident) Corrected the manufacturer/name of the Sears Super Video
+ Arcade. [Lord Nightmare]
+
+-thomson: Performance improvements and bug-fixes: more efficient bank
+ switching, fixed video update (Mach 3, Sparce Racer, HCL), fixed game
+ PIA port B, fixed side-effect in debugger, fixed MO6 cassette.
+ [Fabrice Bellet]
+
+-vidbrain: Improved video timings and correct CPU clock.
+ [Kurt Woloch, Sean Riddle, Curt Coder]
+
+-ep804/digel804: a lot of documentation updates, fixed location of roms
+ to match schematics; documented the ram expansion pinout.
+ [Lord Nightmare, balrog]
+
+-sc3000: Added support for the SC-3000 Survivors *.bit cassette file
+ format. [Curt Coder, SC-3000 Survivor]
+
+-vip: Added byte I/O and expansion slot interfaces. [Curt Coder]
+
+-sc3000: Moved the fake BIOS to cartridge software list. SC-3000 does
+ not have an internal BIOS, instead a BASIC or other cartridge needs to
+ be plugged in manually. E.g. "mess sc3000 basic3" [Curt Coder]
+
+-vip: Connected the byte I/O and expansion ports. Refactored the
+ VP550, VP590, and VP595 to implement the expansion slot interface.
+ [Curt Coder]
+
+-vip: Added beeper on/off switch, and VP585 board. [Curt Coder]
+
+-ti99: gromport redesigned, now offering three slot options "single"
+ (default) / "multi" / "gkracker" determining the set of cartridge
+ slots (cart or cart1/2/3/4). Cartridge insertion may be set to trigger
+ RESET or not. TI consoles now have a dedicated RESET line, connected
+ to the RESET input of the CPU and VDP. [Michael Zapf]
+
+-DEC VK100/GIGI documentation update; document two missing proms,
+ correct (I hope) IC locations (until we can get schematics) using the
+ DEC system of counting from the top right corner downward and shifting
+ one column to the left at the end, and documented the (sometimes
+ barely/illegible) markings on the proms.
+ [Lord Nightmare, Andy Valencia, Guru]
+
+Software Lists:
+----------------
+-ibm5150.xml: Added cassette software list. [Curt Coder]
+
+-snes.xml: Added a dump of a prototype of the cancelled title, Spectrum
+ HoloByte’s Falcon [Le GROS Pixel]
+
+-ql.xml: Added software list for Microdrive cassettes. [Curt Coder]
+
+-tandy6k.xml: Added software list for floppies. [Curt Coder]
+
+-tandy2k.xml: Added software list for floppies. [Curt Coder]
+
+-bw12.xml: Added software list for floppies. [Curt Coder]
+
+-wmbullet.xml: Added software list for floppies. [Curt Coder]
+
+-vip.xml: Added software list for cassettes. [Curt Coder]
+
+-compis.xml: Added software list for cassettes. [Curt Coder]
+
+-pico.xml: new spanish and japanese dumps [TeamEurope]
+
+-ibm5150.xml: added a few diagnostic disks and moved here a couple of
+ disks from ibm5170.xml, since they belong here
+ [Kaylee, shattered, rfka01]
+
+-ibm5170.xml: Added a few more disk images (and reorganized the list)
+ [Kaylee]
+
+Source Changes:
+----------------
+-Refactored the Commodore disk drives to use BIOS definitions.
+ [Curt Coder]
+
+-tms9928/v9938: Using an own address space for the attached video
+ memory [Michael Zapf]
+
+-tms99xx: Introduced symbolic constants for interrupt lines. Added a
+ special RESET line which is handled by the CPU, not by the emulator
+ core. tms9928a/v9938: Introduced dedicated RESET line. [Michael Zapf]
+
+
+0.146u2
+
+MAMETesters Bugs Fixed
+----------------------
+- 04888: [Documentation] (msx.c) cpc400, cpc400s: The year of 
+  manufacture should be corrected to 1988. (Wilbert Pol)
+
+New System Drivers Supported:
+-----------------------------
+(none)
+
+Systems Promoted from GAME_NOT_WORKING:
+---------------------------------------
+- Homelab3 [Robbbert]
+- Homelab4 [Robbbert]
+
+Skeleton drivers:
+-----------------
+- Brailab Plus [Robbbert]
+
+
+System Driver Changes:
+----------------------
+-vic20/c64: Added a slot interface for the control ports. [Curt Coder]
+
+-ti99/tm990189: TM990/189 now using the new TMS9980A implementation;
+ small mods in TI-99 systems. [Michael Zapf]
+
+-Added a slot interface for the Atari 2600 controller ports, and a
+ digital joystick device to accompany it. [Curt Coder]
+
+-Ensoniq Mirage: Preliminary hookup of floppy format and WD1772 FDC
+ [R. Belmont]
+
+-Ensoniq: various documentation improvements for the 16-bit Ensoniqs
+ including correct CPU speed and other details.
+ [R. Belmont, Christian Brunschen]
+
+-odyssey2: Fixed noise channel.  [Justin Kerk, Kevtris]
+
+-Various improvements of mc1502 driver [shattered]
+
+-brailab4: screen and speech. [Robbbert]
+
+-floppy improvements of mc1502 driver [shattered]
+
+-fix for mikrosha cassette output [shattered]
+
+-ec65 - added ascii keyboard [Robbbert]
+
+-ti99: Joystick port now a dedicated slot device [Michael Zapf]
+
+-ti99/990189: Added LOAD interrupt switch [Michael Zapf]
+
+-mac: fix harddisks to work again [R. Belmont]
+
+-geniusiq: Added German ROM. [PulkoMandy]
+
+Software Lists:
+----------------
+-pico.xml: new US dumps added. [Team Europe]
+
+-bbc*_cass.xml: added software lists for tapes and hooked them up 
+ to BBC Model A, B and BBC Master drivers. [Pernod]
+
+-pv1000.xml: two new dumps added [anondumper]
+
+-sf7000.xml: Added floppy software list. [Curt Coder]
+
+-bbcm_cart.xml,electron_cart.xml: added cart list for BBC Master 
+ and Acorn Electron, not hooked up yet. [Pernod]
+
+Source Changes:
+----------------
+-Re-implementation of TMS9980A for cycle-precise processing; changed
+ tms9900.c to allow subclassing TMS9900 and TMS9980A from a common
+ parent. [Michael Zapf]
+
+ 
+0.146u1
+
+MAMETesters Bugs Fixed
+----------------------
+- 04885: [Documentation] (chesstrv.c) borisdpl: The correct 
+  year of manufacture is 1979.
+- 04880: [Documentation] (chesstrv.c) chesstrv: The correct 
+  year of manufacture is 1980.
+
+New System Drivers Supported:
+-----------------------------
+(none)
+
+Systems Promoted from GAME_NOT_WORKING:
+---------------------------------------
+(none)
+
+Skeleton drivers:
+-----------------
+- Unknown HP Z80-based mainframe. [Robbbert,Lord Nightmare]
+- VTech Genius PC. [PulkoMandy]
+- ITT3030 [rfka01]
+
+System Driver Changes:
+----------------------
+-tvc: Added .cas cassette image support. [Sandro Ronco]
+
+-apple II: Added the S.A.M. speech card.  Literally an 8-bit DAC and
+ speaker and that's it.  [R. Belmont]
+
+-apple II: Add ALF Apple Music II card (3x SN76489s) [R. Belmont]
+
+-m20: Now passes POST, need to get FDC booting next [Christian
+ Grössler]
+
+-pcw8256: added software list for disk images and hooked up to the
+ driver. [Fabio Priuli]
+
+-c64: Added a 16KB EPROM cartridge, to which you can map your own ROMs
+ either to ROML, ROMH, or both. E.g. "mess c64p -exp 16k -cart2
+ roml.bin -cart3 romh.bin". The cartridge can operate in 8KB/16KB or
+ Ultimax mode. [Curt Coder]
+
+-elektor: added support for pgm quickloads. Added notes on how to use
+quickloads on vc4000 etc. [Robbbert]
+
+-nes.c: fixed emulation of mapper 52 variant with switched CHR bank
+ lines, used by several pirate multigame carts [Fabio Priuli]
+
+-nes.c: added support for the MMC3 variant used by Fight Street VI
+ [Fabio Priuli]
+
+-nes.c: added support for UNL-FS304 board used by A Link to the Past
+ (Waixing) [Fabio Priuli]
+
+-nes.c: added support for a bootleg board by YOKO Soft used by a couple
+ of fighting games. [Fabio Priuli]
+
+-nes.c: fixed emulation of DAOU306 pcb needed by Janggun ui Adeul.
+ [Fabio Priuli]
+
+-Added "Mac 512" bootleg by Unitron Brazil [rbanffy]
+
+-dm7000: connected terminal keyboard [Lukasz Markowski]
+
+-Lots of Ensoniq work: [R. Belmont, Christian Brunschen]
+ * Added SQ-80, VFX-SD, SD-1, and SD-1 32 voice.
+ * Added ubiqitous 2x40 line VFD display
+ * Hooked up floppy drive and controller on VFX-SD, SD-1, SD-1 32, and
+    EPS-16
+ * Fixed battery level readback on all 16-bit Ensoniqs and respond
+    correctly to keyboard calibration command
+
+-m20: More floppy drive hookup.  A trivial booter disk works; the OS
+ does not. [Christian Grössler]
+
+-ensoniq: EPS-16 ROMs turned out to be plain EPS. [R. Belmont]
+
+-vidbrain: Improved sound slightly. [Kurt Woloch]
+
+-ensoniq: add floppy side select control and EPS/EPS-16+'s 68450 DMAC. 
+ EPS OS now boots and says "ERROR 129" instead of crashing. [R.
+ Belmont]
+
+-apple II: Make Brazilian quasi-clone TK2000 show something.
+ [R. Belmont]
+
+-apple II: Laser 128 and 128EX partially working, can boot ProDOS, DOS
+ 3.3 dies. [R. Belmont]
+
+-megadriv.c: confirmed Asia MegaCD dump [Jakovasaur, ElBarto]
+
+-apple II: Preliminary support for German "Space 84" clone
+ [R. Belmont, rfka01]
+
+-wangpc: Driver now boots from floppy. [Curt Coder]
+
+-apple II: Clean up Laser 128 support, support Space 84 h-flipped char
+ roms. [R. Belmont]
+
+-wangpc: Emulated the medium resolution video controller. [Curt Coder]
+
+-eacc: fixed nmi operation. System boots. [Robbbert]
+
+-apple II: Add the Street Electronics Echo II speech card [R. Belmont]
+
+-apple II: Add support for IBS AP16 VideoTerm clone [R. Belmont,
+ rfka01]
+
+-apple II: Support an alternate version of the AP-16 card
+ [R. Belmont, rfka01]
+
+-apple II: fix crash on hard reset/multisession and improved IIgs soft
+ reset behavior. [R. Belmont]
+
+-eacc: fixed remaining bugs [Robbbert]
+
+-apple II: Add two more VideoTerm clones of unknown manufacture
+ [R. Belmont, Lord Nightmare]
+
+Software Lists:
+----------------
+-vsmile.xml: added some new dumps [rimsky82] 
+
+-pico.xml: new Japanese dumps [Team Europe] 
+
+-pico.xml: added info about Japanese releases and list of undumped items [Fabio Priuli]
+
+-apple1.xml: added a few more tapes [Anon01]
+
+-megadriv.xml: documented more carts and dumps. [ElBarto]
+
+-snes.xml: documented the copy protection algorithm of many pirate
+ cartridges [d4s]
+
+-snes.xml: a couple of new dumps [Badablek, d4s]
+
+-megadriv.xml: added a few Russian pirate dumps. [Kaylee]
+
+-ibm5150.xml: Updated the IBM 5150 list with a few more dumps, and
+ fixed a few errors. [Kaylee]
+
+-pico.xml: new US dumps added. [TeamEurope]
+
+Source Changes:
+----------------
+-upd765.c: Trigger RDY active during reset interrupt for each drive
+ independently so that 4 consecutive Sense Interrupt commands will
+ return the correct status. [Curt Coder]
+
+-SoundBlaster: first-pass somewhat naive working version.  Autoinit DMA
+ does not work; use sblaster1_0, not 1_5!  [R. Belmont]
+
+-New TMS9900 and TMS9995 implementation with proper control line
+ handling and wait state generation. Previous implementation has been
+ renamed and drivers point to the old implementation until they are
+ adapted to the new one. [Michael Zapf]
