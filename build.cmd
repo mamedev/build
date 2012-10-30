@@ -33,7 +33,7 @@ if not "%ALLFOUND%"=="1" goto :eof
 
 
 @rem --- figure out what to do based on input parameters
-set /a PROCS=%NUMBER_OF_PROCESSORS% + 1
+set /a PROCS=%NUMBER_OF_PROCESSORS% * 2 + 1
 set MAKEPARAMS=-j %PROCS%
 set RESUME=0
 set REVISION=%1
@@ -56,7 +56,9 @@ goto :build
 set DIFFNAME=%2u%3.diff
 set DIFFZIP=%2u%3_diff.zip
 set WHATSNEWNAME=whatsnew_%2u%3.txt
+set MESSNEWNAME=messnew_%2u%3.txt
 set WHATSNEW=whatsnew\%WHATSNEWNAME%
+set MESSNEW=messnew\%MESSNEWNAME%
 set SRCBRANCH=mame%2
 set SRCSUFFIX=
 if not "%3"=="1" set /a SRCSUFFIX=%3-1
@@ -69,8 +71,8 @@ set VERSION=%temp:~0,1%.%temp:~1%u%3
 
 
 @rem --- see if the branch exists
-svn list svn://mamedev.org/mame/tags/%SRCBRANCH% %NULLOUT% %NULLERR% || goto :nosourcebranch
-svn list svn://mamedev.org/mame/tags/%DSTBRANCH% %NULLOUT% %NULLERR% && goto :destexists
+svn list svn://dspnet.fr/mame/tags/%SRCBRANCH% %NULLOUT% %NULLERR% || goto :nosourcebranch
+svn list svn://dspnet.fr/mame/tags/%DSTBRANCH% %NULLOUT% %NULLERR% && goto :destexists
 @echo Target branch %DSTBRANCH% doesn't exist; promoting main branch....
 
 
@@ -87,7 +89,7 @@ if "%VALIDATED%"=="0" goto :eof
 
 @rem --- all systems go, create the branch
 @echo Creating target branch %DESTBRANCH%....
-if "%TEST%" == "" svn copy svn://mamedev.org/mame/trunk -r %REVISION% svn://mamedev.org/mame/tags/%DSTBRANCH% -m "MAME %VERSION% tag"
+svn copy svn://dspnet.fr/mame/trunk -r %REVISION% svn://dspnet.fr/mame/tags/%DSTBRANCH% -m "MAME %VERSION% tag"
 
 
 @rem --- now do the diff
@@ -95,21 +97,24 @@ if "%TEST%" == "" svn copy svn://mamedev.org/mame/trunk -r %REVISION% svn://mame
 @echo Generating the full diff....
 if exist temp rd /s/q temp
 if exist %DIFFNAME% del %DIFFNAME%
-svn export svn://mamedev.org/mame/tags/%SRCBRANCH% temp\%SRCBRANCH%
-svn export svn://mamedev.org/mame/tags/%DSTBRANCH% temp\%DSTBRANCH%
+svn export svn://dspnet.fr/mame/tags/%SRCBRANCH% temp\%SRCBRANCH%
+svn export svn://dspnet.fr/mame/tags/%DSTBRANCH% temp\%DSTBRANCH%
 cd temp
 for /f "usebackq" %%i in (`dir /b %SRCBRANCH%`) do ( move %SRCBRANCH%\%%i %%i-old && move %DSTBRANCH%\%%i %%i && diff -Nru %%i-old %%i >>..\%DIFFNAME% )
 cd ..
-@rem svn diff svn://mamedev.org/mame/tags/%SRCBRANCH% svn://mamedev.org/mame/tags/%DSTBRANCH% >%DIFFNAME%
+@rem svn diff svn://dspnet.fr/mame/tags/%SRCBRANCH% svn://dspnet.fr/mame/tags/%DSTBRANCH% >%DIFFNAME%
 
 
 @rem --- now package the diff
 @echo Zipping the results....
 if exist %DIFFZIP% del %DIFFZIP%
 if exist %WHATSNEWNAME% del %WHATSNEWNAME%
+if exist %WHATSNEWNAME% del %MESSNEWNAME%
 copy %WHATSNEW% %WHATSNEWNAME% %NULLOUT%
-7za a -mpass=4 -mfb=255 -y -tzip %DIFFZIP% %DIFFNAME% %WHATSNEWNAME%
+copy %MESSNEW% %MESSNEWNAME% %NULLOUT%
+7za a -mpass=4 -mfb=255 -y -tzip %DIFFZIP% %DIFFNAME% %WHATSNEWNAME% %MESSNEWNAME%
 if exist %WHATSNEWNAME% del %WHATSNEWNAME%
+if exist %MESSNEWNAME% del %MESSNEWNAME%
 
 @goto :eof
 
@@ -124,6 +129,7 @@ if exist %WHATSNEWNAME% del %WHATSNEWNAME%
 
 @rem --- set up variables for a full update
 set WHATSNEW=whatsnew\whatsnew_%2.txt
+set MESSNEW=messnew\messnew_%2.txt
 set DSTBRANCH=mame%2
 set FINALZIP=mame%2s
 set FINALBINZIP=mame%2b
@@ -134,7 +140,7 @@ set VERSION=%temp:~0,1%.%temp:~1%
 
 
 @rem --- see if the branch exists
-svn list svn://mamedev.org/mame/tags/%DSTBRANCH% %NULLOUT% %NULLERR% && goto :destexistsfull
+svn list svn://dspnet.fr/mame/tags/%DSTBRANCH% %NULLOUT% %NULLERR% && goto :destexistsfull
 @echo Target branch %DSTBRANCH% doesn't exist; promoting main branch....
 
 
@@ -151,14 +157,14 @@ if "%VALIDATED%"=="0" goto :eof
 
 @rem --- all systems go, create the branch
 @echo Creating target branch %DESTBRANCH%....
-if "%TEST%" == "" svn copy svn://mamedev.org/mame/trunk -r %REVISION% svn://mamedev.org/mame/tags/%DSTBRANCH% -m "MAME %VERSION% tag"
+if "%TEST%" == "" svn copy svn://dspnet.fr/mame/trunk -r %REVISION% svn://dspnet.fr/mame/tags/%DSTBRANCH% -m "MAME %VERSION% tag"
 
 
 @rem --- export the tree for building
 :destexistsfull
 @echo Checking out a temp copy....
 if exist tempbuild rd /s/q tempbuild
-svn export svn://mamedev.org/mame/tags/%DSTBRANCH% tempbuild %NULLOUT%
+svn export svn://dspnet.fr/mame/tags/%DSTBRANCH% tempbuild %NULLOUT%
 
 
 @rem --- build the debug version
@@ -177,7 +183,7 @@ set SYMBOLS=1
 set SYMLEVEL=1
 set OSD=
 pushd tempbuild
-call :performbuild mamed windows\mamed || goto :eof
+call :performbuild mamed windowsd || goto :eof
 popd
 
 
@@ -194,7 +200,7 @@ set SYMBOLS=1
 set SYMLEVEL=1
 set SUFFIX=
 pushd tempbuild
-call :performbuild mame windows\mame || goto :eof
+call :performbuild mame windows || goto :eof
 popd
 
 
@@ -212,7 +218,7 @@ set SYMBOLS=1
 set SYMLEVEL=1
 set SUFFIX=pp
 pushd tempbuild
-call :performbuild mamepp windows\mamepp || goto :eof
+call :performbuild mamepp windowspp || goto :eof
 popd
 
 
@@ -231,18 +237,18 @@ set SYMBOLS=1
 set SYMLEVEL=1
 set SUFFIX=
 pushd tempbuild
-@rem call :performbuild mame64 windows\mame64 || goto :eof
+call :performbuild mame64 windows64 || goto :eof
 popd
 
 
 @rem --- now export the actual tree
 @echo Checking out a temp copy....
 if exist tempexport rd /s/q tempexport
-svn export svn://mamedev.org/mame/tags/%DSTBRANCH% tempexport %NULLOUT%
+svn export svn://dspnet.fr/mame/tags/%DSTBRANCH% tempexport %NULLOUT%
 
 
 @rem --- copy in the whatsnew file
-copy %WHATSNEW% tempexport\whatsnew.txt
+rem copy %WHATSNEW% tempexport\whatsnew.txt
 
 
 @rem --- now package the results
@@ -262,16 +268,16 @@ del mame.zip
 
 @rem --- now build the official binary
 @echo Building official binary....
-call :buildbinary mame %FINALBINZIP%.exe
+call :buildbinary mame %FINALBINZIP%.exe windows
 
 @echo Building official debug binary....
-call :buildbinary mamed %FINALBINZIP%_debug.exe
+call :buildbinary mamed %FINALBINZIP%_debug.exe windowsd
 
 @echo Building official I686 binary....
-call :buildbinary mamepp %FINALBINZIP%_i686.exe
+call :buildbinary mamepp %FINALBINZIP%_i686.exe windowspp
 
 @echo Building official 64-bit binary....
-call :buildbinary mame64 %FINALBINZIP%_64bit.exe
+call :buildbinary mame64 %FINALBINZIP%_64bit.exe windows64
 
 goto :eof
 
@@ -292,13 +298,13 @@ pushd tempbin
 copy ..\%WHATSNEW% whatsnew.txt
 copy ..\tempbuild\%1.exe
 copy ..\tempbuild\%1.sym
-copy ..\tempbuild\obj\windowsd\%1\chdman.exe
-copy ..\tempbuild\obj\windowsd\%1\ldverify.exe
-copy ..\tempbuild\obj\windowsd\%1\ldresample.exe
-copy ..\tempbuild\obj\windowsd\%1\romcmp.exe
-copy ..\tempbuild\obj\windowsd\%1\jedutil.exe
-copy ..\tempbuild\obj\windowsd\%1\ledutil.exe
-copy ..\tempbuild\obj\windowsd\%1\unidasm.exe
+copy ..\tempbuild\obj\%3\chdman.exe 
+copy ..\tempbuild\obj\%3\ldverify.exe
+copy ..\tempbuild\obj\%3\ldresample.exe
+copy ..\tempbuild\obj\%3\romcmp.exe
+copy ..\tempbuild\obj\%3\jedutil.exe
+copy ..\tempbuild\obj\%3\ledutil.exe
+copy ..\tempbuild\obj\%3\unidasm.exe
 mkdir docs
 copy ..\tempbuild\docs\*.* docs
 mkdir hash
@@ -404,7 +410,7 @@ set PROFILER=
 set SYMBOLS=1
 set SYMLEVEL=1
 set SUFFIX=
-call :performbuild windows\mamed || goto :eof
+call :performbuild windowsd || goto :eof
 popd
 
 @echo Verifying validation....
@@ -423,7 +429,7 @@ set PROFILER=
 set SYMBOLS=
 set SYMLEVEL=
 set SUFFIX=
-@rem call :performbuild windows\mame64d || goto :eof
+call :performbuild windows64d || goto :eof
 popd
 
 @echo Verifying 32-bit SDL debug build....
@@ -439,7 +445,7 @@ set PROFILER=
 set SYMBOLS=
 set SYMLEVEL=
 set SUFFIX=
-call :performbuild sdl\sdlmamed || goto :eof
+call :performbuild sdld || goto :eof
 popd
 
 @echo Verifying 64-bit SDL debug build....
@@ -455,7 +461,7 @@ set PROFILER=
 set SYMBOLS=
 set SYMLEVEL=
 set SUFFIX=
-@rem call :performbuild sdl\sdlmame64d || goto :eof
+call :performbuild sdl64d || goto :eof
 popd
 
 @echo Verifying 32-bit Windows release build....
@@ -471,7 +477,7 @@ set PROFILER=
 set SYMBOLS=
 set SYMLEVEL=
 set SUFFIX=
-call :performbuild windows\mame || goto :eof
+call :performbuild windows || goto :eof
 popd
 
 @echo Verifying 64-bit Windows release build....
@@ -487,7 +493,7 @@ set PROFILER=
 set SYMBOLS=
 set SYMLEVEL=
 set SUFFIX=
-@rem call :performbuild windows\mame64 || goto :eof
+call :performbuild windows64 || goto :eof
 popd
 
 @echo Verifying 32-bit SDL release build....
@@ -503,7 +509,7 @@ set PROFILER=
 set SYMBOLS=
 set SYMLEVEL=
 set SUFFIX=
-call :performbuild sdl\sdlmame || goto :eof
+call :performbuild sdl || goto :eof
 popd
 
 @echo Verifying 64-bit SDL release build....
@@ -519,7 +525,7 @@ set PROFILER=
 set SYMBOLS=
 set SYMLEVEL=
 set SUFFIX=
-@rem call :performbuild sdl\sdlmame64 || goto :eof
+call :performbuild sdl64 || goto :eof
 popd
 
 set VALIDATED=1
