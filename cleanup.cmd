@@ -31,6 +31,7 @@ for /r src %%i in (*.h) do srcclean %%i || goto :cleanupfailed
 for /r src %%i in (*.mak) do srcclean %%i || goto :cleanupfailed
 for /r src %%i in (*.lst) do srcclean %%i || goto :cleanupfailed
 for /r src %%i in (*.lay) do srcclean %%i || goto :cleanupfailed
+for /r src %%i in (*.inc) do srcclean %%i || goto :cleanupfailed
 for /r hash %%i in (*.xml) do srcclean %%i || goto :cleanupfailed
 
 
