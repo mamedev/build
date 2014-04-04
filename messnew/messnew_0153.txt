@@ -37,7 +37,7 @@ MAMETesters Bugs Fixed
 
 New System Drivers Supported:
 -----------------------------
--Bandai Super Vision 8000 [ranger_lennier, and Charles McDonald, Wilbert Pol, Robbbert]
+-Bandai Super Vision 8000 [ranger_lennier, Charles McDonald, Wilbert Pol, Robbbert]
 -Apple IIe (UK) [R. Belmont]
 -Apple IIe (Enhanced, UK) [R. Belmont]
 -Pecom 32 [Zarko Zivanov, Miodrag Milanovic]
@@ -65,7 +65,7 @@ Skeleton drivers:
 -Kasparov Stratos Chess Computer [Cowering, O. Galibert]
 -VTech Genius Leader Color (Germany) [TeamEurope]
 -VTech Pitagorin Junior [Roberto Fresca]
--Husky Hunter 2 [Robbbert, John Elliot]
+-Husky Hunter 2 [Robbbert, John Elliot, Barry Rodewald]
 -VTech Genius Leader 2000 Compact (Germany) [TeamEurope] 
 -VTech Genius Master Table Top (Germany) [TeamEurope] 
 -VTech Genius BrainStation 5505X (Germany) [TeamEurope]
@@ -187,26 +187,25 @@ Source Changes
 -pc_vga: default DAC mask to 0xff, indiana now shows text [Carl]
 
 -apf  [Robbbert]
- * Added -ram switch, the default is 8K, this allows most tapes to
-    load
+ * Added -ram switch, the default is 8K, this allows most tapes to load
  * Fixed pasting of upper-case program listings
- * Added cart slot to apfimag, you must now load the BASIC cart
-    yourself.
+ * Added cart slot to apfimag, you must now load the BASIC cart yourself.
  * Any apfm1000 cart can be loaded into apfimag
-
--Improved the commodore lcd mmu emulation, some software is
- starting to work a bit [smf]
-
--corrected function key mapping [smf]
-
--apf : more fixes, systems marked as WORKING [Robbbert]
  * Fixed bad gfx in rocket patrol and blackjack
- * Fixed space destroyer (you must choose -ram 9k)
+ * Fixed space destroyer (you must choose -ram 1k)
  * Fixed last-minute regression in Space Destroyer
  * Swapped left & right keypads, so they are on the correct sides of
    the keyboard.
+ * Systems marked as Working
+ * added support for CAS and CPF cassettes
+ * added another bios [ranger_lennier]
+ * Fixed bad dump in Basic, and added Extended Basic [ranger_lennier]
 
--clcd.c added support for bitmap mode [smf]
+clcd [smf]
+ * Improved the commodore lcd mmu emulation, some software is
+   starting to work a bit [smf]
+ * corrected function key mapping [smf]
+ * added support for bitmap mode [smf]
 
 -indiana: Added IDE controller, fixed 16-bit ISA I/O
  [R. Belmont, Carl]
@@ -239,29 +238,62 @@ Source Changes
 -nes.c: Fixed support for BMC-12in1 PCB, based on Cah4e3's research.
  [Fabio Priuli]
 
--apple3: Implement correct (zp),y extended addressing.
- [R. Belmont]
-
--apple3: hooked up modifier keys [R. Belmont]
-
--apple3: Added speaker toggle, beep, and DAC sound. [R. Belmont]
-
 -apple3 changes: [R. Belmont]
+ * Implement correct (zp),y extended addressing.
  * Removed ProFile stub, we'll do that as a proper card later
  * Removed ROM patch now that we can specify the ACIA is
     Rockwell-style
  * Allow -ramsize 256K or 512K
  * Both VIAs can generate IRQs now, as per schematics
+ * hooked up modifier keys
+ * Added speaker toggle, beep, and DAC sound.
+ * Adjusted palette, confidence test color names screen is
+   now reasonable.
+ * improved interrupt generation and scanline timing
+ * extended addressing applies to all $x1 opcodes.  SOS
+   apps now start up.
+ * rewrote keyboard handling from scratch using Curt's
+   AY-5-3600 device.  Much, much better.
+ * Add save state support and initial slot hookup.
+ * a non-indirect instruction located on the zero page
+   will also enable extended addressing.  Fixes Business BASIC.
+ * Fix ROM test in Diagnostics and support PCPI AppliCard
+ * improved save states, fixed double-hi-res drawing
+ * Fixed page 2 addresses in all graphics modes, fixed
+   glitches in color hires rendering.
+ * Rework extended addressing from the schematics.
+ * Fixed colors in color hires mode.
+ * Some cleanup, plus writes to Fxxx when write protect
+   isn't asserted go through to the underlying RAM.
 
--apple3: Adjusted palette, confidence test color names screen is
- now reasonable. [R. Belmont]
+-apple2/3: CFFA2 now ignores 6502 spurious reads during write
+ cycles. [R. Belmont]
 
--Refactored the Commodore 1541/1551/1571/2031 disk drives to use
- the modern floppy system. [Curt Coder]
+-apple2: Support another Videoterm clone, the AE Viewmaster 80.
+ [R. Belmont]
+
+-apple2: added games starting with "C" to the softlist. [R. Belmont]
+
+-apple2: Support the Corvus flat-cable interface card, also used
+ in the Corvus Concept. [R. Belmont]
+
+-apple2: rewrote keyboard handling according to schematics and
+ using the generic AY-3600.  [R. Belmont]
+
+-apple2: Support the Apple II Parallel Interface Card [R. Belmont]
 
 -apple2gs: Add support for Vulcan Gold IDE card [R. Belmont, Spk]
 
--apple3: improved interrupt generation and scanline timing [R. Belmont]
+-apple2gs: render to rgb32, allowing palette raster tricks (e.g.
+ "3200 color mode") to work. [R. Belmont]
+
+-Apple drivers cleanup: [R. Belmont]
+ * apple3_state is no longer an unnecessary subclass of apple2_state
+ * ay3600 keyboard decoder is now independent from apple2_state
+ * cleaned up some includes
+
+-Refactored the Commodore 1541/1551/1571/2031 disk drives to use
+ the modern floppy system. [Curt Coder]
 
 -nes: added support for Multi-Discrete PCB (aka Mapper 28) used
  by Action 53 - Function 16 - Volume ONE - "Streemerz Bundle" homebrew
@@ -273,9 +305,6 @@ Source Changes
 -Refactored the Commodore 2040/3040/4040 disk drives to use the
  modern floppy system. [Curt Coder]
 
--apple3: extended addressing applies to all $x1 opcodes.  SOS
- apps now start up.  [R. Belmont]
-
 -nes_mmc5: misc wip [Fabio Priuli]
  * hacked around the limitations of our PPU code, so to support the
     different CHR registers
@@ -283,14 +312,6 @@ Source Changes
  * improved PRG-RAM handling
  * simplified NT-RAM handling
  * first attempt to add split screen mode, still broken
-
--Apple drivers cleanup: [R. Belmont]
- * apple3_state is no longer an unnecessary subclass of apple2_state
- * ay3600 keyboard decoder is now independent from apple2_state
- * cleaned up some includes
-
--apple3: rewrote keyboard handling from scratch using Curt's
- AY-5-3600 device.  Much, much better. [R. Belmont]
 
 -nes: added support for iNES 2.0 submappers [Fabio Priuli]
 
@@ -305,11 +326,7 @@ Source Changes
 -nes_bandai: documented differences between FCG-1/FCG-2 boards
  and LZ93D50 ones, based on analysis by naruko. [Fabio Priuli]
 
--Removed PET CB1 read handler, it is pushing vsync to it
- already. [smf]
-
--apple2: rewrote keyboard handling according to schematics and
- using the generic AY-3600.  [R. Belmont]
+-Removed PET CB1 read handler, it is pushing vsync to it already. [smf]
 
 -nes_bandai: added emulation of the barcode reader for Datach
  Joint ROM System unit, making playable most games using it.
@@ -323,36 +340,13 @@ Source Changes
  to the hardware, because Datach carts could not be mounted in the main
  Famicom cartridge slot. [Fabio Priuli]
 
--apf : added support for CAS and CPF cassettes [Robbbert]
-
 -gl3000s: added LCD and keyboard emulation. [Sandro Ronco]
 
--spc1000 : added IRQ which enables cursor flash & internal timer
- [Miso Kim, Robbbert]
-
--apple3: Add save state support and initial slot hookup.
- [R. Belmont]
-
--apple3: a non-indirect instruction located on the zero page
- will also enable extended addressing.  Fixes Business BASIC.
- [R. Belmont]
-
--apple3: Fix ROM test in Diagnostics and support PCPI AppliCard
- [R. Belmont]
-
--apple3: improved save states, fixed double-hi-res drawing
- [R. Belmont]
- 
--spc1000 : added TAP cassette format [Robbbert]
-
--apple2/3: CFFA2 now ignores 6502 spurious reads during write
- cycles. [R. Belmont]
-
--apple3: Fixed page 2 addresses in all graphics modes, fixed
- glitches in color hires rendering. [R. Belmont]
-
--apple2: Support another Videoterm clone, the AE Viewmaster 80.
- [R. Belmont]
+-spc1000 [Miso Kim, Robbbert]
+ * added IRQ which enables cursor flash & internal timer
+ * added TAP cassette format
+ * added paste facility, fixed cursor flash
+ * fixed corrupted lower-case display
 
 -nes: added Karaoke Studio inputs, mapped to keys Z, X, C. you
  can now select songs and see the animation, even if I would not call
@@ -361,16 +355,8 @@ Source Changes
 -Added BIOS from Midnight Blue PlayStation <10 million model>
  SCPH-7000W [smf, Myria]
 
--apple3: Some cleanup, plus writes to Fxxx when write protect
- isn't asserted go through to the underlying RAM. [R. Belmont]
-
 -added SUBCPU address space dump from US PlayStation
  [smf, psxdev.ru]
-
--apple3: Rework extended addressing from the schematics.
- [R. Belmont]
-
--apple3: Fixed colors in color hires mode. [R. Belmont]
 
 -PC-9801 / upd7220: Fixed Quarth video paging [Angelo Salese]
 
@@ -378,10 +364,6 @@ Source Changes
 
 -pc: Added support for Microsoft DMF 1.68MB disk images.
  [Curt Coder]
-
--apf : added another bios [ranger_lennier]
-
--apf : Fixed bad dump in Basic, and added Extended Basic [ranger_lennier]
 
 -a7800.c - Added more details and clarification regarding the
  potentiometer. [Robert Tuccitto]
@@ -435,10 +417,6 @@ Source Changes
 -microbee : added support for TAP and BEE formats (used in
  ubee512 emulator) [Robbbert]
 
--apple2: Support the Apple II Parallel Interface Card [R. Belmont]
-
--spc1000 : added paste facility, fixed cursor flash [Miso Kim, Robbbert]
-
 -cat: preliminary Centronics hookup [R. Belmont]
 
 -apollo: More cleanup, devlegcy.h now gone. [R. Belmont]
@@ -486,9 +464,6 @@ Source Changes
 -adam: Added ColecoVision control port slot interface along with
  the ColecoVision hand controller. [Curt Coder]
 
--apple2gs: render to rgb32, allowing palette raster tricks (e.g.
- "3200 color mode") to work. [R. Belmont]
-
 -pve500.c:  New maincpu dump to replace bad dump.  [Felipe Sanches]
 
 -softbox: Added preformatted 10MB hard disk image. [Curt Coder]
@@ -500,9 +475,6 @@ Source Changes
 
 -sms.c: fixed behavior of the TH pin in the Japanese SMS
  consoles. [Enik Land]
-
--apple2: Support the Corvus flat-cable interface card, also used
- in the Corvus Concept. [R. Belmont]
 
 -fanucspmg: corrected text mode font. [O. Galibert]
 
@@ -552,8 +524,6 @@ Source Changes
     more-less fine - files from disks loaded OK;
  * Pentagon1024 randomly crashes then selecting "GLUK BOOT", maybe also
    coz of rom switching.
-
--apple2: added games starting with "C" to the softlist. [R. Belmont]
 
 -smssdisp: fixed slot recognition so that now the system boots
  the game from the first occupied slot it finds and not only slot 1.
