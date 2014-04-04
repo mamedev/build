@@ -462,9 +462,9 @@ Source Changes
  address bit. [smf]
 
 -Added unknown encrypted Royal Card. This game is running on Dino 4
- encrypted hardware, with a CPU+PLCC daughterboard. Decrypted pro- gram
- address + data, but code still jumps into $48xx range where there's no
- valid code. Decoded and partially decrypted the graphics set.
+ encrypted hardware, with a CPU+PLCC daughterboard. Decrypted program
+ address + data, but code still jumps into $48xx range where there's
+ no valid code. Decoded and partially decrypted the graphics set.
  [Roberto Fresca, ANY]
 
 -n68681: make loopback operate at the current baud rate instead of
@@ -815,6 +815,14 @@ Source Changes
 
 -Fix compiling on unusual OS X configurations. [Robert Walsh]
 
+-Cherry Wheel improvements: [Roberto Fresca]
+ * Created new memory map due to hardware differences.
+ * Added default NVRAM.
+ * Partial MCU simulation. Without it, only cherries appear
+    and the player always wins.
+ * Added proper button-lamps support.
+ * Added technical notes.
+
 -Super Nove (Playmark): Created proper machine driver and improve the
  second graphics bank decryption/decode. [Roberto Fresca]
 
@@ -825,9 +833,8 @@ Source Changes
 
 -i386.c: Modernised cpu core.  [Wilbert Pol]
 
--Inputs from the scratch for Super Star '95. Also improved inputs from
- other games of the driver. Marked program as bad dump. Added technical
- notes. [Roberto Fresca]
+-Inputs from the scratch for Super Star '97. Also improved inputs from
+ other games of the driver. Added technical notes. [Roberto Fresca]
 
 - Redumped Salary Man Kintaro [Guru]
 
@@ -1082,7 +1089,7 @@ using them now have an actual palette [Alex Jackson]
 -floppy: splice-related fixes [O. Galibert]
 
 -Improvements to 4enlinea driver. Hooked preliminary HCGA controller in
- CGA mode (we need proper UM487F device emulation. Added documentation
+ CGA mode (we need proper UM487F device emulation). Added documentation
  and findings after some analysis. [Roberto Fresca]
 
 -Move destructor definitions out of header files included by emu.h;
@@ -1189,6 +1196,11 @@ using them now have an actual palette [Alex Jackson]
 -Add dumped EEPROMs to Jockey Club II sets and attempt to hook up the
  device allowing initial ID check to pass [ANY]
 
+-Super Star '97: Marked all graphics ROMs as bad dump.
+ (they are mask ROMs and were dumped as 27512, missing
+ half of the graphics) [Roberto Fresca]
+
+
 New games added or promoted from NOT_WORKING status
 ---------------------------------------------------
 
@@ -1199,7 +1211,6 @@ Aaargh (Arcadia) [Unigame, David Haywood]
 Happy 6-in-1 (ver. 101CN) [rtw, iq_132, David Haywood]
 x2222 (prototype) [David Haywood, se yong Jang]
 The Real Broadway [Brian Troha, Mariusz Wojcieszek, The Dumping Union]
-
 Mongolfier New (Italian) [Roberto Fresca, Peter Ferrie]
 Soccer New (Italian) [Roberto Fresca, Peter Ferrie]
 Player's Edge Plus (X002377P+XP000112) Super Double Bonus Poker
@@ -1224,8 +1235,6 @@ Player's Edge Plus (PP0120) Wild Sevens Poker [BrianT]
 Bingo [Roberto Fresca, Siftware]
 China Town (Ver 1B, Dino4 HW) [Roberto Fresca, ANY]
 Luna Park (set 1, dual program) [Roberto Fresca, ANY]
-Luna Park (set 2) [Roberto Fresca, ANY]
-Luna Park (set 1, dual program) [Roberto Fresca, ANY]
 Luna Park (set 2, dual program) [Roberto Fresca, ANY]
 Luna Park (set 3) [Roberto Fresca, ANY]
 Crystal Colours (CMC hardware) [Roberto Fresca, ANY]
@@ -1236,11 +1245,13 @@ Cherry Wheel (Version 1.7) [Roberto Fresca, ANY]
 MPU4 Reel Test (3.0) [jameswal]
 Guns and Roses (C606191SMP, Australia)  [Lord-Data]
 
+
 New clones added
 ----------------
 
 Galaxian (Irem) [DamagedGoods]
-S.V.G. - Spectral vs Generation (M68k label V200) (ARM label V200, ROM 10/11/05 S.V.G V201) [rtw, iq_132, David Haywood]
+S.V.G. - Spectral vs Generation (M68k label V200) (ARM label V200, ROM 10/11/05 S.V.G V201)
+ [rtw, iq_132, David Haywood]
 Happy 6-in-1 (ver. 102CN) [rtw]
 Donkey Kong (hard kit) [Matt Ziolkowski, Rob Rings]
 Out Run (Japan, FD1089A 317-0019) [Charles MacDonald, ShouTime, Yasuhiro]
@@ -1249,8 +1260,8 @@ Pocket Gals V.I.P (set 1) [bodger319, AeroCityMayor, Brian Troha, The Dumping Un
 Pocket Gals V.I.P (set 2) [system11]
 Rough Ranger (v2.0) [bodger319, AeroCityMayor, Brian Troha, The Dumping Union]
 Jet Wave (EAB, Euro v1.04) [The Dumping Union]
-Tekken 2 Ver.B (Japan, TES1/VER.C) [Any, The Dumping Union]
 Tekken 2 Ver.B (Japan, TES1/VER.B) [Any, The Dumping Union]
+Tekken 2 Ver.B (Japan, TES1/VER.C) [Any, The Dumping Union]
 Galaxia (sets 2,3,4) [Paul Swan, Andrew Welburn]
 Fantasia (940429 PCB, set 2) [system11]
 Multi 5 / New Multi Game 5 (set 2) [system11]
@@ -1309,7 +1320,6 @@ Hunchback (Scramble hardware, bootleg) [ANY]
 Ms. Pac-Man (bootleg on Crush Roller Hardware)  [Kevin Eshbach]
 Galaxian Growing Galaxip / Galaxian Nave Creciente (Recreativos Franco S.A. Spanish bootleg)
   [Roselson from AUMAP]
-
 Player's Edge Plus (PP0059) Two Pair or Better [BrianT]
 Player's Edge Plus (PP0060) Standard Draw Poker [BrianT]
 Player's Edge Plus (PP0219) Standard Draw Poker [BrianT]
@@ -1367,6 +1377,7 @@ Videotron Poker (cards selector, set 2) [Roberto Fresca, ANY]
 Witch (With ranking) [Roberto Fresca, ANY]
 Tesorone Dell'Isola (Italy, v2.30) [ANY]
 
+
 New games marked as GAME_NOT_WORKING
 ------------------------------------
 NetMerc [ShouTime, smf]
@@ -1393,24 +1404,20 @@ Radirgy Noa [rtw]
 Star Horse Progress (Rev. A)
   [rtw, Mr. CAST, hap, Yohji, Smitdogg, The Dumping Union]
 Touch de Zunou (Rev. A) [CaH4e3]
-Cherry Wheel (Version 1.7) [Roberto Fresca, ANY]
 Kart Duel (Japan, KTD1/VER.A) 
   [hap, Mooglyguy, Shoutime, Smitdogg, The Dumping Union]
-Gold Fruit [Roberto Fresca, ANY]
 Cosmoswat [Andrew Welburn, Oliver Moazezzi]
 Super Nove (Playmark) [Roberto Fresca, ANY]
 Gran Capitan (Version 3) [Roberto Fresca, ANY]
 Magic Bomb (Version 1) [Roberto Fresca, ANY]
-unknown Bordun game [Roberto Fresca, Siftware]
 Super Star '97 [Roberto Fresca, Siftware]
 Win Cherry (ver 0.16 - 19990219) [Roberto Fresca, f205v ]
 Jockey Club II (older hardware, set 2) [ANY]
 unknown Sisteme France Poker [Roberto Fresca, f205v ]
 American Music Poker (V1.4) [Roberto Fresca, Siftware ]
-Cuantro en Linea [Rockman [from AUMAP)]
+Cuantro en Linea [Rockman (from AUMAP), David Haywood, Roberto Fresca]
 Raiden DX (Holland) [Alex Meijer (Asure)]
-Raiden II (set 9, Holland)
-  [Alex Meijer (Asure)]
+Raiden II (set 9, Holland)   [Alex Meijer (Asure)]
 Gals Panic II (Germany, single PCB) [system11]
 World Kicks (WK1 Ver. A) [Anonymous]
 Mazan  -  Flash of The Blade (MAZ3 Ver. A) [rtw, ShouTime]
