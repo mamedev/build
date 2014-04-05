@@ -110,8 +110,25 @@ MAMETesters Bugs Fixed
 
 Source Changes
 --------------
--Huge effort has been done in order to modernize core and drivers, almost 
- every file have been touched [Curt Coder, Osso, Alex Jackson, smf, Miodrag Milanovic]
+-Massive architectural change: There is no longer a single, global palette.
+ Instead, palettes are now devices, and drivers and devices can have as many
+ independent palettes as needed. This update required extensive changes to many
+ parts of the core, UI, OSD layers, drivers and devices. [Aaron Giles, Miodrag Milanovic, Alex Jackson]
+
+-Likewise, there is no longer a single, global array of decoded graphics.
+ Decoded graphics are now owned by devices using a new device interface,
+ called, unsurprisingly, device_gfx_interface. A "gfxdecode" device (which
+ does nothing but inherit this interface) provides the old, driver-level
+ decoding functionality for drivers with video emulation not based on devices
+ and for devices that haven't been updated to the new interface (which is
+ currently most of them). Also, graphics layouts can now reference shared RAM
+ regions by tag the same way as ROM regions, eliminating the need to set up
+ RAM-based graphics manually (note that drivers/devices are still responsible
+ for marking gfx elements dirty when the RAM they are decoded from is written
+ to) [Miodrag Milanovic, Alex Jackson]
+
+-Huge effort has been done in order to modernize core and drivers, almost
+ every file has been touched [Curt Coder, Osso, Alex Jackson, smf, Miodrag Milanovic]
 
 -Fixed a bug preventing memory display of INT8/UINT8 in debugger
  [Couriersud]
@@ -562,11 +579,10 @@ Source Changes
 
 -popeye.c: added RC filter (MT 3726), cleanups [Alex Jackson]
 
--Stop the flipping insanity [Alex Jackson]
-
+-Stop the flipping insanity: [Alex Jackson]
  Tilemap flipping is now calculated relative to the center of the
  visible area rather than to the total screen size, and the generic
- flip screen functions no longer reconfigure the actual screen. These
+ flip screen functions no longer modify the visible area. These
  changes ensure that in most cases flipping should Just Work for
  drivers that use MCFG_RAW_PARAMs, games that have a programmable CRTC,
  and games that have raster effects, and should fix many longstanding
@@ -662,9 +678,6 @@ Source Changes
  * Derived clocks via #define.
  * Added technical notes.
 
--Created gfxdecode_device instead of using machine fixed gfxdecode  [Miodrag Milanovic] 
- Updated all devices and drivers for using it.
-
 -Added default NVRAM to Crystal Colours (CMC hardware), allowing to
  boot with clean meters/settings. [Roberto Fresca]
 
@@ -691,8 +704,6 @@ Source Changes
 
 -gottlieb.c, kyugo.c, madalien.c, rallyx.c, taito_b.c, zodiack.c: fix
  flipscreen after core changes [Alex Jackson]
-
--m10.c: Fix crash; also fix flipscreen [Alex Jackson]
 
 -Jubilee Double-Up Poker (TMS9980) updates... [Roberto Fresca]
  * Demuxed the input system.
@@ -736,11 +747,8 @@ Source Changes
 
 -IGS036 decryption support [Andreas Naive]
 
--Timers now execute at the end of each timeslice instead of at the
+-Timers once again execute at the end of each timeslice instead of at the
  start, as they did prior to 0.141u2. Fixes MT 4308 [Alex Jackson]
-
--Make memarray word/dword/qword writers take a mem_mask, and update the
- tilemap device to use them [Alex Jackson]
 
 -Fixed rendering issue in psyaria and raycris attract. [smf]
 
@@ -784,30 +792,15 @@ Source Changes
  All measured and traced from the PCB. Implemented all clocks through
  #define. [Roberto Fresca, ANY]
 
--toaplan1.c: fix and cleanup palette handling [Alex Jackson]
-
 -Added free version of uni bios v3.1 [pza]
 
--Fix split palette RAM [Alex Jackson]
-
--Support palette RAM formats that are byteswapped relative to CPU
- endianness [Alex Jackson]
-
--simpsons.c: convert to bankdev [Alex Jackson]
-
--lethal.c: convert to bankdev [Alex Jackson]
-
--toaplan2.c: fix batrider text layer [Alex Jackson]
-
--parodius.c: convert to bankdev [Alex Jackson]
+-Converted several drivers that have multiple different video chips
+ bankswitched into the same address space, or have RAM bankswitched
+ with ROM, to use the address map bank device (aka bankdev) [Alex Jackson, hap]
 
 -Changed popeye to use palette computed from schematics. Also
  implemented interlaced field support. This is actually read by the
  game. [Couriersud]
-
--Convert aliens.c to bankdev, fix jclub2.c crash [Alex Jackson]
-
--Fix nycaptor.c crash, fix m92.c properly [Alex Jackson]
 
 -Popeye now has netlist filtering and amplification. [Couriersud]
 
@@ -825,11 +818,6 @@ Source Changes
 
 -Super Nove (Playmark): Created proper machine driver and improve the
  second graphics bank decryption/decode. [Roberto Fresca]
-
--funworld.c: fix saloon colors [Alex Jackson]
-
--All MAME drivers using indirect colors now explicitly declare them in
- MACHINE_CONFIG [Alex Jackson]
 
 -i386.c: Modernised cpu core.  [Wilbert Pol]
 
@@ -855,9 +843,6 @@ Source Changes
  new graphics bank with different palette for the only girl graphics.
  [Roberto Fresca]
 
--All MESS drivers using indirect colors now explicitly declare them
- [Alex Jackson]
-
 -Fixed pong (rom based). Minor changes no netlist code.[Couriersud]
 
 -upd7810.c: Added ADC support.  [Ramiro Polla]
@@ -865,9 +850,6 @@ Source Changes
 -Fixed the colors of cb3d rearranging the split values stored in 4-bit
  bipolar PROMs and adding the missing one. Promoted to working state.
  [Roberto Fresca]
-
--Declaring indirect colors in MCFG is now mandatory. Removed dynamic
- creation and resizing of indirection tables [Alex Jackson]
 
 -Added device_output_interface and macros
  MCFG_OUTPUT_INDEX/MCFG_OUTPUT_NAME which can be used to specify which
@@ -906,10 +888,6 @@ Source Changes
 -Added Royal Card (French). This set is original, but running in a
  bootleg board. Added a default NVRAM to get the game working. Also
  added technical notes. [Roberto Fresca]
-
--You now specify a gfxdecode device once when you create a tilemap,
- rather than each time in the tile info callback. Updated all drivers
- accordingly [Alex Jackson]
 
 -Fixed the duart ip pins so they don't accidentally clear each other's
  state on device_write_line; this fixes the Canon Cat printing in MESS.
@@ -1043,11 +1021,6 @@ using them now have an actual palette [Alex Jackson]
  Windows/D3D code, and fixed overzealous GL texture caching.
  [R. Belmont]
 
--render.c: clean out dead, broken code accidentally revived by palette
- rewrite. Allocate brightness/contrast/gamma-adjusted palettes on first
- use, since we can't allocate them at startup anymore due to init order
- issues [Alex Jackson]
-
 -tms5110r.inc: updated tms5110 to use newer chirp table, based on decap
  [Lord_Nightmare, digshadow]
 
@@ -1073,16 +1046,11 @@ using them now have an actual palette [Alex Jackson]
 -Fixes to correct some of the regression test data used by the jedutil
  test.  [Kevin Eshbach]
 
--Refactor UI graphics viewer to handle 'empty' gfx decoders
- [Alex Jackson]
-
 -h8: dec16/inc16 fix [Fabio Priuli]
 
 -h8: Sort out UE polarity [O. Galibert]
 
 -h8: Fix enable handling in timers [O. Galibert]
-
--Split C45 road chip from namcoic.c [Alex Jackson]
 
 -h8: Prettify registers/flags in debugger [O. Galibert]
 
@@ -1091,9 +1059,6 @@ using them now have an actual palette [Alex Jackson]
 -Improvements to 4enlinea driver. Hooked preliminary HCGA controller in
  CGA mode (we need proper UM487F device emulation). Added documentation
  and findings after some analysis. [Roberto Fresca]
-
--Move destructor definitions out of header files included by emu.h;
- clean some obsolete junk out of machine.h [Alex Jackson]
 
 -gfx_elements now have a xor mask that is applied to each source bit
  offset when decoding. This can be used to deal with endianness when
