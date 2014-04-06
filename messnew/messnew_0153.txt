@@ -34,6 +34,8 @@ MAMETesters Bugs Fixed
   debug builds (Osso)
 - 05398: [Core] (hp48.c) hp49g: [debug] Debug shows corrupt graphics when compared to 
   regular compile (Osso)
+- 05483: bbcb [demo]: Fatal error: Illegal operation on unmounted image
+  (src/emu/diimage.h:261) (Fabio Priuli)
 
 New System Drivers Supported:
 -----------------------------
@@ -41,6 +43,8 @@ New System Drivers Supported:
 -Apple IIe (UK) [R. Belmont]
 -Apple IIe (Enhanced, UK) [R. Belmont]
 -Pecom 32 [Zarko Zivanov, Miodrag Milanovic]
+-AIWA MegaCD CSD-G1M [Bad_Ad84]
+-Samsung Gam*Boy I [Enik Land]
 
 Systems Promoted from GAME_NOT_WORKING:
 ---------------------------------------
@@ -59,6 +63,10 @@ Skeleton drivers:
 -Memorex 2178 [Al Kossow, Robbbert]
 -Roland Sound Canvas SC-55 [Stefan Lindberg]
 -Genius Leader 4000 Quadro (Germany)  [The Dumping Union, TeamEurope]
+-Genius Leader 4004 Quadro L (Germany) [The Dumping Union, TeamEurope]
+-Genius Leader 5000 (Germany) [The Dumping Union, TeamEurope]
+-Genius Leader 5005X (Germany) [The Dumping Union, TeamEurope]
+-Genius Leader 6000SL (Germany) [The Dumping Union, TeamEurope]
 -Genius Leader 7007SL (Germany) [The Dumping Union, TeamEurope]
 -VTech BrainStation 9009 CXL (Germany) [TeamEurope]
 -Alphasmart 2000 [Jonathan Gevaryahu, Balrog]
@@ -72,7 +80,6 @@ Skeleton drivers:
 -Amust Compak [Robbbert, Chickenman]
 -Fanuc System P Model G [Guru, R. Belmont]
 -SWTPC S/09 [Robert Justice]
--Samsung Gam*Boy I [Enik Land]
 
 
 Software Lists:
@@ -82,25 +89,28 @@ Software Lists:
 -studio2.xml: Added Fun with Numbers cartridge.
  [brolly, Charles MacDonald, ranger_lennier]
 
--pico.xml: added a dozen of new dumps, including most of the
+-pico.xml: Added many new dumps, including most of the
  previously missing European releases [TeamEurope]
 
 -c128_flop.xml: Added 10 Years HVSC. [Curt Coder]
  
--coco_cart.xml: added some new dumps [K1W1]
+-coco_cart.xml: Added some new dumps [K1W1]
 
 -c64_cart.xml: Added Insta-Calc v2.0. [Curt Coder]
 
--m5.xml: added several new Japanese dumps, including rare cart
+-m5.xml: Added several new Japanese dumps, including rare cart
  "Adidas Lucky Shoot" [Ola Andersson]
 
--megaduck.xml: added dump for Duck Adventures [Sean Riddle]
-
--megaduck.xml: added four more dumps. [ranger_lennier, Sean Riddle]
+-megaduck.xml: Added five more dumps. [ranger_lennier, Sean Riddle]
 
 -c64_flop.xml: Added some VICE testprogs. (nw)
 
 -pet_rom.xml: Added Nestar Cluster/One CLO-1002-2 [Mike Naberezny]
+
+-softlist: Added several new dumps, protos and revisions to gameboy, gamegear,
+ gba, gbcolor, megadriv, n64, nes, sms software lists. Many thanks to dumping 
+ teams for their efforts. [Fabio Priuli]
+
 
 Source Changes
 --------------
@@ -218,6 +228,8 @@ clcd [smf]
  instead of halting because of unmapped I/O accesses, or halting
  because of a bad checksum because the ROM was loaded improperly.
  [alegend45]
+
+-megadriv: Added Pioneer LaserActive v1.05 Jpn BIOS. [RetroJunkie]
 
 -amstrad: Added preliminary support for the AMX mouse.
  [Barry Rodewald]
@@ -549,3 +561,9 @@ clcd [smf]
  console menu the first time the expansion is used [Fabio Priuli]
 
 -Improving emulation of SONY PVE-500 video editing station [Felipe Sanches]
+
+-bbc: fixed external cart slot -cart1 for the BBC Master (demo cart
+ runs properly now), added second external slot -cart2 (same functionality
+ as -cart1). Expansion ROM slots, which are handled as internal cart slot, 
+ are now accessible via -cart3/-cart6 media switch, until they are converted 
+ to proper slot devices. [Fabio Priuli]
