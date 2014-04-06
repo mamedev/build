@@ -155,8 +155,8 @@ Source Changes
 -Added a dry-run option (-d) to srcclean. Know what you are doing :-)
  [Couriersud]
 
--uses aer register to select which transition to generate an interrupt
- on [smf]
+-mc68901.c: use aer register to select which transition to generate an
+ interrupt on and added preliminary transmit and receive support [smf]
 
 -se3208.c: Modernized cpu core.  [Wilbert Pol]
 
@@ -169,18 +169,23 @@ Source Changes
 
 -ssp1601.c: Modernized cpu core.  [Wilbert Pol]
 
--don't transmit anything when driven by an external clock and nothing
- has been queued. [smf]
-
--Added preliminary transmit support to MC68901 [smf]
-
--preliminary receiving serial support for MC68901 [smf]
+-diserial.c: don't transmit anything when driven by an external clock and
+ nothing has been queued. call set_data_frame() before calling set_rcv_rate()
+ as otherwise it acccesses m_synchronous before it is set leading to random
+ behaviour. Changed parity & stop bits to an enum (you can now pass in 1.5).
+ Updated the uarts that were testing for 1.5 stop bits to pass that in,
+ but there are probably others & 1.5 stop bits is converted to 2 by
+ diserial. The 68681 requires stop bits to be specified in clocks, so this
+ will change in the future. Replaced synchronous flag with start bit count,
+ as some uarts can use a start bit in synchronous mode & that whether there
+ is a start bit is all the flag is currently controlling. Updated rs232
+ terminal to allow startbits, stop bits 1.5 to be specified (although that
+ is currently not supported by diserial) and individual transmit and receive
+ baud rates. [smf]
 
 -scmp.c: Modernized cpu core.  [Wilbert Pol]
 
--push all gpio values to allow interrupts to work. [smf]
-
--Removed MC68901 polling for gpio bits. [smf]
+-atarist.c: push all gpio values to allow interrupts to work. [smf]
 
 -unsp.c: Modernized cpu core.  [Wilbert Pol]
 
@@ -196,7 +201,14 @@ Source Changes
 
 -segaorun.c: Added motor and lamp outputs. [Howard Casto, hap]
 
--Convert VIA6522 to use DEVCB2 [smf]
+-via6522.c: Converted to use devcb2. Removed alot of read handlers where
+ the values could more easily (and often were being) pushed. CA1 is input
+ only, so I have removed the output callback. The lisa via hookup has been
+ changed as it had functions named as CA2/CB2 hooked up to CA1/CB1 and CA1
+ output no longer exists, it appears to have been wrong since before the code
+ was merged with MAME. Added support for shift out free running at t2 rate,
+ cb1 output now lasts for the specified number of clocks and the signal goes
+ low at the end. [smf]
 
 -tms32025.c: Modernized cpu core.  [Wilbert Pol]
 
@@ -207,18 +219,6 @@ Source Changes
 
 -mquake.c: Added notes and NO_DUMP placeholder for I/O MCU
  [Phil Bennett]
-
--removed readpb & readcb2 callbacks from commodore LCD VIA6522
- configuration. Changed write_cb2 to work with shift register [smf]
-
--removed runtime via device lookups, removed ca1, cb1, ca2, cb2
- callbacks from configuration as the values are pushed already [smf]
-
--Changed victor9000 keyboard to push the data line to the 6522 [smf]
-
--removed IEEE488 CA1/CA2 callback as it already pushes the values [smf]
-
--Removed cb2 callback from mac drivers, you now have to push the data. [smf]
 
 -SDL2.0: Fix relative mouse motion. This makes Missile Attack playable
  again with my Logitech marble trackball. [Couriersud]
@@ -243,15 +243,6 @@ Source Changes
     CBI
 - wip on avr8 EEPROM read/write support
 
--Remove code obfuscation, please don't revert my changes without
- discussing it first. [smf]
-
--Started to remove via port read handlers, prematurely stopped because
- IEEE488 code derives the clock from the read handler being called [smf]
-
--Removed port read handlers from wicat as they just return what was
- written [smf]
-
 -Netlist: [Couriersud]
  * fixed 7474 save state
  * remove a printf
@@ -261,29 +252,19 @@ Source Changes
  * simplified solver code
  * solver time now also resets
 
--removed the simplest 6522 port callbacks [smf]
-
 -fd_fdc: Fix the FM sync detection [Michael Zapf]
 
--Modernised VIC20 user port [smf]
-
--Hooked up the 6551 to the plus 4 user port, haven't been able to test
- it in diag264 as cartridges don't appear to work [smf]
-
 -n68681: modernized and killed config struct in favor of devcb2. [R. Belmont]
-
--Allow vic20/c64/c128 to share user port devices, removed c64 version
- of vic1011 and moved protovision 4 player adapter from bus/c64 to
- bus/vic20. Tried to test with
- http://code.google.com/p/commodore-multi-player/ as it supports
- protovision 4 player adapter, but it currently crashes. I have had to
- disable 1541 as it prevents quick loading from working. [smf]
 
 -Fix for pixel gaps between multi-screen games in HLSL mode. [MooglyGuy]
 
 -Merged pet/vic20/c64/plus4/c128 user ports, the pinout is slightly
  different on each one but there are cards that are compatible with
- each of the different machines. [smf]
+ each of the different machines. Removed c64 version of vic1011 and
+ moved protovision 4 player adapter from bus/c64 to bus/vic20. Tested
+ with http://code.google.com/p/commodore-multi-player/ [smf]
+
+-Hooked up the 6551 to the plus 4 user port [smf]
 
 -Added user port pinout from CBMII manual [smf]
 
@@ -314,7 +295,16 @@ Source Changes
 
 -Naomi/Triforce documentation update [f205v]
 
--Converted PIA6821 to DEVCB2 [smf]
+-Converted PIA6821 to DEVCB2, Removed
+ porta_r/portb_r/ca1_r/ca2_r/cb1_r/cb2_r functions as they only returned
+ what you'd written to the chip, only a couple of those were ever used
+ (by audio/exidy.c). Removed some ca*/cb* read callbacks that just
+ returned what had already been pushed or always returned 0. As there
+ are no longer any cb2 read callbacks that functionality has been
+ removed. reduced the number of callers to set_a_input by calling
+ porta_w & made the WRITE8_HANDLER call that as well, instead of the
+ other way round and having to lookup an address space that is never
+ used [smf]
 
 -Netlist: [Couriersud]
  * Added Ebers-Moll BJT model. Currently only for NPN.
@@ -322,17 +312,6 @@ Source Changes
  * Accuracy for Ebers-Moll must be better than 1e-5 to not generate
    nano-second spikes. Typical sound applications should be able to run
    with less since the spikes are not audible.
-
--Removed 6821 porta_r/portb_r/ca1_r/ca2_r/cb1_r/cb2_r functions as they
- only returned what you'd written to the chip, only a couple of those
- were ever used (by audio/exidy.c). Removed some ca*/cb* read callbacks
- that just returned what had already been pushed or always returned 0.
- As there are no longer any cb2 read callbacks that functionality has
- been removed. [smf]
-
--reduced the number of callers to set_a_input by calling porta_w & made
- the WRITE8_HANDLER call that as well, instead of the other way round
- and having to lookup an address space that is never used [smf]
 
 -tlcs90.c: Modernized cpu core.  [Wilbert Pol]
 
@@ -347,14 +326,9 @@ Source Changes
 -Added a "-listdevices" option to nltool to list all available devices.
  Simplified code. [Couriersud]
 
--It makes more sense to mask out the errors that are going to be
- brought in from the error mask rather than throw all the other bits
- away. However I haven't seen any documentation for Z80DART that says
- there is an error FIFO at all. [smf]
-
 -fixed Z80DART parity selection [smf]
 
--Removed hack and hooked up Z80DART now that parity works. [smf]
+-pulsar.c: hooked up Z80DART correctly. [smf]
 
 -preliminary patches for Donggul Donggul Haerong [ElSemi] (still
  doesn't work, but at least boots now)
@@ -364,19 +338,14 @@ Source Changes
 -i8251: as per the manual, disabling Tx mid-byte should wait for
  transmission to finish [R. Belmont]
 
--call set_data_frame() before calling set_rcv_rate() as otherwise it
- acccesses m_synchronous before it is set leading to random behaviour
- [smf]
-
 -v810.c: Modernized cpu core.  [Wilbert Pol]
 
--Added write_sense to S2650 CPU and use it for pipbug serial port,
+-s2650.c: Replaced FLAG fake IO port with a DEVCB2 callback.
+ Added write_sense method and use it for pipbug serial port,
  Hunchback (Galaxian Hardware) and replace calls to set_input_line(1 in
  lazercmd.c & meadows.c [smf]
 
--Replaced FLAG fake IO port with a DEVCB2 callback [smf]
-
--Added an RS232 port instead of hard coding the serial terminal [smf]
+-exp85.c: Added an RS232 port instead of hard coding the serial terminal [smf]
 
 -Added preliminary sound to thunderlbl. Unsurprisingly seems to share
  the same hook-up as wiggie and superbon, the other thunderl hacks in
@@ -396,7 +365,7 @@ Source Changes
  the rom names and locations.  In addition, corrected some of the names
  of the one United States Donkey Kong Jr. set.  [Kevin Eshbach]
 
--converted to use RS232 port instead of hard coded to using serial
+-isbc.c: converted to use RS232 port instead of hard coded to using serial
  terminal [smf]
 
 -Removed some dead code and ambiguous functions in the netlist code.
@@ -412,17 +381,6 @@ Source Changes
  device. Uncomment "TEST_SOUND" in pong.c to hear a constant sound from
  a 7400 multivibrator. Sound is still WIP, but the proof of concept has
  been done. [Couriersud]
-
--Changed parity & stop bits to an enum (you can now pass in 1.5). I've
- updated the uarts that were testing for 1.5 stop bits to pass that in,
- but there are probably others & 1.5 stop bits is converted to 2 by
- diserial. However the 68681 requires stop bits to be specified in
- clocks, so this will change in the future. Replaced synchronous flag
- with start bit count, as some uarts can use a start bit in synchronous
- mode & that whether there is a start bit is all the flag is currently
- controlling. Updated rs232 terminal to allow startbits, stop bits 1.5
- to be specified (although that is currently not supported by diserial)
- and individual transmit and receive baud rates. [smf]
 
 -Added music and save states to bmcbowl. [Osso]
 
@@ -457,26 +415,32 @@ Source Changes
 -n68681: Implement OP3 toggle on timer expire and input delta
  interrupts. [R. Belmont]
 
--moved contents of .inc into .c to removed #define pollution when
+-h2680.c: moved contents of .inc into .c to removed #define pollution when
  including h6280.h [smf]
 
--converted z80 to c++ [smf]
+-z80.c: converted c++ [smf]
 
--Added support for 8 bit data transfers using the set features command,
+-ata/ide: Added support for 8 bit data transfers using the set features command,
  instead of using mem_mask as ATA doesn't work that way. [smf]
 
--added a hack for mametesters 05256 [smf]
-
--replaced more machine().firstcpu with m_maincpu [smf]
+-replaced some calls to machine().firstcpu with m_maincpu [smf]
 
 -replaced some calls to machine().firstcpu->pcbase() with
  machine().describe_context() [smf]
 
--don't change the current bank on reset, because another device might
+-bankdev.c: don't change the current bank on reset, because another device might
  have already changed the bank when it was reset [smf]
 
--Fix wrapping in KERN/APPL/RAM mode by moving TEST map to the next
- address bit. [smf]
+-clcd.c: Implemented MMU making it usable. Hooked up rtc, rs232, centronics and
+ sound. LCD colors are matched up from this photograph
+ http://vivaamigafilm.blogspot.co.uk/2012/02/chillin-with-porter.html
+ The character rom is not dumped
+ http://www.floodgap.com/retrobits/ckb/secret/cbm-vlcd-charrom.jpg
+ So a fake font is used which takes the unused upper case font in the kernel rom
+ as a starting point and adds lower case characters, trying to make them match
+ the available screen shots
+ http://www.floodgap.com/retrobits/ckb/secret/cbm-lcd-screen.gif
+ There appears to be several bugs in the roms that affect the rtc [smf]
 
 -Added unknown encrypted Royal Card. This game is running on Dino 4
  encrypted hardware, with a CPU+PLCC daughterboard. Decrypted program
@@ -489,32 +453,6 @@ Source Changes
 
 -z180.c: Modernized cpu core.  [Wilbert Pol]
 
--Added support for shift out free running at t2 rate, cb1 output now
- lasts for the specified number of clocks and the signal goes low at
- the end. [smf]
-
--Try to match the colors from the most recent photograph
- http://vivaamigafilm.blogspot.co.uk/2012/02/chillin-with-porter.html [smf]
-
--Created a character font rom with upper and lower case characters
- using the upper case font in the kernel rom as a starting point [smf]
-
--renamed lcd char rom to match this photo
- http://www.floodgap.com/retrobits/ckb/secret/cbm-vlcd-charrom.jpg &
- replaced lower case y with one that better matches this screenshot
- http://www.floodgap.com/retrobits/ckb/secret/cbm-lcd-screen.gif [smf]
-
--6522 CA1 is input only, so I have removed the output callback. The
- lisa via hookup has been changed as it had functions named as CA2/CB2
- hooked up to CA1/CB1 and CA1 output no longer exists, it appears to
- have been wrong since before the code was merged with MAME. Changed
- CB1 to be active low as CA2 & CB2 already are & it sort of was before,
- but when the chip is reset then the handlers are called setting the
- lines to 1. This seems to stop it thinking that you've pressed a key
- at startup as I believe it got out of sync before because the lines
- weren't consistent. Merged some duplicate code for handling outputs
- and removed some obvious comments. [smf]
-
 -tourvis.c: Correct 1 cart name and add newly dumped U4-43 BIOS.
  [The Dumping Union]
 
@@ -525,25 +463,7 @@ Source Changes
  to default to 24H. You can configure what year 0 is in the driver,
  which is used when setting the date at startup. [smf]
  
--Allow reading from port A in output mode. Add a separate bit for timer
- 1 PB7 toggling rather than changing the PB register directly. Don't
- clear the SR register on reset. Clears pcr & acr at construct time, in
- case something sets one of the handshaking lines before we've started.
- Use a separate variable for the latched inputs and the current inputs.
- Consolidated the input and output code. [smf]
- 
 -sharc.c: Modernized cpu core.  [Wilbert Pol]
-
--Hooked up RTC. There are several issues. The day and month register
- are swapped. Even though it allows you to select between 12/24H the
- RTC is always saved in 24H mode and it always defaults to display in
- 12H mode. [smf]
-
--Clears port a and port b latches at startup, temporarily reverted CA1
- timing change as Beezer is extremely sensitive to CB2 timing,
- temporarily prevented port a read handlers from affecting reading back
- of output bits (real hardware can do this but some handlers are
- returning 0 for bits that they aren't driving low). [smf]
 
 -Added SCREEN_RAW_PARAMS to Express Raider, fixed screen size to
  256x240 [Angelo Salese]
@@ -556,12 +476,6 @@ Source Changes
 
 -AICA: EFREG is mapped every other word, not every word.  Fixes memory
  trashing in all Naomi/DC/AW games. [O. Galibert, R. Belmont]
-
--resolves the user port handlers in device_config_complete() & replaced
- calling reset() on user port with toggling of input line 3 as not all
- computers have reset hooked up on the user port. I believe
- device_reset() will always be called, which makes the call in the
- drivers machine_reset() unnecessary. [smf]
 
 -changed name to "PET user port" as that is where it originated and
  reformatted the source file [smf]
@@ -624,9 +538,6 @@ Source Changes
  a configuration switch (not tested). Sorcerer parallel port is more
  like the commodore user port, so should be converted to it's own slot
  where one option is a centronics card. [smf]
-
--hooked up the centronics port, although I have only coaxed it to send
- a single nul to the printer at startup. [smf]
 
 -Magic Card II: Override the wrong visible area and centered the game
  through a dedicated CRTC config interface [Roberto Fresca]
@@ -776,6 +687,8 @@ Source Changes
 
 -Removed diserial connect(). Converted thomson, mc1502 & wangpc to use
  DEVCB2 instead. [smf]
+
+-coco.c: uses rs232 port instead of bitbanger. [smf]
 
 -Fixed a netlist crash on clang due to ATTR_NORETURN. Also fixed some
  debug statements. [Couriersud]
