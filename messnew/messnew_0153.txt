@@ -593,3 +593,85 @@ clcd [smf]
 
 -esqmr: Dumped wave and 68HC705 MCU ROMs. [Guru, R. Belmont]
 
+-Merged pet/vic20/c64/plus4/c128 user ports, the pinout is slightly
+ different on each one but there are cards that are compatible with
+ each of the different machines. Removed c64 version of vic1011 and
+ moved protovision 4 player adapter from bus/c64 to bus/vic20. Tested
+ with http://code.google.com/p/commodore-multi-player/ [smf]
+
+-Hooked up the 6551 to the plus 4 user port [smf]
+
+-Added user port pinout from CBMII manual [smf]
+
+-Fixed commodore quick load by passing in the address space instead of
+ using machine().firstcpu [smf]
+
+-Added PET user port joystick adapter [smf]
+
+-Use proper AY8910 mixing model for MSX. Volumes set to match MSX
+ hardware. [Dr. Venom, Couriersud]
+
+-BBC Micro keyboard updates/fixes: [Nigel Barnes]
+ * added numeric keypad on Master series.
+ * fixed CAPS LOCK and SHIFT LOCK.
+ * removed dipswitches from Master series.
+ * improved dipswitch descriptions.
+
+-exp85.c: Added an RS232 port instead of hard coding the serial terminal [smf]
+
+-isbc.c: converted to use RS232 port instead of hard coded to using serial
+ terminal [smf]
+
+-flopimg: Added preliminary support for the 8-N-1 serial encoding
+ scheme used on Compucolor II floppies. [Curt Coder]
+
+-clcd.c: Implemented MMU making it usable. Hooked up rtc, rs232, centronics and
+ sound. LCD colors are matched up from this photograph
+ http://vivaamigafilm.blogspot.co.uk/2012/02/chillin-with-porter.html
+ The character rom is not dumped
+ http://www.floodgap.com/retrobits/ckb/secret/cbm-vlcd-charrom.jpg
+ So a fake font is used which takes the unused upper case font in the kernel rom
+ as a starting point and adds lower case characters, trying to make them match
+ the available screen shots
+ http://www.floodgap.com/retrobits/ckb/secret/cbm-lcd-screen.gif
+ There appears to be several bugs in the roms that affect the rtc [smf]
+
+-changed name to "PET user port" as that is where it originated and
+ reformatted the source file [smf]
+
+-Centronics WIP using write lines and DEVCB2. Added an output latch and
+ input buffer device to allow configuration in MCFG. Renamed centronics
+ device "printer" to "image". FM-7 parallel port joystick works again.
+ Added support for using PC LPT control lines as inputs (not tested).
+ c64 geocable now just passes individual lines through, changed the
+ strobe line to what is documented online (not tested). Converted MSX &
+ exidy sorcerer parallel port DAC to use covox device instead of using
+ a configuration switch (not tested). Sorcerer parallel port is more
+ like the commodore user port, so should be converted to it's own slot
+ where one option is a centronics card. [smf]
+
+-diimage: Added "read_only" feature to the software list to denote
+ write protected images. [Curt Coder]
+
+-created src\emu\bus\rs232 & src\emu\bus\midi directories and separated
+ rs232 and midi devices, changed h89 to use an rs232 port to
+ communicate with the serial terminal to instead of connecting it
+ directly. [smf]
+
+-cat: Removed hacks required by the old 68681 implementation; keyboard
+ works again. [R. Belmont]
+
+-coco.c: uses rs232 port instead of bitbanger. [smf]
+
+-pdp1.c: Modernized cpu core.  [Wilbert Pol]
+
+-Fixed the duart ip pins so they don't accidentally clear each other's
+ state on device_write_line; this fixes the Canon Cat printing in MESS.
+ [Lord Nightmare]
+
+-Added basic implementation of the NSC810 RAM-I/O-Timer device, and
+ plugged it into the Husky Hunter 2 driver. [Barry Rodewald]
+
+-Removed unselectable slot options (SLOT_INTERFACE_INTERNAL) from the
+ listxml output. [Curt Coder]
+

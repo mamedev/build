@@ -258,21 +258,6 @@ Source Changes
 
 -Fix for pixel gaps between multi-screen games in HLSL mode. [MooglyGuy]
 
--Merged pet/vic20/c64/plus4/c128 user ports, the pinout is slightly
- different on each one but there are cards that are compatible with
- each of the different machines. Removed c64 version of vic1011 and
- moved protovision 4 player adapter from bus/c64 to bus/vic20. Tested
- with http://code.google.com/p/commodore-multi-player/ [smf]
-
--Hooked up the 6551 to the plus 4 user port [smf]
-
--Added user port pinout from CBMII manual [smf]
-
--Fixed commodore quick load by passing in the address space instead of
- using machine().firstcpu [smf]
-
--Added PET user port joystick adapter [smf]
-
 -segas32.c: Added alien3 and darkedge readmes. [Guru]
 
 -Netlist: [Couriersud]
@@ -283,15 +268,6 @@ Source Changes
 -Fixed noise period on AY8910. [Dr. Venom, Couriersud]
 
 -Prevent clock bit to be deleted after CRC in FM. [Michael Zapf]
-
--Use proper AY8910 mixing model for MSX. Volumes set to match MSX
- hardware. [Dr. Venom, Couriersud]
-
--BBC Micro keyboard updates/fixes: [Nigel Barnes]
- * added numeric keypad on Master series.
- * fixed CAPS LOCK and SHIFT LOCK.
- * removed dipswitches from Master series.
- * improved dipswitch descriptions.
 
 -Naomi/Triforce documentation update [f205v]
 
@@ -345,8 +321,6 @@ Source Changes
  Hunchback (Galaxian Hardware) and replace calls to set_input_line(1 in
  lazercmd.c & meadows.c [smf]
 
--exp85.c: Added an RS232 port instead of hard coding the serial terminal [smf]
-
 -Added preliminary sound to thunderlbl. Unsurprisingly seems to share
  the same hook-up as wiggie and superbon, the other thunderl hacks in
  the driver. Marked as IMPERFECT_SOUND cause the music keeps restarting
@@ -355,7 +329,7 @@ Source Changes
 
 -Fixed compiling with Visual Studio 2012 [smf]
 
- Added the correct, half-swapped dump of cpu_pg5.11 to spyhunt/spyhuntp
+-Added the correct, half-swapped dump of cpu_pg5.11 to spyhunt/spyhuntp
  [Porchy]
 
 -Implemented near-to-proper reset for all netlist devices. Reset now
@@ -364,9 +338,6 @@ Source Changes
 -Added 82s153's from Ropeman (Roc 'n Rope bootleg) and also corrected
  the rom names and locations.  In addition, corrected some of the names
  of the one United States Donkey Kong Jr. set.  [Kevin Eshbach]
-
--isbc.c: converted to use RS232 port instead of hard coded to using serial
- terminal [smf]
 
 -Removed some dead code and ambiguous functions in the netlist code.
  [Couriersud]
@@ -395,9 +366,6 @@ Source Changes
  need to investigate [rtw, iq_132, David Haywood]
 
 -tms5501: Rewrote the emulation to use devcb2 and diserial. [Curt Coder]
-
--flopimg: Added preliminary support for the 8-N-1 serial encoding
- scheme used on Compucolor II floppies. [Curt Coder]
 
 -diserial: Added framing error detection. [Curt Coder]
 
@@ -430,17 +398,6 @@ Source Changes
 
 -bankdev.c: don't change the current bank on reset, because another device might
  have already changed the bank when it was reset [smf]
-
--clcd.c: Implemented MMU making it usable. Hooked up rtc, rs232, centronics and
- sound. LCD colors are matched up from this photograph
- http://vivaamigafilm.blogspot.co.uk/2012/02/chillin-with-porter.html
- The character rom is not dumped
- http://www.floodgap.com/retrobits/ckb/secret/cbm-vlcd-charrom.jpg
- So a fake font is used which takes the unused upper case font in the kernel rom
- as a starting point and adds lower case characters, trying to make them match
- the available screen shots
- http://www.floodgap.com/retrobits/ckb/secret/cbm-lcd-screen.gif
- There appears to be several bugs in the roms that affect the rtc [smf]
 
 -Added unknown encrypted Royal Card. This game is running on Dino 4
  encrypted hardware, with a CPU+PLCC daughterboard. Decrypted program
@@ -476,9 +433,6 @@ Source Changes
 
 -AICA: EFREG is mapped every other word, not every word.  Fixes memory
  trashing in all Naomi/DC/AW games. [O. Galibert, R. Belmont]
-
--changed name to "PET user port" as that is where it originated and
- reformatted the source file [smf]
 
 -qix.c: Let's not regenerate the entire palette every time we do a
  partial update [Alex Jackson]
@@ -528,17 +482,6 @@ Source Changes
 -Added skeleton drivers for some discrete games using ROMs, and added
  some documentation. [Fabio Priuli, Tafoid, gregf]
 
--Centronics WIP using write lines and DEVCB2. Added an output latch and
- input buffer device to allow configuration in MCFG. Renamed centronics
- device "printer" to "image". FM-7 parallel port joystick works again.
- Added support for using PC LPT control lines as inputs (not tested).
- c64 geocable now just passes individual lines through, changed the
- strobe line to what is documented online (not tested). Converted MSX &
- exidy sorcerer parallel port DAC to use covox device instead of using
- a configuration switch (not tested). Sorcerer parallel port is more
- like the commodore user port, so should be converted to it's own slot
- where one option is a centronics card. [smf]
-
 -Magic Card II: Override the wrong visible area and centered the game
  through a dedicated CRTC config interface [Roberto Fresca]
 
@@ -561,14 +504,6 @@ Source Changes
 
 -Truco-Tron: Identified the last unknown IC (U15). Added Technical
  notes. [Cristian Arias, Roberto Fresca]
-
--diimage: Added "read_only" feature to the software list to denote
- write protected images. [Curt Coder]
-
--created src\emu\bus\rs232 & src\emu\bus\midi directories and separated
- rs232 and midi devices, changed h89 to use an rs232 port to
- communicate with the serial terminal to instead of connecting it
- directly. [smf]
 
 -Added ability to add optional or required device/ioport/memory_region/... [Miodrag Milanovic] 
  and similar device finders to any device, and also created ability to set tag inside
@@ -672,9 +607,6 @@ Source Changes
 
 -bking.c, toypop.c: fix flipscreen after core changes [Alex Jackson]
 
--cat: Removed hacks required by the old 68681 implementation; keyboard
- works again. [R. Belmont]
-
 -Mundial/Mondial (Italian/French): Implemented the program banking
  properly. Now you can choose the program through a DIP switch.
  [Roberto Fresca]
@@ -688,8 +620,6 @@ Source Changes
 -Removed diserial connect(). Converted thomson, mc1502 & wangpc to use
  DEVCB2 instead. [smf]
 
--coco.c: uses rs232 port instead of bitbanger. [smf]
-
 -Fixed a netlist crash on clang due to ATTR_NORETURN. Also fixed some
  debug statements. [Couriersud]
 
@@ -698,8 +628,6 @@ Source Changes
 
 -namcos1.c, namcos86.c: fix flipscreen after core changes, add
  SCREEN_RAW_PARAMs [Alex Jackson]
-
--pdp1.c: Modernized cpu core.  [Wilbert Pol]
 
 -Witch: Changed both CPU clocks to 3 MHz, Both YM2203 clocks to 3 MHz,
  and confirmed the ES8712 clock (coming from pin 14 of M5205) in 8 MHz.
@@ -783,7 +711,7 @@ Source Changes
 -Cherry Bonus III (set 4, encrypted bootleg). Fixed both graphics banks
  decryption/decode. [Roberto Fresca, ANY]
 
--should be 8-way [Jon Banks]
+-should be 8-way - what?[Jon Banks]
 
 -correct spyhunt labels / positions [Porchy]
 
@@ -802,16 +730,6 @@ Source Changes
 -Added Royal Card (French). This set is original, but running in a
  bootleg board. Added a default NVRAM to get the game working. Also
  added technical notes. [Roberto Fresca]
-
--Fixed the duart ip pins so they don't accidentally clear each other's
- state on device_write_line; this fixes the Canon Cat printing in MESS.
- [Lord Nightmare]
-
--Added basic implementation of the NSC810 RAM-I/O-Timer device, and
- plugged it into the Husky Hunter 2 driver. [Barry Rodewald]
-
--Removed unselectable slot options (SLOT_INTERFACE_INTERNAL) from the
- listxml output. [Curt Coder]
 
 -Add an osd_truncate call to truncate files [O. Galibert]
 
