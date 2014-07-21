@@ -286,7 +286,8 @@ variable. Fixed MT#005551.  [Wilbert Pol]
  fixed fill value, when no battery is found. This allows for loading
  factory formatted sram/nvram from softlist. [Fabio Priuli]
 
--williams.c: convert williams2 hardware games to bankdev [Alex Jackson]
+-williams.c: use bankdevs instead of dynamic address map modification.
+ Reorganize code and driver state class [Alex Jackson]
 
 -i960.c: Save some additional state [Phil Bennett]
 
@@ -517,6 +518,9 @@ where appropriate to match information and added PALs/PROMs.  [Guru]
 
 -i86.c: 0x60 shadow omitted in previous patch. Needed for DOS 2.  [Bavarese]
 
+-Add width and endianness attributes to data areas in software lists.
+ Update neogeo.xml and megadriv.xml to take advantage of them. [Alex Jackson]
+
 -m6502: remove expensive and unused attotime precalculation at start of
  each timeslice [Alex Jackson]
 
@@ -530,6 +534,10 @@ where appropriate to match information and added PALs/PROMs.  [Guru]
 -schedule.c: make yield() actually yield again, rather than be a
  synonym for spin() [Alex Jackson]
 
+-schedule.c: rebuild_execute_list() after loading a savestate to ensure
+ the order of execution remains consistent. Fixes 0.153 savestate
+ regressions in various drivers [Alex Jackson]
+
 -nec v25: Implement programmable clock divider via
  execute_clocks_to_cycles() instead of set_clock_scale(). Properly
  restore the clock divider on state load [Alex Jackson]
@@ -538,9 +546,9 @@ where appropriate to match information and added PALs/PROMs.  [Guru]
 
 -Document recent measurements done on the AY8910. [Couriersud]
 
--m6809: add missing members to save registration and fix typo in
- device_post_load(), fixing savestate regressions in many drivers
- that use this CPU family [Alex Jackson]
+-m6809: add missing members to save registration, fix typo in
+ device_post_load() and add HD6309-specific pre_save() and post_load()
+ Fixes savestate regressions in many drivers using this CPU family [Alex Jackson]
 
 -Also adds a complete dump of the FD1089B 317-0027 key! [briantro]
 
