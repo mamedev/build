@@ -493,7 +493,27 @@ clock speeds. [Artemio Urbina]
 -Updated m72.c with a Guru-readme for Ninja Spirit.  Changed labels
 where appropriate to match information and added PALs/PROMs.  [Guru]
 
--NeoGeo slot work [S. Smith]
+-NeoGeo (multi)slot work [S. Smith, David Haywood]
+ * converted all protection types to be MAME devices
+ * created cartridge (slot) device types for each type of cartridge
+   containing the above protection devices
+ * made the 'neogeo' set emulate a 6-slot MVS system allowing for
+   multiple cartridges to be mounted, for example
+   "mame64 neogeo -cart1 mslug -cart2 mslugx -cart3 mslug3"
+   is the command-line syntax to launch an MVS unit with 3 Metal
+   Slug games installed.
+    - many of the hacks / bootlegs won't work in multi-slot setups,
+      this is true to hardware
+    - some carts (kof95, kof2002 for example) can block recognition
+      of carts in higher slots if the NVRAM isn't already initialized.
+      this appears to be true to original hardware because the kof95h
+      set fixes this issue, powering off/on the system fixes it.
+    - sound banking isn't 100% correctly handled so the odd game may
+      fail with the slot system (trally) but regular loading still
+      works
+    - the slot / multislot support makes use of the Software Lists
+      rather than the internal sets, please ensure the correct softlist
+      XML file is present in your hash folder
 
 -i86.c: 0x60 shadow omitted in previous patch. Needed for DOS 2.  [Bavarese]
 
