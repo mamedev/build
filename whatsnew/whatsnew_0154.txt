@@ -65,16 +65,12 @@ Source Changes
  [Siftware, Quench, Guru]
 
 -device_gfx_interface and memory system improvements: [Alex Jackson]
-
- Added macros to facilitate declaring gfxdecode info arrays as members
- of a device class.
-
- AM_SHAREs in a device's internal address map or its default address
- map are now tagmapped as children of that device rather than siblings
- (analogous to how handlers in internal/default address maps are
- scoped).
-
- Converted the Namco C45 to device_gfx_interface.
+ * Added macros to facilitate declaring gfxdecode info arrays as members
+   of a device class.
+ * AM_SHAREs in a device's internal address map or its default address
+   map are now tagmapped as children of that device rather than siblings
+   (analogous to how handlers in internal/default address maps are
+   scoped).
 
 - Fixed bloom misalignment with HLSL. [MooglyGuy]
 
@@ -82,15 +78,11 @@ Source Changes
 
 -konamigx: Reverb me harder baby! [O. Galibert]
 
--namcona1.c: rewrite tilemap drawing, fixing MT 05499 [Alex Jackson]
-
--namcona1.c: use set_palette_offset for tilemaps; use GFXDECODE_RAM;
- more cleanups [Alex Jackson]
-
--namcona1.c: clean up ROM loading, etc. [Alex Jackson]
-
--Adjusted ROM loading so that all drivers using the k007342 and k007420
- use compatible gfx layouts [Alex Jackson]
+-namcona1.c improvements: [Alex Jackson]
+ * rewrite tilemap drawing code
+ * use set_palette_offset
+ * use GFXDECODE_RAM 
+ * ROM loading and miscellaneous cleanups
 
 -Chihiro improvements:  [Samuele Zannoli]
  * i386 cpu x87 opcodes FPREM and FPREM1 must clear status bit C2 not
@@ -215,8 +207,6 @@ Source Changes
  handle multiplexed ioports without runtime tagmap lookups in a more
  elegant way than was previously possible.
 
--ioport_array_finder improvement: [Alex Jackson]
-
 -TMS34010: Use the CONVSP/CONVDP registers to adjust source and
  destination addresses when window clipping or y-reverse is applied
  [Phil Bennett]
@@ -330,9 +320,6 @@ variable. Fixed MT#005551.  [Wilbert Pol]
 -Created WD7600 chipset device. megapc: Made into a separate driver
  class, hooked up WD7600. [Barry Rodewald]
 
--fixed stack-buffer-overflow in device_gfx_interface::decode_gfx() with
- extended offsets [Alex Jackson]
-
 -eepromser: added support for X24C44 [ANY]
 
 -i86: Add 0x6x instruction shadows, used by DEC Rainbow MS-DOS 2.01.
@@ -349,7 +336,7 @@ variable. Fixed MT#005551.  [Wilbert Pol]
 -drawgfx.c: make it possible to reset the total elements of a
  gfx_element [Alex Jackson]
 
--nemesis.c: use resnet for palette [Alex Jackson]
+-nemesis.c: use resnet for palette [Alex Jackson, Couriersud]
 
 -HotMind: Restored missing text layer, added Ticket/Token dispensers
  and replaced the sound PIC with a hand modified version for correct
@@ -381,10 +368,8 @@ variable. Fixed MT#005551.  [Wilbert Pol]
 
 -debugqt: Un-revert and add fix for focus seizure [Carl]
 
--Partially revert r30524 screen.c changes; bring back the separate
- timer for resetting partial updates, but ensure that the vblank timer
- and the partial-update-reset timer always fire in the correct order
- when vblank starts on scanline 0 [Alex Jackson]
+-screen.c: Ensure the vblank timer and the partial-update-reset timer always
+ fire in the correct order when vblank starts on scanline 0 [Alex Jackson]
 
 -Work on the Sega System16b version of Ace Attacker [Chris Hardy, Andreas Naive]
  * Reconstructed SEGA FD1094 key (317-0059). Some errors could remain.
@@ -394,7 +379,7 @@ variable. Fixed MT#005551.  [Wilbert Pol]
 
 -naomi/chihiro/triforce: Updated set documentation [f205v]
 
--m68000: Do what the real M68K does on byte writes. Fix the debugger so
+-m68000: Smear byte writes the same as a real 68000. Fix the debugger so
  watchpoints continue to work as expected [Alex Jackson]
 
 -bladestl.c: add RC filters to YM2203 SSG channels (based on schematic,
@@ -515,7 +500,7 @@ where appropriate to match information and added PALs/PROMs.  [Guru]
 -i86.c: 0x60 shadow omitted in previous patch. Needed for DOS 2.  [Bavarese]
 
 -m6502: remove expensive and unused attotime precalculation at start of
-each timeslice [Alex Jackson]
+ each timeslice [Alex Jackson]
 
 -funworld.c:  Inserted some more switches, Saloon now boots, and
  service mode is mostly working.  Added default nvram to jolycrdb, game
@@ -535,13 +520,11 @@ each timeslice [Alex Jackson]
 
 -Document recent measurements done on the AY8910. [Couriersud]
 
--m6809: fix typo in device_post_load(), should fix various savestate
- regressions in drivers using this CPU family [Alex Jackson]
+-m6809: add missing members to save registration and fix typo in
+ device_post_load(), fixing savestate regressions in many drivers
+ that use this CPU family [Alex Jackson]
 
 -Also adds a complete dump of the FD1089B 317-0027 key! [briantro]
-
--m6809: add missing members to save registration; this should fix the
- save state regressions for real [Alex Jackson]
 
 -fd1089.c: Document the newly redumped FD1089A 317-0027 along with it's
 unencrypted data range. [Charles MacDonald]
