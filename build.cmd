@@ -82,8 +82,10 @@ svn update -r %REVISION% ..\trunk
 
 
 @rem --- perform validation steps
-set VALIDATED=0
-call :dovalidate
+rem Uncomment next line for doing validation
+rem set VALIDATED=0
+rem call :dovalidate
+set VALIDATED=1
 if "%VALIDATED%"=="0" goto :eof
 
 
@@ -133,6 +135,7 @@ set MESSNEW=messnew\messnew_%2.txt
 set DSTBRANCH=mame%2
 set FINALZIP=mame%2s
 set FINALBINZIP=mame%2b
+set FINALBINZIP_MESS=mess%2b
 set TEMP=%2
 set VERSION=%temp:~0,1%.%temp:~1%
 
@@ -150,22 +153,25 @@ svn update -r %REVISION% ..\trunk
 
 
 @rem --- perform validation steps
-set VALIDATED=0
-call :dovalidate
+rem Uncomment next lines for doing validation
+rem set VALIDATED=0
+rem call :dovalidate
+set VALIDATED=1
 if "%VALIDATED%"=="0" goto :eof
 
 
 @rem --- all systems go, create the branch
 @echo Creating target branch %DESTBRANCH%....
-if "%TEST%" == "" svn copy svn://dspnet.fr/mame/trunk -r %REVISION% svn://dspnet.fr/mame/tags/%DSTBRANCH% -m "MAME %VERSION% tag"
+svn copy svn://dspnet.fr/mame/trunk -r %REVISION% svn://dspnet.fr/mame/tags/%DSTBRANCH% -m "MAME %VERSION% tag"
 
 
 @rem --- export the tree for building
 :destexistsfull
 @echo Checking out a temp copy....
-if exist tempbuild rd /s/q tempbuild
-svn export svn://dspnet.fr/mame/tags/%DSTBRANCH% tempbuild %NULLOUT%
+if "%RESUME%"=="0" if exist tempbuild rd /s/q tempbuild
+if "%RESUME%"=="0" svn export svn://dspnet.fr/mame/tags/%DSTBRANCH% tempbuild %NULLOUT%
 
+@rem goto :createpackage
 
 @rem --- build the debug version
 @echo Building debug version....
@@ -183,7 +189,7 @@ set SYMBOLS=1
 set SYMLEVEL=1
 set OSD=
 pushd tempbuild
-call :performbuild mamed windowsd || goto :eof
+call :performbuild mamed windowsd messd || goto :eof
 popd
 
 
@@ -200,7 +206,7 @@ set SYMBOLS=1
 set SYMLEVEL=1
 set SUFFIX=
 pushd tempbuild
-call :performbuild mame windows || goto :eof
+call :performbuild mame windows mess|| goto :eof
 popd
 
 
@@ -218,7 +224,7 @@ set SYMBOLS=1
 set SYMLEVEL=1
 set SUFFIX=pp
 pushd tempbuild
-call :performbuild mamepp windowspp || goto :eof
+call :performbuild mamepp windowspp messpp || goto :eof
 popd
 
 
@@ -237,7 +243,7 @@ set SYMBOLS=1
 set SYMLEVEL=1
 set SUFFIX=
 pushd tempbuild
-call :performbuild mame64 windows64 || goto :eof
+call :performbuild mame64 windows64 mess64 || goto :eof
 popd
 
 
@@ -248,7 +254,8 @@ svn export svn://dspnet.fr/mame/tags/%DSTBRANCH% tempexport %NULLOUT%
 
 
 @rem --- copy in the whatsnew file
-rem copy %WHATSNEW% tempexport\whatsnew.txt
+copy %WHATSNEW% tempexport\whatsnew.txt
+copy %MESSNEW% tempexport\messnew.txt
 
 
 @rem --- now package the results
@@ -265,19 +272,23 @@ popd
 7za a -mpass=4 -mfb=255 -y -tzip %FINALZIP%.zip mame.zip %NULLOUT%
 del mame.zip
 
-
+:createpackage
 @rem --- now build the official binary
 @echo Building official binary....
-call :buildbinary mame %FINALBINZIP%.exe windows
+call :buildbinary mame %FINALBINZIP%.exe windows 1
+call :buildbinary mess %FINALBINZIP_MESS%.exe windows 2
 
 @echo Building official debug binary....
-call :buildbinary mamed %FINALBINZIP%_debug.exe windowsd
+call :buildbinary mamed %FINALBINZIP%_debug.exe windowsd 1
+call :buildbinary messd %FINALBINZIP_MESS%_debug.exe windowsd 2
 
 @echo Building official I686 binary....
-call :buildbinary mamepp %FINALBINZIP%_i686.exe windowspp
+call :buildbinary mamepp %FINALBINZIP%_i686.exe windowspp 1
+call :buildbinary messpp %FINALBINZIP_MESS%_i686.exe windowspp 2
 
 @echo Building official 64-bit binary....
-call :buildbinary mame64 %FINALBINZIP%_64bit.exe windows64
+call :buildbinary mame64 %FINALBINZIP%_64bit.exe windows64 1
+call :buildbinary mess64 %FINALBINZIP_MESS%_64bit.exe windows64 2
 
 goto :eof
 
@@ -295,6 +306,7 @@ if exist tempbin rd /s/q tempbin
 if exist %2 del %2
 mkdir tempbin
 pushd tempbin
+if "%4"=="2" copy ..\%MESSNEW% messnew.txt
 copy ..\%WHATSNEW% whatsnew.txt
 copy ..\tempbuild\%1.exe
 copy ..\tempbuild\%1.sym
@@ -305,12 +317,30 @@ copy ..\tempbuild\obj\%3\romcmp.exe
 copy ..\tempbuild\obj\%3\jedutil.exe
 copy ..\tempbuild\obj\%3\ledutil.exe
 copy ..\tempbuild\obj\%3\unidasm.exe
+copy ..\tempbuild\obj\%3\nltool.exe 
 mkdir docs
 copy ..\tempbuild\docs\*.* docs
 mkdir hash
-copy ..\tempbuild\hash\*.* hash
+if "%4"=="1" copy ..\tempbuild\hash\*.dtd hash
+if "%4"=="1" copy ..\tempbuild\hash\megatech.xml hash
+if "%4"=="1" copy ..\tempbuild\hash\neogeo.xml hash
+if "%4"=="1" copy ..\tempbuild\hash\vectrex.xml hash
+if "%4"=="1" copy ..\tempbuild\hash\stv.xml hash 
+if "%4"=="2" copy ..\tempbuild\hash\*.* hash
 mkdir hlsl
 copy ..\tempbuild\hlsl\*.* hlsl
+mkdir web
+copy ..\tempbuild\web\*.* web
+mkdir web\css
+copy ..\tempbuild\web\css\*.* web\css
+mkdir web\css\images
+copy ..\tempbuild\web\css\images\*.* web\css\images
+mkdir web\images
+copy ..\tempbuild\web\images\*.* web\images
+mkdir web\js
+copy ..\tempbuild\web\js\*.* web\js
+mkdir nl_examples
+copy ..\tempbuild\nl_examples\*.* nl_examples
 7za x ..\mamedirs.zip
 7za a -mx=9 -y -r -t7z -sfx7z.sfx ..\%2
 popd
@@ -332,6 +362,7 @@ goto :eof
 @rem --- First cleanup old files
 if "%RESUME%"=="0" rd /s/q obj\%2
 if exist %1.exe del %1.exe
+if exist %3.exe del %3.exe
 if exist chdman.exe del chdman.exe
 if exist ldverify.exe del ldverify.exe
 if exist ldresample.exe del ldresample.exe
@@ -339,14 +370,17 @@ if exist romcmp.exe del romcmp.exe
 if exist jedutil.exe del jedutil.exe
 if exist ledutil.exe del ledutil.exe
 if exist unidasm.exe del unidasm.exe
-
+if exist nltool.exe del nltool.exe
 
 @rem --- Do the build
-@echo make buildtools %~3 %~4 %~5 %~6
-make buildtools %~3 %~4 %~5 %~6 || goto :builderror %1
-@echo make all %MAKEPARAMS% %~3 %~4 %~5 %~6
-make all %MAKEPARAMS% %~3 %~4 %~5 %~6 || goto :builderror %1
+@echo make buildtools %~4 %~5 %~6 %~7
+make buildtools %~4 %~5 %~6 %~7 || goto :builderror %1
+@echo make all %MAKEPARAMS% %~4 %~5 %~6 %~7
+make all %MAKEPARAMS% %~4 %~5 %~6 %~7 || goto :builderror %1
+@echo make TARGET=mess all %MAKEPARAMS% %~4 %~5 %~6 %~7
+make all TARGET=mess %MAKEPARAMS% %~4 %~5 %~6 %~7 || goto :builderror %1
 if exist %1.exe strip -s %1.exe
+if exist %3.exe strip -s %3.exe
 
 
 @rem --- Stash the specific binaries
@@ -357,6 +391,7 @@ move /y romcmp.exe obj\%2\
 move /y jedutil.exe obj\%2\
 move /y ledutil.exe obj\%2\
 move /y unidasm.exe obj\%2
+move /y nltool.exe obj\%2\
 
 goto :eof
 
