@@ -1,0 +1,587 @@
+0.155
+-------
+
+
+MAMETesters Bugs Fixed
+----------------------
+- 01007: [Sound] (simpsons.c) simpsons: Some in-game samples such as 
+  "maggie" and "that's my sister mister" sound bad. (Alex Jackson)
+- 05705: [DIP/Input] (segas18.c) ddcrew: Player 3 buttons not working (Osso)
+- 05700: [Graphics] (terracre.c) amazon, amatelas: lag/desync between 
+  sprites and background (Alex Jackson)
+- 03395: [Sound] (nmk16.c) macross2: Music emulation is not 100% perfect (a balance issue) (trap15)
+- 02422: [Sound] (nmk16.c) mustang: Sound communication might be incorrectly implemented. (trap15)
+- 02417: [Sound] (nmk16.c) NMK004 sound CPU is just (imperfectly) simulated for now. (trap15)
+- 01117: [Graphics] (nmk16.c) macross2: After some versions, I noticed a different gfx 
+  overlap priority between hugest ships and weapon pickups in Macross2. (trap15)
+- 05493: [Crash/Freeze] (itgambl2.c) All sets in itgambl2.c: Crash before OK (Olivier Galibert)
+- 05697: [DIP/Input] (flyball.c) All sets in flyball.c: Controls for Batter and Pitcher 
+  are intertwined (hap)
+- 05693: [Graphics] (ddragon3.c) wwfwfest: Wrestler Entrance does not show graphics (hap)
+- 05689: [Misc.] (williams.c) All sets in williams.c: Utility panel buttons not working 
+  correctly compared to real game
+- 05683: [Interface] SDL-based: -watchdog command not operable in SDLMAME (R. Belmont)
+- 05681: [Crash/Freeze] SDL-based: Most Laserdisc CHD games either do not boot or have other issues (R. Belmont)
+- 05688: [Crash/Freeze] (psikyo4.c) hgkairak, hotgm4ev, hotgmck, hotgmck3, hotgmcki: 
+  MAME crashes when enabling flip screen in psikyo4 games (Osso)
+- 02124: [Graphics] (namconb1.c) nebulray, nebulrayj: Nebulas Ray is missing a rotation 
+  effect in the first level (Phil Bennett)
+- 05686: [Documentation] (model2.c) vcopa: missing relationship (Tafoid)
+- 05685: [Documentation] (alg.c) maddog22: maddog22 is missing relationship with other maddog2 sets (JWallace)
+- 05676: [Sound] (eolith.c) candy: Loss of in-game sound (Wilbert Pol)
+- 05675: [Color/Palette] (highvdeo.c) newmcard, record: Palette problems (David Haywood)
+- 05666: [Crash/Freeze] (cswat.c) cswat: AddressSanitizer: heap-buffer-overflow with -aviwrite (hap)
+- 05350: [Core] Systems using M6809 with M6809_HOLD_LINE: CWAI doesn't acknowledge
+  interrupts while polling for them (hap)
+- 05629: [Color/Palette] hangplt, hangpltu, thrilld: Voodoo 3D graphics have no palette (Phil Bennett)
+- 05637: [Crash/Freeze] (vegas.c) gauntdl, gauntdl24: Emulation hangs after initialization (Phil Bennett)
+- 05638: [Crash/Freeze] (seattle.c) vaportrx, vaportrxp: Emulation hangs during INIT (Phil Bennett)
+- 05636: [Sound] (vegas.c) gauntleg, gauntdl, carnevil and clones: Missing streaming
+  BGM/Sounds during gameplay (Phil Bennett)
+- 05634: [Crash/Freeze] (tasman.c) All sets in tasman.c: [debug] Assertion in Debug (Alex Jackson)
+- 05644: [Graphics] (homerun.c) ganjaja: Line glitches at top of screen (hap)
+- 05631: [Crash/Freeze] mquake.c, upscope.c: Crash shortly after start (Osso)
+- 05633: [Crash/Freeze] (pcxt.c) tetriskr: [debug] Crash in Debug at start (crazyc)
+
+
+Source Changes
+--------------
+
+-tourvis.c: Added version 5.3 BIOS to the Tourvision driver. [system11]
+
+-m68kmake.c: change overlapping memcpy() to memmove() [Casper Ti. Vector]
+
+-Changed set mpoker and driver to mgames. Also description from
+ Multi-Poker to Match Games accordingly with the official flyer.
+ http://flyers.arcade-museum.com/?page=thumbs&db=videodb&id=6500 In
+ fact, these are skill instead of poker games. Also added way more
+ documentation and some cosmetic fixes. [Roberto Fresca]
+
+-Unknown Pac-Man gambling game: Rename and redefine the inputs to match
+ the behavior of both games. Added complete instructions to play the
+ stealth gambling game. [Roberto Fresca]
+
+-Unknown Pac-Man gambling game: Added proper sound support. Rearranged
+ some inputs and hooked extra port. Found some DIP switches. Added
+ technical notes and instructions. Cleaned up the whole driver.
+ [Roberto Fresca]
+
+-tasman.c: Remove extraneous K053246/7 device and use correct gfx
+ layout for K055673; fixes debug assert and gfx viewer crash rungun.c:
+ Make sprite mask ROM tests pass [Alex Jackson]
+
+-fm2612: fixed missing dac channel on savestate load
+ [dink (FB Alpha project)]
+
+-Added decryption support for Music Ball [Andreas Naive]
+
+-speedbal.c: Give Music Ball it's own correct Bonus dipswitch settings.
+ Add dipswitch locations to Speed Ball & Music Ball. [Brian Troha]
+
+-tasman.c: hooked up k053246/k055673 registers; object ROM tests pass
+ now [Alex Jackson]
+
+-improve Funny Strip / Puck People protection simulation [iq_132]
+
+-tatsumi.c: Fixed Cycle Warriors (set 1) hangs at boot. [MASH]
+
+-k005289: fix off-by-one frequency; adds missing detune effect to
+ nemesis BGM [Alex Jackson]
+
+-floppy: Handle half and quarter tracks [O. Galibert]
+
+-williams.c - Added missing video board PROM to Joust 2 [Joe Magiera]
+
+-flopimg: don't trash a bunch of memory when loading legacy floppies.
+ [R. Belmont]
+
+-gcpinbal.c: Added PCB layout for Grand Cross Pinball
+ [Brian Troha, system11]
+
+-ssv.c: Add PCB for the Storm Blade game rom board.
+ [Brian Troha, ShouTime]
+
+-Laserdisc titles added and reorganised to include dumps from other
+ sources. ALG titles in particular have been heavily reorganised
+ [Dragon's Lair Project, J. Wallace]
+
+-taito_b.c: Verified clock speeds for the East Technology's ET910000A
+ PCB used by Sel Feena and Ryu Jin. [system11]
+
+-namconb1.c - Improved interrupt handling, fixing raster-effects (used
+ by nebulray and machbrkr) and nebulray test mode. [Phil Bennett]
+
+-Implemented the Namco Custom 116 palette and raster IRQ controller as
+ a device, and hooked it up to the namcos1, namconb1 and namcofl
+ drivers [Alex Jackson]
+
+-digfx.c: Make some members protected instead of private to be less
+ fascistic and more consistent with other device_interfaces. [Alex Jackson]
+
+-SDL: update manpages [Cesare Falco]
+
+-Allow use of external SQLite3 [Cesare Falco]
+
+-coinmvga.c driver: Minor cleanup, new set added, and changed game
+ descriptions. [Roberto Fresca]
+
+-msm5832: day of week is 0-6, not 1-7 [R. Belmont]
+
+-galaxian.c: redumped atlantis2. [system11]
+
+-Preliminary IGS029 protection simulation for mgcs: [Luca Elia]
+ fixes sound, dips and crash at game start.
+
+-bwidow.c - Various changes: [Phil Bennett]
+ * Added address decoder PROMs to Gravitar and clones.
+ * Renamed ROMs to include correct part numbers and locations.
+ * Renamed set gravp to gravitar1.
+
+-centiped.c - Various changes: [Phil Bennett]
+ * Made centtime the parent (this is actually revision 4)
+ * Renamed ROMs to include correct part numbers and locations.
+ * Added sync PROM to Warlords
+
+-boblbobl2 fixed, promoted from GAME_NOT_WORKING [Darq]
+
+-fuukifg2.c: Correct clock speeds for the Susume! Mile Smile / Go Go!
+ Mile Smile and Gyakuten!! Puzzle Bancho sets. [system11]
+
+-added decryption for Gundam Wing: Endless Duel (SNES bootleg) [iq_132]
+
+-floppy: Don't infloop in set_write_splice when there's no floppy
+ (fixes MT5672) [O. Galibert]
+
+-mips3drc: Throw badcop exceptions on COP1 accesses while the COP1
+ status bit is not enabled [MarathonMan]
+
+-segaybd.c: Give the new Power Drift (Japan, Link Version) it's own
+ correct dipswitch settings. [Brian Troha]
+
+-ymf278b: Use the memory system to access wavetable data. This should
+ make it possible to hook up RAM as well as ROM to the device, e.g. for
+ computer sound cards in MESS. [Alex Jackson]
+ 
+-psikyo4: Improve and clean up wavetable ROM banking. The mask ROM
+ tests in hotgm4ev and hotgmcki pass now. loderndf still fails for
+ unknown reasons. Miscellaneous cleanups as well. [Alex Jackson]
+
+-altos5: Fix wrong drive type [O. Galibert]
+
+-mfi_dsk: Fix leaks [O. Galibert]
+
+-SDL: fall through to the baseline Win32 implementations for file,
+ socket, and pty/named pipe I/O. [R. Belmont]
+
+-SDL: init timebase the first time it's needed on Windows, Mac, and
+ OS/2 targets. [R. Belmont]
+
+-Fixed sprite DMA for Raiden 2, bullets are now visible
+ [Angelo Salese, Olivier Galibert]
+
+-SDL: remove dead code from SDL2 renderer, fix laserdisc crash with
+ SDL2 -video accel rendering. [R. Belmont]
+
+-replace rom in ryukendna set [system11]
+
+-SDL: link properly on OS X for SDL2. [R. Belmont]
+
+-SDL: Use the same screen selection method for SDL2 as Windows.
+ [R. Belmont]
+
+-inder.c : Brave Team is working. [Robbbert]
+
+-inder.c : Canasta 86 is working. [Robbbert]
+
+-inder.c : Lap by Lap is working. [Robbbert]
+
+-inder.c : Moon Light is working. [Robbbert]
+
+-inder.c : Clown is working. [Robbbert]
+
+-inder.c : Mundial 90, Corsario, 250CC are working. [Robbbert]
+
+-inder.c : Atleta is working. [Robbbert]
+
+-gtia.c: converted to be a device. [Fabio Priuli]
+
+-hikaru: add mask dumps for podrace [Cah4e3]
+
+-voodoo.c, vooddefs.h: Added support for writes to trexInit1 register,
+ to return TMU configuration data.  [Peter Ferrie]
+
+-antic.c: converted to be a device. [Fabio Priuli]
+
+-jp.c : Faeton is working [Robbbert]
+
+-SDL: Allow -sound dsound on SDL Windows builds. [R. Belmont]
+
+-Removed legacy_cpu_device.  [Wilbert Pol]
+
+-Added proper NMK004 internal rom [trap15]
+
+-Hooked up support for NMK004 internal rom in MAME, replacing Nicola's
+ old simulation code [trap15, David Haywood]
+
+-Fixed TLCS90 16-bit timers & support NMI in the core [trap15]
+
+-Various tweaks and improvements in nmk16.c (timings, sound balance,
+ etc.) [trap15, David Haywood]
+ 
+ * US AAF Mustang now has sound / music for the first time
+ * Much better sound / music in the following games Bio-ship Paladin,
+   Vandyke, Black Heart, Acrobat Mission, Koutetsu Yousai Strahl, Thunder
+   Dragon, Hacha Mecha Fighter, Super Spacefortress Macross, GunNail
+
+-SDL: use Windows OSD's font-selection semantics for SDL Windows
+ builds. [R. Belmont]
+
+-softlist: fixed inconsistent -listsoftware output. [phulshof]
+
+-ui: fixed crash when loading floppies with no parent software from
+ softlist (only via internal File Manager, though) [Fabio Priuli]
+
+-added generic cartslot / ROM socket slot device, which offers basic
+ allocation and access handlers, and converted a few drivers to use
+ this instead of code from cartslot.c [Fabio Priuli]
+
+-Add width/endianness to supracan software list [Alex Jackson]
+
+-softlist: restored the support for loading games from compatible
+ softlists (like gbcolor games in gameboy, and viceversa, msx1 carts in
+ msx2, etc.) by using the syntax mess system -media list:gamename You
+ can now for instance use again "mess gbcolor -cart gameboy:sml" to
+ play "Super Mario Land" with the custom palettes of the Game Boy
+ Color. [Fabio Priuli]
+
+-NS8250 Fixes [smf] 
+  * Loopback: tx goes high and data is clocked at the
+	correct rate instead of appearing instantly Modem status register:
+	don't lose track of external signals when starting, resetting,
+	switching loopback off, writing to register Handshaking: active low
+	for consistency (RS232 port now defaults handshaking lines high and
+	serial mouse dtr/rts handling has been adjusted).
+
+-Memory system and Namco improvements: [Alex Jackson]
+
+  * Explicit regions in address maps (AM_REGION) are now looked up
+	relative to the device rather than as siblings when in an internal
+	address map (similar to devices and shared pointers)  Besides being
+	more orthogonal than before, this allows internal ROMs of MCUs and
+	similar devices to be hooked up in a nicer and more foolproof way.
+	Updated the m37710 and m5074x (m6502 derivative) to take advantage of
+	this.
+	
+  * Divided the M37702/M37710 into specific models, with each model having
+	its own internal address map containing the correct amounts of
+	internal RAM and ROM.
+ 
+  * M37702 MCUs found on various Namco PCBs are now all unique devices and
+	have their respective internal ROMs loaded as device ROMs.
+
+-namcops2: Documentation fixes [Guru]
+
+-addrmap.c: Only install the default device address map if the owner
+ didn't provide one [Alex Jackson]
+
+-8250: call interrupt callback after clearing internal interrupt state
+ when resetting [smf]
+
+-added PC-9821AP2/U8W BIOS [caius]
+
+-added workaround to build with XCode 6.0.1 out-of-the-box
+ [Oliver Stöneberg]
+
+-wd_fdc: Hopefully fix reading sectors with DDAM [lowen, O. Galibert]
+
+-Moved protection vectors from hachamfb to hachamf, making the latter
+ to work properly too [Angelo Salese]
+
+-web: allow pasting in text. [Firehawke]
+
+-Gundam Wing: Endless Duel updates: [Peter Ferrie]
+ * added additional shared memory block
+ * added protection handlers
+ * corrected reset vector
+ * worked around bad startup
+ Game now boots but doesn't coin up.
+
+-fix compile on MSVC 2012 & 2013 [Peter Ferrie]
+
+-snesb.c: Add coin/DSW inputs to Gundam Wing, game is now playable.
+ [stephh]
+
+-s4.c : fixed sound, 4 games marked as working (Flash,Stellar
+ Wars,TriZone,TimeWarp)
+
+-snesb: Set up dip switches for Gundam Wing. [stephh]
+
+-315_5124.c: Refactored sprite handling, fixes status bar on Tarzan for
+ gaemgear. Removed m_collission_buffer member variable. Tweaked game
+ gear timing to fix glitches in status bar of Chicago Syndicate for
+ gamegear.  [Enik Land]
+
+-WebUI: clean up and fixed HTML compliance. [Firehawke]
+
+-k053260: delta PCM decoding rolls over instead of clipping; fixes
+ MT#1007 [Alex Jackson]
+
+-added makefile variable OPENMP to enable usage of OpenMP (includes
+ vconv support of -fopenmp) [Oliver Stöneberg]
+
+-blktiger priority fixes [Mamesick]
+
+-dragrace.c: Added tachometer outputs. [Comboman]
+
+-Handcrafted PAL for actual Varth US PCB.  [Palindrome]
+
+-awboard: add "offset protection" used by some carts.  samsptk and
+ kofxi boot now.  [R. Belmont, MetalliC]
+
+-model3: Rewrote 2D tilemap rendering. [Ville Linde]
+
+-Rewrite k053260 sound device [Alex Jackson]
+
+M-ake cheat initialization debugger message more verbose.  [Pugsy]
+
+-make the orlegend111t set work [iq_132]
+
+-chqflag.c: improve k007232 volume/pan controls, still largely
+ guesswork [Alex Jackson]
+
+-wecleman.c: add missing k007232 volume callback [Alex Jackson]
+
+-naomi.c:
+ * M2-type cartridges 4/8MB mode mapping documentation/code
+    [MetalliC, rtw]
+ * F355 protection key, small docs update/corrections [MetalliC]
+
+-eepromuser.c:  [Felipe Sanches]
+ * Added Support for MSM16911 Serial eeprom
+
+-mb88xx.c:  [Felipe Sanches]
+ * Added support for Fujitsu M88201-202 MCU
+
+-model3: New 3D renderer + various fixes (still heavily WIP) [Ville Linde]
+
+-Beatmania IIDX Twinkle hardware: The IDE DMA is now hooked up, but the
+ sound board isn't running well enough yet for it to make a difference.
+ Hooked up the FDC37665GT and HLE the XVD701 and the 68k sound board
+ responses to get most of the games booting. There is no sound and the
+ games all fail with a hdd error when you start a stage. Beatmania IIDX
+ with DDR 2nd Club Version wants the GQ863 hard disk. [smf]
+
+-Beatmania IIDX Twinkle hardware: beatmania IIDX Substream with DDR 2nd
+ Club Version 2 wants the harddisk from beatmania IIDX Substream. Added
+ missing 3rd & 6th style CD images & replaced 5th style images. [smf]
+
+
+New games added or promoted from NOT_WORKING status
+---------------------------------------------------
+Music Ball [Andreas Naive]
+Dongfang Shenlong [Luca Elia, Guru, Dyq, bnathan]
+Danger Express [Phil Bennett]
+JumpJump [system11, The Dumping Union]
+Elfin [system11, The Dumping Union]
+Raiden 2 [Angelo Salese, Olivier Galibert]
+Raiden DX [Angelo Salese, Olivier Galibert]
+Al Alamiah AX-150 (MSX1)  [Wilbert Pol]
+Canon V-8 (MSX1)  [Wilbert Pol]
+Canon V-20E (MSX1)  [Wilbert Pol]
+Canon V-20F (MSX1)  [Wilbert Pol]
+Canon V-20G (MSX1)  [Wilbert Pol]
+Canon V-20S (MSX1)  [Wilbert Pol]
+Canon V-25 (MSX2)  [Wilbert Pol]
+Casio MX-10 (MSX1)  [Wilbert Pol]
+Casio MX-101 (MSX1)  [Wilbert Pol]
+Casio MX-15 (MSX1)  [Wilbert Pol]
+Casio PV-7 (MSX1)  [Wilbert Pol]
+Daewoo CPC-88 (Korea) (MSX1)  [Wilbert Pol]
+Daewoo CPC-330K KOBO (Korea) (MSX2)  [Wilbert Pol]
+Daewoo DPC-200E (MSX1)  [Wilbert Pol]
+Daewoo Zemmix CPC-50A (Korea) (MSX1)  [Wilbert Pol]
+Daewoo Zemmix CPC-50B (Korea) (MSX1)  [Wilbert Pol]
+Daewoo Zemmix CPC-51 (Korea) (MSX1)  [Wilbert Pol]
+Daewoo Zemmix CPC-61 (Korea) (MSX2)  [Wilbert Pol]
+Fenner DPC-200 (MSX1)  [Wilbert Pol]
+Fenner FPC-500 (MSX1)  [Wilbert Pol]
+Fenner FPC-900 (MSX2)  [Wilbert Pol]
+Fenner SPC-800 (MSX1)  [Wilbert Pol]
+Fujitsu FM-X (MSX1)  [Wilbert Pol]
+Goldstar FC-80U (MSX1)  [Wilbert Pol]
+Goldstar GFC-1080 (MSX1)  [Wilbert Pol]
+Goldstar GFC-1080A (MSX1)  [Wilbert Pol]
+Hitachi MB-H2 (MSX1)  [Wilbert Pol]
+Hitachi MB-H25 (MSX1)  [Wilbert Pol]
+Hitachi MB-H50 (MSX1)  [Wilbert Pol]
+Hitachi MB-H70 (MSX2)  [Wilbert Pol]
+Kawai KMC-5000 (MSX2)  [Wilbert Pol]
+Mitsubishi ML-F48 (MSX1)  [Wilbert Pol]
+Mitsubishi ML-F110 (MSX1)  [Wilbert Pol]
+Mitsubishi ML-F120 (MSX1)  [Wilbert Pol]
+Mitsubishi ML-G1 (MSX2)  [Wilbert Pol]
+Mitsubishi ML-G10 (MSX2)  [Wilbert Pol]
+National / Matsushita FS-4000 (alt) (Japan) (MSX1)  [Wilbert Pol]
+Philips NMS-8250F (MSX2)  [Wilbert Pol]
+Philips NMS-8255F (MSX2)  [Wilbert Pol]
+Philips NMS-8280F (MSX2)  [Wilbert Pol]
+Pioneer PX-07UK (MSX1)  [Wilbert Pol]
+Pioneer PX-V60 (MSX1)  [Wilbert Pol]
+Sanyo MPC-200 (MSX1)  [Wilbert Pol]
+Sanyo MPC-200SP (MSX1)  [Wilbert Pol]
+Sanyo Wavy PHC-55FD2 (MSX2)  [Wilbert Pol]
+Sony HB-10 (MSX1)  [Wilbert Pol]
+Sony HB-101P (MSX1)  [Wilbert Pol]
+Sony HB-55 (MSX1)  [Wilbert Pol]
+Sony HB-F500F (MSX2)  [Wilbert Pol]
+Spectravideo SVI-738 (Arabic) (MSX1)  [Wilbert Pol]
+Spectravideo SVI-738 (Denmark) (MSX1)  [Wilbert Pol]
+Spectravideo SVI-738 (Spain) (MSX1)  [Wilbert Pol]
+Toshiba HX-10D (MSX1)  [Wilbert Pol]
+Toshiba HX-10DP (MSX1)  [Wilbert Pol]
+Toshiba HX-10E (MSX1)  [Wilbert Pol]
+Toshiba HX-10F (MSX1)  [Wilbert Pol]
+Toshiba HX-10SA (MSX1)  [Wilbert Pol]
+Toshiba HX-20I (MSX1)  [Wilbert Pol]
+Toshiba HX-21I (MSX1)  [Wilbert Pol]
+Toshiba HX-22I (MSX1)  [Wilbert Pol]
+Toshiba HX-23I (MSX2)  [Wilbert Pol]
+Toshiba HX-33 (MSX2)  [Wilbert Pol]
+Toshiba FS-TM1 (MSX2)  [Wilbert Pol]
+Victor HC-5 (MSX1)  [Wilbert Pol]
+Victor HC-6 (MSX1)  [Wilbert Pol]
+Victor HC-7 (MSX1)  [Wilbert Pol]
+Yamaha CX5F (w/SFG01) (MSX1)  [Wilbert Pol]
+Yamaha CX5F (w/SFG05) (MSX1)  [Wilbert Pol]
+Yamaha YIS604 (64KB) (MSX2)  [Wilbert Pol]
+Yamaha YIS604 (128KB) (MSX2)  [Wilbert Pol]
+Raiden II New / Raiden DX (newer V33 PCB) (2 sets, different EEPROM for each game)
+  [Olivier Galibert, David Haywood]
+Zero Team 2000 [Olivier Galibert, David Haywood]
+Player's Edge (PK1024) Aces and Faces Poker [BrianT]
+Americana (9131-00) [Brian Troha, The Dumping Union]
+Gundam Wing: Endless Duel (SNES bootleg)
+  [Peter Ferrie, iq_132, stephh]
+Vegas 1 (Ver 2.3 dual coin pulse, shorter) [any]
+Vegas 1 (Ver 2.1 dual coin pulse, longer) [any]
+Vegas 1 (Ver 1.33 single coin pulse) [any]
+Merit Touch Joker Poker (9132-00) [Brian Troha, Mariusz Wojcieszek]
+
+
+New clones added
+----------------
+Player's Edge Plus (X000124P+XP000053) Deuces Wild Poker [BrianT]
+Player's Edge Plus (X002308P+XP000112) Triple Double Bonus Poker
+  [BrianT]
+Armored Warriors (Asia 941024) [system11, The Dumping Union]
+Punch-Out!! (Rev B) [2600]
+Super Punch-Out!! (Rev A) [2600]
+F1 Exhaust Note (set 2) [f.arzeno]
+Cops (UK) [Any]
+Pac-Mania (111187 sound program) [system11]
+Storm Blade (Japan) [ShouTime, The Dumping Union]
+Search Eye (English / Korean / Japanese / Spanish)
+  [system11, The Dumping Union]
+Sky Shark (US, set 2) [caius]
+Growl (World, Rev 1) [caius]
+Bonze Adventure (World, prototype) [Silvio Grazini]
+Colorama (P521 V13, Spanish) [Roberto Fresca]
+Viper Phase 1 (New Version, Holland) [Nigel Parker]
+Phoenix (D&L bootleg)  [PokeMAME, Lord Nightmare]
+Wonder Boy III - Monster Lair (encrypted bootleg) [Claudio Bechini]
+Shadow Dancer (bootleg, set 2) [Asure] (not working)
+19XX: The War Against Destiny (Asia 960104)
+  [system11, The Dumping Union]
+Food Fight (rev 1) [Phil Bennett]
+Candory (Ponpoko bootleg with Mario)  [system11, The Dumping Union]
+Centipede (revision 1) [philipbe]
+Air Rescue (Japan) [ShouTime, The Dumping Union]
+Gaplus (Tecfri PCB) [system11]
+The Simpsons (2 Players World, set 3) [Ben76]
+Fantasia (940803 PCB) [system11]
+The X-Files [system11, The Dumping Union]
+Vendetta (World, 2 Players, ver. unknown) [caius]
+Hacha Mecha Fighter (19th Sep. 1991, unprotected, bootleg Thunder Dragon conversion)
+  [trap15]
+Mega Man: The Power Battle (CPS2, USA 950926, SAMPLE Version) [Asure]
+Raiden II (US, set 2) [farzeno]
+Baryon - Future Assault (set 2) [RockmanX, Datasat]
+Player's Edge Plus (PP0158) 4 of a Kind Bonus Poker (set 1) [BrianT]
+Donkey Kong: Pauline Edition (hack, rev 5) [Clay Cowgill]
+Raiden DX (Japan) [rtw]
+Zero Hour (Inder) [Basilio García]
+Initial D Arcade Stage (Japan) [rtm, ShouTime, The Dumping Union]
+naomi: redumped initdv2j GD-ROM [rtm, ShouTime, The Dumping Union]
+Street Fighter II': Magic Delta Turbo (bootleg, set 4) [any]
+Street Fighter II': Champion Edition (M9, bootleg) [any]
+Street Fighter II: The World Warrior (TAB Austria, bootleg, set 3)
+  [any]
+Street Fighter II: The World Warrior (TAB Austria, bootleg, set 4)
+  [any]
+Oriental Legend / Xi You Shi E Zhuan (ver. 111, Taiwanese Board)
+  [bytestorm]
+Arkanoid (Japan) [ShouTime]
+Raiden DX (China, Ideal International Development Corp license)
+Chelnov - Atomic Runner (Japan, bootleg with SCM8031HCCN40)  [Jan Kretschmer]
+Chelnov - Atomic Runner (Japan, bootleg with I8031, set 2) [Tirino73]
+Shot Rider (bootleg) [f205v]
+Hexa (with 2xZ80, protected) [??]
+Jumping (set 2) [Porchy]
+Pac-Man (JPM bootleg) [Hammy]
+Speed Up (Version 1.00) [neocps1]
+Frisky Tom (set 3, encrypted?) [Andrew Welburn]
+New Zero Team [Olivier Galibert, David Haywood]
+Raiden II (easy version, Germany) [Icronnya77]
+Pengo (bootleg on JPM Pac-Man hardware) [Ace]
+
+
+New games marked as GAME_NOT_WORKING
+------------------------------------
+Revelations (Nova Productions) [AintBigAintClever, J.Wallace]
+Mahjong Cafe Paradise [Guru, Dyq, Bnathan]
+Number Crash [kurobee]
+So Ho Sung [system11]
+Host Invaders [R. Belmont]
+Power Drift (Japan, Link Version)
+  [ShouTime,rtw,B2K24, Gor ,Dullaron, anonymous, Mucci ,gregf ,ghoolster, Smitdogg,The Dumping Union]
+Bazooka (TTL) [Al Kossow]
+Won!Tertainment Music Channel  [ShouTime]
+Yori Zori Kuk Kuk
+  [Dullaron, Kai Bauer, Brian Troha, The Dumping Union]
+Space Warp (Century Electronics)  [Stiletto, Tafoid]
+Trivia (TTL) [gregf, Frank Palazzolo]
+Jump Jump [system11]
+Go-Stop [system11]
+Sengoku Basara X Cross [darksoft, Guru]
+Kinnikuman Muscle Grand Prix 2 [darksoft, Guru]
+Gundam vs. Gundam Next [darksoft, Guru]
+Eggs Playing Chicken [Tafoid, R. Belmont]
+Canon V-30 (MSX2)  [Wilbert Pol]
+Canon V-30F (MSX2)  [Wilbert Pol]
+Daewoo Zemmix CPG-120 (Korea) (MSX2)  [Wilbert Pol]
+Mitsubishi ML-G3 (MSX2)  [Wilbert Pol]
+Perfect Perfect1 (MSX1)  [Wilbert Pol]
+Philips NMS-8260 (Prototype) (MSX2)  [Wilbert Pol]
+Philips NMS-8270 (Prototype) (MSX2)  [Wilbert Pol]
+Sanyo MPC-2500FD (MSX2)  [Wilbert Pol]
+Sanyo Wavy MPC-27 (MSX2)  [Wilbert Pol]
+Sanyo Wavy PHC-77 (MSX2)  [Wilbert Pol]
+Sony HB-701FD (MSX1)  [Wilbert Pol]
+Toshiba HX-21 (MSX1)  [Wilbert Pol]
+Toshiba HX-22 (MSX1)  [Wilbert Pol]
+Toshiba HX-34 (MSX2)  [Wilbert Pol]
+Toshiba HX-34I (MSX2)  [Wilbert Pol]
+Victor HC-90 (MSX2)  [Wilbert Pol]
+Victor HC-95 (MSX2)  [Wilbert Pol]
+Victor HC-95A (MSX2)  [Wilbert Pol]
+Yamaha YIS-503 III R (Russian) (MSX2)  [Wilbert Pol]
+Yamaha YIS-503 III R (Estonian) (MSX2)  [Wilbert Pol]
+Yamaha YIS805/128 (Russian) (MSX2)  [Wilbert Pol]
+Yamaha YIS805R2/128 (Russian) (MSX2)  [Wilbert Pol]
+Yamaha YIS805R2/128 (Estonian) (MSX2)  [Wilbert Pol]
+Yamaha YIS805/256 (Russian) (MSX2)  [Wilbert Pol]
+Capriccio Spin 2 [hap, Yasuhiro]
+Capriccio Cyclone [hap, Yasuhiro]
+MushiKing The King Of Beetle 2K5 1st
+  [rtw, ShouTime, The Dumping Union, R. Belmont]
+Americana (9132-00) [Brian Troha]
