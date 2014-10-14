@@ -1,4 +1,4 @@
-﻿0.155
+0.155
 -------
 
 
@@ -136,13 +136,14 @@ Skeleton drivers:
 -VTech Genius Leader Power Notebook (Germany) [TeamEurope] 
 -LexiPC Mega 2000 (Germany) [TeamEurope]
 -VTech PreComputer 1000 [Porchy]
+-TimeTop GameKing [Porchy]
  
 
 Software Lists:
 ----------------
 
--pico.xml: added many new dumps, including some from Korean releases (2
- of them are Samsung exclusive titles) [Team Europe]
+-pico.xml: added many new dumps, including some from Korean releases and
+ exclusive titles. [Team Europe]
 
 -megadriv.xml: verified and documented a lot of dumps, added Shining
  Force (Euro), redumped Muhammad Ali Heavyweight Boxing (Euro). [sunbeam]
@@ -156,14 +157,12 @@ Software Lists:
 
 -coleco.xml: Some more verified dumps and info added. [Ikrananka]
 
--pico.xml: more Japanese and Korean dumps added. [Team Europe]
-
 -coleco.xml: replaced Sector Alpha incorrect dumps with a proper
  one [Ikrananka]
 
 -coleco.xml: removed choplifter bad dump. [dink]
 
--psx.xml: added info to the games #-F. [Antopisa]
+-psx.xml: added info to the games #-O. [Antopisa]
 
 -sms.xml: documenting Graphic Board prototype dump. [SMSPower]
 
@@ -181,6 +180,16 @@ Software Lists:
 -dmv.xml: added Decision Mate V floppy softlist. [Sandro Ronco]
 
 -vectrex.xml:  Fixed some clones assignments.  [m4st4]
+
+-gameking.xml:  added TimeTop GameKing cart list.  [Porchy]
+
+-timex.xml: added software list for Timex DOCK carts. [Fabio Priuli]
+
+-apple2.xml: added over 150 items, including many classics of
+ the platform. [R. Belmont]
+
+-Add correct data width/endianness to several software lists [Alex
+ Jackson]
 
 
 Source Changes
@@ -272,9 +281,9 @@ Source Changes
     mount hiscore, a -cart2 switch will become available to mount the
     game you want to play
  * Properly implemented XBoarD and XM expansions as passthru carts as
-    well, so that new syntax to run dkxm.a78 is "mess a7800 -cart xm
-    -cart2 path\to\games\dkxm.a78" High Score support for XM shall
-    work as well.
+    well, so that new syntax to run dkxm.a78 is
+      mess a7800 -cart xm -cart2 path\to\games\dkxm.a78
+    High Score support for XM shall work as well.
  * Big clean up of the driver, simplifying memory map, removing writes
     to ROM, etc.
 
@@ -283,9 +292,11 @@ Source Changes
 -a7800: split video emulation (Atari MARIA chip) into a separate
  device. [Fabio Priuli]
 
+-altos5: Fix wrong drive type [O. Galibert]
+
 -atari400.c progress:  [Fabio Priuli]
  * Rewritten cart emulation to use slot devices (many "mappers" do not
-    fully work) and unified cart handling among 8bit home computers,
+    fully work yet) and unified cart handling among 8bit home computers,
     XEGS and Atari 5200
  * Added support for loading carts with bankswitch to all XL/XE models
  * Added support for loading XEGS carts in Atari 8bits home computers
@@ -310,7 +321,8 @@ Source Changes
 
 -maria.c:
  * Timeout rendering added. [Mike Saarna]
- * Reorganized DMA penalties to support new rendering code [Mike Saarna, Robert Tuccitto]
+ * Reorganized DMA penalties to support new rendering code [Mike Saarna, 
+    Robert Tuccitto]
 
 -a7800.c:  [Fabio Priuli]
  * Fixed YM2151 clock in XM expansion, thanks to info from tep392 and
@@ -319,7 +331,7 @@ Source Changes
     CPUWIZ (ROM respectively up to 512K and 256K + 32K of RAM)
  * Misc cleanups
 
--thomson : improve accuracy of the colors [Antoine Mine]
+-thomson: improve accuracy of the colors [Antoine Mine]
 
 -Added the following video card BIOSes: [rfka01, Barry Rodewald]
  s3_764:   S3 9503-62 (not working) Elsa Winner 1000/T2D
@@ -351,17 +363,19 @@ Source Changes
  [R. Belmont]
 
 -famicom: converted the disk system add-on to be a cart in the
- softlist. The official syntax to launch disk games is now mess famicom
- -cart disksys -flop gamename which corresponds to inserting the RAM
- expansion cart with connected the disk drive into the cartslot and the
- desired disk in the disk drive (exactly like you would have done with
- the real thing). In this way, you cannot mount anymore both a cart and
- a disk in the Family Computer (as in a real unit). Users that cannot
- cope with this limitation and/or with the new syntax can still use the
- famitwin driver (which offers both cart and disk options) or the newly
- added driver fds which emulates a famicom with the expansion always
- inserted: in both latter cases the old syntax mess famitwin -flop
- gamename will launch the game, as previously. [Fabio Priuli]
+ softlist. The official syntax to launch disk games is now
+   mess famicom -cart disksys -flop gamename
+ which corresponds to inserting the RAM expansion cart with connected 
+ the disk drive into the cartslot and the desired disk in the disk 
+ drive (exactly like you would have done with the real thing). In this
+ way, you cannot mount anymore both a cart and a disk in the Family 
+ Computer (as in a real unit). Users that cannot cope with this
+ limitation and/or with the new syntax can still use the famitwin
+ driver (which offers both cart and disk options) or the newly added
+ driver fds which emulates a famicom with the expansion always inserted:
+ in both latter cases the old syntax
+   mess famitwin -flop gamename
+ will launch the game, as previously. [Fabio Priuli]
 
 -famicom: fixed disk system IRQ latch clear in Kaettekita Mario
  Bros. based on investigations by FHorse. [Fabio Priuli]
@@ -376,8 +390,6 @@ Source Changes
 
 -tsispch.c - Add v1.1 firmware to TSI/Speech Plus Prose 2000
  driver [Lord Nightmare]
-
--Add correct data width/endianness to several software lists [Alex Jackson]
 
 -concept: fix keyboard status to not return junk data, fixes
  bootup without -debug. [R. Belmont]
@@ -399,15 +411,14 @@ Source Changes
 -advision.c: cleaned up the driver and added support for save
  states. [Fabio Priuli]
 
--softbox: Added BIOS revision 8/9/81.
- [Nils Eilers, Mike Naberezny]
+-added PC-9821AP2/U8W BIOS. [caius]
+
+-softbox: Added BIOS revision 8/9/81. [Nils Eilers, Mike Naberezny]
 
 -amust: added newly-dumped keyboard rom [ejwords, MSPP]
 
 -thomson - fixes for a non-standard video mode and adding a new
  one [Antoine Mine]
-
--timex.c: added software list for DOCK carts. [Fabio Priuli]
 
 -gba.c: fixed Top Gun - Combat Zones cart type, making the game
  playable. [Reznor007]
@@ -421,6 +432,11 @@ Source Changes
 -floppy.c: fixed disks not being launched if loaded from
  softlist through File Manager. [Fabio Priuli]
 
+-315_5124.c: Refactored sprite handling, fixes status bar on Tarzan for
+ gaemgear. Removed m_collission_buffer member variable. Tweaked game
+ gear timing to fix glitches in status bar of Chicago Syndicate for
+ gamegear.  [Enik Land]
+
 -concept: Misc fixes/cleanup, CCOS boots now from 8" floppies.
  [R. Belmont]
 
@@ -429,9 +445,10 @@ Source Changes
 
 -saturn: made RAM / Backup RAM expansion internal slot options.
  you now mount these with the -cart media switch, i.e. for instance
- mess.exe saturn -cdrm ddsom -cart ram32 or mess.exe saturn -cdrm
- draculax -cart bram16 and not anymore using the -exp option.
- [Fabio Priuli]
+   mess saturn -cdrm ddsom -cart ram32
+ or
+   mess saturn -cdrm draculax -cart bram16
+ and not anymore using the -exp option. [Fabio Priuli]
 
 -concept: can boot 5.25" disks on fdc02 now. [crazyc]
 
@@ -442,35 +459,37 @@ Source Changes
  Rockman World Prototype to be played, and the Rocket Games pirate GBC
  carts too. [Fabio Priuli]
 
--gba: added a configuration setting (off by default) to skip
- some BIOS checks at boot. This allows Tyrian 2000 Prototype to be
- played. [Fabio Priuli]
+-gba: added a configuration setting (off by default) to skip some BIOS
+ checks at boot. This allows Tyrian 2000 Prototype to be played. [Fabio
+ Priuli]
 
 -apple2: IIe and later don't require double-reads on the
  language card. [R. Belmont, Peter Ferrie]
 
--odyssey2: converted the driver to use slot devices for
- cartridges, removed The Voice add-on from the main system and emulated
- it as a passthru cart instead. Now, if you want to enjoy speech in
- odyssey/videopac games, you must launch emulation with mess.exe
- odyssey2 -cart voice -cart2 gamename (the -cart2 switch becomes
- available when "voice" is mounted in the first cartslot) [Fabio
- Priuli]
+-odyssey2: converted the driver to use slot devices for cartridges,
+ removed The Voice add-on from the main system and emulated it as
+ a passthru cart instead. Now, if you want to enjoy speech in
+ odyssey/videopac games, you must launch emulation with 
+   mess odyssey2 -cart voice -cart2 gamename
+ (the -cart2 switch becomes available when "voice" is mounted in
+ the first cartslot) [Fabio Priuli]
 
 -intv: converted the driver to use slot devices for cartridges
  and implemented the IntelliVoice expansion and the Entertainment
  Computer System expansion as passthru devices. The official syntax to
- launch games requiring the speech expansion is now mess intv -cart
- voice -cart2 gamename which corresponds to mounting the IntelliVoice
- and plugging the game cart in its subslot.  The official syntax to
- launch games requiring the ECS expansion is now instead mess intv
- -cart ecs -cart2 gamename and mess intv -cart ecs -cart2 voice -cart3
- gamename if the game requires both expansions at once. For additional
- user friendliness, we also offer intvecs (which emulates an
- Intellivision unit with both expansions added) and intvoice (which
- emulates an Intellivision with Intellivoice expansion added) drivers,
- where games can simply be mounted with the -cart media switch.
- [Fabio Priuli]
+ launch games requiring the speech expansion is now
+   mess intv -cart voice -cart2 gamename
+ which corresponds to mounting the IntelliVoice and plugging the game
+ cart in its subslot.  The official syntax to launch games requiring
+ the ECS expansion is now instead
+   mess intv -cart ecs -cart2 gamename
+ and
+   mess intv -cart ecs -cart2 voice -cart3 gamename
+ if the game requires both expansions at once. For additional user
+ friendliness, we also offer intvecs (which emulates an Intellivision
+ unit with both expansions added) and intvoice (which emulates an
+ Intellivision with Intellivoice expansion added) drivers, where games
+ can simply be mounted with the -cart media switch. [Fabio Priuli]
 
 -msx.c: Added support for DMK floppy images.  [Wilbert Pol]
 
@@ -488,16 +507,15 @@ Source Changes
 -spc1000: added fdd code [Meso Kim]
 
 -sms.c: Misc fixes:  [Enik Land]
- * Disable gamegear sio register when in ggsms mode.
- * Fixed tilemap mirroring on sms1 vdp needed for Japanese version of
-    Ys.
- * Fixed BIOS support in the gamegear driver.
- * Fixed collisions when column #0 is disabled.
+ * Disable gamegear sio register when in ggsms mode
+ * Fixed tilemap mirroring on sms1 vdp needed for Japanese version of Ys
+ * Fixed BIOS support in the gamegear driver
+ * Fixed collisions when column #0 is disabled
 
 -gamegear: added preliminary emulation of the Master Gear
  Adapter which allows to launch SMS games in the gamegear driver, with
- video chip in SMS mode. You can try this by launching mess.exe
- gamegear -cart mgear -cart2 your_sms_game (the -cart2 switch becomes
- available when you mount "mgear" in the main gamegear cart slot)
- [Fabio Priuli]
+ video chip in SMS mode. You can try this by launching
+   mess.exe gamegear -cart mgear -cart2 your_sms_game
+ (the -cart2 switch becomes available when you mount "mgear" in the
+ main gamegear cart slot) [Fabio Priuli]
 
