@@ -66,9 +66,9 @@ Source Changes
  technical notes and instructions. Cleaned up the whole driver.
  [Roberto Fresca]
 
--tasman.c: Remove extraneous K053246/7 device and use correct gfx
- layout for K055673; fixes debug assert and gfx viewer crash rungun.c:
- Make sprite mask ROM tests pass [Alex Jackson]
+-k053246_k053247_k055673.c: Make 8-bit-per-pixel ROM readback work;
+ hook up ROM readback properly in rungun.c; hook up registers properly
+ in tasman.c (sprite ROM tests pass now, still doesn't draw anything)
 
 -fm2612: fixed missing dac channel on savestate load
  [dink (FB Alpha project)]
@@ -77,9 +77,6 @@ Source Changes
 
 -speedbal.c: Give Music Ball it's own correct Bonus dipswitch settings.
  Add dipswitch locations to Speed Ball & Music Ball. [Brian Troha]
-
--tasman.c: hooked up k053246/k055673 registers; object ROM tests pass
- now [Alex Jackson]
 
 -improve Funny Strip / Puck People protection simulation [iq_132]
 
@@ -245,8 +242,6 @@ Source Changes
  allocation and access handlers, and converted a few drivers to use
  this instead of code from cartslot.c [Fabio Priuli]
 
--Add width/endianness to supracan software list [Alex Jackson]
-
 -softlist: restored the support for loading games from compatible
  softlists (like gbcolor games in gameboy, and viceversa, msx1 carts in
  msx2, etc.) by using the syntax mess system -media list:gamename You
@@ -324,9 +319,6 @@ Source Changes
  gamegear.  [Enik Land]
 
 -WebUI: clean up and fixed HTML compliance. [Firehawke]
-
--k053260: delta PCM decoding rolls over instead of clipping; fixes
- MT#1007 [Alex Jackson]
 
 -added makefile variable OPENMP to enable usage of OpenMP (includes
  vconv support of -fopenmp) [Oliver Stöneberg]
