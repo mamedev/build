@@ -54,7 +54,10 @@ MAMETesters Bugs Fixed
 - 05644: [Graphics] (homerun.c) ganjaja: Line glitches at top of screen (hap)
 - 05631: [Crash/Freeze] mquake.c, upscope.c: Crash shortly after start (Osso)
 - 05633: [Crash/Freeze] (pcxt.c) tetriskr: [debug] Crash in Debug at start (crazyc)
-
+- 00386: (battlera.c) battlera, bldwolf, bldwolfj: Sprites in the same player where the
+  black box with text that appears sometimes are printed in front of them. (David Haywood)
+- 00385: (battlera.c)  battlera: When you are fighting against the first final boss, you
+  can see it even if it is under the water. (David Haywood)
 
 Source Changes
 --------------
@@ -362,6 +365,16 @@ Source Changes
 
 -m68000: add missing item to save state [Alex Jackson]
 
+- Converted battlera.c driver to use real PCE video code, fixing several
+  longstanding bugs (present since driver was added in 0.37b2 era)
+  [David Haywood]
+
+- Reorganized ST0016 code, detangling several drivers, and fixing a some
+  missing video features used by gostop [David Haywood]
+
+- Refactored legionna.c COP code to use new Raiden II implementation
+  fixing several bugs along the way [David Haywood]
+
 
 New games added or promoted from NOT_WORKING status
 ---------------------------------------------------
@@ -374,7 +387,8 @@ Raiden 2 [Angelo Salese, Olivier Galibert]
 Raiden DX [Angelo Salese, Olivier Galibert]
 Raiden II New / Raiden DX (newer V33 PCB) (2 sets, different EEPROM for each game)
   [Olivier Galibert, David Haywood]
-Zero Team 2000 [Olivier Galibert, David Haywood]
+New Zero Team / Zero Team 2000 [Olivier Galibert, David Haywood]
+Go-Stop [system11, The Dumping Union]
 Player's Edge (PK1024) Aces and Faces Poker [BrianT]
 Americana (9131-00) [Brian Troha, The Dumping Union]
 Gundam Wing: Endless Duel (SNES bootleg)
@@ -510,7 +524,7 @@ Player's Edge Plus (X002308P+XP000112) Triple Double Bonus Poker
 Armored Warriors (Asia 941024) [system11, The Dumping Union]
 Punch-Out!! (Rev B) [2600]
 Super Punch-Out!! (Rev A) [2600]
-F1 Exhaust Note (set 2) [f.arzeno, The Dumping Union]
+F1 Exhaust Note (US) [f.arzeno, The Dumping Union]
 Cops (UK) [Any]
 Pac-Mania (111187 sound program) [system11, The Dumping Union]
 Storm Blade (Japan) [ShouTime, The Dumping Union]
@@ -538,10 +552,13 @@ Vendetta (World, 2 Players, ver. unknown) [caius]
 Hacha Mecha Fighter (19th Sep. 1991, unprotected, bootleg Thunder Dragon conversion)
   [trap15]
 Mega Man: The Power Battle (CPS2, USA 950926, SAMPLE Version) [Asure]
-Raiden II (US, set 2) [farzeno]
-Baryon - Future Assault (set 2) [RockmanX, Datasat]
-Player's Edge Plus (PP0158) 4 of a Kind Bonus Poker (set 1) [BrianT]
 Raiden DX (Japan) [rtw]
+Raiden DX (China, Ideal International Development Corp license)
+Raiden II (US, set 2) [farzeno]
+Raiden II (easy version, Germany) [Icronnya77]
+Raiden II (harder, Raiden DX hardware) [?]
+Baryon - Future Assault (set 2) [Rockman, Datasat]
+Player's Edge Plus (PP0158) 4 of a Kind Bonus Poker (set 1) [BrianT]
 Zero Hour (Inder) [Basilio García]
 Initial D Arcade Stage (Japan) [rtw, ShouTime, The Dumping Union]
 Initial D Arcade Stage Ver. 2 (Japan) [rtw, ShouTime, The Dumping Union]
@@ -554,8 +571,7 @@ Street Fighter II: The World Warrior (TAB Austria, bootleg, set 4)
 Oriental Legend / Xi You Shi E Zhuan (ver. 111, Taiwanese Board)
   [bytestorm]
 Arkanoid (Japan) [ShouTime]
-Raiden DX (China, Ideal International Development Corp license)
-Chelnov - Atomic Runner (Japan, bootleg with SCM8031HCCN40)  [Jan Kretschmer]
+Chelnov - Atomic Runner (Japan, bootleg with I8031, set 1) [Jan Kretschmer]
 Chelnov - Atomic Runner (Japan, bootleg with I8031, set 2) [Tirino73]
 Shot Rider (bootleg) [f205v]
 Hexa (with 2xZ80, protected) [??]
@@ -563,8 +579,6 @@ Jumping (set 2) [Porchy]
 Pac-Man (JPM bootleg) [Hammy]
 Speed Up (Version 1.00) [neocps1]
 Frisky Tom (set 3, encrypted?) [Andrew Welburn]
-New Zero Team [Olivier Galibert, David Haywood]
-Raiden II (easy version, Germany) [Icronnya77]
 Pengo (bootleg on JPM Pac-Man hardware) [Ace]
 
 
@@ -573,7 +587,7 @@ New games marked as GAME_NOT_WORKING
 Revelations (Nova Productions) [AintBigAintClever, J.Wallace]
 Mahjong Cafe Paradise [Guru, Dyq, Bnathan]
 Number Crash [kurobee]
-So Ho Sung [system11, The Dumping Union]
+Su Ho Seong [system11, The Dumping Union]
 Host Invaders [R. Belmont]
 Power Drift (Japan, Link Version)
   [ShouTime,rtw,B2K24, Gor ,Dullaron, anonymous, Mucci ,gregf ,ghoolster, Smitdogg,The Dumping Union]
@@ -583,7 +597,6 @@ Yori Zori Kuk Kuk
   [Dullaron, Kai Bauer, Brian Troha, The Dumping Union]
 Space Warp (Century Electronics)  [Stiletto, Tafoid]
 Trivia (TTL) [gregf, Frank Palazzolo]
-Go-Stop [system11, The Dumping Union]
 Sengoku Basara X Cross [darksoft, Guru]
 Kinnikuman Muscle Grand Prix 2 [darksoft, Guru]
 Gundam vs. Gundam Next [darksoft, Guru]
