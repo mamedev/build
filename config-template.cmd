@@ -54,15 +54,15 @@ set MSVC_BUILD=
 set BASEPATH=%EDITORPATH%;%SVNPATH%;%OTHERPATH%;%WINDIR%\system32;%WINDIR%
 
 @rem 32-bit mingw case: gray on black
-if "%1"=="32" color 07 & set PATH=%MINGWPATH%\mingw64-w32\bin;%PATH%;%GTK_INSTALL_ROOT%\bin& echo Configured for mingw64 32-bit
+if "%1"=="32" color 07 & set PATH=%MINGWPATH%\mingw64-w32\bin;%MINGWPATH%\mingw64-w32\opt\bin;%PATH%;%GTK_INSTALL_ROOT%\bin& echo Configured for mingw64 32-bit
 
 @rem 64-bit mingw case: gray on blue
-if "%1"=="64" color 17 & set PATH=%MINGWPATH%\mingw64-w64\bin;%PATH%;%GTK_INSTALL_ROOT%\bin& echo Configured for mingw64 64-bit
+if "%1"=="64" color 17 & set PATH=%MINGWPATH%\mingw64-w64\bin;%MINGWPATH%\mingw64-w64\opt\bin;%PATH%;%GTK_INSTALL_ROOT%\bin& echo Configured for mingw64 64-bit
 
 @rem 32-bit VC case: yellow on black
 if "%1"=="v32" color 0e & set MSVC_BUILD=1 & call "%VCPATH%\vcvarsall.bat" x86
-if "%1"=="v32" set INCLUDE=%INCLUDE%;%DXSDKPATH%\include& set LIB=%DXSDKPATH%\lib\x86;%LIB%& set PATH=%PATH%;%MINGWPATH%\mingw64-w32\bin
+if "%1"=="v32" set INCLUDE=%INCLUDE%;%DXSDKPATH%\include& set LIB=%DXSDKPATH%\lib\x86;%LIB%& set PATH=%PATH%;%MINGWPATH%\mingw64-w32\bin;%MINGWPATH%\mingw64-w32\opt\bin
 
 @rem 64-bit VC case: yellow on blue
 if "%1"=="v64" color 1e & set MSVC_BUILD=1 & call "%VCPATH%\vcvarsall.bat" amd64
-if "%1"=="v64" set INCLUDE=%INCLUDE%;%DXSDKPATH%\include& set LIB=%DXSDKPATH%\lib\x64;%LIB%& set PATH=%PATH%;%MINGWPATH%\mingw64-w64\bin
+if "%1"=="v64" set INCLUDE=%INCLUDE%;%DXSDKPATH%\include& set LIB=%DXSDKPATH%\lib\x64;%LIB%& set PATH=%PATH%;%MINGWPATH%\mingw64-w64\bin;%MINGWPATH%\mingw64-w64\opt\bin
