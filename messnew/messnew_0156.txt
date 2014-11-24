@@ -1,0 +1,1797 @@
+0.156
+-------
+
+
+MAMETesters Bugs Fixed
+----------------------
+- 05747: [Misc.] (apple2.c) apple2p, apple2e, apple2c (and probably others):
+  The "Diagnostics Test" failed. (R. Belmont)
+- 05157: [Crash/Freeze] (apple2.c) ace100: Access Violation with 
+  "-debug -flop1 4080trkd -ramsize 12288" (R. Belmont)
+- 05158: [Crash/Freeze] (apple2.c) agat7: Access Violation with 
+  "-debug -ramsize 16384" (R. Belmont)
+- 05715: [Crash/Freeze] (wswan.c) wswan, wscolor: It crash if executed
+  w/o cartridge mounted. (Fabio Priuli)
+- 05694: [Sound] All sets in coco12.c and coco3.c: audio output level 
+  incorrect when Cassette/Cartridge selected on SC77526 chip
+- 05252: [Crash/Freeze] (megadriv.c) genesis [madden98]: Madden 98 - 
+  black screen (David Haywood)
+- 05743: [Crash/Freeze] (dragon.c) tanodr64: The system is not working. (Osso)
+- 05660: [Misc.] (coco12.c) Coco 1, 2, 3: Implement virtual "Becker Port"
+  for DriveWire support (R. Belmont)
+- 05738: [Crash/Freeze] (vtech1.c) vz200de: The system is not working. (Robbbert)
+- 05730: [Misc.] (gb.c) gbcolor: The demo "Demotronic by 1.000.000 boys"
+  shows only a white screen. (Wilbert Pol)
+
+
+New System Drivers Supported:
+-----------------------------
+
+
+Systems Promoted from GAME_NOT_WORKING:
+---------------------------------------
+
+
+Skeleton drivers:
+-----------------
+
+
+Software Lists:
+---------------
+
+Source Changes
+--------------
+(MESS) pc98.xml: Added a large number of disk images, including a section
+of disks in currently unsupported disk formats (.FDD, .FIX, .NFD) so to
+document which games are available and which are not. Also, filled most
+of the information about release years and manufacturers. [Fabio Priuli]
+
+Added SCREEN_RAW_PARAMS for Arkanoid and Astrocorp HWs [Angelo Salese]
+
+Added SCREEN_RAW_PARAMS for Alpha 68k HW [Angelo Salese]
+
+added remaining leapster dump info [TeamEurope]
+
+new NOT WORKING
+LeapFrog Leapster [Team Europe]
+
+(MESS) to7_cart.xml: added more dumps. [Riley110]
+
+(MESS) included modern .dsk format among default supported
+formats. [Riley110]
+
+added dump of the sync prom at L8 to Drag Race [Matt]
+
+Skeleton driver for the PSE Desert Patrol, so to document the
+dumped PROMs [Dave Widel, gregf]
+
+New clones added
+
+-------------------
+Super Breakout (Canyon and Vertical Breakout, prototype) [Mariusz Wojcieszek]
+
+rspdrc: Optimized accumulator access in multiply instructions. [MooglyGuy]
+
+new clones
+Cadash (Japan, version 2) [ShouTime]
+Cadash (Japan, oldest version) [ShouTime]
+
+(and identified the set we have as version 1)
+
+lpc: skeleton acpi [O. Galibert]
+
+pentium: More support of the magic 0x66 prefix [O. Galibert]
+
+new clones
+Billiard Academy Real Break (Europe, older) [system11]
+
+
+More sane values for dec0.c / dec8.c screen raw parameters.  [Angelo Salese]
+renamed wizatron.c driver to ticalc1x.c, for TI tms1xxx-based calculators
+
+Fix comment.
+
+Added working Epson LX-810L and Epson ActionPrinter2000 printers
+i6300esb: Document more registers [O. Galibert]
+
+fixed "unresolved external symbol" with RSP during linking with Visual Studio (nw)
+
+(nw)
+
+Fix comment.
+
+Some parsers report:
+Entity: line 461: parser error : Double hyphen within comment: <!--
+
+Fix for XML accidental copy-paste error (n/w)
+
+rsp: fix compile by adding virtual destructor (nw)
+tiny update (NW)
+
+Last try.. more updates (NW)
+
+Improved note, nw
+
+new clones
+Sauro (Recreativo Real S.A. license) [Edcross & Rockman (from Aumap)]
+
+lx810l, ap2000: implement working devices
+
+Improve Epson LX-810L and ActionPrinter 2000 up to a point where they
+actually work. Devices boot and enter main input loop, but input is
+not yet implemented. It is possible to run the printers' self test.
+
+The code has also been split from lx800.
+
+steppers: move to emu/machine
+
+(nw) Split RSP vector opcodes into separate files for interpreter, 
+DRC and DRC + SIMD. Breaks interpreter mode for reasons yet unknown.
+
+pentium: This is the kind of problems you find when a bios uses
+ xmm4 as call stack [O. Galibert]
+
+pci: Add grossly hacked smbus [O. Galibert]
+
+
+pretty sure it's 4:3 vertical when compared with cab pics
+
+(MESS) m5_cart.xml: Added new dump for Pit Chaser cart. [Ola Andersson]
+
+(MESS) softlist: Added a Tandy MC-10 cassette softlist and added several
+images to Spectravision SVI-318/SVI-328 cassette list. [Riley110]
+
+also, unified the tape interface among mc10, alice32 and alice90...
+
+(MESS) dmv: added mouse input.
+
+antic: pass device_video_interface and kill some machine().first_screen() (nw)
+Fixed harddriv debug build regression (nw)
+fixed Visual Studio warnings about truncated constant in src/emu/cpu/rsp/rsp.c (nw)
+
+(MESS) gamecom : notes
+attempt at fixing kinst DRC regression (nw)
+
+Thanks Osso
+
+fixed Visual Studio warning about potentially uninitialized value
+ in src/mess/video/apple2.c (nw)
+
+cv1k.c: Minor spelling corrections - NW
+punctuation
+1 more bad byte found in stopthie, confirmed by seanriddle
+3rd attempt
+(MESS) gamecom : fixed timer in solitaire. Centipede is somewhat playable.
+asteroid.c: Add PCB location to the newly built Lunar Lander rom and 
+added a comment about it being build from original Atari source code. - NW
+
+Didn't add "BAD_DUMP" marker as that is still in discussion.
+Touching all the candy again: [Alex Jackson]
+
+Fixed an annoying inconsistency between memory_share and memory_region:
+the width() method of the former returned the width in bits (8, 16, 32 or 64)
+while the width() method of the latter returned the width in bytes
+(1, 2, 4 or 8). Now both classes have a bitwidth() method and a bytewidth()
+method. Updated all callers to use whichever one was more appropriate.
+
+Removed the implicit-cast-to-any-integer-pointer ability of memory_regions,
+which was rather unsafe (if you weren't careful with your * operators and
+casts it was easy to accidentally get a pointer to the memory_region object
+itself instead of to the data, with no warning from the compiler... or at
+least I kept doing it) Updated all devices and drivers that were accessing
+regions that way to use a region_ptr_finder when possible, and otherwise to
+call base() explicitly.
+
+Added language rom for Lunar Lander [Mariusz Wojcieszek]
+
+Fixed mikrosha.c regression (nw)
+rsp: Made the RSP interpreter core functional again. [MooglyGuy]
+
+nw
+cleanup
+ngen: mapped DMA controller, no idea what DMA channels map to what devices, yet.
+
+(MESS) gamecom : fixed calculator
+(MESS) apple2: fix up laser128 series to boot again. (nw)
+
+tmaster.c: minor updates - NW
+
+All versions of Touchmaster run on the same PCB so there should only be 
+one basic machine config. The OKI samples play too slow at 1MHz and too 
+fast at 2Mhz as compared to a real machine. So 1.5Mhz is use as derived
+ by actual OSC 24Mhz devided by 16. - NW
+ 
+Fix for "required objects" fatalerror for 386i and ngen38.
+
+tmaster.c: Fix key name - NW
+
+The Touchmaster 7000 Eval was a chip swap for Touchmaster 5000 for
+operators to evaluate the next version so it uses the TM5000 security 
+key. - NW
+More Mac fixes (nw)
+
+OS X compile fix (nw)
+
+[MESS] apple2: rewrote all 8-bit Apple II drivers with an aim towards 
+modernity and improved runtime performance, improved correctness, and
+missing features.  Fixes MT #5157, 5158, 5747, and 5748. [R. Belmont]
+
+ngen: mapped i8254, connected channel 2 to the serial clock, added
+ RS232 ports and connected them to the uPD7201.
+
+drawgfx.h: Long-overdue documentation about how to use priority-masked
+drawing (aka pdrawgfx); add some useful constants. [Alex Jackson]
+
+(nw)
+prehisle.c: Fix issues introduced by pdrawgfx conversion; use
+required_region_ptr instead of runtime tag lookup; give gfx regions
+more meaningful names; remove superfluous "prehisle"'s and "16"'s
+from member names (it's been many years since you could accidentally
+plug a handler of the wrong width into an address map and not have
+the core catch you at compile time)
+
+Add chip name for confirmed acan dumps
+
+mc1502: mark CGA unremovable from its slot.
+nw
+made plaparse less strict about whitespace and ordering, and
+ added .phase keyword
+
+tilemap.c internal documentation update; dooyong.c cleanups; prehisle.c pdrawgfx conversion
+didn't mean to remove the chip diagram
+mc1502: mark CGA unremovable from its slot.
+
+mame.lst: Account for set rename - NW
+New Working Bit Boss Megatouch game
+
+New Game Added
+----------------------------------------
+Pit Boss Megatouch (9234-20-01) [Brian Troha, Mariusz Wojcieszek, The Dumping Union]
+
+Added preliminary layout for Alien Invaders based on screenshot
+
+Use of security PIC's readouts for Naomi-M4 decryption [Andreas Naive]
+
+Add chip name for confirmed acan dumps
+
+Added f/f mechanism for irq, game works (lol?), added information about
+ a very crude protection mechanism.
+
+Naomi updates and corrections [Metallic]
+Ferrari F355 (original no-link deluxe) USA BIOS added [Andy Geezer]
+Add irq mask and irq, hangs attempting to play.
+
+Improve template file family properties, added readme and licensed as 
+BSD-3-Clause [Angelo Salese]
+
+ngen: added basic display, and other little bits of WIP.
+
+New games promoted from NOT_WORKING
+
+----------------------------------------------
+Alien Invaders [Seth Soffer, David Haywood, Mariusz Wojcieszek]
+
+lethal.c: sanify palette size and bankdev address map; add placeholder 
+for gfx ROM read (nw)
+(MESS) gamecom : privacy
+goldngam.c, popobear.c: fix unsafe casts pointed out by Aaron comments; 
+the other driver with such comments, crystal.c, is a lost cause (nw)
+Make prehisle use proper priority rather than two-pass sprite rendering,
+ clean up a little
+
+More dooyong cleanup
+
+(MESS) gamecom : fixed mistake in layout
+fix cache2 problem
+fix compile
+Continued work on inputs/mapping for Alien Invaders. [Mariusz Wojcieszek]
+
+made pla_device more generic
+Fixed MT00135 (nw)
+notes, before i forget
+Untangle the three basic dooyong board types
+
+Update tilemap header comments/example to match current interface
+
+new clones
+Dunk Shot (Rev C, FD1089A 317-0022) [ShinobiZ & COY]
+
+-- this one slipped through the cracks, the dump is from 2004! thanks to 
+JackC for pointing it out
+
+Dunk Shot by SEGA 1987 rev C
+
+833-6268-05
+
+Custom 317-0022  FD1089A
+
+EP10473.A7   [7f1f5a27] = 10473.BIN    from Dunk Shot (Sega, protected)
+EP10474.A8   [419a656e] = 10474.BIN    from Dunk Shot (Sega, protected)
+EP10475.A9   [17d55e85] = 10475.BIN    from Dunk Shot (Sega, protected)
+EP10476.A10  [a6be0956] = 10476.BIN    from Dunk Shot (Sega, protected)
+EP10477.B1   [f9d3b2cb] = 10477.BIN    from Dunk Shot (Sega, protected)
+EP10478.B2   [5b5c5c92] = 10478.BIN    from Dunk Shot (Sega, protected)
+EP10479.B3   [e84190a0] = 10479.BIN    from Dunk Shot (Sega, protected)
+EP10481.B5   [feb04bc9] = 10481.BIN    from Dunk Shot (Sega, protected)
+EP10482.B6   [5bc07618] = 10482.BIN    from Dunk Shot (Sega, protected)
+EP10483.B7   [7cab4f9e] = 10483.BIN    from Dunk Shot (Sega, protected)
+EP10520C.A1  [ba9c5d10] NOT FOUND!
+EP10521.A2   [e2d5f97a] = 10468.BIN    from Dunk Shot (Sega, protected)
+EP10522.A3   [e5b5f754] NOT FOUND!
+EP10523C.A4  [106733c2] NOT FOUND!
+EP10524.A5   [22777314] = 10471.BIN    from Dunk Shot (Sega, protected)
+EP10525.A6   [7f41f334] NOT FOUND!
+EP10526.B4   [bf200754] = IC46-B14.BIN from Dunk Shot (Sega, bootleg)
+EP10527.B8   [39b1a242] = IC47-B10.BIN from Dunk Shot (Sega, bootleg)
+EP10528.B9   [a8a3762d] NOT FOUND!
+EP10529.B10  [80cbff50] NOT FOUND!
+EP10530.B11  [2dbe1e52] NOT FOUND!
+
+Provided to you by Belgium Dump Team (ShinobiZ & COY) on 10/10/2004.
+
+ttchamp.c: Minor info update
+
+Fill in known verified info like the (c) year and manufacturer - NW
+Minor doc updates
+
+Casanova is listed a game by Promat on a HK government Approved Game list. 
+Also One Shot One Kill is listed as by "Promet" which is a typo of Promat. - NW
+alinvade wip (nw)
+
+cps2: Roman numeral consistency (nw)
+naomi.c dumped Ferrari F355 (original no-link deluxe) USA BIOS [Andy Geezer]
+
+note: I'm pretty sure also exists Japanese versions of all special Naomi 
+BIOSes for House of the Dead 2, Ferrari F355 and Airline Pilots Deluxe.
+none of these is dumped.
+
+ngen: hooked up CRTC and adjusted CRTC clock, resolution and refresh rate
+are set to expected values.
+
+(MESS) WIP gamecom: converted from crosshairs to mouse pointer.
+
+Still a few bugs, will be worked on over the weekend.
+Fix compilation with GCC 4.4.7 (n/w)
+
+naomi.c doc update and corrections
+
+Add correct xtal for Kaneko Fly Boy/Fast Freddie hardware based on PCB
+pictures, correct clocks in driver. [Lord Nightmare, albolo]
+
+New skeleton drivers added: Convergent NGEN CP-001, B28/38, 386i [Al Kossow, Barry Rodewald]
+
+Fix for Godzilla too
+
+Fix MT #05780
+
+Fix for incorrect comment type (nw)
+Golgo13: fix for service mode toggle mode.
+
+(nw)
+
+naomi.c, chihiro.c, triforce.c:  [f205v, Metallic]
+Revised data while adding new information along with some cosmetic changes.
+
+(MESS) pc9801_kbd: fix locks, add missing keys. [Octocontrabass]
+
+fixed compiling with old Apple GCC (hs and hl are unsigned int, and therefore cannot be < 0). nw.
+
+(MESS) added a few new FM7 tapes, courtesy of Alex Sal who dug
+them out from some big soft archive. nw.
+
+(MESS) softlist: Added new lists for Mikro-80, Tesla PMD-85 and Videoton TVC cassettes. [Riley110]
+
+(MESS) added a few new dumps. nw.
+
+new clones
+Atari Tetris (bootleg set 3) [Guru]
+new NOT WORKING
+Alien Invaders [Seth Soffer]
+
+(MESS) vtech1: fixed cassette recording (thanks to ubee for reporting the problem)
+line endings (nw)
+tmaster.c: reverse-engineered the keys for all protected TouchMaster games; removed the protection hacks
+i82875p: That one was not needed after all [O. Galibert]
+
+pci: generic mapping [O. Galibert]
+
+i6300esb: More mapping verbosity [O. Galibert]
+
+kram3: add GUP flag since encryption isn't fully understood (nw)
+upd7810: fix puzzli sound (nw)
+new clones
+Fire Trap (US, set 2) [Corrado Tomaselli]
+
+i6300esb: More more more [O. Galibert]
+
+(nw)
+fix MT 05395 [Alex Jackson]
+some Taito documentation (nw)
+
+ec1842: skeleton
+oops (nw)
+sms.xml: mark nbajam as unsupported since it's baddump and doesn't run 
+in any MESS version I've tried (nw)
+Skeleton driver for the Siemens PC-D [Dirk Best, rfka01]
+
+tilemap.h: remove temporary assert (nw)
+Fix uPD7810 sound/hang regressions in some MAME drivers (nw)
+new Player's Edge Plus clone
+
+New Clone Added
+---------------------------------------
+Player's Edge Plus (PP0040) Standard Draw Poker (International) [BrianT, Ken R]
+new clones
+Play Girls 2 (bootleg) [system11]
+
+(also I took the chance to unify the gfxdecodes in the drivers, and give
+ them a real name instead of '2')
+
+new NOT WORKING
+Sonic 2 (bootleg of Megadrive version) [caius]
+
+needs correct coin logic (mcu sim?) hooking up for this bootleg, looks like a 
+nasty hack, time counter is accelerated (so really you don't have long to
+ complete the levels) sonic lives logo is hacked out and replaced with the credit display.
+
+it boots with 2 credits, so you can play it right now, but can't add more credits.
+
+added comp4 and wizatron output_pla from Sean Riddle
+
+dec8: lol 'colour overflow' (nw)
+i82875p: Host bridge fun [O. Galibert]
+
+new clones
+Ave Fenix (Recreativos Franco) [Enricnes]
+
+(also verified on a PCB owned by Roselson)
+
+this is the more polished of the Spanish bootlegs, possibly with a real license,
+ even if the code is hacked from the original.
+
+gunbustr.c: use core palette handling (nw)
+ec1842: skeleton
+
+undrfire.c, groundfx.c: improve documentation (TC0620SCC is the 6bpp tilemap chip) (nw)
+cbombers: fix TC0480SCP text layer colors [Alex Jackson]
+pci: Add remapping notifiers [O. Galibert]
+
+(MESS) Added preliminary driver for TI Wiz-A-Tron. [Sean Riddle, hap]
+
+there were some typos in stopthie.bin (game still goes in an infinite loop tho)
+
+minor fixes
+removed duplicated line of code (nw)
+
+Taito device tilemap assert fixes, and clean up of obsolete stuff (nw)
+
+steppers: add absolute position
+
+upd7810: use intermediate flip flops for extended timer/event counter
+peplus.c: Slight update - NW
+peplus.c: Documentation update - NW
+steppers: add absolute position
+
+upd7810: use intermediate flip flops for extended timer/event counter
+
+The extended timer/event counter uses intermediate flip flops (LV0 and
+LV1) before writing the output to CO0 and CO1.
+
+The introduction of LV0/LV1 addresses three issues:
+- Level inversion occurs after the flip flop is output, not before;
+- The intermediate flip flop can be altered without affecting the
+	output of CO0/CO1;
+- upd7810_write_EOM() didn't work properly when the level inversion
+	bit was set along other bits.
+
+small cleanup
+pentium: Some stuff to make lindbergh go further [O. Galibert]
+
+Fix more tilemap asserts (remaining ones are all Taito drivers) (nw)
+new NOT WORKING
+
+Club Pacman [Roberto Fresca, ytsejam]
+
+very weird set dumped by Robbie, might even be an original codebase, has a 2 
+player simultaneous mode (not as polished as Pacman Twin) need to fins the 
+control multiplex tho, and understand if the game is really glitchy due to 
+how it's programmed, or if there's something else going on.
+
+i386: MMX disassembly fixes [O. Galibert]
+
+asst128: has joystick port
+asst128: has joystick port
+
+added assert for usage of uninitialized stack memory in n64_rdp::SpanDraw1Cycle() (nw)
+
+happens with e.g. n64 -cart vprowrs2 - it actually already goes out of
+bounds in poly_manager::render_triangle_custom() but since that code is
+generic it's hard to add an assert there / also added another FBSize
+check
+
+added another check for unsupported FBSize (nw)
+
+happens with n64 -cart sbowlingj
+
+new Player's Edge Plus poker clones
+
+New Clones Added
+--------------------------------------------
+Player's Edge Plus (PP0042) 10's or Better [BrianT, Ken R]
+Player's Edge Plus (PP0043) 10's or Better (International, set 2) [BrianT, Ken R]
+Player's Edge Plus (PP0060) Standard Draw Poker (set 3) [BrianT, Ken R]
+Player's Edge Plus (PP0429) Joker Poker (Aces or Better, set 2) [BrianT, Ken R]
+
+Fix for atetrisb2 regression (nw)
+Do the bootlegs really have the slapstick? our code assumes so. Maybe it's
+ something equivalent and we don't bother documenting it?
+
+Just test of UTF-8 encoding in notifier
+
+mario.c: fix Monitor switch so it correctly affects both tiles and sprites [Alex Jackson]
+
+Revert "Revert "added assert  for e.g. n64 -cart waveracej crash in rsp_device::generate_checksum_block() (nw)""
+
+This reverts commit 36218e2220cca2d31121a06c314ad11f72431527.
+
+Revert "added assert  for e.g. n64 -cart waveracej crash in
+ rsp_device::generate_checksum_block() (nw)"
+
+This reverts commit 491842f8db702b2ccd94c7f0ae78482ab48cef05.
+
+whops. these were meant to be <info> and not <feature>. nw.
+
+First batch of tilemap assert fixes (nw)
+miniboy7.c: Slightly improve colors (see gfx2 color 4, now correct
+playing card colors) (nw)
+calomega.c: Improve color emulation by analogy with tugboat.c (which
+ is actually a heavily modified Cal Omega board) [Alex Jackson]
+Prevent calls to osd_read/write when m_pSocket is NULL [nw]
+
+added assert  for e.g. n64 -cart waveracej crash in rsp_device::generate_checksum_block() (nw)
+
+added asserts for n64 -cart conker crash in mips3_device::generate_checksum_block() (nw)
+
+Alignment fixes for recent changes to XML hashes. (nw)
+
+added sega_315_5296_device
+(mess) pc9801: bit more (nw)
+
+notes
+mm58167: initialize IRQ control register on reset. (nw)
+
+mikrosha: add cartslot and one ROM cart
+mikrosha: add cartslot and one ROM cart
+
+(mess) pc9801: more refactor (nw)
+
+twin16: fix savestate regression after tilemap conversion (nw)
+(mess) pc9801: cleanup and refactor(nw)
+
+MM58167: implemented IRQs and counters write, this allow to pass the K803 diagnostic test. (nw)
+
+dirtc: call clock_updated() after increasing the minutes counter. (nw)
+
+added command-line option -[no]drc_log_native to control DRC 
+native diassembly logging [Oliver Stoneberg]
+
+allows logging of DRC native disassembly without re-compiling / removes
+DRCUML_OPTION_LOG_NATIVE and all the core-specific LOG_NATIVE defines /
+added logging() to drcbe_interface / added logging_native() to
+drcuml_state
+
+(MESS) added preliminary comp4 driver. [Sean Riddle, hap]
+peplus.c: Minor update - NW
+
+Add the rom from the internal printer control PCB and a little bit 
+more documentation for the Player's Choice MG0252 set.
+
+SEGA YBoard: Mapping the port bits used to provide motor movement feedback
+
+naomi.c: redumped F355 [Andy Geezer]
+pci: A little more, reaches an unemulated pslldq at fd228 [O. Galibert]
+
+naomi.c: redumped F355 [Andy Geezer]
+
+added device shortname to DRC UML log for systems with multiple DRCs (nw)
+
+e.g. n64
+
+added command-line option -[no]drc_log_uml to control DRC UML
+ disassembly logging [Oliver Stoneberg]
+
+allows logging of DRC UML disassembly without re-compiling / removes
+DRCUML_OPTION_LOG_UML and all the core-specific LOG_UML defines
+
+
+Fixes for two software lists
+Convert comments to UTF-8 so strict parsers can parse this file.
+
+Add missing closing tag.
+
+tilemap.c: Respect gfx_element::colors() just like drawgfx.c does. 
+Add temporary assert to catch regressions (i.e. drivers that didn't
+ define their gfx elements correctly) (nw)
+(MESS) softlist: Added new lists for Colour Genie, DAI Personal 
+Computer and Jupiter Ace cassettes. [Riley110]
+(MESS) compclr2_flop: Added a few additional images. [Riley110]
+
+out of whatsnew: I took the chance to improve software descriptions 
+in compclr2_flop, but there is still a lot of space
+for improvements :)
+
+upd7810: fix and improve timer/event counter
+tumbleb.c: flip_screen_set() automatically flips tilemaps (nw)
+upd7810: fix and export timer/event counter output
+
+The timer/event counter outputs (CO0 and CO1) are set differently when
+EOM changes and when a timer update occurs. Most EOM values are
+cleared on use. The document at [0] is confusing regarding these bits.
+An older document [1], easier to understand, was used instead.
+
+[0] NEC Electronics User's Manual, April 1987
+[1] NEC uCOM-87AD Family 8-Bit Microcomputers uPD78C1X Users Manual
+
+upd7810: ECNT clear control happens after capture control
+
+upd7810: fix bug introduced in extended timer simplification
+
+added tms0970 device
+let's map merlin number keys to numpad too
+(mess) pc9801: pipe bitmap 7220 vram access though grcg, enable ready
+ line which fixes disk change detection (nw)
+---
+Also disabled reads while grcg is in rmw mode, this I'm not 100%
+ certain about and needs more testing.
+
+notes
+Update README.md
+
+Update of readme
+bit of a driver specific hack to work around what seems to be a core 
+problem when you have multiple screens of different refresh rates and
+ partial updates.
+
+not marked the game as working yet because the side screens seem to
+ crash when you pick the roadster
+
+Fixed MT04990 (nw)
+enabled the RDP range checks by default for now (nw)
+
+this reports some out-of-bounds accesses only ubsan would report
+otherwise - happens with e.g. n64 -cart nbaliv99u
+
+try 2 - Backport MBC1COL detection from GoodGBx
+
+Some Updates (NW)
+
+Fix Typo
+
+Backport MBC1COL detector from GoodGBx
+
+added fatalerror for unsupported FBSize in RDP (nw)
+
+happens with e.g. n64 -cart blastcrpu1
+
+(MESS) victor9k: Floppy WIP. (nw)
+
+mc1502: re-add speaker output, add more BIOS versions
+Build fixes for Emscripten (nw)
+new clones
+Oriental Legend 2 (V101, China) [bytestorm] (not working)
+Knights of Valour 2 New Legend (V300, Taiwan) [bytestorm] (not working)
+
+Start converting the various Hard Drivin' board types to be devices, 
+allowing me to add the 2 additional video boards to Race Drivin' Panorama.
+
+This brings Race Drivin' Panorama to within an inch of working, however
+ there seems to be what I think is a core bug with partial updates on 
+ anything except the primary screen, meaning the other screens fail to 
+ update properly.  It isn't a communicaiton issue ,as you can swap the 
+ screens around and get the other screens updating smoothly instead, it
+ just doesn't seem to want to update the screen when it should.  With a
+ tiny bit more work this could be marked as working.
+
+Also added default eeproms for each of the sub-boards with the views
+ correctly setup.
+
+get rid of some global stuff by making this a device, need this step 
+for now, will improve further later (nw)
+
+mc1502: add more ROMs
+
+mc1502: re-add speaker output
+
+New Magic Bubble clone
+
+New Clone Added
+------------------------------------
+Magic Bubble (Adult version, YS-0211 PCB) [caius, The Dumping Union]
+new Battle Bakraid clone added
+
+New Clone Added
+---------------------------------------
+Battle Bakraid - Unlimited Version (China) (Tue Jun 8 1999) [Bill D, The Dumping Union]
+nw
+looks like they romanized themselves as "Teknon Kogyo", seen on Dracula 
+titlescreen(another old game by them)
+twin16: note about fround (nw)
+redo merlin layout
+(MESS) victor9k: Floppy WIP. (nw)
+
+k007121.c: improve documentation (nw)
+
+Allow sound output if 8253 is never programmed, i.e. all output is done ...
+Allow sound output if 8253 is never programmed, i.e. all output is done by modulating speaker output line.
+
+Compile fix (nw)
+
+Experiments in PCI land [O. Galibert]
+
+get rid of old printfs
+added simon skillswitch, thanks to Simon from http://www.waitingforfriday.com for making a wiring diagram
+MT 03590 [Alex Jackson]
+
+dvk_ksm: DEC VT52-compatible video terminal
+upd7810: interrupt-related fixes
+(MESS) softlist: Added new lists for Sord M5 and PTC SOL-20 cassettes. [Riley110]
+(MESS) softlist: Added info in many Eastern Europe computer softlists. [Riley110]
+
+also, renamed a few lists for consistency.
+
+(mess) num9rev: add number 9 revolution 512x32 [Carl]
+---
+Only the demo programs tested for now
+
+rspdrc: Added undocumented ops VADDB, VACCB, VSUBB, and VSUCB. [MooglyGuy]
+
+(MESS) victor9k: Floppy WIP. (nw)
+
+dvk_ksm: DEC VT52-compatible video terminal
+
+vigilant.c: Consistency, some hade "Rev." and others just "Rev" - NW
+coolridr.c: Add a note about "Aqua Stage" also running on Sega H1 hardware. - NW
+improved cpu clock and speaker lvl
+upd7810: return meaningful value when PC3 is in control mode
+
+When PC3 is in control mode, it acts as INT2 and external Timer Input.
+INT2 may be set by connected devices through set_input_line(), so its
+value can be used when reading or writing to PC3. There is currently
+no code to support external timer input.
+
+upd7810: correctly deal with external interrupts
+
+upd7810: treat NMI like other interrupts
+
+upd7810: remove gamemaster hack for INTFE1
+
+The extended timer has been properly implemented in upd7810.
+Tested with Continental Galaxy 2020.
+
+small cleanup to merlin.c, it is very similar to simon.c
+I want to redo the merlin layout later, make it more similar/appealing.
+epson cpm softlist: change n/a to unofficial
+
+rspdrc: Fix crash on Linux when recompiling BREAK opcode. [MooglyGuy, Firewave]
+
+px4: fix initial rs232 status after reset and add the dram test
+replacement roms
+
+flush drcuml.asm log (nw)
+
+mips3: Fixed left-shift-of-signed-value issues. [MooglyGuy]
+
+rsp: Fixed left-shift-of-signed-value issues. [MooglyGuy]
+
+correct patches for drgw2hk [iq_132]
+
+px4.c: safer portability fix (nw)
+upd7220: shift screen down by vbp (nw)
+
+(mess) upd7220: duh (nw)
+
+just test code (nw)
+
+OS/2 build fixes [KO Myung-Hun]
+
+fix non-Windows compile (nw)
+
+MT 05776
+(MESS)
+New System Drivers Supported:
+-----------------------------
+Simon [Sean Riddle, hap]
+
+Cleanup of unwanted comment (nw)
+upd7220: Bresenham line drawing [Carl]
+--
+Fills the gaps that were breaking adventureland
+
+n64: Fix up how negative values are handled in VRSQL/VRCPL [MooglyGuy]
+
+(MESS) victor9k: Floppy WIP. (nw)
+
+rsp: Add VNOP, VNULL, and VRSQ instructions. [MooglyGuy]
+
+px4: support clock reading & writing
+
+vigilant.c: Misc updates / corrections - NW
+
+Make the unknown World set a bootleg. Use the correct roms for the 
+World Rev C version. Standardize a few rom names and or add IC location
+ where possible. Add a note about need to verify / correct the rom sets
+ for the US versions. - NW
+(MESS) victor9k: Floppy WIP. (nw)
+
+n64: Abort MIPS timeslice when unhalting RSP. Fixes many RSP tests. [MooglyGuy]
+
+segas18.c: Fill in the dipswitches for Hammer Away. [Brian Troha]
+
+Out of whatsnew: made the Hammer Away addition conform to the driver. 
+IE: Alphabetize, spacing, header ect.... - NW
+
+(MESS) abc99: Identified unknown ROMs. [robcfg]
+
+missed a line (nw)
+
+new clones
+Vigilante (World, Rev E) [system11]
+
+(also identified the Japan set as Rev. D)
+
+px4: use nvram for main memory
+
+px4: clean ups
+
+rdp: Do LOD calculation even in 1-cycle mode. Fixes many tests. [MooglyGuy]
+
+new clones
+Dragon World II (ver. 100H, Hong Kong [Hokg Kong]) [rtw]
+
+(not yet working, needs correct protection details adding)
+
+(MESS) victor9k: Floppy WIP. (nw)
+
+enabled a few C64 cart types from fullpath (.crt format), sync castool
+with the supported tape formats + fixed misc typos and c'n'p mistakes
+reported by Riley110. nw.
+
+fixed obvious typo. nw.
+
+mips3drc: Generate -0.0 for NEG.S/D of 0.0 as FNEG does not on x86 [MooglyGuy]
+
+mips3drc: Sign-extend ROUND.L, TRUNC.L, CEIL.L and FLOOR.L [MooglyGuy]
+
+rspdrc: Add destination address support to the BREAK opcode. [MooglyGuy]
+
+Fix -validation issue for naomi.c (nw)
+(MESS) victor9k: Floppy WIP. (nw)
+
+yesterday I had forgotten about this file. nw.
+
+(MESS) pokemini.xml: added some missing dumps. [Team Pokeme, Mityama]
+
+align bus section of the makefile. nw.
+
+amstrad: add CRTC Cursor signal to expansion bus, connected to PlayCity
+ which now has working NMIs.
+
+fix MESS linking (sat_console_state derives from saturn_state in stv.h)
+
+New WORKING Game
+--
+Hammer Away (prototype) [( Atro - from Neo-geo.com aka Rui Baptista )
+ ( _rm_ - from Neo-geo.com aka Ricardo Marques)  
+ ( 1up - from Neo-geo.com aka Daniel "casebres" )]
+
+(not extensively tested, but seems to work, needed irq0 on the sound
+ cpu from the YM, also has more tiles than any other game, might tweak the code further)
+(ROM check fails, but I assume that's just because it's a proto.)
+
+calchase: use larger nvram (nw)
+
+new TMNT clone
+
+Was formerly the unknown nonworking incomplete dump. Another board with
+ the same version was found and dumped to supply the missing 4 program rom. - NW
+
+New Clone Added (promoted from nonworking)
+-----------------------------------------------
+Teenage Mutant Hero Turtles (UK 4 Players, set 3) [caius]
+
+(MESS) victor9k: Floppy WIP. (nw)
+
+(MESS) victor9k: Floppy WIP. (nw)
+
+(mess) pc9801: don't install memory above 640K if it doesn't exist (nw)
+
+naomi.c: vonot maskrom label corrected
+naomi.c: vonot maskrom label corrected
+
+(MESS) dmv: added preliminary K803 emulation. (nw)
+
+(MESS) dmv.xml: added more disks. (nw)
+
+naomi.c:
+naomi.c:
+samba2k, ringout - correct maskrom size and labels [Arzeno Fabrice, MetalliC]
+cartridge docs updates and additions
+
+(mess) upd7220: so dividing by lr didn't quite work (nw)
+---
+This works better but it looks too weird to be entirely correct.
+
+amstrad: made PlayCity output in stereo, add the device has its own stereo audio output.
+
+(MESS) victor9k: Floppy WIP. (nw)
+
+(MESS) x820ii: Fixed ROM error. [Curt Coder]
+
+(MESS) x820: Keyboard WIP. (nw)
+
+(MESS) Added Psion Organiser I softlist.
+(MESS) psion2.xml: documented more datapacks.
+(MESS) psionla: added bios v3.0
+
+peplus.c: Added Clear CMOS IVC006 to driver - NW
+
+Not really useful in emulation but added for completeness and for 
+users / owners / collectors - NW
+
+New Clone Added
+------------------------------------------
+Player's Edge Plus (IVC006) Clear EEPROM Chip [BrianT]
+
+(MESS) victor9k: Keyboard WIP. (nw)
+
+move 315-5881 based encryption to it's own file, allowing me to experiment
+ with the device for the encrypted ST-V games.
+
+ibm5150.xml, ibm5170.xml: More dumps (nw)
+(MESS) x07: added cassette software list. [Anonymous]
+
+(MESS) megadriv.xml: dumped Codemasters Cosmic Spacehead
++ Fantastic Dizzy 2-in-1 cart. [sunbeam]
+
+timefgtr: No need for a double flag (nw)
+Power Drift: Portbits for Limit & Safety switches
+
+G-LOC: Mapping portbits related to the moving cabinet limit switches.
+
+Galaxy Force II: Adding gforce_output_cb1 (the values written there seem
+ to select the meaning of some of the PORTC bits related to motor control)
+
+Galaxy Force II: Mapping the port bits used to provide motor movement
+ feedback signals such as Up/Down/Left/Right limit switches.
+
+svga_device::zero() does it all [nw]
+
+peplus.c: Fix Cut-N-Paste delete - NW
+new PE+ clones
+
+New Clones Added
+-----------------------------------------
+Player's Edge Plus (Set004) Set Chip [BrianT]
+
+New Clones Added (not working)
+------------------------------------------
+Player's Choice (MG0252) Multi-Game [BrianT]
+Player's Edge Plus (KE0017) Keno [BrianT]
+New NOT WORKING game added
+--------------
+Western Dream (Yasuhiro, hap)
+
+minor doc update - NW
+
+In mame.lst: Add (c) info for Cave games
+In cv1k.c: Minor info update
+re-enabled -Wconstant-logical-operand for clang 3.5 (nw)
+
+new clones
+[Burning Ranger & Bicycle Repairman]
+
+Size fix for snes.xml (nw)
+(MESS) x820: Fixed LOCK key. (nw)
+
+use vga_device::zero() in cirrus_vga_device::device_start() as well (nw)
+
+Add a software list for the Epson HX-20/PX-4/PX-8 systems
+
+Add AmigaOS 3.5 to workbench list
+
+
+i386: call with expand down stack [Carl]
+
+re-enabled -Wdynamic-class-memaccess for clang 3.5 now that all warnings
+ have been fixed (nw)
+
+(MESS) misc new dumps and redumps. nw.
+
+minor logging update. nw.
+
+Add zero() to (s)vga_device: zeroes all private variables but vtbls.
+The vga.memory is resized to 0.
+
+fixed clang compilation of src/emu/cpu/drcfe.c (nw)
+
+updated comments/TODOs about invalid vptr warnings (nw)
+
+fixed clang compilation of src/mess/drivers/gamate.c (nw)
+
+do not overwrite the opcode_desc.delay vptr in drc_frontend::describe_one() (nw)
+
+twin16.c: Rewrite video mixing based on PAL equations [Alex Jackson]
+Get mess compiling again - uint32 should be enough, eh?  (nw)
+The 'i' was part of the format. [nw]
+
+more accurate representation of reality. nw.
+
+(MESS) added preliminary emulation of the Bit Corp Gamate [PeT]
+
+out of whatsnew: I have also fixed a couple of compile errors detected by
+the old Apple compiler I'm using
+- "comparison is always true due to limited range of data type" at lines 70 & 90
+- unused variable at line 263
+
+(MESS) apfimag: added software list for cassettes (they require you
+to mount the BASIC cart to be loaded, of course). [Fabio Priuli]
+
+Fix build (nw)
+i386: GP fault with softint in v86 mode when iopl < 3 [Carl]
+
+(MESS) amstrad: Added preliminary support for the PlayCity.
+
+(MESS) x820: Emulated the ASCII keyboard (key repeat is not working yet). [Curt Coder]
+
+pic8259: priority and sfnm [Carl}
+
+gimix: fix for MT05772
+
+tia.c: Prevent Nans. (nw)
+
+(MESS) x168: Fixed validation error. (nw)
+
+d88_dsk: Support some incorrect images [O. Galibert]
+
+segaufo update: added better layouts + made ufo800 work + added upd 
+sound to ufo21 + misc fixes
+
+upd7810: Some fixes and code simplification
+
+Man pages (*nix): Fixed some typos and bumped version to 0.155
+i386: move initialisation of m_lock to i386_common_init(), so that it
+ is always initialised.
+
+(MESS) nes: fixed NINA-06 mirroring, making Krazy Kreatures and
+Mermaids of Atlantis working, and fixing a few glitches in other games
+(e.g. the Robert Byrne's Pool Challenge proto). [Fabio Priuli]
+
+skattva: added NVRAM init and inputs. (nw)
+
+(MESS) fixed internal softlist name, thanks to BIOS-D for catching these. nw.
+
+(MESS) sorcerer: added some more tapes to the software list. nw.
+
+(MESS) spc1000.c: documented hardware differences among
+models of the SPC-1000 series [zannylim]
+
+(MESS) megadriv.xml: some more pcb documented by sunbeam. nw.
+
+Fixed Mametesters 05769 by reducing ATA flash card seek time to zero. [smf]
+
+change program roms to ones found on the board, dump was from Tormod (nw)
+
+small correction
+"UA" in airwolfa is United Amusements
+Man pages (*nix): Fixed some typos and bumped version to 0.155
+
+upd7810: set ETIMER interrupts
+
+upd7810: remove code duplication in ETIMER
+
+upd7810: remove code duplication in timers 0 and 1
+
+upd7810: clear sample and hold on ADC reset
+
+upd7810: sample and hold ADC value at start of conversion process.
+
+upd7810: ADC functions should return bytes.
+
+upd7810: Fixed ADC output register range.
+
+new clones
+JT-104 [??]
+
+
+new clones
+Donkey Kong (Spanish Crazy Kong bootleg) [Marcos75 (from AUMAP)]
+
+new clones
+Galaxy Monsters (Laguna S.A. Spanish bootleg of Space Invaders) [Arcade Vintage ( http://arcadevintageshop.blogspot.com.es/ ), Ricky2001]
+
+new clones
+Botanic (English / Spanish) [Arcade Vintage ((http://arcadevintageshop.blogspot.com.es/ ), Ricky2001]
+
+Fix for incorrectly listed crc in ec1841.xml (nw)
+ufo21 works
+(MESS) x820ii: Added notes and BIOS revisions. (nw)
+
+New Arkanoid Returns clone
+
+New Clone Added
+-----------------------------------------------
+Arkanoid Returns (Ver 2.02A 1997/02/10) [Bill D, The Dumping Union]
+ufomini works
+ignore inp directory (nw)
+
+twin16: according to schems this is priority related, not a flip bit (nw)
+
+Convert to UTF-8.
+Convert to UTF-8.
+
+segaufo layout file placeholder
+fixed usage of uninitialized member in snes_ppu_device (nw)
+
+happened with e.g. snes -cart sdf1gpp
+
+fixed usage of uninitialized members in sns_sa1_device (nw)
+
+happened with e.g. snes -cart sdf1gpp
+
+snes_ppu: let's initialize more class variables! nw.
+
+(MESS) astrocde: installing expansion handlers only if a slot card is
+present avoids the appearance of gfx garbage at start. garbage
+disappeared when pressing reset, but it is better in this way, of course.
+nw.
+
+(MESS) intv.xml: added some more titles, mostly protos from GoodINTV. nw.
+
+this is not RAM (nw)
+
+Use the same list of centronics devices everywhere (except the Amstrad CPC),
+ the list has been renamed as they aren't all printers. [smf]
+
+Naomi updates
+(MESS) astrocade: converted the expansion bus to be a slot
+device, and converted RAM expansions to be slot cards. As a
+result you now specify the expansion you want by using e.g.
+	mess astrocde -exp blue_ram_32k
+or the Slot Devices menu of the internal UI, instead of using the
+DipSwitches menu. Check the -lslot output for a list of available
+expansions. [Fabio Priuli]
+
+removed unused variable (nw)
+
+naomi.c:
+kingrt66 use real MaskROM cart layout and labels instead of flashcart [Arzeno Fabrice]
+docs updates [MetalliC]
+
+ramsize (nw)
+psychic5.c: a little more 2014 (nw)
+
+(MESS) wswan: converted the video chip to be a device. nw.
+
+Some corrections to the Amiga Workbench softlist
+
+ti85: use direct update handler to remove boot memory mapping hacks
+
+out of whatsnew:
+This allows the flash calculators to properly reset pc to 0x0000 instead
+	of 0x8000 and properly reset all memory banks to page 0x00.
+
+This is based on some example code Judge. Possibly performance improvement 
+could be gained by having the callback unregister itself and register on reset.
+
+vreader.xml: Make it valid xml. (nw)
+
+fixed usage of uninitialized member in grip_device (nw)
+
+happened with prof80
+
+line endings
+
+line endings (nw)
+
+konamigx: a few more global variables to the driver state (nw)
+Fixed pet_cass.xml validation (nw)
+rcdino4: fix OOB access
+Correctly model the behavior of a real Coco for the Cassette input in
+ regards to audio (buzzing sound) coming from the port.  [Richard Goedeken]
+ti85: use direct update handler to remove boot memory mapping hacks
+
+This allows the flash calculators to properly reset pc to 0x0000 instead
+of 0x8000 and properly reset all memory banks to page 0x00.
+
+i386: fix more presence checks (nw)
+
+New Clones (Not Working)
+------------------------
+Club Kart (Rev C)  [Arzeno Fabrice]
+
+Handcrafted CPS-1 PALs for Area 88 and Strider PCBs.  [Palindrome]
+
+i386: fix segment present check for calls to a TSS
+
+i386: zero descriptors and stack size (nw)
+
+i386: mark tss busy [Carl]
+
+Added support for the known first part variants of the Maygay M1 Sound 
+board (an MSM6376 and a uPD7759). Only Empire sound remains unsupported.
+
+tms57002.c: initialize variable to fix crackling sound in debug builds
+ for konamigx games (nw)
+Last update for a while (NW)
+
+Update with my info from vsmile_cart (NW)
+
+Split V.Reader into own file (NW)
+
+small fix (nw)
+
+konamigx: Moved global variables into driver state (nw)
+Let's see if I break line endings again.
+
+i386: lock [Barry Rodewald, Carl]
+---
+Some of the group opcodes need to be checked
+
+(MESS) intv.xml: added a few images I've been sent. nw.
+
+fix line endings
+
+peplus.c: moved function to driver state and removed various trampolines. (nw)
+(mess) hdc: xenix 8086 hates this so isolate it (nw)
+
+pet_cass.xml: Added many new images, including the Cursor tapes. [Dagarman]
+
+More updates (NW)
+
+ap2_dsk: edd support [O. Galibert]
+
+ap2_dsk: Fix broken detection of dsk [O. Galibert]
+
+amiga_workbench.xml: Added Workbench 1.3.3 (Rev. 34.34) [Guru]
+
+
+ie15: init palette, do minor cleanup incl. whitespace
+
+
+isa_hdc: ec1841 compatibility
+ie15: use utf-8 in keyboard layout description
+
+ie15: whitespace only
+
+ie15: init palette, minor cleanup
+
+isa_hdc: ec1841 compatibility
+
+
+isa_hdc: implement WRITESBUFF command
+isa_hdc: implement WRITESBUFF command
+ibm5150: add cassette softlist
+besta: fix doubling chars
+
+ibm5150: add cassette softlist
+
+MDA clone has downloadable fonts and both CGA clones have unique chargens.
+ec184x, iskr103x: use custom set of ISA cards
+
+iskr103x: CGA clone
+
+ec184x: MDA clone
+
+
+isa_hdc: add ioport for DIPs, make ROM optional (makes this device work with ec1841)
+isa_hdc: add DIPs, make ROM optional
+
+
+mc1502: restore fdc support for newer hw revisions with bios 5.3x
+mc1502: restore fdc support for bios 5.3x
+
+ec1840: add older revision of BIOS; poisk1: add newer revision of HDC BIOS
+poisk1: new HDC ROM
+
+ec1840: new BIOS ROM
+
+ec1841: change keyboard xtal freq, add speech synthesis swre
+peplus.c: Minor doc update about MGxxxx program roms and the Player's Choice platform. - NW
+ec1841: new softlist item
+
+kb_ec1841: use correct clock frequency
+
+(mess) pc9801: ascii font reading (nw)
+upd7220: attempt to resolve apparent contradiction in window behavior (nw)
+
+(MESS) spc1000: converted the expansion bus EXT1 to be a
+slot device, moved FDD expansion to be a slot card, added
+emulation of the VDP expansion as another slot card. This
+makes Gun Fright, TwinBee and Zanac playable if you launch
+them with "-ext1 vdp" option. If you want to emulate a
+SPC-1000 with floppy drive, you have to add "-ext1 fdd"
+instead. [Fabio Priuli]
+
+out of whatsnew: disk emulation still does not work (unless we use
+Meeso Kim's patched BIOS), but emulation is now closer to the real
+functionality and we needed the changes for the VDP unit emulation.
+
+Convert PSX sio to use devcb. [smf]
+
+
+multfish.c: new game added - Windjammer
+New Game Added
+---------------------------------------
+Windjammer (021216) [MetalliC]
+
+fixed usage of uninitialized member in wd1770_device (ne)
+
+happened with e.g. fm7
+
+fixed usage of uninitialized memory in m6800_cpu_device (nw)
+
+happened with e.g. ehx20e
+
+fixed usage of uninitialized members in c64h156_device (nw)
+
+was actually used inside base_c1541_device::via1_pb_r() with e.g. edu
+-cart batman
+
+(MESS) spc1000: fixed inputs in Toiler Adventure II and Vela (they needed inputs
+to be mirrored in the whole 0x8000-0x9fff range) + some minor cleanup. nw.
+
+calchase: map Trident memory clock, video clock and LUTDAC registers
+
+fixed usage of uninitialized member in upd7220_device (nw)
+
+fixed usage of uninitialized member in sega_32x_device (nw)
+
+and what a fine horse it was
+test
+
+small adjustment to -snapbilinear description (nw)
+
+
+New games added
+---------------
+Solar War (Anonymous)
+
+NOTE: Added as playable, but with issues.  Layout needs work and coins
+ do not operate in game.  Therefore, game is set to Free Play by default.  
+ Also, renamed Solar Warrior (xain.c) from solarwar -> solrwarr to allow this
+ original game to use the setname "solarwar".  Added diplocations to both games.
+
+endings
+
+added command-line option -[no]snapbilinear to control binlinear filtering 
+for snapshots (enabled by default) [Oliver Stoneberg]
+
+this is mainly for making testruns and debugging faster - could also be
+used to speed up -aviwrite usage though
+
+More updates.. Figured out country code 6 (Portugal) (NW)
+
+(mess) pc9801: this patch no longer works, it's not even needed (nw)
+
+fix line endings, hopefully (nw)
+
+
+Fix frequency for X1-010 and add a note.
+Fix frequency for X1-010 and add a note.
+
+I know PhilB is working on a totally new driver, but this should be fixed anyways.
+ It's a very small change, but fixes a lot of things and breaks nothing as far as I can tell.
+
+vamphalf.c: moved some video functions into driver class (nw)
+ppc: converted remaining callbacks to delegates (nw)
+(MESS) astrocde.xml: added a few prototypes dumped last year. [BallyAlley]
+
+out of wn: these were actually in the previous commit, but I forgot to credit...
+
+(MESS) astrocde.c: added support for 256K and 512K carts
+with bankswitch. [Fabio Priuli]
+
+Support for the BEXT instruction (part2)
+
+The BEXT instruction is needed for the Unisonic Champion driver which I'm building.
+The Intellivision doesn't need it since its EBCA0, EBCA1,EBCA2 and EBCA3 pins are grounded.
+The method used was a suggestion from RB
+Support for the BEXT instruction
+
+The BEXT instruction is needed for the Unisonic Champion driver which I'm building.
+The Intellivision doesn't need it since its EBCA0, EBCA1,EBCA2 and EBCA3 pins are grounded.
+The method used was a suggestion from RB
+Added licence info to some pinball drivers (nw)
+(mess) a5105: don't draw double wide chars (nw)
+
+upd7220: slanted chars [Carl]
+
+(MESS) ti85: add basic support for the TI-84 Plus
+
+Adds known dump of TI-84 Plus which has been sent to a mess dev and supports
+enough asic functionality that it boots and runs.
+
+Fixed up model enum to match style from the apple2 and used it to add support
+for where the ti84p differs from the ti84pse.
+
+Consolidated code for the 15Mhz calculators so there is less duplicated code
+between the ti83pse, ti84pse and ti84 support code.
+
+(MESS) asma2k: fixed LCD and RAM bankswitch. (nw)
+
+More updates, Figured out country code 1 (nw)
+
+added assert for index out-of-bounds access with jolypark (nw)
+
+adjusted check in src/emu/snes/snes_slot.c (nw)
+
+fixed usage of initialized members in dave_device() (nw)
+
+also fixes signed integer overflow in dave_device::sound_stream_update()
+with ep128 and others
+
+New games added or promoted from NOT_WORKING status
+---------------------------------------------------
+
+Pop'n Music 1 (ver AA-A) [smf]
+
+made .gitignore much smaller (nw)
+
+fix for gitignore (nw)
+
+ignore *.psess and *.vsp in root (nw)
+
+these are Visual Studio Performance Analysis output files
+
+Changed Trident ISA device to be 16-bit, which is likely more correct.
+
+fix eol for brian (nw)
+
+gts3a.c : WIP
+
+made accessible to frontends usage instructions for tapes which need to
+be loaded twice. nw.
+
+I still have not complete control over github
+
+(MESS) spc1000: added support for tapes in .cas format [Fabio Priuli]
+
+(MESS) spc1000: added emulation of joystick inputs [Fabio Priuli]
+
+(MESS) added software list for Samsung spc1000 tapes [Fabio Priuli]
+
+out of whatsnew: addition of joystick support made playable Space Invaders,
+ Super Xevious, The Goonies and King's Valley.
+
+delete assert no longer needed (nw)
+sonson.c: Correct Audio CPU clock for Son Son as measured on PCB. [Corrado Tomaselli]
+psychic5.c: Correct Audio CPU clock for Psychic 5 as measured on PCB. [Corrado Tomaselli]
+segas16b.c: Minor doc update & rom name corrections. - NW
+New IGT Player's Plus clone
+
+peplus.c: Add the CAPX2172 color prom to the Ace$ Bonus sets correcting color in those sets. [BrianT]
+
+New Clone Added
+-----------------------------------
+Player's Edge Plus (X002173P+XP000038) Ace$ Bonus Poker [BrianT]
+fixed the other __MSC_VER (nw)
+
+fixed out-of-bound access during logging
+
+fix building with MSVC (nw)
+
+renamed psx controller and memory card files, renamed znsec to cat702. (nw)
+
+More ignorance (nw)
+
+only normalize component bounds in layout_element::layout_element() when components exist (nw)
+
+avoids division by zero for sets using src/emu/layout/vertical.lay
+
+Add check for GCC 4.4.4+ for pragma, definitely doesn't work with 4.4.3
+
+(MESS) x820ii: Added keyboard ROM. [Gabriele]
+
+fixed signed integer overflow in address_map::uplift_submaps() - by O. Galibert (nw)
+
+fixed signed integer overflow in address_table::subtable_open() - by O. Galibert (nw)
+
+Allow compilation on cygwin based terminals on Windows (like cmder)
+
+Updated ignore file with executables
+
+enabled some more ubsan checks (nw)
+
+added *.sln and *.suo to .gitignore (nw)
+
+added assert for index out-of-bounds access in z8536_device::external_port_w() with apple3 (nw)
+
+fixed usage of uninitialized member in wozfdc_device (nw)
+
+Added -listnetwork option to list available network adapters
+
+fixed usage of uninitialized members in gtia_device (nw)
+
+line ending changes?
+
+Fix compile on official tools (nw)
+
+line endings (nw)
+
+ay8910: only build the table that will be actually used (per-channel or pre-mixed) (nw)
+upd7220: don't skip every other line in mixed mode (nw)
+
+winpcap: add WinPCap headers to the project;
+windows.mak: include WinPCap headers during Windows build; suppress MSVC debug build warning
+
+Altered FIRQ and NMI handling to improve Maygay M1 operation.
+
+ay8910.c: try zero-initializing dynamic array (nw)
+REcommit last changes
+
+No Idea why GIT wants to commit this
+
+ay8910: fix undefined behavior in initialization (nw)
+add remaining PAL from 'jumping' sets [Porchy]
+More updates to V.Smile
+
+new clones
+Tron (Germany) [MikeMcBike]
+This set can't possibly work with a missing main program ROM (nw)
+upd7220: fix shift expression MSVC doesn't like (nw)
+new clones
+Teenage Mutant Hero Turtles (UK?, unknown revision) [caius]
+
+(PCB was missing a rom)
+
+restored USE_NETWORK checks (nw)
+
+Hardcode clock as 3.33... MHz
+
+brickzn: do swapped opcode decrypt whan command is written rather than predecrypting specific ranges
+These line endings will be the death of me.
+Fix for network compile
+Fixed mixed line endings (nw)
+
+naomi.c:  [Arzeno Fabrice]
+	* HOTD2 Proto BIOS added
+	* Label correction for Club Kart Prize
+
+Added NOT_WORKING flag to apple2cp. (nw)
+Add ini folder to ignore (nw)
+
+Treat .jed files as binary so they are not converted as text (nw)
+
+Small changes from Fabio (nw)
+untie champbwl.c from tnzs_state, this is not really necessary anymore because 
+seta001 and all video related functions are a proper device.
+increased maximum allowed stack size of Visual Studio Code Analysis (nw)
+
+fixed Visual Studio compilation of src/emu/coco/coco_dwsock.c (nw)
+
+spectum.c: tiny update [MetalliC]
+spectum.c: remove weird loop range at border drawing, make Pentagon stereo, 
+correct AY clock
+
+Fixed cchance and champbwl validation (nw)
+Clean up .gitattributes
+
+only calculate m_aspect and m_srcaspect in layout_view::recompute() 
+when they are actually used (nw)
+
+ignore *.bat (nw)
+
+do not set define HAS_OPENMP when makefile define OPENMP is set - 
+fixes warning about macro redefinition
+
+SDL: experimental rework of buffer size calculation. (nw)
+
+SDL: Allow SDL_LIBVER to be overridden without modifying sdl.mak
+(mess) mikromik: don't stop the motor when resetting the fdc (nw)
+
+Tell SDL to stop sound when volume is set to max attenuation. (nw)
+
+Reverse the networking polarity in the OSD makefiles. (nw)
+
+SDL: SDL2 is now the default except for OS/2 builds. [R. Belmont]
+USE_NETWORK Ethernet emulation is now enabled by default as per the roadmap. [R. Belmont]
+
+test. nw.
+Fixed German mistake + xml missing ending, on behalf of K1W1. nw.
+
+msx.c: Removed nms8270 prototype; it seems to be a hacked up romset.
+ There is no confirmation that it even exists. (nw)
+
+Some more adds/fixes for V.Smile
+
+Update x68k.c
+Update x68k.c
+
+MSCV2010 warning treated as error complains about this bool being
+ potentially uninitialized.
+Update winos.c
+Fixed MT05252 (nw)
+Update winos.c
+
+MSVC2010 compilation fix
+upd7220: better output for the compis and dmv [Carl]
+
+Update README.md
+
+Added some breaks
+Create README.md
+
+Added readme for MAME github repo
+tnzs.c - use bankdev
+(MESS) a800.xml: added some more cart dumps, including AtariScreiber, the extremely
+rare German version of AtariWriter. [K1W1]
+bwing.c: replace achocode with clean modern stuff (bankdev, correct TILEMAP_MAPPER_MEMBER, GFXDECODE_RAM) (nw)
+gts3a.c : a bit of WIP
+
+gts3.c : Added switches. After setting up, the games are playable.
+ibm5170.xml: more (nw)
+ibm5170.xml: Added some PC game dumps.  [Justin Kerk]
+model3: More rendering improvements [Ville Linde]
+- Draw transparent triangles in a separate pass
+- Implemented viewport priority
+galpanic.c: Document that Gals Hustler has been found with genuine AFEGA labels - NW
+dec0.c: Add PALs to the World & Japan Secret Agent sets - NW
+New Secret Agent clone
+
+New Clone Added
+------------------------------------
+Secret Agent (Japan revision 2) [ShouTime, The Dumping Union]
+gts3.c : Display works, attract mode works.
+Fixed strange display of long strings in Qt debugger (nw).
+
+
+(nw)
+new clones
+S.V.G. - Spectral vs Generation (M68k label V101TW) (ARM label V101TW, ROM 06/20/05 S.V.G V100) [ShouTime] (not working)
+
+(internal ROM isn't dumped at all for now, using one from Japan PCB but it crashes on special moves)  
+Rom Labels are all V101, internal ROM strings are all V100, because IGS...
+c64.xml: remove useless chasehq2 joined ROM (nw)
+calomega.c: Fill in some unknown dipswitches. [Brian Troha]
+(MESS) PC, AT: Hook up missing softlists to various drivers [Justin Kerk]
+amiga: use memarray for chip RAM and regular array for custom registers (instead of shared_ptr for both) [Alex Jackson]
+Fixed MT05743 (nw)
+Workaround for dragon.h drivers crash. (nw)
+Fixed MT#05741
+(MESS) TRS-80 CoCo: implement virtual "Becker Port" for DriveWire support. [Richard Goedeken]
+
+
+Fixed compile for nonstandard tools
+
+calchase.c:  [Peter Ferrie]
+	* Implemented missing DIP switch for Eggs Playing Chicken, promote to working. 
+	Press "S" to skip the CMOS error, "S" or wait to skip the emm386.exe error
+	(not an emulation issue), use "Coin 2" to
+coin-up and start the game, and "1 Player Start" to brake.
+
+calchase.c, gamecstl.c, midqslvr.c, queen.c, savquest.c, taitowlf.c,
+voyager.c, xtom3d.c:  [Peter Ferrie]
+	* Intel component is not MXTC, it's MTXC.
+intelfsh.c:  [Joe Sturm]
+	* Added support for AMD 29F400T, AMD 29F800T and FUJITSU 29F160T.
+
+ti85.c:  [Joe Sturm]
+	* Improved support of TI83 Plus, TI83 Plus Silver Edition, and TI84 Plus, 
+	and TI84 Plus Silver Edition by switching over to bankdev and adding proper flash chips.
+	They should be working now (press Q to power on).
+
+
+Out of whatsnew:
+ti84p was not added to mess.lst becuase rom is not available yet. 
+ Current romload is same CRC as ti84pse but at a smaller size.  Once corrected and obtained it should work.
+video/model3: Texture enable has been wrong since 2003. Wow. (nw)
+(MESS) move misplaced include (nw)
+
+make 'kog' dipswitch part of the protection device / cartridge (nw)
+Fix potential overrun when adding a size_t to a UINT16. (nw)
+
+
+MT 05527 [Andrew Gardner]
+
+The Qt debugger now behaves more like the Windows one, with horizontal
+scrollbars where the core views expect them.
+
+
+darius.c: Add OSC derived clocks. - NW
+darius.c: Add dipswitch locations to the Darius sets 
+& give the newly added US set the correction coinage. [Brian Troha]
+More region_ptr_finder conversions (nw)
+darius.c: Minor rom name corrections - NW
+compilation fix for VS14 CTP4 (nw)
+gts3.c : WIP
+
+compilation fix for VS14 CTP4 (nw)
+compilation fix for VS14 CTP4 (nw)
+fixed "make tools" with VS14 CTP4 (nw)
+Fixed MT05740 (nw)
+gts3 : split into AN and DMD displays
+gts80b.c : Display is working.
+model3: fvipers2 needs longer delay (nw)
+(MESS) vz200de marked as not working, no roms dumped. Fixes MT05738.
+new clones
+Darius (US) [Andrew Welburn]
+simplify MSVC fix, tested with official MinGW, VS2013 & VS14 CTP4 (nw)
+fixes for building with VS14 CTP4 (nw)
+fix compilation error when building with VS14 CTP4 (nw)
+correct sound rom for 'tturf' (Tough Turf (set 2, Japan, 8751 317-0104)) [ShouTime]
+more appropriate types to avoid warning with VS14 CTP4 (nw)
+From Fabio (nw)
+-hector: creates a machine fragment for the sound components
+ which are shared among hector and interact to avoid duplicate code
+
+-specialist : makes static the specimx palette because it is not used outside video/specimx,c
+
+-pce: fixed MT5734 by adding support for 192k images
+more devfind: [Alex Jackson]
+
+Renamed rom_ptr_finder to region_ptr_finder after discussion with Aaron.
+First round of memory_region_finder to region_ptr_finder conversions.
+
+rf5c400: use a region_ptr_finder to find our sound ROM instead of looking up
+the region by hand in device_start(). Will probably start converting other
+sound devices to this pattern (other than the ones that use the memory system)
+if there are no problems or objections.
+
+devfind: Add rom_ptr_finder, which works like shared_ptr_finder
+except it finds a ROM region instead of a memory share.
+Unlike the old memory_region_finder, these can be accessed without
+any overhead (since it's a pointer directly to the data and not
+to the memory_region object), can be whatever data type you want
+(no casting needed) and are strictly type-checked--if you have a
+required_rom_ptr<UINT32> the region has to be a ROM_REGION32
+(or an implicitly 32-bit region due to belonging to a CPU) or
+the finder won't find it and will tell you why.
+
+Basically, rom_ptr_finders are strictly better than
+memory_region_finders and all drivers using the latter should be
+converted over. I've done megasys1.c and twin16.c as examples.
+
+megasys1: Use a device address map for the peekaboo oki instead
+of memcpy().
+
+twin16: Convert the scrolling layers to tilemaps (the fixed text
+layer was already one). Miscellaneous cleanups/modernizations.
+
+(nw)
+
+Notice that rom_ptr_finder has a length() method which returns the
+length in whatever size unit the pointer is, instead of a bytes()
+method. Yes, I'm going to convert shared_ptr_finder to match, since
+this way makes a lot more sense (in particular, mask() is useless
+for shared_ptrs that are anything other than INT8/UINT8)
+
+(MESS) a1bus: licensing and save state cleanups (nw)
+
+
+gts80b.c : WIP
+
+bionicc.c: Show where the machine clocks come from. - NW
+meritm.c: Cosmetic changes. IE: Correct all CRT 2xx to CRT-2xx and
+ standardize all "Touch Screen" to Touchscreen. - NW
+Fixed debug build validation (nw)
+Misc cleanups (nw)
+converted sn76477 to use inline config. nw.
+Don't execute a timeslice before loading a savestate from the command line [Alex Jackson]
+k051960: remove 16-bit trampolines (nw)
+Capcom updates: [any]
+- Fixed some incorrect info about the SF2 bootlegs and got them running better.
+- Dumped 8571 MCU from a bootleg Top Secret/Bionic Commando PCB. 
+ All other ROMs on the board matched the 'topsecrt' set.
+
+
+Fix compile on MSVC 2012 from Peter Ferrie (nw)
+(MESS) removed softlist features that were not used anymore since conversion
+to slot devices. nw.
+oh, filename was still 315-5296.h in my local tree
+
+(MESS) gb.c: Give gbcolor it's own machine config, fixes regression 
+introduced in r20641. Fixes MT005730.
+Added Sega UFO Catcher hardware driver. [hap, Yasuhiro]
+
+k054156: save correct amount of videoram, fixes lethalen savestates [Alex Jackson]
+
