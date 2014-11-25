@@ -67,28 +67,29 @@ pci: Add grossly hacked smbus [O. Galibert]
 
 Experiments in PCI land [O. Galibert]
 
-Touching all the candy again: [Alex Jackson]
-
 Fixed an annoying inconsistency between memory_share and memory_region:
   the width() method of the former returned the width in bits (8, 16, 32 or 64)
   while the width() method of the latter returned the width in bytes
   (1, 2, 4 or 8). Now both classes have a bitwidth() method and a bytewidth()
   method. Updated all callers to use whichever one was more appropriate.
-
-Removed the implicit-cast-to-any-integer-pointer ability of memory_regions,
+  Also removed the implicit-cast-to-any-integer-pointer of memory_regions,
   which was rather unsafe (if you weren't careful with your * operators and
   casts it was easy to accidentally get a pointer to the memory_region object
   itself instead of to the data, with no warning from the compiler... or at
   least I kept doing it) Updated all devices and drivers that were accessing
   regions that way to use a region_ptr_finder when possible, and otherwise to
-  call base() explicitly.
+  call base() explicitly. [Alex Jackson]
+
+The tilemap system now respects gfx_element::total_colors(). Fixed various
+  drivers and devices that were using incorrect total_colors for gfx elements
+  used in tilemaps [Alex Jackson]
 
 Added language rom for Lunar Lander [Mariusz Wojcieszek]
 
 rsp: Made the RSP interpreter core functional again. [MooglyGuy]
 
-drawgfx.h: Long-overdue documentation about how to use priority-masked
-  drawing (aka pdrawgfx); add some useful constants. [Alex Jackson]
+Long-overdue documentation about how to use priority-masked drawing
+  (aka pdrawgfx); add some useful constants. [Alex Jackson]
 
 Added preliminary layout for Alien Invaders based on screenshot [Tafoid]
 
@@ -126,7 +127,8 @@ upd7810.c:  [Ramiro Polla]
 - Set extended timer/event counter interrupts.
 - Fix and export extended timer/event counter output.
  
-mario.c: fix Monitor switch so it correctly affects both tiles and sprites [Alex Jackson]
+mario.c: fix Monitor switch so it correctly affects both tiles and sprites
+  [Alex Jackson]
 
 Added command-line option -[no]drc_log_uml to control DRC UML 
   disassembly logging. This allows logging of DRC UML disassembly without re-compiling
@@ -135,7 +137,7 @@ Added command-line option -[no]drc_log_uml to control DRC UML
 Added command-line option -[no]drc_log_native to control DRC 
   native diassembly logging.  This allows logging of DRC native disassembly without
   re-compiling [Oliver Stoneberg]
-  
+
 calomega.c: Improve color emulation by analogy with tugboat.c (which
   is actually a heavily modified Cal Omega board) [Alex Jackson]
 
@@ -196,7 +198,9 @@ i386: call with expand down stack [Carl]
 
 i386: GP fault with softint in v86 mode when iopl < 3 [Carl]
 
-twin16.c: Rewrite video mixing based on PAL equations [Alex Jackson]
+twin16.c: Rewrite video mixing based on PAL equations. Fixes sprite-bg
+  priority in Devil World intro, and in Vulcan Venture later stages
+  and ending [Alex Jackson]
 
 pic8259: priority and sfnm [Carl}
 
@@ -271,8 +275,9 @@ model3: More rendering improvements [Ville Linde]
 
 calomega.c: Fill in some unknown dipswitches. [Brian Troha]
 
-amiga: use memarray for chip RAM and regular array for custom registers 
-  (instead of shared_ptr for both) [Alex Jackson]
+amiga.c: use Aaron's memory_array class for bytewidth-agnostic access to chip
+  RAM, instead of a driver-specific implementation. Also store the custom chip
+  registers in an array instead of a memory share [Alex Jackson]
 
 calchase.c:  [Peter Ferrie]
 - Implemented missing DIP switch for Eggs Playing Chicken, promote to working. 
@@ -293,41 +298,39 @@ darius.c: Add dipswitch locations to the Darius sets
 
 Correct sound rom for 'tturf' (Tough Turf (set 2, Japan, 8751 317-0104)) [ShouTime]
 
-Renamed rom_ptr_finder to region_ptr_finder after discussion with Aaron.
-First round of memory_region_finder to region_ptr_finder conversions.
-
-rf5c400: use a region_ptr_finder to find our sound ROM instead of looking up
-  the region by hand in device_start(). Will probably start converting other
-  sound devices to this pattern (other than the ones that use the memory system)
-  if there are no problems or objections.
-
-devfind: Add rom_ptr_finder, which works like shared_ptr_finder
-  except it finds a ROM region instead of a memory share.
-  Unlike the old memory_region_finder, these can be accessed without
+Added region_ptr_finder, which works like shared_ptr_finder except it
+  finds a ROM region instead of a memory share. Unlike the already
+  existing memory_region_finder, these can be accessed without
   any overhead (since it's a pointer directly to the data and not
   to the memory_region object), can be whatever data type you want
-  (no casting needed) and are strictly type-checked--if you have a
-  required_rom_ptr<UINT32> the region has to be a ROM_REGION32
-  (or an implicitly 32-bit region due to belonging to a CPU) or
-  the finder won't find it and will tell you why.
-
-Basically, rom_ptr_finders are strictly better than
+  with no casting needed, and are strictly type-checked--if you have
+  a required_region_ptr<UINT32> the region has to be a ROM_REGION32
+  (or an implicitly 32-bit region due to belonging to a device with
+  a 32-bit bus) or the finder won't find it and will tell you why.
+  Basically, region_ptr_finders are strictly better than
   memory_region_finders and all drivers using the latter should be
-  converted over. I've done megasys1.c and twin16.c as examples.
+  converted over [Alex Jackson]
 
-megasys1: Use a device address map for the peekaboo oki instead
-  of memcpy().
+Converted many sound devices to use a required_region_ptr to find their
+  sample ROMs instead of looking up the region manually in device_start().
+  Note that this means that you can no longer get away with having e.g. an
+  OKIM6376 without a ROM (as several slot machine skeleton drivers did);
+  MAME will now complain at startup about the missing region, instead of
+  just crashing the first time the chip tries to play a sound like it did
+  before [Alex Jackson]
 
 twin16: Convert the scrolling layers to tilemaps (the fixed text
-  layer was already one). Miscellaneous cleanups/modernizations.
+  layer was already one). Miscellaneous cleanups/modernizations [Alex Jackson]
 
-Don't execute a timeslice before loading a savestate from the command line [Alex Jackson]
+Don't execute a timeslice before loading a savestate from the command line
+  [Alex Jackson]
 
 Capcom updates: [any]
 - Fixed some incorrect info about the SF2 bootlegs and got them running better.
 - Dumped 8571 MCU from a bootleg Top Secret/Bionic Commando PCB. 
 
-k054156: save correct amount of videoram, fixes lethalen savestates [Alex Jackson]
+k054156: save state register all video RAM, including the optional "external
+  linescroll RAM"; fixes Lethal Enforcers save states [Alex Jackson]
 
 
 New clones added
