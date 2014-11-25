@@ -123,33 +123,12 @@ cbombers: fix TC0480SCP text layer colors [Alex Jackson]
 
 pci: Add remapping notifiers [O. Galibert]
 
-upd7810: use intermediate flip flops for extended timer/event counter
-upd7810: fix and improve timer/event counter
-upd7810: fix and export timer/event counter output
-upd7810: ECNT clear control happens after capture control
-upd7810: fix bug introduced in extended timer simplification
-upd7810: correctly deal with external interrupts
-upd7810: treat NMI like other interrupts
-upd7810: remove gamemaster hack for INTFE1
-upd7810: set ETIMER interrupts
-upd7810: remove code duplication in ETIMER
-upd7810: remove code duplication in timers 0 and 1
-upd7810: clear sample and hold on ADC reset
-upd7810: sample and hold ADC value at start of conversion process.
-upd7810: ADC functions should return bytes.
-upd7810: Fixed ADC output register range.
-
-The extended timer/event counter uses intermediate flip flops (LV0 and
-LV1) before writing the output to CO0 and CO1.
-
-The introduction of LV0/LV1 addresses three issues:
-- Level inversion occurs after the flip flop is output, not before;
-- The intermediate flip flop can be altered without affecting the
-	output of CO0/CO1;
-- upd7810_write_EOM() didn't work properly when the level inversion
-	bit was set along other bits.
-[Ramiro Polla]
-
+upd7810.c:  [Ramiro Polla]
+ * Small ADC improvements.
+ * Clean up interrupt handler and make it edge triggered.
+ * Set extended timer/event counter interrupts.
+ * Fix and export extended timer/event counter output.
+ 
 mario.c: fix Monitor switch so it correctly affects both tiles and sprites [Alex Jackson]
 
 Added command-line option -[no]drc_log_native to control DRC 
