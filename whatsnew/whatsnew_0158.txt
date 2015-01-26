@@ -111,10 +111,46 @@ Source Changes
  menu so that he can mount a game where needed, instead of killing
  emulation with an error. [Fabio Priuli]
 
--Updates to SEGA's 315-5881 encryption based on new findings from
- Virtua Striker 2 '98 (Model3) [Andreas Naive]
+-Updates to SEGA 315-5881 encryption / compression device emulation
+  [Andreas Naive, Metallic, David Haywood, ANY] 
+ * update algorithm based on based on findings from Virtua Striker 2 '98
+ * correctly hooked up chip in ST-V, Model 2 and Model 3 drivers
+ * added support for multiple blocks in encrypted streams
+ * added support for different height/widths of compressed data steams
+ * found keys for many games allowing for per-game simulations to be removed
+   and fixing badly decompressed graphics in several games
+ * found some correlation between keys and Sega part numbers
 
--Updates to 315-5881 keys [MetalliC]
+    - For ST-V :
+    - Final Fight Revenge boots and is playable
+    - Elandoree has correct textures, more playable
+    - Astra Super Stars no longer relies on a fake ROM from the Saturn
+      release
+    - Tecmo World Cup '98 has correct Tecmo logo / Title screen
+    - Steep Slope Sliders, Radiant Silvergun no longer use custom protection
+      simulations (end result is the same)
+
+    - For Model 2:
+    - Zero Gunner, Pilot Kids and Dynamite Cop no longer use custom protection
+      simulations (end result is the same)
+
+    - For Model 3:
+    - Dirt Devils, Magical Truck Adventure, Virtual On 2 and Machineguns
+      correctly decrypts 2D graphics
+    - Daytona USA 2 correctly decrypts encrypted code block, no longer
+      requires ROM patches to avoid it
+       * key for Daytona USA 2 Power Edition cannot be found with current
+         understanding of the algorithm
+    - Star Wars Trilogy, Spikeout, Fighting Vipers 2, Emergency Call
+      Ambulance, and The Ocean Hunter no longer use custom protection
+      simulation (end result is the same)
+    - Virtua Striker 2 '98 / '99 (Model 3) no longer hang at kickoff
+      (previous simulation was wrong?)
+ 
+    - For Hikaru:
+    - Star Wars Arcade Racer now has a key (315-5881 is not hooked up
+      in the driver because it does not get far enough in MAME)
+
 
 -ui: improved File Manager so that attempts to launch softlist entries
  without having the necessary files don't kill emulation but simply
