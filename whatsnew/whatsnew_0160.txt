@@ -55,11 +55,7 @@ Source Changes
 
 -Fix crashing on ARM Linux targets. [R. Belmont, rjosal]
 
--Add Daioh (location test version) [CoolMod, trap15] Remove Daioh (set
- 1) and replace with Daioh (set 2). Set 1 was a hack and probably
- should not have been accepted.
-
--Mad Alien stuff [Andrew Welburn]
+-Mad Alien documentation improvements [Andrew Welburn]
 
 -goldstar.c: overhaul of the Golden Star driver with improvements to
  many games [Vas Crabb, Amanda King, Bad A. Billy]
@@ -85,6 +81,11 @@ Source Changes
  FD1149 number & board types. [Brian Troha]
 
 -use dumped (from unprotected MCU) MCU rom on mrheli [Silvio Grazini]
+ * Japan warning screen is uploaded to tilemap but not shown due to
+   video emulation faults
+
+- hooked up decapped MCU to X Multiply (Japan, M72) after tidying the
+  driver a little [David Haywood]
 
 -OS/2 patches for SDLMAME 0.159 [KO Muyng-Hun]
 
@@ -115,6 +116,26 @@ Source Changes
 
 -vrc4373: fix PCI target accesses. [Ted Green]
 
+- identified that Table Tennis Champions uses the same style DMA/blitter
+  as the recently added Spider, made some improvements [David Haywood]
+
+- add basic hookups of internal peripherals to the V53, made it an actual
+  CPU type derived from the V33.  Most of these have come from the PC emulation
+  * DMA Controller (subset of uPD71071/uPD71037), clone of 8237A
+  * Serial Controller (modified uPD71051), clone of i8251
+  * Interrupt Controller (uPD71059 equivalent), clone of PIC8259
+  * Timer Unit (identical to uPD71054), clone of pit8253
+  [David Haywood]
+
+- hooked up ROM banking to Hyper Neogeo 64 Sound CPU, this, along with the
+  above V53 peripherals improves the code flow on the CPU significantly,
+  although the interrupt hookups, communication, and sound generation are still
+  not yet understood [David Haywood]
+
+- Improved some textures (billboards) in Xtreme Rally (Hyper Neogeo 64)
+ * some road parts now look worse however, so still needs work, might be
+   mirror flags too [David Haywood]
+
 New games added or promoted from NOT_WORKING status
 ---------------------------------------------------
 Player's Edge Plus (X002111P+XP000038) 4 of a Kind Bonus Poker (with Seq Royal Flush)
@@ -122,15 +143,12 @@ Player's Edge Plus (X002111P+XP000038) 4 of a Kind Bonus Poker (with Seq Royal F
 Crazy Bonus 2002 [Amanda King, Vas Crabb]
 Castle Of Dracula [Caius, The Dumping Union, Luca Elia]
 New Cherry Gold '99 (bootleg of Super Cherry Master) (set 1) [Vas Crabb] 
-
+Spider [system11] [system11, David Haywood]
 
 New clones added
 ----------------
 Nitro Ball (World, set 2) [Bill D. / The Dumping Union]
 Brick Zone (v6.0, Joystick) [system11]
-The Combatribes (US, older) [Jets, Layer]
-Raiden II (France) [Jets, Layer]
-( Jets (emu-france.com) and Layer (neo-arcadia.com forum) ) [mamehaze]
 Player's Edge Plus (PP0158) 4 of a Kind Bonus Poker (set 5) [BrianT]
 Player's Edge Plus (PP0190) Deuces Wild Poker (set 1) [BrianT]
 Player's Edge Plus (PP0203) 4 of a Kind Bonus Poker (set 4) [BrianT]
@@ -163,9 +181,12 @@ Mahjong Electromagnetic Base [Dyq, XingXing, Luca Elia]
 Battle K-Road (Korean PCB) [Manuel Assoni]
 Adventure Quiz Capcom World 2 (Japan 920611, B-Board 91634B-2) [Bonky]
 Willow (World) [Jets (from Emu-france) and Layer (from Neo-arcadia)]
-
+The Combatribes (US, older) [Jets, Layer]
+Raiden II (France) [Jets, Layer]
+Golden Axe II (Mega Play) (original rev) [Jets, Layer] 
+Daioh (location test version) [CoolMod, trap15]
 
 New games marked as GAME_NOT_WORKING
 ------------------------------------
 Mahjong Ougon No Pai [Dyq, XingXing]
-Spider [system11]
+
