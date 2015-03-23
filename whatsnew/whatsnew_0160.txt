@@ -61,20 +61,25 @@ Source Changes
 
 -Mad Alien stuff [Andrew Welburn]
 
--Current crazybon dump comes from a pkrmast conversion kit [Amanda King, Vas Crabb]
- * Fix GFX decode for prkmast and crazybon
- * Add PROM dumps from cmv4 to get correct colours in pkrmast and
-    crazybon until real PROM dumps can be obtained
-
--Crazy Bonus WIP [Amanda King, Vas Crabb]:
- * Fix input mapping - all inputs and DIPs work in switch test
- * Fix AY8910 mapping, data read and write are at different addresses
- * Document all DIPs shown in settings screen
- * Document coin value, coin limit and credit limit DIPs (determined
-    with debugger)
- * Document DIPs with easily visible effect on game
- * Fix input naming
- * Still many unknown DIPs require investigation
+-goldstar.c: overhaul of the Golden Star driver with improvements to
+ many games [Vas Crabb, Amanda King, Bad A. Billy]
+ * Fix GFX decode for pkrmast and crazybon, add PROMs from cmv4 to
+   get usable colours until real dumps are acquired [Amanda King]
+ * Identify board type for crazybon, connect sound, inputs and DIP
+   switches - now working [Amanda King, Vas Crabb]
+ * Split up machine state class into six classes for different
+   board families, reduce redundancy using derived machine configs
+   and input port includes [Vas Crabb]
+ * Identify, document and verify many inputs and DIP switches,
+   correct some game descriptions, add notes on PCBs and info
+   from manuals [Bad A. Billy]
+ * Verify and correct many DIP switches and inputs, add lamp and
+   coin counter outputs for most games [Vas Crabb]
+ * Hook up AY8910, DIP switches, VBLANK IRQ enable, lamps
+   coin counters and ticket dispenser on unkch hardware - all
+   four sets are now playable with sound [Vas Crabb]
+ * Add internal clickable control panel artwork for almost all
+   games with working lamp outputs [Vas Crabb]
 
 -segas32.c: Correct rom names for Sonic the Hedgehog and document the
  FD1149 number & board types. [Brian Troha]
@@ -102,10 +107,6 @@ Source Changes
 
 -tms6100.c: add the tms6125 4KiB VSM pinout [Lord Nightmare, plgdavid]
 
--Hook up AY on unkch hardware for sound and DSW1/DSW2 [Vas Crabb]
-
--Document more DIP switches [Bad A. Billy, Vas Crabb]
-
 -chelnov: simulate some protection instead of patching rom [iq_132]
 
 -iteagle: work-in-progress [Ted Green]
@@ -119,11 +120,8 @@ New games added or promoted from NOT_WORKING status
 Player's Edge Plus (X002111P+XP000038) 4 of a Kind Bonus Poker (with Seq Royal Flush)
   [BrianT]
 Crazy Bonus 2002 [Amanda King, Vas Crabb]
-Super Cherry Gold (bootleg of Super Cherry Master) [Vas Crabb]
-Grand Cherry Master (bootleg of Super Cherry Master) [Vas Crabb]
 Castle Of Dracula [Caius, The Dumping Union, Luca Elia]
 New Cherry Gold '99 (bootleg of Super Cherry Master) (set 1) [Vas Crabb] 
-New Cherry Gold '99 (bootleg of Super Cherry Master) (set 2) [Vas Crabb]
 
 
 New clones added
@@ -137,6 +135,9 @@ Player's Edge Plus (PP0158) 4 of a Kind Bonus Poker (set 5) [BrianT]
 Player's Edge Plus (PP0190) Deuces Wild Poker (set 1) [BrianT]
 Player's Edge Plus (PP0203) 4 of a Kind Bonus Poker (set 4) [BrianT]
 Player's Edge Plus (PP0515) Double Bonus Poker (set 3) [BrianT]
+New Cherry Gold '99 (bootleg of Super Cherry Master) (set 2) [Vas Crabb]
+Super Cherry Gold (bootleg of Super Cherry Master) [Vas Crabb]
+Grand Cherry Master (bootleg of Super Cherry Master) [Vas Crabb]
 Chouji Meikyuu Legion (Japan ver 1.05) [ShinobiZ & COY]
 (JackC forwarded me this old dump, readme below) [mamehaze]
 Legion by Nichibutsu 1987 [mamehaze]
