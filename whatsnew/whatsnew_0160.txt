@@ -1,0 +1,165 @@
+0.160
+-------
+
+
+MAMETesters Bugs Fixed
+----------------------
+- 04138: [Crash/Freeze] (hornet.c) gradius4: "SHARC: PC Stack overflow !" doing MASKROM check (peterferrie)
+- 05862: [Crash/Freeze] (queen.c) queen: [debug] Assertion (peterferrie)
+- 05880: [Documentation] (sam.c) bbh_160 and clones: Year of production is '2010'. (Tafoid)
+- 05879: [Documentation] (sam.c) bdk_294 and clones: Year of production is '2008'. (Tafoid)
+- 05852: [Crash/Freeze] (mw8080bw.c) m4: Crashed after insert coin (Osso)
+
+Source Changes
+--------------
+-Enable OpenGL renderer on Windows. By default, run-time function
+ resolution is enabled. To resolve addresses, the code now first tries
+ GetProcAddress followed by wglGetProcAddress. [Couriersud]
+
+-Fix memory leak warning (autorelease pool) on OSX. [Couriersud]
+
+-improvements to monkelf (bootleg of avspirit), now playable [iq_132]
+
+- Neo-Geo documentation updates  [JacKc]
+ * kof96h - Tagged AES version
+ * kof98h - Tagged MVS and AES version
+ * ncomabth - Tagged MVS and AES version
+ * Updated game pcb info
+ * Misc Documentation update
+
+-OpenGL on windows now supports glsl options. This worked out of the
+ box with wine64 and on virtualbox windows7 (64bit). [Couriersud]
+
+-Fix mame restart (builtin game selector) in draw13.c. [CourierSud]
+
+-Fix clipping bug (e.g. apparent in neogeo) for video accel. Minor code
+ changes. [Couriersud]
+
+-Aligned monitor handling between sdl and baseline. [Couriersud]
+
+-thunderx.c: convert to bankdev, merge with gbusters.c, add notes and
+ correct various things based on schematics [Alex Jackson]
+
+-add dumped prom to  64street [system11]
+
+-Fix fullscreen toggle for the accel driver os OSX. [Couriersud]
+
+-Use measured clocks from brickzn PCB, fixes music tempo [system11]
+
+-First step to move osd_printf_* into osd again. Callbacks are now
+ implemented using an interface and use a push/pop approach where the
+ pop can happen out of order of pushes. [Couriersud]
+
+-m6502: Fix icounting [Peter Ferrie]
+
+-Fix crashing on ARM Linux targets. [R. Belmont, rjosal]
+
+-Add Daioh (location test version) [CoolMod, trap15] Remove Daioh (set
+ 1) and replace with Daioh (set 2). Set 1 was a hack and probably
+ should not have been accepted.
+
+-Mad Alien stuff [Andrew Welburn]
+
+-Current crazybon dump comes from a pkrmast conversion kit [Amanda King, Vas Crabb]
+ * Fix GFX decode for prkmast and crazybon
+ * Add PROM dumps from cmv4 to get correct colours in pkrmast and
+    crazybon until real PROM dumps can be obtained
+
+-Crazy Bonus WIP [Amanda King, Vas Crabb]:
+ * Fix input mapping - all inputs and DIPs work in switch test
+ * Fix AY8910 mapping, data read and write are at different addresses
+ * Document all DIPs shown in settings screen
+ * Document coin value, coin limit and credit limit DIPs (determined
+    with debugger)
+ * Document DIPs with easily visible effect on game
+ * Fix input naming
+ * Still many unknown DIPs require investigation
+
+-segas32.c: Correct rom names for Sonic the Hedgehog and document the
+ FD1149 number & board types. [Brian Troha]
+
+-use dumped (from unprotected MCU) MCU rom on mrheli [Silvio Grazini]
+
+-OS/2 patches for SDLMAME 0.159 [KO Muyng-Hun]
+
+-debugwin.c: avoid race condition where debugger window update request
+ is made before debugger is initialised [Peter Ferrie]
+
+-added command-line option -[no]dummywrite to create snaphots of each
+ frame without writing them to a file [Oliver Stöneberg]
+
+-font_windows.c: don't crash if no memory for bitmap [Peter Ferrie]
+
+-gradius4: avoid stack overflow when adsp21062 device is reset while
+ inside interrupt handler [Peter Ferrie]
+
+-queen: intercept OOB access to PIIX4 device [Peter Ferrie]
+
+-tms6100.c: add the tms6125 4KiB VSM pinout [Lord Nightmare, plgdavid]
+
+-Hook up AY on unkch hardware for sound and DSW1/DSW2 [Vas Crabb]
+
+-Document more DIP switches [Bad A. Billy, Vas Crabb]
+
+-chelnov: simulate some protection instead of patching rom [iq_132]
+
+-iteagle: work-in-progress [Ted Green]
+ * Hooked up PCI devices and bridge correctly using new PCI subsystem
+ * Fixed BIOS selection
+
+-vrc4373: fix PCI target accesses. [Ted Green]
+
+New games added or promoted from NOT_WORKING status
+---------------------------------------------------
+Player's Edge Plus (X002111P+XP000038) 4 of a Kind Bonus Poker (with Seq Royal Flush)
+  [BrianT]
+Crazy Bonus 2002 [Amanda King, Vas Crabb]
+Super Cherry Gold (bootleg of Super Cherry Master) [Vas Crabb]
+Grand Cherry Master (bootleg of Super Cherry Master) [Vas Crabb]
+Castle Of Dracula [Caius, The Dumping Union, Luca Elia]
+New Cherry Gold '99 (bootleg of Super Cherry Master) (set 1) [Vas Crabb] 
+New Cherry Gold '99 (bootleg of Super Cherry Master) (set 2) [Vas Crabb]
+
+
+New clones added
+----------------
+Nitro Ball (World, set 2) [Bill D. / The Dumping Union]
+Brick Zone (v6.0, Joystick) [system11]
+The Combatribes (US, older) [Jets, Layer]
+Raiden II (France) [Jets, Layer]
+( Jets (emu-france.com) and Layer (neo-arcadia.com forum) ) [mamehaze]
+Player's Edge Plus (PP0158) 4 of a Kind Bonus Poker (set 5) [BrianT]
+Player's Edge Plus (PP0190) Deuces Wild Poker (set 1) [BrianT]
+Player's Edge Plus (PP0203) 4 of a Kind Bonus Poker (set 4) [BrianT]
+Player's Edge Plus (PP0515) Double Bonus Poker (set 3) [BrianT]
+Chouji Meikyuu Legion (Japan ver 1.05) [ShinobiZ & COY]
+(JackC forwarded me this old dump, readme below) [mamehaze]
+Legion by Nichibutsu 1987 [mamehaze]
+Version Japan 1.05 [mamehaze]
+Boot Camp (set 2) [chaneman]
+Frogger (videotron bootleg) [system11]
+Player's Edge Plus (BE0014) Blackjack (International English/Spanish)
+  [BrianT]
+Player's Edge Plus (X000006P+XP000038) Standard Draw Poker [BrianT]
+Player's Edge Plus (X000042P+XP000038) 10's or Better [BrianT]
+Player's Edge Plus (X000764P+XP000038) 4 of a Kind Bonus Poker
+  [BrianT]
+Player's Edge Plus (X002010P+XP000038) Nevada Bonus Poker [BrianT]
+Player's Edge Plus (X002016P+XP000038) Full House Bonus Poker [BrianT]
+Player's Edge Plus (X002017P+XP000038) Full House Bonus Poker [BrianT]
+Player's Edge Plus (X002037P+XP000038) Nevada Bonus Poker [BrianT]
+Player's Edge Plus (X002039P+XP000038) Nevada Bonus Poker [BrianT]
+Player's Edge Plus (X002247P+XP000038) Standard Draw Poker [BrianT]
+Player's Edge Plus (X002386P+XP000038) 4 of a Kind Bonus Poker
+  [BrianT]
+Puzznic (bootleg) [cmonkey]
+Mahjong Electromagnetic Base [Dyq, XingXing, Luca Elia]
+Battle K-Road (Korean PCB) [Manuel Assoni]
+Adventure Quiz Capcom World 2 (Japan 920611, B-Board 91634B-2) [Bonky]
+Willow (World) [Jets (from Emu-france) and Layer (from Neo-arcadia)]
+
+
+New games marked as GAME_NOT_WORKING
+------------------------------------
+Mahjong Ougon No Pai [Dyq, XingXing]
+Spider [system11]
