@@ -71,8 +71,8 @@ set VERSION=%temp:~0,1%.%temp:~1%u%3
 
 
 @rem --- see if the branch exists
-svn list svn://dspnet.fr/mame/tags/%SRCBRANCH% %NULLOUT% %NULLERR% || goto :nosourcebranch
-svn list svn://dspnet.fr/mame/tags/%DSTBRANCH% %NULLOUT% %NULLERR% && goto :destexists
+svn list https://github.com/mamedev/mame/tags/%SRCBRANCH% %NULLOUT% %NULLERR% || goto :nosourcebranch
+svn list https://github.com/mamedev/mame/tags/%DSTBRANCH% %NULLOUT% %NULLERR% && goto :destexists
 @echo Target branch %DSTBRANCH% doesn't exist; promoting main branch....
 
 
@@ -91,7 +91,7 @@ if "%VALIDATED%"=="0" goto :eof
 
 @rem --- all systems go, create the branch
 @echo Creating target branch %DESTBRANCH%....
-svn copy svn://dspnet.fr/mame/trunk -r %REVISION% svn://dspnet.fr/mame/tags/%DSTBRANCH% -m "MAME %VERSION% tag"
+rem svn copy https://github.com/mamedev/mame/trunk -r %REVISION% https://github.com/mamedev/mame/tags/%DSTBRANCH% -m "MAME %VERSION% tag"
 
 
 @rem --- now do the diff
@@ -99,12 +99,12 @@ svn copy svn://dspnet.fr/mame/trunk -r %REVISION% svn://dspnet.fr/mame/tags/%DST
 @echo Generating the full diff....
 if exist temp rd /s/q temp
 if exist %DIFFNAME% del %DIFFNAME%
-svn export svn://dspnet.fr/mame/tags/%SRCBRANCH% temp\%SRCBRANCH%
-svn export svn://dspnet.fr/mame/tags/%DSTBRANCH% temp\%DSTBRANCH%
+svn export https://github.com/mamedev/mame/tags/%SRCBRANCH% temp\%SRCBRANCH%
+svn export https://github.com/mamedev/mame/tags/%DSTBRANCH% temp\%DSTBRANCH%
 cd temp
 for /f "usebackq" %%i in (`dir /b %SRCBRANCH%`) do ( move %SRCBRANCH%\%%i %%i-old && move %DSTBRANCH%\%%i %%i && diff -Nru %%i-old %%i >>..\%DIFFNAME% )
 cd ..
-@rem svn diff svn://dspnet.fr/mame/tags/%SRCBRANCH% svn://dspnet.fr/mame/tags/%DSTBRANCH% >%DIFFNAME%
+@rem svn diff https://github.com/mamedev/mame/tags/%SRCBRANCH% https://github.com/mamedev/mame/tags/%DSTBRANCH% >%DIFFNAME%
 
 
 @rem --- now package the diff
@@ -143,7 +143,7 @@ set VERSION=%temp:~0,1%.%temp:~1%
 
 
 @rem --- see if the branch exists
-svn list svn://dspnet.fr/mame/tags/%DSTBRANCH% %NULLOUT% %NULLERR% && goto :destexistsfull
+svn list https://github.com/mamedev/mame/tags/%DSTBRANCH% %NULLOUT% %NULLERR% && goto :destexistsfull
 @echo Target branch %DSTBRANCH% doesn't exist; promoting main branch....
 
 
@@ -162,14 +162,14 @@ if "%VALIDATED%"=="0" goto :eof
 
 @rem --- all systems go, create the branch
 @echo Creating target branch %DESTBRANCH%....
-svn copy svn://dspnet.fr/mame/trunk -r %REVISION% svn://dspnet.fr/mame/tags/%DSTBRANCH% -m "MAME %VERSION% tag"
+rem svn copy https://github.com/mamedev/mame/trunk -r %REVISION% https://github.com/mamedev/mame/tags/%DSTBRANCH% -m "MAME %VERSION% tag"
 
 
 @rem --- export the tree for building
 :destexistsfull
 @echo Checking out a temp copy....
 if "%RESUME%"=="0" if exist tempbuild rd /s/q tempbuild
-if "%RESUME%"=="0" svn export svn://dspnet.fr/mame/tags/%DSTBRANCH% tempbuild %NULLOUT%
+if "%RESUME%"=="0" svn export https://github.com/mamedev/mame/tags/%DSTBRANCH% tempbuild %NULLOUT%
 
 @rem goto :createpackage
 
@@ -250,7 +250,7 @@ popd
 @rem --- now export the actual tree
 @echo Checking out a temp copy....
 if exist tempexport rd /s/q tempexport
-svn export svn://dspnet.fr/mame/tags/%DSTBRANCH% tempexport %NULLOUT%
+svn export https://github.com/mamedev/mame/tags/%DSTBRANCH% tempexport %NULLOUT%
 
 
 @rem --- copy in the whatsnew file
@@ -318,6 +318,9 @@ copy ..\tempbuild\obj\%3\jedutil.exe
 copy ..\tempbuild\obj\%3\ledutil.exe
 copy ..\tempbuild\obj\%3\unidasm.exe
 copy ..\tempbuild\obj\%3\nltool.exe 
+if "%4"=="2" copy ..\tempbuild\obj\%3\castool.exe 
+if "%4"=="2" copy ..\tempbuild\obj\%3\floptool.exe 
+if "%4"=="2" copy ..\tempbuild\obj\%3\imgtool.exe 
 mkdir docs
 copy ..\tempbuild\docs\*.* docs
 mkdir hash
@@ -371,7 +374,9 @@ if exist jedutil.exe del jedutil.exe
 if exist ledutil.exe del ledutil.exe
 if exist unidasm.exe del unidasm.exe
 if exist nltool.exe del nltool.exe
-
+if exist castool.exe del castool.exe 
+if exist floptool.exe del floptool.exe 
+if exist imgtool.exe del imgtool.exe 
 @rem --- Do the build
 @echo make buildtools %~4 %~5 %~6 %~7
 make buildtools %~4 %~5 %~6 %~7 || goto :builderror %1
@@ -392,6 +397,9 @@ move /y jedutil.exe obj\%2\
 move /y ledutil.exe obj\%2\
 move /y unidasm.exe obj\%2
 move /y nltool.exe obj\%2\
+move /y castool.exe obj\%2\
+move /y floptool.exe obj\%2\ 
+move /y imgtool.exe obj\%2\
 
 goto :eof
 
