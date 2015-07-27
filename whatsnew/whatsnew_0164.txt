@@ -173,7 +173,12 @@ Source Changes
 -Added preliminary CD-DA routing to SCSP EXTS parallel port, fixes
  CD-Rom player equalizer in Sega Saturn. [Angelo Salese]
 
--correct sound rom for 1942p set [mastercello]
+- "1942p" improvements
+ * dumped correct sound ROM for this set [mastercello]
+ * hooked up alt. memory map needed by new sound rom [David Haywood]
+ * retagged as a Tecfri bootleg PCB rather than prototype
+ * fixed interrupt generation for this version, allowing powerups to
+   scroll correctly [David Haywood]
 
 -Re-add NetBSD support. [Thomas Klausner]
 
@@ -186,7 +191,7 @@ Source Changes
 
 -rspcp2: Make the align declarations gcc-compatible [O. Galibert]
 
--Decrypted external ARM code in slqz3 [[iq_132]
+-Decrypted external ARM code in slqz3 [iq_132]
 
 -a7800: fix 0x2800 mirroring behavior [Mike Saarna, Robert Tuccitto]
 
@@ -210,6 +215,19 @@ Source Changes
 -c128: Added a skeleton for the PARTNER 128 cartridge. [Curt Coder]
 
 -ti99: MFM low-level hard disk emulation, removed legacy floppy [Michael Zapf]
+
+-315_5124.c: avoid saving the dynamic RAM used for temp rendering, the save
+ state system does not currently agree with RAM that gets reallocated at
+ run time which was happening whenever the resolution changed.
+
+-shadfrce: remove runtime tag lookups and optimized video rendering to restore
+ speed back to what it was in versions prior to 0.161. [David Haywood]
+
+-dreamwld.c: fix visible areas based on PCB tests, fixed linescroll modes,
+ fixed tilemap sizes etc.
+ This improves visuals in cutefght, rolcrush, baryon etc. [David Haywood]
+
+
 
 
 New games added or promoted from NOT_WORKING status
@@ -241,11 +259,11 @@ Maya (set 4, clean) [system11]
 Hot Rod (Japan, 4 Players, Floppy Based, Rev C) [Ordyne]
 Varth: Operation Thunderstorm (Japan Resale Ver. 920714)
   [Alex Cmaylo, The Dumping Union]
-Hot Chase (set 2) [david.haywood]
+Hot Chase (set 2)
 Shinobi (Datsu bootleg, set 2) [Andrew Welburn]
-Midnight Resistance (Joystick bootleg) [david.haywood]
+Midnight Resistance (Joystick bootleg) [Guru]
 Super Cobra (Stern Electronics) (encrypted, KONATEC XC-103SS CPU)
-  [Kevin Eshbach]
+  [Kevin Eshbach, David Haywood]
 Mortal Kombat (Yawdim bootleg, set 4) [Marco, Guru]
 Gang Hunter [Smitdogg, The Dumping Union]
 
