@@ -32,7 +32,7 @@ pushd build\release
 7za a -mpass=4 -mfb=255 -y -tzip mame%1s.zip mame.zip 
 del mame.zip
 popd 
-
+@echo Finished creating release....
 goto :eof
 
 :error
