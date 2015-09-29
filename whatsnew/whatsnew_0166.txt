@@ -6,10 +6,10 @@ MAMETesters Bugs Fixed
 ----------------------
 - 05969: [Graphics] (galaxian.c) jumpbug and clones: Missing scrolling starfield (Osso)
 - 06028: [Sound] (neogeo.c) neogeo.c: Wrong volume of SSG versus the FM & 
-  ADPCM sound generation parts (David Haywood)
+  ADPCM sound generation parts (Dr.Venom)
 - 06029: [Crash/Freeze] (cclimber.c) yamato: game is broken [2 bugs] (Osso)
 - 00999: [Sound] (segaxbd.c) gprider: There are no demo sounds even when 
-  the dip switch is on. (David Haywood)
+  the dip switch is on. (David Haywood, Ariane Fugmann)
 - 04701: [Graphics] (seta.c) blandia, blandiap: Graphic garbage (Mamesick)
 - 00878: [Graphics] (suna8.c) rranger: A piece of the yellow box on the map screen after 
   the game start is over the CREDIT text. (Luca Elia)
@@ -51,15 +51,23 @@ Source Changes
  * method 0x100 (NOP) generates correct interrupt
  * some method parameters are readable from mmio registers
 
+-chihiro.c/xbox.c: Various updates [Samuele Zannoli]
+ * support render targets different than rgb32
+ * support 16 bit depth buffer
+ * support independent clearing of stencil and depth values
+ * update rom loading
+ * add xbox hack to avoid stalling
+ * set xbox bios 4134 as the one used
+
+-xbox.c: now it is able to execute the default.xbe from an iso image [Samuele Zannoli]
+
+-Naomi / Chihiro docs update [f205v]
+
 -Fixed GetModuleHandle to be universal. [Vladimir Kryvian]
 
 -C352: Add divider for System 23, change enum format [Ian Karlsson]
 
--a800_flop.xml: Added Elektra Glide and KoalaPainter. [Curt Coder]
-
 -groundfx.c: fix accelerator [baritonomarchetto]
-
--c64_flop.xml: Added Elektra Glide and KoalaPainter. [Curt Coder]
 
 -besta: hook up 68230 and make its ROM self-test pass [shattered]
 
@@ -71,7 +79,7 @@ Source Changes
 -TMS5110: Add same FAST_START_HACK as in tms5220, makes snmath word
  delay closer to hardware. [Lord Nightmare]
 
--Added correct dump of VA63B.1A [Caius, The Dumping Union]
+-cps1.c: varthu - Added correct dump of VA63B.1A [Caius, The Dumping Union]
 
 -deco32.c: Added some missing PAL dumps [Caius, WWW.JAMMARCADE.NET]
 
@@ -99,7 +107,10 @@ Source Changes
 
 -French Touch "Crazy Cycles" no longer hangs, but still missing effects
 
--Sega X-Board: gprider twin fixes. [Ariane Fugmann]
+-Sega X-Board
+ * Converted 'X Board' to be a device
+ * Correctly emulated the 'Twin' X-Board setup which was used by GP Rider
+   (a bridge board with shared RAM) [David Haywood, Ariane Fugmann]
 
 -bbc: clones, floppy formats, softlists, and cleanups. [Nigel Barnes]
  * Added clone bbcb1770, bbcb now 8271 only.
@@ -119,9 +130,6 @@ Source Changes
 
 -Sega Pico PCM improvements [ValleyBell]
 
--pgm.c: added new clone Oriental Legend (ver. 111, Korean Board)
- [Darksoft]
-
 -Software List additions:
  * gameking.xml
     (4in1_01,4in1_02,4in1_03,4in1_04,4in1_05,4in1_06,4in1_07,4in1no09,4in1no11,4in1no12,4in1no13)
@@ -132,19 +140,12 @@ Source Changes
  * pico.xml (anpanetk, doramach, micktoof, ojadrmdn, profpico
     [former profpico -> picoprofg], zaiweinidiraeiu10th, peterpan10th, 
     sanouk5, susiechn) [TeamEurope]
-
+ * a800_flop.xml: Added Elektra Glide and KoalaPainter. [Curt Coder]
+ * c64_flop.xml: Added Elektra Glide and KoalaPainter. [Curt Coder]
  * vc4000.xml (comefrut)  [SSJ, TeamEurope]
  * jaguar.xml (Air Cars (1994 version)) [Porchy]
- 
--chihiro.c/xbox.c: Various updates [Samuele Zannoli]
- * support render targets different than rgb32
- * support 16 bit depth buffer
- * support independent clearing of stencil and depth values
- * update rom loading
- * add xbox hack to avoid stalling
- * set xbox bios 4134 as the one used
+ * Added new magiclmp parent (english).  [Taizou]
 
--xbox.c: now it is able to execute the default.xbe from an iso image [Samuele Zannoli]
 
 -pcd: implement pcx video device [Carl, Axel Muhr]
 
@@ -164,8 +165,6 @@ Source Changes
 -TMS5220 and TMS5110: Fix an off-by-one in the interpolator causing the
  k5 coefficient to not be zeroed during unvoiced frames. Fixes various
  speech glitches. [Lord Nightmare]
-
--Naomi / Chihiro docs update [f205v]
 
 -TMS5220 and TMS5110: Fixed incorrect implementation of pitch zero
  which caused an improperly long period with no pitch at an
@@ -229,10 +228,6 @@ Source Changes
 
 -Seperate Space Warp into it's own skeleton driver. [mixxmaster]
 
--gbcolor.xml
- * Replaced bad dumps fot magiclmp, binmnst2.  [TeamEurope, SSJ]
- * Added new magiclmp parent (english).  [Taizou]
-
 -m68k: fix 020+ PACK/UNPK nibble ordering [Till Harbaum, R. Belmont]
 
 -i8271: modernize [Carl]
@@ -264,7 +259,7 @@ Rescue (Free Enterprise Games, bootleg) [Guru] (not working)
 Ridge Racer V Arcade Battle (RRV1 Ver. A) [Guru]
 Soul Calibur III (SC31002-NA-A key, NA-A disc) [Guru]
 Tekken 5.1 (TE53 Ver. B) [Guru]
-
+Oriental Legend (ver. 111, Korean Board) [DarkSoft]
 
 New games marked as GAME_NOT_WORKING
 ------------------------------------
