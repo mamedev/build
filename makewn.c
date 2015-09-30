@@ -329,24 +329,30 @@ state_3:
 	
 	if (nextnew[0] > 0)
 	{
-		printf("\n\nNew games added or promoted from NOT_WORKING status\n"
-				"---------------------------------------------------\n");
+		printf("\n\nNew machines added or promoted from NOT_WORKING status\n"
+			   	   "------------------------------------------------------\n");
 		print_list(0);
 	}
 
 	if (nextnew[1] > 0)
 	{
-		printf("\n\nNew clones added\n"
-				"----------------\n");
+		printf("\n\nNew clones added or promoted from NOT_WORKING status\n"
+			  	   "----------------------------------------------------\n");
 		print_list(1);
 	}
 
 	if (nextnew[2] > 0)
 	{
-		printf("\n\nNew games marked as GAME_NOT_WORKING\n"
-				"------------------------------------\n");
+		printf("\n\nNew machines marked as NOT_WORKING\n"
+				   "----------------------------------\n");
 		print_list(2);
 	}
 
+	printf("\n\nNew clones marked as NOT_WORKING\n"
+			   "--------------------------------\n\n");
+	printf("\n\nNew WORKING software list additions\n"
+			   "-----------------------------------\n\n");
+	printf("\n\nNew NOT_WORKING software list additions\n"
+			   "---------------------------------------\n\n");
 	return 0;
 }
