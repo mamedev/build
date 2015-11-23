@@ -21,7 +21,7 @@ MAMETesters Bugs Fixed
 - 06070: [DIP/Input] (psikyosh.c) mjgtaste: Joystick mode does not fully work (David Haywood)
 - 06060: [DIP/Input] (a7800.c) a7800 [1on1u]: Cannot start a game in One-On-One Basketball. (David Haywood)
 - 05817: [Misc.] (mz700.c) mz700, mz700j: Emulation drastically slowing down after loading the basic! (Robbbert)
-- 06056: [Gameplay] (osborne1.c) osborne1: osborne1 banking doesn't work properly (cuavas)
+- 06056: [Gameplay] (osborne1.c) osborne1: osborne1 banking doesn't work properly (Vas Crabb)
 
 Source Changes
 --------------
@@ -33,8 +33,14 @@ Source Changes
 
 -osborne1 improvements [Vas Crabb]
  * Bank low 16k according to schematics, passes memory test
+ * Handle memory mapped I/O addresses according to schematics
  * Correct vectoring of IEEE488 interrupt
+ * Add serial port emulation
+ * Fix beeper frequency/timing
+ * Fix scrolling behvaviour in standard and SCREEN-PAC modes
  * Implement RESET key (generates NMI, F12 by default)
+ * Show contents of video memory in F4 tilemap viewer
+ * Add configured banking and save state support
 
 -Osborne Vixen: fixed screen (thanks to OG who added M1 support to the
  Z80). Various other fixes. Marked as Working [Robbbert]
@@ -91,7 +97,9 @@ Source Changes
 -Fix PVS-Studio warning V564, "The &/| operator is applied to bool
  type value. You've probably forgotten to include parentheses." [MooglyGuy]
 
--goldnpkr.c driver improvements. [Roberto Fresca] S
+-goldnpkr.c driver improvements. [Roberto Fresca]
+
+-cmpacman: fix two DIP switches [Vas Crabb]
 
 -Added partial decryption to the ICP1 daughterboard games. (currently
  only pokerduc set). Since it's just partial, commented out the code
