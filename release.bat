@@ -55,19 +55,23 @@ copy %1\nlwav.exe  %2\. /Y > nul
 copy %1\castool.exe %2\. /Y > nul
 copy %1\floptool.exe %2\. /Y > nul 
 copy %1\imgtool.exe %2\. /Y > nul 
+
+7za x ..\build\mamedirs.zip -o%2 >nul
+
 mkdir %2\docs 2> nul
-copy docs\*.* %2\docs > nul
+xcopy docs\* %2\docs /s /i > nul
 mkdir %2\hash 2> nul
-copy hash\*.* %2\hash\. /Y > nul 
+xcopy hash\* %2\hash /s /i > nul 
 mkdir %2\hlsl 2> nul
-copy hlsl\*.* %2\hlsl > nul
+xcopy hlsl\* %2\hlsl /s /i > nul
 mkdir %2\nl_examples 2> nul
-copy  nl_examples\*.* %2\nl_examples > nul
+xcopy  nl_examples\* %2\nl_examples /s /i > nul
 mkdir %2\samples 2> nul
 xcopy samples\* %2\samples /s /i > nul
+mkdir %2\artwork 2> nul
+xcopy artwork\* %2\artwork /s /i > nul
 
 strip %2\*.exe
-7za x ..\build\mamedirs.zip -o%2 >nul
 echo Packing %4
 pushd %2
 7za a -mx=9 -y -r -t7z -sfx7z.sfx ..\..\..\%4 >nul
