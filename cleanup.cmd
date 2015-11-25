@@ -12,7 +12,6 @@ if not exist .\makefile goto :badenvironment
 del /s *.rej
 del /s *~
 del /s *#
-del /s *.s
 
 
 @rem --- make sure all filenames are lowercase
@@ -26,7 +25,7 @@ make maketree
 make srcclean.exe
 )
 @echo Cleaning up tabs/spaces/end of lines....
-for /r src %%i in (*.c) do srcclean %%i || goto :cleanupfailed
+for /r src %%i in (*.cpp) do srcclean %%i || goto :cleanupfailed
 for /r src %%i in (*.h) do srcclean %%i || goto :cleanupfailed
 for /r src %%i in (*.mak) do srcclean %%i || goto :cleanupfailed
 for /r src %%i in (*.lst) do srcclean %%i || goto :cleanupfailed
@@ -41,30 +40,6 @@ call :finddrivers
 if not "%MISSING%"=="0" goto :drivmissing
 
 @goto :eof
-
-
-
-
-@rem -----------------------------------------------------------
-@rem 	Find drivers
-@rem -----------------------------------------------------------
-
-:finddrivers
-@echo Finding all GAME macros in drivers....
-findstr "\<GAME.*\([^,]*,[^,]*,[^,]*,[^,]*,[^,]*,.*\)" src\mame\drivers\*.c >gamelist.txt
-
-@echo Pruning commented drivers....
-findstr /v "\/\/.*GAME" gamelist.txt >gamelist2.txt
-findstr /v "\/\*[^*]*GAME" gamelist2.txt >gamelist3.txt
-
-@echo Scanning for missing entries....
-for /f "delims=:,( tokens=1-4" %%i in (gamelist3.txt) do ( findstr " %%l " src\mame\mame.lst >nul || ( set MISSING=1 && echo %%l - %%i ) )
-
-del gamelist.txt
-del gamelist2.txt
-del gamelist3.txt
-goto :eof
-
 
 
 @rem -----------------------------------------------------------

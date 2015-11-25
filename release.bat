@@ -51,6 +51,7 @@ copy %1\jedutil.exe %2\. /Y > nul
 copy %1\ledutil.exe %2\. /Y > nul
 copy %1\unidasm.exe %2\. /Y > nul
 copy %1\nltool.exe  %2\. /Y > nul
+copy %1\nlwav.exe  %2\. /Y > nul
 copy %1\castool.exe %2\. /Y > nul
 copy %1\floptool.exe %2\. /Y > nul 
 copy %1\imgtool.exe %2\. /Y > nul 
@@ -60,10 +61,11 @@ mkdir %2\hash 2> nul
 copy hash\*.* %2\hash\. /Y > nul 
 mkdir %2\hlsl 2> nul
 copy hlsl\*.* %2\hlsl > nul
-mkdir %2\web 2> nul
-xcopy web\* %2\web /s /i > nul
 mkdir %2\nl_examples 2> nul
 copy  nl_examples\*.* %2\nl_examples > nul
+mkdir %2\samples 2> nul
+xcopy samples\* %2\samples /s /i > nul
+
 strip %2\*.exe
 7za x ..\build\mamedirs.zip -o%2 >nul
 echo Packing %4
