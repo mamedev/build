@@ -63,15 +63,6 @@ Source Changes
 
 -pet_rom.xml: Added MONJANA/1. [Ruud Baltissen]
 
--Re-write S2636 from scratch as needed for subhuntr: [Vas Crabb]
- * Needs raw screen parameters and calls from scanline timer to work
-    properly
- * Collision and completion bits generated correctly including
-    duplicates
- * Supports background and score display
- * Generates audio tone from line frequency
- * Probably hurts performance when rendering per frame
-
 -add Jaleco Megasys1 Sprite Mosaic effect (port of FBA code)
  [iq_132, dink]
 
@@ -81,16 +72,26 @@ Source Changes
 
 -sun3: switch to new Z80SCC device, add RS232 ports (not functioning yet) [R. Belmont]
 
--Make Lazarian playable [Vas Crabb]
- * Decode PLA bitstream and use for video mixing
- * Document colour format and make up usable colour values
+-Re-write S2636 from scratch as needed for subhuntr: [Vas Crabb]
+ * Needs raw screen parameters and calls from scanline timer to work properly
+ * Collision and completion bits generated correctly including duplicates
+ * Supports background and score display
+ * Generates audio tone from line frequency
+ * Several times faster when rendering per scanline
+
+-laserbat.c improvements: [Vas Crabb]
+ * Use proper video timings
  * Implement shell and area effects
- * Use proper video timings - yes there is blank space on the right
+ * There are still horizontal alignment issues between layers
+ * Decode PLA bitstream and use for video mixing
  * Add PLA from lazarian to laserbat as bad dump as it's needed now
- * Yes it's impossible to get black because there's no LSB for blue
- * Colours are still wrong, but at least it's only the intensities now
- * There are still alignment issues between layers
- * catnmous is completely broken, need schematic for PLA hookup
+ * Add PLA from catnmous to clone as bad dump as it's needed now
+ * Fix colours - detailed explanation in source comments
+ * Fix inputs - cocktail P2 controls and all 16 DIP switches work now
+ * Support cocktail mode (set in Machine Configuration - uses a sense line)
+ * Fix conditions for latching sound data in laserbat/lazarian
+ * Add more notes on sound hardware
+ * laserbat, lazarian and catnmous are playable now, catnmous still lacks sound
 
 -k053252: just reset internal screen state when a frequency clock
  change occurs. [Angelo Salese]
@@ -122,13 +123,6 @@ Source Changes
 
 -partial dumps of Namco FCA and FCB JVSIO MCU's firmware
  [Darksoft, MetalliC, Mitsurugi]
-
--laserbat/lazarian improvements: [Vas Crabb]
- * Fix inputs, P2 controls and all DIP switches are usable now
- * Support cocktail configuration (set in Machine Configuration)
- * Fix conditions for latching sound data
- * More notes
- * Fix catnmous graphics
 
 -apollo: cleanups and enhancements [Hans Ostermeyer]
  * Split OMTI8621 ISA device into PC and Apollo versions (Apollo
