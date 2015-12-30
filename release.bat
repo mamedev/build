@@ -59,17 +59,17 @@ copy %1\imgtool.exe %2\. /Y > nul
 7za x ..\build\mamedirs.zip -o%2 >nul
 
 mkdir %2\docs 2> nul
-xcopy docs\* %2\docs /s /i > nul
+xcopy docs\* %2\docs /s /i /y > nul
 mkdir %2\hash 2> nul
-xcopy hash\* %2\hash /s /i > nul 
+xcopy hash\* %2\hash /s /i /y > nul 
 mkdir %2\hlsl 2> nul
-xcopy hlsl\* %2\hlsl /s /i > nul
+xcopy hlsl\* %2\hlsl /s /i /y > nul
 mkdir %2\nl_examples 2> nul
-xcopy  nl_examples\* %2\nl_examples /s /i > nul
+xcopy  nl_examples\* %2\nl_examples /s /i /y > nul
 mkdir %2\samples 2> nul
-xcopy samples\* %2\samples /s /i > nul
+xcopy samples\* %2\samples /s /i /y > nul
 mkdir %2\artwork 2> nul
-xcopy artwork\* %2\artwork /s /i > nul
+xcopy artwork\* %2\artwork /s /i /y > nul
 
 strip %2\*.exe
 echo Packing %4
