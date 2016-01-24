@@ -1,0 +1,250 @@
+0.170
+-------
+
+
+MAMETesters Bugs Fixed
+----------------------
+- 06127: [DIP/Input] (m92.c) thndblst: "Continuous Play" dip switch 
+  value incorrectly labeled
+- 06126: [Crash/Freeze] (suna8.c) hardhea2b: Exception at start (Osso)
+- 04900: [Flip Screen/Cocktail] (battlex.c) battlex: Missing Title and 
+  Text while flipped (Osso)
+- 06117: [Multisession] (bfm_sc2.c) qntoond, quintoon: MAME crashed when 
+  switching games (Osso)
+- 02640: [Gameplay] (megasys1.c) kazan, iganinju: Multiple issues (slow graphic
+  rendering, missing graphics) (Angelo Salese)
+- 06114: [DIP/Input] (cps1.c) sf2m10: Kick inputs are not working LK MK HK (Osso)
+- 06090: [Crash/Freeze] (namcos10.c) mrdrilr2, mrdrlr2a: Crash during Init (Osso)
+- 06046: [Speed] Several drivers using mc6845.c: Speed is always 90-98% when 
+  throttled (crazyc)
+- 06104: [Gameplay] (x1.c) x1 [druaga]: druaga fails to get past 
+  loading screen (crazyc)
+- 06124: [Crash/Freeze] (phc25.c) phc25, spc1000, fc100: phc25, fc100 crash 
+  at start; spc1000 crash when a letter key is pressed (Osso)
+- 06122: [Crash/Freeze] (x68k.c) x68000 [ffight]: crashes with stack crawl (crazyc)
+
+Source Changes
+--------------
+-Added more accurate SSi S14001A speech chip emulation, written by one
+ of the people at SSi who originally laid out the S14001a silicon in
+ 1974/5! [Ed Bernard]
+
+-nokia_3310.cpp: started implementing the driver based on available
+ information. Also added dumps for various models. [Sandro Ronco]
+
+-Corrections to some ROM names and labels on Elevator Action based on
+ pcb pictures. [Lord Nightmare, brizzo]
+
+-tispeak.cpp: Dumped and added correct version of 1979 US Speak &
+ Spell. [Sean Riddle]
+
+-vicdual: rewrote carnival music board emulation, copy-pasted samples
+ handling from audio/pulsar.cpp. Kept sample names and function names
+ the same. [hap]
+
+-XAudio2 support [Brad Hughes]
+
+-Removed this == nullptr checks and fixed most of the resulting
+ crashes. [MooglyGuy, Tafoid]
+ 
+-psychic5.cpp: added SCREEN_RAW_PARAMS [Angelo Salese]
+
+-More configuration fixes [AJR]
+ * terrafb: remove unused NB1414M4
+ * segas16b.cpp: sanity check forgotten in last confix
+ * sega16sp.cpp: fix region width, make required (as last confix
+    allows)
+
+-psychic5.cpp: Fixed sprite disable for Bombs Away. [Angelo Salese]
+ 
+-Pass and return palette devices by reference, not as pointers [AJR]
+ * Add screen_device::has_palette()
+ * Require device_gfx_interface::gfx() and palette() to access members
+ * Getters for atari_vad_device return devices as references, not
+    pointers
+
+-Driver configuration fixes [AJR]
+- Implement found() method for object finders
+- a1200, cubo, midzeus2, etc.: remove spurious palette tags
+- bagman, sbagman & clones: correct PROM region lengths
+- atomicp, snapper: remove unused(?) sprite device w/no ROMs
+
+-taitotz: replace HLE rendering with actual chip emulation [Ville Linde]
+
+-NAOMI/Chihiro docs update [f205v]
+
+-tourvis.cpp: Added V4.0 BIOS to the Tourvision driver [system11]
+
+-OS/2 patch [KO Myung-Hun]
+
+-Arkanoid: Add note about the number of optical quadrature slots (24)
+ the arkanoid 1:20 geared spinner's quadrature wheel. [brizzo]
+
+-Arkanoid.cpp: Set YM2149 emulation to mix channels the same way the 
+ real pcb mixes them, by directly tying them together with no mixing 
+ resistors. This  introduces some distortion, but is more accurate 
+ to actual pcb audio. [Lord Nightmare]
+ 
+-40love.cpp: added global color select bank, fixes colors in later 
+ levels for Forty-Love [Angelo Salese]
+
+-spc1000: cassette tape motor fixed for working properly [Miso Kim]
+
+-arkanoid.cpp: Added emulation of the 68705 timer and timer interrupts. 
+ Fixed bugs with MCU port c ddr handling, latches and edge detection, 
+ added missing interrupt on Z80 write to MCU, and removed a boost 
+ interleave hack which was made unnecessary by these fixes. Switched 
+ the Arkanoid (older) sets to use original Taito A75 06 MCU code as 
+ opposed to the bootleg MCU code used until now. The 3 (newer) and 1 
+ Tournament sets still use hand-hacked bootleg MCU code until original 
+ MCU chips can be dumped and/or decapped. All 9 of the dumped Arkanoid 
+ MCU code roms now work, if hooked up to the appropriate drivers. Hooked 
+ the now-working 'deprotected Taito' MCU dump up to arkanoidjbl. Added an 
+ alternate gfx rom dumped from an original 'older' US board. [Lord Nightmare, Brizzo]
+
+-some fast invaders improvements [ANY]
+
+-Return std::string objects by value rather than pass by reference [AJR]
+  - strprintf is unaltered, but strformat now takes one fewer argument
+  - state_string_export still fills a buffer, but has been made const
+  - get_default_card_software now takes no arguments but returns a string
+
+-Some comments on TRS-01 'early radar scope' 5-PCB set. Fixed some ROM 
+ names based on PCB pictures from Superully. [Lord Nightmare]
+
+-segas18.cpp: Add documentation of a Laser Ghost test PCB [Arzeno Fabrice]
+
+-common osd path environment var expansion [Jeffrey Clark]
+
+-add lua console support back in [Jeffrey Clark]
+
+-pc9801_86: add pcm [Carl]
+
+-added official updater roms to the calspeeda set so that you can
+ update the hdd / game revision if you so please [mrsinister]
+
+-ts803: can display text and graphics, can boot from disk [Gabriele D'Antona]
+
+-dccons.c:
+  Dreamcast v1.022 "no MIL-CD" BIOS dumped [Leonard Oliveira]
+  Katana Set5 Dev.Box BIOS v1.001 found [MetalliC]
+  sorted out bioses/flashes, removed outdated comments [MetalliC]
+
+-apple2e: fix $c800 arbitration, fixes IDE and SCSI cards 
+ among others. [R. Belmont]
+
+-R9751: Clean up, add timer register, and add another system disk 
+ set to software list [Brandon Munger]
+
+-makedep.py: Finish making it python3-compatible [O. Galibert]
+
+-sfkick.cpp: Fill in missing dipswitches and added dip locations. [Brian Troha]
+
+-Added pre-compiled headers support to build system [Miodrag Milanovic]
+ 
+-improvements to hp9845b driver [F.Ulivi]
+
+-Increase debug console maximum parameters in debugcon.h [ConHuevosGuey]
+
+New machines added or promoted from NOT_WORKING status
+------------------------------------------------------
+Waku Waku Marine [Ryan Holtz, Smitdogg, Shoutime, The Dumping Union]
+Il Galeone [f205v]
+Samsung SPC-1500 [Miso Kim]
+TI-1250 [hap, Sean Riddle]
+Speak & Spell Compact (3 versions) [hap, Sean Riddle, Lord Nightmare, Kevin Horton, plgDavid(David Viens)]
+Ordisavant (France) [TeamEurope, dlfrsilver]
+Fidelity Voice Chess Challenger (Spanish) [Berger]
+Doraemon Meikyuu Daisakusen (Tourvision PCE bootleg) [system11, The Dumping Union]
+
+New clones added or promoted from NOT_WORKING status
+----------------------------------------------------
+Gun Dealer (bootleg) [Yrouel]
+Desert Patrol (set 2) (Project Support Engineering (Telegames license))
+  [blinddog1, Paul Swan, gregf]
+Rambo 3 (bootleg of Ikari, Joystick hack) [Any]
+Wing Force (Japan, prototype) [ShouTime]
+Laser Ghost (Japan) (FD1094 317-0164) [Charles MacDonald, ShouTime]
+Strider (USA, B-Board 90629B-3, Street Fighter II conversion) [system11]
+Nova 2001 (Japan, hack?) [system11]
+Raizin Ping Pong (V2.01J) [Shoutime]
+Power Shovel ni Norou!! - Power Shovel Simulator (v2.07J, alt) [Shoutime]
+Stadium Hero '96 (USA, EAH) [Kevin Eshbach, The Dumping Union]
+Multi Game '96 (Italy) [system11]
+Desert Patrol (set 2) (Project Support Engineering (Telegames license)) [blinddog1, Paul Swan, gregf]
+
+
+New machines marked as NOT_WORKING
+----------------------------------
+Sequential Circuits Prophet-600 [R. Belmont]
+Didact mp68a [Joakim Larsson]
+Didact md6802 [Joakim Larsson]
+Esselte 100 [Joakim Larsson]
+1943 Kai (Tourvision PCE bootleg) [system11, The Dumping Union]
+After Burner (Tourvision PCE bootleg) [system11, The Dumping Union]
+Armed-F (Tourvision PCE bootleg) [system11, The Dumping Union]
+Ballistix (Tourvision PCE bootleg) [system11, The Dumping Union]
+Be Ball (Tourvision PCE bootleg) [system11, The Dumping Union]
+Chōzetsurinjin Beraboh Man (Tourvision PCE bootleg) [system11, The Dumping Union]
+Bomberman (Tourvision PCE bootleg) [system11, The Dumping Union]
+Chuka Taisen (Tourvision PCE bootleg) [system11, The Dumping Union]
+Coryoon (Tourvision PCE bootleg) [system11, The Dumping Union]
+Daisenpu (Tourvision PCE bootleg) [system11, The Dumping Union]
+Dead Moon (Tourvision PCE bootleg) [system11, The Dumping Union]
+Devil Crush (Tourvision PCE bootleg) [system11, The Dumping Union]
+Dodge Ball (Tourvision PCE bootleg) [system11, The Dumping Union]
+Dragon Spirit (Tourvision PCE bootleg) [system11, The Dumping Union]
+Final Blaster (Tourvision PCE bootleg) [system11, The Dumping Union]
+Final Match Tennis (Tourvision PCE bootleg) [system11, The Dumping Union]
+Gunhed (Tourvision PCE bootleg) [system11, The Dumping Union]
+Hana Taka Daka (Tourvision PCE bootleg) [system11, The Dumping Union]
+Jinmu Densho (Tourvision PCE bootleg) [system11, The Dumping Union]
+Kiki Kaikai (Tourvision PCE bootleg) [system11, The Dumping Union]
+Legend of Hero Tonma (Tourvision PCE bootleg) [system11, The Dumping Union]
+Mizubaku Daibouken Liquid Kids (Tourvision PCE bootleg) [system11, The Dumping Union]
+Mr Heli (Tourvision PCE bootleg) [system11, The Dumping Union]
+Ninja Ryukenden (Tourvision PCE bootleg) [system11, The Dumping Union]
+Operation Wolf (Tourvision PCE bootleg) [system11, The Dumping Union]
+Override (Tourvision PCE bootleg) [system11, The Dumping Union]
+Pac-Land (Tourvision PCE bootleg) [system11, The Dumping Union]
+PC Genjin Punkic Cyborg (Tourvision PCE bootleg) [system11, The Dumping Union]
+Power Drift (Tourvision PCE bootleg) [system11, The Dumping Union]
+Pro Yakyuu World Stadium '91 (Tourvision PCE bootleg) [system11, The Dumping Union]
+Psycho Chaser (Tourvision PCE bootleg) [system11, The Dumping Union]
+Puzzle Boy (Tourvision PCE bootleg) [system11, The Dumping Union]
+Raiden (Tourvision PCE bootleg) [system11, The Dumping Union]
+R-Type II (Tourvision PCE bootleg) [system11, The Dumping Union]
+Saiga No Nindou - Ninja Spirit (Tourvision PCE bootleg) [system11, The Dumping Union]
+Salamander (Tourvision PCE bootleg) [system11, The Dumping Union]
+Shinobi (Tourvision PCE bootleg) [system11, The Dumping Union]
+Side Arms (Tourvision PCE bootleg) [system11, The Dumping Union]
+Skweek (Tourvision PCE bootleg) [system11, The Dumping Union]
+Son Son II (Tourvision PCE bootleg) [system11, The Dumping Union]
+Tatsujin (Tourvision PCE bootleg) [system11, The Dumping Union]
+Terra Cresta II (Tourvision PCE bootleg) [system11, The Dumping Union]
+Toy Shop Boys (Tourvision PCE bootleg) [system11, The Dumping Union]
+Veigues (Tourvision PCE bootleg) [system11, The Dumping Union]
+Winning Shot (Tourvision PCE bootleg) [system11, The Dumping Union]
+W-Ring (Tourvision PCE bootleg) [system11, The Dumping Union]
+Xevious (Tourvision PCE bootleg) [system11, The Dumping Union]
+Unknown Tab Austria Poker [ANY]
+Fidelity Voice Excellence [plgDavid]
+Roland TR-606 [hap, Kevin Horton]
+
+
+New clones marked as NOT_WORKING
+--------------------------------
+
+
+
+New WORKING software list additions
+-----------------------------------
+snotec.xml: added 4 new cart dumps. [TeamEurope]
+Added 10 new cart dumps for PreComputer 1000. [TeamEurope]
+Added 2 new cart dumps for Ordisavant (France). [TeamEurope, dlfrsilver]
+c64_flop.xml: Added Little Knight Arthur. [Pasi Hytönen]
+c64_cart.xml: Added KoalaPainter. [Curt Coder]
+
+New NOT_WORKING software list additions
+---------------------------------------
+
