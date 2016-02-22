@@ -1,4 +1,4 @@
 @echo off
-rem for /f "usebackq tokens=1-2 delims=:" %%i in (`svn info https://github.com/mamedev/mame/tags`) do if /i "%%i"=="last changed rev" set LASTREV=%%j
-set LASTREV=r248552
-svn log https://github.com/mamedev/mame/trunk -v -r %LASTREV%:HEAD
+for /f "delims=" %%a in ('git -C ../mame describe --tags --abbrev^=0') do @set LAST_TAG=%%a
+git -C ../mame log %LAST_TAG%..HEAD > temp.log
+makewn temp.log > whatsnew.txt
