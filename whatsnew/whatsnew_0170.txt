@@ -176,6 +176,34 @@ Source Changes
 
 -Added SteamLink initial support [Sam Lantiga, Miodrag Milanovic]
 
+-Refactored NTSC pass and added sliders [ImJezze]
+	* merged YIQ encode and decode pass into one NTSC pass
+	* fixed half texel offset
+	* re-added usage of A value
+	* re-added usage of P value
+	* re-added jitter of B value
+	* changed default O value to 0
+	* reduced sample count to 64
+	* removed duplicate YIQ settings definition
+	* added sliders for most NTSC settings
+	* fit B value jitter between a min/max range of 0 and 1
+	* fit A and B value between a min/max range of -1 and 1
+ Refactored color convergence pass
+	* color convergence is now independent from ratio
+	* color convergence is now limited to a maximum of 10
+	* the radial color convergence now "translates" the most outer 
+	  pixel as they would be translated by the linear color convergence 
+	  with the same amount
+	* added color convergence pass to vector rendering	
+ Misc.
+	* fixed half texel offset in pre-scale pass
+	* fit scan-line jitter between a min/max range of 0 and 1
+	* color convolution, defocus and phosphor pass will now be skipped 
+	  if all influencing parameters are 0
+	* added hum bar simulation based on [MooglyGuy's] GLSL port of the MAME shader pipeline
+	* added monochrome-chessboard.png
+	* added slot-mask-aligned.png (to simulate a TFT LCD
+
 New machines added or promoted from NOT_WORKING status
 ------------------------------------------------------
 Wing Force (Japan, prototype) [ShouTime]
