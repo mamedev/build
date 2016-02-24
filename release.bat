@@ -70,6 +70,14 @@ mkdir %2\samples 2> nul
 xcopy samples\* %2\samples /s /i /y > nul
 mkdir %2\artwork 2> nul
 xcopy artwork\* %2\artwork /s /i /y > nul
+mkdir %2\bgfx 2> nul
+xcopy bgfx\* %2\bgfx /s /i /y > nul
+mkdir %2\shaders 2> nul
+xcopy shaders\* %2\shaders /s /i /y > nul
+mkdir %2\plugins 2> nul
+xcopy plugins\* %2\plugins /s /i /y > nul
+mkdir %2\language 2> nul
+xcopy language\*.mo %2\language /s /i /y > nul
 
 strip %2\*.exe
 echo Packing %4
