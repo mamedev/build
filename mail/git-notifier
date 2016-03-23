@@ -17,10 +17,6 @@ import subprocess
 ##
 ## This is a MAME-specific version of the freely-available git-notifier.
 ##
-## The original script is ugly.  Because of that, I've worked with what we've 
-## been given and not tried to fix much of it.  But seriously, temp files on 
-## disk to transfer a large string between functions.  Really?
-##
 ###############################################################################
 
 
@@ -292,7 +288,6 @@ def getCurrent():
     return state
 
 
-# Global wtf :-P
 Tmps = []
 
 def makeTmp():
@@ -501,7 +496,7 @@ def sendChangeMail(rev, subject, commitString, heads, show_cmd, diff_cmd, stat_c
         diff = git(diff_cmd, stdout_to=tmp)
         tmp.close()
 
-        # This is necessary because the original code is nuts
+        #
         with open(tname, 'r') as fin:
             cachedDiffText = fin.read()
 
