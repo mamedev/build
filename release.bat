@@ -65,19 +65,19 @@ xcopy hash\* %2\hash /s /i /y > nul
 mkdir %2\hlsl 2> nul
 xcopy hlsl\* %2\hlsl /s /i /y > nul
 mkdir %2\nl_examples 2> nul
-xcopy  nl_examples\* %2\nl_examples /s /i /y > nul
+xcopy nl_examples\* %2\nl_examples /s /i /y > nul
 mkdir %2\samples 2> nul
 xcopy samples\* %2\samples /s /i /y > nul
 mkdir %2\artwork 2> nul
 xcopy artwork\* %2\artwork /s /i /y > nul
 mkdir %2\bgfx 2> nul
 xcopy bgfx\* %2\bgfx /s /i /y > nul
-mkdir %2\shaders 2> nul
-xcopy shaders\* %2\shaders /s /i /y > nul
 mkdir %2\plugins 2> nul
 xcopy plugins\* %2\plugins /s /i /y > nul
 mkdir %2\language 2> nul
 xcopy language\*.mo %2\language /s /i /y > nul
+
+copy uismall.bdf %2\. /Y > nul 
 
 strip %2\*.exe
 echo Packing %4
