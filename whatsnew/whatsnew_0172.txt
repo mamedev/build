@@ -80,10 +80,53 @@ Source Changes
 
 -PT-BR Translation update [Ashura-X]
 
--Replace strformat, strprintf and strcatprintf with type-safe [Vas Crabb]
- steam_format and string_format Update MAME to use new function
- Instantiate ODR-used static constant members Make some of the UI code
- more localisable Remove use of retired functions in tools
+-Type-safe C++ printf analog and vector-backed iostreams [Vas Crabb]
+ * Supports most C99, glibc, SUS and MSVCRT format specifications
+ * Allows formatting any object with stream output operator with %s
+ * Replaces strformat, strprintf and strcatprintf
+ * Move to type-safe templates for logerror and popmessage
+ * Remove now-unnecessary I64FMT from calls to logerror/popmessage
+ * Eliminate core_i64_format functions for the most part
+
+-Modernise much of the file handling code [Vas Crabb]
+ * Make core_file, osd_file, and avi_file and polymorphic classes
+ * Move osd_file implementations to shareable OSD module code
+ * Make zip/7z implementations of archive_file with common API
+ * Prefer destructors over explicit close functions
+ * Make APIs supply smart pointers
+ * Pass std::string though lots of APIs rather than C string pointers
+ * Add methods for flushing user-space file buffers
+ * Make archive_file create/destroy thread-safe
+ * Fix buffer overrun when walking zip ECD
+ * Fix some resource leaks in file handling code
+ * Fix edge cases where incorrect error code is returned on Windows
+ * Add Solaris PTY implementation
+ * Support ~/$FOO/${BAR} expansion with SDL OSD
+ * Make emu_file handle zip and 7z archives identically
+ * Search archives with CRC+path, CRC+partial path, CRC, path, partial
+    path when loading ROMs/artwork/cheats/etc.
+ * Support 7z archives via zippath API
+ * Support 7z archives for fullpath loading and media file manager
+ * Make romcmp tool support 7z archives
+
+-Improve OSD font API [Vas Crabb]
+ * Release font handles on destruction
+ * Move font enumeration into OSD, implement for SDL, Windows, OSX
+ * Fix drawing characters outside Unicode BMP with sdl_ttf
+ * Support TTC fonts with sdl_ttf
+ * Separate font display names from configuration names
+ * Make OSX font configuration name the PostScript face name
+ * Make sdl_ttf configuration name Family|Style
+ * Supply ui_small font as a BDF file with Adobe glyph names
+
+-Fix stack smash bugs in INP read/write and better encapsulate the INP
+ header I/O code (thanks Tafoid for reporting), fix divide-by-zero in
+ pathological case of zero-frame recording [Vas Crabb]
+
+-Fix file naming issue when creating new image from internal file
+ manager with media loaded (thanks BIOS-D for reporting) [Vas Crabb]
+
+-Fix many mismatched free() / delete / delete [] errors [Vas Crabb]
 
 -String Translate for Chinese (Traditional / Simplified) [YuiFAN]
 
@@ -102,14 +145,6 @@ Source Changes
 
 -Rewrite input routines as modules [Brad Hughes]
 
-- Support *n conversion in stream_format/string_format [Vas Crabb]
- * Make stream_format return characters printed
- * Add iostreams with std::vector storage
- * Move to type-safe templates for logerror and popmessage
- * Remove now-unnecessary I64FMT from calls to logerror/popmessage
- * Put some lib/util stuff in util:: namespace
- * Some fixes to Japanese translation
-
 -Reparent all sets of IGS Jingle Bell. Added technical information
  about the hardware [Roberto Fresca]
 
@@ -126,14 +161,15 @@ Source Changes
 
 -French (Belgium) translations [Mevi]
 
--crazybon: update DIP switch descriptions/defaults according to manual
- [Vas Crabb, Ioannis Bampoulas]
+-crazybon improvements [Vas Crabb, Ioannis Bampoulas]
+ * Update DIP switch descriptions/defaults according to manual
+ * Hook up reel stop buttons and add to layout
 
--crazybon: hook up stop buttons and add to layout [Vas Crabb, Ioannis Bampoulas] 
- there may be a payout or keyout button
- and hopper switch that still aren't connected the game is playable
- with the current clickable artwork, but it might be a nice touch to
- add clickable buttons for the individual reel stop buttons
+-Add original Dyna Cherry Master '99 QL-1 V9B.00 set [Vas Crabb, Ioannis Bampoulas]
+ * Rename existing set to cmast99b - it's hacked to remove Dyna name
+ * Add DIP switch settings and defaults from manual, nothing confirmed
+ * Confirm correct ROM loading
+ * Add notes, including how to reach input test
 
 -Fixed infinite loop [ImJezze]
  * fixed infinite loop while building slider list, when more than one
@@ -189,10 +225,6 @@ Source Changes
 
 -Update Frankie Dettori layout to MAME 'dark' style [John Parker]
 
--Fix complete failure to read zlib compressed data, handle EOF better
- in compressed files (nw) Fix bug causing crash in pathological case of
- zero-frame INP file [Vas Crabb]
-
 -svi318: initial version of driver rewrite [Dirk Best]
 
 -NoteTaker: Hooked up screen framebuffer. Hacked the Odd/Even interrupt
@@ -202,12 +234,11 @@ Source Changes
  weeds and actually tries to load from floppy now. Needs FDC hooked up
  still. [Lord Nightmare]
 
--To ArBee with love Add common debugger commands to global menu bar [Vas Crabb] 
- Also fix occasional crash in Copy Visible Note that copy
+-Add common debugger commands to global menu bar in OSX [Vas Crabb] 
+ Also fix occasional crash in Copy Visible.  Note that copy
  visible, paste, toggle breakpoint, and view options still require you
- to use context menus in windows Debug/Run menus only work when a
- debugger window has focus, so Break is less useful than it could be
- Hope this is at least a slight improvement for you, ArBee
+ to use context menus in windows.  Debug/Run menus only work when a
+ debugger window has focus, so Break is less useful than it could be.
 
 -floppy: Fix subtle interaction between wd_fdc initial restore and floppy reset [O. Galibert] 
 
@@ -219,20 +250,6 @@ Source Changes
 -NoteTaker: Attached FDC and floppy drive. [Lord Nightmare]
 
 -NoteTaker: Begin to hook up DiskReg register. [Lord Nightmare]
-
--Make osd_file a polymorphic class that's held with smart pointers Make [Vas Crabb]
- avi_file a class that's held with smart pointers, encapsulate various
- AVI I/O structures Make zip_file and _7z_file classes rather than
- having free functions everywhere Hide zip/7z class implementation
- behind an interface, no longer need to call close() to send back to
- the cache Don't dump as much crap in global namespace Add solaris PTY
- implementation Improve variable expansion for SDL OSD - supports
- ~/$FOO/${BAR} syntax Rearrange stuff so the same things are in file
- module for all OSDs Move file stuff into its own module
-
- 7z/zip open and destruct are still not thread-safe due to lack of
- interlocks around cache access Directory functions still need to be
- moved to file module SDL OSD may not initialise WinSock on Windows
 
 -netlist updates: [Couriersud]
  * First steps to move towards c++11.
@@ -249,13 +266,6 @@ Source Changes
 
 -Symbolics 3600: Fix ROM mapping, add a few more PLD/PLA/PAL labels.
  [Lord Nightmare]
-
--Fix drawing characters outside Unicode BMP with SDL Font selection on [Vas Crabb]
- Linux seems to be working provided you don't choose C/J/K fonts
- Selecting a C/J/K font causes MAME to give a black screen when
- dropping back to main menu Since fallback fonts aren't used, this
- means you can't use the Chinese/Japanese localisations with SDL font
- provider
 
 -A lot of ttf fonts (including C/J/K fonts like unifont) do not have an
  type attribute "Regular". This fix will load the first font found if
@@ -276,24 +286,6 @@ Source Changes
 -Rewrote overly complex rawinput_device_improve_name function for
  rawinput module, plus fixing some other defects in input modules as
  detected by coverity. [Brad Hughes]
-
-- Remove confusing method from vectorstreams that hide base_ios [Vas Crabb]
-    method (fixes disassembly view)
- * Allow std::string to pass through core_file unmolested (reduces
-    temporary allocations)
- * Make zip/7z instances of same class with uniform interface
- * zippath browsing is broken at the moment
- This is another step towards transparent archive support.  It's now
- possible to access zip and 7z archives with the same code.  Nothing is
- taking advantage of it yet.  There's now some very similar code in
- fileio.cpp and clifront.cpp that could be folded at some point.
-
--Add original Dyna Cherry Master '99 QL-1 V9B.00 set [Vas Crabb, Ioannis Bampoulas]
- * Rename existing set to cmast99b - it's hacked to remove Dyna name
- * Add DIP switch settings and defaults from manual, nothing confirmed
- * Confirm correct ROM loading
- * Change to use cmast91 setup - gets to input test screen but still
-    not working
 
 -Added support for Raspberry Pi cross-compile [Miodrag Milanovic]
 
@@ -328,20 +320,16 @@ Source Changes
 
 -Coco Loco: Added technical notes [Roberto Fresca]
 
--nbmj8688 two-player game improvements: [Vas Crabb]
- * Flip Player 2 view to better represent what they see from their
-    side of cocktail cabinet
- * Add DIP locations for bijokkoy, bijokkog, housemnq, housemn2 and
-    livegal
- * Document DIP switches for livegal
- * Make analyser switch for bijokkoy, bijokkog, housemnq, housemn2 and
-    livegal a toggle
-
--nbmj8688 input improvements: [Vas Crabb]
- * Improve DIPs in mcitylov, iemotom and ryuuha
+-nbmj8688 improvements [Vas Crabb]
  * Improve mapping of start buttons in two-player cocktails with LCDs
-
--Improve DIP switches for kanatuen, kyuhito and idhimitu [Vas Crabb]
+ * Flip Player 2 view in two-player games with LCDs to better represent
+    what they see from their side of cocktail cabinet
+ * Add DIP locations for  and
+    livegal
+ * Document DIP switch functions/locations for bijokkoy, bijokkog,
+    housemnq, housemn2, livegal, mcitylov, iemotom, ryuuha, kanatuen,
+    kyuhito and idhimitu
+ * Make analyser switch a toggle for many games
 
 -corrected rom names in seganinj set [Mathieu Patard]
  * also added correct 'rev A' sprite rom (the program roms were rev A,
