@@ -21,8 +21,7 @@ del /s *#
 
 @rem --- run a cleanup pass
 @if not exist srcclean.exe (
-make maketree
-make srcclean.exe
+@goto :badenvironment
 )
 @echo Cleaning up tabs/spaces/end of lines....
 for /r src %%i in (*.cpp) do srcclean %%i || goto :cleanupfailed
@@ -32,12 +31,7 @@ for /r src %%i in (*.lst) do srcclean %%i || goto :cleanupfailed
 for /r src %%i in (*.lay) do srcclean %%i || goto :cleanupfailed
 for /r src %%i in (*.inc) do srcclean %%i || goto :cleanupfailed
 for /r hash %%i in (*.xml) do srcclean %%i || goto :cleanupfailed
-
-
-@rem --- verify that all the games are referenced
-set MISSING=0
-call :finddrivers
-if not "%MISSING%"=="0" goto :drivmissing
+for /r scripts %%i in (*.lua) do srcclean %%i || goto :cleanupfailed
 
 @goto :eof
 
