@@ -76,6 +76,8 @@ mkdir %2\plugins 2> nul
 xcopy plugins\* %2\plugins /s /i /y > nul
 mkdir %2\language 2> nul
 xcopy language\*.mo %2\language /s /i /y > nul
+mkdir %2\ini\presets 2> nul
+xcopy ini\presets\* %2\ini\presets /s /i /y > nul
 
 copy uismall.bdf %2\. /Y > nul 
 
