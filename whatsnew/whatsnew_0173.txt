@@ -96,15 +96,15 @@ Source Changes
 
 -This one documents what I think is a real bug of the Japanese game
  Sports Pad Soccer: part of the player 2 input is read from player 1
- input instead. The patch also reorganizes code of the Japanese Sports
+ input instead. Also, reorganized code of the Japanese Sports
  Pad controller device and replace some PORT_CUSTOM/PORT_CHANGED
  callbacks with PORT_READ_LINE/PORT_WRITE_LINE. [Enik]
 
 -Add experimental cheat lua plugin [Carl]
 
--Improvements to tape driver of hp9845b [F.Ulivi]
+-Improvements to tape driver of hp9845b [F. Ulivi]
 
--info.cpp: Improved documentation of input devices in the listxml
+-info.cpp: Improved documentation of input devices in the -listxml
  output, since having just a generic 'number of buttons' is rather
  pointless in the context of home systems with configurable controllers
  (being them keyboards, keypads or joypads). Now the various
@@ -192,12 +192,6 @@ Source Changes
 
 -bgfx: Add data-driven render target clearing [Ryan Holtz]
 
--neogeo: reworked inputs to work through the slot device interface. you
- can now configure the controllers available in the multicart driver
- (neogeo) with the -crtl1 and -ctrl2 options. when you run single game
- drivers (e.g. mslug, or kof94, etc.), instead, a unique controller is
- available and cannot be modified. [Fabio Priuli]
-
 -Significant speed improvement:
  * added a new solver using compressed row format
  * fixed sorting
@@ -259,12 +253,16 @@ Source Changes
     other
  * distort_corner is intependent from the image distortion
 
--neogeo.cpp: more accurate implementation of contollers through slot
- devices. If you want to launch janshin in the multislot driver
- (neogeo) you shall now prescribe
- * edge "" -ctrl1 mahjong and set accordingly the dipswitch. The
-    janshin driver already comes pre-configured in the proper way,
-    instead. [Fabio Priuli]
+-neogeo: reworked inputs to work through the slot device interface. you
+ can now configure the 15-pin ports available in the multicart driver
+ (neogeo) with the -crtl1 and -ctrl2 options. Thus, if you want to launch 
+ janshin in neogeo with the mahjong control panel you shall now prescribe
+    -edge "" -ctrl1 mahjong
+ and set accordingly the dipswitch (the first option disables inputs
+ from the edge connector). When you run single game drivers (e.g. mslug, 
+ or kof94, etc.), instead, a unique controller is available and cannot 
+ be modified. In particular, the janshin driver already comes 
+ pre-configured in the proper way. [Fabio Priuli]
 
 -Refactor OSD window.  [Brad Hughes]
  Unified renderer in osd_window as std::unique_ptr
@@ -284,7 +282,8 @@ Source Changes
 -saturn.cpp: converted controllers to work through slot devices,
  cleaning up the related code. [Fabio Priuli]
 
--Sega Multitap adapter (6 controllers). Saturn Bomberman can now be
+-saturn.cpp:  Added support for SegaTap adapter (4 controllers) and 
+ Sega Multitap adapter (6 controllers). Saturn Bomberman can now be
  played as intended. [Fabio Priuli]
 
 -softlist.cpp: add support for "rom_ignore". [Fabio Priuli]
@@ -333,6 +332,9 @@ Source Changes
  * started hle simulation of usb devices on chihiro baseboard
  * there is a first implementation of xbox game controller
  * the chihiro bios can now enter system configuration menu
+
+-hp9845: added capabilty to load option ROMs [F. Ulivi]
+
 
 New machines added or promoted from NOT_WORKING status
 ------------------------------------------------------
