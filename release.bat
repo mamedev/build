@@ -48,7 +48,6 @@ copy %1\ldverify.exe %2\. /Y > nul
 copy %1\ldresample.exe %2\. /Y > nul
 copy %1\romcmp.exe %2\. /Y > nul
 copy %1\jedutil.exe %2\. /Y > nul
-copy %1\ledutil.exe %2\. /Y > nul
 copy %1\unidasm.exe %2\. /Y > nul
 copy %1\nltool.exe  %2\. /Y > nul
 copy %1\nlwav.exe  %2\. /Y > nul
