@@ -37,32 +37,20 @@ Source Changes
 -Change N64DD to use harddisk device instead of quikload device. [Happy]
  Updated checksum for Randnet disk, previous conversion was faulty.
 
--Flaming 7: Added new technical notes. [Roberto Fresca]
-
--ui refactoring [Vas Crabb]
- * move menu classes into ::ui namesapce
- * reduce scope of many symbols
-
 -West Story improvements: the NMI story [AJR]
  * Thoroughly reworked weststry memory map based on M68000 code
  * FG tilemap scrolling implemented for weststry
  * Sound hooked up, but doesn't fully work (YM3812 stops sending IRQs)
  * Various things documented in other bloodbro.cpp games
 
--Merit Match Games driver: Added technical notes and corrected CRT 810
- layout + old notes. [Roberto Fresca]
-
 -Added color proms to Ozma Wars. [MASH]
-
--Merit Match Games driver: Some cleanup for coding standards, and fixed
- Coinage DIP switches. [Roberto Fresca]
 
 -Merged ataxx.cpp into leland.cpp as they had a completely shared main
  header file (leland.h).  [Tafoid]
 
 -ui refactoring [Vas Crabb]
- * Make ARRAY_LENGTH cause a compile error if used with a
-    pointer/vector
+ * Make ARRAY_LENGTH cause a compile error if used with a pointer/vector
+ * move menu classes into ::ui namesapce and reduce scope of many symbols
  * Clean up text input code, move common operations to inline
     templates
  * Fix numerous one-byte buffer overruns
@@ -73,9 +61,6 @@ Source Changes
  Added factory class to support this. This will decrease compile times
  significantly going forward. [Couriersud]
 
--Magic Fly driver: Refactored PCB layout and pinout with new findings
- and PCB trace. Also added some technical notes [Roberto Fresca].
-
 -Added highly experimental SHARC recompiler (disabled by default)
  [Ville Linde]
 
@@ -85,28 +70,68 @@ Source Changes
 -Tetris + Cherry Master (+K, Canada Version, encrypted) hidden switch
  documentation... [Ioannis Bampoulas]
 
--Flaming 7 (W-4 hardware): Added hand made electronic serial DS2401
- dump, as a start of electronic serial number support. Added technical
- notes. [Roberto Fresca]
+-Merit Match Games driver: [Roberto Fresca]
+ * Added technical notes and corrected CRT 810 layout + old notes.
+ * Some cleanup for coding standards, and fixed Coinage DIP switches.
 
--Flaming 7 (W-4 hardware): Added electronic serial DS2401 device. Still
- remaining the connection and read routines. [Roberto Fresca]
+-Magic Fly driver: Refactored PCB layout and pinout with new findings
+ and PCB trace. Also added some technical notes [Roberto Fresca].
+
+-Major Poker: [Roberto Fresca]
+ * Added missing G2 gal16v8d.
+ * Added missing PLDs, plus technical notes.
+
+-Royal Card (Austrian, set 8): [Roberto Fresca]
+ * Added mirrored VRAM to $4000/$5000.
+ * Worked and added a default NVRAM. The game now is working properly.
+
+-Buena Suerte: Completed the Protel PCB set. Rearranged the graphics
+ ROMs to get accurate gfx banks. Discrete sound needs to be traced.
+ Game is working properly. [Roberto Fresca]
+
+-Buena Suerte (Protel PCB): Added technical notes and a WIP edge
+ connector and mech counters pinout. [Roberto Fresca, Gaby]
+
+-Flaming 7: [Roberto Fresca]
+ * Added new technical notes.
+ * Flaming 7: Decrypted the graphics ROMs & fixed the gfxdecode.
+    Bipolar PROM decode is still wrong.
+ * Graphics Bank 1 is color-accurate. Added some technical notes
+    about the missing extra layer for bonus graphics with the
+    related VRAM used range
+ * Dedicated inputs + DIP switch bank #1.
+ * DIP switches bank #2: bonus pay & internal progressive.
+ * DIP switches bank #3: Maximum Bet, Coin-In Timeout, Denomination,
+    and Progressive Sign.
+ * DIP switches bank #2: Notes about Bonus Pay...
+ * DIP switches bank #3: Added Progressive Sign notes...
+ * Added a DIP switches table ASCII layout...
+ * Added Pay Table Diagram...
+ * Added Pinout Diagram...
+ * Documented the Cyberdyne Printer Harness circuitry.
+ * Fixed the bipolar PROM load. Also improved both graphics banks
+    colors. Colors now are close, but still imperfect.
+
+-Flaming 7 (Taiwanese): Splitted a new machine driver, and added proper
+ gfxdecode. Improved the GFX bank #2. Still needs work... [Roberto Fresca]
+
+-Flaming 7 (W-4 hardware): [Roberto Fresca]
+ * Added hand made electronic serial DS2401 dump, as a start of
+    electronic serial number support. Added technical notes.
+ * Added electronic serial DS2401 device. Still remaining the
+    connection and read routines.
+ * Connected the electronic serial DS2401 device to the proper
+    PPI8255 (PC6) line.
+
+-Flaming 7 (W-4 hardware): correct DS2401 hookup and reverse-engineer
+ protection to get required serial number [Vas Crabb]
 
 -Commodore PET Joysticks and Sound Device [Ken White]
 
 -sun2: Preliminary MMU implementation, still has issues. [R. Belmont]
 
--aristmk6.cpp: reorganized sets based on their actual description and
- removed a few sets which were hacked or incomplete, compared to their
- parents [Heihachi_73]
-
--Flaming 7's: hook up serial EEPROM [Vas Crabb]
-
 -sun2: MMU fixes, both VME and Multibus variants now POST and show
  something. [R. Belmont]
-
--Flaming 7 (W-4 hardware): Connected the electronic serial DS2401
- device to the proper PPI8255 (PC6) line. [Roberto Fresca]
 
 -gbcolor.xml: Documented more Game Boy Color PCBs, based on no-intro
  pictures [Fabio Priuli]
@@ -121,10 +146,6 @@ Source Changes
  data [smf]
 
 -Fix NeoGeo CD P2 inputs [fuzzbop]
-
--aristmk6.cpp: unified rom naming and fixed loading offset in games
- which use the expansion board. Also added a few sets that were
- missing. [Heihachi_73]
 
 -Update rainbow.cpp [Bavarese]
 
@@ -153,10 +174,6 @@ Source Changes
     up initial mappings
 
 -gba.xml: documented some more Game Boy Advance PCBs. [Fabio Priuli]
-
--aristmk6.cpp: fixed BIOS loading and some BIOS naming; removed an
- overdumped BIOS and moved qnilese base PCB ROMS to the BIOS set.
- [Heihachi_73, Fabio Priuli]
 
 -gba.cpp: several improvements [Fabio Priuli]
  * Implemented emulation of the  "General Purpose I/O" port (GPIO) of
@@ -238,20 +255,6 @@ Source Changes
 
 -rainbow.cpp: add 23-090b1 z80 arbitrator PROM dump [Lord Nightmare]
 
--Buena Suerte: Completed the Protel PCB set. Rearranged the graphics
- ROMs to get accurate gfx banks. Discrete sound needs to be traced.
- Game is working properly. [Roberto Fresca]
-
--Buena Suerte (Protel PCB): Added technical notes and a WIP edge
- connector and mech counters pinout. [Roberto Fresca, Gaby]
-
--fl7_3121: promoted to working [Vas Crabb]
- * Correct DS2401 hookup on PIA 0 port C
- * Make serial number ROM to match our program ROM dump
- * Inputs could be improved
- * Get past the data error on empty NVRAM with book (0) and reset (R)
-    buttons
-
 -Small update of italian traslation [AntoPISA]
 
 -Fix keyboard shortcus for disassembly comments pane [Vas Crabb]
@@ -268,12 +271,8 @@ Source Changes
  * mark modified trees as dirty
  * note that version now comes from makefile
 
--Major Poker: Added missing PLDs, plus technical notes. [Roberto Fresca]
-
 -A little change to device_image_interface::call_display to better
  decouple UI fronted and image devices [F.Ulivi]
-
--Major Poker: Added missing G2 gal16v8d. [Roberto Fresca]
 
 -Rom for GameKing 3 [PeT, James]
 
@@ -282,12 +281,6 @@ Source Changes
 -Remove Direct3D abstraction layer [Giuseppe Gorgoglione]
 
 -sun3: many improvements, all models now POST including 3/2xx [R. Belmont]
-
--Royal Card (Austrian, set 8): Added mirrored VRAM to $4000/$5000.
- [Roberto Fresca]
-
--Royal Card (Austrian, set 8): Worked and added a default NVRAM. The
- game now is working properly. [Roberto Fresca]
 
 -Reverse-engineered Moto Frenzy security FPGA and implemented decryption code
  [Morten Shearman Kirkegaard, Samuel Neves, Peter Wilhelmsen]
@@ -336,28 +329,30 @@ Source Changes
 
 -intelfsh, i2cmem: Not a device_memory_interface either [O. Galibert]
 
--aristmk5.cpp: Added proper descriptions to most sets. [Heihachi_73]
+-aristmk5.cpp improvements: [Heihachi_73]
+ * reorganized sets based on their actual description.
+ * Added proper descriptions to most sets.
+ * unified rom naming and added a few sets that were missing.
+
+-aristmk6.cpp improvements: [Heihachi_73]
+ * reorganized sets based on their actual description and removed a
+    few sets which were hacked or incomplete, compared to their
+    parents
+ * unified rom naming and fixed loading offset in games which use the
+    expansion board. Also added a few sets that were missing.
+
+-aristmk6.cpp: fixed BIOS loading and some BIOS naming; removed an
+ overdumped BIOS and moved qnilese base PCB ROMS to the BIOS set.
+ [Heihachi_73, Fabio Priuli]
 
 -decwritr.c: update the la120 driver documentation a bit, fixed memory
  mirror related issue [Lord Nightmare] decwritr.c: documented the Caps
  Lock key being a physical toggle [NeXT]
 
--aristmk5.cpp: reorganized sets based on their actual description. [Heihachi_73]
-
 -emumem: Handlers on different subunits of the same address with
  different address masks are now supported. [O. Galibert]
 
--aristmk5.cpp: unified rom naming and added a few sets that were
- missing. [Heihachi_73]
-
 -Add basic SPARCv7 core [Ryan Holtz]
-
--Flaming 7: Decrypted the graphics ROMs & fixed the gfxdecode. Bipolar
- PROM decode is still wrong. [Roberto Fresca]
-
--Flaming 7: Fixed the bipolar PROM load. Also improved both graphics
- banks colors. Colors now are close, but still imperfect.
- [Roberto Fresca]
 
 -halleyc: Some steps towards a better readability of the video code [O. Galibert]
 
@@ -366,35 +361,9 @@ Source Changes
 
 -emumem: Fix some issues [O. Galibert]
 
--Flaming 7: Graphics Bank 1 is color-accurate. Added some technical
- notes about the missing extra layer for bonus graphics with the
- related VRAM used range [Roberto Fresca]
-
 -newbrain fdc: fix mirrors w.r.t mask [O. Galibert]
 
--Flaming 7: Dedicated inputs + DIP switch bank #1. [Roberto Fresca]
-
--Flaming 7: DIP switches bank #2: bonus pay & internal progressive. [Roberto Fresca]
-
--Flaming 7: DIP switches bank #3: Maximum Bet, Coin-In Timeout,
- Denomination, and Progressive Sign. [Roberto Fresca]
-
--Flaming 7: DIP switches bank #2: Notes about Bonus Pay... [Roberto Fresca]
-
--Flaming 7: DIP switches bank #3: Added Progressive Sign notes...[Roberto Fresca]
-
--Flaming 7: Added a DIP switches table ASCII layout... [Roberto Fresca]
-
--Flaming 7: Added Pay Table Diagram... [Roberto Fresca]
-
--Flaming 7: Added Pinout Diagram... [Roberto Fresca]
-
--Flaming 7: Documented the Cyberdyne Printer Harness circuitry. [Roberto Fresca]
-
 -Added correct ROM labels to helifire [Porchy, Muddymusic, The Dumping Union]
-
--Flaming 7 (Taiwanese): Splitted a new machine driver, and added proper
- gfxdecode. Improved the GFX bank #2. Still needs work... [Roberto Fresca]
 
 -apollo: install the unmapped handler in the correct post-trampoline range [O. Galibert]
 
@@ -412,6 +381,11 @@ Source Changes
  * Fix format of some opcodes
  * Produce clr synthetic
  * Allow running in v7, v8 and v9 modes
+ * Fix addcc/andcc in SPARCv7 mode and simplify integer op tables
+ * Allow ASI descriptions to be supplied with MCFG macro
+ * VIS I (UltraSPARC) and II (UltraSPARC III) support
+ * VIS 2+, VIS 3 and VIS 3B support
+ * Add several SPARC models to unidasm
 
 -banctec: If it's a 6803, then use a 6803, duh [O. Galibert]
 
@@ -420,20 +394,9 @@ Source Changes
 -seibucop.cpp: Prevent cop_angle to overflow byte range. Fixes III to I
  quadrant movements in Legionnaire and Heated Barrel. [Angelo Salese]
  
--SPARC disassembler improvements: [Vas Crabb]
- * Fix addcc/andcc in SPARCv7 mode and simplify integer op tables
- * Allow ASI descriptions to be supplied with MCFG macro
-
 -sun4: add SPARC ASI descriptions [Vas Crabb]
 
--Add SPARC to unidasm [Vas Crabb]
-
 -mac: Fix interactions between mirror and range [O. Galibert]
-
--VIS I (UltraSPARC) and II (UltraSPARC III) for SPARC disassembler [Vas Crabb]
- * Supports %gsr, all ops with exception of SIAM, and all ASI
-    constants
- * Use -arch sparcv9vis1 or -arch sparcv9vis2 with unidasm
 
 -Netlist changes
  * Replaced shared_ptr by unique_ptr.
@@ -459,11 +422,6 @@ Source Changes
 
 -galpani3.cpp: Added correct supplemental graphics roms to the Gals
  Panic 3 (Hong Kong) set. [Brian Troha, The Dumping Union]
-
--SPARC VIS 2+, VIS 3 and VIS 3B disassembler support [Vas Crabb]
- * Note that this omits non-VIS OSA 2007/2011 features
- * VIS 2+ ldtxa/ldtwa/sttwa still uses ldda/stda, using new mnemonics
-    requires special-casing this instruction and checking ASI
 
 -dec_lk201: keyclick [Bavarese] 
 
@@ -548,7 +506,7 @@ iSBC 80/10 [Nigel Barnes]
 iSBC 80/10A [Nigel Barnes]
 iSBC 80/10B [Nigel Barnes]
 iSBC 80/30 [Nigel Barnes]
-Flaming 7 (Red, White & Blue 7's + Hollywood Nights) [Roberto Fresca, Vas Crabb]
+Flaming 7 (Red, White & Blue 7's + Hollywood Nights) [Roberto Fresca, Vas Crabb, Ioannis Bampoulas]
 Super 9 Sensory Chess Challenger [hap, anonymous]
 Varth (bootleg) [Robbbert]
 Fidelity Elite Avant Garde (model 6117-9) [anonymous]
