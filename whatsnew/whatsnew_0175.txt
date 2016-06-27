@@ -57,10 +57,6 @@ Source Changes
  * Don't flat-out ignore input beyond the C1 hole
  * Fix decoding of SDL text input
 
--Fixed vs2015 compile. Started moving object definitions into cpp file.
- Added factory class to support this. This will decrease compile times
- significantly going forward. [Couriersud]
-
 -Added highly experimental SHARC recompiler (disabled by default)
  [Ville Linde]
 
@@ -221,26 +217,31 @@ Source Changes
  at least it is not stuck anymore to the time of first configuration.
  [Fabio Priuli]
 
--* Added constructors to prepare to move terminal setup into
-    constructor.
- * Reworked twoterm setup. Fixed some timebombs along the way.
- * Fix r2r dac. Remove dead code.
- * analog_outputs now created in constructor.
- * moved analog_input creation into constructor.
- * moved logic output creation to constructor.
- * moved all logic inputs into constructor.
- * Completely removed init_object. Finally. [Couriersud]
- * More code cleanup.
- * Dead code removal and minor refactoring.
- * Simplify. Align naming with stl. Fix somed pedantic warnings.
- * More STL compatability.
+-Netlist changes [Couriersud]
+ * Introduced HINT(device, hint) to clarify that hints are inheritent
+    and not specific to devices.
+ * Added improved profiling support to netlist. Statistics output now
+    proposes devices for which whole device activation/deactivation be
+    disabled. No significant improvement for pong, but breakout
+    experiences a 10% improvement.
+ * Introduced perftime_t and perfcount_t for gathering statistics.
+    These templates do not create any code if statistics are not kept.
+ * Make help2man ./nltool produce usuable output.
+ * Replaced shared_ptr by unique_ptr.
+ * Better seperation of setup_t and netlist_t.
+ * Fixed bugs in rdtsc code. Refactored timer code.
+ * Moved options code from include to cpp file.
+ * More truthtable refactoring. Removed half-finished code for
+    internal state support. As implemented, this would have had no
+    support for timing delays. 
+ * All netlist device setup is now done in the device constructor. This
+    significantly increases readability and stability and allowed to remove
+    init_object calls and start calls.
+ * Removed a significant amount of dead code.
  * Remove ATTR_HOT and ATTR_COLD. Refactored netlist_time.
- * Fix long standing workaround which would ignore policy of
-    change-only" propagation.
- * Rewrote for loops to use auto : semantics.
+ * More STL usage and c++11.
  * Get rid of nl_math. Remove nl_util.h and moved contents to
     plib/putil.h.
- * Fix standalone build. Refactor ptypes.h. [Couriersud]
 
 -Major refactoring of debugger core [Ryan Holtz]
  * Eliminate globals/file statics
@@ -402,26 +403,6 @@ Source Changes
 -sun4: add SPARC ASI descriptions [Vas Crabb]
 
 -mac: Fix interactions between mirror and range [O. Galibert]
-
--Netlist changes
- * Replaced shared_ptr by unique_ptr.
- * Better seperation of setup_t and netlist_t.
- * Fixed bugs in rdtsc code. Refactored timer code.
- * Simplify conditional activation/deactivation.
- * Introduced HINT(device, hint) to clarify that hints are inheritent
-    and not specific to devices.
- * Added improved profiling support to netlist. Statistics output now
-    proposes devices for which whole device activation/deactivation be
-    disabled. No significant improvement for pong, but breakout
-    experiences a 10% improvement.
- * Moved options code from include to cpp file.
- * Minor modifications to 7493 and 9316
- * Introduced perftime_t and perfcount_t for gathering statistics.
-    These templates do not create any code if statistics are not kept.
- * Make help2man ./nltool produce usuable output.
- * More truthtable refactoring. Removed half-finished code for
-    internal state support. As implemented, this would have had no
-    support for timing delays. [Couriersud]
 
 -Rewrite SPARC emulation based on detailed descriptions from SPARC manual [Ryan Holtz]
 
