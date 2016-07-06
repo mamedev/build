@@ -249,6 +249,6 @@ print('Comparing %s to %s' % (oldbuild, newbuild))
 print('')
 
 printResult('New machines added or promoted from NOT_WORKING status', new_working_parents)
-printResult('New clones added or promoted from NOT_WORKING status', new_working_parents)
-printResult('New machines marked as NOT_WORKING', new_nonworking_clones)
+printResult('New clones added or promoted from NOT_WORKING status', new_working_clones)
+printResult('New machines marked as NOT_WORKING', new_nonworking_parents)
 printResult('New clones marked as NOT_WORKING', new_nonworking_clones)
