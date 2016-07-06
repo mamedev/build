@@ -16,14 +16,14 @@ class ErrorHandler(object):
 
     def error(self, exception):
         self.errors += 1
-        print('error: %s' % (excpetion))
+        print('error: %s' % (exception))
 
     def fatalError(self, exception):
-        raise excpetion
+        raise exception
 
     def warning(self, exception):
         self.warnings += 1
-        print('warning: %s' % (excpetion))
+        print('warning: %s' % (exception))
 
 
 class Categoriser(object):
