@@ -29,11 +29,10 @@ MAMETesters Bugs Fixed
 
 Source Changes
 --------------
--r9751: Add save state support, document progress, and clean up [Brandon Munger]
+-r9751: Add save state support, document progress and clean up, add PROM
+ version 4.2 [Brandon Munger]
 
--ym2151: Isolate, objectify, integrate [O. Galibert]
-
--ym2413: Isolate, objectify, integrate [O. Galibert]
+-ym2151, ym2413: Isolate, objectify, integrate [O. Galibert]
 
 -add Net-DIMM 3.03 firmware [letoram, gamerfan, Mark F., Smitdogg, The Dumping Union]
 
@@ -57,9 +56,23 @@ Source Changes
  * Wno-format-nonliteral -Wno-weak-template-vtables This was a helpful
     exercise since it brought forward some serious issues with
     implicit constructors.
+ * Removed trampolines (OUTLOGIC, INPLOGIC and friends).
+ * Started using doxygen comment and documentation style. Added
+    doxygen files to documentation folder.
+ * Refactored code triggered by doxygen output.
+ * Moved internal and support classes into namespace detail.
+ * Use an anordered map in parser.
+ * Wconversion fixes - All done now.
+ * Fixed -Wold-style-cast warnings in netlist code.
+ * Added iterators to pstring.
+ * Moved two macros, added more RAII and improved exceptions. Fixed
+    some bugs in parser code.
+ * Fixed a number of bugs in parser code and exception handling.
 
 -Forte Card: Switched the ver 110 (spanish) to parent set since it's a
  posterior and newer version. Also cleaned up the driver. [Roberto Fresca]
+
+-Direct3D HLSL: use aviwrite to record avi movies [Giuseppe Gorgoglione]
 
 -Cleanup patches for Direct3D renderer [Giuseppe Gorgoglione]
 
@@ -76,15 +89,25 @@ Source Changes
  all designed to be used on a display with RGB subpixel order, and may
  thus suffer if rotated or used with a BGR display. [Jeremy Green]
 
--Direct3D HLSL: use aviwrite to record avi movies [Giuseppe Gorgoglione]
-
 -Added in "Miscellaneous Options" menu one item to hide ROMless
  machines from the availables list. [Maurizio Petrarota]
 
 -sun4 updates:
+ * Added SPARCStation 1+, 4/110, and 4/4x0 ROMs [Al Kossow]
  * Preliminary counter/timer support [R. Belmont]
+ * Separated sun4 and sun4c, started implementing unique original sun4
+    features. [R. Belmont]
  * Support both 8 and 16 context variants of sun4c arch [R. Belmont]
- * Added SPARCStation 1+ ROM [Al Kossow]
+ * Improved original sun4 architecture support [R. Belmont]
+ * Improved timers, logging [Ryan Holtz]
+ * Initial FDC hookup in [Ryan Holtz]
+ * Get sun4_40 happy with SCSI DMA [Ryan Holtz]
+
+-Add high-level emulation of Sun type 3/4/5/6 keyboards [Vas Crabb]
+ * U.S.A, Great Britain, Sweden and Japan layouts for Type 5
+ * Layout selection settings for Type 4 and Type 5
+ * Identification selection for type 4
+ * Adaptor for connecting to RS-232 port representing level translator
 
 -feversoc.cpp: Hook up EEPROM; remap buttons, hook up lamps and serial RTC [AJR]
 
@@ -93,11 +116,8 @@ Source Changes
 
 -Corrected many Mahjong dip switches and settings [system11]
  * Fixes for: Mahjong Focus, Nozokimeguri Mahjong Peep Show,
-   Mahjong Fantasic Love & Ojousan
+    Mahjong Fantasic Love & Ojousan
  * Various Video System Mahjong dip switches
-
--sun4: separated sun4 and sun4c, started implementing unique original
- sun4 features. [R. Belmont]
 
 -Final enhancements to HP TACO driver [fulivi]
 
@@ -114,31 +134,21 @@ Source Changes
  * Add several aliases for M6800_IRQ_LINE
 
 -UI refactoring: [Vas Crabb]
- * Move more main menu stuff out of the base menu class
+ * Move most main launch menu stuff out of the base menu class
+ * Move some common code from selgame and selsoft into selmenu
  * Get rid of the rest of the troublesome static members in ui::menu
-    (there are still problematic function statics in some menu
-    classes)
-
--UI refactoring: move palette menu drawing code out of base into
- palette menu class [Vas Crabb]
+ * Eliminate some function statics
+ * Move palette menu drawing code out of base into palette menu class
+ * Use std::bind, references where nullptr is unacceptable, and const
+    where appropriate
+ * Improve encapsulation of class members
+ * Reduce repeated string allocation in audit code
+ * Don't play so fast and loose with integer types
+ * Eliminate some expensive deep copies of vectors/maps
+ * .h -> .ipp for things that aren't really headers
+ * Remove members that have lifecycle associated with operation
 
 -DPS1: system boots up, working [Robbbert]
-
--sun4 updates:
- * Added 4/110 and 4/4x0 boot ROMs [Al Kossow]
- * Improved original sun4 architecture support [R. Belmont]
-
--UI refactoring: [Vas Crabb]
- * std::bind - accept no substitutes
- * pointer -> reference conversion
- * make more menu members private or protected
- * don't play so fast and loose with integer types
- * reduce some vector copying
- * make more static constants const
-
--sun4: improved timers, logging [Ryan Holtz]
-
--Reduce repeated string allocation in audit code [Vas Crabb]
 
 -bankdev: pass through the debugger flag from the incoming space
  argument [R. Belmont]
@@ -156,15 +166,15 @@ Source Changes
  [Hans Ostermeyer]
 
 -fix item hilighting in debugger state view when scrolling [Vas Crabb]
- better encapsulate debug_view_state::state_item
 
 -Introduce validity checks for RGB utilities and fix bugs uncovered [Vas Crabb]
+ * Fix rgbvmx on Linux ppc64 and ppc64le targets with GCC 5
  * Added several missing functions to rgbgen
  * Fixed logical shift right in rgbgen
  * Fixed sra that should be sra_imm in rdptpipe
  * Added some simple SSE4.1 optimisations in rgbsse
  * Re-organised rgbsse, rgbvmx and rgbgen to be in more logical order
- * Fixed return on some modifying operators
+ * Fixed return type on some modifying operators
  * Made some more reference parameters const
  * Removed inline qualifier from a number of methods as it's implied
     when body is present at declaration
@@ -178,90 +188,25 @@ Source Changes
 -Updated driver with new information related to ID and gamelist for
  tourvis.cpp  [system11, Tafoid]
 
--UI menu refactoring: [Vas Crabb]
- * Eliminate some function statics
- * Move another launch menu specific member out of base class
- * Move some common code from selgame and selsoft into selmenu
- * Tighten up const and casts
-
 -Consolidating implementations of create_option_guide() that return
  nullptr [Nathan Woods]
 
--UI refactoring: [Vas Crabb]
- * .h -> .ipp for things that aren't really headers
- * make more stuff in selmenu private
- * move the remembered driver/software associated with the snap to the
-    cache object
- * start cleaning up constness in datfile manager - it's still a mess
-    of non-const statics
-
 -Fix archimedes disk format [O. Galibert]
-
--UI refactoring: [Vas Crabb]
- * more const where it should be
- * don't unnecessarily copy big maps
- * don't make things members when they shouldn't be
- * get rid of a couple more function statics
- * move custom render and tab navigate up to base class
-
--Initial FDC hookup in sun4.cpp [Ryan Holtz]
 
 -apple2: don't allow debugger to trigger slot switching [Peter Ferrie]
 
--HLE serial keyboard compatible with Sun Type 4/5/6 connected to
- sun4/sun4c [Vas Crabb]
-
 -tiamc1: Kot-Rybolov implemented sound, documentation updates [MetalliC]
-
--SPARC keyboard: remove transmit delay hack, emulate keyclick [Vas Crabb]
-
--Make Sun keyboard port its own bus [Vas Crabb]
-
--SPARC keyboard: get rid of some annoying printfs, use constants [Vas Crabb]
-
--Netlist updates:    [Couriersud]
- * Removed trampolines (OUTLOGIC, INPLOGIC and friends).
- * Started using doxygen comment and documentation style. Added
-    doxygen files to documentation folder.
- * Refactored code triggered by doxygen output.
- * Moved internal and support classes into namespace detail.
- * Use an anordered map in parser.
- * Wconversion fixes - All done now.
- * Fixed -Wold-style-cast warnings in netlist code.
- * Added iterators to pstring.
- * Moved two macros, added more RAII and improved exceptions. Fixed
-    some bugs in parser code.
- * Fixed a number of bugs in parser code and exception handling.
-
--Get sun4_40 happy with SCSI DMA [Ryan Holtz]
-
--sunkbd: split up HLE into proper type 3, type 4 and type 5, hook up
- sun3 family keyboard, set default keyboard appropriately for different
- families [Vas Crabb]
-
--Add an emulated Sun keyboard to RS232 adaptor [Vas Crabb]
-
--sun keyboard: add type5ukhle option, fix shift with -natural (not 100%
- reliable) [Vas Crabb]
 
 -amstrad: fix undocumented mode 3. [Barry Rodewald]
 
--sun keyboard improvements: [Vas Crabb]
- * Add diagram for Type 5 International layout
- * Make AltGr work at least some of the time in natural keyboard mode
- * Add Type 5 Swedish keyboard option type5sehle
- * Rename type5ukhle to type5gbhle
- * Remove less useful constructors
-
 -GAMATE: Added hot hero [Peter Wilhelmsen]
 
--Flaming 7's, original custom hardware: Reverse-engineer protection to
- bypass the requested serial number. The iButton device still needs to
- be hooked. Promoted these games to working with their correspondent
- flags. [Roberto Fresca]
-
--Flaming 7's, original custom hardware: Added tech notes, comments and
- instructions to boot the machine for first time. [Roberto Fresca]
+-Flaming 7's, original custom hardware improvement: [Roberto Fresca]
+ * Reverse-engineer protection to bypass the requested serial number.
+    The iButton device still needs to be hooked. Promoted these games to
+    working with their correspondent flags.
+ * Added tech notes, comments and instructions to boot the machine for
+    first time.
 
 -Flaming 7's, Taiwanese hardware: Reverse-engineer protection to bypass
  the requested serial number. The iButton device still needs to be
@@ -269,8 +214,6 @@ Source Changes
  Added technical notes. [Roberto Fresca]
 
 -hiscore.dat: Updates [Leezer]
-
--r9751: Add prom version 4.2 [Brandon Munger]
 
 -alto2: Hunting the jiggly cursor bug [Juergen Buchmueller]
 
