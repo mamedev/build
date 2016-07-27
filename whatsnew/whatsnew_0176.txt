@@ -39,19 +39,22 @@ Source Changes
 
 -pc98_cd.xml: final batch of additions [rzero9]
 
--Added crt-geom and crt-geom-deluxe shaders for bgfx. [cgwg]
-
 -Fixed coinage in Touchmaster 2000-8000 [MASH]
 
--Z80SCC fixed problem with dropped characters for Sun4 [Joakim Larsson]
+-z80scc: fix dropped character problem for sun4_75, and fix edge cases
+ where datasheet recommendations are ignored allowing sun3/sun4 to
+ recognise keyboard and hk68v10 to work with correct SCC clock
+ [Joakim Larsson Edstrom]
 
 -pc9801: fixed mouse buttons [rzero9]
 
--coco3: improve palettes and support alternate composite mode [milliluk]
-
--coco3: GIME fix for scanlines in legacy graphic modes [milliluk]
+-coco3 improvements: [milliluk]
+ * improve palettes and support alternate composite mode
+ * GIME fix for scanlines in legacy graphic modes
 
 -m6809: Improve debugging support for 6809/6309 cpus [milliluk]
+
+-GNU/kFreeBSD support [stevenc99]
 
 -Add arch defines for Linux alpha and mips64el. [Jordi Mallach]
 
@@ -59,7 +62,12 @@ Source Changes
 
 -Starting work doing the GBA e-reader software-list [Shideravan]
 
+-Name Neo-Geo AES, NeoGeo CD and FM Towns Marty buttons [Shideravan]
+
 -Updated *nix man pages. [Cesare Falco]
+
+-posik1: unbreak after "Memory fun", add B623 sound card (skeleton), add
+ basic softlist [shattered]
 
 -r9751: Add save state support, document progress and clean up, add PROM
  version 4.2 [Brandon Munger]
@@ -67,8 +75,6 @@ Source Changes
 -ym2151, ym2413: Isolate, objectify, integrate [O. Galibert]
 
 -add Net-DIMM 3.03 firmware [letoram, gamerfan, Mark F., Smitdogg, The Dumping Union]
-
--C++-ified the strings inside of menu items [Nathan Woods]
 
 -Netlist improvements:  [Couriersud]
  * nltool now accepts -Ddefine=value to pass on to netlists
@@ -95,9 +101,10 @@ Source Changes
 -Forte Card: Switched the ver 110 (spanish) to parent set since it's a
  newer version. Also cleaned up the driver. [Roberto Fresca]
 
--Direct3D HLSL: use aviwrite to record avi movies [Giuseppe Gorgoglione]
-
--Cleanup patches for Direct3D renderer [Giuseppe Gorgoglione]
+-Render module improvements: [Giuseppe Gorgoglione]
+ * Direct3D HLSL: use aviwrite to record AVI movies
+ * Cleanup patches for Direct3D renderer
+ * BGFX: fix crash when bgfx effect folder is not present
 
 -Fixed priority issues in Legionnaire, Heated Barrel, Denjin Makai and
  Godzilla [Angelo Salese]
@@ -105,7 +112,14 @@ Source Changes
 -opwolf.cpp: fix all the gameplay problems by improving the c-chip
  protection simulation [Bryan McPhail] 
 
--Filesel cleanup [Nathan Woods]
+-Miscellaneous modernisation: [Nathan Woods]
+ * File create and format refactoring, better name/path validation
+   (with POSIX implementation from Vas Crabb)
+ * Use string objects in in core_file static functions, menu items,
+    strconv functions, image device extensions and softlist classes
+ * Consolide default implementation of create_option_guide()
+ * Filesel cleanup
+ * Migrate softlist code from simple_list to std::list
 
 -Added crt-geom and crt-geom-deluxe shaders for bgfx including several
  aperture grille/shadow mask patterns (designed for RGB subpixel order)
@@ -116,6 +130,7 @@ Source Changes
 
 -sun4 updates:
  * Added SPARCStation 1+, 4/110, and 4/4x0 ROMs [Al Kossow]
+ * SPARC CPU core fixes [Ryan Holtz, Vas Crabb]
  * Preliminary counter/timer support [R. Belmont]
  * Separated sun4 and sun4c, started implementing unique original sun4
     features. [R. Belmont]
@@ -130,8 +145,13 @@ Source Changes
  * Layout selection settings for Type 4 and Type 5
  * Identification selection for type 4
  * Adaptor for connecting to RS-232 port representing level translator
+ * Hook up to sun3, sun4 and sun4c
+
+-zeroteam: improve sprite/sprite priorities [AJR]
 
 -feversoc.cpp: Hook up EEPROM; remap buttons, hook up lamps and serial RTC [AJR]
+
+-denjinmk: hack sound comms to work without ROM patch [AJR]
 
 -vt100.cpp: Add the older vt102/vt131 romset to the vt131 driver as
  another bios set [Lord Nightmare, Al Kossow]
@@ -142,10 +162,6 @@ Source Changes
  * Various Video System Mahjong dip switches
 
 -Final enhancements to HP TACO driver [fulivi]
-
--Update Chinese translations [YuiFAN]
-
--Update Brazilian Portuguese [Ashura-X]
 
 -Gamate: added new game: Volcano Panic [Juan Felix Mateos and Mr. Postman]
 
@@ -209,16 +225,13 @@ Source Changes
     when body is present at declaration
  * Mark some constructors explicit
 
--null_modem: rtscts flow control + relevant fix to i8251 [Sergey Svishchev]
+-null_modem: rtscts flow control + relevant fix to i8251 [shattered]
 
 -pce_tourvision.xml - Added a number of new dumps (15) to the softlist.
  [system11, Tafoid]
 
 -Updated driver with new information related to ID and gamelist for
  tourvis.cpp  [system11, Tafoid]
-
--Consolidating implementations of create_option_guide() that return
- nullptr [Nathan Woods]
 
 -Fix archimedes disk format [O. Galibert]
 
@@ -260,6 +273,12 @@ Source Changes
 
 -chihiro: game crtaxihr "Crazy Taxi High Roller (Rev B)" boots too [Samuele Zannoli]
 
+Translations added or modified
+------------------------------
+Chinese (simplified/traditional) [YuiFAN]
+Greek [BraiNKilleRGR]
+Japanese [Vas Crabb]
+Portuguese (Brazil) [Ashura-X]
 
 New machines added or promoted from NOT_WORKING status
 ------------------------------------------------------
