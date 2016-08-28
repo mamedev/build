@@ -3,6 +3,7 @@
 ## license:BSD-3-Clause
 ## copyright-holders:Vas Crabb
 
+import argparse
 import getpass
 import pygithub3
 import re
@@ -38,6 +39,23 @@ def print_fresh_pull_requests(api, stream):
             stream.write('\n'.encode('UTF-8'))
 
 
-ghuser = 'get_github_user_from_somewhere'
-api = pygithub3.Github(user='mamedev', repo='mame', login=ghuser, password=getpass.getpass('github password: '))
-print_fresh_pull_requests(api, sys.stdout)
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Retrieve merged pull requests.')
+    parser.add_argument('-u', '--user', metavar="<username>", type=str, help='github username')
+    parser.add_argument('-o', '--out', metavar='<file>', type=str, help='output file')
+    parser.add_argument('-a', '--append', action='store_const', const=True, default=False, help='append to output file')
+    args = parser.parse_args()
+
+    if args.user is not None:
+        ghuser = args.user
+    else:
+        ghuser = raw_input('github username: ')
+    api = pygithub3.Github(user='mamedev', repo='mame', login=ghuser, password=getpass.getpass('github password: '))
+
+    if args.out is not None:
+        stream = open(args.out, 'a' if args.append else 'w')
+    else:
+        stream = sys.stdout
+
+    with stream:
+        print_fresh_pull_requests(api, stream)
