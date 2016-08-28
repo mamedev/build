@@ -27,7 +27,7 @@ def fresher_pull_requests(api, commit):
 
 def print_fresh_pull_requests(api, stream):
     nowhatsnew_pat = re.compile('.*[[(]nw[])].*')
-    lineclean_pat = re.compile('^(\w*[-*]\w*)?(.*)$')
+    lineclean_pat = re.compile('^(\w*[-*])?\w*(.*)$')
     commit = get_latest_tagged_commit(api)
     for pr in fresher_pull_requests(api, commit):
         if nowhatsnew_pat.match(pr.title) is None:
