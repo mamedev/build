@@ -4,146 +4,111 @@
 
 MAMETesters Bugs Fixed
 ----------------------
-- 06269: [Debugger] DEBUGGER: Unable to use any valid cheats while using debug (Ryan Holtz)
-- 00550: [Graphics] (atarisy2.c) apb: There is a graphics problem with your police car at the point you drive away from your starting square. (crazyc)
-- 06352: [Crash/Freeze] (cps1.c) mbombrd, mbombrdj: Crash in demonstration mode (Osso)
-- 06349: [Gameplay] brapboys: MAME crashed when exiting game (O. Galibert)
-- 06185: [DIP/Input] LIGHTGUNS: Aimtrak Dual Lightguns no longer properly detect (Pitou)
-- 06343: [DIP/Input] (taito_l.c) plottingu: Coinage dipswitches are labeled incorrectly. (Tafoid)
-- 05584: [Gameplay] (konamigx.c) rungun2, slamdnk2: during run mame produces several messages about unknown protection command (Tafoid)
-- 06335: [Interface] UI:: Input (general) selection menus do not display correctly or at all (Vas Crabb)
-- 06332: [Graphics] (galaga.c) digdug and clones: Graphics from Tilemap 0 are missing (Osso)
-- 06342: [Crash/Freeze] pc (pccga): System crashing while loading (crazyc)
-- 06326: [Crash/Freeze] (megadriv.c) megadriv, 32x and clones, some segac2.c sets: Selecting machine and game via softlist though internal menu results exception/crash (Osso)
-- 06331: [Crash/Freeze] (apollo.c) dn3500_19i, dsp3000, dsp3500, dsp5500: Crash/Exception on start (Osso)
-- 06330: [Crash/Freeze] (altos5.c) altos5: Crash/.Exception on start (crazyc)
-- 06328: [Crash/Freeze] Various ISA using machines: Crash/Exception at Initialization (crazyc)
+- 00550: [Graphics] (atarisy2.c) apb: There is a graphics problem with
+  your police car at the point you drive away from your starting
+  square. (crazyc)
+- 01455: [DIP/Input] (segas18.c) lghost: Problem with crosshair (Pitou)
+- 05584: [Gameplay] (konamigx.c) rungun2, slamdnk2: during run mame
+  produces several messages about unknown protection command (Tafoid)
+- 05823: [Core] (coco12.c) -ramsize does nothing for emulation although
+  it does change the .ini file (Nathan Woods)
+- 06185: [DIP/Input] LIGHTGUNS: Aimtrak Dual Lightguns no longer
+  properly detect (Pitou)
+- 06269: [Debugger] DEBUGGER: Unable to use any valid cheats while
+  using debug (Ryan Holtz)
+- 06326: [Crash/Freeze] (megadriv.c) megadriv, 32x and clones, some
+  segac2.c sets: Selecting machine and game via softlist though
+  internal menu results exception/crash (Osso)
+- 06328: [Crash/Freeze] Various ISA using machines: Crash/Exception at
+  Initialization (crazyc)
+- 06330: [Crash/Freeze] (altos5.c) altos5: Crash/.Exception on
+  start (crazyc)
+- 06331: [Crash/Freeze] (apollo.c) dn3500_19i, dsp3000, dsp3500,
+  dsp5500: Crash/Exception on start (Osso)
+- 06332: [Graphics] (galaga.c) digdug and clones: Graphics from
+  Tilemap 0 are missing (Osso)
+- 06335: [Interface] UI:: Input (general) selection menus do not
+  display correctly or at all (Vas Crabb)
+- 06342: [Crash/Freeze] pc (pccga): System crashing while
+  loading (crazyc)
+- 06343: [DIP/Input] (taito_l.c) plottingu: Coinage dipswitches are
+  labeled incorrectly. (Tafoid)
+- 06349: [Gameplay] brapboys: MAME crashed when exiting
+  game (O. Galibert)
+- 06352: [Crash/Freeze] (cps1.c) mbombrd, mbombrdj: Crash in
+  demonstration mode (Osso)
 
 
 Source Changes
 --------------
 
--Changed coco_cart softlist 'cclimbra' alternate ROM to be the correct rom for 'cclimber' [npwoods]
-  * 'cclimber' crashes, whereas 'cclimbra' did not.  After reviewing the difference between the two dumps, I've concluded that the 'cclimbra' so-called "alternate" is in fact the correct dump.
-  * It isn't clear to me who maintains these softlists, or if the softlists are derived from some other data source.  If there is a better way to make this correction, let me know.
+-softlist.cpp: Minor cleanups. [Nathan Woods]
 
--Yet more softlist cleanups [npwoods]
-  * These started out as some opportunistic softlist cleanups in pursuit of an issue reported by Tafoid, until I realized that the behavior was correct.  I don't want to lose these cleanups; feel free to wait until after the release to merge this pull request.
+-maygay1b: [David Haywood]
+ * Fixed second set of lamps
+ * Partially investigated MCU hookup
 
--fmtowns_cd.xml: new dumps [rzero9]
-  * Air Management - Oozora ni Kakeru
-  * Hiouden II
-  * Windows 3.1 L12
+-softlist.cpp: Refactored system layout. [Nathan Woods]
 
--found the rather obvious bug that was actually preventing the 2nd lot… [mamehaze]
-  * … of lamps from working..
-  * looked more at the MCU based on studying the (rather short) program, but the hookup so far doesn't work so continue to use the fake 2nd i8279..
-  * it looks like the MCU really just implements a small set of the i8279 features?!
+-apple2gs.cpp: Redumped, verified and corrected 341-0748 FE-FF ROM for
+ Apple IIGS ROM03. [Brian Troha]
 
--pc98_cd.xml: added more disks + FM Towns hybrids [rzero9]
-  *  Added 7 new dumps sourced from P2P
-  *  Added entries from fmtowns_cd.xml that are hybrid CDs and work on PC-98x1
+-apple2gs.cpp: Confirmed that 341-0748 and 341-0749 ROMs are identical.
+ [Brian Troha]
 
--It's time to add Animal Crossing Series 2 [Shideravan]
-  * in the e-reader software-list
+-mpu4.cpp: Added all known expansions as fragments for DRIVER_INIT.
+ This will permit 'per set' configuration to make the games
+ playable. [James Wallace]
 
--Redo of split of src/emu/softlist.[cpp|h] [npwoods]
-  * This is a redo of the split first submitted in #137, with the following differences:
-  *  The newly refactored rom_entry data structure is used
-  *  I've kept the refactored softlist code in src/emu, in order to defer the mechanical process of moving it
-  *  I've kept includes of softlist[_dev].h out of diimage.h, so that changes to either do not trigger an emu.h recompilation
-  *  Obviously, this goes against the latest master
+-naomi.cpp: Added all known Sega DIMM board firmware dumps. [TylerDurden67]
 
-Commit by Curt Coder
-pofo.xml: Dumped the File Manager/Tutorial card. [Curt Coder]
+-amstrad.cpp: Added pause button to GX4000. [Barry Rodewald]
 
-Commit by briantro
-apple2gs.cpp: Redump, verify & Correct 341-0748 FE-FF ROM for Apple
-IIGS ROM03 [Brian Troha]
+-debugimgui: Added images menu, with crude file select dialog, added
+ very crude create image dialog. [Barry Rodewald]
 
-Commit by briantro
-apple2gs.cpp: Confirmed 341-0748 == 341-0749
-
-Removed non actual clone now that all the roms have been dumped
-correctly and verified.
-
-Commit by Shideravan
-It's time to add Animal Crossing Series 2
-
-in the e-reader software-list
-
-Commit by r09
-pc98_cd.xml: added more disks + FM Towns hybrids
-
- * Added 7 new dumps sourced from P2P
- * Added entries from fmtowns_cd.xml that are hybrid CDs and work on
-    PC-98x1
-
-Commit by David Haywood
-found the rather obvious bug that was actually preventing the 2nd lot
-of lamps from working.. looked more at the MCU based on studying the
-(rather short) program, but the hookup so far doesn't work so continue
-to use the fake 2nd i8279.. it looks like the MCU really just
-implements a small set of the i8279 features?!
-
-Commit by James Wallace
-Added all known expansions as fragments for DRIVER_INIT. This will
-permit 'per set' configuration to make the games playable.
-
-Commit by r09
-fmtowns_cd.xml: new dumps
-
-Air Management - Oozora ni Kakeru Hiouden II Windows 3.1 L12
-
-
-
-
--naomi.c: add all known Sega DIMM board firmware dumps [TylerDurden67]
-
--amstrad: add pause button to GX4000 [Barry Rodewald]
-
--debugimgui: added images menu, with crude file select dialog, added
- very crude create image dialog [Barry Rodewald]
-
--ALTOS5: fixed banking, all disks can boot [Robbbert]
+-ALTOS5: Fixed banking, all disks can boot. [Robbbert]
 
 -Renamed the arcade "sun" project to avoid conflict with the mess "sun"
  project [Robbbert]
 
 -Playmatic Pinball: All MPU-1 games working, plus other WIP. [Robbbert]
 
--Fixed rom size in s80btest [Robbbert]
+-s80btest: Fixed rom size. [Robbbert]
 
--MK14: fixed a memory bug. Added paste facility, cassette, sound, and
- notes [Robbbert]
+-MK14: [Robbbert]
+ * Fixed a memory bug.
+ * Added paste facility, cassette, sound, and notes.
 
--CHAOS2: Added notes [Robbbert]
+-CHAOS2: Added notes. [Robbbert]
 
--Pro-80: added devices. Centaur: fixed typo. [Robbbert]
+-Pro-80: Added devices. [Robbbert]
 
--Separate of the LDP-1450 laserdisc player to its own device
+-Centaur: Fixed typo. [Robbbert]
+
+-Separated the LDP-1450 laserdisc player into its own device
  [James Wallace]
 
 -Added support for MPU4 layouts for games beginning with 'a', based on
- MFME2MAME conversion.  (CHR protection data is still not hooked up for
- many of these sets, so lamping behaviour is incorrect.) [James Wallace]
+ MFME2MAME conversion. CHR protection data is still not hooked up for
+ many of these sets, so lamping behaviour is incorrect. [James Wallace]
 
--Ferrari F355 Japan BIOS dumped [ShouTime]
+-Dumped Ferrari F355 Japan BIOS. [ShouTime]
 
 -Fixed TNZS ROM locations/labels [Brian A. Troha, Lord Nightmare]
 
 -hiscore.dat: updates [Leezer]
 
 -Various netlist fixes: [couriersud]
- * minor include cleanup
- * fix a memory hole (caused by assign operators)
- * more C++
+ * Minor include cleanup
+ * Fixed a memory hole caused by assign operators
+ * More C++
  * Use noexcept in netlist code where appropriate
 
--abc80x: Fixed ABC-838 disk image cell size [Curt Coder]
+-abc80x: Fixed ABC-838 disk image cell size. [Curt Coder]
 
 -c64: Optimized the 1541 bit read/write function slightly without
- noticable effect on driver speed since the 2 CIA's are the current
+ noticable effect on driver speed, since the 2 CIA's are the current
  bottlenecks. [Curt Coder]
 
 -compis improvements: [Curt Coder]
@@ -153,12 +118,12 @@ Air Management - Oozora ni Kakeru Hiouden II Windows 3.1 L12
  * Fixed RTC to use 24 hour mode
 
 -victor9k improvements: [Curt Coder]
-  * Set floppy RPM after track step. Boots to CP/M now
-  * Implemented hires graphics
-  * Implemented display brightness control
-  * Fixed keyboard line Y12
-  * Implemented SCP communications.
-  * Boots also to MS-DOS now - promoted driver to working
+ * Set floppy RPM after track step. Boots to CP/M now
+ * Implemented hires graphics
+ * Implemented display brightness control
+ * Fixed keyboard line Y12
+ * Implemented SCP communications.
+ * Boots also to MS-DOS now - promoted driver to working
 
 -pofo improvements: [Curt Coder]
  * Implemented the A: credit card memory
@@ -172,17 +137,17 @@ Air Management - Oozora ni Kakeru Hiouden II Windows 3.1 L12
  * Fixed interrupt handling - boots to DOS now
  * Fixed keyboard error on POST
 
--Fix missing region report when DEVICE_SELF is used [O. Galibert]
+-Fixed missing region report when DEVICE_SELF is used. [O. Galibert]
 
 -dirom: device_rom_interface for sound chips with rom/memory map
  alternative [O. Galibert]
   * Make robust for oversize ROMs
 
--dirom,okim6295: Add/fix banking support [O. Galibert]
+-dirom,okim6295: Added/fixed banking support. [O. Galibert]
 
 -Preliminary VGM player (vgmplay) [O. Galibert]
 
--kaneko_calc3: Stop trashing memory [O. Galibert]
+-kaneko_calc3: Stop trashing memory. [O. Galibert]
 
 -Fairlight CMI IIx driver: [Ryan Holtz]
  * Modernization of Phil's CMI IIx driver
@@ -192,17 +157,17 @@ Air Management - Oozora ni Kakeru Hiouden II Windows 3.1 L12
  * Hook up second floppy
 
 -vgmplay.cpp enhancement: [Ryan Holtz]
- * Added HuC6280
- * Added YM3812 support
- * Added POKEY support, and rebalanced audio
- * Added Namco C352
+ * Added HuC6280, NES APU, Gameboy DMG, YM2203, YM3812, YM3526,
+   AY-3-8910, Namco C352, Sega MultiPCM, Konami K053260, and
+   Atari POKEY.
+ * Added support for looping.
+ * Added dual-chip support for AY-3-8910, YM2203, MultiPCM, and
+   POKEY.
 
--Fix -debug -cheat crash this time [Ryan Holtz]
+-tv990/995: Added save state support and LPT port. [R. Belmont]
 
--tv990/995: Add save state support and LPT port [R. Belmont]
-
--tv950: new redumps, fleshed out the skeleton, needs a CRTC expert to
-  draw anything [R. Belmont, Al Kossow]
+-tv950: New redumps, fleshed out the skeleton, needs a CRTC expert to
+  draw anything. [R. Belmont, Al Kossow]
 
 -ti99 improvements: [Michael Zapf]
   * Fixed stuck INT line in TMS9902
@@ -215,26 +180,26 @@ Air Management - Oozora ni Kakeru Hiouden II Windows 3.1 L12
     expected file size
  * Fixed another issue with double stepping
 
--ti99_dsk: Fixed issue with deleted data marks in FM [Michael Zapf]
+-ti99_dsk: Fixed issue with deleted data marks in FM. [Michael Zapf]
 
--hdc92x4: Added 9224 emulation [Michael Zapf]
+-hdc92x4: Added 9224 emulation. [Michael Zapf]
 
--Added PC-AT mode (still untested), some preparations for 9224 emulation
+-Added PC-AT mode (still untested), some preparations for 9224
+ emulation. [Michael Zapf]
+
+-floppy: Improved floppy sound emulation with new sound samples.
  [Michael Zapf]
 
--floppy: Improved floppy sound emulation with new sound samples 
- [Michael Zapf]
-
--Funworld driver: Added technical notes to Inter Games poker
+-Funworld driver: Added technical notes to Inter Games poker.
  [Roberto Fresca]
 
 -Jolly Card (Austrian, set 2):
   * Added specs [Roberto Fresca, Team Europe]
-  * Added GAL16V8S dump (Team Europe, caius)
+  * Added GAL16V8S dump [Team Europe, caius]
 
--Jolly Joker (Apple Time): Added technical notes [Roberto Fresca]
+-Jolly Joker (Apple Time): Added technical notes. [Roberto Fresca]
 
--Amatic multigames: Corrected technical notes [Roberto Fresca]
+-Amatic multigames: Corrected technical notes. [Roberto Fresca]
 
 -alto2 improvements: [Juergen Buchmueller]:
   * Add speaker sound
@@ -249,117 +214,115 @@ Air Management - Oozora ni Kakeru Hiouden II Windows 3.1 L12
   * Refactor videotiming, use attoseconds_t
 
 -apricot improvements: [Dirk Best]
-  * move expansion bus to its own directory
-  * create bus interface for the keyboard interface
-  * make HLE keyboard emulation a bus device
-  * use device_buffered_serial_interface and
+  * Moved expansion bus to its own directory
+  * Created bus interface for the keyboard interface
+  * Made HLE keyboard emulation a bus device
+  * Use device_buffered_serial_interface and
      device_matrix_keyboard_interface for the HLE keyboard emulation to
      reduce duplication and implement a FIFO
-  * add rtc support to keyboard
+  * Added rtc support to keyboard
 
 -Keyboard/terminal improvements: [Vas Crabb]
- * Add base classes for HLE matrix keyboard and buffered RS232 device
- * Make generic keyboard/terminal more usable: configurable typematic
+ * Added base classes for HLE matrix keyboard and buffered RS232 device
+ * Made generic keyboard/terminal more usable: configurable typematic
     delay/rate, selectable JIS/ANSI layout, handle simultaneous
     keypresses more intuitively, use meta to set high bit, configurable
     auto LF on CR, auto CR on LF and local echo, audible bell
- * Untangle Olivetti M20 keyboard from generic_keyboard, add notes, use
+ * Untangled Olivetti M20 keyboard from generic_keyboard, add notes, use
     physical layout
- * Untangle RM Nimbus keyboard from generic_keyboard aand fix -natural
- * Untangle x68k keyboard from generic_keyboard, improve key names,
+ * Untangled RM Nimbus keyboard from generic_keyboard aand fix -natural
+ * Untangled x68k keyboard from generic_keyboard, improve key names,
     default mapping and typematic behaviour
- * Untangle QX-10 keyboard from generic_keyboard
- * Keep NGEN keyboard barely working
+ * Untangled QX-10 keyboard from generic_keyboard
+ * Kept NGEN keyboard barely working
 
--Re-write srcclean to be cool with UTF-8 and C++14 [Vas Crabb]
+-Rewrote srcclean to be cool with UTF-8 and C++14. [Vas Crabb]
 
--Fix UTF-16 encode, pass UTF-16 to Windows character drawing [Vas Crabb]
+-Fixed UTF-16 encode, pass UTF-16 to Windows character drawing. [Vas Crabb]
 
--Make path_iterator copy search path to fix use-after-free [Vas Crabb]
+-Made path_iterator copy search path to fix use-after-free [Vas Crabb]
 
 -devfind improvements: [Vas Crabb]
- * Make object finders behave like pointers (not pointer/reference/
+ * Made object finders behave like pointers (not pointer/reference/
     vector) hybrids
- * Remove some default argument values and dangerous accessors
+ * Removed some default argument values and dangerous accessors
  * Use single uniform class for object array finders, using real arrays
     to avoid double indirection
  * Use a format string to allow more flexible tag names in object array
     finders
  * Use template using typedefs to greatly reduce bolerplate code
- * Consolidate template instantiations speeding up the build
- * Add Doxygen comments to many key classes
+ * Consolidated template instantiations speeding up the build
+ * Added Doxygen comments to many key classes
 
--Fix cosmic.cpp and mpu4.cpp games that had too few tags passed to I/O
- port array finder [Vas Crabb]
+-Fixed cosmic.cpp and mpu4.cpp games that had too few tags passed to
+ I/O port array finder [Vas Crabb]
 
 -dooyong.cpp: Video improvements: [Vas Crabb]
  * Mix two 4bpp tilemaps for the 8bpp layer in popbingo
- * Make ROM tilemap generator into a device, moving a whole lot of stuff
+ * Made ROM tilemap generator into a device, moving a whole lot of stuff
     from video start to machine config and removing trampolines
- * Change tile/sprite ROM regions to be 16-bit to better match hardware
+ * Changed tile/sprite ROM regions to be 16-bit to better match hardware
  * Represent 16-bit text layer block on Z80 games as a device
  * Split up state classes some more and use derived machine configs
 
--fix regression: using IPT_START in sms makes mame think joypad 1 is
+-Fixed regression: using IPT_START in sms makes mame think joypad 1 is
  occupied and inserts joypad 2&3 instead of joypad 1&2 [hap]
 
--dotrikun improvements: [hap]:
- * much better video timing, but still shows glitches in ccovell's ROM
+-dotrikun improvements: [hap]
+ * Much better video timing, but still shows glitches in ccovell's ROM
  * eat_cycles clamps to 0, adjust_icount does do what I intended
- * try another method for video timing
+ * Try another method for video timing
 
--gx4000: don't use IPT_KEYBOARD for console pause button [hap]
+-gx4000: Don't use IPT_KEYBOARD for console pause button. [hap]
 
--al520ex: use correct key name for tvordiy znak [hap]
+-al520ex: Use correct key name for tvordiy znak. [hap]
 
--hh_tms1k: gamelist notes update [hap]
+-hh_tms1k: Gamelist notes update. [hap]
 
--hh_hmcs40: added sag internal artwork (external artwork still
- recommended) [hap]
+-hh_hmcs40: Added sag internal artwork (external artwork still
+ recommended). [hap]
 
--tlcs90: fix a nonsense check [hap]
+-tlcs90: Fixed a nonsense check. [hap]
 
--chessmst: added reset and halt buttons [hap]
+-chessmst: Added reset and halt buttons. [hap]
 
--champbasjb: fix MAME complaining about missing MCU device, correct
- romlabels [hap]
+-champbasjb: Fixed MAME complaining about missing MCU device, correct
+ romlabels. [hap]
 
--lghost: allow gun offset correction to be disabled [hap]
+-lghost: Allow gun offset correction to be disabled. [hap]
 
--tiamc1: tilemap bit layers disable control [MetalliC]
+-tiamc1: Tilemap bit layers disable control. [MetalliC]
 
--vector06: impeovements: [MetalliC]
-  * ramdisk emulated, machine mostly working, fix i8080 status callbacks
-     during push/pop
-  * fix ROM cartridge boot, use soviet FDC
-  * hook AY8910 (2 variants), promoted to working
+-vector06: Improvements: [MetalliC]
+  * RAM disk emulated, machine mostly working, fixed i8080 status
+     callbacks during push/pop
+  * Fixed ROM cartridge boot, use soviet FDC
+  * Hooked up AY8910 (2 variants), promoted to working
 
--cv1k.cpp: found and corrected bad bits in Pink Sweets U2 graphics ROMs
- based on comparison 4 dumped versions [MetalliC, rtw]
+-cv1k.cpp: Found and corrected bad bits in Pink Sweets U2 graphics ROMs
+ based on comparison 4 dumped versions. [MetalliC, rtw]
 
--aica: add ADPCM diff value clamp based on encoder research
+-aica: Added ADPCM diff value clamp based on encoder research.
  [kode54, MetalliC]
 
--hp9845: correct character generator ROMs added [fulivi, A.Kueckes]
+-hp9845: Added correct character generator ROMs. [fulivi, A.Kueckes]
 
--Use emumem.h defines whenever possible [Giuseppe Gorgoglione]
+-Use emumem.h defines whenever possible. [Giuseppe Gorgoglione]
 
--Rework and simplify GBA code [Giuseppe Gorgoglione]
+-gba: Reworked and simplified code. [Giuseppe Gorgoglione]
 
--gba: 1st batch of code refactorings [Giuseppe Gorgoglione]
+-gba: First batch of code refactorings: [Giuseppe Gorgoglione]
   * Attempt at modernizing the code by taking advantage of C++ features
 
--Make hiscore path configurable by ini file, fix .hi file path
- resolution [stengun]
+-Made hiscore path configurable by ini file, fix .hi file path
+ resolution. [stengun]
 
--Fix the Gun#2 not working in MAME #618 [Pitou]
+-Fixed Gun#2 not working in MAME #618 [Pitou]
 
--lghost: Add gun offset offset correction table (MT01455) [Pitou]
+-Fixed read case in kaneko_calc3.cpp and made kaneko_toybox.cpp safe as
+ well. [David Haywood]
 
--Fix read case in kaneko_calc3.cpp and make kaneko_toybox.cpp safe as
- well [David Haywood]
-
--various Seibu Refactoring, [David Haywood]
+-Various Seibu Refactoring: [David Haywood]
   * Air Raid, Street Fight and Dark Mist all use very similar video
      systems;this takes some steps towards allowing a common
      implementation
@@ -367,11 +330,11 @@ Air Management - Oozora ni Kakeru Hiouden II Windows 3.1 L12
      different Video Boards; makes video boards into devices to
      faciliate this
 
--Put DM01 matrix board CPU inside device for BFM Sc2/4 [David Haywood]
+-Put DM01 matrix board CPU inside device for BFM Sc2/4. [David Haywood]
 
 -Maygay M1A, MCU bones, commuication not hooked up yet. [David Haywood]
 
--Fix many MPU4 set descriptions [David Haywood]
+-Fixed many MPU4 set descriptions: [David Haywood]
  * Identify and mark hacks
  * Associate sets with correct games
  * Treat Casino Bar-gain and Bar-gain as different games
@@ -379,69 +342,73 @@ Air Management - Oozora ni Kakeru Hiouden II Windows 3.1 L12
 -Treat Sc2 DMD as screen, avoid tag lookups, add correct DMD ROM to some
  sets [David Haywood]
 
--Maygay M1A/B partial fix for lamp mapping [John Parker]
+-Maygay M1A/B partial fix for lamp mapping: [John Parker]
   * Fix the lamp mapping for the first half of the matrix
   * Fix typo and add comment to function that is intended to handle the
      second half of the matrix
 
--Add layouts to Maygay driver [John Parker]
+-Added layouts to Maygay driver: [John Parker]
  * These are generated, and will be updated as I MFME2MAME converter is
     improved, reels are transcribed, etc.
  * m1albsqp, m1apollo2, m1bargnc, m1bghou, m1bigdel, m1calypsa,
     m1casclb, m1casroy1, m1chain, m1cik51o, m1clbfvr, m1cluecb1,
-    m1cluedo4, m1cluessf, m1coro21n, m1dkong91n, m1dxmono51o, m1eastndl,
-    m1eastqv3, m1fantfbb, m1fightb , m1frexplc, m1gladg, m1grescb,
-    m1hotpoth, m1htclb, m1imclb, m1infern, m1inwinc, m1itjobc, m1itskob,
-    m1jpmult, m1lucknon, m1luxorb, m1manhat, m1monclb, m1mongam,
-    m1monmon, m1monou, m1nhp, m1nudbnke, m1omega, m1onbusa, m1przeeb,
-    m1retpp, m1search, m1sptlgtc, m1startr, m1taknot, m1thatlfc,
-    m1topstr, m1triviax, m1trtr, m1ttcash, m1wldzner, m1wotwa
+    m1cluedo4, m1cluessf, m1coro21n, m1dkong91n, m1dxmono51o,
+    m1eastndl, m1eastqv3, m1fantfbb, m1fightb , m1frexplc, m1gladg,
+    m1grescb, m1hotpoth, m1htclb, m1imclb, m1infern, m1inwinc,
+    m1itjobc, m1itskob, m1jpmult, m1lucknon, m1luxorb, m1manhat,
+    m1monclb, m1mongam, m1monmon, m1monou, m1nhp, m1nudbnke, m1omega,
+    m1onbusa, m1przeeb, m1retpp, m1search, m1sptlgtc, m1startr,
+    m1taknot, m1thatlfc, m1topstr, m1triviax, m1trtr, m1ttcash,
+    m1wldzner, m1wotwa
 
--Add new Scorpion 1 layouts [John Parker]
+-Added new Scorpion 1 layouts: [John Parker]
   * sc1barcd, sc1bartk, sc1cl65, sc1clbtma, sc1cwcl, sc1dblch, sc1pwrl,
      sc1sirb, sc1spct, sc1str4
 
--Scorpion 2: added 12 internal layouts [John Parker]
+-Scorpion 2: Added 12 internal layouts: [John Parker]
   * sc2ptytm1, sc2cpe, sc2casr2, sc2majes, sc2eggs1, sc2prom, sc2cpg,
      sc2copcl7, sc2town2, sc2suprz1, sc2heypr, sc2prem2
 
--Scorpion 4: add 35x Layouts [John Parker]
+-Scorpion 4: Add 35x Layouts. [John Parker]
 
--Scorpion 4 7-segment displays mostly fixed [John Parker]
+-Scorpion 4: Mostly fixed 7-segment displays. [John Parker]
 
--Maygay - fix input strobe order bug [John Parker]
+-Maygay: Fixed input strobe order bug [John Parker]
 
--Update regenerated Maygay layouts - all now initialise OK [John Parker]
+-Updated regenerated Maygay layouts; all now initialise OK.
+  [John Parker]
   * Updated due to Converter bugfixes.
 
--Maygay - add/update layouts [John Parker]
+-Maygay: Added/updated layouts: [John Parker]
   * Layouts have the new 'MFME2MAME Debug View'
   * Layouts have new fix (same as MPU4) for 'coin slot buttons'
   * Some reel lamp improvement for 5th reel
   * Added four new layouts
 
--JPM MPS: Added 89 Layouts [John Parker]
+-JPM MPS: Added 89 Layouts: [John Parker]
   * j2adnote, j2always, j2bankch, j2bigbnk, j2bigbox, j2blustr,
      j2cashbn, j2cashrl, j2cashro, j2cashrv, j2cashtk, j2coinsh,
      j2coppot, j2cprndx, j2criscr, j2crown, j2cshalm, j2cshcrd,
      j2cshfil, j2cshnud, j2cshsmh, j2cvault, j2droplt, j2ewn, j2ews,
-     j2exec, j2fasttk, j2fiveal, j2fiveln, j2fqueen, j2frucnx, j2fullhs,
-     j2fws, j2ghostb, j2gldchy, j2goldbr, j2hilocl, j2hinote, j2hiroll,
-     j2hitmon, j2hotpot, j2hotsht, j2hypnot, j2jackbr, j2kingcl,
-     j2litean, j2litnot, j2lovshd, j2lovsht, j2luckar, j2lucky2,
-     j2maxima, j2missis, j2monblt, j2mongam, j2montrp, j2nolimt,
-     j2notesh, j2nudbnz, j2nudfev, j2nudmon, j2nudshf, j2paypkt,
-     j2penny, j2plsmnd, j2plsnud, j2pndrsh, j2rdclb, j2reelbn, j2reelbo,
-     j2reelcz, j2reelmc, j2reelmo, j2silvcl, j2silvsh, j2sldgld,
-     j2slvrgh, j2spcrsv, j2sstrea, j2stahed, j2supfrc, j2suprsh,
-     j2supsft, j2supstp, j2suptrk, j2swbank, j2take2, j2trail, j2tstplt
+     j2exec, j2fasttk, j2fiveal, j2fiveln, j2fqueen, j2frucnx,
+     j2fullhs, j2fws, j2ghostb, j2gldchy, j2goldbr, j2hilocl, j2hinote,
+     j2hiroll, j2hitmon, j2hotpot, j2hotsht, j2hypnot, j2jackbr,
+     j2kingcl, j2litean, j2litnot, j2lovshd, j2lovsht, j2luckar,
+     j2lucky2, j2maxima, j2missis, j2monblt, j2mongam, j2montrp,
+     j2nolimt, j2notesh, j2nudbnz, j2nudfev, j2nudmon, j2nudshf,
+     j2paypkt, j2penny, j2plsmnd, j2plsnud, j2pndrsh, j2rdclb,
+     j2reelbn, j2reelbo, j2reelcz, j2reelmc, j2reelmo, j2silvcl,
+     j2silvsh, j2sldgld, j2slvrgh, j2spcrsv, j2sstrea, j2stahed,
+     j2supfrc, j2suprsh, j2supsft, j2supstp, j2suptrk, j2swbank,
+     j2take2, j2trail, j2tstplt
 
--JPM SYSTEM5: added 21 layouts [John Parker]
-  * j5ar80cla, j5cira, j5fairp, j5firebl, j5hollyc, j5hotdoga, j5indsum,
-     j5intr, j5movie, j5nite, j5palma, j5popeye, j5sizl, j5supbara,
-     j5suphi, j5swop, j5term, j5topshp, j5trail, j5ujb, j5wsc
+-JPM SYSTEM5: Added 21 layouts: [John Parker]
+  * j5ar80cla, j5cira, j5fairp, j5firebl, j5hollyc, j5hotdoga,
+     j5indsum, j5intr, j5movie, j5nite, j5palma, j5popeye, j5sizl,
+     j5supbara, j5suphi, j5swop, j5term, j5topshp, j5trail, j5ujb,
+     j5wsc
 
--BFM DMD: Adjust to more accurately match the colour of the real
+-BFM DMD: Adjusted to more accurately match the colour of the real
  machines [John Parker]
 
 -Techno Drive improvements [superctr]
@@ -456,10 +423,10 @@ Air Management - Oozora ni Kakeru Hiouden II Windows 3.1 L12
   * fixes the sound tempo in nebulray, gslugrsj, gslgr94u and clones,
      and vshoot.
 
--Byteswap timecris sample ROM, remove MACHINE_IMPERFECT_SOUND flags for
- C352 games [superctr]
+-Byteswapped timecris sample ROM, remove MACHINE_IMPERFECT_SOUND flags
+ for C352 games. [superctr]
 
--Namco C352 improvements [superctr]
+-Namco C352 improvements: [superctr]
   * Replaced C352 core with new one used in VGMPlay (fixes noise
      generation and sample interpolation)
   * Change clock frequencies for sub CPU and sound chip for
@@ -468,29 +435,30 @@ Air Management - Oozora ni Kakeru Hiouden II Windows 3.1 L12
   * Removed rear channels for systems that lack a second Sanyo
      LC78815M stereo DAC
 
--kim1: RS & ST keys, input ports update [Dagarman]
+-kim1: RS & ST keys, input ports update: [Dagarman]
   * Hooked up the ST key and updated RS key function
   * Updated INPUT_PORTS to add numpad keys and better support pasting
   * Moved type definitions to kim1.h
   * Simplified kim1.lay coordinates
 
--Document 3 diagnostic menu bugs in the Vii's BIOS [PressStartandSelect]
+-Documented 3 diagnostic menu bugs in the Vii's BIOS.
+ [PressStartandSelect]
 
--Fixed action on debugger 'trace'/'traceover' commands [Nathan Woods]
+-Fixed action on debugger 'trace'/'traceover' commands: [Nathan Woods]
   * 'trace'/'traceover' commands were registered as having three
      arguments, this fixes it so there are four arguments
 
--Fixed some MC6847 low resolution video modes [Nathan Woold]
+-Fixed some MC6847 low resolution video modes: [Nathan Woods]
   * Fixed a bug from where video data was sampled that could cause too
      many samples to be loaded in low resolution video modes
   * On the CoCo, this fixes some low resolution video modes used by
      Project Nebula and some other games
 
--CoCo 1/2: Fixed configurable RAM sizes (MT05823) [Nathan Woods]
+-CoCo 1/2: Fixed configurable RAM sizes: [Nathan Woods]
   * Changes the 6883 SAM implementation to assume memory bank lengths
      smaller than available space are not mirrored
 
--Make rom_entry a class that keeps copies of strings [Nathan Woods]
+-Made rom_entry a class that keeps copies of strings: [Nathan Woods]
   * Also introduce a POD tiny_rom_entry for static ROM definitions
   * C++-fiied code that iterates over rom_entry arrays
 
@@ -503,20 +471,20 @@ Air Management - Oozora ni Kakeru Hiouden II Windows 3.1 L12
   * Better encapsulation of format list
   * Better encapsulation of filenme extension extraction
 
--Convert many NUL-terminated strings to std::string [Nathan Woods]
+-Converted many NUL-terminated strings to std::string: [Nathan Woods]
  * Parameters to zippath and emufile
  * menu_software_list::m_filename_buffer
  * Various places in softlist code
 
--Standardized names for som softlist concepts [Nathan Woods]
+-Standardized names for som softlist concepts. [Nathan Woods]
 
 -Check return value of CassetteLegacyWaveFiller.chunk_sample_calc()
- (this is just better error checking) [Nathan Woods]
+ (this is just better error checking). [Nathan Woods]
 
--Changing device_image_interface::determine_open_plan() to not create an
- image unless device_image_interface::create() is used [Nathan Woods]
+-Changed device_image_interface::determine_open_plan() to not create an
+ image unless device_image_interface::create() is used. [Nathan Woods]
 
--Fixed an issue that caused softlist device descriptions to be blank
+-Fixed an issue that caused softlist device descriptions to be blank.
  [Nathan Woods]
 
 -Report Windows ERROR_INVALID_NAME as osd_file::error::NOT_FOUND
@@ -524,115 +492,120 @@ Air Management - Oozora ni Kakeru Hiouden II Windows 3.1 L12
 
 -Fixed menu lag. [dankan1890]
 
--Use required_ioport_array for multiple keyboards [shattered]
+-Use required_ioport_array for multiple keyboards. [shattered]
 
--ec1841: adapt to Memory Fun (TM) [shattered]
+-ec1841: Adapted to new memory system. [shattered]
 
--mc1502: make serial test in BIOS work [shattered]
+-mc1502: Made serial test in BIOS work. [shattered]
 
--minor fixes to poisk1 and mc1502 [shattered]
+-poisk1, mc1502: Minor fixes. [shattered]
 
--vt240: unbreak host comms when flow control is enabled [shattered]
+-vt240: Fixed host comms when flow control is enabled. [shattered]
 
--dvk_ksm: unbreak host comms, add PORT_CHARs to its keyboard [shattered]
+-dvk_ksm: Fixed host comms, added PORT_CHARs to its keyboard.
+ [shattered]
 
--dvk_ksm: drop dvk_ksm01 variant and merge ROM sets; enable tx to its
- keyboard [shattered]
+-dvk_ksm: Dropped dvk_ksm01 variant and merged ROM sets; enabled tx to
+ its keyboard. [shattered]
 
--ms7004: enable serial rx and add PORT_CHAR's [shattered]
+-ms7004: Enabled serial rx and add PORT_CHARs. [shattered]
 
--keyboard: add F16..F20 keys (present on DEC terminals) [shattered]
+-keyboard: Added F16..F20 keys (present on DEC terminals). [shattered]
 
--isa_hdc: implement READSBUFF command (used by ec1841 diags) [shattered]
+-isa_hdc: Implemented READSBUFF command (used by ec1841 diagnostics).
+ [shattered]
 
--Remap "P1 Mahjong Score" to / key for OS X [AJR]
+-Remapped "P1 Mahjong Score" to / key for OS X. [AJR]
 
--New core input type: "Memory Reset" [AJR]
-  *  Resets settings/bookkeeping to system-provided default
-  *  The default key binding F1
+-New core input type: "Memory Reset": [AJR]
+  * Resets settings/bookkeeping to system-provided default
+  * The default key binding F1
 
--Designate more memory reset inputs in mahjong games; regularize service
- inputs in dynax.cpp [AJR]
+-Designated more memory reset inputs in mahjong games. [AJR]
 
--Attempt to fix distortion with -refreshspeed and -audio xaudio2
+-dynax.cpp: Regularized service inputs. [AJR]
+
+-Attempted to fix distortion with -refreshspeed and -audio xaudio2.
  [Calamity]
 
--New stretching options (as suggested by Jeeze) [Calamity]
+-New stretching options (as suggested by Jezze): [Calamity]
   * New option -unevenstretchy (complementary to -unevenstretchx)
-  * New option -autostretchxy, to automatically apply -unevenstretchx or
-     -unevenstretchy based on source native orientation.
+  * New option -autostretchxy, to automatically apply -unevenstretchx
+     or -unevenstretchy based on source native orientation.
 
--Warp mode for relative mouse on OSX SDL 2.0.4 (fixes #1232) [bradhugh]
+-Warp mode for relative mouse on OSX SDL 2.0.4 (fixes Github issue
+ #1232). [bradhugh]
 
--sengokmj: Inputs refined based on examination of program code [AJR]
+-sengokmj: Inputs refined based on examination of program code: [AJR]
   *  All service inputs are momentary switches, not DIP toggles
   *  Add unused SW2 DIPs as displayed in service mode
   *  Add a couple of obscure inputs not shown in service mode
 
--pwrkick, othldrby: Various improvements [AJR]
-  * Add NVRAM to Power Kick and Othello Derby; document the reset
+-pwrkick, othldrby: Various improvements: [AJR]
+  * Added NVRAM to Power Kick and Othello Derby; document the reset
      mechanism for the latter
-  * Add ticket dispenser to Power Kick (seems to work for the most part)
-  * Remove numerous bogus DIP switches
-  * Thoroughly reconfigure coin inputs in Power Kick, adding counters
+  * Added ticket dispenser to Power Kick (seems to work for the most part)
+  * Removed numerous bogus DIP switches
+  * Thoroughly reconfigured coin inputs in Power Kick, adding counters
      and lockouts for all three (including the "Key In" input that
      really isn't)
   * More meaningful settings for the "Payout" DIP switch in Power Kick
      (based on program code)
 
--Improvements to almost all games in skylncr.cpp [AJR]
+-skylncr.cpp: Improvements to almost all games: [AJR]
   * Use standard input mappings in all games except Sonik Fighter
-  * Add working hopper outputs and payout buttons
-  * Promote mbutrfly to WORKING after solving the protection (the code
+  * Added working hopper outputs and payout buttons
+  * Promoted mbutrfly to WORKING after solving the protection (the code
      wasn't encrypted) and add the button lamps internally associated
      with it
-  * Decrypt bdream97, which is almost working now with obvious graphical
-     glitches and some apparent input problems
+  * Decrypted bdream97, which is almost working now with obvious
+     graphical glitches and some apparent input problems
 
--kurukuru, ppj: Input/output improvements [AJR]
+-kurukuru, ppj: Input/output improvements: [AJR]
   * Ticket dispenser now works
-  * Correct "Payout Mode" DIP settings
-  * Correct DSW1 settings in Pyon Pyon Jump
-  * Rename coin inputs and coin-related DIP switches and order by
+  * Corrected "Payout Mode" DIP settings
+  * Corrected DSW1 settings in Pyon Pyon Jump
+  * Renamed coin inputs and coin-related DIP switches and order by
       increasing denomination
-  * Remove "Unknown" inputs that aren't actually used
+  * Removed "Unknown" inputs that aren't actually used
   * Full character names only for Kuru Kuru Pyon Pyon
   * Reset button now mapped as "Memory Reset"
   * Random notes based on program code
 
--Show color values in palette viewer [AJR]
+-Show color values in palette viewer: [AJR]
   * Move the mouse over a color rectangle to show index and RGB values
   * For indirect pens, index of the corresponding color is also shown
   * For colors in normal RAM-based palettes, the raw value in memory is
      also shown (does not currently work with most buffered palettes,
      and is incompatible with PROM-based or RAMDAC-based palettes)
 
--Validity checking improvements [AJR]
+-Validity checking improvements: [AJR]
   * Always print the name of each driver with -validate -verbose before
      check to help detect crashes
-  * Softlists get validated the first time, not every time but the first
+  * Softlists get validated the first time, not every time but the
+     first
   * Make address maps complain when entry bounds lie outside the global
       mask
 
 -Midway V-Unit imrprovements: [Risugami]
- * Add layouts for Cruis'n USA, Cruis'n World, and Off Road Challenge
- * Add wheel force feedback reference and made notes on other outputs
+ * Added layouts for Cruis'n USA, Cruis'n World, and Off Road Challenge
+ * Added wheel force feedback reference and made notes on other outputs
  * Finished implementing the Galil command communication
  * Finished implementing motion controller
 
--Decrypted River Patrol (Japan), game now working [MASH]
+-Decrypted River Patrol (Japan), game now working. [MASH]
 
--Fixed PROMs in Dribbling (dumped a Dribbling PCB with different PROMs)
- [f205v, MASH]
+-Fixed PROMs in Dribbling (dumped a Dribbling PCB with different
+ PROMs). [f205v, MASH]
 
--Added missing PAL dump to Green Beret (bootleg) [MASH]
+-Added missing PAL dump to Green Beret (bootleg). [MASH]
   * Same PAL dump also in suprmriobl, drhl and ddragon6809a
 
--Added video proms to Turkey Shoot and Mystic Marathon [MASH]
+-Added video proms to Turkey Shoot and Mystic Marathon. [MASH]
 
--Fixed arcade only build (cshooter.cpp changed to airraid.cpp) [MASH]
+-Fixed arcade only build (cshooter.cpp changed to airraid.cpp). [MASH]
 
--Add proper SMT Flash dumps to deluxe4u [system11]
+-Added proper SMT Flash dumps to deluxe4u. [system11]
 
 -dynax.cpp: dumped color PROMs for Intergirl [f205v]
 
@@ -717,10 +690,14 @@ Wangan Midnight Maximum Tune (Japan) (Rev B) [ShouTime, rtw]
 
 New WORKING software list additions
 -----------------------------------
-
+pc98_cd.xml: added more disks + FM Towns hybrids [rzero9]
+fmtowns_cd.xml: new dumps [rzero9]
+coco_cart.xml: Switched 'cclimbra' to 'cclimber'. [Nathan Woods]
+pofo.xml: Dumped the File Manager/Tutorial card. [Curt Coder]
 
 New NOT_WORKING software list additions
 ---------------------------------------
+gba_ereader.xml: Animal Crossing Series 2 [Shideravan]
 
 Translations added or modified
 ------------------------------
