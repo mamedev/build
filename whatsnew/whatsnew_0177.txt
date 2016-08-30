@@ -51,13 +51,9 @@ MAMETesters Bugs Fixed
 Source Changes
 --------------
 
--softlist.cpp: Minor cleanups. [Nathan Woods]
-
 -maygay1b: [David Haywood]
  * Fixed second set of lamps
  * Partially investigated MCU hookup
-
--softlist.cpp: Refactored system layout. [Nathan Woods]
 
 -apple2gs.cpp: Redumped 341-0748 FE-FF ROM for the ROM03 Apple IIGS,
  confirming that 341-0748 and 341-0749 ROMs are identical.
@@ -503,25 +499,25 @@ Source Changes
   * Consolidated error code translation
   * Use std::string rather than C strings in more cases
   * Better encapsulation of format list
-  * Better encapsulation of filenme extension extraction
+  * Better encapsulation of filename extension extraction
+
+-software list refactoring: [Nathan Woods]
+  * Separation of software list data structure from runtime device
+  * Use std::string rather than C strings in many cases
+  * Standardized terminology for various concepts
 
 -Converted many NUL-terminated strings to std::string: [Nathan Woods]
- * Parameters to zippath and emufile
- * menu_software_list::m_filename_buffer
- * Various places in softlist code
-
--Standardized names for som softlist concepts. [Nathan Woods]
+  * Parameters to zippath and emufile
+  * menu_software_list::m_filename_buffer
 
 -Check return value of CassetteLegacyWaveFiller.chunk_sample_calc()
  (this is just better error checking). [Nathan Woods]
 
 -Changed device_image_interface::determine_open_plan() to not create an
- image unless device_image_interface::create() is used. [Nathan Woods]
+ image unless device_image_interface::create() is used.  This fixes odd
+ behavior where zero byte images could be created. [Nathan Woods]
 
--Fixed an issue that caused softlist device descriptions to be blank.
- [Nathan Woods]
-
--Report Windows ERROR_INVALID_NAME as osd_file::error::NOT_FOUND
+-Report Win32 ERROR_INVALID_NAME as osd_file::error::NOT_FOUND
  [Nathan Woods]
 
 -Fixed menu lag. [dankan1890]
