@@ -26,12 +26,16 @@ del /s *#
 @echo Cleaning up tabs/spaces/end of lines....
 for /r src %%i in (*.cpp) do srcclean %%i || goto :cleanupfailed
 for /r src %%i in (*.h) do srcclean %%i || goto :cleanupfailed
+for /r src %%i in (*.hxx) do srcclean %%i || goto :cleanupfailed
+for /r src %%i in (*.ipp) do srcclean %%i || goto :cleanupfailed
+for /r src %%i in (*.inc) do srcclean %%i || goto :cleanupfailed
 for /r src %%i in (*.mak) do srcclean %%i || goto :cleanupfailed
 for /r src %%i in (*.lst) do srcclean %%i || goto :cleanupfailed
 for /r src %%i in (*.lay) do srcclean %%i || goto :cleanupfailed
 for /r src %%i in (*.inc) do srcclean %%i || goto :cleanupfailed
 for /r hash %%i in (*.xml) do srcclean %%i || goto :cleanupfailed
 for /r scripts %%i in (*.lua) do srcclean %%i || goto :cleanupfailed
+for /r plugins %%i in (*.lua) do srcclean %%i || goto :cleanupfailed
 
 @goto :eof
 

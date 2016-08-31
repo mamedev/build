@@ -16,8 +16,8 @@ call :copyfiles build\mingw-gcc\bin\x32\Release build\release\x32\Release\mame m
 @echo Copy files MAME 64-bit Release build ...
 call :copyfiles build\mingw-gcc\bin\x64\Release build\release\x64\Release\mame mame64 mame%1b_64bit.exe %1
 
-@echo Downloading MAME source ....
-git clone https://github.com/mamedev/mame.git  --branch mame%1  --depth=1 build\release\src
+@echo Cloning MAME source....
+git clone . --branch mame%1 --depth=1 build\release\src
 rm -r -f build\release\src\.git
 pushd build\release\src
 
@@ -27,11 +27,16 @@ pushd build\release\src
 7za a -mx=0 -y -r -tzip ..\mame.zip * 
 popd
 
-pushd build\release
 @echo Creating final source ZIP....
+pushd build\release
 7za a -mpass=4 -mfb=255 -y -tzip mame%1s.zip mame.zip 
 del mame.zip
 popd 
+
+@echo Creating XML system list....
+build\mingw-gcc\bin\x64\Release\mame64.exe -listxml > mame%1.xml
+7za a -mpass=4 -mfb=255 -y -tzip build\release\mame%1lx.zip mame%1.xml
+
 @echo Finished creating release....
 goto :eof
 
@@ -85,4 +90,3 @@ echo Packing %4
 pushd %2
 7za a -mx=9 -y -r -t7z -sfx7z.sfx ..\..\..\%4 >nul
 popd
-
