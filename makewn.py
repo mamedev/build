@@ -150,7 +150,8 @@ def format_entry(stream, message, author, checkmachines):
         format_paragraph(stream, paragraph, level, author, first)
         paragraph = ''
         first = False
-    stream.write('\n'.encode('UTF-8'))
+    if not first:
+        stream.write('\n'.encode('UTF-8'))
 
 
 def format_commit(stream, commit):
@@ -206,9 +207,20 @@ def print_fresh_pull_requests(api, stream, commit):
         format_entry(stream, message, pr.user['login'], True)
 
 
+def print_section_heading(stream, heading):
+    stream.write(('%s\n%s\n' % (heading, '-' * len(heading))).encode('UTF-8'))
+
+
+def print_source_changes(stream, repo, api, tag):
+    print_section_heading(stream, 'Source Changes')
+    print_log(stream, repo, '%s..master' % (tag.name))
+    print_fresh_pull_requests(api, stream, api.git_data.commits.get(tag.commit.hexsha))
+    stream.write('\n'.encode('UTF-8'))
+
+
 def print_new_machines(stream, title, machines):
     if machines:
-        stream.write(('%s\n%s\n' % (title, '-' * len(title))).encode('UTF-8'))
+        print_section_heading(stream, title)
         for machine in machines:
             print_wrapped(stream, bullet_pat.sub('\\2', machine), -1)
         stream.write('\n\n'.encode('UTF-8'))
@@ -234,24 +246,24 @@ if __name__ == '__main__':
     else:
         stream = sys.stdout
 
-    repo = git.Repo(args.clone)
+    repo = git.Repo(args.clone if args.clone is not None else '.')
     api = pygithub3.Github(user='mamedev', repo='mame', login=ghuser, password=getpass.getpass('github password: '))
     tag = get_most_recent_tag(repo)
 
-    version = '0.%s' % (long(releasetag_pat.sub('\\1', tag.name)) + 1)
-    stream.write(('%s\n%s\n\n\n' % (version, '-' * len(version))).encode('UTF-8'))
-
-    stream.write('MAMETesters Bugs Fixed\n----------------------\n\n\n'.encode('UTF-8'))
-
-    stream.write('Source Changes\n--------------\n\n'.encode('UTF-8'));
-    print_log(stream, repo, '%s..master' % (tag.name))
-    print_fresh_pull_requests(api, stream, api.git_data.commits.get(tag.commit.hexsha))
+    print_section_heading(stream, '0.%s' % (long(releasetag_pat.sub('\\1', tag.name)) + 1))
     stream.write('\n\n'.encode('UTF-8'))
 
+    print_section_heading(stream, 'MAMETesters Bugs Fixed')
+    stream.write('\n\n'.encode('UTF-8'))
+
+    print_source_changes(stream, repo, api, tag)
     print_new_machines(stream, 'New machines added or promoted from NOT_WORKING status', new_working_parents);
     print_new_machines(stream, 'New clones added or promoted from NOT_WORKING status', new_working_clones);
     print_new_machines(stream, 'New machines marked as NOT_WORKING', new_broken_parents);
     print_new_machines(stream, 'New clones marked as NOT_WORKING', new_broken_clones);
 
-    stream.write('New WORKING software list additions\n-----------------------------------\n\n\n'.encode('UTF-8'));
-    stream.write('New NOT_WORKING software list additions\n---------------------------------------\n\n'.encode('UTF-8'));
+    print_section_heading(stream, 'New WORKING software list additions')
+    stream.write('\n\n'.encode('UTF-8'))
+
+    print_section_heading(stream, 'New NOT_WORKING software list additions')
+    stream.write('\n'.encode('UTF-8'))
