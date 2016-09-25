@@ -46,6 +46,8 @@ MAMETesters Bugs Fixed
   Error when starting (O. Galibert)
 - 06372: [Interface] Bitbanger device can no longer accept streams/
   sockets/pipes (Nathan Woods)
+- 06374: [Crash/Freeze] (aristmk5.c) adonis: Changing System Configuration
+  to anything but game_prg causes a crash  (Reagan Roush) THIS NEEDS TO BE VERIFIED AND EITHER MARKED FIXED ON MT OR REMOVED, PLEASE DO SO TAFOID
 
 
 Source Changes
@@ -57,19 +59,19 @@ Source Changes
   * Example included that uses the hi2txt XML parser files to display
      high score info from hiscore file or NVRAM
 
--Rough C++ modernization of CoCo cartridge infrastructure (usage of 'enum
+-Roughly modernized CoCo cartridge infrastructure (usage of 'enum
  class', scoping etc) [Nathan Woods]
 
--Now setting m_filetype for images loaded from softlists [Nathan Woods]
+-Fixed setting m_filetype for images loaded from softlists [Nathan Woods]
 
 -Changed the "extension as filetype" behavior for software list images to
  be opt in behavior [Nathan Woods]
 
--option_guide C++-ification, touched up imgtool [Nathan Woods]
+-Modernized option_guide, touched up imgtool [Nathan Woods]
 
 -Initial imgtool C++-ification [Nathan Woods]
 
--Fixed an issue on the i860 disassembler that could cause an undefined
+-Fixed an issue in the i860 disassembler that could cause an undefined
  string to be used [Nathan Woods]
 
 -Allow devices to indicate whether image creation should be supported at
@@ -228,93 +230,80 @@ Source Changes
 
 -vector06: add software list and TODOs [MetalliC]
 
--Partially fix SDL joysticks with same name Fixes #1334 [Brad Hughes]
+-Partially fixed SDL joysticks with same name. Fixes GitHub #1334 [Brad Hughes]
 
 -Terminator 2 - Judgment Day Proto clone added [briantro]
 
--Fixed an issue on the i860 disassembler that could cause an undefined
- string to be used [Nathan Woods]
-
--naomi docs update [f205v, MetalliC]
+-naomi: Updated docs. [f205v, MetalliC]
 
 -pc1512: Fixed keyboard reset behavior. [Curt Coder]
 
--namcos22: timecris clone still had wrong byteswapped samplerom [hap]
+-namcos22: Fixed byteswapped sample ROM in timecris clone set. [hap]
 
--electron: added Acorn Plus 3 expansion as slot device (floppy support) [Nigel Barnes]
+-electron: Added Acorn Plus 3 expansion as slot device (floppy support) [Nigel Barnes]
  * now uses RAM device instead of ROM_REGION
  * added CSW cassette format
  * pressing BREAK will now hold until released
  * reset expansion devices on BREAK
  * minor progress on M2501 device
 
--added header checks to identify in uef_cas and csw_cas formats [Nigel Barnes]
+-Added header checks to identify in uef_cas and csw_cas formats [Nigel Barnes]
 
--bbc: added Opus Challenger (floppy and ramdisc) device on 1mhz bus [Nigel Barnes]
+-bbc: Added Opus Challenger (floppy and ramdisc) device on 1mhz bus [Nigel Barnes]
  * moved joystick to analogue port slot device
  * added Voltmace self-centering joysticks
  * updated to use input merger device
  * keyboard and joystick use ioport_array
  * reset devices on BREAK
  
--bbcb: moved fdc to slot device to support various controller boards [Nigel Barnes]
+-bbcb: Moved fdc to slot device to support various controller boards [Nigel Barnes]
  * Acorn 8271 and 1770, supporting Acorn, Amcom, Watford DFS's
  * Cumana QFS (8877a)
  * Opus DDOS and EDOS (1770, 2793, 2791)
  * Watford DDFS (1770 and 1772)
  * removed fake bbcb1770 machine
  
--bbcm: replace cassette led with power led in layout [Nigel Barnes]
+-bbcm: Replaced cassette led with power led in layout. [Nigel Barnes]
 
--bbcmc: added joyport slot device to Master Compact, defaulting to joystick [Nigel Barnes]
+-bbcmc: Added joyport slot device to Master Compact, defaulting to joystick. [Nigel Barnes]
 
--superqix.cpp: Fix ROM labels and locations for prebillian, add notes
- about lack of Taito game ID and PCB label. [ShouTime, Lord Nightmare]
+-superqix: Multiple fixes for pbillian, hotsmash and others: [Lord Nightmare]
+ * Fixed ROM labels and locations for pbillian.
+ * Added notes about lack of Taito game ID and PCB label for pbillian.
+ * Added some debugger access fences on read handlers.
+ * Got rid of timer hacks for Z80<->MCU communication in hotsmash.
+ * Implemented 68705 DDR registers.
+ * Implemented proper readback of Z80<->MCU semaphores.
+ * Removed HOLD_LINE hack for NMI by implementing NMI acknowledge register.
+ * Added more driver notes, including hotsmash MCU code documentation.
+ * Improved MCU HLE for pbillian to use non-anonymous timers instead of hacks.
+ * Made AY port bits for pbillian and hotsmash more consistent.
+ * Changed sample playback engine sample rate from 5KHz to 3.96KHz which
+    more closely matches PCB recordings and is derivable from a 12MHz clock.
+ * Documented the purpose of various RAM chips.
+ * Unified memory map for prebillian and hotsmash.
+ * Made hotsmash machine configuration derive from pbillian.
+ * Implemented AY-3-8910 mixing based on PCB tracing.
+ * Added crystals and notes about "SYSTEM" register bits being incorrect.
+ * Added sqixr0 as a working clone.
+ * Renamed sqixr1, sqix, and sqixb1 set long names to include versions.
+ * Updated comments about sqixb1, various PCB fixes, and coin lockout.
+ * Replaced bootleg MCU code on sqix and sqixr1 sets with a dump created
+    from the sqixu MCU, based on the bootleg MCU code.
 
--superqix.cpp: add notes, add some debugger access fences on read
- handlers [Lord Nightmare]
+-superqix: Various changes: [Lord Nightmare, Elgen]
+ * Shuffled the superqix machine configs to make more sense.
+ * Added a custom input member to clean up MCU semaphore implementation
+    for sqix and clones.
+ * Added notes about the sqixb1 MCU code origin.
+ * Marked the sqixb1 MCU dump good for that specific set and updated notes.
 
--superqix.cpp: Got rid of timer hacks for z80<->mcu communication in
- hotsmash, Implemented 68705 DDR registers, implemented proper readback
- of z80<->mcu semaphores, Got rid of HOLD_LINE hack for NMI by
- implementing NMI ACK register, Added more driver notes [Lord Nightmare]
+-atarist: Added correct ROM labels for the TOS 1.02 and 1.04 ROMs for the
+ MegaST. [Lord Nightmare, techfury90]
 
--superqix.cpp: improved MCU HLE for prebillian to use non-anonymous
- timers instead of scheduler hacks consistencized the AY port bits for
- hotsmash and prebillian got rid of hack mame_rand usage for the MCU
- semaphores in prebillian in favor of proper implementation added notes
- about what the majority of the hotsmash MCU code actually does changed
- the samplerate of the sample playback engine from 5khz to 3906hz which
- sounds more correct in hotsmash, and is directly derivable from the
- 12mhz pcb xtal [Lord Nightmare] Add notes about what the various rams on
- hotsmash/prebillian and superqix actually do, including the framebuffer
- ram [Lord Nightmare, Corrado Tomaselli]
+-hiscore.dat: Various updates. [Leezer]
 
--superqix.cpp: Unified memory map for prebillian and hotsmash
- [Lord Nightmare]
-
--superqix.cpp: made hotsmash machine config derived from prebillian
- [Lord Nightmare]
-
--superqix.cpp: Implement AY-3-8910 mixing based on PCB tracing, add XTALs
- and notes about "SYSTEM" register bits being incorrect as currently
- implemented [Lord Nightmare, Stefan Lindberg]
-
--superqix.cpp: Add sqixr0 World/Japan V1.0 romset as a working clone,
- dumped from an early PCB. Renamed sqixr1, sqix, and sqixb1 set long
- names to include their version numbers. Updated comments about sqixb1,
- which is in fact an exact copy of sqixr0 with one gfx rom split and the
- MCU replaced with a bootleg version. Add notes about the greenwire fix
- on 7H on the V1.0 pcb vs the res/cap fix on later pcbs. Add notes about
- V1.0 coin lockout being inverted compared to the later sets.
- [Lord Nightmare]
-
--atarist.cpp: Add correct rom labels for the TOS 1.02 and 1.04 roms for
- the MegaST [Lord Nightmare, techfury90]
-
--hiscore.dat: updates [Leezer]
-
--fmtowns: switch off layer debug keys by default [Barry Rodewald]
+-fmtowns: Switched off layer debug keys by default. [Barry Rodewald]
 
 -pc1640: Added a software list for hard disks, and a preinstalled HD20
  image to it. [Curt Coder]
@@ -322,301 +311,225 @@ Source Changes
 -pc1512: Added a software list for hard disks, and a preinstalled HD20
  image to it. [Curt Coder]
 
--chessmst: fixed HALT button. [Sandro Ronco]
+-chessmst: Fixed HALT button. [Sandro Ronco]
 
--pc1512 improvements: [Curt Coder]
- * Added joystick port to the keyboard
- * Added mouse port slot interface
+-pc1512 Various improvements: [Curt Coder]
+ * Added joystick port to the keyboard.
+ * Added mouse port slot interface.
 
--nss: revised/corrected hardware info [Guru]
+-nss: Revised and corrected hardware info. [Guru]
 
--fmtowns: reduce logerror spam a bit [Barry Rodewald]
+-fmtowns: Reduced logerror spam a bit. [Barry Rodewald]
 
 -dirom banking fixes: [O. Galibert]
- * Reject out-of-bounds bank numbers
- * Add a mandatory callback on bank change
+ * Reject out-of-bounds bank numbers.
+ * Add a mandatory callback on bank change.
 
--okim6295: Directly use set_rom_bank [O. Galibert]
+-okim6295: Directly use set_rom_bank. [O. Galibert]
 
--dimemory, dirom: Add some documentation [O. Galibert]
+-dimemory, dirom: Added some documentation. [O. Galibert]
 
--tsi speech+: added battery status input [hap]
+-tsispch: Added battery status input. [hap]
 
--gba_lcd: add missing check for BG2 enable flag in draw_roz_bitmap_scanline()
+-gba_lcd: Added missing check for BG2 enable flag in draw_roz_bitmap_scanline()
  [Giuseppe Gorgoglione]
 
--gba_lcd: code refactoring [Giuseppe Gorgoglione]
+-gba_lcd: Refactored code. [Giuseppe Gorgoglione]
 
--Improved graphics in bagmanf set [Angelo Salese]
+-bagmanf: Improved graphics. [Angelo Salese]
 
--Fix Mega Duck envelope and lfsr sound registers [John Rieman]
+-gb: Fixed Mega Duck envelope and LFSR sound registers: [John Rieman]
  * Determined that envelope/LFSR register nybbles are reversed relative
     to Game Boy by comparing writes made by Mega Duck and Game Boy
     versions of Snake Roy and Pile Wonder
 
--octopus: [Barry Rodewald]
- * correct CPU speeds, add Z80, add basic video output
- * added some more components, pass a few more tests
- * added more components, hooked up DIP switches; all systems
+-octopus: Various changes: [Barry Rodewald]
+ * Corrected CPU speeds, added Z80, added basic video output
+ * Added some more components, pass a few more tests
+ * Added more components, hooked up DIP switches; all systems
     tests now pass
- * fixed floppy use, now attempts to boot from floppy; CP/M 86-80 Plus
-    and MS-DOS both now load to the command prompt
- * add keyboard
- * added PIT timer and speaker sound
- * made a start at switching between the 8088 and Z80 CPUs.
- * fix mapping of graphics PROM, now detected on boot
- * hooked up RTC to the PPI (hopefully more or less correctly)
+ * Fixed floppy use, now attempts to boot from floppy; CP/M 86-80 Plus
+    and MS-DOS both now load to the command prompt.
+ * Added keyboard.
+ * Added PIT timer and speaker sound.
+ * Made a start at switching between the 8088 and Z80 CPUs.
+ * Fixed mapping of graphics PROM, now detected on boot.
+ * Hooked up RTC to the PPI (hopefully more or less correctly).
 
--fidel6502: hooked up EAS speech chip. game still not playable [hap]
+-fidel6502: Hooked up EAS speech chip. Game still not playable. [hap]
 
--sms.cpp: more accurate FM Sound Unit behavior [Enik Land]
+-sms: Added more accurate FM Sound Unit behavior. [Enik Land]
 
 -Added some clones [Wayder]
 
--photon2.cpp documentation update based on schematics research [Mick]
+-photon2: Updated documentation based on schematics research. [Mick]
 
--naomibd notes [MetalliC]
+-naomibd: Added notes. [MetalliC]
 
--Fix GH#1364 [tabbycat12]
+-Fixed GitHub issue #1364. [tabbycat12]
 
--16-bit hook-up for the Sharp LH28F016S flash memory [Luca Elia]
+-intelfsh: Added 16-bit hookup for the Sharp LH28F016S flash memory. [Luca Elia]
 
--new Chicken Draw Clone [briantro]
+-merit: Added new Chicken Draw Clone. [briantro]
 
--apple2e.cpp: write-only soft-switches are write-only [Peter Ferrie]
+-apple2e: Made write-only soft-switches write-only. [Peter Ferrie]
 
--Fixed text tilemap char select enable and opacity in Combat School
+-combatsc: Fixed text tilemap char select enable and opacity in Combat School.
  [Angelo Salese]
 
--Support for configuring device to conrtoller id [Tomer Verona]
- * This change adds support for configuring device to conrtoller id. This
-    allows for stable controller ids even if USB devices are plugged /
+-Added support for binding devices to controller IDs: [Tomer Verona]
+ * This allows for stable controller ids even if USB devices are plugged or
     unplugged, system is rebooted, etc.
  * See documentation for additional context.
 
--superqix.cpp: Shuffled around the super qix machine configs to make a
- bit more logical sense. added a custom input member to clean up the mcu
- semaphore implementation for sqix and clones. Added some notes about the
- sqixb1 mcu code origin. [Lord Nightmare, Elgen]
- * Marked the recovered sqixb1 mcu dump good for that specific set as it
-    matches a dump from a working pcb, and updated notes.
+-chessmst: Added layout with script. [Sandro Ronco]
 
--superqix.cpp: Replace bootleg mcu code on sqix and sqixr1 sets with an
- MCU dump patched from the decapped sqixu MCU, using hints in the bootleg
- MCU code to figure out what to change. This very likely will match the
- real sqix/sqixr1 MCU once it gets dumped, but mark it as BAD_DUMP since
- it is a user-created image. [Lord Nightmare]
+-Various OSD changes: [Brad Hughes]
+ * Converted OSD monitor info to modules plus added DXGI implementation.
+ * Converted the monitor information code from video.cpp in SDL and Windows
+    to modules.
 
--chessmst: added layout with script. [Sandro Ronco]
-
--Convert OSD monitor info to modules plus add DXGI implementation
- [Brad Hughes]
-
--Fix MT #00963 [Angelo Salese]
- * (Which is actually also "fixed landscape scrolling": when turning right
-    landscape is supposed to go left, not the other way around!)
-
--Added preliminary raster effects to tecmo.cpp, improves ending screen
- effect in Gemini Wing [Angelo Salese]
-
--Converted rollrace.cpp foreground to tilemap system and fixed flip flags
- in it, fixes service mode in rollace2 set [Angelo Salese]
- * (also fixed a wrap-around regression)
-
-cmi2x improvements: [Ryan Holtz]
- * Fixed FDC DMA behavior
- * Fixed channel card memory tests
- * Fixed inverted data writes to I8214 PICUs
- * Fix 6809 interrupt vectoring
-
--ay8910.cpp: Implement register readback masking for ay-3-8914 as used on
- Intellivision [Lord Nightmare, Joe Zbiciak]
-
--6840: Load the counter when held in reset [O. Galibert]
-
--Added serial support that still has issues plus some clean up of the
- driver [Joakim Larsson Edstrom]
-
--mcd: add incomplete Mitsumi ISA CDROM emulation [Carl]
-
--on-the-fly decryption support for mrdrilr2 [joseluis]
-
--Added semaphore and command handshake flags to audio section in Taito SJ
- [Angelo Salese, Lord Nightmare]
-
--add overrides to make gcc 6.1.0 happier [andreasn]
-
--Added flipscreen support to Gigas, Free Kick and Counter Run
+-tecmo: Added preliminary raster effects, improves ending screen in Gemini Wing.
  [Angelo Salese]
 
--Partially fix MT #01890 [Angelo Salese]
+-rollrace: Various changes: [Angelo Salese]
+ * Converted foreground to tilemap system and fixed flip flags, fixing service
+    mode in rollace2 set.
+ * Fixed a wrap-around regression.
 
--Use keys that can be programmed onto a CPS2 motherboard
+-cmi2x: Various changes: [Ryan Holtz]
+ * Fixed FDC DMA behavior.
+ * Fixed channel card memory tests.
+ * Fixed inverted data writes to I8214 PICUs.
+ * Fixed 6809 interrupt vectoring.
+
+-ay8910: Implemented register readback masking for AY-3-8914 as used on
+ Intellivision. [Lord Nightmare, Joe Zbiciak]
+
+-6840ptm: Load the counter when held in reset. [O. Galibert]
+
+-didact: Cleaned up driver and added serial support (though it has issues still).
+ [Joakim Larsson Edstrom]
+
+-mcd: Added incomplete Mitsumi ISA CDROM emulation [Carl]
+
+-namcos10: Added on-the-fly decryption support for mrdrilr2. [joseluis]
+
+-taitosj: Added semaphore and command handshake flags to audio section.
+ [Angelo Salese, Lord Nightmare]
+
+-freekick: Added flipscreen support to Gigas, Free Kick and Counter Run.
+ [Angelo Salese]
+
+-cps2: Use keys that can be programmed onto a CPS2 motherboard.
  [smf, Eduardo Cruz, Andreas Naive]
 
--Fix compile for DirectWrite font provider and make it compile with
- normal windows build [Brad Hughes]
+-Fixed compile for DirectWrite font provider and made it compile with
+ normal Windows build. [Brad Hughes]
 
--ssriders.cpp: protection chip actually uses the work RAM buffer for
- horizontal scrolling in collision dtection routine. Fixed
- players/enemies collision detection on slopes. [Angelo Salese]
+-ssriders: Fixed protection chip to use the work RAM buffer for horizontal
+ scrolling in collision detection routine. This fixes collision detection
+ for players/enemies on slopes. [Angelo Salese]
 
--Removed dupes from psx.xml; shortnames consistency fixes [Aeternal]
- * The removed discs are identical to their redump.org counterparts,
-    they've just been dumped with different offsets.
+-xbox: Added ability to select BIOSes 4134, 3944, 4034, and 4817. [yz70s]
 
--xbox.cpp: give ability to select bioses 4134 3944 4034 4817 [yz70s]
+-chihiro: Added debugger command "chihiro threadlist" to list ready
+ threads except current one. [yz70s]
 
--chihiro.cpp: add debugger command "chihiro threadlist" to list ready
- threads except current one [yz70s]
+-taitosj: Various changes: [Lord Nightmare]
+ * Added XTALs for various clocks based on schematics.
+ * Documented and implemented AY-3-8910 outputs.
+ * Added proper handling of sound CPU NMI on sound command register/semaphore
+    writes and clears.
+ * Added note about an unemulated filter effect.
+ * Fixed some save state and initialization issues.
+ * Fixed watchdog timing per schematics and re-enabled watchdog.
+ * Checked that Bio Attack no longer incorrectly trigger watchdog on death.
+ * Cleaned up ROM labels/locations for the Elevator Action sets.
 
--taitosj.cpp: Add XTALs for various clocks based on schematics.
- Documented and implemented AY-3-8910 outputs being tied directly
- together for 3 of the 4 AY-3-8910 chips. [Lord Nightmare]
+-taitosj: Added Elevator Action 4-board set as clone, working.
+ [caius, The Dumping Union]
 
--taitosj.cpp: Add proper handling of sound cpu NMI on sound command
- register and semaphore writes and clears. Add note about an unemulated
- filter effect on one of the AY chips. Some savestate and init fixes.
- [Lord Nightmare]
-
--Renamed ZN1/ZN2 bios roms based on the label (where known), renamed the
- bios sets after the board, moved cat702 to files [smf, Guru]
-
--Swap non playable primal rage 2 for playable judge dredd for now. Fixes
- mametesters #06138 [smf]
-
--dec_lk201.cpp: Add key matrix, documented the switch IDs for each key.
- Fixed Setup(F3)->F3 and PF1->NumLock mapping. [Lord Nightmare]
-
--Updating e-reader software-list with NES e-cards [Shideravan]
-
--Fixed trace command access a parameter beyond the list supplied, added
- an error message if you provide an invalid boolean, allow boolean to be
- case-insensitive and skip empty strings when parsing booleans. [smf]
-
--dec_lk201.cpp: Add 8051 version rom, not used yet. Corrected note about
- contact D13, which is completely omitted from the schematic, but
- definitely appears on the physical keyboard membrane, and functions.
- [Lord Nightmare]
-
--xbox.cpp/chihiro.cpp: small refactoring [yz70s]
-
--Initial work towards debug command hookups for Sega Saturn
- [Angelo Salese]
-
--Adding id() property to input_device [Tomer Verona]
- * This change adds id() property to input_device, which represents the
-    unique device id. This allows the osd layer when creating a device to
-    pass a friendly display name along with a unique identifier.
- * Currently the device id is only used to map a physical controller device
-    to controller id, but can be used more generally in the future. For raw
-    input devices, we use the full raw input name as the device id. For all
-    other devices, we fall back to device name as the device id. The
-    "uniqueness" of the device id is not currently enforced in code.
-
--Added coin counter and lockout to Asterix [Angelo Salese]
-
--Fixed up recent saurob submission from MASH.  Added documentation readme
- with locations from original dump, dropped SP0256 entry as it did not
- exist on the bootleg as well as adding unknown PROM unique to that
- board.  [Tafoid]
-
--vt100.cpp: Add VT100-AC romset with intelligent STP board (not working,
- needs one rom redumped and the 8085 stp cpu hooked up) [Lord Nightmare]
-
--Fixed sprite priority bug with the ball being above the net in Euro
- League / Tecmo World Cup '90 bootlegs [Angelo Salese]
-
--Added irq acks and second YM2203 sound chip to Euro League, which adds
- piano keys to sound [Angelo Salese]
-
--Fixed more Mahjong dips as per manuals - system11 [system11b]
-
--vis: add sound [Carl]
-
--taitosj.cpp: Fixed watchdog timing per schematics, and re-enabled
- watchdog. Bio attack doesn't incorrectly trigger watchdog on death
- anymore. [Lord Nightmare]
-
--New Apple 2 disk images [briantro]
- * Renegade (2 disks) Taito America Dungeon Master's Assistant (2 disks)
-    SSI
- * Several pirate images replaced with clean cracks. Marked sets as clean
-    crack
-
--taitosj.cpp: Add Elevator Action 4-board set as clone, working [caius,
- The Dumping Union] Add "SOUND STOP" bit emulation, which improves but
- does not completely fix the spurious startup sound in Time Tunnel.
+-taitosj: Added "sound stop" bit emulation, which improves but does not
+ completely fix the spurious startup sound in Time Tunnel
  [Angelo Salese, Lord Nightmare]
 
- -aristmk5.cpp: Added missing ARISTOCRAT_MK5_BIOS defines to some sets,
- fixing MT6374 [Reagan Roush]
+-zn: Renamed ZN1/ZN2 BIOS ROMs based on the label (where known), renamed the
+ bios sets after the board, moved cat702 to files. [smf, Guru]
 
--Two More Apple II disk images [briantro]
- * Genesis - 1983 Datasoft / Design Labs Pigpen - 1982 Datamost / TMQ
-    Software
+-dec_lk201: Various changes: [Lord Nightmare]
+ * Added key matrix.
+ * Documented the switch IDs for each key.
+ * Fixed Setup(F3)->F3 and PF1->NumLock mapping.
+ * Added 8051 version ROM, not used yet.
+ * Corrected note about D13 contact.
 
--Apple II hash.. Specify Arkanoid 2 is level hack of Arkanoid [briantro]
+-debugcmd: Various changes: [smf]
+ * Fixed trace command accessing a parameter beyond the list supplied.
+ * Added an error message if an invalid boolean is provided.
+ * Added functionality to allow boolean to be case-insensitive.
+ * Added code to skip empty strings when parsing booleans.
 
--taitosj.cpp: Cleaned up rom labels/locations for the elevator action
- sets and added notes. Noted that the 4 and 5 board sets dumped so far of
- elevator action are the exact same code and gfx, just split differently.
- [Lord Nightmare]
+-xbox/chihiro: Minor refactoring. [yz70s]
 
--mac.cpp: Replace bad dump in macplus v2 romset with redump, and use
- split roms for all macplus and mac512ke sets. [Lord Nightmare]
+-saturn: Initial work towards debug command hookups. [Angelo Salese]
 
--mac.cpp: Use split ROMs for mac 128l and 512k, and document proper
- labels [Lord Nightmare]
+-Added id() property to input_device: [Tomer Verona]
+ * This change adds an id() property to input_device, which represents the
+    unique device ID. This allows the OSD layer when creating a device to
+    pass a friendly display name along with a unique identifier.
+ * Currently the device ID is only used to map a physical controller device
+    to controller ID, but can be used more generally in the future. For raw
+    input devices, we use the full raw input name as the device ID. For all
+    other devices, we fall back to device name as the device ID. The
+    "uniqueness" of the device ID is not currently enforced in code.
 
--Added the later 286 variant to the Siemens Simatic PG685 skeleton. 896K
- RAM, Bitmapped graphics [rfka01]
+-asterix: Added coin counter and lockout. [Angelo Salese]
 
--Redumped graphics rom for Grand Prix '98 (V100K) [Guru]
+-sauro: Various changes: [Tafoid]
+ * Fixed up recent saurob submission.
+ * Added documentation readme with locations from original dump.
+ * Removed SP0256 entry as it did not exist on the bootleg.
+ * Added unknown PROM unique to the bootleg.
+
+-vt100: Added VT100-AC ROM set with intelligent STP board (not working,
+ needs one ROM redumped and the 8085 STP CPU hooked up). [Lord Nightmare]
+
+-wc90b: Fixed sprite priority bug with the ball being above the net in Euro
+ League / Tecmo World Cup '90 bootlegs [Angelo Salese]
+
+-wc90b: Added IRQ acknowledge and second YM2203 sound chip to Euro League,
+ which adds piano keys to sound. [Angelo Salese]
+
+-jangou: Fixed more Mahjong dips as per manuals. [system11b]
+
+-vis: Added sound. [Carl]
+
+-mac: Replaced bad dump in macplus v2 ROM set with redump, and use
+ split ROMs for all macplus and mac512ke sets. [Lord Nightmare]
+
+-mac: Made driver use split ROMs for mac 128l and 512k, and documented proper
+ labels. [Lord Nightmare]
+
+-pg685: Added the later 286 variant to the Siemens Simatic PG685 skeleton. [rfka01]
+
+-igs009: Redumped graphics ROM for Grand Prix '98 (V100K) [Guru]
 
 -stv: Removed optional joystick control inputs from Virtual Mahjong since
- this game only supports Mahjong panel but was defaulting to Joystick
+ this game only supports Mahjong panel but was defaulting to Joystick.
  [system11]
 
--aristmk5.cpp: Added missing ARISTOCRAT_MK5_BIOS defines to some sets,
- fixing MT6374 [rdroush]
-
--Fixed more Mahjong dips as per manuals - system11 [system11b]
-
--Updating e-reader software-list with NES e-cards [Shideravan]
-
--Partial fix for MT06383 Exporting is now also possible for the favorites
+-Partial fix for MT06383. Exporting is now also possible for the favorites
  list, except if it has software in it. [dankan1890]
 
--Removed dupes from psx.xml; shortnames consistency fixes The removed
- discs are identical to their redump.org counterparts, they've just been
- dumped with different offsets. [aeternal606]
+-forte2: Updated comments on Forte 2 Pesadelo/Knightmare bootleg. [Felipe Sanches]
 
--update comments on Forte 2 Pesadelo/Knightmare bootleg [Felipe Sanches]
+-galaxian: Fixed ROMs in Moon Alien Part 2 (older version). [MASH]
 
--Add support for stable controller IDs [tverona1]
+-galaga: Fixed palette in Battles (set 1). [MASH]
 
--Fixed ROMs in Moon Alien Part 2 (older version) [MASH]
-
--Convert OSD monitor info to modules plus add DXGI implementation
- Converted the monitor information stuff from video.cpp in SDL and
- Windows to modules.  Also add an implementation using DXGI instead of
- Win32. [bradhugh]
-
--x68k: Added some clones to the software list [nekoziman]
- * New software list additions
- * aqualesd    Aquales (Demo) genocid2da  Genocide 2 (Demo, Alt) gradius2d
-    Gradius II - Gofer no Yabou (Demo) lagoond     Lagoon (Demo) lagoondo
-    Lagoon (Demo, Older) lemmingsd   Lemmings (Demo) phalanxd    Phalanx
-    (Demo) starwarsd   Star Wars - Attack on the Death Star (Demo)
- * http://wayder.blog102.fc2.com/blog-entry-2985.html
-
--Fixed palette in Battles (set 1) [MASH]
-
--Added joystick to P1 Start Added joystick to P1 Start for bartop52.cpp,
- guab.cpp, midyunit.cpp, namcos22.cpp, sshot.cpp and turrett.cpp. In this
- games you can INSERT COINS with joystick but not START the game.
- [MASHinfo]
+-Changed use of IPT_START to IPT_START1 in bartop52, guab, midyunit, namcos22,
+ sshot and turrett. [MASHinfo]
 
 
 New machines added or promoted from NOT_WORKING status
@@ -673,6 +586,7 @@ Arbiter Discmate  [Nigel Barnes]
 
 New WORKING software list additions
 -----------------------------------
+FIX THIS SECTION, DO NOT LET A RELEASE GO OUT LIKE THIS
 Sky Fighter (Samsung Gam*Boy/Master System) [David Haywood]
 Action Fighter (prototype) (Master System) [David Haywood, SMS power]
 Captain Silver (prototype) (Master System) [David Haywood, SMS power]
@@ -682,10 +596,32 @@ Karateka (Beta 1986-03-03) (IBM 5150) [Jason Scott, Jordan Mechner]
 Additions from various sources (IBM 5150) [Justin Kerk]
 electron_flop.xml: Added software list for floppies [Nigel Barnes]
 bbcb_flop: Added various software items [Nigel Barnes]
+-New Apple 2 disk images [briantro]
+ * Renegade (2 disks) Taito America Dungeon Master's Assistant (2 disks)
+    SSI
+ * Several pirate images replaced with clean cracks. Marked sets as clean
+    crack
+-Two More Apple II disk images [briantro]
+ * Genesis - 1983 Datasoft / Design Labs Pigpen - 1982 Datamost / TMQ
+    Software
+-Apple II hash.. Specify Arkanoid 2 is level hack of Arkanoid [briantro]
+-Removed dupes from psx.xml; shortnames consistency fixes The removed
+ discs are identical to their redump.org counterparts, they've just been
+ dumped with different offsets. [aeternal606]
+-psx.xml: Removed duplicates, fixed shortname consistency. [Aeternal]
+ * The removed discs are identical to their redump.org counterparts,
+    they've just been dumped with different offsets.
+-x68k: Added some clones to the software list [nekoziman]
+ * New software list additions
+ * aqualesd    Aquales (Demo) genocid2da  Genocide 2 (Demo, Alt) gradius2d
+    Gradius II - Gofer no Yabou (Demo) lagoond     Lagoon (Demo) lagoondo
+    Lagoon (Demo, Older) lemmingsd   Lemmings (Demo) phalanxd    Phalanx
+    (Demo) starwarsd   Star Wars - Attack on the Death Star (Demo)
 
 
 New NOT_WORKING software list additions
 ---------------------------------------
-Adding all the Mario Party-e card collection (U) [Shideravan]
-Finished Animal Crossing e-cards [Shideravan]
+Mario Party-e card collection (U) [Shideravan]
+Animal Crossing e-cards [Shideravan]
 Domo-Kun Card-e collection [Shideravan]
+NES e-card collection [Shideravan]
