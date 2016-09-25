@@ -12,7 +12,7 @@ import sys
 
 
 releasetag_pat = re.compile('^mame0([0-9]+)$')
-nowhatsnew_pat = re.compile('.*[[(]n/?w[])].*')
+nowhatsnew_pat = re.compile('.*([[(]n/?w[])].*|[\s,]n/?w$)')
 bullet_pat = re.compile('^([-*]\s*)?(.+)$')
 credit_pat = re.compile('^.+\s\[.+\]$')
 markdown_url_pat = re.compile('\[([^]]+)\]\(([^)])+\)')
