@@ -27,7 +27,7 @@ new_broken_clones = []
 
 
 def print_wrapped(stream, paragraph, level):
-    wrapcol = 72
+    wrapcol = 132
     if level == -1:
         prefix = ''
         indent = '  '
@@ -43,9 +43,9 @@ def print_wrapped(stream, paragraph, level):
     if nowhatsnew_pat.match(paragraph) is None:
         while paragraph:
             if (len(prefix) + len(paragraph)) > wrapcol:
-                pos = paragraph.rfind(' ', 0, 73)
+                pos = paragraph.rfind(' ', 0, wrapcol + 1 - len(prefix))
                 if pos < 0:
-                    pos = paragraph.find(' ', 73)
+                    pos = paragraph.find(' ', wrapcol + 1 - len(prefix))
                 if pos >= 0:
                     if paragraph[-1] == ']':
                         opening = paragraph.rfind(' [')
@@ -213,7 +213,7 @@ def print_section_heading(stream, heading):
 
 def print_source_changes(stream, repo, api, tag):
     print_section_heading(stream, 'Source Changes')
-    print_log(stream, repo, '%s..master' % (tag.name))
+    print_log(stream, repo, '%s..release0%ld' % (tag.name, (long(releasetag_pat.sub('\\1', tag.name)) + 1)))
     print_fresh_pull_requests(api, stream, api.git_data.commits.get(tag.commit.hexsha))
     stream.write('\n'.encode('UTF-8'))
 
