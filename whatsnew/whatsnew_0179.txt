@@ -93,9 +93,9 @@ New NOT_WORKING software list additions
 
 Source Changes
 --------------
--Fixed missing ARISTOCRAT_MK5_BIOS defines addition [MASH]
+-aristmk5: Fixed missing ARISTOCRAT_MK5_BIOS defines addition. [MASH]
 
--Proposal for new system flags for 0.179 dev-cycle: [Angelo Salese]
+-core: Proposed for new system flags for 0.179 dev-cycle: [Angelo Salese]
  * MACHINE_NODEVICE_MICROPHONE For unemulated microphone;
  * MACHINE_NODEVICE_CAMERA For unemulated camera;
  * MACHINE_NODEVICE_PRINTER For unemulated printer
@@ -103,139 +103,104 @@ Source Changes
  * MACHINE_NODEVICE_WAN For unemulated networking capabilities;
  * Restructured MACHINE_FLAGS into FATAL/WARNING/BTANB main categories, in order to make them easier to expose.
 
--Added stub bus/sci/wdt devices for sh7604 Not necessary to work in a different branch since they are unused as per now. [Angelo Salese]
- * This also fixes Daytona USA CE for Sega Saturn (reason for the merge)
+-sh2: Added stub bus/sci/wdt devices for sh7604. [Angelo Salese]
+ * This also fixes Daytona USA CE for Sega Saturn.
 
--Promoted pdriftl to working. [Angelo Salese]
+-segaybd: Promoted pdriftl to working. [Angelo Salese]
 
--Various input related bug-fixes to Wild Pilot: [Angelo Salese]
- * Lightgun is actually an ad-stick;
- * Added player 2 inputs;
- * Fixed bogus start button starting a play even without a coin inserted;
+-cischeat: Various input related bug-fixes to Wild Pilot [Angelo Salese]
+ * Changed lightgun to an AD-stick.
+ * Added player 2 inputs.
+ * Fixed bogus start button starting a play even without a coin inserted.
 
--Added mahjong panel to mjsenpu. [Angelo Salese]
+-mjsenpu: Added mahjong panel. [Angelo Salese]
 
--Made imgtool_image (now imgtool::image) a "real" C++ class [Nathan Woods]
+-core: Added new string conversion overloads [a|w|t|utf8]_from_[a|w|t|utf8_]string(xyz.c_str()) [Nathan Woods]
 
--[Imgtool Mac Module]  Fixed an unsigned overflow error that would causes crashes on 64 bit systems [Nathan Woods]
+-imgtool: Various changes and modernizations: [Nathan Woods]
+ * Mac: Fixed an unsigned overflow error that would causes crashes on 64 bit systems.
+ * Fixed a bug that could cause module's close() callback to be invoked if an image failed to open or be created.
+ * C++-ified imgtool_partition, imgtool_image, imgtool_stream, others.
+ * Converted a number of pointers to references.
+ * Made use of std functionality where possible.
 
--Adding new string conversion overloads [a|w|t|utf8]_from_[a|w|t|utf8_]string(xyz.c_str()) [Nathan Woods]
+-coco: Changed to use required_ioport_array and optional_ioport [Nathan Woods]
 
--[Imgtool] Fixed a recently introduced bug that could cause module's close() callback to be invoked if an image fails to be opened
- or created. [Nathan Woods]
+-omv1000: Removed second joystick. [einstein95]
 
--[Imgtool] C++-ified a few more classes [Nathan Woods]
- * imgtool_partition ==> imgtool::partition imgtool_directory ==> imgtool::directory
+-6809: Fixed disassembly when core is interrupted mid-instruction. [smf]
 
--[Imgtool] More C++-ification (imgtool_stream ==> imgtool::stream) [Nathan Woods]
+-core: Ensured all CPUs export STATE_GENPCBASE and use safe_pcbase() for everything in the debugger, which allows interruptible
+ CPUs to work properly. [smf]
 
--[Imgtool] Changed the create/open callbacks to take 'imgtool::stream &&' [Nathan Woods]
+-pc: Fixed 16-bit audio in diagnose.exe for the Sound Blaster 16. [smf]
+ * The fix replaces the lowest bit of the page with the upper bit of the address, in the case of a 128k DMA.
+ * This applies to the southbridge, cs4031, wd7600, ngen, and at devices.
 
--[COCO] Changed to use required_ioport_array and optional_ioport [Nathan Woods]
+-ide: Added "headphones" to ATAPI CD-ROM drives. [smf]
 
--[Imgtool] Changed many 'imgtool::stream *' to 'imgtool::stream &' [Nathan Woods]
+-ay8910: Implemented upper address check. [smf]
+ * Not configurable at present, but chips could be ordered from the factory with IDs other than 0.
 
--[Imgtool] Changed a number of callbacks to be std::function instead of old fashioned function pointers [Nathan Woods]
+-chdman: Fixed addmeta --valuefile by calling the correct write_metadata. [smf]
 
--[Imgtool] Bulk change:  'imgtool::image *' ==> 'imgtool::image &' [Nathan Woods]
-
--[Imgtool] Bulk change: 'imgtool::partition *' ==> 'imgtool::partition &' [Nathan Woods]
-
--[Imgtool] Modernized imgtool::image::list_partitions() [Nathan Woods]
-
--[Imgtool] Bulk change: 'imgtool::directory *' ==> 'imgtool::directory &' [Nathan Woods]
-
--[Imgtool] Changed imgtool::image::info() to use std::stream and std::stringstream [Nathan Woods]
-
--Remove 2nd joystick from omv1000 [einstein95]
-
--Make alignment consistent with recent changes [einstein95]
-
--fix disassembly if 6809 is interrupted mid-instruction [smf]
-
--Make sure all cpu's export STATE_GENPCBASE and use safe_pcbase() for everything in the debugger, which allows interruptible cpu's to
- work properly. [smf]
-
--Drop the upper bit of the address when shifting left, as described http://wiki.osdev.org/ISA_DMA#16_bit_issues. This fixes 16 bit
- audio in sb16 diagnose.exe [smf]
-
--added "headphones" to atapi cd-rom drives [smf]
-
--Intel documentation is conflicting, which prompted osdev to claim that 128k dma was impossible. Masking the lowest bit of the page
- instead of the upper bit of the address makes more sense and it does also fix the issue with SB16 diagnose.exe playing silence.
- [smf]
-
--Implement upper address check, not configurable at present but chips could be ordered from the factory with id's other than 0
- (allowing you to chain multiple chips without adding extra address lines. Don't hardcode AY8910 into logerror, using name() instead.
- [smf]
-
--Fix chdman addmeta --valuefile by calling the correct write_metadata. [smf]
-
--DAC WIP, started documenting the DACs in use. [smf]
- * ataxx: Fixed missing sound channel caused by one dac not being hooked up and one dac being hooked up to two addresses.
- * bestbest: Fixed high pitch screech caused by incorrect addressing (two dacs weren't hooked up and two were hooked up to two
+-dac: Started documenting the various DACs in use. [smf]
+ * ataxx: Fixed missing sound channel caused by one DAC not being hooked up and one DAC being hooked up to two addresses.
+ * bestbest: Fixed high pitch screech caused by incorrect addressing (two DACs weren't hooked up and two were hooked up to two
     addresses).
- * cchasm: Fixed static noise generation caused by feeding the same bit to both dacs.
- * cheekyms: Slightly improved sound by implementing sound triggers as 8 x 1 bit dacs instead of 1 x 8 bit dac.
+ * cchasm: Fixed static noise generation caused by feeding the same bit to both DACs.
+ * cheekyms: Slightly improved sound by implementing sound triggers as 8x1-bit DACs instead of 1x8-bit DAC.
  * galeb: Fixed sound by implementing it according to http://www.deltasoft.com.hr/retro/galebemu.htm & implemented enough of
     LOAD/SAVE to stop it hanging.
- * hard drivin: (all games in driver) Improved 12 bit controls, although centre still goes out of sync.
+ * hard drivin: (all games in driver) Improved 12-bit controls, although centre still goes out of sync.
  * mea8000: Converted to a sound device.
  * megaphx: Fixed noisy samples due to wrong format.
  * microvsn: Fixed sound pitch caused by incorrect usage of write_signed8().
- * seicross: Changed to a 4 bit dac as samples are packed nibble.
+ * seicross: Changed to a 4-bit DAC as samples are packed nibble.
  * spaceg: Preliminary sound using space invaders samples.
- *suna8: Changed to a 4 bit dac as samples are packed nibble.
+ *suna8: Changed to a 4-bit DAC as samples are packed nibble.
  * vcombat: Fixed static during machine gun fire due to incorrect dc offset removal.
  * vectrex: Fixed noisy samples due to wrong format.
- wheelfir: Fixed sound, eeprom & analogue steering wheel and brake pedal.
+ wheelfir: Fixed sound, EEPROM & analogue steering wheel and brake pedal.
 
--Fixed several small issues in HLSL/BGFX [Jezze]
- * fixed target texture dimension when -intoverscan is used (this fixes the appereance of scanline and shadow mask)
- * added target_scale and screen_count uniforms
- * rounded corners now remain aligned with screen bounds when -intoverscan is used (single screen only)
+-osd: Fixed several small issues in HLSL/BGFX. [Jezze]
+ * Fixed target texture dimension when -intoverscan is used (this fixes the appereance of scanlines and shadow mask)
+ * Added target_scale and screen_count uniforms
+ * Rounded corners now remain aligned with screen bounds when -intoverscan is used (single screen only)
 
--Fixed null reference exception (D3D/HLSL) when toggling from fullscreen to window mode [Jezze]
+-d3d9: Fixed null reference exception when toggling from fullscreen to window mode [Jezze]
 
--Disabled clearing of render targets in several passes (HLSL) [Jezze]
- * Was unnecessary overhead because the shaders fill every texel of a target without blending
+-d3d9: Disabled clearing render targets in several passes to reduce draw time, all texels are written with opaque anyway. [Jezze]
 
--Reduced defocus effect to one pass (HLSL/BGFX) [Jezze]
- * removed second defocus pass
- * limited defocus stength to a maximum of 2.0
+-d3d9/bgfx: Reduced defocus effect to one pass and capped defocus strength to 2.0. [Jezze]
 
--norautp.cpp: added prom, pal and updated pcb layout for bjpoker [Guru]
+-norautp: Added PROM, PAL and updated PCB layout for bjpoker [Guru]
 
--Fix various spelling errors. [Jordi Mallach]
+-various: Fixed various spelling errors. [Jordi Mallach]
 
--Corrected date for kaguya2f as per MT bug 06110 [system11]
-
--Corrected Hana no Momoko gumi dip switches Corrected Mahjong 4p Simasyo dip switches Corrected year & company for Mahjong
- Housoukyoku Honbanchuu Corrected dip switches for Hyper Reaction 2 [system11]
-
--mjsisters.cpp: Corrected dip switches [system11]
-
--nbmj8891: Corrected scandal dips nbmj9195: Improved renaiclb + gal10ren dips srmp6: Added diplocations [system11]
-
--nbmj8688.cpp: Corrected kaguya* dips and added diplocation to all games homedata.cpp: Added info about board types [system11]
+-various: Fixed various things in certain mahjong drivers. [system11]
+ * homedata: Added information about board types.
+ * nbmj8688: Corrected kaguya*, secolove DIP switches and added DIP locations to all games.
+ * nbmj8891: Fixed or improved DIP switches in hanamomo and scandal.
+ * nbmj9195: Improved renaiclb and gal10ren DIP switches.
+ * niyanpai: Fixed 4psimasy DIP switches.
+ * niyanpai: Fixed mhhonban year and company.
+ * srmp6: Added DIP locations.
+ * ssv: Fixed hypreac2 DIP switches.
+ * mjsister: Fixed DIP switches.
 
 -ninjakd2.cpp: Replaced mnight with World version, Kawakus license now mnightj [frsj8112, system11]
 
--nbmj8688.cpp: Corrected Second Love dips as per manual (minor corrections) [system11]
+-hp9845: Various changes: [F.Ulivi]
+ * Moved hp9845b_state class into a separate file.
+ * Refactored handling of irq/sts/flg bits to allow for adding I/O slots.
+ * Added I/O slots.
+ * Implemented HP98035 RTC card.
+ * Fixed I/O ROM version B in software list.  *** SOFTLIST?
 
--hp9845: hp9845b_state class moved into a separated file (hp9845.h) [F.Ulivi]
+-hphybrid: Fixed indirect EXE instruction [F.Ulivi]
 
--hp9845: refactored handling of irq/sts/flg bits to prepare for external I/O bus [F.Ulivi]
-
--hphybrid: "Interrupt Mask" changed to "Interrupt Mode" (it sounds better to me) [F.Ulivi]
-
--hphybrid: fixed indirect EXE instruction [F.Ulivi]
-
--hp9845: handling of I/O slots added. Implemented HP98035 RTC card. [F.Ulivi]
-
--hp9845: fixed I/O ROM vers. B in software list [F.Ulivi]
-
--x68k: Add/fix to the software list [Wayder]
+-x68k: Add/fix to the software list [Wayder] *** SOFTLIST?
  * New software added bgelmntt - Blade of The Great Elements (Test Version) phalanxs - Phalanx (Sample Version) mjfants2 - Mahjong
     Gensoukyoku II - Mahjong Fantasia -The 2nd Stage
  * Add 2HDE Format Header (Unsupported) ldb_x68k - Login Disk & Book Series - X68000 Kessaku Game-sen
@@ -249,38 +214,27 @@ Source Changes
     of X68000 - Logic Rush & Ah! Ohimesama!
  * Move to category aahime (This boot disk is copied file from "lcmyprin")
 
--redump irrmaze v2 rom and fix rom loading [Brian Hargrove, Razoola]
+-neogeo: Redumped irrmaze V2 ROM and fixed ROM loading. [Brian Hargrove, Razoola]
 
--make wingwar360 not crash on startup. [David Haywood]
- * it hangs after you insert coins waiting for the safety bar to lower, also collisions in wingwar still seem broken since the swa work)
+-model1: Made wingwar360 not crash on startup. [David Haywood]
+ * Currently hangs after you insert coins waiting for the safety bar to lower.
+ * Collisions in wingwar are broken since recent changes to swa.
 
--update apple1 softwarelist Added Extended Monitor. [Dagarman]
+-update apple1 softwarelist Added Extended Monitor. [Dagarman] *** SOFTLIST?
  * Changed Lunar Lander (ASCII Graphics) to supported="partial" because the sound output is not supported.
  * Updated Wumpus with errata
  * wumpus.zip
  * extmon.zip
 
--allow netmerc to boot [David Haywood]
- * there still seems to be something uninitialized or some memory corruption as quite often it will crash instead of launching, but if
-    it does launch you can get a title screen and attract demo with some 3d.  roms pass in rom test now too.
- * 3d is quite broken, lots of polys being stretched in weird ways and no 3d palette.
+-model1: Fixed enough to get netmerc to boot, though there are many issues still and it is unplayable. [David Haywood]
 
--make model 1 render list scanning code safer by masking accesses to the ram size and using less pointer math [David Haywood]
- * without this invalid displaylists can easily crash MAME because the pointer artihmetic can end up going way beyond RAM sizes with no
-    easy way to mask.
- * (netmerc still crashes due to other things tho)
+-model1: Made render list scanning code safer by masking accesses to the RAM size and using less pointer math. [David Haywood]
 
--hook up payout buttons and a hopper to Mahjong Senpu, promote to working. [David Haywood]
- * there does seem to be another payout mode that isn't hooked up, and our current hopper is always a 'ticket dispenser' which might
-    not be accurate, but you can press the payout button and it will count down the coins, so I think that's good enough for now.
- * the dipswitches still need translating properly.
+-mjsenpu: Hooked up payout buttons and a hopper [David Haywood]
 
--tagged all the decocass.cpp sets as US / Japan based on which bios type they use (A = Japan, B = US/World, they aren't compatible,
- using the wrong one will give a loading error) note cbnj is for type B, so was incorrectly tagged as Japan (or has been hacked)
- [David Haywood]
+-decocass: Tagged all sets as US / Japan based on which BIOS type they use (A = Japan, B = US/World). [David Haywood]
 
--make the different decocass bios roms actually selectable. also add ocean to ocean, which fails with all bios roms because it
- doesn't decrypted properly, to be investigated, will credit once works. [David Haywood]
+-decocass: Made the different BIOS ROMs selectable and added Ocean to Ocean. [David Haywood]
 
 -cmi2x: Fixed envelope terminal flag diagnostic. [Ryan Holtz]
 
@@ -290,161 +244,137 @@ Source Changes
 
 -v1050: Fixed 8214 PICU hookup and promoted back to working. [Ryan Holtz]
 
--Added skeleton driver and basic hookups for VeriFone Tranz 330 point of sale terminal. [Ryan Holtz]
+-tranz330: Added partially working driver for the VeriFone Tranz 330 point of sale terminal. [Ryan Holtz]
+ * Modem is not currently emulated, but it can be interacted with in a meaningful way and configured.
 
--tranz330: Hooked up inputs. [Ryan Holtz]
-
--tranz330: Added programmer-art layout. [Ryan Holtz]
-
--tranz330: Added clickable artwork. [Ryan Holtz]
-
--Added: Dallas DS1386-8K and DS1386-32K timekeepers (largely untested). [Ryan Holtz]
-
--minor indy_indigo2 cleanup, 12-year-old code written at university is embarrassing [Ryan Holtz]
-
--arm7: Performed some minor optimization. [Ryan Holtz]
+-ds1386: Added Dallas DS1386-8K and DS1386-32K timekeepers (largely untested). [Ryan Holtz]
 
 -ie15: Improved performance by using a timer to determine hblank. [Ryan Holtz]
 
--rainbow: Add color board [Bavarese]
- * first incarnatation of the Color Graphics Option for Rainbow-100 B
- * Clock, VRAM reads/writes + values of uninitialized registers still unverified
- * (see BUGS section in main driver).
-
--DEC Rainbow-100: correct medium resolution mode DEC 100 B Color Graphics Option: Doodle painter shows correct colors and Pacman is
- playable. Highres and vector mode still have unfixed bugs. [Bavarese]
+-rainbow: Various changes: [Bavarese]
+ * Fixed medium resolution mode.
+ * Added first incarnation of Color Graphics Option for Rainbow-100 B.
+ * Note: Highres and vector mode still have unfixed bugs.
 
 -Added clickable buttons to a few Midway layouts and cleaned up some code. [Risugami]
 
--Added layout for San Francisco Rush [Risugami]
+-seattle: Added layout for San Francisco Rush [Risugami]
 
--mjsister.cpp: A few input fixups [AJR]
- * Identify the difficulty DIP switches
- * Add some non-DIP inputs for service mode
+-mjsister: A few input fixups [AJR]
+ * Identified the difficulty DIP switches.
+ * Added some non-DIP inputs for service mode.
 
--cninjabl2: Add sprites, Change title; promote to WORKING with known problems [AJR]
+-cninjabl2: Add sprites, changed title; promoted to WORKING with known problems [AJR]
 
--witch: Take the "Hopper Active" DSW value into proper account; no longer must it be low [AJR]
+-witch: Fixed the code handling the "Hopper Active" DSW; no longer must it be low [AJR]
 
--Misc. keyboard input improvements [AJR]
+-core: Misc. keyboard input improvements [AJR]
  * Add BS, Tab, 00, 000 keys common on add-on keypads as input items; SDL may recognize these, but DirectInput does not
  * Assign Keypad 00 and Keypad 000 in several drivers' input lists
  * Add SDL keycode for "cancel" key
  * Add keypad keys as alternates to natural keyboard
 
--Soft resets no longer turn back clocks on devices [AJR]
+-core: Soft resets no longer turn back clocks on devices [AJR]
  * Give RTCs their own phase of machine initialization, right after NVRAM loading
  * Make RTC feature flag overrides const, including one new one
  * Make rtc_clock_updated a required override
 
--Parenthesize optional items in input menus [AJR]
+-ui: Parenthesize optional items in input menus [AJR]
 
--amusco: Major improvements; promoted to WORKING [AJR]
- * Inputs figured out almost completely
- * Add blinking cursor for service mode
- * Gross hacks used to get coins working due to broken IRQ timings
- * Palette remains in dire need of improvement
- * mc6845: Allow cursor blink state to be read
- * pit8253: Eliminate device name from logging messages
+-amusco: Various improvements; promoted to WORKING [AJR]
+ * Figured inputs out almost completely
+ * Added blinking cursor for service mode
+ * Hacked coins into working due to broken IRQ timings
+ * Palette is in need of improvement
+ * mc6845: Added readback for cursor blink state
+ * pit8253: Eliminated device name from logging messages
 
--Add row size as sixth parameter to debug dump command [AJR]
+-Added row size as sixth parameter to debug dump command [AJR]
 
--zodiac: Change input type to keyboard [AJR]
- * Add PORT_CHARs
- * Add notes on physical button layout
+-zodiac: Changed input type to keyboard [AJR]
+ * Added PORT_CHARs
+ * Added notes on physical button layout
 
--mz80b, mz2000: Tinkering around the edges [AJR]
- * Move MZ-80B to mz2000.cpp driver (emulation remains totally broken)
- * Overhaul character layouts, creating separate configurations for European and Japanese keyboards (MT #6338)
- * Add GRPH characters and kana to key names
+-mz80b, mz2000: Various minor changes [AJR]
+ * Moved MZ-80B to mz2000.cpp driver (emulation remains non-working)
+ * Overhauled character layouts, creating separate configurations for European and Japanese keyboards (MT #6338)
+ * Added GRPH characters and kana to key names
 
--octopus: add on-board serial comms controller [Barry Rodewald]
+-octopus: Various changes: [Barry Rodewald]
+ * Added on-board serial comms controller.
+ * Added serial vector ports.
+ * Fix extended RAM, made 256k the default.
+ * Inverted IRQ signal from RTC.
+ * Added Centronics parallel port.
+ * Added software list.
 
--octopus: fix extended RAM, make 256k the default.  This gets Concurrent DOS 4.1 and 5.2 to start to boot, as they require 256kB or
- more. [Barry Rodewald]
+-x68k: Added IPL ROM dumped from an early X68000 CZ-600CE, made default for the X68000. [The Dumping Union, Barry Rodewald]
 
--octopus: add serial vector ports. (Unused for now, but makes Concurrent DOS 5.2 a little bit happier) [Barry Rodewald]
+-linenoise: Fixed build with Visual Studio ('and' isn't supported). [dankan1890]
 
--invert IRQ signal from RTC (Concurrent DOS 4.1 now boots), add Centronics parallel port. [Barry Rodewald]
+-mac: Rewrote audio output for original Macs to work like hardware. [R. Belmont]
 
--octopus: added software list [Barry Rodewald]
+-snes: Various redumps [Alex Jackson, byuu] *** SOFTLIST?
 
--x68k: added IPL ROM dumped from an early X68000 CZ-600CE, made default for the X68000 [The Dumping Union, Barry Rodewald]
+-osd: Incorporated product/instance DirectInput device IDs. This should allow better disambiguation of devices. [Tomer Verona]
 
--linenoise: fixed build with VS ('and' isn't supported) [dankan1890]
+-sms: Fixed Out Run sound in FM mode. [Enik Land]
 
--mac: rewrite audio output for original Macs to work like hardware. [R. Belmont]
+-ibm5150.xml, ibm5170.xml: additions from various sources [Justin Kerk] *** SOFTLIST?
 
--SNES redumps [Alex Jackson, byuu]
-
--Incorporate product / instance directinput device ids [Tomer Verona]
- * This change generates a more unique device id for derect input devices by incorporating the product unique identifier and instance
-    unique identifier. This allows for better disambiguation on device id when mapping controllers via mapdevice config settings.
-
--sms.cpp: fix Out Run sound in FM mode [Enik Land]
-
--ibm5150.xml, ibm5170.xml: additions from various sources [Justin Kerk]
-
--Added swpath. Allows users to specify location of loose software. [Robbbert]
+-core: Added swpath. Allows users to specify location of loose software. [Robbbert]
 
 -rc702: fixed ctc interrupt. [Robbbert]
 
--MT 03045: source.ini must now be in the source subfolder. [Robbbert]
+-accexx: Started skeleton driver for 1995 Accexx 28.8 modem. [Joakim Larsson Edstrom]
 
--Skeleton driver for 1995 Accexx 28.8 modem started [Joakim Larsson Edstrom]
+-z80scc: Various improvements [Joakim Larsson Edstrom]
+ * Added support for shift left/right modes in zbus_r and zbus_w.
+ * Improved variant handling including some incomplete read register maps.
+ * Added external CTS and DCD interrupts.
+ * Improved device reset values.
+ * Added SWI acknowledge command.
+ * Improved/fixed handling of WR9, RR2, RR3.
+ * Added WR7' register.
+ * Improved Tx handling, added Tx FIFO including special case with 1 slot Tx FIFO for NMOS and CMOS.
 
--SCC improvements [Joakim Larsson Edstrom]
- * zbus interface functions zbus_r and zbus_w added supporting shift left/right modes
- * improved variant handling including the incomplete read register maps for some
- * external CTS and DCD interrupts added
- * improved device reset values
- * SWI acknowledge command added
- * improved/fixed handling of wr9, rr2, rr3
- * wr7prime register added
+-z80scc: IACK and reset improvements [Joakim Larsson Edstrom]
+ * Added IACK by reading RR2
+ * Made z80daisy_iack return -1 when no vector found or disabled through the WR9 VIS.
+ * Removed z80daisy_reti code to match SCC documentation.
+ * Removed defacto reset values where possible and replaced them with documented SCC reset values.
 
--SCC iack and reset improvements [Joakim Larsson Edstrom]
- * Added iack by reading rr2
- * z80daisy_iack now returns -1 when no vector found or disabled through the WR9 VIS
- * Removed z80daisy_reti code to match SCC documentation
- * Removed defacto reset values where possible and replaced them with documented SCC reset values
+-8530scc: Fixed typo (allows System 7 to boot on Mac drivers, and fixes X68000 mouse) [CharlesJS]
 
--Fixed vector modification reading the modified vector through channel B register 2 didn't work. [Joakim Larsson Edstrom]
- * There was also a theoretical possibility that the unmodified vector had bits set in the vector fields.
+-s3: Replaced Pinball sound ROMs with game specific sound dumps [barakandl]
+ * Williams System 3/4 Pinballs affected: World Cup, Contact, Disco Fever and Phoenix
 
--SCC improved Tx handling Added Tx fifo including special case with 1 slot tx fifo for NMOS and CMOS. [Joakim Larsson Edstrom]
- * It didn't fix the self test problem on Sun 3-80 but may improve the performance of the indigo driver
-
--Fix typo in 8530scc.cpp (allows System 7 to boot on Mac drivers, and fixes x68000 mouse) [CharlesJS]
-
--s3.cpp: replace sound ROMs with game specific sound dumps [barakandl] Pinball games in particular: World Cup, Contact, Disco Fever
- and Phoenix [Quench]
-
--es5506.cpp fixes: [Christian Brunschen]
- * Fixed readback of global registers when the current page was in a certain range
- * Real h/w does run the voice for a zero-length loop and the synths rely on it
+-es5506: Various fixes [Christian Brunschen]
+ * Fixed readback of global registers when the current page was in a certain range.
+ * Made voices run for a zero-length loop, as real hardware does it and synthesizers rely on it.
  * These changes fix the playback of "Transwaves" on the VFX and SD-series synths.
 
--stv.c: add Taiwan 97/05/15 v1.14 BIOS [Corrado Tomaselli]
+-stv: Added Taiwan 97/05/15 v1.14 BIOS [Corrado Tomaselli]
 
 -hiscore.dat: Updates [Leezer]
 
--8042kbdc: fix Indigo keyboard [Carl]
+-8042kbdc: Fixed keyboard on SGI Indy/Indigo 2 driver. [Carl]
 
--segacd.xml:  Fixed CHD hash for roadrashp but still marked baddump until cue issue is fully resolved. [Scott Stone]
+-segacd.xml: Fixed CHD hash for roadrashp but still marked baddump until cue issue is fully resolved. [Scott Stone] *** SOFTLIST?
 
--mcr.cpp: redumped dpoker sound roms [Sean Rider]
+-mcr: Redumped dpoker sound ROMs. [Sean Rider]
 
--NOTICE (TYPE NAME CONSOLIDATION) Use standard uint64_t, uint32_t, uint16_t or uint8_t instead of UINT64, UINT32, UINT16 or UINT8
- also use standard int64_t, int32_t, int16_t or int8_t instead of INT64, INT32, INT16 or INT8 [Miodrag Milanovic]
+-core: Use standard uint64_t, uint32_t, uint16_t or uint8_t instead of UINT64, UINT32, UINT16 or UINT8 [Miodrag Milanovic]
+ * Also use standard int64_t, int32_t, int16_t or int8_t instead of INT64, INT32, INT16 or INT8.
 
--Update the Sega CD software list. This is pretty much a total rewrite of the Sega CD software list. I've tried to do as much
+-Update the Sega CD software list. This is pretty much a total rewrite of the Sega CD software list. I've tried to do as much *** SOFTLIST?
  research as I can on the subject and added a bunch of notes about the various discs in the list as well as what I could find out
  about missing software. [FakeShemp]
  * Many software have been updated with "better" dumps (where "better" basically means "more well-documented"). There have also been a
     few new software dumps added which have popped up since the last time the list was updated.
 
--Fix errors with new Sega CD softlist I fixed all the errors and dumb stuff that was pointed out to me (thanks everyone) and did a
+-Fix errors with new Sega CD softlist I fixed all the errors and dumb stuff that was pointed out to me (thanks everyone) and did a *** SOFTLIST?
  few new updates toward a better structure of the list. [FakeShemp]
 
--Fix hash errors in Sega CD softlist This should have all the faulty hashes fixed. [FakeShemp]
+-Fix hash errors in Sega CD softlist This should have all the faulty hashes fixed. [FakeShemp] *** SOFTLIST?
  * Secret of Monkey Island changed to the redump.org dump as well.
