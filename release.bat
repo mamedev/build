@@ -9,7 +9,7 @@ rm -r -f build\release
 @mkdir build\release\x64\Release\mame 2> nul 
 copy ..\build\whatsnew\whatsnew_%1.txt build\release\. /Y > nul
 @echo Copy files MAME 32-bit Release build ...
-call :copyfiles build\mingw-gcc\bin\x32\Release build\release\x32\Release\mame mame mame%1b.exe %1
+call :copyfiles build\mingw-gcc\bin\x32\Release build\release\x32\Release\mame mame mame%1b_32bit.exe %1
 @echo Copy files MAME 64-bit Release build ...
 call :copyfiles build\mingw-gcc\bin\x64\Release build\release\x64\Release\mame mame64 mame%1b_64bit.exe %1
 
