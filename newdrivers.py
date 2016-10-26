@@ -202,53 +202,83 @@ def printResult(title, descriptions):
         print('')
 
 
-if len(sys.argv) < 3:
-    print('Usage:')
-    print('  newdrivers <old.xml> <new.xml>')
+def getOldName(driver, description, working, nonworking, descriptions):
+    if (driver in working) or (driver in nonworking):
+        return driver
+    elif description in descriptions:
+        return descriptions[description]
+    else:
+        return None
+
+
+if __name__ == '__main__':
+    if len(sys.argv) < 3:
+        print('Usage:')
+        print('  newdrivers <old.xml> <new.xml>')
+        print('')
+        sys.exit(0)
+
+    oldlist = sys.argv[1]
+    newlist = sys.argv[2]
+
+    error_handler = ErrorHandler()
+    content_handler = Categoriser(error_handler)
+    parser = xml.sax.make_parser()
+    parser.setErrorHandler(error_handler)
+    parser.setContentHandler(content_handler)
+
+    old_working = set()
+    old_nonworking = set()
+    old_descriptions = dict()
+    def handleOldMachine(driver, description, is_clone, is_working):
+        if is_working: old_working.add(driver)
+        else: old_nonworking.add(driver)
+        old_descriptions[description] = driver
+    content_handler.handleMachine = handleOldMachine
+    parser.parse(oldlist)
+    oldbuild = content_handler.build
+
+    new_working_parents = set()
+    new_working_clones = set()
+    promoted_parents = set()
+    promoted_clones = set()
+    new_nonworking_parents = set()
+    new_nonworking_clones = set()
+    renames = dict()
+    def handleNewMachine(driver, description, is_clone, is_working):
+        old_name = getOldName(driver, description, old_working, old_nonworking, old_descriptions)
+        if old_name is None:
+            if is_working:
+                if is_clone: new_working_clones.add(description)
+                else: new_working_parents.add(description)
+            else:
+                if is_clone: new_nonworking_clones.add(description)
+                else: new_nonworking_parents.add(description)
+        else:
+            if old_name != driver:
+                renames[description] = (old_name, driver)
+            if is_working and (old_name not in old_working):
+                if is_clone: promoted_clones.add(description)
+                else: promoted_parents.add(description)
+    content_handler.handleMachine = handleNewMachine
+    parser.parse(newlist)
+    newbuild = content_handler.build
+
+    if (error_handler.errors > 0) or (error_handler.warnings > 0):
+        sys.exit(1)
+
+    print('Comparing %s to %s' % (oldbuild, newbuild))
     print('')
-    sys.exit(0)
 
-oldlist = sys.argv[1]
-newlist = sys.argv[2]
+    if renames:
+        print('Renames')
+        for description, names in renames.iteritems():
+            print('%s -> %s %s' % (names[0], names[1], description))
+        print('')
 
-error_handler = ErrorHandler()
-content_handler = Categoriser(error_handler)
-parser = xml.sax.make_parser()
-parser.setErrorHandler(error_handler)
-parser.setContentHandler(content_handler)
-
-old_working = set()
-old_nonworking = set()
-def handleOldMachine(driver, description, is_clone, is_working):
-    if is_working: old_working.add(driver)
-    else: old_nonworking.add(driver)
-content_handler.handleMachine = handleOldMachine
-parser.parse(oldlist)
-oldbuild = content_handler.build
-
-new_working_parents = set()
-new_working_clones = set()
-new_nonworking_parents = set()
-new_nonworking_clones = set()
-def handleNewMachine(driver, description, is_clone, is_working):
-    if is_working:
-        if driver not in old_working:
-            if is_clone: new_working_clones.add(description)
-            else: new_working_parents.add(description)
-    elif (driver not in old_working) and (driver not in old_nonworking):
-        if is_clone: new_nonworking_clones.add(description)
-        else: new_nonworking_parents.add(description)
-content_handler.handleMachine = handleNewMachine
-parser.parse(newlist)
-newbuild = content_handler.build
-
-if (error_handler.errors > 0) or (error_handler.warnings > 0):
-    sys.exit(1)
-
-print('Comparing %s to %s' % (oldbuild, newbuild))
-print('')
-
-printResult('New machines added or promoted from NOT_WORKING status', new_working_parents)
-printResult('New clones added or promoted from NOT_WORKING status', new_working_clones)
-printResult('New machines marked as NOT_WORKING', new_nonworking_parents)
-printResult('New clones marked as NOT_WORKING', new_nonworking_clones)
+    printResult('New working machines', new_working_parents)
+    printResult('New working clones', new_working_clones)
+    printResult('Machines promoted to working', promoted_parents)
+    printResult('Clones promoted to working', promoted_clones)
+    printResult('New machines marked as NOT_WORKING', new_nonworking_parents)
+    printResult('New clones marked as NOT_WORKING', new_nonworking_clones)
