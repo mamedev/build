@@ -266,4 +266,7 @@ if __name__ == '__main__':
     stream.write('\n\n'.encode('UTF-8'))
 
     print_section_heading(stream, 'New NOT_WORKING software list additions')
-    stream.write('\n'.encode('UTF-8'))
+    stream.write('\n\n'.encode('UTF-8'))
+
+    print_section_heading(stream, 'Translations added or modified')
+    stream.write('\n\n'.encode('UTF-8')

@@ -16,14 +16,14 @@ class ErrorHandler(object):
 
     def error(self, exception):
         self.errors += 1
-        print('error: %s' % (exception))
+        sys.stderr.write('error: %s\n' % (exception))
 
     def fatalError(self, exception):
         raise exception
 
     def warning(self, exception):
         self.warnings += 1
-        print('warning: %s' % (exception))
+        sys.stderr.write('warning: %s\n' % (exception))
 
 
 class Categoriser(object):
@@ -195,11 +195,11 @@ class Categoriser(object):
 
 def printResult(title, descriptions):
     if descriptions:
-        print(title)
-        print('-' * len(title))
+        sys.stdout.write(('%s\n' % (title)).encode('UTF-8'))
+        sys.stdout.write(('%s\n' % ('-' * len(title))).encode('UTF-8'))
         for description in sorted(descriptions):
-            print description
-        print('')
+             sys.stdout.write(('%s\n' % (description)).encode('UTF-8'))
+        sys.stdout.write('\n'.encode('UTF-8'))
 
 
 def getOldName(driver, description, working, nonworking, descriptions):
@@ -267,14 +267,14 @@ if __name__ == '__main__':
     if (error_handler.errors > 0) or (error_handler.warnings > 0):
         sys.exit(1)
 
-    print('Comparing %s to %s' % (oldbuild, newbuild))
-    print('')
+    sys.stdout.write(('Comparing %s to %s\n' % (oldbuild, newbuild)).encode('UTF-8'))
+    sys.stdout.write('\n'.encode('UTF-8'))
 
     if renames:
-        print('Renames')
+        sys.stdout.write('Renames\n'.encode('UTF-8'))
         for description, names in renames.iteritems():
-            print('%s -> %s %s' % (names[0], names[1], description))
-        print('')
+            sys.stdout.write(('%s -> %s %s\n' % (names[0], names[1], description)).encode('UTF-8'))
+    sys.stdout.write('\n'.encode('UTF-8'))
 
     printResult('New working machines', new_working_parents)
     printResult('New working clones', new_working_clones)
