@@ -101,7 +101,10 @@ cop400 improvements: [Curt Coder]
 
 -apricot: Use 74153 for the serial clock selector [Dirk Best]
 
--gen_latch: Inverted logic (latch_read -> latch_written), fixed initial callback after start. [Dirk Best]
+-gen_latch updates:
+ * Add MCFG_GENERIC_LATCH_DATA_PENDING_CB to raise and lower a line automatically as the latch is written and read. This should make
+  sound IRQs easier to deliver and reduce the incidence of HOLD_LINE in drivers. [AJR]
+ * Inverted logic (latch_read -> latch_written), fixed initial callback after start. [Dirk Best]
 
 -ashnojoe, crospang, crshrace, dcheese: Latch cleanup [Dirk Best]
 
@@ -609,24 +612,10 @@ cop400 improvements: [Curt Coder]
  * Previously missed dumps have been added as well.
  * Some typos have been fixed.
 
+-punkywil: Added a ridiculously incomplete dump of the CPU ROM. [AJR, Akiles500]
 
 New machines added or promoted from NOT_WORKING status
 ------------------------------------------------------
-Eight Ball Champ (Spain, Z-Pinball hardware) [AJR]
-Cobra (Playbar) [AJR]
-Credit to Iso Tropia for dumping these in 2013. [AJR]
-Bloody Roller (Playbar) [AJR]
-Slalom Code 0.3 (Stargame) [AJR]
-punkywil: Added a ridiculously incomplete dump of the CPU ROM. [AJR]
-All of the above were originally dumped by Akiles500 at various dates. [AJR]
-Add MCFG_GENERIC_LATCH_DATA_PENDING_CB to raise and lower a line automatically as the latch is written and read. This should make
-  sound IRQs easier to deliver and reduce the incidence of HOLD_LINE in drivers. [AJR]
-Update a few drivers to use this new callback. [AJR]
-Add MCFG_GENERIC_LATCH_DATA_PENDING_CB to raise and lower a line automatically as the latch is written and read. This should make
-  sound IRQs easier to deliver and reduce the incidence of HOLD_LINE in drivers. [AJR]
-Update a few drivers to use this new callback. [AJR]
-Ator (Videodens) [AJR]
-The dump is credited to Gonzalo. The first program ROM is unfortunately missing, so this is for (partial) preservation only. [AJR]
 -New skeleton LINK RM480Z [Robbbert]
 Conic Multisport/Tandy Sports Arena [hap, Sean Riddle]
 Compugraphic MCS PowerView 10 [Carl, Al Kossow]
@@ -651,12 +640,6 @@ change Dead or Alive 2 Millenium to be parent of DoA2 set, note: DoA2M is not "n
 we've been sitting on this for a while, progress was shown a few years ago, but is apparently lost.  Smitdogg should be able to
   clarify the exact part numbers, they're not readable in the pictures. [mamehaze]
 ARM core is better than it was a few years ago too, so might actually work better if hooked up again now. [mamehaze]
-Ator (Videodens) [ajrhacker]
-The dump is credited to Gonzalo. The first program ROM is unfortunately missing, so this is for (partial) preservation only.
-  [ajrhacker]
-Add MCFG_GENERIC_LATCH_DATA_PENDING_CB to raise and lower a line automatically as the latch is written and read. This should make
-  sound IRQs easier to deliver and reduce the incidence of HOLD_LINE in drivers. [ajrhacker]
-Update a few drivers to use this new callback. [ajrhacker]
 ### Major Changes [anikom15]
 Two types of phosphor persistence models for raster and vector screens [anikom15]
 Separate persistence model for LCDs [anikom15]
@@ -694,6 +677,19 @@ ___________________ [Ivan Vangelista]
 MotorDome (German) [PinMAME]
 Motorola MC68705R3 Programmer [Vas Crabb]
 World Kicks (Japan, WK1 Ver.A) [rtw]
+
+
+New machines marked as NOT_WORKING
+----------------------------------
+Cobra (Playbar) [AJR, Iso Tropia]
+Bloody Roller (Playbar) [AJR, Akiles500]
+Slalom Code 0.3 (Stargame) [AJR, Akiles500]
+Ator (Videodens) [AJR, Gonzalo]
+
+
+New clones marked as NOT_WORKING
+--------------------------------
+Eight Ball Champ (Spain, Z-Pinball hardware) [AJR, Iso Tropia]
 
 
 New WORKING software list additions
