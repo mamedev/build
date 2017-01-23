@@ -578,65 +578,10 @@ Unfiltered output from commit/PR scraping scripts:
 
 -Add new dump confirms from TeamEurope. [FakeShemp]
 
--Implement new phosphor shader. [Westley M. Martinez]
- * hlsl/phosphor.fx: Make changes to the pixel shader.  New uniforms: Mode, Tau, Beta, Gamma.  Remove Phosphor.  Mode selects the
-    mode for phosphor simulation: off (no decay), exponential, inverse power.  Tau is the time constant for exp. decay.  Beta and
-    Gamma are constants for inv-pow.
- * src/osd/modules/render/d3d/d3dhlsl.cpp: Provide uniforms and add sliders for new options.
- * src/osd/modules/render/d3d/d3dhlsl.h: (BP) Provide new options.
- * src/osd/windows/winmain.cpp: (BP) Provide new options.
- * src/osd/windows/winmain.h: (BP) Provide new options.
-
--Implement LCD persistence shader. [Westley M. Martinez]
- * hlsl/phosphor.fx: Do LCD persistence effect using boolean LCD. LCD persistence is monochrome and thus does not have separate
-    components like phosphor persistence.
- * src/osd/modules/render/d3d/d3dhlsl.cpp: Add slider for LCD games.
- * src/osd/modules/render/d3d/d3dhlsl.h: (BP) Add options for LCD games.
- * src/osd/windows/winmain.cpp: (BP) Add options for LCD games.
- * src/osd/windows/winmain.h: (BP) Add options for LCD games.
-
--Update presets for new persistence shaders. [Westley M. Martinez]
-
--Remove phosphor burn-in. [Westley M. Martinez]
-
--Add gamma correction for proper impulse response. [Westley M. Martinez]
-
--Scale and phosphor persistence sliders. [Westley M. Martinez]
- * hlsl/phosphor.fx: Scale parameter into tau or gamma.
- * src/osd/modules/render/d3d/d3dhlsl.cpp: src/osd/modules/render/d3d/d3dhlsl.h: src/osd/windows/winmain.cpp:
-    src/osd/windows/winmain.h: Combine tau and beta sliders into one slider labeled 'Time Constant'.
-
--Tweak phosphor parameter scaling, update presets. [Westley M. Martinez]
-
--rohga.cpp: Dipswitch improvements [Brian Troha]
- * Add dipswitch locations to all sets. Filled in missing difficulty switches for Schmeiser Robo Filled in most switches for Hangzo.
-
--Add LCD ghosting shader for Direct3D [Westley M. Martinez]
- * hlsl/ghosting.fx: Add LCD ghosting shader
- * hlsl/phosphor.fx: Remove LCD logic
- * ini/presets/gameboy.ini, ini/presets/gba.ini, ini/presets/lcd-matrix.ini, ini/presets/lcd.ini, ini/presets/raster.ini,
-    ini/presets/vector.ini: Update presets
- * src/osd/modules/render/d3d/d3dhlsl.cpp, src/osd/modules/render/d3d/d3dhlsl.h: Add LCD shader and sliders.  Allow sliders to be
-    adjusted for R, G, and B components.
- * src/osd/windows/winmain.cpp, src/osd/windows/winmain.h: Add LCD ghosting options.# Please enter the commit message for your
-    changes. Lines starting
-
--Correct LCD ghosting INI and slider defaults. [Westley M. Martinez]
-
--Change cached texture format to floating point. [Westley M. Martinez]
- * hlsl/phosphor.fx: Remove hacks
- * ini/presets/raster.ini, ini/presets/vector-mono.ini, ini/presets/vector.ini: Tweak presets
- * src/osd/modules/render/d3d/d3dcomm.h, src/osd/modules/render/d3d/d3dhlsl.cpp, src/osd/modules/render/drawd3d.cpp: Change cache
-    texture format to floating point for precise for phosphor and ghosting shaders.
-
--Revert "New phosphor persistence shaders for HLSL" [R. Belmont]
-
 -floppy: Inhibit reading/stepping until drive has spun up; this concerns drives/controllers that do not use the READY line
  [Michael Zapf]
 
 -floppy: Added TODO comments; revert stp_w ignore on spin-up until further evidence [Michael Zapf]
-
--Revert "New phosphor persistence shaders for HLSL" Reverts mamedev/mame#1843 [rb6502]
 
 -New machine: Atari PC1; name correction: Atari PC3; gave standard pccga five slots, so machines with combo cards can have harddisks
  as well until combo cards are emulated; reordered MCFG and ROM entries to match the machine list at the bottom of the file;
@@ -660,27 +605,6 @@ Unfiltered output from commit/PR scraping scripts:
     available.
  * Previously missed dumps have been added as well.
  * Some typos have been fixed.
-
-### Major Changes [anikom15]
-Two types of phosphor persistence models for raster and vector screens [anikom15]
-Separate persistence model for LCDs [anikom15]
-Update the presets to work with the new shaders. [anikom15]
-### Explanation [anikom15]
-There are two basic responses for phosphor persistence: exponential and inverse power. You can't combine the two; you have to commit
-  to one. Exponential is simpler and is designed for displays that use short phosphors like black and white television. It uses one
-  parameter, tau, which increases the persistence. Inverse power is for longer persistences, and can be made to have a long tail
-  while keeping a fast initial decay. The two parameters are beta and gamma. Beta is the power, from 0.5 to 2. Lower beta means a
-  slower decay and (much) longer persistence, with gamma 1, a power of 0.5 will persist for over 18 hr., while a power of 2 will
-  persist for only 15 s. Gamma is a time constant. Higher gamma means a faster decay and shorter persistence. These constants can be
-  set individually for red, green, and blue subpixels. The mode has a slider and the subpixels each have three sliders for the three
-  constants. [anikom15]
-LCD persistence uses the exponential model. This makes sense because the response is basically an asymmetric capacitor. LCDs don't
-  have individual responses for their red, green, and blue subpixels, and so there is just one slider. [anikom15]
-I will try to port this to BGFX although I am even more unfamiliar with that than I am with HLSL. Please let me know if you have any
-  problems or ideas. [anikom15]
-—W. [anikom15]
-
-
 
 
 Unreconciled new machines from scipt output:
