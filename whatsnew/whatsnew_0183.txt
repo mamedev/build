@@ -96,6 +96,7 @@ Golden Pyramids (0100878V, Victoria) [Heihachi_73]
 Excalibur (German) [PinMAME]
 Margarita Magic (EHG1558, US) [Heihachi_73]
 Missile Attack [f205v]
+Street Fighter EX 2 (US 980312) [coolmod, The Dumping Union]
 Panther Magic (0100716V, NSW/ACT) [Heihachi_73]
 Pet Shop (0100731V, NSW/ACT) [Heihachi_73]
 Q.T. Bird (0500009V, NSW/ACT) [Heihachi_73]
@@ -334,8 +335,6 @@ Source Changes
 
 -[Imgtool]  Fixed recently introduced bug in the code that emits usage text [Nathan Woods]
 
--new VS Block Breaker clone [briantro]
-
 -tidy up for release [Patrick Mackinlay]
 
 -tidy up for pull request [Patrick Mackinlay]
@@ -396,10 +395,6 @@ Source Changes
     after the format string. Types are determined automatically. "{3:04x}" would format a number as a hexadecimal with 4 leading
     zeros.
  * [Couriersud]
-
--New Street Fighter EX2 clone [briantro]
-
--gcpinbal: Add HCT157 [AJR]
 
 -Solver stuff: [couriersud]
 
@@ -497,14 +492,12 @@ Source Changes
 
 -lastbank: Working sound and music [AJR]
  * ES-8712: Add busy status read and notes on device
+ * Allow sound CPU to reset the ES-8712 and M6295
+ * Add NVRAM; remap/rename inputs; RTC notes
 
 -Fixed Battle Cruiser M-12 sprite colors [MASH]
 
 -bcruzm12: Change PSGs to AY8912; note on PCB [AJR]
-
--lastbank: Allow sound CPU to reset the ES-8712 and M6295 [AJR]
-
--gcpinbal: Add interface for 93C46 EEPROM [AJR]
 
 -dblcrown: Simplify code by adding 8255 PPI; PSG type is YMZ284 [AJR]
 
@@ -514,6 +507,9 @@ Source Changes
  * Break up the bogus IOC structure and use 8-bit handlers where appropriate. This fixes a music playback glitch due to the old
     handler's failure to take byte mirroring into account.
  * Improve OKI M6295 sounds by using correct bit for banking
+ * Load more music by sending interrupt when ES-8712 finishes playing sample
+ * Add interface for 93C46 EEPROM
+ * Add HCT157
 
 -Some documentation work. [couriersud]
 
@@ -527,8 +523,6 @@ Source Changes
  * added delegate support for emscripten and arm processors
  * added delegate support for VS 2015 x64 [Couriersud]
 
--gcpinbal: Load more music by sending interrupt when ES-8712 finishes playing sample [AJR]
-
 -preliminary TLCS-870 disassembler - Work in Progress (#1967) [ajrhacker]
 
 -t10mmc: added Play Audio MSF (0x47) command, used by Another CD Player and Astrocounter of Crescents. [mahlemiut]
@@ -538,8 +532,6 @@ Source Changes
     including customs. Correct OKI M6295 clock with actual resonator.
 
 -kothello: Add DIP SW2 and identify DIP switches and locations [AJR]
-
--lastbank: Add NVRAM; remap/rename inputs; RTC notes [AJR]
 
 -Updates FSF address in a few files. (#2044) [Luke Jones]
  * Update hq2x.json
@@ -723,10 +715,6 @@ Source Changes
 -Updates FSF address in a few files. Very minor pull request, this just updates the FSF address in the license header of a few
  shaders. [Luke-Nukem]
 
--gcpinbal: Modernization and sound improvements [ajrhacker]
- * Break up the bogus IOC structure and use 8-bit handlers where appropriate. This fixes a music playback glitch due to the old
-    handler's failure to take byte mirroring into account.
- * Improve OKI M6295 sounds by using correct bit for banking
 
 -Correctly assign service button(s) Mame Testers Bug: http://mametesters.org/view.php?id=6489 [OzFalcon]
 
