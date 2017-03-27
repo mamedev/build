@@ -61,13 +61,14 @@ Source Changes
 
 -Improve readability. Add more c++11 noexcept and  swap semantics. [couriersud]
 
--Softlist cleanup (#2075) [npwoods]
- * Eliminates the need for emu_options::update_cached_options() by providing a hook for when option values change
- * This is a preliminary fix to the issue identified in PR#2065
- * More softlist related refactoring:
-   - We now only parse the command line (with core_options::parse_command_line()) once
-   - Options that are set up during slot and image setup go through a 'value_specifier' function
-   - Eliminated the command line postprocessing
+-Softlist cleanup This is an attempt to greatly refactor softlists, prompted by MT bug 6464 and the concerns raised in #2065.
+ [Nathan Woods]
+ * I've done a lot of work to pull the evaluation of softlists at the command line upfront and then the results are used to drive
+    the slot and image setup process.  I've also had to refactor slot and image setup, on the idea that
+    core_options::parse_command_line() should only be called once and arguments needed when setting up slots and images should go
+    through a module that can interpret both the command line and softlist processing results.
+ * This is a very gutsy refactoring.  It is inevitable that this introduces at least some regressions due to the brittle nature of
+    the softlist code, and my incomplete awareness of all of the capabilities of softlists.
 
 -naomi.cpp: dumped "Ferrari F355 Challenge (deluxe, no link)" Export BIOS [Darksoft]
 
@@ -77,13 +78,6 @@ Source Changes
  * Note this is not passed around 'const', the reason being that the command line processing will now "eat" the vector
 
 -naomi.cpp: dumped "Ferrari F355 Challenge (deluxe, no link)" Japan BIOS [Ordyne, The Dumping Union]
-
--The recent softlist cleanup broke -console; this fixes it [Nathan Woods]
- * The reason is that the LUA console, HTTP server and other features relied on the command line arguments being "pre-parsed".  Part
-    of the softlist cleanup was to sanitize where command line parsing occurs.  This change moves the setup of the LUA console (and
-    other capabilities such as the HTTP server) to the correct place in the new order.
-
--Vas feedback [Nathan Woods]
 
 -ti99: Various fixes for TI-99/4 (not A) [Michael Zapf]
   * Added initializations to prevent 99/4 from crashing on startup
@@ -138,9 +132,6 @@ Source Changes
  * figured out how the starfield and gradient get enabled on vicdual hardware. don't exactly know how they work yet, so I added a
     simulation of the gradient for nsub.
 
--Fixed regression pertaining to specification of empty strings as slot names [Nathan Woods]
- * e.g. - 'next -scsibus:1 "" -listdevices'
-
 -blockade: Rewrite driver [Dirk Best]
  * Remove fake interrupts and rewrite coin handling
  * Use correct CPU type
@@ -155,10 +146,7 @@ Source Changes
 
 -mips3:  Retry fixing FPU register aliasing [Happy]
 
--[CoCo] Made third and fourth floppy drives on by default, and made "fixed" (#2098) [npwoods]
- * [CoCo] Made third and fourth floppy drives on by default, and made "fixed"
- * [CoCo] Backing out  MCFG_SLOT_FIXED(true)
- * Sarayan was right; I was intoxicated from softlist poisoning
+-[CoCo] Made third and fourth floppy drives on by default (#2098) [Nathan Woods]
 
 -Self-registering devices prep: [Vas Crabb]
  * Make device_creator a variable template and get rid of the ampersands
@@ -172,8 +160,6 @@ Source Changes
  reported problem. [Brad Hughes]
 
 -hp9845b: Use standard instance names (and type) for optional ROMs [AJR]
-
--Fixed -readconfig regression introduced in the 0.184 dev cycle [Nathan Woods]
 
 -apple2: rewrote 16k language card to pass Zellyn/qkumba tests [R. Belmont]
 
@@ -275,15 +261,11 @@ Source Changes
 
 -scorpion: Remove direct update handler [O. Galibert]
 
--Fixing stupid error in the bpset command [Nathan Woods]
-
--Fixed a few more issues broken similarly to 'bpset' [Nathan Woods]
-
 -Attempt 1 to get superset ROM working. [Mark Garlanger]
 
 -popper: Hook up inputs, rename audio cpu to sub cpu, hook up flip screen [Dirk Best]
 
--Changed a few more 'const char *' ==> 'const std::string &' (#2111) [npwoods]
+-Changed a few more 'const char *' ==> 'const std::string &' (#2111) [Nathan Woods]
 
 -Correct MMOD bit for Z180 DMA [AJR]
 
@@ -453,19 +435,6 @@ Source Changes
 
 -triforce.cpp: security PIC dump for "Mario Kart Arcade GP" [Soyandroid]
 
--Preliminary attempt to fix regression caused by poor understanding of get_default_card_software() (#2122) [npwoods]
- * Tafoid brought to my attention a recent regression caused by my softlist changes.  Specifically, this failed:
- * mame odyssey2 -cart1 voice -cart2 bees
- * The reason is that the recent refactoring caused some critical softlist logic to be bypassed.  Essentially
-    device_slot_interface::get_default_card_software() provides a technique for devices to inspect softlists and select slot options
-    to be specified.  In the case above, the selection of the "voice" software list item in the first cartridge slot requires
-    get_default_card_software() to be called to specify the o2_voice slot device, which in turn adds the second cartridge slot.
-    Skipping this caused '-cart2' to stop being recognized.
- * This is an attempt to fix the problem.  In some ways, this doesn't go far enough - the astute observer will note that
-    mame_options::reevaluate_slot_options() looks a lot like mame_options::update_slot_options(); part of me wants to just rip the
-    latter out.  In the long run, device_slot_interface::get_default_card_software() should be reevaluated; having a hook is a good
-    idea but it should be a pure function that doesn't alter state.
-
 -t11 cpu: emulate MFPT instruction. [Sergey Svishchev]
 
 -t11 cpu: MOV, CLR and SXT read memory before writing to it (page B-8 of User's Manual). [Sergey Svishchev]
@@ -564,12 +533,6 @@ Source Changes
 
 -Greatly improve performance of -romident on multiple files [Vas Crabb]
 
--Fixed regression when loading multipart softlists [Nathan Woods]
- * Pernod found a regression introduced in the 0.183 softlist refactoring whereby multi-part softlist items would not distribute to
-    multiple slots.  The problem was that the old code was relying on the image slots being loaded into the core.  This is not the
-    way the new system works, so I've added a hook into software_list_device::find_mountable_image() that allows the new approach to
-    work.
-
 -Remove incomplete support for SuperSet H19. [Mark Garlanger]
 
 -Incremental C++-ification of 6821pia.cpp [Nathan Woods]
@@ -627,10 +590,6 @@ Source Changes
 
 -MIPS: initial support for VR5500 and TX4925 CPUs. [R. Belmont]
 
--Fixed recently introduced order of operations issue, and changed to Vas' preferred style [Nathan Woods]
-
--Fixed recently introduced order of operations issue, and changed to Vas' preferred style [npwoods]
-
 -Minor cleanup of H19. [mgarlanger]
 
 -Fixed writes to decrypted opcode memory Fixes problem in the debugger and the cheat engine as currently the writes to opcode memory
@@ -671,7 +630,7 @@ Source Changes
     describe any battery extensions whatsoever.
 
 -Incremental C++-ification of 6821pia.cpp 1.  Changed some 'int' ==> 'bool' where appropriate 2.  Changed the various control byte
- macros to static functions [npwoods]
+ macros to static functions [Nathan Woods]
 
 -Additions/improvements to nes driver and softlist Almost every change should be logged in the whole text of the commit. [kazblox]
  * If anything needs cleanups before the new MAME version, let me know. Due to sleep deprivation, I will have to send the new
@@ -679,7 +638,7 @@ Source Changes
 
 -[CoCo 3]  Fixed an issue clearing interrupts on the GIME implementation The normal way to acknowledge a GIME interrupt is by
  reading from $FF92/3.  However, the act of disabling interrupts by writing to the same registers will also do the trick, and we
- were not emulating this technique. [npwoods]
+ were not emulating this technique. [Nathan Woods]
  * Thanks to Glen Hewlett and Tim Lindner for helping to identify this problem
 
 -z80sio: interrupt support for upd7201 and i8274 Things are more correct for the SIO in general and the 7201/8274 in particular.
@@ -687,11 +646,6 @@ Source Changes
  * This made it possible to replace a workaround in the isbc2861 driver which now robustly boots Xenix. Previously this failed due
     to a lost interrupt with an infinite hang as a result. The fix included implementation of triggering a iack by reading the rr2
     register which could then replace the m1_r() call. Also the 8274 interrupt is now handled solely by the 8259.
-
--Fixed regression when loading multipart softlists Pernod found a regression introduced in the 0.183 softlist refactoring whereby
- multi-part softlist items would not distribute to multiple slots.  The problem was that the old code was relying on the image slots
- being loaded into the core.  This is not the way the new system works, so I've added a hook into
- software_list_device::find_mountable_image() that allows the new approach to work. [npwoods]
 
 -Confirm a few japanese dump and add a new one. Hello, [evadot]
  * A few japanese game confirmation and a new dump. Some cart weren't open because of label on top of screw and games aren't cheap.
@@ -748,7 +702,7 @@ Source Changes
 
 -Allow clock frequency changes in ay8910. Overrided device method to support changing clock frequencies in the ay8910. [tlindner]
 
--CoCo:  Implementing support for enabling and disabling cartridge-specific sound [npwoods]
+-CoCo:  Implementing support for enabling and disabling cartridge-specific sound [Nathan Woods]
 
 -tosh1000: hook up ROM-DOS. [shattered]
 
@@ -772,20 +726,7 @@ Source Changes
 
 -feversoc: Add coin hopper output (prize hopper doesn't quite work) [ajrhacker]
 
--Adds a new addrmap.cpp validation intended to catch AM_REGION declarations not tied to anything meaningful [npwoods]
-
--Preliminary attempt to fix regression caused by poor understanding of get_default_card_software() Tafoid brought to my attention a
- recent regression caused by my softlist changes.  Specifically, this failed: [npwoods]
- * mame odyssey2 -cart1 voice -cart2 bees
- * The reason is that the recent refactoring caused some critical softlist logic to be bypassed.  Essentially
-    device_slot_interface::get_default_card_software() provides a technique for devices to inspect softlists and select slot options
-    to be specified.  In the case above, the selection of the "voice" software list item in the first cartridge slot requires
-    get_default_card_software() to be called to specify the o2_voice slot device, which in turn adds the second cartridge slot.
-    Skipping this caused '-cart2' to stop being recognized.
- * This is an attempt to fix the problem.  In some ways, this doesn't go far enough - the astute observer will note that
-    mame_options::reevaluate_slot_options() looks a lot like mame_options::update_slot_options(); part of me wants to just rip the
-    latter out.  In the long run, device_slot_interface::get_default_card_software() should be reevaluated; having a hook is a good
-    idea but it should be a pure function that doesn't alter state.
+-Adds a new addrmap.cpp validation intended to catch AM_REGION declarations not tied to anything meaningful [Nathan Woods]
 
 -a7150: de-skeletonize. [shattered]
 
@@ -796,13 +737,9 @@ Source Changes
  * nes: marked skaraok as unknown for now
  * The alternate Chinese/Russian names I have put into the commits come from the NESBBS listings and cartridge labels.
 
--Fixed a few more issues broken similarly to 'bpset' [npwoods]
+-C++-ification of debugger code (misc std::string/std::vector adoption mainly) [Nathan Woods]
 
--Fixing stupid error in the bpset command [npwoods]
-
--C++-ification of debugger code (misc std::string/std::vector adoption mainly) [npwoods]
-
--Changed a few more 'const char *' ==> 'const std::string &' [npwoods]
+-Changed a few more 'const char *' ==> 'const std::string &' [Nathan Woods]
 
 -fcisio: layout added and RS232 configured for all 8 serial ports Enabling the serial port revealed a segfault when using more the 2
  serial terminals from a slot device something that works just fine with the fccpu30 driver, which is not a slot device yet.
@@ -833,8 +770,6 @@ Source Changes
  * Thanks.
  * -F.Ulivi
 
--Fixed -readconfig regression introduced in the 0.184 dev cycle [npwoods]
-
 -Revert "ie15: convert to a device with frontends (standalone driver and rs232…" Reverts mamedev/mame#2096 [cuavas]
  * This introduces a dependency from src/devices on src/mame.  We have enough problems with circular dependencies already, we don't
     need to create more.
@@ -842,9 +777,9 @@ Source Changes
 -mips3:  Retry fixing FPU register aliasing [Happy-yappH]
 
 -Cleanup of slot code Added device_slot_interface::has_selectable_options() to calculate whether a particular slot has selectable
- options [npwoods]
+ options [Nathan Woods]
 
--[CoCo] Made third and fourth floppy drives on by default, and made "fixed" [npwoods]
+-[CoCo] Made third and fourth floppy drives on by default [Nathan Woods]
 
 -ie15: convert to a device with frontends (standalone driver and rs232 slot device) [shattered]
 
@@ -858,8 +793,6 @@ Source Changes
     define how it is configured. My initial attempts to define it, caused run-time crashes. The ROM chip is a 32K chip, of which 16K
     is used. But the valid data is in the 2nd and 4th 8K blocks of the chip, not the 1st and 3rd. So it would either error with
     'mirror touching a set bit' or have the memory reflect the invalid parts of the ROM chip.
-
--Fixed regression pertaining to specification of empty strings as slot names e.g. - 'next -scsibus:1 "" -listdevices' [npwoods]
 
 -vicdual: nsub gradient I figured out how the starfield / gradient get enabled on vicdual hardware. [SailorSat]
  * N-Sub uses a gradient for the background; there are black destroyers on the horizon that basically can't be seen without.
@@ -888,24 +821,6 @@ Source Changes
  * correct the Konami sound XTAL definition in galaxian.cpp
  * other misc. XTAL definition cleanups
  * for now, make spcwarp use hunchbkg palette ROMs
-
--The recent softlist cleanup broke -console; this fixes it The reason is that the LUA console, HTTP server and other features relied
- on the command line arguments being "pre-parsed".  Part of the softlist cleanup was to sanitize where command line parsing occurs.
- This change moves the setup of the LUA console (and other capabilities such as the HTTP server) to the correct place in the new
- order. [npwoods]
-
--Fixed an issue where device options (e.g. -cart) were reported as unknown when they actually worked This change also changes around
- how command line arguments are passed around; specifically I changed argc/argv to be std::vector<std::string> [npwoods]
- * Note this is not passed around 'const', the reason being that the command line processing will now "eat" the vector
-
--Softlist cleanup This is an attempt to greatly refactor softlists, prompted by MT bug 6464 and the concerns raised in #2065.
- [npwoods]
- * I've done a lot of work to pull the evaluation of softlists at the command line upfront and then the results are used to drive
-    the slot and image setup process.  I've also had to refactor slot and image setup, on the idea that
-    core_options::parse_command_line() should only be called once and arguments needed when setting up slots and images should go
-    through a module that can interpret both the command line and softlist processing results.
- * This is a very gutsy refactoring.  It is inevitable that this introduces at least some regressions due to the brittle nature of
-    the softlist code, and my incomplete awareness of all of the capabilities of softlists.
 
 -Update exp.h Removed colon (":") from image_interface value that was preventing some front-ends, such as QMC2, from being able to
  launch ColecoVision software from the software list (the software rom itself ended up being omitted so it just booted the main
