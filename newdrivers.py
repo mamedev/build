@@ -238,6 +238,8 @@ if __name__ == '__main__':
     parser.parse(oldlist)
     oldbuild = content_handler.build
 
+    new_working = dict()
+    new_nonworking = dict()
     new_working_parents = set()
     new_working_clones = set()
     promoted_parents = set()
@@ -246,8 +248,10 @@ if __name__ == '__main__':
     new_nonworking_clones = set()
     renames = dict()
     def handleNewMachine(driver, description, is_clone, is_working):
+        if is_working: new_working[driver] = description
+        else: new_nonworking[driver] = description
         old_name = getOldName(driver, description, old_working, old_nonworking, old_descriptions)
-        if old_name is None:
+        if (old_name is None) or (old_name in renames):
             if is_working:
                 if is_clone: new_working_clones.add(description)
                 else: new_working_parents.add(description)
@@ -256,7 +260,9 @@ if __name__ == '__main__':
                 else: new_nonworking_parents.add(description)
         else:
             if old_name != driver:
-                renames[description] = (old_name, driver)
+                renames[old_name] = (description, driver)
+                if old_name in new_working: new_working_clones.add(new_working[old_name])
+                elif old_name in new_nonworking: new_nonworking_clones.add(new_nonworking[old_name])
             if is_working and (old_name not in old_working):
                 if is_clone: promoted_clones.add(description)
                 else: promoted_parents.add(description)
@@ -272,8 +278,8 @@ if __name__ == '__main__':
 
     if renames:
         sys.stdout.write('Renames\n'.encode('UTF-8'))
-        for description, names in renames.iteritems():
-            sys.stdout.write(('%s -> %s %s\n' % (names[0], names[1], description)).encode('UTF-8'))
+        for old_name, info in renames.iteritems():
+            sys.stdout.write(('%s -> %s %s\n' % (old_name, info[1], info[0])).encode('UTF-8'))
     sys.stdout.write('\n'.encode('UTF-8'))
 
     printResult('New working machines', new_working_parents)
