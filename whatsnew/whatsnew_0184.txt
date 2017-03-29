@@ -22,13 +22,16 @@ Conic Electronic I.Q. [hap, Sean Riddle]
 CXG Chess 2001 [hap, Berger]
 Micro Genius IQ-501 [kazblox]
 Micro Genius IQ-502 [kazblox]
+Shiny Golds [caius, The Dumping Union]
 USG/Tandy 2-Player Football [hap, Sean Riddle]
 
 
 New working clones
 ------------------
+2 On 2 Open Ice Challenge (rev 1.2A) [Brian Troha, Sean Sutton, Smitdogg, The Dumping Union]
 Chesster Challenger (V1.3) [yovan]
 Dendy Classic 2 [kazblox]
+Dynablaster / Bomber Man (bootleg, set 3) [Hammy, The Dumping Union]
 Fidelity Designer 2100 [hap]
 Fidelity The Excellence (model EP12, set 2) [yovan]
 Fidelity The Par Excellence (rev. B) [hap]
@@ -39,9 +42,11 @@ Kishon Chesster [yovan]
 Milton Bradley Simon (Rev F) [Sean Riddle]
 NBA Play By Play (ver AAB) [alca]
 Phoenix (IDI bootleg) [f205v]
+Radical Radial (Japan) [ShouTime, The Dumping Union]
 Raiden II (Germany) [caius, The Dumping Union]
 San Francisco Rush (boot rom L 1.06A) [Andrew Welburn, The Dumping Union]
 Shanghai III (US, prototype) [coolmod, The Dumping Union]
+Street Fighter II: The World Warrior (World 910129) [Janniz]
 Super Crowns Golf (World) [Kevin Eshbach, The Dumping Union]
 
 
@@ -49,6 +54,7 @@ Machines promoted to working
 ----------------------------
 Novag Constellation Forte (version B) [hap]
 Heathkit H-19 [Mark Garlanger]
+HP-9845C [f.ulivi, Angus Kueckes]
 SM 7238 [shattered]
 
 
@@ -120,11 +126,12 @@ Mountain Money (0100289V, NSW/ACT) [Heihachi_73]
 Orchid Mist (0100849V, NSW/ACT) [Heihachi_73]
 Oscar (0100348V, NSW/ACT) [Heihachi_73]
 OutRun 2 Special Tours (GDX-0014) [Ordyne, The Dumping Union]
-PPG Waveterm A [shattered]
+Penguin Brothers (Japan, bootleg) [Rod_Wod, Team Europe and The Dumping Union]
 Penguin Pays (0100113V, NSW/ACT) [Heihachi_73]
 Penguin Pays - Penguin Pucks (EHG1257, US) [Heihachi_73]
 Penguin Pirate (0200578V, NSW/ACT) [Heihachi_73]
 Pot O' Gold (U.S. Games, v580F) [deathmock]
+PPG Waveterm A [shattered]
 Queen of the Nile (0101139V, NSW/ACT) [Heihachi_73]
 Queen of the Nile (0101707V, Brazil) [Heihachi_73]
 Queen of the Nile (04J00784, Venezuela) [Heihachi_73]
@@ -142,6 +149,34 @@ Time Traveler (set 2) [Ordyne, The Dumping Union]
 Unicorn Dreaming (0100813V, NSW/ACT) [Heihachi_73]
 Wangan Midnight Maximum Tune 2 (Export) (GDX-0016) [Ordyne, The Dumping Union]
 Zephy (alternate set) [PinMAME]
+
+
+New working software list additions
+-----------------------------------
+archimedes: Over 20 games and applications [Nigel Barnes]
+bbcb_flop: Disk User coverdisks, Bad Apple and X-Pansions Elevation demos [Nigel Barnes]
+bbcm_flop: Enjoy The Silence and Retribution X demos [Nigel Barnes]
+c64_cass: speakeasy [Dagarman]
+ibm5150:
+  Bivouac, Chuck Yeager's Advanced Flight Trainer, Double Dragon (5.25", older), EDITEXTE,
+  Indianapolis 500: The Simulation (3.5", newer), Label Magic, Licence to Kill, Multitexte, Pick'n Pile, Prehistorik,
+  PrintMaster Plus, Rockford, Skweek
+  [breiztiger]
+ibm5170:
+  Adaptec EZ-SCSI 3.1 German, AMouse Driver Disk v7.0, Borland Eureka 1.0, Borland Paradox 3.01 (German),
+  Borland Paradox 4.0 (German, 2 versions),
+  IBM DOS 5.02 (German), MS-DOS 6.22 (German), Windows 3.1 (German), Windows for Workgroups 3.11 (German)
+  [darkstar]
+megadriv: TOm and Jerry (Jpn) [ElBarto]
+nes: Magic Kid GooGoo [kazblox]
+ti74: Maths and Finance cartridges [PockEmul]
+vic1001_cass: speakeasy (partial dump) [Dagarman]
+
+
+New software list additions marked as NOT_WORKING
+-------------------------------------------------
+ibm5150:
+  Ikari Warriors (alt), First Samurai, JetFighter I: The Adventure, Turbo Driver [breiztiger]
 
 
 Source Changes
@@ -168,13 +203,18 @@ Source Changes
 
 -Added skeleton device for Video System C7-01 GGA [AJR]
 
--zorba keyboard: Mapped remaining keys, documented remaining DIP switches, and added notes on MCU program. [Vas Crabb]
+-taito_z.cpp: Fixed subtle color pen bug in Mexico GP stage for Continental Circus. [Angelo Salese]
 
--gotcha/ppchamp/pasha2: Hooked up lamp outputs and add clickable artwork. [Vas Crabb]
+-8x300dasm: Corrected JMP target addresses. [Barry Rodewald]
 
--ay8910: Added a write handler for the case of bc1=a0 and bc2=a1. [Dirk Best]
+-Work around bug in msys2 C runtime causing garbage on console with DInput controllers. [Brad Hughes]
+
+-abc80: Converted to scanline based rendering, fixed graphics characters, and fixed sound. [Curt Coder]
+ * Genesis Project demos (abcdemo, hiresinv) are now fully working.
 
 -Ambush: Driver state cleanups [Dirk Best]
+
+-ay8910: Added a write handler for the case of bc1=a0 and bc2=a1. [Dirk Best]
 
 -blockade: Rewrote driver: [Dirk Best]
  * Removed fake interrupts, rewrote coin handling, corrected CPU type.
@@ -189,7 +229,86 @@ Source Changes
  * Hooked up inputs and flip screen.
  * Fixed audio hookup.
 
+-HP9845C improvements: [f.ulivi, Angus Kueckes]
+ * Expanded from 1 to 4 I/O slots.
+ * Allowed RAM size to be configured with -ram option.
+ * Implemented HP-9845C driver (color version of the 9845 range of machines).
+ * Improved 9845C lightpen emulation.
+ * nanoprocessor: Fixed a subtle bug in interrupt handling.
+
+-n64 updates: [Happy]
+ * Added short delay between RDP full sync and DP interrupt, allowing RSP IRQ to arrive first.
+ * Let debugger disassembly windows track RSP PC.
+ * Flush RSP DRC cache when SP DMA changes IMEM.
+ * Make element selection in vector load/store RSP DRC C functions consistent with other implementations.
+ * Fix a minor issue with RDP disassembly listing for Load Block.
+
+-mips3 DRC : Ensure branch delay slot instruction is not virtual instruction before trying to generate code to add it to the block
+ checksum, fixed FPU register aliasing. [Happy]
+
+-z80sio: Added i8274/upd7201 variants, refactored interrupts, improved logging. [Joakim Larsson Edstrom]
+ *isbc: Changed to use z80sio.cpp i8274 device instead of z80dart.cpp's, removed m1_r() workaournd.
+
+-fcisio: Added layout and and RS232 configured for terminals on all 8 serial ports. [Joakim Larsson Edstrom]
+
+-netlist: Added a heap priority queue, fix netlist stats collection, fixed new clang warnings, reduced footprint of extended clock.
+ [couriersud]
+
 -Decoded popper color PROMs. [Joe Magiera, couriersud]
+
+-sdk86.cpp: Fixed ROM loading. [Lord Nightmare]
+
+-pes.cpp: use combined /RS and /WS function since the MCU/CPU can in theory change both lines at once, and since it uses a TMS5220C
+ it does matter in this case. [Lord Nightmare]
+
+-segas32.cpp: Added uPD7725 DSP with ROM loading to Air Rescue (disabled for now). [Lord Nightmare]
+
+-upd7725: Added preliminary IRQ support, corrected SI/SO bit order, added SIACK/SOACK registers, fixed save state registration,
+ fixed reset state. [Lord Nightmare]
+
+-Fixed an off-by-one error when loading upd96050 roms for SNES games. [Lord Nightmare]
+
+-potgoldu.cpp: Added undumped MCU as NO_DUMP. [Lord Nightmare]
+
+-konmedal/tsukande: Add clock XTAL definition for the Z80 CPU, divisor is guessed. [Lord Nightmare]
+
+-Heath H19: Fixed keyboard, fixed handling of enable/disable of 25th line, use internal MM5740 ROM, fixed H-19 with Watzman ROM,
+ fixed Super19. [Mark Garlanger]
+
+-ti99: Various fixes for TI-99/4 (not A). [Michael Zapf]
+  * Added initializations fixing crash on startup, fixed GROM issues (clock turned off too early).
+
+-geneve: Fixed issue with sector read on HFDC without implied seek (did not check CRC and failed to switch density). [Michael Zapf]
+
+-ti99/geneve: Made bus mouse now separate device, may also be used with evpc. [Michael Zapf]
+
+-ti99/geneve: Fixed jerky mouse movement. [Michael Zapf]
+
+-ti99_8: Fixed debugging for TI-99/8. [Michael Zapf]
+
+-Softlist/slot improvements: [Nathan Woods]
+ * Fixed an issue where device options (e.g. -cart) were reported as unknown when they actually worked.
+ * Do more softlist evaluation upfront and use results to drive slot/image setup.
+ * Added device_slot_interface::has_selectable_options() to determine whether a particular slot has selectable options.
+
+-Added a new addrmap.cpp validity check intended to catch AM_REGION declarations not tied to anything meaningful. [Nathan Woods]
+
+-CoCo: Implemented support for enabling and disabling cartridge-specific sound, made third and fourth floppy drives present by
+ default. [Nathan Woods]
+
+-CoCo 3: Fixed an issue clearing GIME interrupts (disabling interrupts by writing to $FF92/3 also acknowledges interrupt).
+ [Nathan Woods, tim lindner, Glen Hewlett]
+
+-6821pia.cpp: changed int to bool where appropriate, changed macros to static functions. [Nathan Woods]
+
+-[CoCo 3]  Fixed an issue clearing interrupts on the GIME implementation The normal way to acknowledge a GIME interrupt is by
+ reading from $FF92/3.  However, the act of disabling interrupts by writing to the same registers will also do the trick, and we
+ were not emulating this technique. [Nathan Woods]
+ * Thanks to Glen Hewlett and Tim Lindner for helping to identify this problem
+
+-archimedes: Added JFD floppy format as used by JASPP (Archimedes Software Preservation Project). [Nigel Barnes]
+
+-electron: Added First Byte joystick interface. [Nigel Barnes]
 
 -Made side effect suppression a machine property. [O. Galibert]
 
@@ -197,6 +316,10 @@ Source Changes
  * a2600, atm (still not working, but less badly), mpf1 (makes step work), mpz80, pentagon, sage2, scorpion, tms32031
 
 -mb86233: Massive disassembler overhaul. [O. Galibert]
+
+-arm7ops.cpp: Advance PC on unimplemented opcodes. [Peter Ferrie]
+
+-apple2: Rewrote language card handling. [Peter Ferrie]
 
 -apple2: Fixed IIe/IIc self-test regression [R. Belmont]
 
@@ -250,6 +373,14 @@ Source Changes
 
 -hp_ipc: De-skeletonized. [shattered]
 
+-Commodore LCD: Halved size of character rom region and fixed switching between upper and lower case character sets. [smf]
+
+-Fixed UPD7725 disassembly. [smf]
+
+-zorba keyboard: Mapped remaining keys, documented remaining DIP switches, and added notes on MCU program. [Vas Crabb]
+
+-gotcha/ppchamp/pasha2: Hooked up lamp outputs and add clickable artwork. [Vas Crabb]
+
 -sun3x.cpp: Hooked up keyboard port. [Vas Crabb]
 
 -Fixed natural keyboard mapping for vg9k keyboard (and hence UI paste/autoboot). [Vas Crabb]
@@ -272,456 +403,57 @@ Source Changes
 
 -Fixed new device validation issues. [Vas Crabb, O. Galibert, AJR]
 
--Corrected the main crystal in marineb.cpp to 12MHz as seen in PCB photos. [Kaz <>]
- * Cleaned up clock definitions in galaxian driver.
- * Moved ladybugg from galaxold to galaxian drivers.
+-triforce.cpp: Fixed Mario Kart 2 ROM loading [MetalliC]
 
--Added I8274 type macros and derived class + logging [Joakim Larsson Edstrom]
-
--Changed to use z80sio.cpp i8274 device driver instead of z80dart.cpp's [Joakim Larsson Edstrom]
-
--z80sio: variant support for i8274/upd7201 and a refactored interrupt support [Joakim Larsson Edstrom]
-
--z80sio: interrupt support for upd7201 and i8274 Things are more correct for the SIO in general and the 7201/8274 in particular.
- [JoakimLarsson]
- * This made it possible to replace a workaround in the isbc2861 driver which now robustly boots Xenix. Previously this failed due
-    to a lost interrupt with an infinite hang as a result. The fix included implementation of triggering a iack by reading the rr2
-    register which could then replace the m1_r() call. Also the 8274 interrupt is now handled solely by the 8259.
-
--viper.cpp: added timekeeper dump for code1db [ShouTime]
-
--naomi.cpp: dumped and documented 837-14438 hopper controller board, used in Kick'4'Cash and few other SWP games
+-naomi.cpp: Dumped and documented 837-14438 hopper controller board (used by Kick'4'Cash and other SWP games).
  [big10p, Darksoft, MetalliC]
 
--naomi.cpp: redumped "Noukone Puzzle Takoron (GDL-0042)" [rtw]
+-Measured Naomi's MIE MCU speed. [rtw, MetalliC]
 
--naomi.cpp: dumped "Ferrari F355 Challenge (deluxe, no link)" Export BIOS [Darksoft]
+-naomi.cpp: Redumped "Noukone Puzzle Takoron (GDL-0042)" and "Virtua Fighter 4 (Rev B) (GDS-0012B)" [rtw]
 
--naomi.cpp: dumped "Ferrari F355 Challenge (deluxe, no link)" Japan BIOS [Ordyne, The Dumping Union]
+-model1: Added dumped internal TGP ROMs. [Caps0ff]
 
--naomi.cpp: redumped "Virtua Fighter 4 (Rev B) (GDS-0012B)" [rtw]
+-naomi.cpp: New BIOS dumps:
+ * "Ferrari F355 Challenge (deluxe, no link)" Export BIOS [Darksoft]
+ * "Ferrari F355 Challenge (deluxe, no link)" Japan BIOS [Ordyne, The Dumping Union]
+ * "House of the Dead 2" Japan BIOS [Nomax]
 
--naomi.cpp: dumped "House of the Dead 2" Japan BIOS [Nomax]
+-triforce.cpp: Added security PIC dumps:
+ * "Mario Kart Arcade GP 2" [Soyandroid, Darksoft]
+ * "Mario Kart Arcade GP" [Soyandroid]
 
--measured Naomi's MIE MCU speed [rtw, MetalliC]
+-taito.cpp: Added program ROMs and corrected title for voleybal. [PinMAME]
 
--Add documentation for differing Model 1 coprocessor chips [balr0g]
+-phoenix.cpp: Dumped/redumped PROMs for some of the bootlegs. [f205]
 
--abc80 updates: [Curt Coder]
- * Converted to scanline based rendering
- * Fixed graphics characters
- * Fixed sound
- * Genesis Project demos (abcdemo, hiresinv) are now fully working
+-viper.cpp: Added timekeeper dump for code1db. [ShouTime]
 
--Softlist cleanup This is an attempt to greatly refactor softlists, prompted by MT bug 6464 and the concerns raised in #2065.
- [Nathan Woods]
- * I've done a lot of work to pull the evaluation of softlists at the command line upfront and then the results are used to drive
-    the slot and image setup process.  I've also had to refactor slot and image setup, on the idea that
-    core_options::parse_command_line() should only be called once and arguments needed when setting up slots and images should go
-    through a module that can interpret both the command line and softlist processing results.
+-midwunit.cpp: Redumped "Ultimate Mortal Kombat 3" U2-U5 sound ROMs. [ShouTime]
 
--Cleanup of slot code [Nathan Woods]
- * Added device_slot_interface::has_selectable_options() to calculate whether a particular slot has selectable options
+-Corrected the main crystal in marineb.cpp to 12MHz as seen in PCB photos, cleaned up clock definitions in galaxian driver, moved
+ ladybugg from galaxold to galaxian driver, use mooncrst_audio for mooncrst in galaxold, made spcwrp use hunchbkg pallette ROMs.
+ [kazblox]
 
--Fixed an issue where device options (e.g. -cart) were reported as unknown when they actually worked [Nathan Woods]
- * This change also changes around how command line arguments are passed around; specifically I changed argc/argv to be
-    std::vector<std::string>
- * Note this is not passed around 'const', the reason being that the command line processing will now "eat" the vector
+-nes: Added Magic Kid Googoo board (iNES mapper 190).
 
--Cleanup of slot code Added device_slot_interface::has_selectable_options() to calculate whether a particular slot has selectable
- options [Nathan Woods]
+-Save state fixes for i386/pc_vga/cs4031: [moralrecordings]
+ * Save cs4031 emulated A20 state, additional i386 attribute registers/flags, and VGA palette configuration.
+ * Fixed broken VGA port reads on state load.
+ * Fixed enum range check in i386.
 
--Fix softwarelist cart memory cheats Moved the initial cheat file loading to later in the start up process after the software list
- cart_rom has been loaded. Otherwise it will not load the cheats as the cart_rom will not exist. Eg. mame coleco qbert [PugsyMAME]
+-vicdual: Added nsub gradient simulation (makes black destroyers on the horizon visible). [SailorSat]
 
--ti99: Various fixes for TI-99/4 (not A) [Michael Zapf]
-  * Added initializations to prevent 99/4 from crashing on startup
-  * Fix GROM issues with 99/4; clock turned off too early
+-homedata.cpp: Use 8-way joysticks for Reikai Doushi; added button descriptions and DIP locations. [Bad A. Billy]
 
--geneve: Fixed issue with sector read on HFDC without implied seek; did not check CRC and thus failed to switch density [Michael Zapf]
+-Fixed softwarelist cart memory cheats by moving cheat file loading to a later point in startup process. [Pugsy]
 
--ti99/geneve: Bus mouse now a separate device, may also be used with evpc. [Michael Zapf]
+-Removed colon from image_interface preventing front-ends from launching ColecoVision software. [gordon-fish]
 
--ti99/geneve: Fix jerky mouse [Michael Zapf]
+-ay8910: Added support for clock frequency changes. [tim lindner]
 
--ti99_8: Fixed debugging for TI-99/8 [Michael Zapf]
+-chihiro.cpp: Redumped Ollie King (GDX-0007) [Ordyne, The Dumping Union]
 
--chihiro.cpp: redumped Ollie King (GDX-0007) [Ordyne, The Dumping Union]
+-konamigx.cpp: Corrected two ROM names and redumped sound ROM for Rushing Heroes. [Smitdogg, The Dumping Union]
 
--Added a heap priority queue to the netlist source. [couriersud]
-
--Fix netlist stats collection. Code refactoring: [couriersud]
-
--Fix clang warnings in netlist code. [couriersud]
-
--Netlist refactoring [couriersud]
- * align timed_queue closer to std::priority_queue
- * use uint8_t in extended clock for better memory usage.
-
--nes: Add Magic Kid Googoo board. [Kaz <>]
-
--Fix Heath H19 keyboard (#2066) [Mark Garlanger]
- * Fix Heath H19 keyboard
- * Fix how enable/disable of 25th line is handled.
- * Updated to use internal ROM in MM5740.
-
--Fix Heathkit H-19 with Watzman ROM [Mark Garlanger]
-
--Fix Super19 version of Heath H19. Adds the AM_MIRROR settings which the Super19 ROM relied on.  The CRTC ports and the videoram
- memory were the only ones I saw, which was REQUIRED to get it working, but figured I'd update all the memory and ports to properly
- reflect the real board in case the ROM used it in other code paths I hadn't tested. [mgarlanger]
-
--Fix Heath H19 keyboard Fixes the problems with the keyboard in the H19 terminal. Now the numeric keys and their symbols display
- properly with and without the shift key. The NS MM5740 keyboard encoder and keyboard ROM is now being used instead of the "generic
- keyboard". Other minor fixes, including the fixing the BELL.  Seems like the H19 is in a state, that the MACHINE_NOT_WORKING flag
- can be removed, if there is disagreement on that, I can add it back in. [mgarlanger]
-
--Removed colon (":") from image_interface preventing front-ends from launching ColecoVision software [gordon-fish]
-
--Update exp.h Removed colon (":") from image_interface value that was preventing some front-ends, such as QMC2, from being able to
- launch ColecoVision software from the software list (the software rom itself ended up being omitted so it just booted the main
- bios, like starting a real CV without a game inserted.) [gordon-fish]
-
--(#2089) [kazblox]
- * nes_zemina_device: cleanups
- * marineb: moved definitions
- * rockclim: base off mooncrst
-
--Some reports of garbage in console with DInput controllers. Change to snprintf with assert since apparently snprintf fixes the
- reported problem. [Brad Hughes]
-
--apple2: rewrite LC handling [Peter Ferrie]
-
--midwunit.cpp: redumped "Ultimate Mortal Kombat 3" U2-U5 sound ROMs [ShouTime]
-
--taito.cpp: added program ROMs and corrected title for voleybal [PinMAME]
-
--fcisio: layout added and RS232 configured for all 8 serial ports, rs232p1-rs232p8 [Joakim Larsson Edstrom]
-
--aristmk5.cpp: new sets, layouts, documentation [Heihachi_73]
-
--taito_z.cpp: Fixed subtle color pen bug in Mexico GP stage for Continental Circus [Angelo Salese]
-
--hp9845: I/O slots expanded from 1 to 4 [fulivi]
-
--hp9845: RAM size is now configurable by -ram option [fulivi]
-
--hp9845: put parts common to various 9845 models in a base class to prepare for 9845C & 9845T drivers [fulivi]
-
--hp9845: finished moving all 45B-specific code into a separated class [fulivi]
-
--hp9845: Small re-factoring of 45B screen palette [fulivi]
-
--hp9845: Implemented 9845C driver together with A.Kueckes! [fulivi]
-
--hp9845: 1st attempt at eliminating the src/mame -> src/devices dependency for I/O slots [fulivi]
-
--hp9845: generation of graphic and LP cursors separated. Some refactoring of LP data computation. [fulivi]
-
--hp9845: further improvements to LP emulation, especially on timing. [fulivi]
-
--nanoprocessor: fixed a subtle bug in interrupt handling [fulivi]
-
--Fixed a bug in fdc_pll: there is no operator* to multiply an attotime by a double [fulivi]
-
--sdk86.cpp: fix rom loading so the non-booting rom pair is mapped at 0xfe*** while the booting pair is mapped at 0xff***
- [Lord Nightmare]
-
--Adds a new addrmap.cpp validation intended to catch AM_REGION declarations not tied to anything meaningful [Nathan Woods]
-
--triforce.cpp: security PIC dump for "Mario Kart Arcade GP 2" [Soyandroid, Darksoft]
-
--triforce.cpp: Mario Kart 2 rom load [MetalliC]
-
--triforce.cpp: security PIC dump for "Mario Kart Arcade GP" [Soyandroid]
-
--arm7ops.cpp: repair broken ARM [Peter Ferrie]
-
--pc_vga.h: update CRTC usage comments [Scott Percival]
-
--pc_vga: save expanded attribute registers [Scott Percival]
-
--pc_vga: add palette configuration to save state [Scott Percival]
-
--pc_vga: fix broken port reads on state load [Scott Percival]
-
--i386/pc_vga: save state fixes [moralrecordings]
- * VGA card now saves vga.dac to the state, as the MAME palette is clobbered periodically with data from here. Changed the type of
-    vga.dac.colour to a flat uint8_t array seeing as save_item isn't struct-friendly. Fixes Liero.
- * Saved more VGA flags, including vga.miscellaneous_output, which despite the vague name is needed for reading from the ports.
- * Fixed an enum range check miss.
- * Saved more i386 flags required for 32-bit save states. Fixes Jump 'n Bump.
-
--i386: fix enum range check [Scott Percival]
-
--i386: save additional CPU flags [Scott Percival]
-
--pc_vga/cs4031: fix save state support The pc_vga driver contains a lot of registers for the current state that weren't really being
- saved. The three original lines are a facsimile of the raw VGA memory that gets updated in lock step with the easier-to-use
- attribute registers, but it is the registers which track the state and are used for all the logic. Patch makes VGA games survive a
- save state load. [moralrecordings]
- * Also, the CS4031 chipset driver has three registers for tracking the excerable A20 line bodge, and only two were being saved.
-    Software using extended memory would frequently get the whole memory map ripped out from under it. Fixed by tracking the third
-    register.
-
--cs4031: save emulated A20 state [Scott Percival]
-
--pes.cpp: use combined /RS and /WS function since the MCU/CPU can in theory change both lines at once, and since it uses a TMS5220C
- it does matter in this case. [Lord Nightmare]
-
--phoenix.cpp: dumped / redumped the PROM for some of the bootlegs [f205] Also started documenting the differences. [Ivan Vangelista]
-
--8x300dasm: correct JMP target address [mahlemiut]
-
--CoCo:  Implementing support for enabling and disabling cartridge-specific sound [Nathan Woods]
-
--Overrided device device method to support changing clock frequencies in the ay8910. [tim lindner]
-
--Commodore LCD: Halved size of character rom region and fixed switching between upper and lower case character sets. [smf]
-
--segas32.cpp: add Air Rescue's uPD7725 DSP and load its roms. Disabled for now, since the uPD7725 cpu core will need some features
- added before this can work. [Lord Nightmare]
-
--upd7725: add preliminary IRQ support [Lord Nightmare]
-
--upd7725: handle the LSB-first load from SI properly, for when SI gets hooked up in the future. [Lord Nightmare]
-
--upd7725: Add siack and soack registers and their requisite jumps, not used yet. Fix missing si register and flags registers
- savestate registration. [Lord Nightmare]
-
--uPD7725: Corrected which registers are actually reset by /RESET, and fixed/updated IRQ system, should behave more properly now.
- [Lord Nightmare]
-
--uPD7725: Fix LSB-first bit ordering for SO reg, not used yet. [Lord Nightmare]
-
--fixed UPD7725 disassembly [smf]
-
--n64 - Add short delay between RDP full sync and DP interrupt [Happy]
- * Since the RDP is not currently scheduled for its own timeslices, this will allow the RSP interrupt from graphics tasks to arrive
-    at the main CPU first.  In some instances, the RSP timeslice would end after the RDP had been sent the full sync command, but
-    before the RSP could finish its task.  No issues were manifest if both RSP and RDP interrupts arrive at the same time, but it is
-    still expected that the RSP interrupt should arrive first.
-
--RSP - let debugger disassembly windows track RSP PC [Happy]
-
--n64 - Flush RSP drc cache when SP DMA changes IMEM [Happy]
-
--N64 / RSP - Make element selection in vector load/store DRC C functions consistent with other implementations. [Happy]
- * Also fix a minor issue with RDP disassembly listing for Load Block.
-
--potgoldu.cpp: add undumped MCU as NO_DUMP [Lord-Nightmare]
-
--model1: Add dumped internal TGP roms [caps0ff]
-
--hiscore.dat: Updates [Leezer]
-
--Fix an off-by-one error when loading upd96050 roms for snes games [Lord Nightmare]
-
--homedata.cpp: various updates [Bad-A-Billy]
- * Change 4-way joysticks to correct 8-way to Reikai Doushi according to manual.
- * Add button descriptions.
- * Add DSW layouts & a note about their numbering according to the manual.
-
--Confirm a few japanese dump and add a new one. (#2161) [Emmanuel Vadot]
- * Add bullvsblj to the confirmed dump section with no pcb pic.
- * Add shikinjo to the confirmed dump with no pcb pic section.
- * Add new dump of Tom and Jerry (Jpn).
- * Add valis3j to the confirmed dump with no pcb pic section
- * Move worldillj to the confirmed dump section.
- * Move bullvsblj to the confirmed dump section and add pcb feature
-
--DRC: fix regression on OS X [Phil Bennett]
-
--isbc2861: hooked up the SIO irq through the 8259 and removed the m1_r() workaround [Joakim Larsson Edstrom]
-
--konmedal/tsukande: Add clock XTAL definition for the z80 cpu, divisor is guessed. [Lord Nightmare]
-
--[CoCo 3]  Fixed an issue clearing interrupts on the GIME implementation [Nathan Woods]
- * The normal way to acknowledge a GIME interrupt is by reading from $FF92/3.  However, the act of disabling interrupts by writing
-    to the same registers will also do the trick, and we were not emulating this technique.
- * Thanks to Glen Hewlett and Tim Lindner for helping to identify this problem
-
--[CoCo] Made third and fourth floppy drives on by default (#2098) [Nathan Woods]
-
--Incremental C++-ification of 6821pia.cpp [Nathan Woods]
- * 1.  Changed some 'int' ==> 'bool' where appropriate 2.  Changed the various control byte macros to static functions
-
--konamigx.cpp: Correct 2 rom names in the rushhero set. [Smitdogg, The Dumping Union]
-
--konamigx.cpp: Redumped sound rom for Rushing Heroes. [Smitdogg, The Dumping Union]
-
--archimedes: Added JFD floppy format as used by JASPP (Archimedes Software Preservation Project) [Nigel Barnes]
-
--electron: Added First Byte joystick interface [Nigel Barnes]
-
--Fixed writes to decrypted opcode memory Fixes problem in the debugger and the cheat engine as currently the writes to opcode memory
- are not handled correctly, so separated EXPSPACE_RAMWRITE and EXPSPACE_OPCODE case statements to allow opcode writes to access the
- correct memory. [PugsyMAME]
- * Example: In flicky this will now disable cat collisions with the main sprite: maincpu.ob@3ac6=c3
-
--mips3 drc : Make sure branch delay slot instruction is not virtual instruction before trying to generate code to add it to the
- block checksum. [Happy-yappH]
-
--mips3:  Retry fixing FPU register aliasing [Happy]
-
--Incremental C++-ification of 6821pia.cpp 1.  Changed some 'int' ==> 'bool' where appropriate 2.  Changed the various control byte
- macros to static functions [Nathan Woods]
-
--Additions/improvements to nes driver and softlist Almost every change should be logged in the whole text of the commit. [kazblox]
-
--[CoCo 3]  Fixed an issue clearing interrupts on the GIME implementation The normal way to acknowledge a GIME interrupt is by
- reading from $FF92/3.  However, the act of disabling interrupts by writing to the same registers will also do the trick, and we
- were not emulating this technique. [Nathan Woods]
- * Thanks to Glen Hewlett and Tim Lindner for helping to identify this problem
-
--homedata.cpp improvements Changed the 4-way joysticks to the correct 8-ways,according to manual. (-improves game play greatly)
- Added button descriptions. Added DSW layouts & note about numbering in the manual. [Bad-A-Billy]
-
--N64 / RSP - Make element selection in vector load/store DRC C functions consistent [Happy-yappH]
- * with other implementations.
- * Also fix a minor issue with RDP disassembly listing for Load Block.
-
--N64 - some improvements to DRC stability [Happy-yappH]
-
--Allow clock frequency changes in ay8910. Overrided device method to support changing clock frequencies in the ay8910. [tlindner]
-
--CoCo:  Implementing support for enabling and disabling cartridge-specific sound [Nathan Woods]
-
--Adds a new addrmap.cpp validation intended to catch AM_REGION declarations not tied to anything meaningful [Nathan Woods]
-
--fcisio: layout added and RS232 configured for all 8 serial ports Enabling the serial port revealed a segfault when using more the 2
- serial terminals from a slot device something that works just fine with the fccpu30 driver, which is not a slot device yet.
- (issue 2109) [JoakimLarsson]
-
--HP9845C driver [fulivi]
- * Implement the HP-9845C driver. This system was the color version of the 9845 range of machines. The
-    driver was written together with Ansgar Kueckes who did a lot of reverse engineering of the video and lightpen sub-systems.
- * The best way to try the emulator is running the DEMO tape. Quick instructions:
- * Load the colorgfx optional ROM (-rom1 colorgfx)
- * Load the demo1.hti into cassette drive (-magt demo1.hti)
- * Optionally, enable lightpen emulation (-lightgun -lightgun_device mouse)
- * Map the k8..k15 keys, they are not mapped by default and they are needed for menu navigation (see below).
- * Start the demo with: LOAD "AUTOST",1 <EXECUTE>
- * Be patient, demo takes a while to load..
- * Once the system asks for the type of printer paper, load the demo2.hti image and answer the question (see next point)
- * Use the 8 softkeys to navigate the menus. At the moment softkeys are not directly emulated but you can use the keyboard
-    substitutes (SK1-8 map to SHIFT + K8-15 respectively)
-
--Improvements to 9845C light pen emulation Hi, [fulivi]
- * Improvement of the light pen emulation of 9845C system. The LP now behaves a lot better than before even though
-    there are still some (minor) problems here and there. Hopefully I'll fix them in the (near) future.
-
--[CoCo] Made third and fourth floppy drives on by default [Nathan Woods]
-
--vicdual: simulate the gradient in nsub. [Ariane Fugmann]
- * figured out how the starfield and gradient get enabled on vicdual hardware. don't exactly know how they work yet, so I added a
-    simulation of the gradient for nsub.
-
--vicdual: nsub gradient I figured out how the starfield / gradient get enabled on vicdual hardware. [SailorSat]
- * N-Sub uses a gradient for the background; there are black destroyers on the horizon that basically can't be seen without.
- * N-Sub and Star Raker also seem to have some kind of starfield simulation which is completly missing for now.
- * Can't find any decent schematics for the hardware, so the gradient is based on guesswork for now.
- * Reference for N-Sub: https://www.youtube.com/watch?v=Lqq4ZKyh3UA
- * (older) simuation (column based) seemed off at the water surface - http://images.arianchen.de/mame/nsub/0003.png
- * (current) simulation (pixel based) is better, but still not perfect -  http://images.arianchen.de/mame/nsub/0004.png
-
--iNES Mapper 190 support, miscellanous cleanups in some drivers This pull adds the following changes: [kazblox]
- * add iNES Mapper 190 for Magic Kid Googoo support!
- * make ladybugg use galaxian driver instead of galaxold
- * make mooncrst configuration in galaxold driver actually use mooncrst_audio
- * made the mooncrst-based games in galaxold driver actually derive off mooncrst
- * correct the XTAL in marineb and derivatives to 12MHz as seen in this photo:
-    http://www.andysarcade.net/store2/images/source/PCBimages/AA01263P.jpg
- * correct the Konami sound XTAL definition in galaxian.cpp
- * other misc. XTAL definition cleanups
- * for now, make spcwarp use hunchbkg palette ROMs
-
-
-New machines added or promoted from NOT_WORKING status
-------------------------------------------------------
-ibm5150: EDITEXTE, Label Magic, Multitexte, PrintMaster Plus, Bivouac, Chuck Yeager's Advanced Flight Trainer, [Justin Kerk]
-Double Dragon (5.25", older), Indianapolis 500: The Simulation (3.5", newer), Licence to Kill, Pick'n Pile, Prehistorik,
-  [Justin Kerk]
-Rockford, Skweek [breiztiger]
-ibm5150: Ikari Warriors (alt), First Samurai, JetFighter I: The Adventure, Turbo Driver [breiztiger]
-Shiny Golds [caius, The Dumping Union]
-
-
-
-New clones added or promoted from NOT_WORKING status
-----------------------------------------------------
-2 On 2 Open Ice Challenge (rev 1.2A) [Brian Troha, Sean Sutton, Smitdogg, The Dumping Union]
-Dynablaster / Bomber Man (bootleg, set 3) [Hammy, The Dumping Union]
-Street Fighter II: The World Warrior (World 910129) [Janniz]
-Radical Radial (Japan) [ShouTime, The Dumping Union]
-Penguin Brothers (Japan, bootleg) [Rod_Wod, Team Europe and The Dumping Union]
-
-
-New WORKING software list additions
------------------------------------
-archimedes: Over 20 games and applications [Nigel Barnes]
-bbcb_flop: Disk User coverdisks, Bad Apple and X-Pansions Elevation demos [Nigel Barnes]
-bbcm_flop: Enjoy The Silence and Retribution X demos [Nigel Barnes]
--Softlist additions and corrections [kazblox]
- * nes: added Magic Kid GooGoo, named as mkgoogoo
- * nes: assigned UxROM to dancekar
- * nes: fixed names of some subor carts
- * nes: marked skaraok as unknown for now
- * The alternate Chinese/Russian names I have put into the commits come from the NESBBS listings and cartridge labels.
--ibm5170 softlist: replace win31g floppy images with cleaned/fixed ones Follow-up for my PR #2137 with cleaned/fixed disk images.
- [darkstar]
-
--ibm5170 softlist: add Adaptec EZ-SCSI 3.1 German [Michael D]
--ibm5170 softlist: add Borland Eureka 1.0 [Michael D]
--ibm5170 softlist: Add Borland Paradox 3.01 (German) [Michael D]
--ibm5170 softlist: Add Borland Paradox 4.0 (German, 2 versions) [Michael D]
--ibm5170 softlist: Add IBM DOS 5.02 (German) [Michael D]
--ibm5170 softlist: Add MS-DOS 6.22 (German) [Michael D]
--ibm5170 softlist: Add Windows 3.1 (German) [Michael D]
--ibm5170 softlist: Add Windows for Workgroups 3.11 (German) [Michael D]
--ibm5170 softlist: fix clone relations [Michael D]
--ibm5170 softlist: forgot this one [Michael D]
--vic1001_cass.xml speakeasy partial dump [KEN WHITE]
--c64_cass.xml dumps [KEN WHITE]
--[kazblox]
- * Misc changes: Fixed copyrights on pirate.cpp code in subor.cpp, and a few more alternate names/serials and publishers were added
-    as well to some educational carts on the NES softlist.
- * Some BWRAM defines were replaced with WRAM defines due to the said carts in this commit not actually needing battery-backed WRAM
-    to function. They will peform just fine with plain WRAM since none of them have any save functions, nor their iNES dumps
-    describe any battery extensions whatsoever.
--ti74: added Maths and Finance cartridges [PockEmul]
--vic1001_cass.xml and c64_cass.xml dumps added speakeasy software to support PPP speakeasy hardware
- https://www.sendspace.com/file/52xvix [Dagarman]
--Update sorcerer_cass.xml [Michael Borthwick]
- * Added year of publication for Blair Rideout's Interceptor (Scramber clone) based on it being described as a new game in the
-    System Software Christmas 1983 catalogue.
--ibm5170 softlist: Add AMouse Driver Disk v7.0 [Michael D]
-
--ibm5170 softlist: add info about dump source to previous commit [Michael D]
-
--ibm5170 softlist: replace win31g floppy images with cleaned/fixed ones [Michael D]
--megadrive: Confirm a few japanese dumps and add a new one. Hello, [evadot]
- * A few japanese game confirmation and a new dump. Some cart weren't open because of label on top of screw and games aren't cheap.
--Update sorcerer_cass.xml Added year of publication for Blair Rideout's Interceptor (Scramble clone) based on it being described as
- a new game in the System Software Christmas 1983 catalogue. [exidyboy]
-
-
-
-
-
-
-New NOT_WORKING software list additions
----------------------------------------
-
-
-Translations added or modified
-------------------------------
-
-
-
-
-Comparing 0.183 (mame0183) to 0.183 (mame0183-536-g6cb38b0)
-
-Machines promoted to working
-----------------------------
-9845C
+-Updated hiscore.dat. [Leezer]
