@@ -1,0 +1,799 @@
+0.185
+-----
+
+
+MAMETesters Bugs Fixed
+----------------------
+
+
+Source Changes
+--------------
+-[CoCo] Further cleanups in CoCo cartridge slot signal handling [Nathan Woods]
+ * This is an attempt to make how the various signals on the CoCo cartridge slot (CART, NMI, HALT) a bit more standardized and less
+    ad hoc, especially with the practice of Program Paks tying the CART line to Q.  This should fix some outstanding bugs in how
+    these signals were passed around when using the CoCo Multi-Pak interface.
+
+-Removing stray declaration [Nathan Woods]
+
+-fmtowns_cd.xml: added several dumps [r09]
+ * F-BASIC386 Compiler v1.1 L21 Dennou Ehon - Kyouryuu no Sekai Hyper Oku no Hosomichi Soko-ban Perfect Youjuu Senki 2 - Reimei no
+    Senshi
+
+-pc98_cd.xml: added several dumps [r09]
+ * Jorougumo - Jubaku no Dorei-tachi Ms. Detective File #1 - Iwami Ginzan Satsujin Jiken Youjuu Senki 2 - Reimei no Senshi
+
+-Make debugger 'dasm' command able to traverse virtual spaces with unmapped holes. [Happy]
+ * Previously, 'dasm' would enter an infinite loop if it hit an unmapped pc, continuing to grow the output file until the program
+    was killed.
+
+-Fixed writes to decrypted opcode memory [v3] (#2190) [PugsyMAME]
+ * Fixes problem in the debugger and the cheat engine as currently the writes to opcode memory are not handled correctly, so
+    separated EXPSPACE_RAMWRITE and EXPSPACE_OPCODE case statements to allow opcode writes to access the correct memory.
+ * Example: In flicky this will now disable cat collisions with the main sprite: maincpu.ob@3ac6=c3
+ * This is the simplest way of updating this, EXPSPACE_OPCODE is now a copy of EXPSPACE_RAMWRITE except it uses AS_DECRYPTED_OPCODES
+    instead of AS_PROGRAM. This method means I've got a lot of work updating a lot of cheat file warnings ...but this is the correct
+    way of doing this.
+
+-vp101: Improved support for reduced-cost VP050 version. [R. Belmont]
+
+-gameboy.xml:  Added double cart Song of the Pipa / Magic Ball  (NOT WORKING)  [James, TeamEurope and Tauwasser]
+
+-shangha3.cpp: Rom label consistency - NW [briantro]
+
+-galgames.cpp: Slight rewording & change proto --> prototype - NW [briantro]
+
+-shangha3.cpp: Documentation correction - NW [briantro]
+
+-sblaster: save DSP state [Scott Percival]
+
+-sblaster: fix incessant popping before first use [Scott Percival]
+
+-ymf262: add save state support, slot pointer checks [Scott Percival]
+
+-Add later SuperMac Spec/8 III V1.3 NuBus ROM [fink]
+
+-Fix CID 157540: "Missing comma" resulting in unintentional string concatenation [Peter Bortas]
+
+-Fix CID 157541: "Missing comma" resulting in unintentional string concatenation [Peter Bortas]
+
+-chihiro: let's pretend there is a drive board connected, so outr2 can run with usb enabled and no patches [Samuele Zannoli]
+
+-New Rastan clone added [briantro]
+
+-uml : add case for parameter PTYPE_CODE_LABEL in uml instruction disassembly [Happy]
+
+-Turn psring iterator into a real forward iterator that works with standard algorithms. [Vas Crabb]
+ * There are a few changes to achieve this:
+ * Rename to const_iterator since it's immutable
+ * Typedef iterator to const_iterator for now as there's no mutable iterator
+ * Add default constrcutor and operator-> required by concept, const-qualify operators
+ * Remove operator+ and operator+= since it's not a random-access iterator (use std::next and std::advance instead)
+ * Return reference/pointer to a proxy rather than a code_t value from opertator*/operator->
+ * The final change is required to meet the requirement that operator* for two equivalent forward iterators return an equivalent
+    reference.  The pstring doesn't actually contain a sequence of code_t, so there's no way to return a reference to code_t
+    directly.  Instead, a reference to a proxy object aliased on the string storage is returned.  The proxy is implicitly
+    convertible to code_t.  The most noticeable side effect is that auto c = *s.begin() or for (auto c : s) won't work.  You need to
+    do for (auto &c : s) or for (code_t c : s) instead.
+
+-assume LLVM libc++ if __llvm__ is defined but __GLIBC__ is undefined [Vas Crabb]
+
+-8051 MCU family core fix : Fix the indirect memory access opcodes dec,inc and xch_a. Indirect access can't touch the SFR and must
+ point to the extra memory above 0x80. This probably fix many machines using this MCU. [Jean-François DEL NERO]
+
+-Change pstring to use std::string as storage container. [couriersud]
+ * This removes all allocation code from pstring. const_iterator is consequently now based on pstring::const_iterator. Removed
+    pstring_buffer. This was class wasn't a good idea.
+
+-vicdual: add 97269-P-B and 97271-P daughterboards for nsub (#2192) [Ariane Fugmann]
+
+-sun4: Added SparcStation IPX V2.3 boot ROM [NekoEd]
+
+-Rename the write-only -printer image instance type to -printout. The former option name conflicts with RS232 printer ports in
+ several drivers. [AJR]
+
+-sun4: add SPARCstation 1 boot ROM v2.2 [NekoEd]
+
+-osbexec: Experimental support for RS232C serial ports (untested) [AJR]
+
+-ti8*: remove the gross boot hack, break the driver, don't give a shit [O. Galibert]
+
+-bbc: the direct update handler is supposed not to be useful anymore [N. Barnes, O. Galibert]
+
+-abc80x: Remove the direct update handler, doesn't seem to change a thing [O. Galibert]
+
+-UI input map fixes [AJR]
+ * Fix a longstanding bug that prevented binding several ORed buttons to any input belonging to a non-root device.
+ * Fix a visual glitch when assigning inputs to analog sequences.
+
+-multiface 2: Disable the direct update handler [O. Galibert]
+ * That device should be overhauled using the by now reversed PAL information available at:
+    http://hardware.speccy.org/temp/Amstrad-multiface2.html
+
+-i86: Add decrypted opcodes space support [O. Galibert]
+
+-ibm5170 softlist additions [Michael D]
+ * Borland Quattro Pro 3.0 (German)
+ * Borland Quattro Pro 5.0 (German)
+ * Borland Turbo Basic 1.0 (German)
+ * Borland Turbo Pascal 4.0
+ * Borland Turbo Pascal 6.01 (German)
+
+-This is Sparta ! [Olivier Galibert]
+
+-piratesh: fix to pass POST, which earns it working with imperfect gfx [R. Belmont]
+
+-Fixed the build (dst_wrapmask set but not used). [Robbbert]
+
+-Documented that Taito's T.T. New York New York ROMs match the Sigma set [Ivan Vangelista]
+
+-i86: Fix jnl flags test [htjywf2008]
+
+-mlanding: tms32025 memory map fix [O. Galibert]
+
+-cesblit.cpp: Improve blit coordinates, fixes some missing graphics in e.g. galgame4 [Luca Elia]
+
+-Fixed issue that could cause bogus arguments to be reported incorrectly [Nathan Woods]
+ * Examples:  'mame -whatever nes' would previously be reported as "Unrecognized argument: nes"
+
+-naomi.cpp: redumped "Initial D Arcade Stage Ver. 2 (Export) (GDS-0027)" [rtw]
+
+-pstring, pdynlib, pfmtlog refactoring : [couriersud]
+ * pstring:
+ * added support for UTF16LE to pstring.
+ * renamed size() to mem_t_size()
+ * renmaed len() to length()
+ * added size() == length()
+ * added empty()
+ * added simple compare()
+ * pfmtlog:
+ * Simplified pfmtlog, added more c++
+ * pdynlib:
+ * add a dynproc type to dynlib to wrap dynamic library calls.
+ * various:
+ * fix two coverty scan issue.
+ * various clang warnings fixed.
+
+-Fixed a bug that caused "Switch Item Ordering" in the software list menu to dupe entries [Nathan Woods]
+ * This was MT#6402
+
+-fm77av: fix mapping of F-BASIC ROM (fixes MT#06534) [mahlemiut]
+
+-Changed a lookup within the softlist code to use std::find_if() [Nathan Woods]
+
+-Refactoring in response to MT#6531 [Nathan Woods]
+ * Prior to this change, options for images and slots were stored in the emu_options collection.  Anything that might restart the
+    emulation (such as slot changes and images that reset on load) had to manipulate the emu_options structure directly.  The
+    dynamic nature of images and slots meant that some elaborate conventions for setting up this collection had to be understood by
+    clients.
+ * After this change, emu_options has two new members (image_options and slot_options) that expose image and slot selections via an
+    std::map.  Anything that changes images or slots in a fashion that needs to persist across sessions needs to modify these data
+    structures.  Additionally, some of the hairly logic (e.g. - get_default_card_software) now records its data here rather than
+    trying to subvert the core_options system.
+ * This is how MT#6531 was fixed; now when diimage.cpp sees an image that resets on load, it just modifies the image_options
+    structure and forces a reset.  This allowed some further cleanups to happen within diimage.
+ * This should be considered a very risky change, and scrutiny/feedback is welcome.  In particular, there seems to be functionality
+    surrounding device bioses that I'm not 100% sure how it works; the syntax seems to imply that it only works on slot devices.
+
+-Ipt service button fixes & cleanups (#2085) [Michael.S.G]
+ * realbrk.cpp Remove service button hard coded keycode assignment
+ * Remove hard coded key assignment and use default mapping. Mame Testers Bug: http://mametesters.org/view.php?id=6489
+ * albazc.cpp (hanaroku) Use standard inputs & key assignments.
+ * Use standard inputs consistent with other hanafuda games. (hanafuda games usually have a mahjong panel for input) Remove hard
+    coded IPT_SERVICE assignments. Mame Testers Bug: http://mametesters.org/view.php?id=6489
+ * aleck64.cpp Correct Service/Test Button assignments.
+ * "Service Mode" which is assigned to IPT_SERVICE is not located in aleck64.cpp - No changes. "Service Button" is assigned to
+    IPT_SERVICE1 (Hard coded keycode removed & default used). "Test Button" is assigned to IPT_SERVICE2 (Test Button is not
+    displayed in Machine input....). Mame Testers Bug: http://mametesters.org/view.php?id=6489
+ * amaticmg.cpp (suprstar) Remove hard coded keycode assignments
+ * Remove hard coded key assignment and use default mapping. Mame Testers Bug: http://mametesters.org/view.php?id=6489
+ * ampoker2.cpp Make various key assignments consistant
+ * Cleanup different assignments for the same buttons across supported games while still keeping true to the Game Notes / Operation
+    instructions. 1. Make "Operator Key" consistant (Use IPT_GAMBLE_SERVICE) 2. Make "Supervisor Key" consistant (Use IPT_SERVICE2)
+    3. Make "Hopper 1" consistant (Use IPT_OTHER, KEYCODE_Y) 4. Make "Hopper Out" consistant (Use IPT_OTHER, KEYCODE_G) 5. Make
+    "Hopper Low" consistant (Use IPT_OTHER, KEYCODE_H) 6. Make "Return Line" consistant (Use IPT_OTHER, KEYCODE_J) 7. Make "Coin
+    Refill" consistant (Use IPT_OTHER, KEYCODE_R) 8. Make "Payout" consistant (Use IPT_GAMBLE_PAYOUT) 9. Make "TILT" consistant (Use
+    IPT_TILT) 10. Make "Double" consistant (Use IPT_GAMBLE_D_UP)
+ * Mame Testers Bug: http://mametesters.org/view.php?id=6489
+ * albazc.cpp: Assign "Data Clear" to IPT_MEMORY_RESET
+ * Assign "Data Clear" to IPT_MEMORY_RESET
+ * albazc.cpp Change "Medal In" & "Pay Out" to standard buttons
+ * Change "Medal In" & "Pay Out" to standard gamble service buttons (Previously standard service buttons). Change Lockout "Key" to
+    PORT_TOGGLE type.
+ * albazc.cpp Correct "Payout" button to use "IPT_GAMBLE_PAYOUT".
+ * Payout operation has been clarified and noted at start of driver. Correct "Payout" button to use "IPT_GAMBLE_PAYOUT".
+ * albazc.cpp Add Todo: Hookup hopper & Addresses.
+ * Add Hookup hopper to to do list. Add hopper activity addresses to notes.
+ * albazc.cpp Correct  IPT_SERVICE assignments
+ * Rework PR to merge with commit https://github.com/mamedev/mame/commit/0bc96f38f1a2eb1e098882e474f9604ba905d972 Set IPT_SERVICE &
+    Double up buttons as standard assignments. Set "Ext In 1" & "Ext In 2" as IPT_OTHER.
+
+-nes.xml: new dumps Adan y Eva [hashes were known, but ROMs surfaced on No-Intro] AV Super Real Pachinko [Frank Cifaldi]
+
+-Introduced an 'util::arbitrary_clock' template class, to represent a clock that "knows" when the epoch starts (#2010) [npwoods]
+ * Introduced an 'util::arbitrary_clock' template class, to represent a clock that "knows" when the epoch starts
+ * Also:
+ * Converted the NTFS filetime code to use util::arbitrary_clock
+ * Converted the Mac datetime code to use util::atribrary_clock
+ * This is in preparation for a bigger change to Imgtool where I eliminate usage of time_t
+
+-Fixed a pedantic MSVC warning in dipalette.h [Nathan Woods]
+
+-New working machine added: Wireless 60 (Jungle Soft / Kids Station Toys Inc) (#2215) [Rebecca G. Bettencourt]
+
+-Fixed gtrfrk6m from booting up due to an incorrect flash card memory size. 32MB works for gtrfrk5m as well. (#2214) [limyz]
+
+-decocass.cpp: Correct missile colors for Highway Chase and Astro Fantasia [AJR]
+
+-P2 IO port should be optional. My apologies. (#2216) [Rebecca G. Bettencourt]
+ * Wireless 60 (Jungle Soft / Kids Station Toys Inc) P2 IO port should be optional. My apologies.
+
+-Fixed some regressions introduced in my recent refactoring related to software lists (#2217) [npwoods]
+ * This fixes crashes invoked by the following command lines
+ * mame nes zelda mame gamate cubeup
+ * These had two independent causes.  The first crash was a consequence of open_image_file() doing something inappropriate required
+    by implementations of get_default_card_software().  The second crash was a failure to access image options moved outside the
+    core_options structure.
+
+-naomi.cpp: converted remaining bad CHD v4 to good v5, track1 and track2 length was restored based on known now data patterns
+ [MetalliC]
+
+-Netlist code refactoring: [couriersud]
+ * more use of c++ features
+ * some CRTP in pfmtlog
+ * demangled code for truthtables
+ * use more constexpr
+ * rewrite main loop
+ * use default constructors and assignment operators were applicable.
+ * optimized 7448 and 9316
+ * All of this has decreased startup time by approx. 25% to 30%. Complex netlists like pong or kidniki are parsed, analyzed and
+    constructed in around 15 ms. Run performance has increased by about 5%.
+ * All in all not to bad. A game like pong uses a clock of 7 MHz (after division by 2). Thats 14 MHz clock invocations. Running at
+    over 200%, 28 MHz. On a 3.9 GHz Machine about 140 cycles/clock change.
+ * [Couriersud]
+
+-Made a few random methods 'const' [Nathan Woods]
+
+-Games added as GAME_NOT_WORKING: Megatouch XL 6000 [R. Belmont, AeroCityMayor, Smitdogg, The Dumping Union]
+
+-triforce.cpp: converted bad CHD v4 to good v5, one bad dump left, will be redumped for real [MetalliC]
+
+-Changed the validity checks to have its own emu_options [Nathan Woods]
+ * This comes from a regression reported by Tafoid whereby the following command line:
+ * mame coco wildcat
+ * Would report the following error (which was not really fatal because it happened within validation):
+ * Driver t4426 (file coco12.cpp): 1 errors, 0 warnings Errors: Fatal error Unknown slot option 'pak' in slot 'ext'
+ * My changes to option processing changed emu_options to put image and slot options in their own arrays, and I expect those
+    image/slot options to be pertinent to the active driver.  However, driver validation was passing the emu_options associated with
+    the main emulation  to validation specific maching_config for other drivers.  This changes validate_one() to always use a fresh
+    emu_options with each individual validation.
+
+-chihiro.cpp: converted bad CHD v4 to good v5 [MetalliC]
+
+-segas24.cpp: Read inputs through 315-5296 [AJR]
+
+-Made a number of methods be const correct and static where appropriate [Nathan Woods]
+ * Also changed a few methods to return 'bool' when appropriate
+
+-segaybd.cpp: Read inputs through 315-5296 [AJR]
+
+-segajw.cpp: Use 315-5296 for I/O [AJR]
+
+-pet_rom.xml: Added KeyChip. [Andy Grady]
+
+-Changes to make get_default_card_software() less stupid [Nathan Woods]
+ * The goals with this change is to make get_default_card_software() a bit more standalone by making it a const method that does not
+    mutate the state of the device_image_interface.  This is done by passing in a small structure that encapsulates the minimum of
+    information that get_default_card_software() needs.
+ * This also eliminates the need for device_image_interface::open_image_file()
+ * I agree with Sarayan that get_default_card_software() is terrible and needs to ultimately go away.  This is a small step in that
+    direction.
+ * Lastly, I don't care for the name of get_default_card_software_hook (or get_default_card_software() for that matter).  If anybody
+    has better ideas, let me know.
+
+-segaxbd.cpp: Rewrite CXD1095 as a device and also add it to megatech.cpp [AJR]
+
+-cyclwarr, bigfight: Read inputs through CXD1095 device [AJR]
+
+-megaplay.cpp: Use CXD1095 device for BIOS I/O [AJR]
+
+-Added two new pinball sets [PinMAME]
+
+-Fixed Gun Card logic in Double Dealer [Angelo Salese]
+
+-tms32026: Fix status register and banking [O. Galibert]
+
+-ds1205: Add Dallas DS1205 Multikey [Carl]
+
+-[thomson] fix regressions to (legacy) floppy support (#2224) [Antoine Miné]
+ * [thomson] fix legacy floppy support
+ * [thomson] more (legacy) floppy fixes
+
+-segaybd.cpp, srallyc: Add OKI MSM6253 device [AJR]
+
+-hp9845: driver for HP9845T added (in collaboration with A.Kueckes) [fulivi]
+
+-hphybrid: hopefully fixed a super-subtle race condition in 9845T video hw. [fulivi]
+
+-hp9845: fixed a race condition in 45T. A little cleanup. [fulivi]
+
+-naomi.cpp: mushik2e appeared 3in1 Mushiking II, III and III+ [MetalliC]
+
+-apple1: fixed bug introduced when the cassette was slotified. [Colin Douglas Howell, R. Belmont]
+
+-Redumped Knights of Valour 3 HD (V105) [Peter Wilhelmsen, The Dumping Union]
+
+-hp9845: added second tape drive (T14) [fulivi]
+
+-hp9845: 98035 module default SC is 9 now [fulivi]
+
+-Add VS9209 I/O device for various Video System games [AJR]
+
+-Fixes issues specifying image/slot options fron INI files (reported by Robbbert) (#2231) [npwoods]
+ * This fix really doesn't go far enough.  I added hooks so that options specified at the command line can also be responded to when
+    parsed from INI files, but in the long run much of the logic that is currently in mame_options should go into emu_options so
+    that when an option is specified, all of the wacko logic around slot/image specification "just works" because it is encapsulated
+    within emu_options.
+ * We have a release 11 days away; I want to be in stabilization mode.
+
+-Changed validity_checker to keep a fresh emu_options for validation purposes (#2232) [npwoods]
+ * Changed validity_checker to keep a fresh emu_options for validation purposes
+ * This seems to solve the performance problems introduced by PR#2221 while keeping with that PR's goals of not using the "runtime"
+    emu_options for purposes of validation.
+ * Sorry, I can't spell apparently...
+
+-Convert Sega Model 1 Sound Board and Z80-based Digital Sound Board to use proper UART-based serial interfaces [AJR]
+
+-Head Panic's nude/bikini pics are displayed after a level when set; more modesty means more clothes and vice versa [einstein95]
+
+-More options refactoring [Nathan Woods]
+ * This should address outstanding concerns with PR#2231.  I'm trying to turn emu_options into a self contained structure that
+    encapsulates behaviors related to options, including the gymnastics pertaining to image/slot loading and interactions with
+    get_default_card_software() and "just works".
+ * When the MAME 0.186 development cycle starts up, I hope to take this further.  I want to make core_options::entry an abstract
+    base class so that the entries associated with image options and slot options can derive from it.  This will eliminate the
+    current need for emu_options to directly expose maps for image and slot options.
+ * For now, I'm in stabilization mode, and I hope to get things working for a stable 0.185 release.
+
+-Made a number of device_image_interface members private (#2227) [npwoods]
+ * Made a number of device_image_interface members private
+ * This also fixes a number of get_default_card_software() implementations that were accessing m_file incorrectly
+ * Remove duplicate prototype
+
+-Fixed out of bounds issues in NeoGeo memory access [Nathan Woods]
+ * The NeoGeo driver exposes a number of different memory regions as vectors.  Accessing the pointers was done through a
+    '&vector[0]' pattern.  This caused problems when the region was size zero; I changed the code to return null pointers in these
+    scenarios.
+ * This was reported by Robbbert in response to recent regressions (the command line was 'mame aes bjourney'), but it seems to be
+    present in MAME 0.184.
+
+-Pruned out some cruft in src/lib/util/options.[cpp|h] [Nathan Woods]
+
+-dgnbeta: Added software list with OS-9 system and apps [Nigel Barnes]
+ * Replaced 5.25" floppies with 3.5", and added sounds
+ * Enabled floppy motor
+ * Removed tag lookups
+
+-dragon32: Corrected release year and company of Spanish clones [Nigel Barnes]
+ * Added joysticks to all machines
+ * Added floppy sounds
+ * dragon200e: Added chargen ROM, not working (possibly mc6847 issue)
+ * Demoted to MACHINE_NOT_WORKING
+ * d64plus: Added crtc with chargen ROM and second screen output, not yet hooked up
+ * Demoted to MACHINE_NOT_WORKING
+ * dgnalpha: Added older Boot v0.4 ROM
+ * Replaced 5.25" floppy drives with 3.5", and added sounds
+
+-atom: Added csw cassette format [Nigel Barnes]
+
+-segas32.cpp: Input modernization, phase 1 [AJR]
+ * Use I8255 or MSM6253 devices for most non-JAMMA inputs
+ * Separate service and test inputs in Multi-32 and twin-unit sets
+ * arescue: Four coins are recognized, not just two ga2: Use MB8421 device for V25 communications orunners: Assign keys to some 2P
+    inputs
+
+-hotrod: Read pedals through MSM6253 [AJR]
+
+-Fixed a regression in the mandatory image check (#2243) [npwoods]
+ * As a consequence of recent changes, we were not properly blocking the emulation from starting when a must_be_loaded() image had
+    an unspecified image.
+
+-Add skeleton driver for Shark (US Billiards Inc.) (1975). [Stiletto]
+ * Add skeleton driver for Shark (US Billiards Inc.) (1975).
+
+-kokoroj2: Correct inputs [AJR]
+
+-kokoroj2: Promote to WORKING (maybe) [AJR]
+ * Find switch to disable CD & printer; game presumably works now, though rather imperfectly
+ * Game name changed to agree with title screen
+
+-Fixed an issue where reset_on_load images would not properly persist across emulation sessions (#2244) [npwoods]
+
+-Workaround for scenarios where both the command line and an INI specify an image option (#2245) [npwoods]
+ * This is a hack; see commentary within the code.  I intend to fix this "for real" when emu_options become more self contained
+
+-Workaround for sibling disk image loading issue (#2246) [npwoods]
+ * Gory details in the comments
+
+-jvs13551: Remove identical second halves of overdumped MCU PROMs [AJR]
+
+-mac: fix major 0.183 regression in Mac II series [R. Belmont]
+
+-voodoo: Change multi base address selection to fix funkball textures. [Ted Green]
+
+-Seibu/TAD PROM stuff [AJR]
+ * toki: Add dumps of bipolar PROMs [caius]
+ * bloodbro: Add dump of bipolar PROM [Andreas]
+ * dynduke, raiden, skysmash, cupsoc: Document undumped PROMs for many sets
+
+-new Mach Breakers clone added [briantro]
+
+-namconb1.cpp: Corrected Coin inputs and added in Coin3 & Coin4 as needed [Brian Troha]
+
+-apollo: fix SIO regression [Hans Ostermeyer]
+
+-phc25: Added character generator ROM, not yet used. [Nigel Barnes]
+
+-electron: Added Power Software joystick interface [Nigel Barnes]
+
+-Workaround for issue where the cannonical instance_name for a device was lost (#2248) [npwoods]
+ * This is a hack; details are in the source code.  I felt that it was too late in the 0.185 release cycle to do anything intrusive.
+    I intend to fix this "for real" when image/slot option morphing is encapsulated within emu_options.
+
+-segas32.cpp: Input modernization, phase 2 [AJR]
+ * Use Sega 315-5296 device for primary I/O
+ * Restore Coin 2 inputs to f1lap, radm, radr, slipstrm
+ * Identify onboard service inputs and restore them to practically all games
+
+-mac128: fix multiple keyboard regressions since 0.180 (MT#6481) [R. Belmont]
+
+-acchi.cpp: promoted to working state [David Haywood]
+ * added scantimer interrupt, inputs work in game.
+ * added video banking.
+ * added an NMK112 for sound banking, might not be hooked up correctly, difficult to know without understanding Japanese.
+ * oki frequencies etc. need verifying on pcb.
+
+-do variable substitution in bgfx_path #2201 [Vas Crabb]
+
+-Workaround for issue where the cannonical instance_name for a device was lost This is a hack; details are in the source code.  I
+ felt that it was too late in the 0.185 release cycle to do anything intrusive.  I intend to fix this "for real" when image/slot
+ option morphing is encapsulated within emu_options. [npwoods]
+
+-Workaround for sibling disk image loading issue Gory details in the comments [npwoods]
+
+-Workaround for scenarios where both the command line and an INI specify an image option This is a hack; see commentary within the
+ code.  I intend to fix this "for real" when emu_options become more self contained [npwoods]
+
+-Fixed an issue where reset_on_load images would not properly persist across emulation sessions [npwoods]
+
+-Fixed a regression in the mandatory image check As a consequence of recent changes, we were not properly blocking the emulation
+ from starting when a must_be_loaded() image had an unspecified image. [npwoods]
+
+-Pruned out some cruft in src/lib/util/options.[cpp|h] [npwoods]
+
+-Fixed out of bounds issues in NeoGeo memory access The NeoGeo driver exposes a number of different memory regions as vectors.
+ Accessing the pointers was done through a '&vector[0]' pattern.  This caused problems when the region was size zero; I changed the
+ code to return null pointers in these scenarios. [npwoods]
+ * This was reported by Robbbert in response to recent regressions (the command line was 'mame aes bjourney'), but it seems to be
+    present in MAME 0.184.
+
+-More options refactoring This should address outstanding concerns with PR#2231.  I'm trying to turn emu_options into a self
+ contained structure that encapsulates behaviors related to options, including the gymnastics pertaining to image/slot loading and
+ interactions with get_default_card_software() and "just works". [npwoods]
+ * When the MAME 0.186 development cycle starts up, I hope to take this further.  I want to make core_options::entry an abstract
+    base class so that the entries associated with image options and slot options can derive from it.  This will eliminate the
+    current need for emu_options to directly expose maps for image and slot options.
+ * For now, I'm in stabilization mode, and I hope to get things working for a stable 0.185 release.
+
+-Changed validity_checker to keep a fresh emu_options for validation purposes This seems to solve the performance problems
+ introduced by PR#2221 while keeping with that PR's goals of not using the "runtime" emu_options for purposes of validation.
+ [npwoods]
+
+-Fixes issues specifying image/slot options fron INI files (reported by Robbbert) This fix really doesn't go far enough.  I added
+ hooks so that options specified at the command line can also be responded to when parsed from INI files, but in the long run much
+ of the logic that is currently in mame_options should go into emu_options so that when an option is specified, all of the wacko
+ logic around slot/image specification "just works" because it is encapsulated within emu_options. [npwoods]
+ * We have a release 11 days away; I want to be in stabilization mode.
+
+-Made a number of device_image_interface members private This also fixes a number of get_default_card_software() implementations
+ that were accessing m_file incorrectly [npwoods]
+
+-[thomson] fix regressions to (legacy) floppy support Floppy images in the Thomson drivers have stopped working for some time. The
+ code (mostly) uses legacy floppy images. Ideally, it should be updated to the new floppy image support. The floppy controller code
+ also needs an overhaul (move code into modern devices, move floppy image creation code into the floppy image format and remove
+ redundant code). This is some work. In the meantime, this PR fixes the legacy code. [antoinemine]
+
+-Changes to make get_default_card_software() less stupid The goals with this change is to make get_default_card_software() a bit
+ more standalone by making it a const method that does not mutate the state of the device_image_interface.  This is done by passing
+ in a small structure that encapsulates the minimum of information that get_default_card_software() needs. [npwoods]
+ * This also eliminates the need for device_image_interface::open_image_file()
+ * I agree with Sarayan that get_default_card_software() is terrible and needs to ultimately go away.  This is a small step in that
+    direction.
+ * Lastly, I don't care for the name of get_default_card_software_hook (or get_default_card_software() for that matter).  If anybody
+    has better ideas, let me know.
+
+-Made a number of methods be const correct and static where appropriate Also changed a few methods to return 'bool' when appropriate
+ [npwoods]
+
+-Changed the validity checks to have its own emu_options This comes from a regression reported by Tafoid whereby the following
+ command line: [npwoods]
+ * mame coco wildcat
+ * Would report the following error (which was not really fatal because it happened within validation):
+ * Driver t4426 (file coco12.cpp): 1 errors, 0 warnings Errors: Fatal error Unknown slot option 'pak' in slot 'ext'
+ * My changes to option processing changed emu_options to put image and slot options in their own arrays, and I expect those
+    image/slot options to be pertinent to the active driver.  However, driver validation was passing the emu_options associated with
+    the main emulation  to validation specific maching_config for other drivers.  This changes validate_one() to always use a fresh
+    emu_options with each individual validation.
+
+-Made a few random methods 'const' [npwoods]
+
+-Fixed some regressions introduced in my recent refactoring related to software lists This fixes crashes invoked by the following
+ command lines [npwoods]
+ * mame nes zelda mame gamate cubeup
+ * These had two independent causes.  The first crash was a consequence of open_image_file() doing something inappropriate required
+    by implementations of get_default_card_software().  The second crash was a failure to access image options moved outside the
+    core_options structure.
+
+-P2 IO port should be optional. My apologies. P2 IO port should be optional. My apologies. [RebeccaRGB]
+
+-Fixed gtrfrk6m from booting up due to an incorrect flash card memory size 32MB works for gtrfrk5m as well. Thanks to
+ @sakamoto-neko. [limyz]
+
+-Fixed a pedantic MSVC warning in dipalette.h [npwoods]
+
+-Changed a lookup within the softlist code to use std::find_if() [npwoods]
+
+-nes improvements, mostly softlist related Mostly from the commit description: nes.xml: New dumps: Adan y Eva [hashes were known,
+ but ROMs surfaced on No-Intro] AV Super Real Pachinko [Frank Cifaldi]
+ * There's an extra note about GLK Book 48-in-1 if anyone wants to check and disassemble the WORD program to see how it's saving
+    things into the WRAM...
+ * Note: while the Waixing games under waixing_sgzlz boot up fine under the new implementation of the board, can someone with good
+    knowledge of the Chinese language check if cwdjz works properly? The game seems to boot up past the title screen, but I can't
+    check any further.
+
+-Fixed a bug that caused "Switch Item Ordering" in the software list menu to dupe entries This was MT#6402 [npwoods]
+
+-Fixed issue that could cause bogus arguments to be reported incorrectly Examples:  'mame -whatever nes' would previously be
+ reported as "Unrecognized argument: nes" [npwoods]
+
+-Refactoring in response to MT#6531 Prior to this change, options for images and slots were stored in the emu_options collection.
+ Anything that might restart the emulation (such as slot changes and images that reset on load) had to manipulate the emu_options
+ structure directly.  The dynamic nature of images and slots meant that some elaborate conventions for setting up this collection
+ had to be understood by clients. [npwoods]
+ * After this change, emu_options has two new members (image_options and slot_options) that expose image and slot selections via an
+    std::map.  Anything that changes images or slots in a fashion that needs to persist across sessions needs to modify these data
+    structures.  Additionally, some of the hairly logic (e.g. - get_default_card_software) now records its data here rather than
+    trying to subvert the core_options system.
+ * This is how MT#6531 was fixed; now when diimage.cpp sees an image that resets on load, it just modifies the image_options
+    structure and forces a reset.  This allowed some further cleanups to happen within diimage.
+ * This should be considered a very risky change, and scrutiny/feedback is welcome.  In particular, there seems to be functionality
+    surrounding device bioses that I'm not 100% sure how it works; the syntax seems to imply that it only works on slot devices.
+
+-Correct i86.cpp See #2200 [htjywf2008]
+
+-ibm5170 softlist additions [darkstar]
+ * Borland Quattro Pro 3.0 (German)
+ * Borland Quattro Pro 5.0 (German)
+ * Borland Turbo Basic 1.0 (German)
+ * Borland Turbo Pascal 4.0
+ * Borland Turbo Pascal 6.01 (German)
+ * IMG files have been uplaoded to @DopefishJustin , KryoFlux dumps and floppy scans are available on my archive.org page
+
+-8051 MCU family core fix : Fix the indirect memory access opcodes dec… 8051 MCU family core fix : Fix the indirect memory access
+ opcodes dec, inc and xch_a. [jfdelnero]
+ * Indirect access can't touch the SFR and must point to the extra memory above 0x80. This probably fix many machines using this
+    MCU.
+
+-uml : add case for parameter PTYPE_CODE_LABEL in uml instruction disassembly [Happy-yappH]
+
+-vicdual: add 97269-P-B and 97271-P daughterboards for nsub [SailorSat]
+ * EDIT* this is a followup to https://github.com/mamedev/mame/pull/2092 and https://github.com/mamedev/mame/pull/2124
+ * EDIT*
+ * confirmed PR-33 and PR-34 on the nsub motherboard. type is MMI 6331 (32*8)
+ * added the 97269-P-B daughterboard. not complete - gradient is still a simulation, but now uses the PROMs starfield is still
+    completely missing.
+ * reference image: http://images.arianchen.de/2017-01/030320171775.jpg wiring notes: http://files.arianchen.de/nsub/97269-P-B.txt
+ * the 1024*4 proms are are one nybble-per-byte with the upper 4 bits being zero
+ * PROMs: http://files.arianchen.de/nsub/s97269pb.zip
+
+-Make debugger 'dasm' command able to traverse virtual spaces with unmapped holes. [Happy-yappH]
+ * Previously, 'dasm' would enter an infinite loop if it hit an unmapped pc, continuing to grow the output file until the program
+    was killed.
+
+-fmtowns_cd.xml & pc98_cd.xml: added several dumps FM Towns: F-BASIC386 Compiler v1.1 L21 Dennou Ehon - Kyouryuu no Sekai Hyper Oku
+ no Hosomichi Soko-ban Perfect Youjuu Senki 2 - Reimei no Senshi [rzero9]
+ * PC-98: Jorougumo - Jubaku no Dorei-tachi Ms. Detective File #1 - Iwami Ginzan Satsujin Jiken Youjuu Senki 2 - Reimei no Senshi
+
+-[CoCo] Further cleanups in CoCo cartridge slot signal handling This is an attempt to make how the various signals on the CoCo
+ cartridge slot (CART, NMI, HALT) a bit more standardized and less ad hoc, especially with the practice of Program Paks tying the
+ CART line to Q.  This should fix some outstanding bugs in how these signals were passed around when using the CoCo Multi-Pak
+ interface. [npwoods]
+
+-Ipt service button fixes & cleanups This is the first batch of IPT SERVICE button fixes & general minor button cleanups. Hard coded
+ button assignments are replace with standard inputs where possible. The changes address issues listed here:
+ http://mametesters.org/view.php?id=6489 [OzFalcon]
+
+-Introduced an 'util::arbitrary_clock' template class, to represent a clock that "knows" when the epoch starts Also: [npwoods]
+ * Converted the NTFS filetime code to use util::arbitrary_clock
+ * Converted the Mac datetime code to use util::arbitrary_clock
+ * This is in preparation for a bigger change to Imgtool where I eliminate usage of time_t
+ * While I'm (reasonably) confident in the logic, I feel that it is a virtual certainty that I'm violating some norm of std::chrono
+    or some other C++-ism.  Looking forward to Vas reviewing this.
+
+
+New machines added or promoted from NOT_WORKING status
+------------------------------------------------------
+Galaxy Games StarPak 4 [Keith M. Kolmos, The Dumping Union]
+Fidelity Dame Sensory Challenger [hap, yovan]
+Unknown Poker Game by Chain Leisure [Gerald (COY), The Dumping Union]
+pce_tourvision.xml: Dragon Egg!  [system11]
+Zhan Qi - Chinese Battle Chess (Tw) [system11]
+GI-Classic EX [R. Belmont, Jacob Kesinger, Surgeville, Paul Vining, Smitdogg, The Dumping Union]
+Pirate Ship [Phil Bennett, R. Belmont, (dump credits?)]
+Tekken Card World [ShouTime, Rob Carr, The Dumping Union]
+Otomedius
+  [R. Belmont, dopefishjustin, G. Paziouros, S. Fauveau, R. Higashi, R. Howard, B. Munger, S. S. Neilson, Tormod, Smitdogg, The
+  Dumping Union]
+Unknown Sega gambling game (M1 Satellite board) [Jacob Kesinger, Surgeville, Paul Vining, Smitdogg, The Dumping Union]
+Gaelco Championship Tuning Race [Mark F., Smitdogg, The Dumping Union]
+Ring Riders (Software version v2.2) [Mark F., Smitdogg, The Dumping Union]
+Tokyo Cop (US, kit version) [Mark F., Smitdogg, The Dumping Union]
+Create device_palette_interface, which takes over most functionality from palette_device except for the initialization/decoding
+  routines and RAM interface. [AJR]
+Update screen_device and device_gfx_interface to use a device_palette_interface object rather than a palette_device. This
+  necessitates slight alterations to a few drivers and devices. [AJR]
+Modify v9938 and v9958 to use the new device_palette_interface rather than a subdevice. This entails breaking a cyclic dependency
+  between device_video_interface and screen_device for this case. [AJR]
+Super Derby II (Satellite board) [Charles MacDonald, The Dumping Union]
+Police Trainer 2 [R. Belmont, gamerfan, Mr. CAST, Smitdogg, The Dumping Union]
+ibm5150: Prince of Persia v1.0 [ArcadeShadow]
+ibm5170: Monkey Island 2: LeChuck's Revenge, Space Quest V: The Next Mutation [ArcadeShadow]
+Fidelity Sensory Chess Challenger 8 [hap, yovan]
+Game & Watch: Boxing [hap, Sean Riddle]
+Megatouch XL Super 5000 [R. Belmont, Smitdogg, The Dumping Union]
+Megatouch XL Gold [R. Belmont, Smitdogg, The Dumping Union]
+MegaTouch XL (Italy version R1) [any, R. Belmont]
+ibm5150: Golden Axe, Home Alone [ArcadeShadow]
+ibm5170: Gods, Indiana Jones and the Fate of Atlantis, The Legend of Kyrandia [ArcadeShadow]
+GI-Classic EX (Server) [R. Belmont, Phil Bennett, The Dumping Union]
+Super Star (Recreativos Franco) [AJR, Akiles500]
+coco_cart: Added Super LOGO and removed all Dragon cartridges [Nigel Barnes]
+dragon_cart: Moved all Dragon cartridges from coco_cart [Nigel Barnes]
+dragon_cass: All known cassette dumps [Nigel Barnes]
+dragon_flop: All known floppy dumps [Nigel Barnes]
+dragon_flex: FLEX System and other Compusense FLEX releases [Nigel Barnes]
+dragon_os9: OS-9, BASIC09, C, Dynacalc, Pascal, RMS, Stylograph [Nigel Barnes]
+dgnalpha_flop: OS-9, NitrOS9, C, Dynacalc, Pascal, RMS, Stylograph, etc. [Nigel Barnes]
+bbcb_cass: Added Pro Word, 3D-Wars, Football Director and other games/utilities [Nigel Barnes]
+Game & Watch: Donkey Kong II [hap, Sean Riddle]
+TI-2550 III [hap, Sean Riddle]
+phc25_cass: Mostly official releases from Sanyo [Nigel Barnes]
+Acchi Muite Hoi [David Haywood, Surgeville, Sean Sutton, Jred, Mike Krug, Smitdogg, The Dumping Union]
+Unknown 'VIP 2000' game [TeamEurope, f205v]
+Novag Presto/Octo [hap, Berger]
+Super Star (Recreativos Franco) [AJR, Akiles500]
+Hi, [fulivi]
+this set of commits implements the HP9845T driver. [fulivi]
+The main feature of this machine from the 9845 line was the hardware-accelerated monochromatic graphic video (HP98780A). [fulivi]
+The driver was written together with Ansgar Kueckes. [fulivi]
+I'm mailing the ROM images to the usual "code" e-mail. [fulivi]
+Thanks. [fulivi]
+-F.Ulivi [fulivi]
+Wireless 60 (Jungle Soft / Kids Station Toys Inc) [RebeccaRGB]
+Create device_palette_interface, which takes over most functionality from palette_device except for the initialization/decoding
+  routines and RAM interface. [ajrhacker]
+Update screen_device and device_gfx_interface to use a device_palette_interface object rather than a palette_device. This
+  necessitates slight alterations to a few drivers and devices. [ajrhacker]
+Modify v9938 and v9958 to use the new device_palette_interface rather than a subdevice. This entails breaking a cyclic dependency
+  between device_video_interface and screen_device for this case. [ajrhacker]
+
+
+New clones added or promoted from NOT_WORKING status
+----------------------------------------------------
+Martial Masters (ver. 103, 102, 101CN) [kuze, The Dumping Union]
+Rastan (World, Earlier code base) [System11, The Dumping Union]
+Prehistoric Isle in 1930 (World, bootleg) [The Iron Goat]
+Sonic Blast Man (US) [coolmod, The Dumping Union]
+Knights of Valour / Sangoku Senki (ver. 100, Hong Kong) [Pasky Junk]
+Street Fighter II': Champion Edition (UPL bootleg) [ShouTime, The Dumping Union]
+Tokyo Cop (US, dedicated version) [Mark F., Smitdogg, The Dumping Union]
+Rocky (French speech) [PinMAME]
+MegaTouch XL Gold (Version r00) [arbee]
+Also more work clarifying the various versions, thanks to Merit documentation. [arbee]
+MegaTouch XL 5000 (Version R5B) [arbee]
+MegaTouch XL 5000 (Version R5E) [arbee]
+MegaTouch XL 6000 (Version r07) [arbee]
+Bionic Commandos (bootleg, set 2) [Team Europe]
+Gals Panic DX (Asia) [arcademodbios.com]
+Megatack (set 2) [OriginalJohn]
+The Real Ghostbusters (US 3 Players, revision ?) [caius, The Dumping Union]
+Up Maguila (bootleg of Donkey Kong Jr.) [Asociación A.R.C.A.D.E.]
+Mach Breakers (World, MB2) [caius, Silvio Grazini, The Dumping Union]
+Out of whatsnew: Correct coin inputs - when set to individual coins slots they were reversed. [briantro]
+
+
+New WORKING software list additions
+-----------------------------------
+
+
+New NOT_WORKING software list additions
+---------------------------------------
+
+
+Translations added or modified
+------------------------------
+
+
+Comparing 0.184 (mame0184) to 0.184 (mame0184-414-ga19e42c)
+
+Renames
+tokyocop -> tokyocopi Tokyo Cop (Italy)
+gnwmndon -> gnw_dm53 Game & Watch: Mickey & Donald
+sbm -> sbmj Sonic Blast Man (Japan)
+
+New working machines
+--------------------
+Acchi Muite Hoi
+Dame Sensory Challenger
+Galaxy Games StarPak 4 (prototype)
+Pirate Ship (ver UAA)
+Presto (Novag)
+Sensory Chess Challenger 8
+TI-2550 III
+Tekken Card World
+
+New working clones
+------------------
+Bionic Commandos (bootleg, set 2)
+Gals Panic DX (Asia)
+Mach Breakers - Numan Athletics 2 (Japan, MB1)
+Martial Masters (ver. 103, 102, 101CN)
+Megatack (set 2)
+Octo (Novag)
+Prehistoric Isle in 1930 (World, bootleg)
+Rastan (World, Earlier code base)
+Street Fighter II': Champion Edition (UPL bootleg)
+Up Maguila (bootleg of Donkey Kong Jr.)
+
+Machines promoted to working
+----------------------------
+9845T
+N-Sub (upright)
+Soreike Kokology Vol. 2 - Kokoro no Tanteikyoku
+
+New machines marked as NOT_WORKING
+----------------------------------
+GI-Classic EX (satellite terminal)
+GI-Classic EX (server)
+Gaelco Championship Tuning Race
+Galaxy Play
+Game & Watch: Boxing
+Game & Watch: Donkey Kong II
+MegaTouch XL (Italy Version R1)
+MegaTouch XL 6000 (Version r07)
+MegaTouch XL Gold (Version r01)
+MegaTouch XL Super 5000 (Version R5I)
+Otomedius (ver GGG:J:A:A:2008041801)
+Police Trainer 2
+Ring Riders (Software version v2.2)
+Shark [TTL]
+Super Derby II (Satellite board)
+Super Star (Recreativos Franco)
+Unknown 'VIP 2000' game
+Unknown Poker Game
+Unknown Sega gambling game (M1 Satellite board)
+Wireless 60
+
+New clones marked as NOT_WORKING
+--------------------------------
+Knights of Valour / Sangoku Senki (ver. 100, Hong Kong)
+MegaTouch XL 6000 (Version r02)
+MegaTouch XL Gold (Version r00)
+MegaTouch XL Super 5000 (Version R5B)
+MegaTouch XL Super 5000 (Version R5E)
+Rocky (French speech)
+Sonic Blast Man (US)
+The Real Ghostbusters (US 3 Players, revision ?)
+Tokyo Cop (US, dedicated version)
+Tokyo Cop (US, kit version)
+U.S.A. Football (R01u)
+
