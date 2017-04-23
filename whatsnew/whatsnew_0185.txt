@@ -40,6 +40,12 @@ Street Fighter II': Champion Edition (UPL bootleg) [ShouTime, The Dumping Union]
 Up Maguila (bootleg of Donkey Kong Jr.) [Asociacion A.R.C.A.D.E.]
 
 
+Machines promoted to working
+----------------------------
+HP 9845T [fulivi, A.Kueckes]
+Popper [Dirk Best]
+
+
 New machines marked as NOT_WORKING
 ----------------------------------
 GI-Classic EX (satellite terminal) [R. Belmont, Jacob Kesinger, Surgeville, Paul Vining, Smitdogg, The Dumping Union]
@@ -56,7 +62,7 @@ Otomedius (ver GGG:J:A:A:2008041801)
   The Dumping Union]
 Police Trainer 2 [R. Belmont, gamerfan, Mr. CAST, Smitdogg, The Dumping Union]
 Ring Riders (Software version v2.2) [Mark F., Smitdogg, The Dumping Union]
-Shark [TTL] [Stiletto, Siftware]
+Shark (US Billiards Inc.) [Stiletto, Siftware]
 Super Derby II (Satellite board) [Charles MacDonald, The Dumping Union]
 Super Star (Recreativos Franco) [AJR, Akiles500]
 Unknown 'VIP 2000' game [TeamEurope, f205v]
@@ -66,6 +72,7 @@ Unknown Sega gambling game (M1 Satellite board) [Jacob Kesinger, Surgeville, Pau
 
 New clones marked as NOT_WORKING
 --------------------------------
+Megatouch XL 6000 (Version r02) [R. Belmont, AeroCityMayor, Smitdogg, The Dumping Union]
 MegaTouch XL Gold (Version r00) [R. Belmont]
 MegaTouch XL Super 5000 (Version R5B) [R. Belmont]
 MegaTouch XL Super 5000 (Version R5E) [R. Belmont]
@@ -77,10 +84,35 @@ Tokyo Cop (US, kit version) [Mark F., Smitdogg, The Dumping Union]
 
 Source Changes
 --------------
+-pstring, pdynlib, pfmtlog refactoring: [Couriersud]
+ * pstring:
+   - Changed to use std::string for storage (removes allocation code).
+   - Added support for UTF16LE.
+   - Renamed size() to mem_t_size() and len() to length(), added size() == length().
+   - Added empty() and simple compare().
+ * Simplified pfmtlog, added more C++.
+ * pdynlib: Added a dynproc type to dynlib to wrap dynamic library calls.
+ * Fixed two coverty scan issues and various clang warnings.
+
+-Netlist code refactoring: [Couriersud]
+ * More use of C++ features.
+ * Some CRTP in pfmtlog.
+ * Demangled code for truthtables.
+ * Used more constexpr.
+ * Rewrote main loop.
+ * Used default constructors and assignment operators were applicable.
+ * Optimized 7448 and 9316.
+ * Startup time decreased by 25% to 30% (netlists like pong/kidniki are parsed, analyzed and constructed in around 15 ms).
+ * Run performance has improved by about 5%.
+
+-popper: Fixed memory map, finished gfx rendering - game is fully working again. [Dirk Best]
+
 -dgnbeta: Added software list with OS-9 system and apps. [Nigel Barnes]
  * Replaced 5.25" floppies with 3.5", and added sounds.
  * Enabled floppy motor.
  * Removed tag lookups.
+
+-cesblit.cpp: Improved blit coordinates - fixes some missing graphics in e.g. galgame4. [Luca Elia]
 
 -dragon32: Corrected release year and company of Spanish clones. [Nigel Barnes]
  * Added joysticks to all machines, Added floppy sounds.
@@ -129,11 +161,21 @@ Source Changes
 
 -apple1: Fixed bug introduced when the cassette was slotified. [Colin Douglas Howell, R. Belmont]
 
--Turn pstring iterator into a real forward iterator that works with standard algorithms. [Vas Crabb]
+-Turned pstring iterator into a real forward iterator that works with standard algorithms. [Vas Crabb]
 
 -Assume LLVM libc++ if __llvm__ is defined but __GLIBC__ is undefined (fixes bx build with MacPorts clang). [Vas Crabb]
 
 -Apply environment variable substitution to bgfx_path (issue #2201). [Vas Crabb]
+
+-apollo: Fixed SIO regression. [Hans Ostermeyer]
+
+-i86: Fixed JNL flags test (github issue #2200). [htjywf2008]
+
+-naomi.cpp: Redumped "Initial D Arcade Stage Ver. 2 (Export) (GDS-0027)". [rtw]
+
+-wirels60: Made P2 IO port optional. [RebeccaRGB]
+
+-sun4: Added SPARCstation IPX V2.3 and SPARCstation 1 V2.2 boot ROMs. [NekoEd]
 
 -[CoCo] Further cleanups in CoCo cartridge slot signal handling [Nathan Woods]
  * This is an attempt to make how the various signals on the CoCo cartridge slot (CART, NMI, HALT) a bit more standardized and less
@@ -180,18 +222,10 @@ Source Changes
 -8051 MCU family core fix : Fix the indirect memory access opcodes dec,inc and xch_a. Indirect access can't touch the SFR and must
  point to the extra memory above 0x80. This probably fix many machines using this MCU. [Jean-François DEL NERO]
 
--Change pstring to use std::string as storage container. [couriersud]
- * This removes all allocation code from pstring. const_iterator is consequently now based on pstring::const_iterator. Removed
-    pstring_buffer. This was class wasn't a good idea.
-
 -vicdual: add 97269-P-B and 97271-P daughterboards for nsub (#2192) [Ariane Fugmann]
-
--sun4: Added SparcStation IPX V2.3 boot ROM [NekoEd]
 
 -Rename the write-only -printer image instance type to -printout. The former option name conflicts with RS232 printer ports in
  several drivers. [AJR]
-
--sun4: add SPARCstation 1 boot ROM v2.2 [NekoEd]
 
 -osbexec: Experimental support for RS232C serial ports (untested) [AJR]
 
@@ -210,30 +244,8 @@ Source Changes
 
 -Documented that Taito's T.T. New York New York ROMs match the Sigma set [Ivan Vangelista]
 
--i86: Fix jnl flags test [htjywf2008]
-
--cesblit.cpp: Improve blit coordinates, fixes some missing graphics in e.g. galgame4 [Luca Elia]
-
 -Fixed issue that could cause bogus arguments to be reported incorrectly [Nathan Woods]
  * Examples:  'mame -whatever nes' would previously be reported as "Unrecognized argument: nes"
-
--naomi.cpp: redumped "Initial D Arcade Stage Ver. 2 (Export) (GDS-0027)" [rtw]
-
--pstring, pdynlib, pfmtlog refactoring : [couriersud]
- * pstring:
- * added support for UTF16LE to pstring.
- * renamed size() to mem_t_size()
- * renmaed len() to length()
- * added size() == length()
- * added empty()
- * added simple compare()
- * pfmtlog:
- * Simplified pfmtlog, added more c++
- * pdynlib:
- * add a dynproc type to dynlib to wrap dynamic library calls.
- * various:
- * fix two coverty scan issue.
- * various clang warnings fixed.
 
 -Fixed a bug that caused "Switch Item Ordering" in the software list menu to dupe entries [Nathan Woods]
  * This was MT#6402
@@ -298,14 +310,9 @@ Source Changes
 
 -Fixed a pedantic MSVC warning in dipalette.h [Nathan Woods]
 
--New working machine added: Wireless 60 (Jungle Soft / Kids Station Toys Inc) (#2215) [Rebecca G. Bettencourt]
-
 -Fixed gtrfrk6m from booting up due to an incorrect flash card memory size. 32MB works for gtrfrk5m as well. (#2214) [limyz]
 
 -decocass.cpp: Correct missile colors for Highway Chase and Astro Fantasia [AJR]
-
--P2 IO port should be optional. My apologies. (#2216) [Rebecca G. Bettencourt]
- * Wireless 60 (Jungle Soft / Kids Station Toys Inc) P2 IO port should be optional. My apologies.
 
 -Fixed some regressions introduced in my recent refactoring related to software lists (#2217) [npwoods]
  * This fixes crashes invoked by the following command lines
@@ -317,23 +324,7 @@ Source Changes
 -naomi.cpp: converted remaining bad CHD v4 to good v5, track1 and track2 length was restored based on known now data patterns
  [MetalliC]
 
--Netlist code refactoring: [couriersud]
- * more use of c++ features
- * some CRTP in pfmtlog
- * demangled code for truthtables
- * use more constexpr
- * rewrite main loop
- * use default constructors and assignment operators were applicable.
- * optimized 7448 and 9316
- * All of this has decreased startup time by approx. 25% to 30%. Complex netlists like pong or kidniki are parsed, analyzed and
-    constructed in around 15 ms. Run performance has increased by about 5%.
- * All in all not to bad. A game like pong uses a clock of 7 MHz (after division by 2). Thats 14 MHz clock invocations. Running at
-    over 200%, 28 MHz. On a 3.9 GHz Machine about 140 cycles/clock change.
- * [Couriersud]
-
 -Made a few random methods 'const' [Nathan Woods]
-
--Games added as GAME_NOT_WORKING: Megatouch XL 6000 [R. Belmont, AeroCityMayor, Smitdogg, The Dumping Union]
 
 -triforce.cpp: converted bad CHD v4 to good v5, one bad dump left, will be redumped for real [MetalliC]
 
@@ -456,8 +447,6 @@ Source Changes
  * As a consequence of recent changes, we were not properly blocking the emulation from starting when a must_be_loaded() image had
     an unspecified image.
 
--Add skeleton driver for Shark (US Billiards Inc.) (1975). [Stiletto, Siftware]
- 
 -kokoroj2: Correct inputs [AJR]
 
 -kokoroj2: Promote to WORKING (maybe) [AJR]
@@ -482,8 +471,6 @@ Source Changes
 -new Mach Breakers clone added [briantro]
 
 -namconb1.cpp: Corrected Coin inputs and added in Coin3 & Coin4 as needed [Brian Troha]
-
--apollo: fix SIO regression [Hans Ostermeyer]
 
 -Workaround for issue where the cannonical instance_name for a device was lost (#2248) [npwoods]
  * This is a hack; details are in the source code.  I felt that it was too late in the 0.185 release cycle to do anything intrusive.
@@ -579,8 +566,6 @@ Source Changes
     by implementations of get_default_card_software().  The second crash was a failure to access image options moved outside the
     core_options structure.
 
--P2 IO port should be optional. My apologies. P2 IO port should be optional. My apologies. [RebeccaRGB]
-
 -Fixed gtrfrk6m from booting up due to an incorrect flash card memory size 32MB works for gtrfrk5m as well. Thanks to
  @sakamoto-neko. [limyz]
 
@@ -613,8 +598,6 @@ Source Changes
     structure and forces a reset.  This allowed some further cleanups to happen within diimage.
  * This should be considered a very risky change, and scrutiny/feedback is welcome.  In particular, there seems to be functionality
     surrounding device bioses that I'm not 100% sure how it works; the syntax seems to imply that it only works on slot devices.
-
--Correct i86.cpp See #2200 [htjywf2008]
 
 -ibm5170 softlist additions [darkstar]
  * Borland Quattro Pro 3.0 (German)
@@ -735,7 +718,6 @@ Mach Breakers - Numan Athletics 2 (Japan, MB1)
 
 Machines promoted to working
 ----------------------------
-9845T
 N-Sub (upright)
 Soreike Kokology Vol. 2 - Kokoro no Tanteikyoku
 
@@ -745,5 +727,4 @@ Galaxy Play
 
 New clones marked as NOT_WORKING
 --------------------------------
-MegaTouch XL 6000 (Version r02)
 U.S.A. Football (R01u)
