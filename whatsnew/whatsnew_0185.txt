@@ -51,6 +51,7 @@ New machines marked as NOT_WORKING
 GI-Classic EX (satellite terminal) [R. Belmont, Jacob Kesinger, Surgeville, Paul Vining, Smitdogg, The Dumping Union]
 GI-Classic EX (server) [R. Belmont, Phil Bennett]
 Gaelco Championship Tuning Race [Mark F., Smitdogg, The Dumping Union]
+Galaxy Play [PinMAME]
 Game & Watch: Boxing [hap, Sean Riddle]
 Game & Watch: Donkey Kong II [hap, Sean Riddle]
 MegaTouch XL 6000 (Version r07) [R. Belmont]
@@ -80,6 +81,7 @@ Rocky (French speech) [PinMAME]
 The Real Ghostbusters (US 3 Players, revision ?) [caius, The Dumping Union]
 Tokyo Cop (US, dedicated version) [Mark F., Smitdogg, The Dumping Union]
 Tokyo Cop (US, kit version) [Mark F., Smitdogg, The Dumping Union]
+U.S.A. Football (R01u) [PinMAME]
 
 
 Source Changes
@@ -242,7 +244,7 @@ Source Changes
 
 -Fixed the build (dst_wrapmask set but not used). [Robbbert]
 
--Documented that Taito's T.T. New York New York ROMs match the Sigma set [Ivan Vangelista]
+-Documented that Taito's T.T. New York New York ROMs match the Sigma set [ShouTime]
 
 -Fixed issue that could cause bogus arguments to be reported incorrectly [Nathan Woods]
  * Examples:  'mame -whatever nes' would previously be reported as "Unrecognized argument: nes"
@@ -278,13 +280,13 @@ Source Changes
     displayed in Machine input....). Mame Testers Bug: http://mametesters.org/view.php?id=6489
  * amaticmg.cpp (suprstar) Remove hard coded keycode assignments
  * Remove hard coded key assignment and use default mapping. Mame Testers Bug: http://mametesters.org/view.php?id=6489
- * ampoker2.cpp Make various key assignments consistant
+ * ampoker2.cpp Make various key assignments consistent
  * Cleanup different assignments for the same buttons across supported games while still keeping true to the Game Notes / Operation
-    instructions. 1. Make "Operator Key" consistant (Use IPT_GAMBLE_SERVICE) 2. Make "Supervisor Key" consistant (Use IPT_SERVICE2)
-    3. Make "Hopper 1" consistant (Use IPT_OTHER, KEYCODE_Y) 4. Make "Hopper Out" consistant (Use IPT_OTHER, KEYCODE_G) 5. Make
-    "Hopper Low" consistant (Use IPT_OTHER, KEYCODE_H) 6. Make "Return Line" consistant (Use IPT_OTHER, KEYCODE_J) 7. Make "Coin
-    Refill" consistant (Use IPT_OTHER, KEYCODE_R) 8. Make "Payout" consistant (Use IPT_GAMBLE_PAYOUT) 9. Make "TILT" consistant (Use
-    IPT_TILT) 10. Make "Double" consistant (Use IPT_GAMBLE_D_UP)
+    instructions. 1. Make "Operator Key" consistent (Use IPT_GAMBLE_SERVICE) 2. Make "Supervisor Key" consistent (Use IPT_SERVICE2)
+    3. Make "Hopper 1" consistent (Use IPT_OTHER, KEYCODE_Y) 4. Make "Hopper Out" consistent (Use IPT_OTHER, KEYCODE_G) 5. Make
+    "Hopper Low" consistent (Use IPT_OTHER, KEYCODE_H) 6. Make "Return Line" consistent (Use IPT_OTHER, KEYCODE_J) 7. Make "Coin
+    Refill" consistent (Use IPT_OTHER, KEYCODE_R) 8. Make "Payout" consistent (Use IPT_GAMBLE_PAYOUT) 9. Make "TILT" consistent (Use
+    IPT_TILT) 10. Make "Double" consistent (Use IPT_GAMBLE_D_UP)
  * Mame Testers Bug: http://mametesters.org/view.php?id=6489
  * albazc.cpp: Assign "Data Clear" to IPT_MEMORY_RESET
  * Assign "Data Clear" to IPT_MEMORY_RESET
@@ -472,7 +474,7 @@ Source Changes
 
 -namconb1.cpp: Corrected Coin inputs and added in Coin3 & Coin4 as needed [Brian Troha]
 
--Workaround for issue where the cannonical instance_name for a device was lost (#2248) [npwoods]
+-Workaround for issue where the canonical instance_name for a device was lost (#2248) [npwoods]
  * This is a hack; details are in the source code.  I felt that it was too late in the 0.185 release cycle to do anything intrusive.
     I intend to fix this "for real" when image/slot option morphing is encapsulated within emu_options.
 
@@ -487,16 +489,8 @@ Source Changes
  * added an NMK112 for sound banking, might not be hooked up correctly, difficult to know without understanding Japanese.
  * oki frequencies etc. need verifying on pcb.
 
--Workaround for issue where the cannonical instance_name for a device was lost This is a hack; details are in the source code.  I
- felt that it was too late in the 0.185 release cycle to do anything intrusive.  I intend to fix this "for real" when image/slot
- option morphing is encapsulated within emu_options. [npwoods]
-
--Workaround for sibling disk image loading issue Gory details in the comments [npwoods]
-
 -Workaround for scenarios where both the command line and an INI specify an image option This is a hack; see commentary within the
  code.  I intend to fix this "for real" when emu_options become more self contained [npwoods]
-
--Fixed an issue where reset_on_load images would not properly persist across emulation sessions [npwoods]
 
 -Fixed a regression in the mandatory image check As a consequence of recent changes, we were not properly blocking the emulation
  from starting when a must_be_loaded() image had an unspecified image. [npwoods]
@@ -605,7 +599,7 @@ Source Changes
  * Borland Turbo Basic 1.0 (German)
  * Borland Turbo Pascal 4.0
  * Borland Turbo Pascal 6.01 (German)
- * IMG files have been uplaoded to @DopefishJustin , KryoFlux dumps and floppy scans are available on my archive.org page
+ * IMG files have been uploaded to @DopefishJustin , KryoFlux dumps and floppy scans are available on my archive.org page
 
 -8051 MCU family core fix : Fix the indirect memory access opcodes dec… 8051 MCU family core fix : Fix the indirect memory access
  opcodes dec, inc and xch_a. [jfdelnero]
@@ -640,13 +634,6 @@ Source Changes
 -Ipt service button fixes & cleanups This is the first batch of IPT SERVICE button fixes & general minor button cleanups. Hard coded
  button assignments are replace with standard inputs where possible. The changes address issues listed here:
  http://mametesters.org/view.php?id=6489 [OzFalcon]
-
--Introduced an 'util::arbitrary_clock' template class, to represent a clock that "knows" when the epoch starts Also: [npwoods]
- * Converted the NTFS filetime code to use util::arbitrary_clock
- * Converted the Mac datetime code to use util::arbitrary_clock
- * This is in preparation for a bigger change to Imgtool where I eliminate usage of time_t
- * While I'm (reasonably) confident in the logic, I feel that it is a virtual certainty that I'm violating some norm of std::chrono
-    or some other C++-ism.  Looking forward to Vas reviewing this.
 
 
 New machines added or promoted from NOT_WORKING status
@@ -721,10 +708,4 @@ Machines promoted to working
 N-Sub (upright)
 Soreike Kokology Vol. 2 - Kokoro no Tanteikyoku
 
-New machines marked as NOT_WORKING
-----------------------------------
-Galaxy Play
 
-New clones marked as NOT_WORKING
---------------------------------
-U.S.A. Football (R01u)
