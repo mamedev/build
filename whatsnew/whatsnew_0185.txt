@@ -30,6 +30,7 @@ New working clones
 Bionic Commandos (bootleg, set 2) [TeamEurope]
 Gals Panic DX (Asia) [arcademodbios.com]
 Knights of Valour / Sangoku Senki (ver. 100, Hong Kong) [Pasky Junk]
+Mach Breakers (World, MB2) [caius, Silvio Grazini, The Dumping Union]
 Martial Masters (ver. 103, 102, 101CN) [kuze, The Dumping Union]
 Megatack (set 2) [OriginalJohn]
 Novag Octo [hap, Berger]
@@ -44,6 +45,7 @@ Machines promoted to working
 ----------------------------
 HP 9845T [fulivi, A.Kueckes]
 Popper [Dirk Best]
+Soreike Kokology Vol. 2 - Kokoro no Tanteikyoku [AJR]
 
 
 New machines marked as NOT_WORKING
@@ -82,6 +84,43 @@ The Real Ghostbusters (US 3 Players, revision ?) [caius, The Dumping Union]
 Tokyo Cop (US, dedicated version) [Mark F., Smitdogg, The Dumping Union]
 Tokyo Cop (US, kit version) [Mark F., Smitdogg, The Dumping Union]
 U.S.A. Football (R01u) [PinMAME]
+
+
+New working software list additions
+-----------------------------------
+bbcb_cass:
+  3D-Wars (Demo), Arcade 4 Pack, Blockbusters Question Master, Children from Space, CopyCat III,
+  Crazy Cut/Mastermind/Klingon Attack, Disk Master, Football Director, How To Move Programs To Disk, Music, Predict, Pro Word,
+  Superior Mover, Tape Transfer Software, Toccata [Nigel Barnes]
+coco_cart: Super LOGO [Nigel Barnes]
+dragon_cass: All known cassette dumps [Nigel Barnes]
+dragon_flop: All known floppy dumps [Nigel Barnes]
+dragon_flex: FLEX System and other Compusense FLEX releases [Nigel Barnes]
+dragon_os9: OS-9, BASIC09, C, Dynacalc, Pascal, RMS, Stylograph [Nigel Barnes]
+dgnalpha_flop: OS-9, NitrOS9, C, Dynacalc, Pascal, RMS, Stylograph, etc. [Nigel Barnes]
+fmtowns_cd:
+  F-BASIC386 Compiler v1.1 L21, Dennou Ehon - Kyouryuu no Sekai, Hyper Oku no Hosomichii, Soko-ban Perfect,
+  Youjuu Senki 2 - Reimei no Senshi [r09]
+ibm5150:
+  Golden Axe, Home Alone, Prince of Persia v1.0 [ArcadeShadow]
+ibm5170:
+  Gods, Indiana Jones and the Fate of Atlantis, The Legend of Kyrandia, Monkey Island 2: LeChuck's Revenge,
+  Space Quest V: The Next Mutation [ArcadeShadow]
+  Borland Quattro Pro 3.0 (German), Borland Quattro Pro 5.0 (German), Borland Turbo Basic 1.0 (German),
+  Borland Turbo Pascal 4.0, Borland Turbo Pascal 6.01 (German) [darkstar]
+ibm5150, ibm5170: Various alternate sets [Justin Kerk]
+megadriv: Zhan Qi - Chinese Battle Chess (Tw) [system11]
+nes: Adan y Eva [No-Intro], AV Super Real Pachinko [Frank Cifaldi]
+pc98_cd:
+  Jorougumo - Jubaku no Dorei-tachi, Ms. Detective File #1 - Iwami Ginzan Satsujin Jiken, Youjuu Senki 2 - Reimei no Senshi [r09]
+pet_rom: KeyChip [Andy Grady]
+phc25_cass: official releases from Sanyo, Citadelle [Nigel Barnes]
+
+
+New NOT_WORKING software list additions
+--------------------------------------- 
+gameboy: Song of the Pipa / Magic Ball [James, TeamEurope, Tauwasser]
+pce_tourvision: Dragon Egg! [system11]
 
 
 Source Changes
@@ -130,6 +169,8 @@ Source Changes
 
 -atom: Added csw cassette format. [Nigel Barnes]
 
+-dragon: Moved all Dragon cartridges from coco_cart to dragon_cart [Nigel Barnes]
+
 -phc25: Added character generator ROM, not yet used. [Nigel Barnes]
 
 -electron: Added Power Software joystick interface. [Nigel Barnes]
@@ -159,7 +200,7 @@ Source Changes
 
 -mac: Fixed major 0.183 regression in Mac II series [R. Belmont]
 
--mac128: Fixed multiple keyboard regressions since 0.180 (MT#6481). [R. Belmont]
+-megatouch: More work clarifying the various versions, thanks to Merit documentation. [R. Belmont]
 
 -apple1: Fixed bug introduced when the cassette was slotified. [Colin Douglas Howell, R. Belmont]
 
@@ -167,9 +208,29 @@ Source Changes
 
 -Assume LLVM libc++ if __llvm__ is defined but __GLIBC__ is undefined (fixes bx build with MacPorts clang). [Vas Crabb]
 
--Apply environment variable substitution to bgfx_path (issue #2201). [Vas Crabb]
+-Apply environment variable substitution to bgfx_path (github issue #2201). [Vas Crabb]
+
+-naomi.cpp: Converted remaining bad CHD v4 to good v5, track1 and track2 length was restored based on now-known data patterns.
+ [MetalliC]
+
+-triforce.cpp: Converted bad CHD v4 to good v5 - one bad dump left, will be redumped for real. [MetalliC]
+
+-chihiro.cpp: Converted bad CHD v4 to good v5. [MetalliC]
+
+-naomi.cpp: Export mushik2e/mushi2eo are 3-in-1 Mushiking II, III and III+ sets. [MetalliC]
+
+-thomson: Fixed regressions to (legacy) floppy support [Antoine Mine]
 
 -apollo: Fixed SIO regression. [Hans Ostermeyer]
+
+-acchi.cpp: Promoted to working state: [David Haywood]
+ * Added scantimer interrupt, inputs work in game.
+ * Added video banking.
+ * Added an NMK112 for sound banking, might not be hooked up correctly, difficult to know without understanding Japanese.
+ * Oki frequencies etc. need verifying on PCB.
+
+-mcs51: Fixed indirect memory access opcodes dec, inc and xch_a. [Jean-Francois DEL NERO]
+ * Indirect access can't use SFRs, only extra memory above 0x80.
 
 -i86: Fixed JNL flags test (github issue #2200). [htjywf2008]
 
@@ -177,19 +238,14 @@ Source Changes
 
 -wirels60: Made P2 IO port optional. [RebeccaRGB]
 
+-Documented that Taito's T.T. New York New York ROMs match the Sigma set. [ShouTime]
+
 -sun4: Added SPARCstation IPX V2.3 and SPARCstation 1 V2.2 boot ROMs. [NekoEd]
 
 -[CoCo] Further cleanups in CoCo cartridge slot signal handling [Nathan Woods]
  * This is an attempt to make how the various signals on the CoCo cartridge slot (CART, NMI, HALT) a bit more standardized and less
     ad hoc, especially with the practice of Program Paks tying the CART line to Q.  This should fix some outstanding bugs in how
     these signals were passed around when using the CoCo Multi-Pak interface.
-
--fmtowns_cd.xml: added several dumps [r09]
- * F-BASIC386 Compiler v1.1 L21 Dennou Ehon - Kyouryuu no Sekai Hyper Oku no Hosomichi Soko-ban Perfect Youjuu Senki 2 - Reimei no
-    Senshi
-
--pc98_cd.xml: added several dumps [r09]
- * Jorougumo - Jubaku no Dorei-tachi Ms. Detective File #1 - Iwami Ginzan Satsujin Jiken Youjuu Senki 2 - Reimei no Senshi
 
 -Make debugger 'dasm' command able to traverse virtual spaces with unmapped holes. [Happy]
  * Previously, 'dasm' would enter an infinite loop if it hit an unmapped pc, continuing to grow the output file until the program
@@ -202,8 +258,6 @@ Source Changes
  * This is the simplest way of updating this, EXPSPACE_OPCODE is now a copy of EXPSPACE_RAMWRITE except it uses AS_DECRYPTED_OPCODES
     instead of AS_PROGRAM. This method means I've got a lot of work updating a lot of cheat file warnings ...but this is the correct
     way of doing this.
-
--gameboy.xml:  Added double cart Song of the Pipa / Magic Ball  (NOT WORKING)  [James, TeamEurope and Tauwasser]
 
 -sblaster: save DSP state [Scott Percival]
 
@@ -221,9 +275,6 @@ Source Changes
 
 -uml : add case for parameter PTYPE_CODE_LABEL in uml instruction disassembly [Happy]
 
--8051 MCU family core fix : Fix the indirect memory access opcodes dec,inc and xch_a. Indirect access can't touch the SFR and must
- point to the extra memory above 0x80. This probably fix many machines using this MCU. [Jean-François DEL NERO]
-
 -vicdual: add 97269-P-B and 97271-P daughterboards for nsub (#2192) [Ariane Fugmann]
 
 -Rename the write-only -printer image instance type to -printout. The former option name conflicts with RS232 printer ports in
@@ -235,16 +286,7 @@ Source Changes
  * Fix a longstanding bug that prevented binding several ORed buttons to any input belonging to a non-root device.
  * Fix a visual glitch when assigning inputs to analog sequences.
 
--ibm5170 softlist additions [Michael D]
- * Borland Quattro Pro 3.0 (German)
- * Borland Quattro Pro 5.0 (German)
- * Borland Turbo Basic 1.0 (German)
- * Borland Turbo Pascal 4.0
- * Borland Turbo Pascal 6.01 (German)
-
 -Fixed the build (dst_wrapmask set but not used). [Robbbert]
-
--Documented that Taito's T.T. New York New York ROMs match the Sigma set [ShouTime]
 
 -Fixed issue that could cause bogus arguments to be reported incorrectly [Nathan Woods]
  * Examples:  'mame -whatever nes' would previously be reported as "Unrecognized argument: nes"
@@ -301,8 +343,6 @@ Source Changes
  * Rework PR to merge with commit https://github.com/mamedev/mame/commit/0bc96f38f1a2eb1e098882e474f9604ba905d972 Set IPT_SERVICE &
     Double up buttons as standard assignments. Set "Ext In 1" & "Ext In 2" as IPT_OTHER.
 
--nes.xml: new dumps Adan y Eva [hashes were known, but ROMs surfaced on No-Intro] AV Super Real Pachinko [Frank Cifaldi]
-
 -Introduced an 'util::arbitrary_clock' template class, to represent a clock that "knows" when the epoch starts (#2010) [npwoods]
  * Introduced an 'util::arbitrary_clock' template class, to represent a clock that "knows" when the epoch starts
  * Also:
@@ -323,12 +363,7 @@ Source Changes
     by implementations of get_default_card_software().  The second crash was a failure to access image options moved outside the
     core_options structure.
 
--naomi.cpp: converted remaining bad CHD v4 to good v5, track1 and track2 length was restored based on known now data patterns
- [MetalliC]
-
 -Made a few random methods 'const' [Nathan Woods]
-
--triforce.cpp: converted bad CHD v4 to good v5, one bad dump left, will be redumped for real [MetalliC]
 
 -Changed the validity checks to have its own emu_options [Nathan Woods]
  * This comes from a regression reported by Tafoid whereby the following command line:
@@ -340,8 +375,6 @@ Source Changes
     the main emulation  to validation specific maching_config for other drivers.  This changes validate_one() to always use a fresh
     emu_options with each individual validation.
 
--chihiro.cpp: converted bad CHD v4 to good v5 [MetalliC]
-
 -segas24.cpp: Read inputs through 315-5296 [AJR]
 
 -Made a number of methods be const correct and static where appropriate [Nathan Woods]
@@ -350,8 +383,6 @@ Source Changes
 -segaybd.cpp: Read inputs through 315-5296 [AJR]
 
 -segajw.cpp: Use 315-5296 for I/O [AJR]
-
--pet_rom.xml: Added KeyChip. [Andy Grady]
 
 -Changes to make get_default_card_software() less stupid [Nathan Woods]
  * The goals with this change is to make get_default_card_software() a bit more standalone by making it a const method that does not
@@ -375,10 +406,6 @@ Source Changes
 
 -ds1205: Add Dallas DS1205 Multikey [Carl]
 
--[thomson] fix regressions to (legacy) floppy support (#2224) [Antoine Miné]
- * [thomson] fix legacy floppy support
- * [thomson] more (legacy) floppy fixes
-
 -segaybd.cpp, srallyc: Add OKI MSM6253 device [AJR]
 
 -hp9845: driver for HP9845T added (in collaboration with A.Kueckes) [fulivi]
@@ -386,8 +413,6 @@ Source Changes
 -hphybrid: hopefully fixed a super-subtle race condition in 9845T video hw. [fulivi]
 
 -hp9845: fixed a race condition in 45T. A little cleanup. [fulivi]
-
--naomi.cpp: mushik2e appeared 3in1 Mushiking II, III and III+ [MetalliC]
 
 -Redumped Knights of Valour 3 HD (V105) [Peter Wilhelmsen, The Dumping Union]
 
@@ -483,12 +508,6 @@ Source Changes
  * Restore Coin 2 inputs to f1lap, radm, radr, slipstrm
  * Identify onboard service inputs and restore them to practically all games
 
--acchi.cpp: promoted to working state [David Haywood]
- * added scantimer interrupt, inputs work in game.
- * added video banking.
- * added an NMK112 for sound banking, might not be hooked up correctly, difficult to know without understanding Japanese.
- * oki frequencies etc. need verifying on pcb.
-
 -Workaround for scenarios where both the command line and an INI specify an image option This is a hack; see commentary within the
  code.  I intend to fix this "for real" when emu_options become more self contained [npwoods]
 
@@ -523,11 +542,6 @@ Source Changes
 
 -Made a number of device_image_interface members private This also fixes a number of get_default_card_software() implementations
  that were accessing m_file incorrectly [npwoods]
-
--[thomson] fix regressions to (legacy) floppy support Floppy images in the Thomson drivers have stopped working for some time. The
- code (mostly) uses legacy floppy images. Ideally, it should be updated to the new floppy image support. The floppy controller code
- also needs an overhaul (move code into modern devices, move floppy image creation code into the floppy image format and remove
- redundant code). This is some work. In the meantime, this PR fixes the legacy code. [antoinemine]
 
 -Changes to make get_default_card_software() less stupid The goals with this change is to make get_default_card_software() a bit
  more standalone by making it a const method that does not mutate the state of the device_image_interface.  This is done by passing
@@ -593,11 +607,6 @@ Source Changes
  * This should be considered a very risky change, and scrutiny/feedback is welcome.  In particular, there seems to be functionality
     surrounding device bioses that I'm not 100% sure how it works; the syntax seems to imply that it only works on slot devices.
 
--8051 MCU family core fix : Fix the indirect memory access opcodes dec… 8051 MCU family core fix : Fix the indirect memory access
- opcodes dec, inc and xch_a. [jfdelnero]
- * Indirect access can't touch the SFR and must point to the extra memory above 0x80. This probably fix many machines using this
-    MCU.
-
 -uml : add case for parameter PTYPE_CODE_LABEL in uml instruction disassembly [Happy-yappH]
 
 -vicdual: add 97269-P-B and 97271-P daughterboards for nsub [SailorSat]
@@ -630,27 +639,12 @@ Source Changes
 
 New machines added or promoted from NOT_WORKING status
 ------------------------------------------------------
-pce_tourvision.xml: Dragon Egg!  [system11]
-Zhan Qi - Chinese Battle Chess (Tw) [system11]
 Create device_palette_interface, which takes over most functionality from palette_device except for the initialization/decoding
   routines and RAM interface. [AJR]
 Update screen_device and device_gfx_interface to use a device_palette_interface object rather than a palette_device. This
   necessitates slight alterations to a few drivers and devices. [AJR]
 Modify v9938 and v9958 to use the new device_palette_interface rather than a subdevice. This entails breaking a cyclic dependency
   between device_video_interface and screen_device for this case. [AJR]
-ibm5150: Prince of Persia v1.0 [ArcadeShadow]
-ibm5170: Monkey Island 2: LeChuck's Revenge, Space Quest V: The Next Mutation [ArcadeShadow]
-ibm5150: Golden Axe, Home Alone [ArcadeShadow]
-ibm5170: Gods, Indiana Jones and the Fate of Atlantis, The Legend of Kyrandia [ArcadeShadow]
-coco_cart: Added Super LOGO and removed all Dragon cartridges [Nigel Barnes]
-dragon_cart: Moved all Dragon cartridges from coco_cart [Nigel Barnes]
-dragon_cass: All known cassette dumps [Nigel Barnes]
-dragon_flop: All known floppy dumps [Nigel Barnes]
-dragon_flex: FLEX System and other Compusense FLEX releases [Nigel Barnes]
-dragon_os9: OS-9, BASIC09, C, Dynacalc, Pascal, RMS, Stylograph [Nigel Barnes]
-dgnalpha_flop: OS-9, NitrOS9, C, Dynacalc, Pascal, RMS, Stylograph, etc. [Nigel Barnes]
-bbcb_cass: Added Pro Word, 3D-Wars, Football Director and other games/utilities [Nigel Barnes]
-phc25_cass: Mostly official releases from Sanyo [Nigel Barnes]
 Hi, [fulivi]
 this set of commits implements the HP9845T driver. [fulivi]
 The main feature of this machine from the 9845 line was the hardware-accelerated monochromatic graphic video (HP98780A). [fulivi]
@@ -664,46 +658,3 @@ Update screen_device and device_gfx_interface to use a device_palette_interface 
   necessitates slight alterations to a few drivers and devices. [ajrhacker]
 Modify v9938 and v9958 to use the new device_palette_interface rather than a subdevice. This entails breaking a cyclic dependency
   between device_video_interface and screen_device for this case. [ajrhacker]
-
-
-New clones added or promoted from NOT_WORKING status
-----------------------------------------------------
-Also more work clarifying the various versions, thanks to Merit documentation. [R. Belmont]
-Mach Breakers (World, MB2) [caius, Silvio Grazini, The Dumping Union]
-
-
-New WORKING software list additions
------------------------------------
-ibm5150: Golden Axe, Home Alone, Prince of Persia v1.0 [ArcadeShadow]
-ibm5170: Gods, Indiana Jones and the Fate of Atlantis, The Legend of Kyrandia, Monkey Island 2: LeChuck's Revenge,
-  Space Quest V: The Next Mutation [ArcadeShadow]
-ibm5150, ibm5170: Various alternate sets [Justin Kerk]
-ibm5170: Borland Quattro Pro 3.0 (German), Borland Quattro Pro 5.0 (German), Borland Turbo Basic 1.0 (German),
-  Borland Turbo Pascal 4.0, Borland Turbo Pascal 6.01 (German) [darkstar]
-
-
-New NOT_WORKING software list additions
----------------------------------------
-
-
-Translations added or modified
-------------------------------
-
-
-Comparing 0.184 (mame0184) to 0.184 (mame0184-414-ga19e42c)
-
-Renames
-tokyocop -> tokyocopi Tokyo Cop (Italy)
-gnwmndon -> gnw_dm53 Game & Watch: Mickey & Donald
-sbm -> sbmj Sonic Blast Man (Japan)
-
-New working clones
-------------------
-Mach Breakers - Numan Athletics 2 (Japan, MB1)
-
-Machines promoted to working
-----------------------------
-N-Sub (upright)
-Soreike Kokology Vol. 2 - Kokoro no Tanteikyoku
-
-
