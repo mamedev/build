@@ -252,8 +252,6 @@ Source Changes
 -Fixed a bug that caused "Switch Item Ordering" in the software list menu to dupe entries [Nathan Woods]
  * This was MT#6402
 
--Changed a lookup within the softlist code to use std::find_if() [Nathan Woods]
-
 -Refactoring in response to MT#6531 [Nathan Woods]
  * Prior to this change, options for images and slots were stored in the emu_options collection.  Anything that might restart the
     emulation (such as slot changes and images that reset on load) had to manipulate the emu_options structure directly.  The
@@ -265,6 +263,7 @@ Source Changes
     trying to subvert the core_options system.
  * This is how MT#6531 was fixed; now when diimage.cpp sees an image that resets on load, it just modifies the image_options
     structure and forces a reset.  This allowed some further cleanups to happen within diimage.
+ * The various implementations of get_default_card_software() were overhauled
  * This should be considered a very risky change, and scrutiny/feedback is welcome.  In particular, there seems to be functionality
     surrounding device bioses that I'm not 100% sure how it works; the syntax seems to imply that it only works on slot devices.
 
@@ -303,11 +302,11 @@ Source Changes
 
 -nes.xml: new dumps Adan y Eva [hashes were known, but ROMs surfaced on No-Intro] AV Super Real Pachinko [Frank Cifaldi]
 
--Introduced an 'util::arbitrary_clock' template class, to represent a clock that "knows" when the epoch starts (#2010) [npwoods]
+-Introduced an 'util::arbitrary_clock' template class, to represent a clock that "knows" when the epoch starts (#2010) [Nathan Woods]
  * Introduced an 'util::arbitrary_clock' template class, to represent a clock that "knows" when the epoch starts
  * Also:
  * Converted the NTFS filetime code to use util::arbitrary_clock
- * Converted the Mac datetime code to use util::atribrary_clock
+ * Converted the Imgtool Mac datetime code to use util::atribrary_clock
  * This is in preparation for a bigger change to Imgtool where I eliminate usage of time_t
 
 -Fixed a pedantic MSVC warning in dipalette.h [Nathan Woods]
@@ -316,13 +315,6 @@ Source Changes
 
 -decocass.cpp: Correct missile colors for Highway Chase and Astro Fantasia [AJR]
 
--Fixed some regressions introduced in my recent refactoring related to software lists (#2217) [npwoods]
- * This fixes crashes invoked by the following command lines
- * mame nes zelda mame gamate cubeup
- * These had two independent causes.  The first crash was a consequence of open_image_file() doing something inappropriate required
-    by implementations of get_default_card_software().  The second crash was a failure to access image options moved outside the
-    core_options structure.
-
 -naomi.cpp: converted remaining bad CHD v4 to good v5, track1 and track2 length was restored based on known now data patterns
  [MetalliC]
 
@@ -330,38 +322,15 @@ Source Changes
 
 -triforce.cpp: converted bad CHD v4 to good v5, one bad dump left, will be redumped for real [MetalliC]
 
--Changed the validity checks to have its own emu_options [Nathan Woods]
- * This comes from a regression reported by Tafoid whereby the following command line:
- * mame coco wildcat
- * Would report the following error (which was not really fatal because it happened within validation):
- * Driver t4426 (file coco12.cpp): 1 errors, 0 warnings Errors: Fatal error Unknown slot option 'pak' in slot 'ext'
- * My changes to option processing changed emu_options to put image and slot options in their own arrays, and I expect those
-    image/slot options to be pertinent to the active driver.  However, driver validation was passing the emu_options associated with
-    the main emulation  to validation specific maching_config for other drivers.  This changes validate_one() to always use a fresh
-    emu_options with each individual validation.
-
 -chihiro.cpp: converted bad CHD v4 to good v5 [MetalliC]
 
 -segas24.cpp: Read inputs through 315-5296 [AJR]
-
--Made a number of methods be const correct and static where appropriate [Nathan Woods]
- * Also changed a few methods to return 'bool' when appropriate
 
 -segaybd.cpp: Read inputs through 315-5296 [AJR]
 
 -segajw.cpp: Use 315-5296 for I/O [AJR]
 
 -pet_rom.xml: Added KeyChip. [Andy Grady]
-
--Changes to make get_default_card_software() less stupid [Nathan Woods]
- * The goals with this change is to make get_default_card_software() a bit more standalone by making it a const method that does not
-    mutate the state of the device_image_interface.  This is done by passing in a small structure that encapsulates the minimum of
-    information that get_default_card_software() needs.
- * This also eliminates the need for device_image_interface::open_image_file()
- * I agree with Sarayan that get_default_card_software() is terrible and needs to ultimately go away.  This is a small step in that
-    direction.
- * Lastly, I don't care for the name of get_default_card_software_hook (or get_default_card_software() for that matter).  If anybody
-    has better ideas, let me know.
 
 -segaxbd.cpp: Rewrite CXD1095 as a device and also add it to megatech.cpp [AJR]
 
@@ -397,36 +366,9 @@ Source Changes
 
 -Add VS9209 I/O device for various Video System games [AJR]
 
--Fixes issues specifying image/slot options fron INI files (reported by Robbbert) (#2231) [npwoods]
- * This fix really doesn't go far enough.  I added hooks so that options specified at the command line can also be responded to when
-    parsed from INI files, but in the long run much of the logic that is currently in mame_options should go into emu_options so
-    that when an option is specified, all of the wacko logic around slot/image specification "just works" because it is encapsulated
-    within emu_options.
- * We have a release 11 days away; I want to be in stabilization mode.
-
--Changed validity_checker to keep a fresh emu_options for validation purposes (#2232) [npwoods]
- * Changed validity_checker to keep a fresh emu_options for validation purposes
- * This seems to solve the performance problems introduced by PR#2221 while keeping with that PR's goals of not using the "runtime"
-    emu_options for purposes of validation.
- * Sorry, I can't spell apparently...
-
 -Convert Sega Model 1 Sound Board and Z80-based Digital Sound Board to use proper UART-based serial interfaces [AJR]
 
 -Head Panic's nude/bikini pics are displayed after a level when set; more modesty means more clothes and vice versa [einstein95]
-
--More options refactoring [Nathan Woods]
- * This should address outstanding concerns with PR#2231.  I'm trying to turn emu_options into a self contained structure that
-    encapsulates behaviors related to options, including the gymnastics pertaining to image/slot loading and interactions with
-    get_default_card_software() and "just works".
- * When the MAME 0.186 development cycle starts up, I hope to take this further.  I want to make core_options::entry an abstract
-    base class so that the entries associated with image options and slot options can derive from it.  This will eliminate the
-    current need for emu_options to directly expose maps for image and slot options.
- * For now, I'm in stabilization mode, and I hope to get things working for a stable 0.185 release.
-
--Made a number of device_image_interface members private (#2227) [npwoods]
- * Made a number of device_image_interface members private
- * This also fixes a number of get_default_card_software() implementations that were accessing m_file incorrectly
- * Remove duplicate prototype
 
 -Fixed out of bounds issues in NeoGeo memory access [Nathan Woods]
  * The NeoGeo driver exposes a number of different memory regions as vectors.  Accessing the pointers was done through a
@@ -434,8 +376,6 @@ Source Changes
     scenarios.
  * This was reported by Robbbert in response to recent regressions (the command line was 'mame aes bjourney'), but it seems to be
     present in MAME 0.184.
-
--Pruned out some cruft in src/lib/util/options.[cpp|h] [Nathan Woods]
 
 -segas32.cpp: Input modernization, phase 1 [AJR]
  * Use I8255 or MSM6253 devices for most non-JAMMA inputs
@@ -445,23 +385,11 @@ Source Changes
 
 -hotrod: Read pedals through MSM6253 [AJR]
 
--Fixed a regression in the mandatory image check (#2243) [npwoods]
- * As a consequence of recent changes, we were not properly blocking the emulation from starting when a must_be_loaded() image had
-    an unspecified image.
-
 -kokoroj2: Correct inputs [AJR]
 
 -kokoroj2: Promote to WORKING (maybe) [AJR]
  * Find switch to disable CD & printer; game presumably works now, though rather imperfectly
  * Game name changed to agree with title screen
-
--Fixed an issue where reset_on_load images would not properly persist across emulation sessions (#2244) [npwoods]
-
--Workaround for scenarios where both the command line and an INI specify an image option (#2245) [npwoods]
- * This is a hack; see commentary within the code.  I intend to fix this "for real" when emu_options become more self contained
-
--Workaround for sibling disk image loading issue (#2246) [npwoods]
- * Gory details in the comments
 
 -jvs13551: Remove identical second halves of overdumped MCU PROMs [AJR]
 
@@ -474,10 +402,6 @@ Source Changes
 
 -namconb1.cpp: Corrected Coin inputs and added in Coin3 & Coin4 as needed [Brian Troha]
 
--Workaround for issue where the canonical instance_name for a device was lost (#2248) [npwoods]
- * This is a hack; details are in the source code.  I felt that it was too late in the 0.185 release cycle to do anything intrusive.
-    I intend to fix this "for real" when image/slot option morphing is encapsulated within emu_options.
-
 -segas32.cpp: Input modernization, phase 2 [AJR]
  * Use Sega 315-5296 device for primary I/O
  * Restore Coin 2 inputs to f1lap, radm, radr, slipstrm
@@ -489,83 +413,21 @@ Source Changes
  * added an NMK112 for sound banking, might not be hooked up correctly, difficult to know without understanding Japanese.
  * oki frequencies etc. need verifying on pcb.
 
--Workaround for scenarios where both the command line and an INI specify an image option This is a hack; see commentary within the
- code.  I intend to fix this "for real" when emu_options become more self contained [npwoods]
-
--Fixed a regression in the mandatory image check As a consequence of recent changes, we were not properly blocking the emulation
- from starting when a must_be_loaded() image had an unspecified image. [npwoods]
-
--Pruned out some cruft in src/lib/util/options.[cpp|h] [npwoods]
-
 -Fixed out of bounds issues in NeoGeo memory access The NeoGeo driver exposes a number of different memory regions as vectors.
  Accessing the pointers was done through a '&vector[0]' pattern.  This caused problems when the region was size zero; I changed the
- code to return null pointers in these scenarios. [npwoods]
+ code to return null pointers in these scenarios. [Nathan Woods]
  * This was reported by Robbbert in response to recent regressions (the command line was 'mame aes bjourney'), but it seems to be
     present in MAME 0.184.
-
--More options refactoring This should address outstanding concerns with PR#2231.  I'm trying to turn emu_options into a self
- contained structure that encapsulates behaviors related to options, including the gymnastics pertaining to image/slot loading and
- interactions with get_default_card_software() and "just works". [npwoods]
- * When the MAME 0.186 development cycle starts up, I hope to take this further.  I want to make core_options::entry an abstract
-    base class so that the entries associated with image options and slot options can derive from it.  This will eliminate the
-    current need for emu_options to directly expose maps for image and slot options.
- * For now, I'm in stabilization mode, and I hope to get things working for a stable 0.185 release.
-
--Changed validity_checker to keep a fresh emu_options for validation purposes This seems to solve the performance problems
- introduced by PR#2221 while keeping with that PR's goals of not using the "runtime" emu_options for purposes of validation.
- [npwoods]
-
--Fixes issues specifying image/slot options fron INI files (reported by Robbbert) This fix really doesn't go far enough.  I added
- hooks so that options specified at the command line can also be responded to when parsed from INI files, but in the long run much
- of the logic that is currently in mame_options should go into emu_options so that when an option is specified, all of the wacko
- logic around slot/image specification "just works" because it is encapsulated within emu_options. [npwoods]
- * We have a release 11 days away; I want to be in stabilization mode.
-
--Made a number of device_image_interface members private This also fixes a number of get_default_card_software() implementations
- that were accessing m_file incorrectly [npwoods]
 
 -[thomson] fix regressions to (legacy) floppy support Floppy images in the Thomson drivers have stopped working for some time. The
  code (mostly) uses legacy floppy images. Ideally, it should be updated to the new floppy image support. The floppy controller code
  also needs an overhaul (move code into modern devices, move floppy image creation code into the floppy image format and remove
  redundant code). This is some work. In the meantime, this PR fixes the legacy code. [antoinemine]
 
--Changes to make get_default_card_software() less stupid The goals with this change is to make get_default_card_software() a bit
- more standalone by making it a const method that does not mutate the state of the device_image_interface.  This is done by passing
- in a small structure that encapsulates the minimum of information that get_default_card_software() needs. [npwoods]
- * This also eliminates the need for device_image_interface::open_image_file()
- * I agree with Sarayan that get_default_card_software() is terrible and needs to ultimately go away.  This is a small step in that
-    direction.
- * Lastly, I don't care for the name of get_default_card_software_hook (or get_default_card_software() for that matter).  If anybody
-    has better ideas, let me know.
-
--Made a number of methods be const correct and static where appropriate Also changed a few methods to return 'bool' when appropriate
- [npwoods]
-
--Changed the validity checks to have its own emu_options This comes from a regression reported by Tafoid whereby the following
- command line: [npwoods]
- * mame coco wildcat
- * Would report the following error (which was not really fatal because it happened within validation):
- * Driver t4426 (file coco12.cpp): 1 errors, 0 warnings Errors: Fatal error Unknown slot option 'pak' in slot 'ext'
- * My changes to option processing changed emu_options to put image and slot options in their own arrays, and I expect those
-    image/slot options to be pertinent to the active driver.  However, driver validation was passing the emu_options associated with
-    the main emulation  to validation specific maching_config for other drivers.  This changes validate_one() to always use a fresh
-    emu_options with each individual validation.
-
--Made a few random methods 'const' [npwoods]
-
--Fixed some regressions introduced in my recent refactoring related to software lists This fixes crashes invoked by the following
- command lines [npwoods]
- * mame nes zelda mame gamate cubeup
- * These had two independent causes.  The first crash was a consequence of open_image_file() doing something inappropriate required
-    by implementations of get_default_card_software().  The second crash was a failure to access image options moved outside the
-    core_options structure.
-
 -Fixed gtrfrk6m from booting up due to an incorrect flash card memory size 32MB works for gtrfrk5m as well. Thanks to
  @sakamoto-neko. [limyz]
 
--Fixed a pedantic MSVC warning in dipalette.h [npwoods]
-
--Changed a lookup within the softlist code to use std::find_if() [npwoods]
+-Changed a lookup within the softlist code to use std::find_if() [Nathan Woods]
 
 -nes improvements, mostly softlist related Mostly from the commit description: nes.xml: New dumps: Adan y Eva [hashes were known,
  but ROMs surfaced on No-Intro] AV Super Real Pachinko [Frank Cifaldi]
@@ -574,24 +436,6 @@ Source Changes
  * Note: while the Waixing games under waixing_sgzlz boot up fine under the new implementation of the board, can someone with good
     knowledge of the Chinese language check if cwdjz works properly? The game seems to boot up past the title screen, but I can't
     check any further.
-
--Fixed a bug that caused "Switch Item Ordering" in the software list menu to dupe entries This was MT#6402 [npwoods]
-
--Fixed issue that could cause bogus arguments to be reported incorrectly Examples:  'mame -whatever nes' would previously be
- reported as "Unrecognized argument: nes" [npwoods]
-
--Refactoring in response to MT#6531 Prior to this change, options for images and slots were stored in the emu_options collection.
- Anything that might restart the emulation (such as slot changes and images that reset on load) had to manipulate the emu_options
- structure directly.  The dynamic nature of images and slots meant that some elaborate conventions for setting up this collection
- had to be understood by clients. [npwoods]
- * After this change, emu_options has two new members (image_options and slot_options) that expose image and slot selections via an
-    std::map.  Anything that changes images or slots in a fashion that needs to persist across sessions needs to modify these data
-    structures.  Additionally, some of the hairly logic (e.g. - get_default_card_software) now records its data here rather than
-    trying to subvert the core_options system.
- * This is how MT#6531 was fixed; now when diimage.cpp sees an image that resets on load, it just modifies the image_options
-    structure and forces a reset.  This allowed some further cleanups to happen within diimage.
- * This should be considered a very risky change, and scrutiny/feedback is welcome.  In particular, there seems to be functionality
-    surrounding device bioses that I'm not 100% sure how it works; the syntax seems to imply that it only works on slot devices.
 
 -8051 MCU family core fix : Fix the indirect memory access opcodes dec… 8051 MCU family core fix : Fix the indirect memory access
  opcodes dec, inc and xch_a. [jfdelnero]
@@ -617,11 +461,6 @@ Source Changes
 -fmtowns_cd.xml & pc98_cd.xml: added several dumps FM Towns: F-BASIC386 Compiler v1.1 L21 Dennou Ehon - Kyouryuu no Sekai Hyper Oku
  no Hosomichi Soko-ban Perfect Youjuu Senki 2 - Reimei no Senshi [rzero9]
  * PC-98: Jorougumo - Jubaku no Dorei-tachi Ms. Detective File #1 - Iwami Ginzan Satsujin Jiken Youjuu Senki 2 - Reimei no Senshi
-
--[CoCo] Further cleanups in CoCo cartridge slot signal handling This is an attempt to make how the various signals on the CoCo
- cartridge slot (CART, NMI, HALT) a bit more standardized and less ad hoc, especially with the practice of Program Paks tying the
- CART line to Q.  This should fix some outstanding bugs in how these signals were passed around when using the CoCo Multi-Pak
- interface. [npwoods]
 
 -Ipt service button fixes & cleanups This is the first batch of IPT SERVICE button fixes & general minor button cleanups. Hard coded
  button assignments are replace with standard inputs where possible. The changes address issues listed here:
