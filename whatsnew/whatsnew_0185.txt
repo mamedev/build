@@ -146,6 +146,57 @@ Source Changes
  * Startup time decreased by 25% to 30% (netlists like pong/kidniki are parsed, analyzed and constructed in around 15 ms).
  * Run performance has improved by about 5%.
 
+-Fixed Gun Card logic in Double Dealer. [Angelo Salese]
+
+-Renamed the write-only -printer image instance type to -printout (the former conflicts with printer port in several drivers). [AJR]
+
+-osbexec: Added experimental support for RS232C serial ports. [AJR]
+
+-UI input map fixes: [AJR]
+ * Fixed a longstanding bug that prevented binding several ORed buttons to any input belonging to a non-root device.
+ * Fixed a visual glitch when assigning inputs to analog sequences.
+
+-decocass.cpp: Corrected missile colors for Highway Chase and Astro Fantasia. [AJR]
+
+-segas24.cpp, segaybd.cpp, segajw.cpp: Use 315-5296 for I/O. [AJR]
+
+-segaxbd.cpp: Rewrote CXD1095 as a device and also add it to megaplay.cpp, megatech.cpp, cyclwarr, and bigfight. [AJR]
+
+-segaybd.cpp, srallyc: Added OKI MSM6253 device. [AJR]
+
+-Added VS9209 I/O device for various Video System games. [AJR]
+
+-Converted Sega Model 1 Sound Board and Z80-based Digital Sound Board to use proper UART-based serial interfaces. [AJR]
+
+-segas32.cpp: Input modernization: [AJR]
+ * Use I8255 or MSM6253 devices for most non-JAMMA inputs.
+ * Separated service and test inputs in Multi-32 and twin-unit sets.
+ * arescue: Four coins are recognized, not just two.
+ * ga2: Use MB8421 device for V25 communications.
+ * orunners: Assign keys to some 2P inputs.
+ * Use Sega 315-5296 device for primary I/O.
+ * Restored Coin 2 inputs to f1lap, radm, radr, slipstrm.
+ * Identified onboard service inputs and restored them to practically all games.
+
+-hotrod: Read pedals through MSM6253 [AJR]
+
+-kokoroj2: Corrected inputs, changed name to match title screen. [AJR]
+ * Found switch to disable CD and printer, game presumably works now, albeit imperfectly.
+
+-jvs13551: Removed identical second halves of overdumped MCU PROMs. [AJR]
+
+-Created device_palette_interface mixin: [AJR]
+ * Provides most of the functionality from palette_device besides initialization/decoding routines and RAM interface.
+ * Updated screen_device and device_gfx_interface to use device_palette_interface rather than palette_device.
+ * Modified v9938 and v9958 to use device_palette_interface rather than a subdevice.
+
+-Seibu/TAD PROM stuff:
+ * toki: Added dumps of bipolar PROMs [caius]
+ * bloodbro: Added dump of bipolar PROM [Andreas Naive]
+ * dynduke, raiden, skysmash, cupsoc: Documented undumped PROMs for many sets. [AJR]
+
+-ds1205: Added Dallas DS1205 Multikey. [Carl]
+
 -popper: Fixed memory map, finished gfx rendering - game is fully working again. [Dirk Best]
 
 -dgnbeta: Added software list with OS-9 system and apps. [Nigel Barnes]
@@ -154,6 +205,29 @@ Source Changes
  * Removed tag lookups.
 
 -cesblit.cpp: Improved blit coordinates - fixes some missing graphics in e.g. galgame4. [Luca Elia]
+
+-Created 'util::arbitrary_clock' class template representing a clock with known epoch. [Nathan Woods]
+ * Converted NTFS filetime code and Imgtool Mac datetime code to use new template.
+
+-coco: Further cleanups in cartridge slot signal handling: [Nathan Woods]
+ * Attempts to make signals on the CoCo cartridge slot (CART, NMI, HALT) more standardized, particularly the practice of Program
+    Paks tying the CART line to Q.
+ * Should fix some outstanding bugs in how these signals were passed around when using the CoCo Multi-Pak interface.
+
+-Fixed issue that could cause bogus arguments to be reported incorrectly. [Nathan Woods]
+ * Example: 'mame -whatever nes' would previously be reported as "Unrecognized argument: nes".
+
+-Refactoring in response to MT6531: [Nathan Woods]
+ * Exposed emu_options image and slot selections as maps, store data that persists across sessions here rather than subverting
+    core_options.
+ * Overhauled various implementations of get_default_card_software().
+
+-Fixed out of bounds issues in NeoGeo memory access. [Nathan Woods]
+
+-Miscellaneous cleanup: [Nathan Woods]
+ * Fixed a pedantic MSVC warning in dipalette.h.
+ * Made a few random methods 'const'.
+ * Changed a lookup within the softlist code to use std::find_if().
 
 -dragon32: Corrected release year and company of Spanish clones. [Nigel Barnes]
  * Added joysticks to all machines, Added floppy sounds.
@@ -204,20 +278,34 @@ Source Changes
 
 -apple1: Fixed bug introduced when the cassette was slotified. [Colin Douglas Howell, R. Belmont]
 
+-chihiro: Added high level simulation of an2131sc - OutRun 2 runs with USB enabled and no patches. [Samuele Zannoli]
+
 -Turned pstring iterator into a real forward iterator that works with standard algorithms. [Vas Crabb]
 
 -Assume LLVM libc++ if __llvm__ is defined but __GLIBC__ is undefined (fixes bx build with MacPorts clang). [Vas Crabb]
 
 -Apply environment variable substitution to bgfx_path (github issue #2201). [Vas Crabb]
 
--naomi, triforce, chihiro: Converted remaining bad CHD v4 to good v5, track1 and track2 length was restored based on now-known data patterns.
- [MetalliC]
+-naomi, triforce, chihiro: Converted remaining bad CHD v4 to good v5, track1 and track2 length was restored based on now-known data
+ patterns. [MetalliC]
 
--naomi.cpp: Export mushik2e/mushi2eo are 3-in-1 Mushiking II, III and III+ game. [MetalliC]
+-naomi.cpp: Export mushik2e/mushi2eo are 3-in-1 Mushiking II, III and III+ games. [MetalliC]
 
 -thomson: Fixed regressions to (legacy) floppy support [Antoine Mine]
 
 -apollo: Fixed SIO regression. [Hans Ostermeyer]
+
+-Allow debugger 'dasm' command to traverse virtual spaces with unmapped holes. [Happy]
+
+-uml: Added case for parameter PTYPE_CODE_LABEL in UML instruction disassembly. [Happy]
+
+-vicdual: Added 97269-P-B and 97271-P daughterboards for nsub. [SailorSat]
+ * Confirmed PR-33 and PR-34 on the nsub motherboard - type is MMI 6331 (32*8).
+ * Added the 97269-P-B daughterboard - gradient is still a simulation, but uses the PROMs (starfield is still missing).
+
+-Implemented HP 9845T driver (9845 with HP987080A hardware-accelerated monochrome graphics). [fulivi, A.Kueckes]
+ * Fixed a race condition in 45T, added second tape drive (T14), 98035 module default SC is 9 now.
+ * hphybrid: Hopefully fixed a super-subtle race condition in 9845T video hardware.
 
 -acchi.cpp: Promoted to working state: [David Haywood]
  * Added scantimer interrupt, inputs work in game.
@@ -230,286 +318,46 @@ Source Changes
 
 -i86: Fixed JNL flags test (github issue #2200). [htjywf2008]
 
--naomi.cpp: Redumped "Initial D Arcade Stage Ver. 2 (Export) (GDS-0027)". [rtw]
+-namconb1.cpp: Corrected Coin inputs and added in Coins 3 and 4 as needed. [Brian Troha]
 
 -wirels60: Made P2 IO port optional. [RebeccaRGB]
 
+-sblaster: Save DSP state, fixed incessant popping before first use. [moralrecordings]
+
+-ymf262: Added save state support and slot pointer checks. [moralrecordings]
+
+-nes improvements: [kazblox]
+ * Marked edu2k48 as working, added notes about mouse titles.
+ * Made koko not use battery-backed WRAM as shown in PCB picture.
+ * waixing.cpp: Slight modernizations - waixing_sgzlz_device now implemented the way CaH4e3 does it, gets some titles working.
+
+-Fixed Head Panic modesty settings (more modesty means more clothing; nude/bikini pics are displayed after a level when set).
+ [einstein95]
+
+Input/service button fixes and clenups: [OzFalcon]
+ * realbrk.cpp: Removed service button hard-coded keycode assignment.
+ * hanaroku: Use standard hanafuda inputs and key assignments, remove hard-coded IPT_SERVICE assignments.
+ * aleck64.cpp: Corrected Service/Test Button assignments.
+ * suprstar: Remove hard-coded keycode assignments.
+ * ampoker2.cpp: Made various key assignments consistent.
+ * albazc.cpp: Assigned "Data Clear" to IPT_MEMORY_RESET, changed "Medal In" and "Pay Out" to standard buttons, changed lockout
+    "Key" to PORT_TOGGLE type, corrected "Payout" button to use "IPT_GAMBLE_PAYOUT", corrected  IPT_SERVICE assignments, set
+    IPT_SERVICE and Double up buttons as standard assignments, set "Ext In 1" & "Ext In 2" as IPT_OTHER.
+
+-Fixed gtrfrk6m boot by correcting Flash card memory size to 32MB, works for gtrfrk5m as well (thanks to @sakamoto-neko). [limyz]
+
+-naomi.cpp: Redumped "Initial D Arcade Stage Ver. 2 (Export) (GDS-0027)". [rtw]
+
+-Redumped Knights of Valour 3 HD (V105). [Peter Wilhelmsen, The Dumping Union]
+
 -Documented that Taito's T.T. New York New York ROMs match the Sigma set. [ShouTime]
+
+-Added later SuperMac Spec/8 III V1.3 NuBus ROM. [fink]
+
+-Fixed coverity CID 157540 and CID 15741: Missing comma resulting in unintentional string concatenation. [Peter Bortas]
 
 -sun4: Added SPARCstation IPX V2.3 and SPARCstation 1 V2.2 boot ROMs. [NekoEd]
 
--[CoCo] Further cleanups in CoCo cartridge slot signal handling [Nathan Woods]
- * This is an attempt to make how the various signals on the CoCo cartridge slot (CART, NMI, HALT) a bit more standardized and less
-    ad hoc, especially with the practice of Program Paks tying the CART line to Q.  This should fix some outstanding bugs in how
-    these signals were passed around when using the CoCo Multi-Pak interface.
-
--Make debugger 'dasm' command able to traverse virtual spaces with unmapped holes. [Happy]
- * Previously, 'dasm' would enter an infinite loop if it hit an unmapped pc, continuing to grow the output file until the program
-    was killed.
-
--Fixed writes to decrypted opcode memory [v3] (#2190) [PugsyMAME]
- * Fixes problem in the debugger and the cheat engine as currently the writes to opcode memory are not handled correctly, so
-    separated EXPSPACE_RAMWRITE and EXPSPACE_OPCODE case statements to allow opcode writes to access the correct memory.
- * Example: In flicky this will now disable cat collisions with the main sprite: maincpu.ob@3ac6=c3
- * This is the simplest way of updating this, EXPSPACE_OPCODE is now a copy of EXPSPACE_RAMWRITE except it uses AS_DECRYPTED_OPCODES
-    instead of AS_PROGRAM. This method means I've got a lot of work updating a lot of cheat file warnings ...but this is the correct
-    way of doing this.
-
--sblaster: save DSP state [Scott Percival]
-
--sblaster: fix incessant popping before first use [Scott Percival]
-
--ymf262: add save state support, slot pointer checks [Scott Percival]
-
--Add later SuperMac Spec/8 III V1.3 NuBus ROM [fink]
-
--Fix CID 157540: "Missing comma" resulting in unintentional string concatenation [Peter Bortas]
-
--Fix CID 157541: "Missing comma" resulting in unintentional string concatenation [Peter Bortas]
-
--chihiro: add high level simulation of an2131sc, OutRun 2 runs with usb enabled and no patches, press 1 to go ingame [Samuele Zannoli]
-
--uml : add case for parameter PTYPE_CODE_LABEL in uml instruction disassembly [Happy]
-
--vicdual: add 97269-P-B and 97271-P daughterboards for nsub (#2192) [Ariane Fugmann]
-
--Rename the write-only -printer image instance type to -printout. The former option name conflicts with RS232 printer ports in
- several drivers. [AJR]
-
--osbexec: Experimental support for RS232C serial ports (untested) [AJR]
-
--UI input map fixes [AJR]
- * Fix a longstanding bug that prevented binding several ORed buttons to any input belonging to a non-root device.
- * Fix a visual glitch when assigning inputs to analog sequences.
-
--Fixed the build (dst_wrapmask set but not used). [Robbbert]
-
--Fixed issue that could cause bogus arguments to be reported incorrectly [Nathan Woods]
- * Examples:  'mame -whatever nes' would previously be reported as "Unrecognized argument: nes"
-
--Fixed a bug that caused "Switch Item Ordering" in the software list menu to dupe entries [Nathan Woods]
- * This was MT#6402
-
--Refactoring in response to MT#6531 [Nathan Woods]
- * Prior to this change, options for images and slots were stored in the emu_options collection.  Anything that might restart the
-    emulation (such as slot changes and images that reset on load) had to manipulate the emu_options structure directly.  The
-    dynamic nature of images and slots meant that some elaborate conventions for setting up this collection had to be understood by
-    clients.
- * After this change, emu_options has two new members (image_options and slot_options) that expose image and slot selections via an
-    std::map.  Anything that changes images or slots in a fashion that needs to persist across sessions needs to modify these data
-    structures.  Additionally, some of the hairly logic (e.g. - get_default_card_software) now records its data here rather than
-    trying to subvert the core_options system.
- * This is how MT#6531 was fixed; now when diimage.cpp sees an image that resets on load, it just modifies the image_options
-    structure and forces a reset.  This allowed some further cleanups to happen within diimage.
- * The various implementations of get_default_card_software() were overhauled
- * This should be considered a very risky change, and scrutiny/feedback is welcome.  In particular, there seems to be functionality
-    surrounding device bioses that I'm not 100% sure how it works; the syntax seems to imply that it only works on slot devices.
-
--Ipt service button fixes & cleanups (#2085) [Michael.S.G]
- * realbrk.cpp Remove service button hard coded keycode assignment
- * Remove hard coded key assignment and use default mapping. Mame Testers Bug: http://mametesters.org/view.php?id=6489
- * albazc.cpp (hanaroku) Use standard inputs & key assignments.
- * Use standard inputs consistent with other hanafuda games. (hanafuda games usually have a mahjong panel for input) Remove hard
-    coded IPT_SERVICE assignments. Mame Testers Bug: http://mametesters.org/view.php?id=6489
- * aleck64.cpp Correct Service/Test Button assignments.
- * "Service Mode" which is assigned to IPT_SERVICE is not located in aleck64.cpp - No changes. "Service Button" is assigned to
-    IPT_SERVICE1 (Hard coded keycode removed & default used). "Test Button" is assigned to IPT_SERVICE2 (Test Button is not
-    displayed in Machine input....). Mame Testers Bug: http://mametesters.org/view.php?id=6489
- * amaticmg.cpp (suprstar) Remove hard coded keycode assignments
- * Remove hard coded key assignment and use default mapping. Mame Testers Bug: http://mametesters.org/view.php?id=6489
- * ampoker2.cpp Make various key assignments consistent
- * Cleanup different assignments for the same buttons across supported games while still keeping true to the Game Notes / Operation
-    instructions. 1. Make "Operator Key" consistent (Use IPT_GAMBLE_SERVICE) 2. Make "Supervisor Key" consistent (Use IPT_SERVICE2)
-    3. Make "Hopper 1" consistent (Use IPT_OTHER, KEYCODE_Y) 4. Make "Hopper Out" consistent (Use IPT_OTHER, KEYCODE_G) 5. Make
-    "Hopper Low" consistent (Use IPT_OTHER, KEYCODE_H) 6. Make "Return Line" consistent (Use IPT_OTHER, KEYCODE_J) 7. Make "Coin
-    Refill" consistent (Use IPT_OTHER, KEYCODE_R) 8. Make "Payout" consistent (Use IPT_GAMBLE_PAYOUT) 9. Make "TILT" consistent (Use
-    IPT_TILT) 10. Make "Double" consistent (Use IPT_GAMBLE_D_UP)
- * Mame Testers Bug: http://mametesters.org/view.php?id=6489
- * albazc.cpp: Assign "Data Clear" to IPT_MEMORY_RESET
- * Assign "Data Clear" to IPT_MEMORY_RESET
- * albazc.cpp Change "Medal In" & "Pay Out" to standard buttons
- * Change "Medal In" & "Pay Out" to standard gamble service buttons (Previously standard service buttons). Change Lockout "Key" to
-    PORT_TOGGLE type.
- * albazc.cpp Correct "Payout" button to use "IPT_GAMBLE_PAYOUT".
- * Payout operation has been clarified and noted at start of driver. Correct "Payout" button to use "IPT_GAMBLE_PAYOUT".
- * albazc.cpp Add Todo: Hookup hopper & Addresses.
- * Add Hookup hopper to to do list. Add hopper activity addresses to notes.
- * albazc.cpp Correct  IPT_SERVICE assignments
- * Rework PR to merge with commit https://github.com/mamedev/mame/commit/0bc96f38f1a2eb1e098882e474f9604ba905d972 Set IPT_SERVICE &
-    Double up buttons as standard assignments. Set "Ext In 1" & "Ext In 2" as IPT_OTHER.
-
--nes.xml: new dumps Adan y Eva [hashes were known, but ROMs surfaced on No-Intro] AV Super Real Pachinko [Frank Cifaldi]
-
--Introduced an 'util::arbitrary_clock' template class, to represent a clock that "knows" when the epoch starts (#2010) [Nathan Woods]
- * Introduced an 'util::arbitrary_clock' template class, to represent a clock that "knows" when the epoch starts
- * Also:
- * Converted the NTFS filetime code to use util::arbitrary_clock
- * Converted the Imgtool Mac datetime code to use util::atribrary_clock
- * This is in preparation for a bigger change to Imgtool where I eliminate usage of time_t
-
--Fixed a pedantic MSVC warning in dipalette.h [Nathan Woods]
-
--Fixed gtrfrk6m from booting up due to an incorrect flash card memory size. 32MB works for gtrfrk5m as well. (#2214) [limyz]
-
--decocass.cpp: Correct missile colors for Highway Chase and Astro Fantasia [AJR]
-
--Made a few random methods 'const' [Nathan Woods]
-
--segas24.cpp: Read inputs through 315-5296 [AJR]
-
--segaybd.cpp: Read inputs through 315-5296 [AJR]
-
--segajw.cpp: Use 315-5296 for I/O [AJR]
-
--pet_rom.xml: Added KeyChip. [Andy Grady]
-
--segaxbd.cpp: Rewrite CXD1095 as a device and also add it to megatech.cpp [AJR]
-
--cyclwarr, bigfight: Read inputs through CXD1095 device [AJR]
-
--megaplay.cpp: Use CXD1095 device for BIOS I/O [AJR]
-
--Added two new pinball sets [PinMAME]
-
--Fixed Gun Card logic in Double Dealer [Angelo Salese]
-
--ds1205: Add Dallas DS1205 Multikey [Carl]
-
--segaybd.cpp, srallyc: Add OKI MSM6253 device [AJR]
-
--hp9845: driver for HP9845T added (in collaboration with A.Kueckes) [fulivi]
-
--hphybrid: hopefully fixed a super-subtle race condition in 9845T video hw. [fulivi]
-
--hp9845: fixed a race condition in 45T. A little cleanup. [fulivi]
-
--Redumped Knights of Valour 3 HD (V105) [Peter Wilhelmsen, The Dumping Union]
-
--hp9845: added second tape drive (T14) [fulivi]
-
--hp9845: 98035 module default SC is 9 now [fulivi]
-
--Add VS9209 I/O device for various Video System games [AJR]
-
--Convert Sega Model 1 Sound Board and Z80-based Digital Sound Board to use proper UART-based serial interfaces [AJR]
-
--Head Panic's nude/bikini pics are displayed after a level when set; more modesty means more clothes and vice versa [einstein95]
-
--Fixed out of bounds issues in NeoGeo memory access [Nathan Woods]
- * The NeoGeo driver exposes a number of different memory regions as vectors.  Accessing the pointers was done through a
-    '&vector[0]' pattern.  This caused problems when the region was size zero; I changed the code to return null pointers in these
-    scenarios.
- * This was reported by Robbbert in response to recent regressions (the command line was 'mame aes bjourney'), but it seems to be
-    present in MAME 0.184.
-
--segas32.cpp: Input modernization, phase 1 [AJR]
- * Use I8255 or MSM6253 devices for most non-JAMMA inputs
- * Separate service and test inputs in Multi-32 and twin-unit sets
- * arescue: Four coins are recognized, not just two ga2: Use MB8421 device for V25 communications orunners: Assign keys to some 2P
-    inputs
-
--hotrod: Read pedals through MSM6253 [AJR]
-
--kokoroj2: Correct inputs [AJR]
-
--kokoroj2: Promote to WORKING (maybe) [AJR]
- * Find switch to disable CD & printer; game presumably works now, though rather imperfectly
- * Game name changed to agree with title screen
-
--jvs13551: Remove identical second halves of overdumped MCU PROMs [AJR]
-
--Seibu/TAD PROM stuff [AJR]
- * toki: Add dumps of bipolar PROMs [caius]
- * bloodbro: Add dump of bipolar PROM [Andreas]
- * dynduke, raiden, skysmash, cupsoc: Document undumped PROMs for many sets
-
--new Mach Breakers clone added [briantro]
-
--namconb1.cpp: Corrected Coin inputs and added in Coin3 & Coin4 as needed [Brian Troha]
-
--segas32.cpp: Input modernization, phase 2 [AJR]
- * Use Sega 315-5296 device for primary I/O
- * Restore Coin 2 inputs to f1lap, radm, radr, slipstrm
- * Identify onboard service inputs and restore them to practically all games
-
--acchi.cpp: promoted to working state [David Haywood]
- * added scantimer interrupt, inputs work in game.
- * added video banking.
- * added an NMK112 for sound banking, might not be hooked up correctly, difficult to know without understanding Japanese.
- * oki frequencies etc. need verifying on pcb.
-
--Fixed out of bounds issues in NeoGeo memory access The NeoGeo driver exposes a number of different memory regions as vectors.
- Accessing the pointers was done through a '&vector[0]' pattern.  This caused problems when the region was size zero; I changed the
- code to return null pointers in these scenarios. [Nathan Woods]
- * This was reported by Robbbert in response to recent regressions (the command line was 'mame aes bjourney'), but it seems to be
-    present in MAME 0.184.
-
--[thomson] fix regressions to (legacy) floppy support Floppy images in the Thomson drivers have stopped working for some time. The
- code (mostly) uses legacy floppy images. Ideally, it should be updated to the new floppy image support. The floppy controller code
- also needs an overhaul (move code into modern devices, move floppy image creation code into the floppy image format and remove
- redundant code). This is some work. In the meantime, this PR fixes the legacy code. [antoinemine]
-
--Fixed gtrfrk6m from booting up due to an incorrect flash card memory size 32MB works for gtrfrk5m as well. Thanks to
- @sakamoto-neko. [limyz]
-
--Changed a lookup within the softlist code to use std::find_if() [Nathan Woods]
-
--nes improvements, mostly softlist related Mostly from the commit description: nes.xml: New dumps: Adan y Eva [hashes were known,
- but ROMs surfaced on No-Intro] AV Super Real Pachinko [Frank Cifaldi]
- * There's an extra note about GLK Book 48-in-1 if anyone wants to check and disassemble the WORD program to see how it's saving
-    things into the WRAM...
- * Note: while the Waixing games under waixing_sgzlz boot up fine under the new implementation of the board, can someone with good
-    knowledge of the Chinese language check if cwdjz works properly? The game seems to boot up past the title screen, but I can't
-    check any further.
-
--8051 MCU family core fix : Fix the indirect memory access opcodes dec… 8051 MCU family core fix : Fix the indirect memory access
- opcodes dec, inc and xch_a. [jfdelnero]
- * Indirect access can't touch the SFR and must point to the extra memory above 0x80. This probably fix many machines using this
-    MCU.
-
--uml : add case for parameter PTYPE_CODE_LABEL in uml instruction disassembly [Happy-yappH]
-
--vicdual: add 97269-P-B and 97271-P daughterboards for nsub [SailorSat]
- * EDIT* this is a followup to https://github.com/mamedev/mame/pull/2092 and https://github.com/mamedev/mame/pull/2124
- * EDIT*
- * confirmed PR-33 and PR-34 on the nsub motherboard. type is MMI 6331 (32*8)
- * added the 97269-P-B daughterboard. not complete - gradient is still a simulation, but now uses the PROMs starfield is still
-    completely missing.
- * reference image: http://images.arianchen.de/2017-01/030320171775.jpg wiring notes: http://files.arianchen.de/nsub/97269-P-B.txt
- * the 1024*4 proms are are one nybble-per-byte with the upper 4 bits being zero
- * PROMs: http://files.arianchen.de/nsub/s97269pb.zip
-
--Make debugger 'dasm' command able to traverse virtual spaces with unmapped holes. [Happy-yappH]
- * Previously, 'dasm' would enter an infinite loop if it hit an unmapped pc, continuing to grow the output file until the program
-    was killed.
-
--fmtowns_cd.xml & pc98_cd.xml: added several dumps FM Towns: F-BASIC386 Compiler v1.1 L21 Dennou Ehon - Kyouryuu no Sekai Hyper Oku
- no Hosomichi Soko-ban Perfect Youjuu Senki 2 - Reimei no Senshi [rzero9]
- * PC-98: Jorougumo - Jubaku no Dorei-tachi Ms. Detective File #1 - Iwami Ginzan Satsujin Jiken Youjuu Senki 2 - Reimei no Senshi
-
--Ipt service button fixes & cleanups This is the first batch of IPT SERVICE button fixes & general minor button cleanups. Hard coded
- button assignments are replace with standard inputs where possible. The changes address issues listed here:
- http://mametesters.org/view.php?id=6489 [OzFalcon]
-
-
-New machines added or promoted from NOT_WORKING status
-------------------------------------------------------
-Create device_palette_interface, which takes over most functionality from palette_device except for the initialization/decoding
-  routines and RAM interface. [AJR]
-Update screen_device and device_gfx_interface to use a device_palette_interface object rather than a palette_device. This
-  necessitates slight alterations to a few drivers and devices. [AJR]
-Modify v9938 and v9958 to use the new device_palette_interface rather than a subdevice. This entails breaking a cyclic dependency
-  between device_video_interface and screen_device for this case. [AJR]
-Hi, [fulivi]
-this set of commits implements the HP9845T driver. [fulivi]
-The main feature of this machine from the 9845 line was the hardware-accelerated monochromatic graphic video (HP98780A). [fulivi]
-The driver was written together with Ansgar Kueckes. [fulivi]
-I'm mailing the ROM images to the usual "code" e-mail. [fulivi]
-Thanks. [fulivi]
--F.Ulivi [fulivi]
-Create device_palette_interface, which takes over most functionality from palette_device except for the initialization/decoding
-  routines and RAM interface. [ajrhacker]
-Update screen_device and device_gfx_interface to use a device_palette_interface object rather than a palette_device. This
-  necessitates slight alterations to a few drivers and devices. [ajrhacker]
-Modify v9938 and v9958 to use the new device_palette_interface rather than a subdevice. This entails breaking a cyclic dependency
-  between device_video_interface and screen_device for this case. [ajrhacker]
+-Fixed writes to decrypted opcode memory space. [Pugsy]
+ * Separated EXPSPACE_RAMWRITE and EXPSPACE_OPCODE case statements to allow opcode writes to access the correct memory.
+ * Example: In flicky this will now disable cat collisions with the main sprite: maincpu.ob@3ac6=c3.
