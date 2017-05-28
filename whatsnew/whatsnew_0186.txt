@@ -13,20 +13,96 @@ MAMETesters Bugs Fixed
 - 06547: [Crash/Freeze] (tv990.cpp) All sets in tv990.cpp: [debug] Assert when starting emulation (Robbbert)
 - 06555: [Crash/Freeze] (apple2.cpp) All sets in apple2.cpp, apple2e.cpp: Mounting ezcgi9938 or ezgui9958 into any slot causes Fatal Error (AJR)
 - 06558: [Interface] agat7 and others: mame -verifyroms not working for agat7 and 129 other sets (Robbbert)
-- 06560: [Crash/Freeze] (coco3.cpp) All sets in coco12.cpp, coco3.cpp: Loading cartridges from softlists locks up emulator (npwoods)
+- 06560: [Crash/Freeze] (coco3.cpp) All sets in coco12.cpp, coco3.cpp: Loading cartridges from softlists locks up emulator (Nathan Woods)
+- 06575: [Debugger] DEBUGGER: MAME crashes when given the 'symlist' command in the debugger. (Nathan Woods)
 - 06587: [Sound] (model1.cpp) vf: Loss of Sound (AJR)
-
 
 
 Source Changes
 --------------
+-k054321: Implemented as a device [O. Galibert, Phil Bennett]
+
+-z180: Fixed obvious typo detected by Coverity, thanks Coverity. [O. Galibert]
+
+-Replace linenoise-ng with a simpler port that uses a different UTF8 parser. [Carl]
+
+-plugins/console: Improved suggested completions. [Carl]
+
+-ojankohs: Rewrote input handling: [Dirk Best]
+ * Added missing player 2 controls.
+ * Verified and removed non-existent keys from games.
+ * Added DIP switch locations to all games and identified some unknown DIP switces.
+ * Cleaned up and corrected code, and removed runtime tagmap lookups.
+
+-Hooked up PPI(s) for chinsan, igspoker, jackie, megaphx, thief and upscope. [Dirk Best]
+
+-chinsan: Merged with mayumi driver, general improvements and cleanup: [Dirk Best]
+ * Cleaned up inputs and added flip flop and statistics buttons.
+ * Identified coinage and demo sound DIP switches.
+ * Set YM2203 clock to a more likely 10MHz/8.
+ * Hooked up interrupt enable, flip screen and NVRAM.
+
+-thief: Verified XTALs and cleaned up machine configurations. [Dirk Best]
+
+-megaphx: Replaced PIC16C54 MCU simulation with emulation using existing dump. [Dirk Best]
+ * Also cleaned up DIP switches, added DIP locations, and addded documentation.
+
+-Added new SN54/74166 8-Bit Parallel-In/Serial-Out Shift Register device. [Dirk Best]
+
+-ym2203: Fixed crash on fatal errors. [Dirk Best]
+
+-emupal: Added error handling and allowed palette region name to be overridden. [Dirk Best]
+
+-Replaced some custom palette initialisation fuctions with appropriate standard callbacks. [Dirk Best]
+
+-ui: Added ability to select different tilemap categories in tilemap viewer with page up/down keys. [Dirk Best]
+
+-Added hopper-like mode to ticket dispenser device. [MetalliC]
+
+-Fixed graphics decode issues and improved palette generation in Dodge Man and Battle Cross. [Tomasz Slanina]
+
+-hcd62121: Improved rotate and shift instructions; identified COM and PORT registers; fixed unidasm configuration. [Wilbert Pol]
+
+-Wide-ranging modernisation/cleanup: [Vas Crabb]
+ * Moved static data (short name, full name, source file) out of devices and into device types.
+ * Moved state class out of MACHINE_CONFIG_START, eliminating need for MACHINE_CONFIG_FRAGMENT and MACHINE_CONFIG_DERIVED_CLASS.
+ * Made game drivers add machine configuration in the same way as any other device.
+ * Added support for machine configuration in device members, allowing many internal handlers to be made protected or private.
+ * Moved many constants used internally by devices out of headers and into source files.
+ * Converted many constants to scoped enums, and reduced scope of many constants and types.
+ * Made many callback setters forward the parameter
+ * Cleaned up many names that are reserved because they begin with _[A-Z] or contain two consecutive underscores.
+ * Gave many devices more descriptive names, and renamed some device types and classes with overly generic names.
+ * Untangled fantasy sound and Microprose 3D noise from the driver state classes.
+ * Converted DECO BSMT2000 ready callback from a function pointer to a device delegate.
+ * Made many devices use object finders for subdevices rather than doing tagmap lookups later.
+ * Started to disentangle TI-99 from TI-990 and organised stuff by bus type.
+ * Made some TI-99 buses use slot/card interfaces properly.
+ * Turned some of the FM, SID, SCSP DSP, EPIC12 and Voodoo cores into idiomatic C++.
+ * Factored out some boilerplate for YM chips with PSG.
+ * Made Z180 table allocation/setup a bit safer.
+ * Improved encapsualtion of Z80DART channels and SNES PPU.
+ * Converted generic keyboard and terminal to use a device delegate rather than WRITE8 since space/offset/mask aren't relevant.
+ * Made terminal device dynamically allocate buffer so derived devices (e.g. teleprinter) can specify size.
+ * Started to break out common parts of Samsung ARM SoC devices.
+ * Consolidated and de-duplicated forward declarations in src/emu, and removed some obsolete ones.
+ * Added #incude guards to many headers that were missing them, and made many existing ones consistent.
+ * Removed rarely used output and PTY interfaces from emu.h prefix header.
+
+-Improvements to auxiliary verbs: [Vas Crabb]
+ * Added support for device sets to -listroms (e.g. mpu401 or m68705p3).
+ * Added support for multiple names/patterns to -listroms, -verifyroms and -listxml.
+ * Added check that device short names don't exceed 32 characters in -validate.
+ * Made -listxml instantiate slot devices as children of slots rather than the root device.
+ * Improved performance of device type walk by at least two thirds.
+
+-Converted many devices to use machine configuration in member functions. [Vas Crabb, Ivan Vangelista]
+
+-exidy.cpp: Added PROMs from bootleg to mtrap sets as bad dumps. [Ivan Vangelista]
+
 -z80ne: Added software lists for disks and tapes [Reagan Roush]
 
 -Minor comment fix [Reagan Roush]
-
--UI: Add the ability to select different tilemap categories [Dirk Best]
- * This allows you to select different tilemap categories in the built-in tilemap viewer. The default is to render all categories
-    (same as before), but you can select to render only a specific tilemap category with the PAGE_UP and PAGE_DOWN keys.
 
 -Mechanism for devices to generate clocks for other devices [AJR]
  * Have set_unscaled_clock and set_clock_scale not call notify_clock_changed unless the device has been started.
@@ -50,8 +126,6 @@ Source Changes
 
 -added (partial) correct register mappings to HD6345 [bwodok]
 
--k054321: Implement as a device [O. Galibert, Phil Bennett]
-
 -z180: added support for DREQ, TEND signals; fixed dma0 count, DREQ handling (#2256) [BartmanAbyss]
 
 -N64, RSP, drc : Wrap PC to 12 bits in a few more places. [Happy]
@@ -69,11 +143,7 @@ Source Changes
 
 -via6522: refactored shifter supporting more fetures and fixed a few bugs [Joakim Larsson Edstrom]
 
--jackie: Hook up PPIs [Duke]
-
 -Fix MT 06555 [AJR]
-
--Fix obvious type detected by Coverity, thanks Coverity [Olivier Galibert]
 
 -via6522: Removed old code and cleaned up a bit [Joakim Larsson Edstrom]
 
@@ -96,16 +166,6 @@ Source Changes
 
 -Visible area fixed. [Jean-François DEL NERO]
 
--thief: Hook up PPI, verify XTALs, clean up machine configs [Dirk Best]
-
--Fixed graphics decode issues and improved palette generation in Dodge Man and Battle Cross. [Tomasz Slanina]
-
--megatech.cpp: Fix Free Play regression [AJR]
-
--upscope: Hook up PPI [Dirk Best]
-
--chinsan: Hook up PPI [Dirk Best]
-
 -Fixed an issue that could cause problems when loading reset_on_load devices (like cartridges) from softlists at runtime
  [Nathan Woods]
  * This was not guaranteed to cause a problem; the specific issue here was reported by mr_gw in the context of the CoCo, and the
@@ -116,21 +176,9 @@ Source Changes
 
 -Remove redundant DSWs (#2250) [Bad-A-Billy]
 
--chinsan: Inputs cleanup and add flip flop and statistics buttons [Dirk Best]
-
--chinsan: Use tilemap system for rendering, general driver cleanup [Dirk Best]
-
--chinsan: Identify coinage and demo sound dip switches [Dirk Best]
-
--BP1200: Mostly traced out the SM48D socket module. [Lord Nightmare]
+-megatech.cpp: Fix Free Play regression [AJR]
 
 -royalmah.cpp: redumped mjyarou, verified it only has 1 Z80 [Guru]
-
--chinsan: Set YM2203 clock to a more likely 10MHz/8, restore PCB number [Dirk Best]
-
--chinsan: Merge mayumi driver [Dirk Best]
- * Interrupt enable and flip screen hooked up for chinsan
- * NVRAM support for chinsan
 
 -Add support for Seiko S-29X90 16-bit EEPROMs [Luca Elia]
 
@@ -175,14 +223,8 @@ Source Changes
 
 -Fixed issue with the Emscripten port where the emulation would continue to run while paused. [Steven Hugg]
 
--Fixed a crash in the 'symlist' debugger command (MT#6575) [Nathan Woods]
-
--hcd62121: Improve rotate and shift instructions. Identified COM and PORT registers. Fixed unidasm config.  [Wilbert Pol]
-
 -Machines promoted to WORKING [AJR]
  * Poker Genius [AJR]
-
--igspoker: Hook up PPI [Dirk Best]
 
 -hh_tms1k.cpp fix typo [KEN WHITE]
 
@@ -192,6 +234,21 @@ Source Changes
  * This really needs _much_ more work
 
 -new Touchmaster Clones Added [briantro]
+
+-Add preliminary Sharp SM590 CPU core [Lord Nightmare, hap]
+
+-Replace sm590 adx handler with override since behavior differs slightly from sm510 [Lord Nightmare, hap]
+
+-Irem Audio: Got rid of gen_latch usage; fixed missing d7 on sound latch; fixed device_reset to correctly clear sound latch; fixed a
+ potential situation where sound cpu /IRQ could be incorrectly cleared [Lord Nightmare]
+
+-epos.cpp: Some corrections to rom names/comments and added rom types based on pcb pictures; added note that revngr84 is a newer set
+ rom-numbering wise than revenger is. [Lord Nightmare]
+
+-epos.cpp: Implemented Tristar 9000 hardware ay-3-8910 port A 'multiplexer', PSG REGISTERS test can (in theory) pass with
+ dipswitches set now. Switched Tristar 8000 hardware to use ay-3-8912 as shown on schematics. [Lord Nightmare]
+
+-BP1200: Mostly traced out the SM48D socket module. [Lord Nightmare]
 
 -Williams Special Chip 1&2: Add pinout diagram, and clarify the abbreviations to reduce confusion with similarly named chips. Fix a
  comment error about SC1 vs SC2 behavior. [Sean Riddle, Lord Nightmare]
@@ -294,8 +351,6 @@ Source Changes
 -Replaced the checksums with correct checksums. [Mark Riley]
  * The MCPX 1.0 ROM had the wrong checksums. The checksums included were from a known bad copy of the ROM.
 
--Add preliminary Sharp SM590 CPU core [Lord Nightmare, hap]
-
 -Changed 'int ignore_warnings' parameter on core_options::parse_ini_file() to be 'bool ignore_unknown_options' [Nathan Woods]
 
 -Improve Critter Crusher / Tatacot Gun Control [sjy96525]
@@ -310,21 +365,13 @@ Source Changes
 -seibucop.cpp: Fixed Legionnaire / Heated Barrel scenery walking bug (a different 138e is used) [Angelo Salese]
  * (out of whatsnew: pending promotion to working for both)
 
--Replace sm590 adx handler with override since behavior differs slightly from sm510 [Lord Nightmare, hap]
-
 -acchi.cpp: fixed audio [k2-git]
-
--taito_f3: added hacks to work around graphical issues [dink]
 
 -Fix bug that permanently disabled some UI search strings when they were cleared [AJR]
 
 -Copy longname, manufacturer, year, filetype, etc. for image info in all softlisted cases [AJR]
 
 -daytona: Add feedback driver board (including ROM) [AJR]
-
--Revert "taito_f3: added hacks to work around graphical issues [dink]" [Vas Crabb]
- * This patch was evidently poorly tested and broke title screens of things it was supposed to improve.
- * This reverts commit e103368214bf619ea6806247c29bf15c8682447b.
 
 -Improvements to romcmp [AJR]
  * Identify plain ASCII text files as such
@@ -351,9 +398,6 @@ Source Changes
 -Revert "Bug fix to -romident and aux verb cleanup (#2288)" [Vas Crabb]
  * This reverts commit 78bf804192f38d69fc9299dc7da724fb6a537f94.
 
--Irem Audio: Got rid of gen_latch usage; fixed missing d7 on sound latch; fixed device_reset to correctly clear sound latch; fixed a
- potential situation where sound cpu /IRQ could be incorrectly cleared [Lord Nightmare]
-
 -Bug fix to -romident and aux verb cleanup (take two) (#2299) [npwoods]
  * Resurrected auxverb_cleanup_and_romident_bugfix
  * Changed usage for -romident and minor cleanups
@@ -366,67 +410,9 @@ Source Changes
 
 -vegas: Converted vegas driver to use new PCI bus. [Ted Green]
 
--linenoise: replace linenoise-ng with a different port that is simpler and uses a different UTF8 parser [Carl] plugins/console:
- better completions [Carl]
-
 -Lua scripts cleanup. [dankan1890]
 
 -New Shiritsu Justice Gakuen clone [briantro]
-
--TMS3203x: RTPS should be RPTS -nw- [Philip Bennett]
-
--epos.cpp: Some corrections to rom names/comments and added rom types based on pcb pictures; added note that revngr84 is a newer set
- rom-numbering wise than revenger is. [Lord Nightmare]
-
--Move static data out of devices into the device types.  This is a significant change, so please pay attention. [Vas Crabb]
- * The core changes are:
- * Short name, full name and source file are no longer members of device_t, they are part of the device type
- * MACHINE_COFIG_START no longer needs a driver class
- * MACHINE_CONFIG_DERIVED_CLASS is no longer necessary
- * Specify the state class you want in the GAME/COMP/CONS line
- * The compiler will work out the base class where the driver init member is declared
- * There is one static device type object per driver rather than one per machine configuration
- * Use DECLARE_DEVICE_TYPE or DECLARE_DEVICE_TYPE_NS to declare device type.
- * DECLARE_DEVICE_TYPE forward-declares teh device type and class, and declares extern object finders.
- * DECLARE_DEVICE_TYPE_NS is for devices classes in namespaces - it doesn't forward-declare the device type.
- * Use  DEFINE_DEVICE_TYPE or DEFINE_DEVICE_TYPE_NS to define device types.
- * These macros declare storage for the static data, and instantiate the device type and device finder templates.
- * The rest of the changes are mostly just moving stuff out of headers that shouldn't be there, renaming stuff for consistency, and
-    scoping stuff down where appropriate.
- * Things I've actually messed with substantially:
- * More descriptive names for a lot of devices
- * Untangled the fantasy sound from the driver state, which necessitates breaking up sound/flip writes
- * Changed DECO BSMT2000 ready callback into a device delegate
- * Untangled Microprose 3D noise from driver state
- * Used object finders for CoCo multipak, KC85 D002, and Irem sound subdevices
- * Started to get TI-99 stuff out of the TI-990 directory and arrange bus devices properly
- * Started to break out common parts of Samsung ARM SoC devices
- * Turned some of FM, SID, SCSP DSP, EPIC12 and Voodoo cores into something resmbling C++
- * Tried to make Z180 table allocation/setup a bit safer
- * Converted generic keyboard/terminal to not use WRITE8 - space/offset aren't relevant
- * Dynamically allocate generic terminal buffer so derived devices (e.g. teleprinter) can specify size
- * Imporved encapsulation of Z80DART channels
- * Refactored the SPC7110 bit table generator loop to make it more readable
- * Added wrappers for SNES PPU operations so members can be made protected
- * Factored out some boilerplate for YM chips with PSG
- * toaplan2 gfx
- * stic/intv resolution
- * Video System video
- * Out Run/Y-board sprite alignment
- * GIC video hookup
- * Amstrad CPC ROM box members
- * IQ151 ROM cart region
- * MSX cart IRQ callback resolution time
- * SMS passthrough control devices starting subslots
- * I've smoke-tested several drivers, but I've probably missed something.  Things I've missed will likely blow up spectacularly with
-    failure to bind errors and the like.  Let me know if there's more subtle breakage (could have happened in FM or Voodoo).
- * And can everyone please, please try to keep stuff clean.  In particular, please stop polluting the global namespace.  Keep things
-    out of headers that don't need to be there, and use things that can be scoped down rather than macros. It feels like an uphill
-    battle trying to get this stuff under control while more of it's added.
-
--Fixed various issues that failed when compiling Vas' changes on MSVC [Nathan Woods]
- * Most of these appear to be typos that should be benign but due to MSVC bugs, are not benign
- * The dac.h 'bits' thing is just stupid
 
 -hiscore.dat: Updates [Leezer]
 
@@ -442,23 +428,13 @@ Source Changes
  * Starting a machine containing a list of the software from the Favorites menu, now determines the launch of the appropriate
     sub-menu with the list of software.
 
--epos.cpp: Implemented Tristar 9000 hardware ay-3-8910 port A 'multiplexer', PSG REGISTERS test can (in theory) pass with
- dipswitches set now. Switched Tristar 8000 hardware to use ay-3-8912 as shown on schematics. [Lord Nightmare]
-
--New device: SN54/74166 8-Bit Parallel-In/Serial-Out Shift Register [Dirk Best]
-
--megaphx: Remove PIC MCU simulation, emulate it instead [Dirk Best]
- * It's now emulated using the existing PIC16C54 dump
- * Proper 8255 PPI hookup
- * Clean up dip switches, add dip locations
- * Add documentation
+-Fixed various issues that failed when compiling Vas' changes on MSVC [Nathan Woods]
+ * Most of these appear to be typos that should be benign but due to MSVC bugs, are not benign
+ * The dac.h 'bits' thing is just stupid
 
 -Adding hack to fish hashpath option out of INI files prior to softlist evaluation [Nathan Woods]
  * eientei95 reported an error where the hashpath specified in INI files was not being honored in softlist evaluation.  This is a
     change to preprocess INI files for the sole purpose of finding the hashpath prior to evaluating softlists.
-
--exidy.cpp: added PROMs to the mtrap sets. These come from a bootleg board and I marked them as bad_dump, though I believe they'll
- be verified as correct. The Mouse Trap manual confirms it has 3 PROMs. [Ivan Vangelista]
 
 -Hp9845: Support for HPI floppy format (#2310) [fulivi]
  * hp9845: Support for HPI floppy format [F. Ulivi, A.Kückes]
@@ -490,18 +466,7 @@ Source Changes
 
 -Amiga: Use correctly sized bootroms for the A1000 [Guru]
 
--Support -listroms for devices (e.g. mpu401 or m68705p3) [Vas Crabb]
- * Also ~67% improvement of device walk in -verifyroms
-
--More auxiliary verb stuff: [Vas Crabb]
- * -validate complains if device shortnames exceed 32 characters
- * -listroms and -verifyroms accept multiple names/patterns
-
 -r9751: Add terminal keyboard callback [Brandon Munger]
-
--More usability improvements: [Vas Crabb]
- * Allow multiple patterns/names for -listxml
- * Fix some spurious errors from -listroms and -verifyroms with multiple patterns
 
 -Fixed a regression in -listmedia/-listslots [Nathan Woods]
  * The issue is that -listmedia/-listslots were not honoring command line options specified on the slot.  This works around the
@@ -514,17 +479,9 @@ Source Changes
 -Remove the minimum constraint for sleep, thus avoid choosing a seemingly arbitrary constant.
  [057a3dd61f99517a3afea0051a49cb27994f94d]
 
--Machine promoted to WORKING Hashire Patrol Car [MetalliC]
-
--add hopper-like mode to ticket dispenser device [MetalliC]
-
 -Fixed some inaccuracies in file names in lua scripts. [dankan1890]
 
 -Partially rewrite uPD4701 device and hook it up to a few Sega games [AJR]
-
--Fix crashes in -listxml in debug builds [Vas Crabb]
- * Make -listxml instantiate slot devices in slots rather than under the machine root
- * Use dynamic_cast rather than static_cast or downcast on parent device in TI-99 slot/card devices
 
 -calibr50: Add uPD4701A device [AJR]
 
@@ -540,34 +497,13 @@ Source Changes
 
 -wwallyj: Add uPD4701A devices [AJR]
 
--ym2203: Avoid crash if MAME fatalerrors [Dirk Best]
-
--emupal: Don't hardcode color PROM region name, add error handling [Dirk Best]
-
 -xbox/chihiro: usb devices are now slot devices [Samuele Zannoli]
-
--Replace some custom palette inits with the appropriate standard callback [Dirk Best]
-
--Goodbye MACHINE_CONFIG_FRAGMENT, it was nice knowing you. [Vas Crabb]
-
--There's no day like today.  This just follows up on the last commit: game drivers are less special special - they have
- configuration instantiated in the usual way. [Vas Crabb]
-
--let's use Zaccaria as a demo for machine config in members [Vas Crabb]
-
--get rid of mconfig trampoline in a few more devices, make handlers protected [Vas Crabb]
 
 -by68701.cpp: added missing ROM dump for flashgdnp1 [PinMAME]
 
 -Update luaengine.rst [Dan Amador]
 
 -taito_l.cpp: More MB8421, less HOLD_LINE (fixes sound in evilston) [AJR]
-
--general cleanup: [Vas Crabb]
- * move rarely-used output and pty interfaces out of emu.h
- * consolidate and de-duplicate forward declarations, also remove some obsolete ones
- * clean up more #include guard macros
- * scope down a few more things
 
 -interpro improvements, plus some naive scsi hacks (#2330) [Patrick Mackinlay]
  * Various InterPro changes:
@@ -612,19 +548,12 @@ Source Changes
 
 -ti99: Created bus gromport, split monster file gromport [Michael Zapf]
 
--Machines promoted to WORKING Microman Battle Charge Technical Bowling [MetalliC]
- * thanks Osso/Ivan for pointing similar to patocar medal cabinets
+-Machine promoted to WORKING Hashire Patrol Car [MetalliC]
 
--ojankohs: Rewrite input handling [Dirk Best]
- * Add missing player 2 controls
- * Verify and remove non-existing keys from games
- * Add dip switch locations to all games
- * Identify some of the unknown dip switches
- * Clean up and correct code
+-Machines promoted to WORKING Microman Battle Charge Technical Bowling [MetalliC]
+ * thanks 
 
 -segas18.cpp: dumped later ver of Shadow Dancer sound CPU ROM, document main program EPR labels [rtw]
-
--ojankohs: Remove tagmap lookups [Dirk Best]
 
 -model1.cpp: Implement workaround for race condition that caused vf to lose sound (MT #6587). This fix causes swa to show an error
  message before booting normally, due to the I/O board not being emulated properly in the first place. [AJR]
@@ -644,8 +573,6 @@ Source Changes
 
 -Netlist refactoring: [couriersud]
  * OPENMP refactored. All OPENMP operations are now templatized in pomp.h
-
--fix non-debug build [Vas Crabb]
 
 -New Machine Added [briantro]
 
@@ -824,10 +751,6 @@ Source Changes
  * Behavior checked from the Visual 6800 and the real hardware (goupil computer) http://www.visual6502.org/JSSim/expert-6800.html
  * This patch make the goupil g1 Basic working.
 
--hcd62121: Improve rotate and shift instructions. Identified COM and PORT registers. Fixed unidasm config.  [Wilbert Pol]
-
--Fixed a crash in the 'symlist' debugger command (MT#6575) [npwoods]
-
 -Remove starshp1 hack to restore correct behavior A very old (> 10 years?) hack seemed to clean up the way the ships explode in
  Atari Starship 1.  But this is different than the actual game behavior.  See this video of the way the ships behave when they are
  hit: https://youtu.be/-crXVuoKlL4?t=573  I'm pretty sure this is the way it used to work when I originally coded it from the
@@ -889,10 +812,6 @@ Source Changes
  * I found the Working Control for War : Final Assault and Road Burner in the Controls TEST.
 
 -DERIVED_CLOCK now updates in response to clock changes, and changed CoCo to use this mechanism [npwoods]
-
--UI: Add the ability to select different tilemap categories This allows you to select different tilemap categories in the built-in
- tilemap viewer. The default is to render all categories (same as before), but you can select to render only a specific tilemap
- category with the PAGE_UP and PAGE_DOWN keys. [startaq]
 
 -z80ne: Added software lists for disks and tapes [rdroush]
 
