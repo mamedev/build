@@ -572,7 +572,16 @@ Source Changes
 
 -basic VT03 support [David Haywood]
 
--ti99: Wrapped into namespaces; minor rearrangement [Michael Zapf]
+-ti99: Changes to peripheral handling [Michael Zapf]
+ * Major rearrangement of the bus/ti99 subtree; using namespaces now.
+   Moving all ti99 stuff from ti99x into the "internal" subtree.
+ * Big all-in-one file gromport.cpp split into separate device files,
+   introducing "gromport" as a bus of its own.
+ * Added console connector "ioport" with PEB as slot option. PEB will now
+   be plugged in, instead of being a subdevice; requiring update of slot
+   options for emulation start of TI-99/4/4A/8. No changes to Geneve and
+   TI-99/4P. ti99_4ev finds PEB plugged in as default, together with the EVPC
+   so that we have a default video output.
 
 -some support for extended sprite addressing used by cybar120 [David Haywood]
 
@@ -587,16 +596,12 @@ Source Changes
 
 -mrflea: Use PPIs for interboard communication and PIC for sub interrupt [AJR]
 
--ti99: Added console connector "ioport" with PEB as slot option [Michael Zapf]
-
 -Retired min/max in attotime.h, in favor of std::[min|max]() [Nathan Woods]
 
 -Fixed 2 bugs 1. If either a multipart softlist item was loaded, or a single-part item loaded into a system with more than one of
  the same media slot, then a reset would cause a fatal error. 2. If a non-existing image was listed in the ini, it would fatal error
  at start and there was no way to fix it except by hand-editing the ini file. This restores the previous behaviour of ejecting the
  bad image with the first error. [Robbbert]
-
--ti99: Created bus gromport, split monster file gromport [Michael Zapf]
 
 -Machine promoted to WORKING Hashire Patrol Car [MetalliC]
 
@@ -634,8 +639,6 @@ Source Changes
 -Fix issues identified by Vas and LordKale4: [couriersud]
  * made local netlists in Cheeky Mouse static
  * replace stdlib rand by 16 bit galois lfsr
-
--ti99: Change ioport default to peb for ti99_4ev, also add evpc automatically [Michael Zapf]
 
 -liberate.cpp: All PSGs are AY-3-8912A [AJR]
 
