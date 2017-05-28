@@ -12,7 +12,7 @@ MAMETesters Bugs Fixed
 - 06544: [Crash/Freeze] (didact.cpp) can09: [debug] Assert when starting emulation (Robbbert)
 - 06547: [Crash/Freeze] (tv990.cpp) All sets in tv990.cpp: [debug] Assert when starting emulation (Robbbert)
 - 06555: [Crash/Freeze] (apple2.cpp) All sets in apple2.cpp, apple2e.cpp: Mounting ezcgi9938 or ezgui9958 into any slot causes Fatal Error (AJR)
-- 06558: [Interface] agat7 and others: mame -verifyroms not working for agat7 and 129 other sets (Robbbert)
+- 06558: [Interface] agat7 and others: mame -verifyroms not working for agat7 and 129 other sets (unknown)
 - 06560: [Crash/Freeze] (coco3.cpp) All sets in coco12.cpp, coco3.cpp: Loading cartridges from softlists locks up emulator (Nathan Woods)
 - 06575: [Debugger] DEBUGGER: MAME crashes when given the 'symlist' command in the debugger. (Nathan Woods)
 - 06587: [Sound] (model1.cpp) vf: Loss of Sound (AJR)
@@ -226,20 +226,11 @@ Source Changes
 
 -Adding Doubutsu no Mori Card-e  (Series 1 and Series 2) [Shideravan]
 
--MT 06540, 6541, 06542. (sn76477 - unconnected resistor treated as invalid even though it's the initial value) (bshipb - infinite
- capacitance was specified) [Robbbert]
-
--MT 06544: (MCFG_MC6845_CHAR_WIDTH must be specified) [Robbbert]
-
--MT 06547: [Robbbert]
-
 -via6522: refactored shifter supporting more fetures and fixed a few bugs [Joakim Larsson Edstrom]
 
 -via6522: Removed old code and cleaned up a bit [Joakim Larsson Edstrom]
 
 -via6522: tuned shifter IRQ timing to be more cycle accurate [Joakim Larsson Edstrom]
-
--Fixed a few things found by Coverity. [Robbbert]
 
 -New machine support : The French Minitel 2 Terminal. (#2261) [Jean-Francois DEL NERO]
  * TS9347 variant support added
@@ -306,11 +297,6 @@ Source Changes
 
 -hh_tms1k.cpp fix typo [KEN WHITE]
 
--[Imgtool] Fix to MT#6576 (#2275) [npwoods]
- * [Imgtool] Fixed issue with 'listfilters' command
- * [Imgtool] Extremely basic fix to the Imgtool <==> CHD HD bridge
- * This really needs _much_ more work
-
 -new Touchmaster Clones Added [briantro]
 
 -Add preliminary Sharp SM590 CPU core [Lord Nightmare, hap]
@@ -362,6 +348,39 @@ Source Changes
 
 -acommand: Use tilemap device [AJR]
 
+-seattle: Update driver to new PCI bus system. [Ted Green]
+
+-iteagle: Added save states to iteagle driver. [Ted Green]
+
+-new Rastan Sega clone [briantro]
+
+-hp9845: text video of 45C improved [fulivi]
+
+-hp9845: improved graphic cursors of 45C & 45T [fulivi]
+
+-hp9845: implemented softkeys for 45C & 45T [fulivi]
+
+-hp9845: fixed a system freeze when loading memory tester from tape [fulivi]
+
+-hp9845: debug message cleanup [fulivi]
+
+-Hp9845: Support for HPI floppy format (#2310) [fulivi]
+ * hp9845: Support for HPI floppy format [F. Ulivi, A.Kueckes]
+
+-Hp9845: Support for HPI floppy format Hi, [fulivi]
+ * this PR introduces the handling of HPI floppy image format. This format is used to store the image of the HP-formatted 8" floppy
+    disks used in hp9895a drive. Thanks.
+
+-Hp9845: softkeys & video rendering improvements Hi, [fulivi]
+ * this PR introduces the handling of display softkeys in hp9845C & T emulation. It also improves the accuracy of the displayed
+    image of these systems. Thanks.
+
+-scyclone.cpp: promoted to working status [David Haywood]
+ * added sound. Discrete part missing;
+ * added save state support.
+
+-add Japan Dreamcast flash dump [rtw]
+
 -Overhaul to how MAME handles options (#2260) [npwoods]
  * This is an overhaul to how MAME handles options to provide a better foundation for what MAME is already doing in practice.
     Previously, core_options was designed to provide an input/output facility for reading options from the command line and INI
@@ -379,33 +398,74 @@ Source Changes
     discern between warnings and errors as needed.
  * Obviously this is a risky change; that's why this is being submitted at the start of the dev cycle.
 
--seattle: Update driver to new PCI bus system. [Ted Green]
-
--iteagle: Added save states to iteagle driver. [Ted Green]
-
--new Rastan Sega clone [briantro]
-
--hp9845: text video of 45C improved [fulivi]
-
--hp9845: improved graphic cursors of 45C & 45T [fulivi]
-
--hp9845: implemented softkeys for 45C & 45T [fulivi]
-
--hp9845: fixed a system freeze when loading memory tester from tape [fulivi]
-
--hp9845: debug message cleanup [fulivi]
-
--scyclone.cpp: promoted to working status [David Haywood]
- * added sound. Discrete part missing;
- * added save state support.
-
--add Japan Dreamcast flash dump [rtw]
-
 -Revert "Overhaul to how MAME handles options (#2260)" [Vas Crabb]
  * This reverts commit 536990e77b49ccc50ef275bfbf1018cc29c16154.
  * Conflicts: src/frontend/mame/mame.cpp
  * Sorry, but this change was half-baked.  It breaks a lot of existing functionality and clearly hasn't been tested in more than a
     tiny subset of use cases.  Please play this work back onto your own branch, and test it before submitting another PR.
+
+-Cleanups to src/frontend/mame/ui/slotopt.[cpp|h] [Nathan Woods]
+ * Did the following: 1.  Polished up residual traces of this code's pre-C++ heritage 2.  Moved completely private code to an
+    anonymous namespace 3.  Created device_slot_interface::slot_name() to wrap the pattern of taking the tag and removing the
+    initial colon
+
+-Bug fix to -romident and aux verb cleanup (#2288) [npwoods]
+ * Bug fix to -romident and aux verb cleanup
+ * Made the following changes: 1.  Fixed a bug where resolved slot/image options would choke -romident (reproducible in MAME 0.185
+    with 'mame64 -romident coco.zip') 2.  'mame64 -romident' no longer crashes (though it doesn't do anything useful) 3.  Changed
+    the aux verb functions to take 'const std::string &'
+ * Further cleanups to auxillary verb code, as per Vas
+ * Specifically: 1.  The commands themselves now take 'const std::vector<std::string> &' for their argument lists 2.
+    util::core_options now collects command arguments into a separate vector rather than treating them as unadorned arguments
+ * Vas Crabb feedback
+ * Now only using trim_spaces_and_quotes() when parsing INIs
+ * Vas pointed out that it is inappropriate to trim spaces and quotes when parsing command line options
+
+-Revert "Bug fix to -romident and aux verb cleanup (#2288)" [Vas Crabb]
+ * This reverts commit 78bf804192f38d69fc9299dc7da724fb6a537f94.
+
+-Bug fix to -romident and aux verb cleanup (take two) (#2299) [npwoods]
+ * Resurrected auxverb_cleanup_and_romident_bugfix
+ * Changed usage for -romident and minor cleanups
+ * Supporting auxverbs in any order
+ * The previous patch was supporting 'mame64 -listsource pacman' but not 'mame64 pacman -listsource'
+
+-Adding hack to fish hashpath option out of INI files prior to softlist evaluation eientei95 reported an error where the hashpath
+ specified in INI files was not being honored in softlist evaluation.  This is a change to preprocess INI files for the sole purpose
+ of finding the hashpath prior to evaluating softlists. [npwoods]
+
+-Fixed various issues that failed when compiling Vas' changes on MSVC [Nathan Woods]
+ * Most of these appear to be typos that should be benign but due to MSVC bugs, are not benign
+ * The dac.h 'bits' thing is just stupid
+
+-Adding hack to fish hashpath option out of INI files prior to softlist evaluation [Nathan Woods]
+ * eientei95 reported an error where the hashpath specified in INI files was not being honored in softlist evaluation.  This is a
+    change to preprocess INI files for the sole purpose of finding the hashpath prior to evaluating softlists.
+
+-Fixed various issues that failed when compiling Vas' changes on MSVC Most of these appear to be typos that should be benign but due
+ to MSVC bugs, are not benign [npwoods]
+ * The dac.h 'bits' thing is just stupid
+
+-Bug fix to -romident and aux verb cleanup (take two) Earlier I was handling 'mame64 -listsource pacman' but not 'mame64 pacman
+ -listsource' [npwoods]
+
+-Fixed a regression in -listmedia/-listslots [Nathan Woods]
+ * The issue is that -listmedia/-listslots were not honoring command line options specified on the slot.  This works around the
+    problem.
+
+-Changed 'int ignore_warnings' parameter on core_options::parse_ini_file() to be 'bool ignore_unknown_options' [npwoods]
+
+-Cleanups to src/frontend/mame/ui/slotopt.[cpp|h] Did the following: 1.  Polished up residual traces of this code's pre-C++ heritage
+ 2.  Moved completely private code to an anonymous namespace 3.  Created device_slot_interface::slot_name() to wrap the pattern of
+ taking the tag and removing the initial colon [npwoods]
+
+-Bug fix to -romident and aux verb cleanup Made the following changes: 1.  Fixed a bug where resolved slot/image options would choke
+ -romident (reproducible in MAME 0.185 with 'mame64 -romident coco.zip') 2.  'mame64 -romident' no longer crashes (though it doesn't
+ do anything useful) 3.  Changed the aux verb functions to take 'const std::string &' [npwoods]
+
+-Refactoring/cleanup to state load/save handling [npwoods]
+ * Changed running_machine::schedule_[load|save]() to take 'std::string &&' instead of 'const char *'
+ * Changed running_machine::saveload_schedule to be 'enum class'
 
 -namcos11.cpp: Let's call Star Sweep (STP2/VER.A) the Asia version [briantro]
  * Like all other "2" regions in System 11 driver. Plus there is no Japanese "Notice For use in Japan" warning.
@@ -413,11 +473,6 @@ Source Changes
 -wicat: Added floppy drive and attached software list (not working). [Nigel Barnes]
 
 -cgenie: Fixed loading roms from softlist in floppy interface [Nigel Barnes]
-
--Cleanups to src/frontend/mame/ui/slotopt.[cpp|h] [Nathan Woods]
- * Did the following: 1.  Polished up residual traces of this code's pre-C++ heritage 2.  Moved completely private code to an
-    anonymous namespace 3.  Created device_slot_interface::slot_name() to wrap the pattern of taking the tag and removing the
-    initial colon
 
 -Replaced the checksums with correct checksums. [Mark Riley]
  * The MCPX 1.0 ROM had the wrong checksums. The checksums included were from a known bad copy of the ROM.
@@ -450,30 +505,9 @@ Source Changes
  * Avoid buffer overruns
  * For calculating address masks, don't assume file size to be a power of 2
 
--Bug fix to -romident and aux verb cleanup (#2288) [npwoods]
- * Bug fix to -romident and aux verb cleanup
- * Made the following changes: 1.  Fixed a bug where resolved slot/image options would choke -romident (reproducible in MAME 0.185
-    with 'mame64 -romident coco.zip') 2.  'mame64 -romident' no longer crashes (though it doesn't do anything useful) 3.  Changed
-    the aux verb functions to take 'const std::string &'
- * Further cleanups to auxillary verb code, as per Vas
- * Specifically: 1.  The commands themselves now take 'const std::vector<std::string> &' for their argument lists 2.
-    util::core_options now collects command arguments into a separate vector rather than treating them as unadorned arguments
- * Vas Crabb feedback
- * Now only using trim_spaces_and_quotes() when parsing INIs
- * Vas pointed out that it is inappropriate to trim spaces and quotes when parsing command line options
-
--epos.cpp: added backup RAM to dealer, revngr84 and beastf [Angelo Salese]
-
--epos.cpp: added flip screen support [Angelo Sslese]
-
--Revert "Bug fix to -romident and aux verb cleanup (#2288)" [Vas Crabb]
- * This reverts commit 78bf804192f38d69fc9299dc7da724fb6a537f94.
-
--Bug fix to -romident and aux verb cleanup (take two) (#2299) [npwoods]
- * Resurrected auxverb_cleanup_and_romident_bugfix
- * Changed usage for -romident and minor cleanups
- * Supporting auxverbs in any order
- * The previous patch was supporting 'mame64 -listsource pacman' but not 'mame64 pacman -listsource'
+-epos.cpp: [Angelo Salese]
+ * added backup RAM to dealer, revngr84 and beastf
+ * added flip screen support
 
 -Emulation of Games Master Cartridge [tim lindner]
 
@@ -482,6 +516,8 @@ Source Changes
 -vegas: Converted vegas driver to use new PCI bus. [Ted Green]
 
 -Lua scripts cleanup. [dankan1890]
+
+-Fixed some inaccuracies in file names in lua scripts. [dankan1890]
 
 -New Shiritsu Justice Gakuen clone [briantro]
 
@@ -499,55 +535,48 @@ Source Changes
  * Starting a machine containing a list of the software from the Favorites menu, now determines the launch of the appropriate
     sub-menu with the list of software.
 
--Fixed various issues that failed when compiling Vas' changes on MSVC [Nathan Woods]
- * Most of these appear to be typos that should be benign but due to MSVC bugs, are not benign
- * The dac.h 'bits' thing is just stupid
-
--Adding hack to fish hashpath option out of INI files prior to softlist evaluation [Nathan Woods]
- * eientei95 reported an error where the hashpath specified in INI files was not being honored in softlist evaluation.  This is a
-    change to preprocess INI files for the sole purpose of finding the hashpath prior to evaluating softlists.
-
--Hp9845: Support for HPI floppy format (#2310) [fulivi]
- * hp9845: Support for HPI floppy format [F. Ulivi, A.Kueckes]
-
 -aristmk4, aristmk5, aristmk6 - extra sets and improved documentation [Heihachi_73] (#2300) [DavidHaywood]
-
--mame.lst update [David Haywood]
 
 -Fix video_manager::throttle_until_ticks (#2309) [057a3dd61f99517a3afea0051a49cb27994f94d]
  * Do not update m_average_oversleep if we overslept too much. This is still a partial fix, more investigation is needed when the
     system time jumps backward.
 
+-Relax the threshold to consider an oversleep as a system time change, in case of running on a heavily loaded system, as suggested
+ by cuavas. [057a3dd61f99517a3afea0051a49cb27994f94d]
+
+-Remove the minimum constraint for sleep, thus avoid choosing a seemingly arbitrary constant.
+ [057a3dd61f99517a3afea0051a49cb27994f94d]
+
 -fix mitchell.cpp nvram saving [D. Haywood]
 
 -mitchell.cpp : just use the finder method for nvram [David Haywood]
+
+-mitchell.cpp : just use the finder method for nvram since after the last submission we're now saving the whole ram and don't have
+ the provisional code to go back we can just use the built in finder rather than set_base [DavidHaywood]
+
+-fix mitchell.cpp nvram saving this must have been broken for a while, it was assuming that MAME used the CPU region as RAM for
+ 8-bit CPUs and that hasn't been an valid for a long time. (15+ years?)  As a result data wasn't being saved / restored properly at
+ all. [DavidHaywood]
+ * Corrado Tomaselli noticed this when playing with his Super Pang PCB, after replacing a hacked set with a proper original + Kabuki
+    battery he noticed the game no longer showed '8Mhz Original Board' on bootup.  This is because the battery also backs up at
+    least part of main RAM, and it only displays that string the first time it initializes main ram.
+ * The previous MAME code only tried to save 0x80 bytes of the RAM, with a different location for some games.  I've left that
+    behavior commented in case it turns out the original does only save that area, but it seems more likely it just backs up the
+    whole of the RAM.
 
 -m14.cpp: Revised PT Reach Mahjong, making it actually working [Angelo Salese]
  * Added ball and paddle screen drawing;
  * Added green background as per flyer pics;
  * Added reach button and updated input labels;
-
--m14.cpp: Added flip screen support [angelosa]
-
--Relax the threshold to consider an oversleep as a system time change, in case of running on a heavily loaded system, as suggested
- by cuavas. [057a3dd61f99517a3afea0051a49cb27994f94d]
+ * Added flip screen support [angelosa]
 
 -Amiga: Use correctly sized bootroms for the A1000 [Guru]
 
 -r9751: Add terminal keyboard callback [Brandon Munger]
 
--Fixed a regression in -listmedia/-listslots [Nathan Woods]
- * The issue is that -listmedia/-listslots were not honoring command line options specified on the slot.  This works around the
-    problem.
-
 -Have -listroms display a user-friendly message when no ROMs are required [AJR]
 
 -Add support for ULTRA ROM on the Heathkit H19 (#2313) [Mark Garlanger]
-
--Remove the minimum constraint for sleep, thus avoid choosing a seemingly arbitrary constant.
- [057a3dd61f99517a3afea0051a49cb27994f94d]
-
--Fixed some inaccuracies in file names in lua scripts. [dankan1890]
 
 -floppy: Fix for a segfault when emulating HP9895 drive [F.Ulivi]
 
@@ -598,15 +627,11 @@ Source Changes
 
 -Retired min/max in attotime.h, in favor of std::[min|max]() [Nathan Woods]
 
--Fixed 2 bugs 1. If either a multipart softlist item was loaded, or a single-part item loaded into a system with more than one of
- the same media slot, then a reset would cause a fatal error. 2. If a non-existing image was listed in the ini, it would fatal error
- at start and there was no way to fix it except by hand-editing the ini file. This restores the previous behaviour of ejecting the
- bad image with the first error. [Robbbert]
-
--Machine promoted to WORKING Hashire Patrol Car [MetalliC]
-
--Machines promoted to WORKING Microman Battle Charge Technical Bowling [MetalliC]
- * thanks 
+-Fixed 2 bugs: [Robbbert]
+ 1. If either a multipart softlist item was loaded, or a single-part item loaded into a system with more than one of
+ the same media slot, then a reset would cause a fatal error.
+ 2. If a non-existing image was listed in the ini, it would fatal error at start and there was no way to fix it except
+ by hand-editing the ini file. This restores the previous behaviour of ejecting the bad image with the first error.
 
 -segas18.cpp: dumped later ver of Shadow Dancer sound CPU ROM, document main program EPR labels [rtw]
 
@@ -696,19 +721,6 @@ Source Changes
 
 -r9751: Add terminal keyboard callback [bmunger]
 
--mitchell.cpp : just use the finder method for nvram since after the last submission we're now saving the whole ram and don't have
- the provisional code to go back we can just use the built in finder rather than set_base [DavidHaywood]
-
--fix mitchell.cpp nvram saving this must have been broken for a while, it was assuming that MAME used the CPU region as RAM for
- 8-bit CPUs and that hasn't been an valid for a long time. (15+ years?)  As a result data wasn't being saved / restored properly at
- all. [DavidHaywood]
- * Corrado Tomaselli noticed this when playing with his Super Pang PCB, after replacing a hacked set with a proper original + Kabuki
-    battery he noticed the game no longer showed '8Mhz Original Board' on bootup.  This is because the battery also backs up at
-    least part of main RAM, and it only displays that string the first time it initializes main ram.
- * The previous MAME code only tried to save 0x80 bytes of the RAM, with a different location for some games.  I've left that
-    behavior commented in case it turns out the original does only save that area, but it seems more likely it just backs up the
-    whole of the RAM.
-
 -Fix video_manager::throttle_until_ticks (#2309) Do not update m_average_oversleep if we overslept too much. This is still a partial
  fix, more investigation is needed when the system time jumps backward. [057a3dd61f99517a3afea0051a49cb27994f94d]
 
@@ -720,24 +732,10 @@ Source Changes
 
 -clones from Mathieu Patard [DavidHaywood]
 
--Hp9845: Support for HPI floppy format Hi, [fulivi]
- * this PR introduces the handling of HPI floppy image format. This format is used to store the image of the HP-formatted 8" floppy
-    disks used in hp9895a drive. Thanks.
- * -F.Ulivi
-
--Starting from the Favorites menu now starts the software list submenu (if necessary). Question outside the pull request: why are
- the previous commites counted that there is nothing to do with the PR? [dankan1890]
+-Starting from the Favorites menu now starts the software list submenu (if necessary). [dankan1890]
 
 -Games Master Cartridge slot device for the Color Computer Adds a new slot device to emulate the Games Master Cartridge developed by
  John Linville. [tlindner]
-
--Adding hack to fish hashpath option out of INI files prior to softlist evaluation eientei95 reported an error where the hashpath
- specified in INI files was not being honored in softlist evaluation.  This is a change to preprocess INI files for the sole purpose
- of finding the hashpath prior to evaluating softlists. [npwoods]
-
--Fixed various issues that failed when compiling Vas' changes on MSVC Most of these appear to be typos that should be benign but due
- to MSVC bugs, are not benign [npwoods]
- * The dac.h 'bits' thing is just stupid
 
 -linenoise work Linenoise-ng uses convertutf.cpp which apparently has a dodgy license and Debian removes it in their build.  It also
  is overly complex.  I'm replacing it with a simpler port that has an MIT licensed UTF8 parser and moving more completion logic into
@@ -748,9 +746,6 @@ Source Changes
 -aristmk4, aristmk5, aristmk6 - extra sets and improved documentation [Heihachi_73] (submitted on behalf of Heihachi_73, not my
  submission) [DavidHaywood]
 
--Bug fix to -romident and aux verb cleanup (take two) Earlier I was handling 'mame64 -listsource pacman' but not 'mame64 pacman
- -listsource' [npwoods]
-
 -audio fixed Audio is completely reversed. When the correct answer is red, "to up the white" sound played. [k2-git]
  * p.s: I think machine name is wrong. this is "pata pata panic"(ATLUS) not "Acchi Muite Hoi"
  * Please See also...(real machine photo) http://k1world2.seesaa.net/upload/detail/image/image-668f7-thumbnail2.jpg.html
@@ -758,28 +753,9 @@ Source Changes
 -Replaced the checksums with correct checksums. The MCPX 1.0 ROM had the wrong checksums. The checksums included were from a known
  bad copy of the ROM. [mark-riley]
 
--Changed 'int ignore_warnings' parameter on core_options::parse_ini_file() to be 'bool ignore_unknown_options' [npwoods]
-
--Cleanups to src/frontend/mame/ui/slotopt.[cpp|h] Did the following: 1.  Polished up residual traces of this code's pre-C++ heritage
- 2.  Moved completely private code to an anonymous namespace 3.  Created device_slot_interface::slot_name() to wrap the pattern of
- taking the tag and removing the initial colon [npwoods]
-
 -Improve Critter Crusher / Tatacot Gun Control [sjy96525]
 
--Bug fix to -romident and aux verb cleanup Made the following changes: 1.  Fixed a bug where resolved slot/image options would choke
- -romident (reproducible in MAME 0.185 with 'mame64 -romident coco.zip') 2.  'mame64 -romident' no longer crashes (though it doesn't
- do anything useful) 3.  Changed the aux verb functions to take 'const std::string &' [npwoods]
-
--Refactoring/cleanup to state load/save handling [npwoods]
- * Changed running_machine::schedule_[load|save]() to take 'std::string &&' instead of 'const char *'
- * Changed running_machine::saveload_schedule to be 'enum class'
-
 -New working machine added: Zone 60 (Jungle Soft / Ultimate Products (HK) Ltd) [RebeccaRGB]
-
--Hp9845: softkeys & video rendering improvements Hi, [fulivi]
- * this PR introduces the handling of display softkeys in hp9845C & T emulation. It also improves the accuracy of the displayed
-    image of these systems. Thanks.
- * -F.Ulivi
 
 -acommand: Use tilemap device [ajrhacker]
 
@@ -789,9 +765,17 @@ Source Changes
 
 -hh_tms1k.cpp fix typo Corrects spelling error [Dagarman]
 
+-[Imgtool] Fix to MT#6576 (#2275) [npwoods]
+ * [Imgtool] Fixed issue with 'listfilters' command
+ * [Imgtool] Extremely basic fix to the Imgtool <==> CHD HD bridge
+ * This really needs _much_ more work
+
 -[Imgtool] Fix to MT#6576 Two independent issues reported under MT#6576 [npwoods]
  * The 'listformats' command was broken
  * imghd.cpp (the Imgtool <==> CHD HD bridge) was pretty much completely broken (more work is needed here)
+
+-[Imgtool] Cleanups to validity code, and transitioned to std::wcerr Windows doesn't like mixing std::wc[out|err] and printf()
+ [npwoods]
 
 -Fix 6800 invalid instructions length / Program counter behavior. Fix invalid instructions length. Each 6800 invalid opcodes have a
  different behavior. This commit fix the PC increment of each invalid opcode. There is three groups of invalid opcodes : [jfdelnero]
@@ -817,9 +801,6 @@ Source Changes
  not guaranteed to cause a problem; the specific issue here was reported by mr_gw in the context of the CoCo, and the proximate
  issue (hanging) was in CoCo-specific code.   That said, this could cause problems elsewhere. [npwoods]
  * This was MT#6560
-
--[Imgtool] Cleanups to validity code, and transitioned to std::wcerr Windows doesn't like mixing std::wc[out|err] and printf()
- [npwoods]
 
 -Visible area fixed. [jfdelnero]
 
@@ -865,8 +846,6 @@ Source Changes
  * I found the Working Control for War : Final Assault and Road Burner in the Controls TEST.
 
 -DERIVED_CLOCK now updates in response to clock changes, and changed CoCo to use this mechanism [npwoods]
-
--z80ne: Added software lists for disks and tapes [rdroush]
 
 
 New machines added or promoted from NOT_WORKING status
@@ -999,6 +978,10 @@ Mahjong Yarou [BET] (Japan, set 1)
 Microman Battle Charge (J 990326 V1.000)
 Technical Bowling (J 971212 V1.000)
 The Dealer
+-Machine promoted to WORKING Hashire Patrol Car [MetalliC]
+
+-Machines promoted to WORKING Microman Battle Charge Technical Bowling [MetalliC]
+
 
 Clones promoted to working
 --------------------------
