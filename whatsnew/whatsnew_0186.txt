@@ -5,7 +5,7 @@
 MAMETesters Bugs Fixed
 ----------------------
 - 00599: [DIP/Input] (m72.cpp) poundfor: You can't move the arrows on the menu screens to choose the other boxer or game. (AJR)
-- 06103: [Documentation] (taitopjc.cpp) optiger: The correct description is "Operation Tiger (Ver 2.14 O) "
+- 06103: [Documentation] (taitopjc.cpp) optiger: The correct description is "Operation Tiger (Ver 2.14 O)"
 - 06540: [Crash/Freeze] (hh_tms1k.cpp) bshipb: [debug] Assert when starting emulation (Robbbert)
 - 06541: [Crash/Freeze] (laserbat.cpp) laserbat, lazarian: [debug] Assert when starting emulation (Robbbert)
 - 06542: [Crash/Freeze] (toratora.cpp) All set in toratora.cpp: [debug] Assert when starting emulation (Robbbert)
@@ -195,6 +195,17 @@ Wild Thing (0201176V, NSW/ACT) [Heihachi_73]
 
 Source Changes
 --------------
+-seibucop.cpp: Fixed Legionnaire / Heated Barrel scenery walking bug (a different 138e is used). [Angelo Salese]
+
+-epos.cpp: Several changes to The Dealer, Revenger '84 and Beastie Feastie hardware: [Angelo Salese]
+ * Fixed RAM based colors.
+ * Added backup RAM support.
+ * Added flip screen support.
+
+-m14.cpp: Revised PT Reach Mahjong, making it actually work: [Angelo Salese]
+ * Added ball and paddle screen drawing, green background as per flyer pictures, and flip screen support.
+ * Added reach button and updated input labels.
+
 -k054321: Implemented as a device [O. Galibert, Phil Bennett]
 
 -z180: Fixed obvious typo detected by Coverity, thanks Coverity. [O. Galibert]
@@ -212,6 +223,12 @@ Source Changes
 -megatech.cpp: Fixed Free Play regression. [AJR]
 
 -arabfgt: Replaced protection MCU simulation with emulation of actual program. [AJR]
+
+-Improvements to romcmp: [AJR]
+ * Identify plain ASCII text files as such.
+ * If a ROM has the same data in each half, print the hashes for that.
+ * Avoid buffer overruns.
+ * For calculating address masks, don't assume file size to be a power of 2.
 
 -plugins/console: Improved suggested completions. [Carl]
 
@@ -244,13 +261,69 @@ Source Changes
 
 -ui: Added ability to select different tilemap categories in tilemap viewer with page up/down keys. [Dirk Best]
 
+-Added support for Seiko S-29X90 16-bit EEPROMs. [Luca Elia]
+
+-Seta ST-0020 updates: added 4 tilemaps and switchable resolution - ST-0032 video on par with ST-0020. [Luca Elia]
+
+-jclub2.cpp: Jockey Club II updates: [Luca Elia]
+ * Split sets by software revision.
+ * Added default EEPROMs and documented the procedure.
+ * Finished I/O and added layout for on-screen keyboards.
+ * Added sound communication.
+ * Fixed backgrounds and colors.
+
 -Added hopper-like mode to ticket dispenser device. [MetalliC]
 
+-cgenie: Fixed loading ROMs from softlist in floppy interface. [Nigel Barnes]
+
+-wicat: Added floppy drive and attached software list (not working). [Nigel Barnes]
+
 -xbox/chihiro: Made USB peripherals slot devices. [Samuele Zannoli]
+
+-seattle: Updated driver to new PCI bus system. [Ted Green]
+
+-iteagle: Added save state support. [Ted Green]
 
 -Fixed graphics decode issues and improved palette generation in Dodge Man and Battle Cross. [Tomasz Slanina]
 
 -hcd62121: Improved rotate and shift instructions; identified COM and PORT registers; fixed unidasm configuration. [Wilbert Pol]
+
+-starshp1: Removed hack to restore correct behavior when ships explode. [Frank Palazzolo]
+
+-Added support for French Minitel 2 Terminal: [Jean-Francois DEL NERO]
+ * Added support for TS9347 display processor variant.
+ * Fixed visible area.
+ * Fixed random crash in EF9345/TS9347 when drawing characters at right or bottom border.
+
+-Fixed 6800 invalid instruction length/program counter behavior and renamed invalid opcodes. [Jean-Francois DEL NERO]
+ * This makes goupil g1 Basic work.
+
+-Fixed audio sample ROM mapping and corrected title of Pata Pata Panic. [Katsuhiko Kagami]
+ * Previously called "Acchi Muite Hoi" based on incorrect auction description.
+
+-InterPro improvements - ip2800 boots to FDM prompt with many memdiag test failures: [Patrick Mackinlay]
+ * Fixed CPU/MMU ssw bug.
+ * Added preliminary nscsi support.
+ * Added preliminary MMU address translation.
+ * Expanded memory maps for several devices.
+ * Improved IRQ and DMA handling (still not working properly).
+ * Stubbed out more SGA registers, added SRARB.
+ * Added NCR53C94 support to ncr5390.cpp.
+ * Added start/stop unit command to t10spc.cpp.
+
+-Netlist library updates: [Couriersud]
+ * Changed Solver.PARALLEL parameter definition - 0: no parallelism; 1: one processor parallel; >1: solve n subnets in parallel.
+ * Refactored OPENMP - all OPENMP operations are now templatized in pomp.h.
+ * Added 16-bit Galois LFSR generator (used to simulate thermal junction noise in Cheeky Mouse).
+
+-cheekyms: Added netlist-based discrete audio emulation, replacing the placeholder DACs. [Vas Crabb, Couriersud]
+ * Thanks to Sam Grech for supplying high-quality scans of the schematics.
+
+-monymony, jackrabt: Added netlist for analog processing in melody section of 1B11132 sound board. [Vas Crabb]
+ * Added a crude TTL Schmitt trigger model that allows input to source current.
+ * Thanks to Couriersud for fixing a rather stupid typo in the tromba (trumpet) section of the netlist.
+ * Cassa (bass drum) is currently disconnected as it causes issues with current simulation.
+ * Mixing melody with speech and SFX is done outside the netlist, and relative levels are probably wrong.
 
 -Wide-ranging modernisation/cleanup: [Vas Crabb]
  * Moved static data (short name, full name, source file) out of devices and into device types.
@@ -289,6 +362,14 @@ Source Changes
 
 -exidy.cpp: Added PROMs from bootleg to mtrap sets as bad dumps. [Ivan Vangelista]
 
+-scyclone.cpp: Redumped bad ROM, dumped PROMs. [ShouTime]
+
+-williams.cpp: Redumped defenderj bad ROM, game now works. [ShouTime]
+
+-Added Japan Dreamcast flash dump. [rtw]
+
+-Updated hiscore.dat. [Leezer]
+
 -z80ne: Added software lists for disks and tapes [Reagan Roush]
 
 -Minor comment fix [Reagan Roush]
@@ -325,10 +406,6 @@ Source Changes
 
 -via6522: tuned shifter IRQ timing to be more cycle accurate [Joakim Larsson Edstrom]
 
--New machine support : The French Minitel 2 Terminal. (#2261) [Jean-Francois DEL NERO]
- * TS9347 variant support added
- * New machine support : Minitel 2 (Radiotechnique Portenseigne / Philips)
-
 -Added working controls for War : Final Assault and Road Burner [sjy96… (#2234) [sjy96525]
  * Added working controls for War : Final Assault and Road Burner [sjy96525]
 
@@ -337,8 +414,6 @@ Source Changes
  * Update Taito Type-Zero descriptions
 
 -luckgrln.cpp: add dips and layout for 7smash, promoted to working [David Haywood]
-
--Visible area fixed. [Jean-Francois DEL NERO]
 
 -Fixed an issue that could cause problems when loading reset_on_load devices (like cartridges) from softlists at runtime
  [Nathan Woods]
@@ -352,37 +427,15 @@ Source Changes
 
 -royalmah.cpp: redumped mjyarou, verified it only has 1 Z80 [Guru]
 
--Add support for Seiko S-29X90 16-bit EEPROMs [Luca Elia]
-
--Seta ST-0020 update: [Luca Elia]
- * Add 4 tilemaps
- * Add switchable resolution
- * ST-0032 video on par with ST-0020
-
--jclub2.cpp: Jockey Club II updates [Luca Elia]
- * Split sets by software revision
- * Add default EEPROMs and document the procedure
- * Finish i/o and add layout for on-screen keyboards
- * Add sound communication
- * Fix backgrounds and colors
-
--williams.cpp: redumped defenderj bad rom, game now works [ShouTime]
-
 -cgenie_cass.xml: add some missing entries [Juergen Buchmueller]
 
 -cgenie_cass.xml: fix digboy [Juergen Buchmueller]
-
--scyclone.cpp: redumped bad rom, dumped proms [ShouTime]
 
 -cgenie_cass.xml: fix missing </software> tag [Juergen Buchmueller]
 
 -stv.cpp: documented mask rom version of epr_17951a bios [ShouTime, The Dumping Union]
 
 -z80scc: Reset Tx Interrupt Pending Command implemented [Joakim Larsson Edstrom]
-
--Remove starshp1 hack to restore correct behavior [Frank Palazzolo]
-
--EF9345 : Fix random mame crash while drawing characters at the right or bottom screen borders. (#2267) [Jean-Francois DEL NERO]
 
 -Fixed issue with the Emscripten port where the emulation would continue to run while paused. [Steven Hugg]
 
@@ -421,27 +474,9 @@ Source Changes
 
 -fresh: Add some sound [AJR]
 
--Fix 6800 invalid instructions length / Program counter behavior. (#2274) [Jean-Francois DEL NERO]
- * Fix random crash while drawing characters at the screen borders.
- * draw_char_40 & draw_char_80 : use of std::min.
- * Fix invalid instructions length. Each 6800 invalid opcodes have a different behavior. This commit fix the PC increment of each
-    invalid opcode execution. There is three groups of invalid opcodes :
- * One byte invalid opcodes/instructions :
- * 00,02,03,04,05,12,13,15,18,1A,1C,1D,1E,1F,21, 38,3A,3C,3D,41,42,45,4B,4E,51,52,55,5B,5E
- * Two bytes invalid opcodes/instructions :
- * 61,62,65,6B,83,93,A3,C3,D3,DC,E3,EC,ED
- * Three bytes invalid opcodes/instructions :
- * 71,72,75,7B,B3,CC,CD,F3,FC,FD
- * Behavior checked from the Visual 6800 and the real hardware (goupil computer) http://www.visual6502.org/JSSim/expert-6800.html
- * cosmetic changes : invalid opcodes renamed.
-
 -via6522: fixed the flank timer value which improved but not completelly reverted the vectrex regression [Joakim Larsson Edstrom]
 
 -acommand: Use tilemap device [AJR]
-
--seattle: Update driver to new PCI bus system. [Ted Green]
-
--iteagle: Added save states to iteagle driver. [Ted Green]
 
 -new Rastan Sega clone [briantro]
 
@@ -469,8 +504,6 @@ Source Changes
 -scyclone.cpp: promoted to working status [David Haywood]
  * added sound. Discrete part missing;
  * added save state support.
-
--add Japan Dreamcast flash dump [rtw]
 
 -Overhaul to how MAME handles options (#2260) [npwoods]
  * This is an overhaul to how MAME handles options to provide a better foundation for what MAME is already doing in practice.
@@ -558,13 +591,6 @@ Source Changes
  * Changed running_machine::schedule_[load|save]() to take 'std::string &&' instead of 'const char *'
  * Changed running_machine::saveload_schedule to be 'enum class'
 
--namcos11.cpp: Let's call Star Sweep (STP2/VER.A) the Asia version [briantro]
- * Like all other "2" regions in System 11 driver. Plus there is no Japanese "Notice For use in Japan" warning.
-
--wicat: Added floppy drive and attached software list (not working). [Nigel Barnes]
-
--cgenie: Fixed loading roms from softlist in floppy interface [Nigel Barnes]
-
 -Replaced the checksums with correct checksums. [Mark Riley]
  * The MCPX 1.0 ROM had the wrong checksums. The checksums included were from a known bad copy of the ROM.
 
@@ -579,26 +605,11 @@ Source Changes
 -DERIVED_CLOCK now updates in response to clock changes, and changed CoCo to use this mechanism (#2140) [npwoods]
  * [CoCo] Changed the 6883 SAM implementation to control the root_machine clock, and changed CoCo devices to use DERIVED_CLOCK
 
--seibucop.cpp: Fixed Legionnaire / Heated Barrel scenery walking bug (a different 138e is used) [Angelo Salese]
-
--acchi.cpp: fixed audio [k2-git]
-
 -Fix bug that permanently disabled some UI search strings when they were cleared [AJR]
 
 -Copy longname, manufacturer, year, filetype, etc. for image info in all softlisted cases [AJR]
 
 -daytona: Add feedback driver board (including ROM) [AJR]
-
--Improvements to romcmp [AJR]
- * Identify plain ASCII text files as such
- * If a ROM has the same data in each half, print the hashes for that
- * Avoid buffer overruns
- * For calculating address masks, don't assume file size to be a power of 2
-
--epos.cpp: several changes to The Dealer, Revenger '84 and Beastie Feastie type HW [Angelo Salese]
- * fixed RAM based colors;
- * added backup RAM support;
- * added flip screen support;
 
 -Emulation of Games Master Cartridge [tim lindner]
 
@@ -609,10 +620,6 @@ Source Changes
 -Lua scripts cleanup. [dankan1890]
 
 -Fixed some inaccuracies in file names in lua scripts. [dankan1890]
-
--New Shiritsu Justice Gakuen clone [briantro]
-
--hiscore.dat: Updates [Leezer]
 
 -New Mega Force clone added [briantro]
 
@@ -655,12 +662,6 @@ Source Changes
     behavior commented in case it turns out the original does only save that area, but it seems more likely it just backs up the
     whole of the RAM.
 
--m14.cpp: Revised PT Reach Mahjong, making it actually working [Angelo Salese]
- * Added ball and paddle screen drawing;
- * Added green background as per flyer pics;
- * Added reach button and updated input labels;
- * Added flip screen support
-
 -Amiga: Use correctly sized bootroms for the A1000 [Guru]
 
 -r9751: Add terminal keyboard callback [Brandon Munger]
@@ -676,19 +677,6 @@ Source Changes
 -Update luaengine.rst [Dan Amador]
 
 -taito_l.cpp: More MB8421, less HOLD_LINE (fixes sound in evilston) [AJR]
-
--interpro improvements, plus some naive scsi hacks (#2330) [Patrick Mackinlay]
- * Various InterPro changes:
- * fixed cpu/mmu ssw bug
- * added preliminary nscsi support
- * added preliminary mmu address translation
- * expanded memory maps for several devices
- * improved irq and dma handling (still not working properly)
- * stubbed out more sga registers, added srarb
- * For the following, I don't really know what I'm doing, so please check carefully:
- * WARNING: includes a naive addition of ncr53c94 support to ncr5390.cpp
- * WARNING: adds a start/stop unit command to t10spc.cpp
- * After these changes, ip2800 boots to FDM prompt with a ton of memdiag test failures, but not much else is visibly improved.
 
 -basic VT03 support [David Haywood]
 
@@ -729,33 +717,6 @@ Source Changes
 -model1.cpp: Implement workaround for race condition that caused vf to lose sound (MT #6587). This fix causes swa to show an error
  message before booting normally, due to the I/O board not being emulated properly in the first place. [AJR]
 
--cheekyms: add preliminary netlist sound based on schematics provided by Sam Grech [Vas Crabb]
-
--Preliminary netlist sound for the Zaccaria 1B11142 board [Vas Crabb]
- * Tromba (trumpet) sound is not working - requires Schmitt trigger device
- * Connecting cassa (bass drum) swamps other instruments so it's disconnected for now
- * Mixing melody sound with speech/SFX is not done in netlist (should be)
- * Relative levels of melody/speech/SFX are probably still wrong
-
--Changed Solver.PARALLEL parameter logic: [couriersud]
- * 0: Parallel processing of solvers disabled 1: One processor parallel processing. Can be used to measure OPENMP overhead >1: Solve
-    n analog subnets in parallel.
- * Previously, all available processors were used which caused performance to degrade on hyperthreading. [Couriersud]
-
--Netlist refactoring: [couriersud]
- * OPENMP refactored. All OPENMP operations are now templatized in pomp.h
-
--New Machine Added [briantro]
-
--netlist: add a crude TTL schmitt trigger model and hook up in 1B11142 sound board, completing the tromba circuit [Vas Crabb]
-
--Add rand() function to pfunction expression parser. Use this to simulate E-B noise in Cheeky Mouse and fix the "cheese" choose.
- [Couriersud]
-
--Fix issues identified by Vas and LordKale4: [couriersud]
- * made local netlists in Cheeky Mouse static
- * replace stdlib rand by 16 bit galois lfsr
-
 -liberate.cpp: All PSGs are AY-3-8912A [AJR]
 
 -Fixed issue when the hash length is zero (#2314) [npwoods]
@@ -780,18 +741,6 @@ Source Changes
     sources for EmuVT were ever released) and the documentation out there doesn't cover all features, and in some cases isn't
     entirely correct.
  * Submitting now as it was a lot of work just keeping this in sync with the latest changes.
-
--interpro improvements, plus some naive scsi hacks Various InterPro changes: [pmackinlay]
- * fixed cpu/mmu ssw bug
- * added preliminary nscsi support
- * added preliminary mmu address translation
- * expanded memory maps for several devices
- * improved irq and dma handling (still not working properly)
- * stubbed out more sga registers, added srarb
- * For the following, I don't really know what I'm doing, so please check carefully:
- * WARNING: includes a naive addition of ncr53c94 support to ncr5390.cpp
- * WARNING: adds a start/stop unit command to t10spc.cpp
- * After these changes, ip2800 boots to FDM prompt with a ton of memdiag test failures, but not much else is visibly improved.
 
 -Update luaengine.rst I recently bumped into this problem while trying to develop a script and couldn't find adequate documentation
  or examples for the newest Mame version [DanAmador]
@@ -819,8 +768,6 @@ Source Changes
  * std::vector<my_struct> my_vec(0); // create an empty std::vector my_struct *ptr = &my_vec[0];
  * While this is a degenerate scenario, this should be fixed
 
--Add support for ULTRA ROM on the Heathkit H19 [mgarlanger]
-
 -clones from Mathieu Patard [DavidHaywood]
 
 -Starting from the Favorites menu now starts the software list submenu (if necessary). [dankan1890]
@@ -833,13 +780,6 @@ Source Changes
  lua enabling better completions.  Doing as a PR for suggestions and compile testing. [cracyc]
 
 -Lua scripts cleanup. [dankan1890]
-
--aristmk4, aristmk5, aristmk6 - extra sets and improved documentation [Heihachi_73] (submitted on behalf of Heihachi_73, not my
- submission) [DavidHaywood]
-
--audio fixed Audio is completely reversed. When the correct answer is red, "to up the white" sound played. [k2-git]
- * p.s: I think machine name is wrong. this is "pata pata panic"(ATLUS) not "Acchi Muite Hoi"
- * Please See also...(real machine photo) http://k1world2.seesaa.net/upload/detail/image/image-668f7-thumbnail2.jpg.html
 
 -Replaced the checksums with correct checksums. The MCPX 1.0 ROM had the wrong checksums. The checksums included were from a known
  bad copy of the ROM. [mark-riley]
@@ -868,32 +808,12 @@ Source Changes
 -[Imgtool] Cleanups to validity code, and transitioned to std::wcerr Windows doesn't like mixing std::wc[out|err] and printf()
  [npwoods]
 
--Fix 6800 invalid instructions length / Program counter behavior. Fix invalid instructions length. Each 6800 invalid opcodes have a
- different behavior. This commit fix the PC increment of each invalid opcode. There is three groups of invalid opcodes : [jfdelnero]
- * One byte invalid opcodes/instructions :
- * 00,02,03,04,05,12,13,15,18,1A,1C,1D,1E,1F,21, 38,3A,3C,3D,41,42,45,4B,4E,51,52,55,5B,5E
- * Two bytes invalid opcodes/instructions :
- * 61,62,65,6B,83,93,A3,C3,D3,DC,E3,EC,ED
- * Three bytes invalid opcodes/instructions :
- * 71,72,75,7B,B3,CC,CD,F3,FC,FD
- * Behavior checked from the Visual 6800 and the real hardware (goupil computer) http://www.visual6502.org/JSSim/expert-6800.html
- * This patch make the goupil g1 Basic working.
-
--Remove starshp1 hack to restore correct behavior A very old (> 10 years?) hack seemed to clean up the way the ships explode in
- Atari Starship 1.  But this is different than the actual game behavior.  See this video of the way the ships behave when they are
- hit: https://youtu.be/-crXVuoKlL4?t=573  I'm pretty sure this is the way it used to work when I originally coded it from the
- schematics.  I have removed the hack and modified the comments in the code in video/starshp1.cpp [palazzol]
-
 -z80scc: Reset Tx Interrupt Pending Command implemented Fix for the virtpool game [JoakimLarsson]
-
--EF9345 : Fix random mame crash while drawing characters at the right or bottom screen borders. [jfdelnero]
 
 -Fixed an issue that could cause problems when loading reset_on_load devices (like cartridges) from softlists at runtime This was
  not guaranteed to cause a problem; the specific issue here was reported by mr_gw in the context of the CoCo, and the proximate
  issue (hanging) was in CoCo-specific code.   That said, this could cause problems elsewhere. [npwoods]
  * This was MT#6560
-
--Visible area fixed. [jfdelnero]
 
 -via6522 shifter support for external clock The regression of the Mac adb bus support caused me to refactor the shifter and I feel
  much better about this implementation as it got rid of ugly sub states and purely handles flanks now as opposed to a mix of flanks
@@ -943,25 +863,6 @@ New machines added or promoted from NOT_WORKING status
 ------------------------------------------------------
 security PIC is missing [MetalliC]
 Ltd) [AJR]
-
-
-New clones added or promoted from NOT_WORKING status
-----------------------------------------------------
-he also dumped a Football Champ board only to find the content was the same despite using a different Taito number for the rom that
-  determines the region, so it's likely one of them is incorrect *or* because in this case a Dipswitch determines the title, Taito
-  might have actually shipped the same rom with different numbers (seems less likely tho, because the region byte also affects
-  coinage etc.)  this has been documented and the longname for the set updated to reflect the switchable title. [David Haywood]
-Also made euroch92 not a clone as it follows the 'sf2ce' rule, it's a re-released game with small updates, not an identical product,
-  it likely has it's own Taito product code (although we don't currently have the correct ROM names for it) [David Haywood]
-Wonder Boy (set 6, 315-5179) [Mathieu Patard]
-he also dumped a Football Champ board only to find the content was the same despite using a different Taito number for the rom that
-  determines the region, so it's likely one of them is incorrect *or* because in this case a Dipswitch determines the title, Taito
-  might have actually shipped the same rom with different numbers (seems less likely tho, because the region byte also affects
-  coinage etc.)  this has been documented and the longname for the set updated to reflect the switchable title. [DavidHaywood]
-Also while I was looking there I made euroch92 not a clone as it follows the 'sf2ce' rule, it's a re-released game with small
-  updates, not an identical product, it likely has it's own Taito product code (although we don't currently have the correct ROM
-  names for it) [DavidHaywood]
-PCB images etc. have been submitted. [DavidHaywood]
 
 
 New WORKING software list additions
