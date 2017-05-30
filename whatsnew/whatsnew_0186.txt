@@ -199,10 +199,20 @@ Wild Thing (0201176V, NSW/ACT) [Heihachi_73]
 
 New working software list additions
 -----------------------------------
+cgenie_cass: Colour Frog, Synthesizer (TCS), Colour-Zap Ver 1.0 (TCS), DIG-BOY (TCS) [Juergen Buchmueller]
+ibm5150:
+  Arkanoid 2: Revenge of Doh, Crime Wave, Prince of Persia (5.25", v1.1), Operation Wolf, Terminator 2: Judgment Day [ArcadeShadow]
+  Ferrari Formula One, Savage [breiztiger]
+ibm5170: Dark Seed, The Secret of Monkey Island [ArcadeShadow]
+ibm5150, ibm5170: Many IBM PC-DOS sets [Justin Kerk]
+t1000: MS-DOS (Version 2.11, Tandy version 02.11.24), MS-DOS (Verson 3.30, Tandy Version 03.30.20) [Justin Kerk]
+z80ne_cass: 27 known titles in 1200, 600 and 300 Baud variants [Reagan Roush]
+z80ne_flop: 39 known titles [Reagan Roush]
 
 
 New NOT_WORKING software list additions
 ---------------------------------------
+gba_ereader: Doubutsu no Mori Card-e (Series 1 and Series 2 cards) [Shideravan]
 
 
 Translations added or modified
@@ -227,6 +237,12 @@ Source Changes
 
 -z180: Fixed obvious typo detected by Coverity, thanks Coverity. [O. Galibert]
 
+-Added a mechanism for devices to generate clocks for other devices: [AJR]
+ * Made set_unscaled_clock and set_clock_scale not call notify_clock_changed unless the device has been started.
+ * Made owner-derived clocks update whenever the owner's clock changes, including at configuration time.
+ * Add clock_update_delegate type to represent device-generated clock outputs that may be dynamically modified.
+   - Model implementation of this is the CLK output in I8085A.
+
 -Partially rewrote uPD4701 device and hooked it up to a few Sega games. [AJR]
 
 -Added uPD4701A device to cabal (trackball sets), calibr50, eaglshot, horshoes, poundfor and wwallyj. [AJR]
@@ -245,6 +261,10 @@ Source Changes
 
 -daytona: Added feedback driver board (including ROM). [AJR]
 
+-fresh: Added some sound. [AJR]
+
+-liberate.cpp: All PSGs are AY-3-8912A. [AJR]
+
 -mrflea: Use PPIs for interboard communication and PIC for sub interrupt. [AJR]
 
 -model1.cpp: Worked around race condition that caused vf to lose sound. [AJR]
@@ -253,6 +273,8 @@ Source Changes
 -Fixed bug that permanently disabled some UI search strings when they were cleared. [AJR]
 
 -Copy longname, manufacturer, year, filetype, etc. for image info in all softlisted cases. [AJR]
+
+-Made -listroms display a user-friendly message when no ROMs are required. [AJR]
 
 -Improvements to romcmp: [AJR]
  * Identify plain ASCII text files as such.
@@ -310,6 +332,13 @@ Source Changes
 
 -ui: Added ability to select different tilemap categories in tilemap viewer with page up/down keys. [Dirk Best]
 
+-via6522 updates, adds support for external clock: [Joakim Larsson Edstrom]
+ * Refactored shifter, adding support for more fetures and fixing a few bugs.
+ * Tuned shifter IRQ timing to be more cycle accurate.
+ * Fixed the flank timer value, which improves but doesn't completely fix the vectrex regression.
+
+-z80scc: Implemented Reset Tx Interrupt Pending Command (fixes virtpool). [Joakim Larsson Edstrom]
+
 -Added support for Seiko S-29X90 16-bit EEPROMs. [Luca Elia]
 
 -Seta ST-0020 updates: added 4 tilemaps and switchable resolution - ST-0032 video on par with ST-0020. [Luca Elia]
@@ -323,9 +352,16 @@ Source Changes
 
 -Added hopper-like mode to ticket dispenser device. [MetalliC]
 
+-ti99: Improvements to peripheral handling: [Michael Zapf]
+ * Rearranged bus/ti99 subtree, moved classes into namespaces, moved ti99 stuff from ti99x to ti99/internal.
+ * Split big, all-in-one gromport.cpp into separate device files, introducing "gromport" as a bus of its own.
+ * Added console connector "ioport" with PEB as slot option - PEB now needs to be plugged into TI-99/4/4A/8.
+
 -Added hack to fish hashpath option out of INI files prior to softlist evaluation. [Nathan Woods]
 
 -Fixed issue in image identification code accessing an empty verctor when the hashed data length is zero. [Nathan Woods]
+
+-CoCo: Made 6883 SAM control the root device clock, and changed CoCo devices to use derived clocks. [Nathan Woods]
 
 -Cleanups to ram_device: [Nathan Woods]
  * Expose specific options, removing the burden of parsing RAM strings from clients.
@@ -336,6 +372,20 @@ Source Changes
  * Fixed issue with 'listfilters' command.
  * Extremely basic fix to the imgtool <-> CHD HD bridge (really nees much more work).
  * Simplified CHD metadata load since C++11 allows writing to a std::string directly.
+
+-Windows options fixes: [Nathan Woods]
+ * Removed redundant ";global_inputs".
+ * Disambiguated "yiqp" abbreviation - YIQ phase count is now "yiqpc" (YIQ pixel clock scaling is still "yiqp").
+
+-Auxiliary verb handling cleanup: [Nathan Woods]
+ * Fixed a bug where resolved slot/image options would choke -romident.
+ * Fixed crash when -romident is not supplied any arguments.
+ * Converted verb handlers to take arguments as a vector of strings.
+ * Fixed regression preventing -listslots/-listmedia working when slot options are specified.
+
+-Don't strip spaces/quotes from command line arguments, only INI option values. [Nathan Woods]
+
+-Fixed an issue that could cause poblems when loading reset_on_load devices from software lists at runtime. [Nathan Woods]
 
 -Micellaneous cleanup and modernisation: [Nathan Woods]
  * Polished up traces of slot options menu's pre-C++ heritage and moved completely private code to an anonymous namespace.
@@ -348,6 +398,13 @@ Source Changes
 -cgenie: Fixed loading ROMs from softlist in floppy interface. [Nigel Barnes]
 
 -wicat: Added floppy drive and attached software list (not working). [Nigel Barnes]
+
+-z180: Added support for DREQ and TEND signals, and fixed dma0 count and DREQ handling. [BartmanAbyss]
+
+-Fixed two software loading bugs: [Robbbert]
+ * Fatal error on reset if either a multipart softlist item was loaded, or a single-part item was loaded into a system with more
+    than one slot of the same media type.
+ * Fatal error on non-existent images specified in INI files (bad image is ejected, restoring previous behaviour).
 
 -xbox/chihiro updates: [Samuele Zannoli]
  * Migrated PCI devices to new PCI bus framework.
@@ -362,6 +419,23 @@ Source Changes
 -Fixed graphics decode issues and improved palette generation in Dodge Man and Battle Cross. [Tomasz Slanina]
 
 -hcd62121: Improved rotate and shift instructions; identified COM and PORT registers; fixed unidasm configuration. [Wilbert Pol]
+
+-H8 improvements: [BartmanAbyss]
+ * Fixed nstruction eepmov.b (used r4h instead of r4l).
+ * Added support for non-autorequest DMA (DREQ edge, DREQ level).
+ * Added support for H8/300H to h8_dma (previously only H8/300S supported).
+ * Added DMA channels and RTMCSR register to H8/3002.
+
+-Added (partial) correct register mappings to HD6345. [BartmanAbyss]
+
+-hp9845: Added Support for HPI floppy format used for HP-formatted 8" floppy disks. [F.Ulivi, A.Kueckes]
+
+-hp9895: Fixed a segfault when emulating the HP9845 drive (caused by rounding errors). [F.Ulivi]
+
+-hp9845: Display improvements and softkey support: [F.Ulivi]
+ * Improved text video of 45C, improved graphic cursors of 45C and 45T, and implemented softkeys for 45C and 45T.
+
+-hp9845: Fixed a system freeze when loading memory tester from tape. [F.Ulivi]
 
 -starshp1: Removed hack to restore correct behavior when ships explode. [Frank Palazzolo]
 
@@ -387,6 +461,10 @@ Source Changes
  * Stubbed out more SGA registers, added SRARB.
  * Added NCR53C94 support to ncr5390.cpp.
  * Added start/stop unit command to t10spc.cpp.
+
+-Fixed issue with the Emscripten port where the emulation would continue to run while paused. [Steven Hugg]
+
+-CoCo: Added support for Games Master Cartridge developed by John Linville as slot device. [Tim Lindner]
 
 -Netlist library updates: [Couriersud]
  * Changed Solver.PARALLEL parameter definition - 0: no parallelism; 1: one processor parallel; >1: solve n subnets in parallel.
@@ -439,6 +517,26 @@ Source Changes
 
 -exidy.cpp: Added PROMs from bootleg to mtrap sets as bad dumps. [Ivan Vangelista]
 
+-Added preliminary Sharp SM590 CPU core. [Lord Nightmare, hap]
+
+-QSound/DL-1425: Updated ROM and comments with corrections from recent decap. [Lord Nightmare, Siliconpr0n, superctr, Quench]
+
+-Williams Special Chip 1/2: Added pinout diagram, clarified abbreviations, and fixed comments about SC1 vs SC2 behavior.
+ [Sean Riddle, Lord Nightmare]
+
+-Irem audio: Replaced generic latch with more accurate emulation: [Lord Nightmare]
+ * Fixed missing D7 on sound latch, made device_reset clear latch; fixed case where sound CPU interrupt could be cleared in error.
+
+-epos.cpp updates: [Lord Nightmare]
+ * Corrected ROM names/comments and added rom types based on PCB pictures.
+ * Noted that revngr84 is a newer set than revenger based on ROM numbering.
+ * Implemented Tristar 9000 hardware AY-3-8910 port A 'multiplexer'.
+ * Switched Tristar 8000 hardware to use AY-3-8912 as shown on schematics.
+
+-BP1200: Mostly traced out the SM48D socket module. [Lord Nightmare]
+
+-Added a note and flag indicating that Williams' Mayday has unemulated protection that is currently hacked around. [Lord Nightmare]
+
 -Cleaned up GENie Lua scripts and corrected some header file names. [dankan1890]
 
 -Made software list menu appear if approprieate when starting a machine from the Favorites menu. [dankan1890]
@@ -446,6 +544,8 @@ Source Changes
 -scyclone.cpp: Redumped bad ROM, dumped PROMs. [ShouTime]
 
 -williams.cpp: Redumped defenderj bad ROM, game now works. [ShouTime]
+
+-stv.cpp: Documented mask ROM version of epr_17951a BIOS. [ShouTime, The Dumping Union]
 
 -Added Japan Dreamcast flash dump. [rtw]
 
@@ -474,244 +574,8 @@ Source Changes
 
 -r9751: Added terminal keyboard callback. [Brandon Munger]
 
+-Updated lua engine documentation. [Dan Amador]
+
 -Updated hiscore.dat. [Leezer]
 
--z80ne: Added software lists for disks and tapes [Reagan Roush]
-
--Minor comment fix [Reagan Roush]
-
--Mechanism for devices to generate clocks for other devices [AJR]
- * Have set_unscaled_clock and set_clock_scale not call notify_clock_changed unless the device has been started.
- * Owner-derived clocks are now updated whenever the owner's clock is changed, including at configuration time. This simplifies the
-    configuration of various NES clones.
- * Add clock_update_delegate type to represent device-generated clock outputs that may be dynamically modified. The model
-    implementation of this is the CLK output in I8085A.
-
--Removed redundant ";global_inputs" [Nathan Woods]
-
--Fixed h8 instruction eepmov.b (used r4h instead of r4l) (#2253) [BartmanAbyss]
- * Added support for non-autorequest DMA (DREQ edge, DREQ level) in h8 Added support for H8/300H to h8_dma (previously only H8/300S
-    supported) Added DMA channels to H8/3002 Added RTMCSR register to H8/3002
-
--Disambiguated the WINOPTION_YIQ_PHASE_COUNT option [Nathan Woods]
- * "yiqp" was used for WINOPTION_YIQ_PVALUE and WINOPTION_YIQ_PHASE_COUNT
-
--added (partial) correct register mappings to HD6345 [bwodok]
-
--z180: added support for DREQ, TEND signals; fixed dma0 count, DREQ handling (#2256) [BartmanAbyss]
-
--QSound/DL-1425: update ROM and comments with corrections from recent decap [Lord Nightmare, Siliconpr0n, superctr, Quench]
-
--Adding Doubutsu no Mori Card-e  (Series 1 and Series 2) [Shideravan]
-
--via6522: refactored shifter supporting more fetures and fixed a few bugs [Joakim Larsson Edstrom]
-
--via6522: Removed old code and cleaned up a bit [Joakim Larsson Edstrom]
-
--via6522: tuned shifter IRQ timing to be more cycle accurate [Joakim Larsson Edstrom]
-
--Fixed an issue that could cause problems when loading reset_on_load devices (like cartridges) from softlists at runtime
- [Nathan Woods]
- * This was not guaranteed to cause a problem; the specific issue here was reported by mr_gw in the context of the CoCo, and the
-    proximate issue (hanging) was in CoCo-specific code.   That said, this could cause problems elsewhere.
-
--cgenie_cass.xml: add some missing entries [Juergen Buchmueller]
-
--cgenie_cass.xml: fix digboy [Juergen Buchmueller]
-
--cgenie_cass.xml: fix missing </software> tag [Juergen Buchmueller]
-
--stv.cpp: documented mask rom version of epr_17951a bios [ShouTime, The Dumping Union]
-
--z80scc: Reset Tx Interrupt Pending Command implemented [Joakim Larsson Edstrom]
-
--Fixed issue with the Emscripten port where the emulation would continue to run while paused. [Steven Hugg]
-
--Add preliminary Sharp SM590 CPU core [Lord Nightmare, hap]
-
--Replace sm590 adx handler with override since behavior differs slightly from sm510 [Lord Nightmare, hap]
-
--Irem Audio: Got rid of gen_latch usage; fixed missing d7 on sound latch; fixed device_reset to correctly clear sound latch; fixed a
- potential situation where sound cpu /IRQ could be incorrectly cleared [Lord Nightmare]
-
--epos.cpp: Some corrections to rom names/comments and added rom types based on pcb pictures; added note that revngr84 is a newer set
- rom-numbering wise than revenger is. [Lord Nightmare]
-
--epos.cpp: Implemented Tristar 9000 hardware ay-3-8910 port A 'multiplexer', PSG REGISTERS test can (in theory) pass with
- dipswitches set now. Switched Tristar 8000 hardware to use ay-3-8912 as shown on schematics. [Lord Nightmare]
-
--BP1200: Mostly traced out the SM48D socket module. [Lord Nightmare]
-
--Williams Special Chip 1&2: Add pinout diagram, and clarify the abbreviations to reduce confusion with similarly named chips. Fix a
- comment error about SC1 vs SC2 behavior. [Sean Riddle, Lord Nightmare]
-
--Add a note and flag that Williams' Mayday has unemulated protection which is currently hacked around. [Lord Nightmare]
-
--Minor improvement to CHD metadata loading [Nathan Woods]
- * Writing into an std::string is now legal with C++11
-
--fresh: Add some sound [AJR]
-
--via6522: fixed the flank timer value which improved but not completelly reverted the vectrex regression [Joakim Larsson Edstrom]
-
--acommand: Use tilemap device [AJR]
-
--new Rastan Sega clone [briantro]
-
--hp9845: text video of 45C improved [fulivi]
-
--hp9845: improved graphic cursors of 45C & 45T [fulivi]
-
--hp9845: implemented softkeys for 45C & 45T [fulivi]
-
--hp9845: fixed a system freeze when loading memory tester from tape [fulivi]
-
--hp9845: debug message cleanup [fulivi]
-
--Hp9845: Support for HPI floppy format (#2310) [fulivi]
- * hp9845: Support for HPI floppy format [F. Ulivi, A.Kueckes]
-
--Hp9845: Support for HPI floppy format Hi, [fulivi]
- * this PR introduces the handling of HPI floppy image format. This format is used to store the image of the HP-formatted 8" floppy
-    disks used in hp9895a drive. Thanks.
-
--Hp9845: softkeys & video rendering improvements Hi, [fulivi]
- * this PR introduces the handling of display softkeys in hp9845C & T emulation. It also improves the accuracy of the displayed
-    image of these systems. Thanks.
-
--Bug fix to -romident and aux verb cleanup (#2288) [npwoods]
- * Bug fix to -romident and aux verb cleanup
- * Made the following changes: 1.  Fixed a bug where resolved slot/image options would choke -romident (reproducible in MAME 0.185
-    with 'mame64 -romident coco.zip') 2.  'mame64 -romident' no longer crashes (though it doesn't do anything useful) 3.  Changed
-    the aux verb functions to take 'const std::string &'
- * Further cleanups to auxillary verb code, as per Vas
- * Specifically: 1.  The commands themselves now take 'const std::vector<std::string> &' for their argument lists 2.
-    util::core_options now collects command arguments into a separate vector rather than treating them as unadorned arguments
- * Vas Crabb feedback
- * Now only using trim_spaces_and_quotes() when parsing INIs
- * Vas pointed out that it is inappropriate to trim spaces and quotes when parsing command line options
-
--Revert "Bug fix to -romident and aux verb cleanup (#2288)" [Vas Crabb]
- * This reverts commit 78bf804192f38d69fc9299dc7da724fb6a537f94.
-
--Bug fix to -romident and aux verb cleanup (take two) (#2299) [npwoods]
- * Resurrected auxverb_cleanup_and_romident_bugfix
- * Changed usage for -romident and minor cleanups
- * Supporting auxverbs in any order
- * The previous patch was supporting 'mame64 -listsource pacman' but not 'mame64 pacman -listsource'
-
--Bug fix to -romident and aux verb cleanup (take two) Earlier I was handling 'mame64 -listsource pacman' but not 'mame64 pacman
- -listsource' [npwoods]
-
--Adding hack to fish hashpath option out of INI files prior to softlist evaluation [Nathan Woods]
- * eientei95 reported an error where the hashpath specified in INI files was not being honored in softlist evaluation.  This is a
-    change to preprocess INI files for the sole purpose of finding the hashpath prior to evaluating softlists.
-
--Fixed a regression in -listmedia/-listslots [Nathan Woods]
- * The issue is that -listmedia/-listslots were not honoring command line options specified on the slot.  This works around the
-    problem.
-
--Bug fix to -romident and aux verb cleanup Made the following changes: 1.  Fixed a bug where resolved slot/image options would choke
- -romident (reproducible in MAME 0.185 with 'mame64 -romident coco.zip') 2.  'mame64 -romident' no longer crashes (though it doesn't
- do anything useful) 3.  Changed the aux verb functions to take 'const std::string &' [npwoods]
-
--DERIVED_CLOCK now updates in response to clock changes, and changed CoCo to use this mechanism (#2140) [npwoods]
- * [CoCo] Changed the 6883 SAM implementation to control the root_machine clock, and changed CoCo devices to use DERIVED_CLOCK
-
--Emulation of Games Master Cartridge [tim lindner]
-
--Updated for latest mame revision. [tim lindner]
-
--Minor cleanup of some old defines. [tim lindner]
-
--Vasified source. [tim lindner]
-
--Fix video_manager::throttle_until_ticks (#2309) [057a3dd61f99517a3afea0051a49cb27994f94d]
- * Do not update m_average_oversleep if we overslept too much. This is still a partial fix, more investigation is needed when the
-    system time jumps backward.
-
--Relax the threshold to consider an oversleep as a system time change, in case of running on a heavily loaded system, as suggested
- by cuavas. [057a3dd61f99517a3afea0051a49cb27994f94d]
-
--Remove the minimum constraint for sleep, thus avoid choosing a seemingly arbitrary constant.
- [057a3dd61f99517a3afea0051a49cb27994f94d]
-
--Have -listroms display a user-friendly message when no ROMs are required [AJR]
-
--floppy: Fix for a segfault when emulating HP9895 drive [F.Ulivi]
-
--Update luaengine.rst [Dan Amador]
-
--ti99: Changes to peripheral handling [Michael Zapf]
- * Major rearrangement of the bus/ti99 subtree; using namespaces now.
-   Moving all ti99 stuff from ti99x into the "internal" subtree.
- * Big all-in-one file gromport.cpp split into separate device files,
-   introducing "gromport" as a bus of its own.
- * Added console connector "ioport" with PEB as slot option. PEB will now
-   be plugged in, instead of being a subdevice; requiring update of slot
-   options for emulation start of TI-99/4/4A/8. No changes to Geneve and
-   TI-99/4P. ti99_4ev finds PEB plugged in as default, together with the EVPC
-   so that we have a default video output.
-
--Fixed 2 bugs: [Robbbert]
- 1. If either a multipart softlist item was loaded, or a single-part item loaded into a system with more than one of
- the same media slot, then a reset would cause a fatal error.
- 2. If a non-existing image was listed in the ini, it would fatal error at start and there was no way to fix it except
- by hand-editing the ini file. This restores the previous behaviour of ejecting the bad image with the first error.
-
--liberate.cpp: All PSGs are AY-3-8912A [AJR]
-
--Update luaengine.rst I recently bumped into this problem while trying to develop a script and couldn't find adequate documentation
- or examples for the newest Mame version [DanAmador]
-
--Fix for a segfault when emulating HP9895 drive (take 2) Hi, this is the 2nd attempt to fix the bug that sometimes caused segfaults
- when emulating hp9895 drive. My previous attempt was in PR #2319. I think this addresses the problem better. It was due to a
- rounding error in floppy_image_device::find_position function that overflowed the "sacred" 2E+8 limit. Thanks. [fulivi]
- * -F.Ulivi
-
--Fixed a regression in -listmedia/-listslots The issue is that -listmedia/-listslots were not honoring command line options
- specified on the slot.  This works around the problem. [npwoods]
-
--Fix video_manager::throttle_until_ticks (#2309) Do not update m_average_oversleep if we overslept too much. This is still a partial
- fix, more investigation is needed when the system time jumps backward. [057a3dd61f99517a3afea0051a49cb27994f94d]
-
--Games Master Cartridge slot device for the Color Computer Adds a new slot device to emulate the Games Master Cartridge developed by
- John Linville. [tlindner]
-
--linenoise work Linenoise-ng uses convertutf.cpp which apparently has a dodgy license and Debian removes it in their build.  It also
- is overly complex.  I'm replacing it with a simpler port that has an MIT licensed UTF8 parser and moving more completion logic into
- lua enabling better completions.  Doing as a PR for suggestions and compile testing. [cracyc]
-
--via6522: fixed the flank timer value which improved  but not completely reverted the vectrex regression [JoakimLarsson]
-
--z80scc: Reset Tx Interrupt Pending Command implemented Fix for the virtpool game [JoakimLarsson]
-
--Fixed an issue that could cause problems when loading reset_on_load devices (like cartridges) from softlists at runtime This was
- not guaranteed to cause a problem; the specific issue here was reported by mr_gw in the context of the CoCo, and the proximate
- issue (hanging) was in CoCo-specific code.   That said, this could cause problems elsewhere. [npwoods]
- * This was MT#6560
-
--via6522 shifter support for external clock The regression of the Mac adb bus support caused me to refactor the shifter and I feel
- much better about this implementation as it got rid of ugly sub states and purely handles flanks now as opposed to a mix of flanks
- and cycles before. In my regression tests I noticed that some systems seems to work a bit better and of course both Mac adb bus and
- the Prodigy. Let me know any problems asap [JoakimLarsson]
-
--Adding Doubutsu no Mori Card-e  (Series 1 and Series 2) [Shideravan]
-
--Mechanism for devices to generate clocks for other devices The dynamic DERIVED_CLOCK part of this actually works on a similar
- principle to #2140, but reuses an existing member of device_t instead of adding two new ones. This does change configured_clock()
- to return an unresolved value for derived clocks, but nothing directly accesses that parameter outside of device_t anyway.
- [ajrhacker]
- * Foreseen applications of this include the ENT0 CLK instruction on MCS-48 microcontrollers.
-
--DERIVED_CLOCK now updates in response to clock changes, and changed CoCo to use this mechanism [npwoods]
-
-
-New WORKING software list additions
------------------------------------
-ibm5150: Arkanoid 2: Revenge of Doh, Crime Wave, Prince of Persia (5.25", v1.1), Operation Wolf, Terminator 2: Judgment Day
-  [ArcadeShadow]
-ibm5150: Ferrari Formula One, Savage [breiztiger]
-ibm5170: Dark Seed, The Secret of Monkey Island [ArcadeShadow]
-ibm5150, ibm5170: Many IBM PC-DOS sets [Justin Kerk]
-t1000: MS-DOS (Version 2.11, Tandy version 02.11.24), MS-DOS (Verson 3.30, Tandy Version 03.30.20) [Justin Kerk]
+-Removed the minimum sleep time constraint in video_manager::throttle_until_ticks. [057a3dd61f99517a3afea0051a49cb27994f94d]
