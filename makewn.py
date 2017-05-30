@@ -250,23 +250,21 @@ if __name__ == '__main__':
     api = pygithub3.Github(user='mamedev', repo='mame', login=ghuser, password=getpass.getpass('github password: '))
     tag = get_most_recent_tag(repo)
 
-    print_section_heading(stream, '0.%s' % (long(releasetag_pat.sub('\\1', tag.name)) + 1))
-    stream.write('\n\n'.encode('UTF-8'))
-
-    print_section_heading(stream, 'MAMETesters Bugs Fixed')
-    stream.write('\n\n'.encode('UTF-8'))
+    placeholders = (
+            '0.%s' % (long(releasetag_pat.sub('\\1', tag.name)) + 1),
+            'MAMETesters Bugs Fixed',
+            'New working machines',                 'New working clones' ,
+            'Machines promoted to working',         'Clones promoted to working',
+            'New machines marked as NOT_WORKING',   'New clones marked as NOT_WORKING',
+            'New working software list additions',
+            'New NOT_WORKING softwre list additions',
+            'Translations added or modified')
+    for heading in placeholders:
+        print_section_heading(stream, heading)
+        stream.write('\n\n'.encode('UTF-8'))
 
     print_source_changes(stream, repo, api, tag)
     print_new_machines(stream, 'New machines added or promoted from NOT_WORKING status', new_working_parents);
     print_new_machines(stream, 'New clones added or promoted from NOT_WORKING status', new_working_clones);
     print_new_machines(stream, 'New machines marked as NOT_WORKING', new_broken_parents);
     print_new_machines(stream, 'New clones marked as NOT_WORKING', new_broken_clones);
-
-    print_section_heading(stream, 'New WORKING software list additions')
-    stream.write('\n\n'.encode('UTF-8'))
-
-    print_section_heading(stream, 'New NOT_WORKING software list additions')
-    stream.write('\n\n'.encode('UTF-8'))
-
-    print_section_heading(stream, 'Translations added or modified')
-    stream.write('\n\n'.encode('UTF-8'))
