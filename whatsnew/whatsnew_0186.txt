@@ -90,6 +90,7 @@ Wonder Boy (set 6, 315-5179) [Mathieu Patard]
 
 Machines promoted to working
 ----------------------------
+7 Smash [David Haywood]
 Contra (handheld) [hap, Sean Riddle]
 Game & Watch: Boxing [hap, Sean Riddle]
 Game & Watch: Donkey Kong II [hap, Sean Riddle, Reinier]
@@ -196,6 +197,14 @@ Unicorn Dreaming (BHG1584, US) [Heihachi_73]
 Wild Thing (0201176V, NSW/ACT) [Heihachi_73]
 
 
+New working software list additions
+-----------------------------------
+
+
+New NOT_WORKING software list additions
+---------------------------------------
+
+
 Translations added or modified
 ------------------------------
 Hungarian [Lothar Serra Mari]
@@ -218,8 +227,6 @@ Source Changes
 
 -z180: Fixed obvious typo detected by Coverity, thanks Coverity. [O. Galibert]
 
--Replace linenoise-ng with a simpler port that uses a different UTF8 parser. [Carl]
-
 -Partially rewrote uPD4701 device and hooked it up to a few Sega games. [AJR]
 
 -Added uPD4701A device to cabal (trackball sets), calibr50, eaglshot, horshoes, poundfor and wwallyj. [AJR]
@@ -236,10 +243,16 @@ Source Changes
 
 -acommand: Use tilemap device. [AJR]
 
+-daytona: Added feedback driver board (including ROM). [AJR]
+
 -mrflea: Use PPIs for interboard communication and PIC for sub interrupt. [AJR]
 
--model1.cpp: Work around race condition that caused vf to lose sound. [AJR]
+-model1.cpp: Worked around race condition that caused vf to lose sound. [AJR]
  * Causes swa to show an error message before booting normally due to poor I/O board emulation.
+
+-Fixed bug that permanently disabled some UI search strings when they were cleared. [AJR]
+
+-Copy longname, manufacturer, year, filetype, etc. for image info in all softlisted cases. [AJR]
 
 -Improvements to romcmp: [AJR]
  * Identify plain ASCII text files as such.
@@ -247,7 +260,26 @@ Source Changes
  * Avoid buffer overruns.
  * For calculating address masks, don't assume file size to be a power of 2.
 
+-Replace linenoise-ng with a simpler port that uses a different UTF8 parser. [Carl]
+
 -plugins/console: Improved suggested completions. [Carl]
+
+-luckgrln.cpp: Added DIPs and layout for 7smash, promoted to working. [David Haywood]
+
+-Preliminary steps for basic VT03 (NES clone) support: [David Haywood]
+ * Allowed derived classes to extend the PPU functionality to support the basic modes.
+ * Added VT03 PPU variant and machine driver.
+ * Moved mc_dgear from nes.xml to this driver and added several dumps.
+ * Added some support for cybar120 extended sprite addressing.
+
+-mitchell.cpp: Fixed NVRAM saving. [David Haywood]
+
+-scyclone.cpp updates, promoted to working: [David Haywood]
+ * Added sprite colours and preliminary starfield (no twinkle, uncertain star positions).
+ * Documented probably hardware collision feature.
+ * Added preliminary flipscreen support
+ * Added sound, discrete section missing.
+ * added save state support.
 
 -ojankohs: Rewrote input handling: [Dirk Best]
  * Added missing player 2 controls.
@@ -290,6 +322,28 @@ Source Changes
  * Fixed backgrounds and colors.
 
 -Added hopper-like mode to ticket dispenser device. [MetalliC]
+
+-Added hack to fish hashpath option out of INI files prior to softlist evaluation. [Nathan Woods]
+
+-Fixed issue in image identification code accessing an empty verctor when the hashed data length is zero. [Nathan Woods]
+
+-Cleanups to ram_device: [Nathan Woods]
+ * Expose specific options, removing the burden of parsing RAM strings from clients.
+ * Moved validation of command line arguments out of device_validity_check().
+
+-imgtool updates: [Nathan Woods]
+ * Cleaned up validity code and transitioned to std::wcerr as Windows doesn't like mixing std::wc(out|err) with printf.
+ * Fixed issue with 'listfilters' command.
+ * Extremely basic fix to the imgtool <-> CHD HD bridge (really nees much more work).
+ * Simplified CHD metadata load since C++11 allows writing to a std::string directly.
+
+-Micellaneous cleanup and modernisation: [Nathan Woods]
+ * Polished up traces of slot options menu's pre-C++ heritage and moved completely private code to an anonymous namespace.
+ * Created device_slot_interface::slot_name() to wrap pattern of taking the tag and removing the initial colon.
+ * Changed running_machine::schedule_[load|save]() to take 'std::string &&' instead of 'const char *'.
+ * Converted running_machine::saveload_schedule to scoped enum.
+ * Changed 'int ignore_warnings' parameter on core_options::parse_ini_file() to 'bool ignore_unknown_options'.
+ * Retired min/max in attotime.h in favor of std::[min|max]().
 
 -cgenie: Fixed loading ROMs from softlist in floppy interface. [Nigel Barnes]
 
@@ -385,6 +439,10 @@ Source Changes
 
 -exidy.cpp: Added PROMs from bootleg to mtrap sets as bad dumps. [Ivan Vangelista]
 
+-Cleaned up GENie Lua scripts and corrected some header file names. [dankan1890]
+
+-Made software list menu appear if approprieate when starting a machine from the Favorites menu. [dankan1890]
+
 -scyclone.cpp: Redumped bad ROM, dumped PROMs. [ShouTime]
 
 -williams.cpp: Redumped defenderj bad ROM, game now works. [ShouTime]
@@ -394,6 +452,9 @@ Source Changes
 -segas18.cpp: Dumped later version of Shadow Dancer sound CPU ROM, documented main program EPR labels. [rtw]
 
 -by68701.cpp: Added missing ROM dump for flashgdnp1. [PinMAME]
+
+-aristmk4, aristmk5, aristmk5: Added more sets and improved documentation. [Heihachi_73]
+ * Many dumps were corrupted by being transfered to a UNIX system using FTP mode A.
 
 -Updated Taito Power JC and Taito Type Zero descriptions. [sjy96525]
 
@@ -408,6 +469,8 @@ Source Changes
 -Amiga: Use correctly sized boot ROMs for the A1000 (mask ROMs are much larger than the content). [Guru]
 
 -royalmah.cpp: Redumped mjyarou, verified it only has one Z80. [Guru]
+
+-dsoccr94: removed redundant DIP switches. [Bad A. Billy]
 
 -r9751: Added terminal keyboard callback. [Brandon Munger]
 
@@ -437,8 +500,6 @@ Source Changes
 
 -z180: added support for DREQ, TEND signals; fixed dma0 count, DREQ handling (#2256) [BartmanAbyss]
 
--N64, RSP, drc : Wrap PC to 12 bits in a few more places. [Happy]
-
 -QSound/DL-1425: update ROM and comments with corrections from recent decap [Lord Nightmare, Siliconpr0n, superctr, Quench]
 
 -Adding Doubutsu no Mori Card-e  (Series 1 and Series 2) [Shideravan]
@@ -449,17 +510,10 @@ Source Changes
 
 -via6522: tuned shifter IRQ timing to be more cycle accurate [Joakim Larsson Edstrom]
 
--luckgrln.cpp: add dips and layout for 7smash, promoted to working [David Haywood]
-
 -Fixed an issue that could cause problems when loading reset_on_load devices (like cartridges) from softlists at runtime
  [Nathan Woods]
  * This was not guaranteed to cause a problem; the specific issue here was reported by mr_gw in the context of the CoCo, and the
     proximate issue (hanging) was in CoCo-specific code.   That said, this could cause problems elsewhere.
-
--[Imgtool] Cleanups to validity code, and transitioned to std::wcerr [Nathan Woods]
- * Windows doesn't like mixing std::wc[out|err] and printf()
-
--Remove redundant DSWs (#2250) [Bad-A-Billy]
 
 -cgenie_cass.xml: add some missing entries [Juergen Buchmueller]
 
@@ -493,12 +547,6 @@ Source Changes
 
 -Add a note and flag that Williams' Mayday has unemulated protection which is currently hacked around. [Lord Nightmare]
 
--scyclone.cpp: more work [David Haywood]
- * added sprite colours, basic starfield (rendering isn't correct, eg. no twinkle, uncertain star positions);
- * documented what is probably a hw collision bit as you can't destroy the large sprites with it off, but if you turn it on all the
-    time then a shot in the corner will cause the game to lock up repeating the explosion sequence over and over;
- * added preliminary flipscreen support
-
 -Minor improvement to CHD metadata loading [Nathan Woods]
  * Writing into an std::string is now legal with C++11
 
@@ -531,38 +579,6 @@ Source Changes
  * this PR introduces the handling of display softkeys in hp9845C & T emulation. It also improves the accuracy of the displayed
     image of these systems. Thanks.
 
--scyclone.cpp: promoted to working status [David Haywood]
- * added sound. Discrete part missing;
- * added save state support.
-
--Overhaul to how MAME handles options (#2260) [npwoods]
- * This is an overhaul to how MAME handles options to provide a better foundation for what MAME is already doing in practice.
-    Previously, core_options was designed to provide an input/output facility for reading options from the command line and INI
-    files. However, the current needs (image/slot/get_default_card_software calculus and MewUI) go way beyond that.
- * Broadly, this PR makes the following changes:
- * core_options now has an extensibility mechanism, so one can register options that behave dramatically differently
- * With that foundation, emu_options now encapsulates all of the funky image/slot/get_default_card_software calculus that were
-    previously handled by static methods in mameopts.cpp. Changes to emu_options should not automatically cascade in such a way so
-    that it stays in a consistent state
- * emu_options no longer provides direct access to the slot_options/image_options maps; there are simpler API functions that control
-    these capabilities
- * Many core_options functions that expose internal data structures (e.g. - priority) that were only really needed because of
-    previous (now obsolete) techniques have been removed.
- * core_options is now exception based (rather than dumping text to an std::string). The burden is on the caller to catch these, and
-    discern between warnings and errors as needed.
- * Obviously this is a risky change; that's why this is being submitted at the start of the dev cycle.
-
--Revert "Overhaul to how MAME handles options (#2260)" [Vas Crabb]
- * This reverts commit 536990e77b49ccc50ef275bfbf1018cc29c16154.
- * Conflicts: src/frontend/mame/mame.cpp
- * Sorry, but this change was half-baked.  It breaks a lot of existing functionality and clearly hasn't been tested in more than a
-    tiny subset of use cases.  Please play this work back onto your own branch, and test it before submitting another PR.
-
--Cleanups to src/frontend/mame/ui/slotopt.[cpp|h] [Nathan Woods]
- * Did the following: 1.  Polished up residual traces of this code's pre-C++ heritage 2.  Moved completely private code to an
-    anonymous namespace 3.  Created device_slot_interface::slot_name() to wrap the pattern of taking the tag and removing the
-    initial colon
-
 -Bug fix to -romident and aux verb cleanup (#2288) [npwoods]
  * Bug fix to -romident and aux verb cleanup
  * Made the following changes: 1.  Fixed a bug where resolved slot/image options would choke -romident (reproducible in MAME 0.185
@@ -584,77 +600,31 @@ Source Changes
  * Supporting auxverbs in any order
  * The previous patch was supporting 'mame64 -listsource pacman' but not 'mame64 pacman -listsource'
 
--Adding hack to fish hashpath option out of INI files prior to softlist evaluation eientei95 reported an error where the hashpath
- specified in INI files was not being honored in softlist evaluation.  This is a change to preprocess INI files for the sole purpose
- of finding the hashpath prior to evaluating softlists. [npwoods]
-
--Fixed various issues that failed when compiling Vas' changes on MSVC [Nathan Woods]
- * Most of these appear to be typos that should be benign but due to MSVC bugs, are not benign
- * The dac.h 'bits' thing is just stupid
+-Bug fix to -romident and aux verb cleanup (take two) Earlier I was handling 'mame64 -listsource pacman' but not 'mame64 pacman
+ -listsource' [npwoods]
 
 -Adding hack to fish hashpath option out of INI files prior to softlist evaluation [Nathan Woods]
  * eientei95 reported an error where the hashpath specified in INI files was not being honored in softlist evaluation.  This is a
     change to preprocess INI files for the sole purpose of finding the hashpath prior to evaluating softlists.
 
--Fixed various issues that failed when compiling Vas' changes on MSVC Most of these appear to be typos that should be benign but due
- to MSVC bugs, are not benign [npwoods]
- * The dac.h 'bits' thing is just stupid
-
--Bug fix to -romident and aux verb cleanup (take two) Earlier I was handling 'mame64 -listsource pacman' but not 'mame64 pacman
- -listsource' [npwoods]
-
 -Fixed a regression in -listmedia/-listslots [Nathan Woods]
  * The issue is that -listmedia/-listslots were not honoring command line options specified on the slot.  This works around the
     problem.
-
--Changed 'int ignore_warnings' parameter on core_options::parse_ini_file() to be 'bool ignore_unknown_options' [npwoods]
-
--Cleanups to src/frontend/mame/ui/slotopt.[cpp|h] Did the following: 1.  Polished up residual traces of this code's pre-C++ heritage
- 2.  Moved completely private code to an anonymous namespace 3.  Created device_slot_interface::slot_name() to wrap the pattern of
- taking the tag and removing the initial colon [npwoods]
 
 -Bug fix to -romident and aux verb cleanup Made the following changes: 1.  Fixed a bug where resolved slot/image options would choke
  -romident (reproducible in MAME 0.185 with 'mame64 -romident coco.zip') 2.  'mame64 -romident' no longer crashes (though it doesn't
  do anything useful) 3.  Changed the aux verb functions to take 'const std::string &' [npwoods]
 
--Refactoring/cleanup to state load/save handling [npwoods]
- * Changed running_machine::schedule_[load|save]() to take 'std::string &&' instead of 'const char *'
- * Changed running_machine::saveload_schedule to be 'enum class'
-
--Changed 'int ignore_warnings' parameter on core_options::parse_ini_file() to be 'bool ignore_unknown_options' [Nathan Woods]
-
--Improve Critter Crusher / Tatacot Gun Control [sjy96525]
-
--Refactoring/cleanup to state load/save handling [Nathan Woods]
- * Changed running_machine::schedule_[load|save]() to take 'std::string &&' instead of 'const char *'
- * Changed running_machine::saveload_schedule to be 'enum class'
-
 -DERIVED_CLOCK now updates in response to clock changes, and changed CoCo to use this mechanism (#2140) [npwoods]
  * [CoCo] Changed the 6883 SAM implementation to control the root_machine clock, and changed CoCo devices to use DERIVED_CLOCK
 
--Fix bug that permanently disabled some UI search strings when they were cleared [AJR]
-
--Copy longname, manufacturer, year, filetype, etc. for image info in all softlisted cases [AJR]
-
--daytona: Add feedback driver board (including ROM) [AJR]
-
 -Emulation of Games Master Cartridge [tim lindner]
-
--Lua scripts cleanup. [dankan1890]
-
--Fixed some inaccuracies in file names in lua scripts. [dankan1890]
 
 -Updated for latest mame revision. [tim lindner]
 
 -Minor cleanup of some old defines. [tim lindner]
 
 -Vasified source. [tim lindner]
-
--Starting from the Favorites menu now starts the software list submenu (if necessary). (#2308) [Dankan1890]
- * Starting a machine containing a list of the software from the Favorites menu, now determines the launch of the appropriate
-    sub-menu with the list of software.
-
--aristmk4, aristmk5, aristmk6 - extra sets and improved documentation [Heihachi_73] (#2300) [DavidHaywood]
 
 -Fix video_manager::throttle_until_ticks (#2309) [057a3dd61f99517a3afea0051a49cb27994f94d]
  * Do not update m_average_oversleep if we overslept too much. This is still a partial fix, more investigation is needed when the
@@ -666,30 +636,11 @@ Source Changes
 -Remove the minimum constraint for sleep, thus avoid choosing a seemingly arbitrary constant.
  [057a3dd61f99517a3afea0051a49cb27994f94d]
 
--fix mitchell.cpp nvram saving [D. Haywood]
-
--mitchell.cpp : just use the finder method for nvram [David Haywood]
-
--mitchell.cpp : just use the finder method for nvram since after the last submission we're now saving the whole ram and don't have
- the provisional code to go back we can just use the built in finder rather than set_base [DavidHaywood]
-
--fix mitchell.cpp nvram saving this must have been broken for a while, it was assuming that MAME used the CPU region as RAM for
- 8-bit CPUs and that hasn't been an valid for a long time. (15+ years?)  As a result data wasn't being saved / restored properly at
- all. [DavidHaywood]
- * Corrado Tomaselli noticed this when playing with his Super Pang PCB, after replacing a hacked set with a proper original + Kabuki
-    battery he noticed the game no longer showed '8Mhz Original Board' on bootup.  This is because the battery also backs up at
-    least part of main RAM, and it only displays that string the first time it initializes main ram.
- * The previous MAME code only tried to save 0x80 bytes of the RAM, with a different location for some games.  I've left that
-    behavior commented in case it turns out the original does only save that area, but it seems more likely it just backs up the
-    whole of the RAM.
-
 -Have -listroms display a user-friendly message when no ROMs are required [AJR]
 
 -floppy: Fix for a segfault when emulating HP9895 drive [F.Ulivi]
 
 -Update luaengine.rst [Dan Amador]
-
--basic VT03 support [David Haywood]
 
 -ti99: Changes to peripheral handling [Michael Zapf]
  * Major rearrangement of the bus/ti99 subtree; using namespaces now.
@@ -702,17 +653,6 @@ Source Changes
    TI-99/4P. ti99_4ev finds PEB plugged in as default, together with the EVPC
    so that we have a default video output.
 
--some support for extended sprite addressing used by cybar120 [David Haywood]
-
--make cybar120 look more reasonable [David Haywood]
-
--Cleanups to ram_device (#2324) [npwoods]
- * Specifically: 1.  Changed ram_device to expose specific options, removing the burden for clients to parse RAM strings 2.  Moved
-    validation of command line arguments out of device_validity_check(); that method is only intended for checking the device itself
-    3.  Miscellaneous polishing
-
--Retired min/max in attotime.h, in favor of std::[min|max]() [Nathan Woods]
-
 -Fixed 2 bugs: [Robbbert]
  1. If either a multipart softlist item was loaded, or a single-part item loaded into a system with more than one of
  the same media slot, then a reset would cause a fatal error.
@@ -721,54 +661,19 @@ Source Changes
 
 -liberate.cpp: All PSGs are AY-3-8912A [AJR]
 
--Fixed issue when the hash length is zero (#2314) [npwoods]
- * Fixed issue when the hash length is zero
- * The following is illegal, even if no elements in the pointer are accessed:
- * std::vector<my_struct> my_vec(0); // create an empty std::vector my_struct *ptr = &my_vec[0];
- * While this is a degenerate scenario, this should be fixed
-
--Retired min/max in attotime.h, in favor of std::[min|max]() [npwoods]
-
--preliminary steps for basic VT03 (NES clone) support VT03 is a clone of the NES hardware but with extended capabilities such as
- 4bpp tiles, an extended palette and it's own banking schemes.  The VT family of chips are used by the vast majority of recent
- 'famiclone' systems, often standalone devices with a number of built in games and no cartridge slot.  Later models add 8bpp modes
- and even more complex banking schemes. [DavidHaywood]
- * This allows derived classes to extend the PPU functionality to support the basic modes.
- * mc_dgear has been moved from nes.xml to this driver (as it's not something that could actually run on a NES) and several other
-    dumps from what should be VT based machines have been added, although some use later models.  cybar120 boots but you can see it
-    appears to need an 8bpp mode.  Most of the others don't boot yet.
- * for mc_dgear 'Shark', 'Octopus', 'Harbor', and 'Earth Fighter' use the extended palette / 4bpp mode, although the actual palette
-    decoding needs work even if the tiles are now correctly decoded.
- * To my knowledge the only other emulator for these is EmuVT which is an illegal chinese made hack of Nester (Nester is GPL, but no
-    sources for EmuVT were ever released) and the documentation out there doesn't cover all features, and in some cases isn't
-    entirely correct.
- * Submitting now as it was a lot of work just keeping this in sync with the latest changes.
-
 -Update luaengine.rst I recently bumped into this problem while trying to develop a script and couldn't find adequate documentation
  or examples for the newest Mame version [DanAmador]
-
--Fixed some inaccuracies in file names in lua scripts. [dankan1890]
 
 -Fix for a segfault when emulating HP9895 drive (take 2) Hi, this is the 2nd attempt to fix the bug that sometimes caused segfaults
  when emulating hp9895 drive. My previous attempt was in PR #2319. I think this addresses the problem better. It was due to a
  rounding error in floppy_image_device::find_position function that overflowed the "sacred" 2E+8 limit. Thanks. [fulivi]
  * -F.Ulivi
 
--Cleanups to ram_device Specifically: 1.  Changed ram_device to expose specific options, removing the burden for clients to parse
- RAM strings 2.  Moved validation of command line arguments out of device_validity_check(); that method is only intended for
- checking the device itself 3.  Miscellaneous polishing [npwoods]
-
 -Fixed a regression in -listmedia/-listslots The issue is that -listmedia/-listslots were not honoring command line options
  specified on the slot.  This works around the problem. [npwoods]
 
 -Fix video_manager::throttle_until_ticks (#2309) Do not update m_average_oversleep if we overslept too much. This is still a partial
  fix, more investigation is needed when the system time jumps backward. [057a3dd61f99517a3afea0051a49cb27994f94d]
-
--Fixed issue when the hash length is zero The following is illegal, even if no elements in the pointer are accessed: [npwoods]
- * std::vector<my_struct> my_vec(0); // create an empty std::vector my_struct *ptr = &my_vec[0];
- * While this is a degenerate scenario, this should be fixed
-
--Starting from the Favorites menu now starts the software list submenu (if necessary). [dankan1890]
 
 -Games Master Cartridge slot device for the Color Computer Adds a new slot device to emulate the Games Master Cartridge developed by
  John Linville. [tlindner]
@@ -777,23 +682,7 @@ Source Changes
  is overly complex.  I'm replacing it with a simpler port that has an MIT licensed UTF8 parser and moving more completion logic into
  lua enabling better completions.  Doing as a PR for suggestions and compile testing. [cracyc]
 
--Lua scripts cleanup. [dankan1890]
-
 -via6522: fixed the flank timer value which improved  but not completely reverted the vectrex regression [JoakimLarsson]
-
--Minor improvement to CHD metadata loading Writing into an std::string is now legal with C++11 [npwoods]
-
--[Imgtool] Fix to MT#6576 (#2275) [npwoods]
- * [Imgtool] Fixed issue with 'listfilters' command
- * [Imgtool] Extremely basic fix to the Imgtool <==> CHD HD bridge
- * This really needs _much_ more work
-
--[Imgtool] Fix to MT#6576 Two independent issues reported under MT#6576 [npwoods]
- * The 'listformats' command was broken
- * imghd.cpp (the Imgtool <==> CHD HD bridge) was pretty much completely broken (more work is needed here)
-
--[Imgtool] Cleanups to validity code, and transitioned to std::wcerr Windows doesn't like mixing std::wc[out|err] and printf()
- [npwoods]
 
 -z80scc: Reset Tx Interrupt Pending Command implemented Fix for the virtpool game [JoakimLarsson]
 
@@ -809,10 +698,6 @@ Source Changes
 
 -Adding Doubutsu no Mori Card-e  (Series 1 and Series 2) [Shideravan]
 
--Remove redundant DSWs These appear to have been overlooked & leftover from a a few years ago. Here is where I believe they were
- originally added. https://git.redump.net/mame/commit/?id=5ad309b60ffb645b9c438b04c61afaece1aa998f [Bad-A-Billy]
- * They are already included with the port_include so we don't need to add them again in the port_modify.
-
 -Mechanism for devices to generate clocks for other devices The dynamic DERIVED_CLOCK part of this actually works on a similar
  principle to #2140, but reuses an existing member of device_t instead of adding two new ones. This does change configured_clock()
  to return an unresolved value for derived clocks, but nothing directly accesses that parameter outside of device_t anyway.
@@ -820,12 +705,6 @@ Source Changes
  * Foreseen applications of this include the ENT0 CLK instruction on MCS-48 microcontrollers.
 
 -DERIVED_CLOCK now updates in response to clock changes, and changed CoCo to use this mechanism [npwoods]
-
-
-New machines added or promoted from NOT_WORKING status
-------------------------------------------------------
-security PIC is missing [MetalliC]
-Ltd) [AJR]
 
 
 New WORKING software list additions
@@ -836,7 +715,3 @@ ibm5150: Ferrari Formula One, Savage [breiztiger]
 ibm5170: Dark Seed, The Secret of Monkey Island [ArcadeShadow]
 ibm5150, ibm5170: Many IBM PC-DOS sets [Justin Kerk]
 t1000: MS-DOS (Version 2.11, Tandy version 02.11.24), MS-DOS (Verson 3.30, Tandy Version 03.30.20) [Justin Kerk]
-
-
-New NOT_WORKING software list additions
----------------------------------------
