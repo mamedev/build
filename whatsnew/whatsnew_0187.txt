@@ -147,18 +147,14 @@ Source Changes
 
 -MT 06594 [Robbbert]
 
--[Ram Device] Better detection of bad -ramsize strings, move some private code to anonymous namespace (#2336) [npwoods]
+-[Ram Device] Better detection of bad -ramsize strings, move some private code to anonymous namespace (#2336) [Nathan Woods]
  * [Ram Device] Better detection of bad -ramsize strings, move code to anonymous namespace
  * There was a longstanding bug where '-ramsize 16kfoo' would be treated as '-ramsize 16k'
  * Changed parse_string() to explicitly look for the suffixes "[k|m][|b|ib]"
 
--CoCo: Overhaul to the cartridge slot subsystem and Speech/Sound Cartridge support [Nathan Woods, Tim Lindner]
+-CoCo: Overhaul to the cartridge slot subsystem  [Nathan Woods]
 
--state: Turns the current state save feature to a menu [Nathan Woods]
- * This turns the current state save feature to a menu; one can still press 0-9, but you can also browse a menu when loading and
-    saving state
- * Fixed some issues requested by Vas Crabb
- * Updated state menu to support arbitrary character slots
+-CoCo: Speech/Sound Cartridge support [Tim Lindner]
 
 -r9751: Add more SMIOC registers and additional traces (#2338) [Brandon Munger]
 
@@ -171,10 +167,6 @@ Source Changes
 
 -Windows debugger: image menu: Mount File/Create default to swpath instead of randomness. [Robbbert]
 
--Revert "state: Turns the current state save feature to a menu [Nathan Woods]" [Olivier Galibert]
- * This breaks saving a state from a joystick button, e.g. the joy%i-%i.sta states, which are rather useful when you don't have a
-    keyboard handy.
-
 -use more likely clocks for littlerb based on PCB XTALS (Main CPU is more likely 8MHz than 12Mhz) [David Haywood]
  * also use a hack to overclock the TMS to 120% so that the map screen renders properly, points at possible timing errors in the
     core?
@@ -186,11 +178,6 @@ Source Changes
 -segasnd.cpp: Make "Universal Sound Board with ROM" work again (MT #6599) [AJR]
 
 -Fixed JVC disk format to correctly recognize 2 sided disks. (#2357) [tim lindner]
-
--[CoCo] Changed device_cococart_interface implementations to do dynamic_casts at config completion (#2356) [npwoods]
- * This should be considered part of the CoCo cartridge overhaul.  Vas (correctly) suggested that dynamic_casts should be done in
-    interface_config_complete() to avoid calling them at runtime.  This was actually happening inconsistently in the various
-    implementations, and consolidating them is a good cleanup.
 
 -naomi.cpp: add 5 real dumps of SPI EEPROMs used in M1/171-7978B-type cartridges, docs update [f205v, MetalliC]
 
@@ -265,8 +252,11 @@ Source Changes
 -ti99: Architectural cleanup for slot devices; constant renaming [Michael Zapf]
 
 -Fixes a crash when returning to the front end when a system was launched from favorites [Nathan Woods]
- * This bug could be reproduced with the following steps: 1.  Put 'nes' in 'Favorites' 2.  Launch 'nes' 3.  Choose something from
-    the software menu and run the emulation 4.  Escape back  -- CRASH
+ * This bug could be reproduced with the following steps:
+    1.  Put 'nes' in 'Favorites'
+    2.  Launch 'nes'
+    3.  Choose something from the software menu and run the emulation
+    4.  Escape back  -- CRASH
 
 -toaplan2.cpp: Generate (and acknowledge) video interrupts within VDP [AJR]
 
@@ -309,13 +299,6 @@ Source Changes
 -Move Famiclone stuff from nes.xml to driver, add 2 new sets (#2374) [DavidHaywood]
  * moved various famiclones 'ONE BUS' systems from nes.xml to the nes_vt.cpp driver as they're standalone systems, not cartridges.
 
--[CoCo] Follow up hygiene on CoCo cartridge slot refactoring (#2371) [npwoods]
- * [CoCo] Follow up hygiene on CoCo cartridge slot refactoring
-   - Removed now-extraneous cart_set_line() specific to the FDC code
-   - Added typedefs for line and line_value within device_cococart_interface()
-   - Moved private TIMER_* declarations to source file
-   - Added overload of set_line_value() that takes a 'bool' instead of 'line_value'
-
 -Some more descriptive names for CBM IEC devices [AJR]
 
 -Coco ssc busy delay (#2373) [tim lindner]
@@ -350,8 +333,9 @@ Source Changes
 -system16.cpp: Corrected clocks for Alien Storm (bootleg, set 2) [caius, The Dumping Union]
 
 -[CoCo 3]  Cleanups to the GIME implementation [Nathan Woods]
- * 1.  Moved specific implementations to anonymous namespace 2.  gime_base_device ==> gime_device 3.  Changed a pointer to a
-    reference
+ * 1.  Moved specific implementations to anonymous namespace 
+ * 2.  gime_base_device ==> gime_device
+ * 3.  Changed a pointer to a reference
 
 -Quingo: switched to hot slots machine since is more accurate. [RobertoFresca]
 
@@ -520,10 +504,6 @@ Source Changes
  * Added sound (same as Electron)
  * Added layout and hooked up Caps/Shift Lock LED's
 
--Fixed an issue that could cause the debugger 'source' command to falsely display I/O error [Nathan Woods]
- * I've discovered a scenario where reading to the end of file seems to trigger the fail bit, in addition to the eof bit.  Because
-    of this, I've changed the error message to display when we can't read from the stream, but the eof bit is _not_ set
-
 -ti99: Added new cartridge type paged7 for TI-CALC. [Michael Zapf]
 
 -new working clones  Treasure Island (DECO Cassette) (Region D) [David Haywood]
@@ -540,10 +520,6 @@ Source Changes
  * Hooked up i8042 I/O microcontroller comms to main CPU
  * Support medium-res built-in video on 9000/332
 
--Fixed an issue that could cause the debugger 'source' command to falsely display I/O error I've discovered a scenario where reading
- to the end of file seems to trigger the fail bit, in addition to the eof bit.  Because of this, I've changed the error message to
- display when we can't read from the stream, but the eof bit is _not_ set [npwoods]
-
 -added diagnostic 7-seg led [pmackinlay]
 
 -Gameboy v7 Some miscellaneous game boy documentation updates and a simple constant initialization as reported by coverity.
@@ -556,11 +532,6 @@ Source Changes
 
 -use actual M68705P5 dump for Rumba Lumber, replaces inaccurate simulation [ShouTime, brizzo] … [DavidHaywood]
 
--Changed 'enum read_or_write' to be 'enum class' [npwoods]
-
--[CoCo 3]  Cleanups to the GIME implementation 1.  Moved specific implementations to anonymous namespace 2.  gime_base_device ==>
- gime_device 3.  Changed a pointer to a reference [npwoods]
-
 -Goupil G2 computer support added. [jfdelnero]
 
 -Update neogeo_spr.cpp Tile code is 20bits, stop masking MSB. [TheHpman]
@@ -568,16 +539,6 @@ Source Changes
 -Move Famiclone stuff from nes.xml to driver, add 2 new sets [DavidHaywood]
 -new NOT WORKING
  * VG Pocket Tablet [BeckieRGB] Game Prince RS-1 [BeckieRGB]
-
--Fixes a crash when returning to the front end when a system was launched from favorites This bug could be reproduced with the
- following steps: 1.  Put 'nes' in 'Favorites' 2.  Launch 'nes' 3.  Choose something from the software menu and run the emulation 4.
- Escape back  -- CRASH [npwoods]
-
--[CoCo] Follow up hygiene on CoCo cartridge slot refactoring [npwoods]
- * Removed now-extraneous cart_set_line() specific to the FDC code
- * Added typedefs for line and line_value within device_cococart_interface()
- * Moved private TIMER_* declarations to source file
- * Added overload of set_line_value() that takes a 'bool' instead of 'line_value'
 
 -EF9365 : Fix the hardware vector engine. (This fix the ARC Squale Basic instruction and probably many others stuffs) [jfdelnero]
 
@@ -599,24 +560,8 @@ Source Changes
 -Fix mametesters bug #3041 Update clock frequencies based on video evidence and PCB photos Updated thrust control from toggle to
  momentary per actual game [palazzol]
 
--Reintroduced a state save menu, take two This attempts to address the concerns that caused PR#1026 to get reverted.  Specifically,
- joystick button support was readded. [npwoods]
- * Take note that this (along with PR#1026) changes the menu to be driven by keyboard input rather than keycode presses.  This means
-    that if I press 'A' on a French keyboard, I will now be saving or loading 'a.sta'.  Contrast this with the previous behavior
-    where pressing 'A' on a French keyboard would either load or save 'q.sta' (because that keycode pats to ITEM_ID_Q).  There have
-    been assertions that there is absolutely nothing wrong with the current behavior.  Even if we accept that, I would argue that
-    stops being the case when you have a menu that lets you look at the directory.
- * Lastly, there have been assertions that PR#1026 would "partially" honor the local keyboard layout, causing a situation where the
-    local keyboard layout would be honored on save but not load (or vice versa).  I've been unable to reproduce this behavior on my
-    Windows machine, in either a normal or an SDL build.  If anybody has more concrete repro instructions, please advise.
-
 -Fixed JVC disk format to correctly recognize 2 sided disks. And also included an additional #include to let the build system know
  about the new SDF format. [tlindner]
-
--[CoCo] Changed device_cococart_interface implementations to do dynamic_casts at config completion This should be considered part of
- the CoCo cartridge overhaul.  Vas (correctly) suggested that dynamic_casts should be done in interface_config_complete() to avoid
- calling them at runtime.  This was actually happening inconsistently in the various implementations, and consolidating them is a
- good cleanup. [npwoods]
 
 -use more likely clocks for littlerb based on PCB XTALS (Main CPU is more likely 8MHz than 12Mhz) [DavidHaywood]
  * also use a hack to overclock the TMS to 120% so that the map screen renders properly, points at possible timing errors in the
@@ -634,55 +579,14 @@ Source Changes
 -Added support for resetting RX interrupts/status by reading Rx FIFO through RR3, gets virtpool driver terminal a bit further but
  not all the way an no visible difference. [JoakimLarsson]
 
--Overhaul to how MAME handles options, take two This is an overhaul to how MAME handles options to provide a better foundation for
- what MAME is already doing in practice.  Previously, core_options was designed to provide an input/output facility for reading
- options from the command line and INI files.  However, the current needs (image/slot/get_default_card_software calculus and MewUI)
- go way beyond that. [npwoods]
- * Broadly, this PR makes the following changes:
- * core_options now has an extensibility mechanism, so one can register options that behave dramatically differently
- * With that foundation, emu_options now encapsulates all of the funky image/slot/get_default_card_software calculus that were
-    previously handled by static methods in mameopts.cpp.  Changes to emu_options should not automatically cascade in such a way so
-    that it stays in a consistent state
- * emu_options no longer provides direct access to the slot_options/image_options maps; there are simpler API functions that control
-    these capabilities
- * Many core_options functions that expose internal data structures (e.g. - priority) that were only really needed because of
-    previous (now obsolete) techniques have been removed.
- * core_options is now exception based (rather than dumping text to an std::string).  The burden is on the caller to catch these,
-    and discern between warnings and errors as needed.
- * The slot menu will now "react" to changes that alter the list of available slots
- * Obviously this is a risky change; that's why this is being submitted at the start of the dev cycle.
-
 -r9751: Add more SMIOC registers and additional traces [bmunger]
 
 -Improve CD audio play track/index command handling [smf]
-
--[Ram Device] Better detection of bad -ramsize strings, move some private code to anonymous namespace There was a longstanding bug
- where '-ramsize 16kfoo' would be treated as '-ramsize 16k' [npwoods]
 
 -Fix incorrectly labeled machine and add another [AttackedbyGlitch]
  * Rename "Cyber Arcade 120-in-1" to "Defender M2500P 120-in-1". According to the dumper, this would be the correct name for this
     machine.
  * Add vdogdeme, an earlier version of vdogdemo.
-
--[CoCo] Overhaul to the cartridge slot subsystem and Speech/Sound Cartridge support This was a general cleanup to the CoCo cartridge
- slot infrastructure, and related devices. [npwoods]
- * Changed read() and write() to scs_read() and scs_write() and restricted to $FF40-5F, to restrict those methods to usage
-    pertaining to reads/writes when the SCS pin is active
- * Added a distinct ability to install read/write handlers in the CoCo address space
- * This should fix cartridges that do this (Multi-Pak interface, Orch-90, RS232) on non-CoCo 3 systems
- * Refactored each of the CoCo cartridge devices to keep their device classes in anonymous namespaces in their source files,
-    eliminating the need for several header files, and performed cleanups.
- * Also, updated each to use device_add_mconfig() instead of device_mconfig_additions()
- * Separately, the following device specific changes were made (by me when not otherwise specified):
- * Added the CoCo S/SC (Speech & Sound) cartridge [Tim Lindner]
- * Added the ROM to the CoCo Orch-90 device
- * Corrected the address space for the RS-232 pak (supposed to be $FF68-B, was $FF68-F)
- * Fixed a motor issue on the CoCo FDC [Tim Lindner]
-
--Changed a few 'const char *' ==> 'const std::string &' in the MAME debugger [npwoods]
-
--This turns the current state save feature to a menu This turns the current state save feature to a menu.  One can still press 0-9,
- but you can also browse a menu when loading and saving state [npwoods]
 
 
 New machines added or promoted from NOT_WORKING status
