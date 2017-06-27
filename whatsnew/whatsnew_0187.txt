@@ -30,14 +30,17 @@ Waku Waku Ultraman Racing [ShouTime, gamerfan, Rod_Wod, MetalliC, Peter Wilhelms
 New working clones
 ------------------
 Bambino Classic Football [hap]
+Burnin' Rubber (DECO Cassette) (Japan) [Charles MacDonald, The Dumping Union]
 Danger Track (Rally X bootleg) [Rafael Alonso, Ricky2001, Rockman, ArcadeHacker]
 Fidelity Sensory Chess Challenger 9 (rev. B) [yoyo_chessboard]
 Gingateikoku No Gyakushu (bootleg set 3) [Andrew Welburn, Craig Anstett, The Dumping Union]
+Graplop (DECO Cassette) (Japan) [Charles MacDonald, The Dumping Union]
 Guerrilla War (Version 1, set 2) [Artemio Urbina, The Dumping Union]
 HP 9845B (Germany) [F.Ulivi, A.Kueckes]
 HP 9845C (Germany) [F.Ulivi, A.Kueckes]
 HP 9845T (Germany) [F.Ulivi, A.Kueckes]
 Jack Potten's Poker (set 10, ICP-1 PCB) [TeamEurope, Roberto Fresca]
+Lock'n'Chase (DECO Cassette) (Japan) [Charles MacDonald, wtc4ever, The Dumping Union]
 Mach-9 (bootleg of Vulgus) [Marcos75, The Dumping Union]
 Macross II (Korea) [CoolMod, CS, The Dumping Union]
 Marchen Maze (Japan, hack?) [frsj8112, The Dumping Union]
@@ -47,6 +50,7 @@ Operation Thunderbolt (Japan, SC) [ShouTime, The Dumping Union]
 Palamedes (US) [caius, The Dumping Union]
 Pengo (set 5) [Corrado Tomaselli, The Dumping Union]
 Power Instinct (USA, prototype) [ShouTime]
+Pro Tennis (DECO Cassette) (Japan) [Charles MacDonald, The Dumping Union]
 Spectar (revision 2, bootleg) [Ricky2001]
 Tehkan World Cup (set 4, earlier?) [Purity, The Dumping Union]
 Time Killers (v1.32I) [Brian Troha, The Dumping Union]
@@ -109,6 +113,7 @@ V-Smile (US) [Sean Riddle]
 
 New working software list additions
 -----------------------------------
+abc80_cass, abc80_flop: ABCStacker [Andreas Gustafsson]
 archimedes: Countdown to Doom, The Last Days of Doom [Nigel Barnes]
 bbcmc: Bikes [Nigel Barnes]
 dragon_cart: Sound Extension [Nigel Barnes]
@@ -129,6 +134,7 @@ ibm5150:
   PKZip 2.04g, Platoon, Risky Woods, SimEarth, Star Goose!, Wrath of the Demon, Xenon [ArcadeShadow]
 ibm5170:
   Disney's Aladdin, Gobliiins, Gobliins 2: The Prince Buffoon, Goblins Quest 3, PC Tools (various versions), SimFarm [ArcadeShadow]
+pet_quik: Hardcore Petting, No Pets Allowed [Curt Coder]
 pce_tourvision: Ankoku Densetsu, Batman, Burning Angels, Cadash, Gradius, Toilet Kids, World Jockey [system11, The Dumping Union]
 x68k_flop:
   Bradion, Dennou Club Vol. 90 Tokubetsu Henshuu-ban, Dennou Club Vol. 94, Dennou Club Vols. 96-139, GJ, Nemesis '95 Gradius 2
@@ -141,10 +147,6 @@ dragon_cart: EPROM Programmer, Speech Synthesis, Ultra Drive [Nigel Barnes]
 vsmile_cart:
   Abenteuer im ABC Park (GER), Finding Nemo - De Wonderwereld Van Nemo (NL), Mickey Mouse Clubhouse (NL),
   Shrek De Derde - Arthurs Schooldag Avontuur (NL) [Team Europe]
-
-
-Translations added or modified
-------------------------------
 
 
 Source Changes
@@ -160,16 +162,45 @@ Source Changes
 
 -Improved CD audio play track/index command handling. [smf]
 
+-Added unused DIP switches 7 and 8 to eeekk! since it's a conversion of pacman. [smf]
+
 -terracre.cpp: Added actual hookup for protection data and fixed potential buffer overflow. [Angelo Salese]
 
 -cop01.cpp: Improved Mighty Guy sound. [Angelo Salese]
 
 -apricot: Switched to preferred Z80SIO device. [Dirk Best]
 
+-drawgfx: Made the palette optional, and fixed viewgfx for case where palette is absent. [O. Galibert]
+
+-devcb: Added line hold capability. [O. Galibert]
+
 -bgfx: Fixed the following shaders: xBR-lv2-multipass, xBR-lv2-fast, xBR-lv2-noblend, xBR-lv2, xBR-lv3-noblend, xBR-lv3. [Ryan Holtz]
 
 -Added preliminary YM3802 MIDI/cassette controller with MIDI clock timer and click counter. [Barry Rodewald]
  * Added X68000 expansion device using the YM3802, Mahou Daisakusen (x68k) plays MIDI music.
+
+-ti99 updates: [Michael Zapf]
+ * Implemented Hexbus and HX5102 floppy early WIP.
+ * Cleaned up slot devices architecture and renamed constants.
+ * Added new cartridge type paged7 for TI-CALC.
+
+-accomm: Fully implemented keyboard, added sound (same as Electron), and added layout with Caps/Shift Lock LEDs. [Nigel Barnes]
+
+-d64plus: Implemented banking of extra 64K, and 6845 with chargen - promoted to working. [Nigel Barnes]
+
+-dragon32: Added JCB Sound Extension cartridge. [Nigel Barnes]
+
+-dragon200e: Added correct keyboard. [Nigel Barnes]
+
+-starshp1 updates: [Frank Palazzolo]
+ * Fixed graphics/speed issues.
+ * Made Fast/Slow momentary as on real cabinet, added note about behaviour.
+ * Updated clocks according to latest information.
+
+-z80scc: Added support for resetting RX interrupts/status by reading Rx FIFO through RR3. [Joakim Larsson Edstrom]
+ * Gets virtpool driver terminal a bit further, but not all the way (no visible difference).
+
+-dbox: Separated skeleton driver from unfinished display device. [Joakim Larsson Edstrom]
 
 -Replaced fake TLCS-90 I/O space with callbacks. [AJR]
 
@@ -209,7 +240,7 @@ Source Changes
 
 -norautp: Restored some inputs that were disconnected many releases ago, don't hardcode "Readout" inputs. [AJR]
 
--grdian, getstarj: Replaced MCU simulation with new dump. [AJR]
+-grdian, getstarj: Replaced MCU simulation with new dump. [AJR, ShouTime, brizzo]
 
 -s2650: Modernised I/O: [AJR]
  * Replaced fake S2650_SENSE_PORT address with line read callback (set_input_line should also work).
@@ -226,6 +257,20 @@ Source Changes
 -exidy.cpp: Added PROMs to spectar taken from a bootleg set - believed to match original. [Ivan Vangelista]
 
 -Migrated remainding device machine configuration additions to instance member functions. [Ivan Vangelista]
+
+-Made RAM device look for [km](i?b)? rather than [km].* suffix. [Nathan Woods]
+
+-Fixed a crash when returning to the front-end after launching a system from favorites. [Nathan Woods]
+
+-CoCo: Overhauled the cartridge slot subsystem. [Nathan Woods]
+
+-Made read_or_write a scoped enum. [Nathan Woods]
+
+-Changed the profiler to use std::ostringstream as the text sink (instead of std::string). [Nathan Woods]
+
+-Cleaned up CoCo 3 GIME implementation. [Nathan Woods]
+
+-Changed a few C strings to std::string references in the debugger. [npwoods]
 
 -Quingo: Switched to hot slots machine (more accurate). [RobertoFresca]
 
@@ -270,6 +315,12 @@ Source Changes
 
 -t10spc.cpp: Added missing start/stop unit command [Patrick Mackinlay]
 
+gameboy updates: [Tauwasser]
+ * Cleaned up Gowin information in gameboy.xml, added information from archived web site and catalogue.
+ * Replaced GoodGBX MBC1 Collection check code with direct comparison of internal ROM name.
+ * Removed buffer over-read in get_cart_type.
+ * Updated MBC1-MBC5 mapper documentation.
+
 -Use more likely clocks for littlerb based on PCB crystals (main CPU is more likely 8MHz than 12MHz). [David Haywood]
  * Also added a hack to overclock the TMS to 120% so that the map screen renders properly.
 
@@ -296,206 +347,32 @@ Source Changes
 
 -Use dumped M68705 for fieldday/undoukai. [ShouTime, brizzo]
 
+-tetrsark: Add a totally useless MCU dump (apparently blank). [ShouTime, Brizzo]
+
+-arkanoidja, arkanoidu, arkatour: Replaced hand-crafted MCU programs with 68705 dumps. [Lord Nightmare, ShouTime, brizzo]
+
+-prebillian: Replaced MCU simulation with actual dump, fixed vblank input, fixed player 2 spinner input, and added launch button.
+ [Lord Nightmare, ShouTime, brizzo]
+
+-ay8910.cpp: Made device_clock_changed respect YM2149 pin 26, added pinout, and remove outdated comments. [Lord Nightmare]
+
+-socrates.cpp: Converted socrates and iqunlimz to bankdev, hooked up socrates hblank input, and made profweis machine configuration
+ derive from socrates. [Lord Nightmare]
+
+-hh_sm510: Improved Mickey & Donald SVG artwork. [Sean Riddle, RColtrane]
+
 -naomi.cpp: Bruteforced "Dragon Treasure" main unit DES key. [Mike Ryan]
 
 -svmu: Added two English BIOS versions and a newer Japanese BIOS version. [Kingizor]
 
+-system16.cpp: Corrected clocks for Alien Storm (bootleg, set 2). [caius, The Dumping Union]
+
+-Fixed missing VLM5030 speech in Hyper Crash and increased volume, and fixed VLM loading in jailbrek and clones. [MASH]
+
 -gradius4: Changed description to match title screen/flyer. [Pedro J. Martinez]
+
+-Renamed "Cyber Arcade 120-in-1" to "Defender M2500P 120-in-1" (correct name according to dumper). [AttackedbyGlitch]
 
 -Corrected descriptions for Gradius 4: Fukkatsu and Silent Scope 2. [sjy96525]
 
 -Changed Air Combat 22 auto-centring throttle from Pedal to AD_STICK_Z. [sjy96525]
-
--drawgfx: Make the palette optional [O. Galibert]
- * device_gfx_interface does two things:
- * go from a possibly weird rom layout to a one-byte-per-pixel tiled layout
- * draw the tiles so created
- * The second part requires a palette, but the first doesn't.  And low-level emulations of individual graphic chips (konami tilemap
-    or sprite generators for instance) are not supposed to care about the palette.  They just output bits which are partly indexes
-    into palettes, and partly not, and in any case become pen ids only much further in the rendering chain.  But they need access to
-    the decoding step, because one-byte-per-pixel is real nice..  So now such a device, which inherits from device_gfx_interface,
-    can call set_palette_disable(true) and no palette tag will be required. Calling the draw functions will segfault though.
- * As a side effect, the gfx_element constructor now takes a palette pointer instead of a reference, since it's now optional.
-
--Added support for resetting RX interrupts/status by reading Rx FIFO through RR3 [Joakim Larsson Edstrom]
-
--Changed the profiler to use std::ostringstream as the text sink (instead of std::string) [Nathan Woods]
-
--viewgfx: Fix the case when a gfx element has no palette [O. Galibert]
-
--abc80_cass.xml, abc80_flop.xml: Added ABCStacker. [Andreas Gustafsson]
-
--pet: Added quickload software list with some demos. [Curt Coder]
-
--ay8910.cpp: add pinout, remove outdated comments from .h [Lord Nightmare]
-
--dbox: separated skeleton driver from unfinished display device [Joakim Larsson Edstrom]
-
--[Ram Device] Better detection of bad -ramsize strings, move some private code to anonymous namespace (#2336) [Nathan Woods]
- * [Ram Device] Better detection of bad -ramsize strings, move code to anonymous namespace
- * There was a longstanding bug where '-ramsize 16kfoo' would be treated as '-ramsize 16k'
- * Changed parse_string() to explicitly look for the suffixes "[k|m][|b|ib]"
-
--CoCo: Overhaul to the cartridge slot subsystem  [Nathan Woods]
-
--Fix incorrectly labeled machine and add another (#2334) [AttackedbyGlitch]
-   - Defender M2500P 120-in-1 was incorrectly labeled as Cyber Arcade 120-in-1.
-   - Added vdogdeme (earlier version of vdogdemo).
- * revert romset name change
-
--Windows debugger: image menu: added ability to load software-list items. [Robbbert]
-
--Windows debugger: image menu: Mount File/Create default to swpath instead of randomness. [Robbbert]
-
--Fixed missing VLM5030 speech in Hyper Crash [MASH]
- * Fixed missing VLM5030 speech in Hyper Crash since MAME 0.176. Also increased VLM volume.
- * MAME 0.176: https://git.redump.net/mame/commit/?id=b9032a023abf81c23481ba02d258c1cf1ef26896 Convert VLM5030 to
-    device_memory_interface; correct region lengths
- * https://git.redump.net/mame/commit/?id=cd502b4fdba620de705dcc1a675ae308a366933e Fix VLM loading in jailbrek and clones
-
--Fix mametesters bug #3041 (#2359) [Frank Palazzolo]
- * starshp1: Fast/Slow control from toggled to momentary, as in real game
- * Update clocks per latest information
- * Add note about Throttle Level behaviour
- * Change format of comments
-
--ti99: Hexbus implementation; floppy HX5102 early WIP [Michael Zapf]
-
--hh_sm510: Improved Mickey & Donald SVG artwork [Sean Riddle, RColtrane]
-
--devcb: Add line hold capability [O. Galibert]
- * Whoever feels like saying that "HOLD does not exist in hardware", I invite to admire the beautiful TTL circuit to the left of the
-    68000s in the Over Drive schematics.
-
--ti99: Architectural cleanup for slot devices; constant renaming [Michael Zapf]
-
--Fixes a crash when returning to the front end when a system was launched from favorites [Nathan Woods]
- * This bug could be reproduced with the following steps:
-    1.  Put 'nes' in 'Favorites'
-    2.  Launch 'nes'
-    3.  Choose something from the software menu and run the emulation
-    4.  Escape back  -- CRASH
-
--ay8910.cpp: Fixed device_clock_changed to respect the YM2149_PIN26_LOW flag. Fixes MameTesters #06614 [Lord Nightmare]
-
--system16.cpp: Corrected clocks for Alien Storm (bootleg, set 2) [caius, The Dumping Union]
-
--[CoCo 3]  Cleanups to the GIME implementation [Nathan Woods]
- * 1.  Moved specific implementations to anonymous namespace 
- * 2.  gime_base_device ==> gime_device
- * 3.  Changed a pointer to a reference
-
--d64plus: Implemented banking of extra 64K, and 6845 with chargen. Machine promoted to WORKING. [Nigel Barnes]
- * dragon32: Added JCB Sound Extension cartridge.
- * dragon200e: Added correct keyboard.
-
--eeekk! is a conversion of pacman, so it will have switch 7 & 8 even though the game doesn't use it [smf]
-
--Changed 'enum read_or_write' to be 'enum class' [Nathan Woods]
-
--arkanoid.cpp: Replace hand crafted MCUs with dumped 68705 dumps. [ShouTime, brizzo]
- * For Arkanoid (Japan, newer w/level select) & Tournament Arkanoid (US)
-
--gameboy.xml: clean up Gowin information [Tauwasser]
- * Add information from archived Gowin website as well as Gowin catalogue
- * Signed-off-by: Tauwasser <tauwasser@tauwasser.eu>
-
--gameboy: remove GoodGBX MBC1 Collection check code [Tauwasser]
- * Replace with direct comparison of internal ROM name
- * Signed-off-by: Tauwasser <tauwasser@tauwasser.eu>
-
--gameboy: remove buffer over-read in get_cart_type [Tauwasser]
- * Signed-off-by: Tauwasser <tauwasser@tauwasser.eu>
-
--gameboy: update MBC1--MBC5 mapper documentation [Tauwasser]
- * Signed-off-by: Tauwasser <tauwasser@tauwasser.eu>
-
--gameboy: MBC3 init rtc_enabled field in ctor [Tauwasser]
- * Fixes coverity #159877
- * Signed-off-by: Tauwasser <tauwasser@tauwasser.eu>
-
--tetrsark: Add a totally useless MCU dump [ShouTime, Brizzo]
-
--gameboy: remove spurious sentence from MBC1 documentation [Tauwasser]
- * Signed-off-by: Tauwasser <tauwasser@tauwasser.eu>
-
--arkanoid.cpp: Replace hand crafted MCU for arkanoidu "Arkanoid (US, newer)" set with dumped 68705.
- [Lord Nightmare, brizzo, digshadow]
-
--prebillian: replace MCU simulation with actual dump [ShouTime, brizzo]
- Fixed prebillian vblank input so game doesn't hang with real MCU dump,
- fixed player 2 spinner input, and added ball launch 'button' [Lord Nightmare]
-
--socrates.cpp: switched banking for both socrates and iqunlimz over to using bankdev,
- hooked up hblank input to socrates, unified some functions, and made profweis a
- derived machine config of socrates. [Lord Nightmare]
-
--Changed a few 'const char *' ==> 'const std::string &' in the MAME debugger (#2170) [npwoods]
-
--new working clone Lock'n'Chase (DECO Cassette) (Japan) [??]
- * this is in various public rom collections, and even on MAMEdev, but was never added? looks like a 100% legitimate Japanese
-    version, complete with the alt (harder) maze.
-
--the following exist in the public 'various arcade' collection too ?! again no idea who to credit, this stuff was just forwarded to
- me. [David Haywood]
-
--accomm: Fully implemented keyboard [Nigel Barnes]
- * Added sound (same as Electron)
- * Added layout and hooked up Caps/Shift Lock LED's
-
--ti99: Added new cartridge type paged7 for TI-CALC. [Michael Zapf]
-
--new working clones  Treasure Island (DECO Cassette) (Region D) [David Haywood]
- * this is the ctisland3 set that has been in MAME since forever.  compared to the other ctisland sets it uses a different
-    encryption and has a region code of 'D' in the header. we haven't seen any 'D' region roms before (A is Japan, B is assumed to
-    be US) so I've had to handcraft a bios rom for it (the only difference between the A/B bios roms is the single byte it checks in
-    the header anyway)
-
--Gameboy v7 Some miscellaneous game boy documentation updates and a simple constant initialization as reported by coverity.
- Additionally, I converted the mbc1 collection check to compare the whole game title instead of only checking select bytes (probably
- came from GoodGBX). [Tauwasser]
-
--Fixed missing VLM5030 speech in Hyper Crash Fixed missing VLM5030 speech in Hyper Crash since MAME 0.176. Also increased VLM
- volume. [MASHinfo]
- * MAME 0.176: https://git.redump.net/mame/commit/?id=b9032a023abf81c23481ba02d258c1cf1ef26896 Convert VLM5030 to
-    device_memory_interface; correct region lengths
- * https://git.redump.net/mame/commit/?id=cd502b4fdba620de705dcc1a675ae308a366933e Fix VLM loading in jailbrek and clones
-
--Added support for resetting RX interrupts/status by reading Rx FIFO through RR3, gets virtpool driver terminal a bit further but
- not all the way an no visible difference. [JoakimLarsson]
-
--Improve CD audio play track/index command handling [smf]
-
--Fix incorrectly labeled machine and add another [AttackedbyGlitch]
- * Rename "Cyber Arcade 120-in-1" to "Defender M2500P 120-in-1". According to the dumper, this would be the correct name for this
-    machine.
- * Add vdogdeme, an earlier version of vdogdemo.
-
-
-New machines added or promoted from NOT_WORKING status
-------------------------------------------------------
-boots to menu, some games are playable [DavidHaywood]
-same hardware as pitnrun, with no MCU populated. [DavidHaywood]
-no copyright on the title screen, thought to be by Kaneko. [DavidHaywood]
-doesn't look like the original needs rom 5, the bootleg however you can't shoot anything in, presumably they moved some code around
-  causing it to need an extra rom? unfortunately the chip on the bootleg was dead. [DavidHaywood]
-decryption figured out by ArcadeHacker. [DavidHaywood]
-I did a lot of research on this one that I want submit before I loose track of it. The driver is impeded on a lot of devices we
-  don't emulate just yet so it will take a while to get it up and running. However I hope to be able to add the LED matrix
-  controller for the power up sequence quite soon. [JoakimLarsson]
-
-
-New clones added or promoted from NOT_WORKING status
-----------------------------------------------------
-this is in various public rom collections, and even on MAMEdev, but was never added? [DavidHaywood]
-looks like a 100% legitimate Japanese version, complete with the alt (harder) maze. [DavidHaywood]
-
-
-Comparing 0.186 (mame0186) to 0.186 (mame0186-539-g469c2bb)
-
-New working clones
-------------------
-Burnin' Rubber (DECO Cassette) (Japan)
-Graplop (DECO Cassette) (Japan)
-Lock'n'Chase (DECO Cassette) (Japan)
-Pro Tennis (DECO Cassette) (Japan)
