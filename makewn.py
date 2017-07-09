@@ -16,13 +16,16 @@ nowhatsnew_pat = re.compile('.*([[(]n/?w[])].*|[\s,]n/?w$)')
 bullet_pat = re.compile('^([-*]\s*)?(.+)$')
 credit_pat = re.compile('^.+\s\[.+\]$')
 markdown_url_pat = re.compile('\[([^]]+)\]\(([^)])+\)')
+newdrivers_pat = re.compile('^new|(game|machine|system|clone)s? promot')
 softlist_pat = re.compile('soft(ware)? ?list')
 notworking_pat = re.compile('not[_ ]working')
 longdash_pat = re.compile('^-{2,}$')
 
 new_working_parents = []
+new_promoted_parents = []
 new_broken_parents = []
 new_working_clones = []
+new_promoted_clones = []
 new_broken_clones = []
 
 
@@ -75,16 +78,21 @@ def append_line(paragraph, line):
 
 def check_new_machines(line):
     line = line.lower()
-    if line.startswith('new') and (softlist_pat.match(line) is None):
+    if (newdrivers_pat.match(line) is not None) and (softlist_pat.match(line) is None):
         clone = line.find('clone') >= 0
-        if notworking_pat.match(line) is not None:
-            working = line.find('promot') >= 0
+        if line.find('promot') >= 0:
+            working = True
+            promoted = True
+        elif notworking_pat.search(line) is not None:
+            working = False
+            promoted = False
         else:
             working = True
+            promoted = False
         if clone:
-            return new_working_clones if working else new_broken_clones
+            return new_promoted_clones if promoted else new_working_clones if working else new_broken_clones
         else:
-            return new_working_parents if working else new_broken_parents
+            return new_promoted_parents if promoted else new_working_parents if working else new_broken_parents
     else:
         return None
 
@@ -264,7 +272,9 @@ if __name__ == '__main__':
         stream.write('\n\n'.encode('UTF-8'))
 
     print_source_changes(stream, repo, api, tag)
-    print_new_machines(stream, 'New machines added or promoted from NOT_WORKING status', new_working_parents);
-    print_new_machines(stream, 'New clones added or promoted from NOT_WORKING status', new_working_clones);
+    print_new_machines(stream, 'New working machines', new_working_parents);
+    print_new_machines(stream, 'New working clones', new_working_clones);
+    print_new_machines(stream, 'Machines promoted to working', new_promoted_parents);
+    print_new_machines(stream, 'Clones promoted to working', new_promoted_clones);
     print_new_machines(stream, 'New machines marked as NOT_WORKING', new_broken_parents);
     print_new_machines(stream, 'New clones marked as NOT_WORKING', new_broken_clones);
