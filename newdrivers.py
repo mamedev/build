@@ -95,13 +95,13 @@ class Categoriser(object):
                 self.description = ''
             else:
                 if name == 'driver':
-                    if 'status' not in attrs:
+                    if 'emulation' not in attrs:
                         self.error_handler.fatalError(xml.sax.SAXParseException(
                                 'Expected attribute status not found',
                                 None,
                                 self.locator))
                     else:
-                        self.is_working = attrs['status'] != 'preliminary'
+                        self.is_working = attrs['emulation'] != 'preliminary'
                 self.ignored_depth = 1
         else:
             self.ignored_depth = 1
