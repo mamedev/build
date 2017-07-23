@@ -286,19 +286,11 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
 
 -Implemented i82586 Ethernet MAC, ~90% complete. [Patrick Mackinlay]
 
--Reintroduced a state save menu, take two (#2358) [npwoods]
- * This turns the current state save feature to a menu; one can still press 0-9, but you can also browse a menu when loading and
-    saving state
- * Fixed some issues requested by Vas Crabb
- * Updated state menu to support arbitrary character slots
- * WIP, transitioned 'entry_char' to std::string
- * Still need to address Joystick and FR keyboard concerns
- * Reimplemented state save support with joystick buttons
- * Changed the state menu to be "code driven" rather than "character driven"
- * When the menu is displayed, it will look at the filenames, and translate them to a visual representation as per the user's locale
- * Vas feedback
+-Introduced a state save menu (#2358) [Nathan Woods]
+ * This turns the current state save feature to a menu; one can still press 0-9/A-Z or use the joystick, but you can also browse a menu when loading and saving state
 
--Overhaul to how MAME handles options, take two (#2341) [npwoods]
+-Overhaul to how MAME handles (#2341) [Nathan Woods]
+ * The slot menu will now show updated options in response to selections made by the user.
 
 -Fix sound_sdl::sdl_callback, fill buffer with silence when underflow. [057a3dd61f99517a3afea0051a49cb27994f94d]
  * The problem is most noticeable when you are saving state, and the save takes a relatively long time, short period of audio gets
@@ -311,14 +303,6 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
 
 -ti99: Changed Hexbus chaining [Michael Zapf]
 
--Fixed issue #2413, caused by options regression [Nathan Woods]
-
--Fixed issue loading reset_on_load() images (#2414) [Nathan Woods]
-
--Fixed state save menu UI issues (#2411) [Nathan Woods]
-
--Fixed issue #2420 [Nathan Woods]
-
 -tehkanwcd has a different dipswitch setup to the other sets (different locations populated on PCB?) so fix it in MAME so the
  dipswitch reading works also hook up diplocations etc. for all sets in driver. [David Haywood]
  * I think maybe this driver also needs some kind of PPI devices? not sure which tho.
@@ -330,10 +314,6 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
 -arkanoid.cpp: added machine def for "akranoid bootleg with 68705p3 mcu and ay-3-8910" for the ark1ball bootleg, so it has "properly
  wrong" sound. Added some notes about bootleg roms and what sets they are copied from or derived from. Updated note about hidden
  credits with hiscore initials. [Lord Nightmare]
-
--Fixed sorcerer unmount issue reported by Robert [Nathan Woods]
- * Report from Robert:
- * Start mame sorcerer, then enter the slots menu, empty the rs232 slot, then choose Reset. It crashes with an access violation.
 
 -identified dipswitches for a number of decocass sets (#2425) [David Haywood]
 
@@ -537,7 +517,7 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
  * Better feedback on cylinder positions. Almost all checks of the winchester test pass (option 16 @ RX50DIAG.TD0 diskette), except
     low level tests expecting manufacturer or diagnostic tracks (write test #1).
 
--Cleaned up the MC-10 driver (#2480) [npwoods]
+-Cleaned up the MC-10 driver (#2480) [Nathan Woods]
 
 -Redumped color proms in Time Limit [ShouTime, TServo2049, pablopelos, The Dumping Union]
 
@@ -563,8 +543,6 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
     This is because the INTEXT pin on the MC6847 VDG is set, but AS is not and there is no external ROM.
  * This was reported by Jim Gerrie:  https://www.youtube.com/watch?v=VmsWqdiwH2o
 
--Missed this MC6847T1 issue [Nathan Woods]
-
 -hp85: improved CRT access timing, implemented hw timers and beeper [fulivi]
 
 -missb2: Fix oki read/write bitswap so what seem to be the correct sound effects are played. Used the bublpong oki rom in place of
@@ -573,8 +551,6 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
 
 -New not working machine [superctr]
  * TG100 [vampirefrog, superctr, bmos, Valley Bell]
-
--[ALICE90] Fixed regression [Nathan Woods]
 
 -alphatro: Added correct banking and partial floppy support. [R. Belmont]
 
@@ -698,18 +674,9 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
  * out of whatsnew Alligator Hunt was dumped and works, but not yet added, want to verify on a 2nd PCB first as the process does
     corrupt some bytes and a couple had to be handfixed, so the only way to know for sure is multiple dumps.
 
--[MC6847] Fixed the "Semigraphics 6" mode on the CoCo/MC-10 On these systems, the "Semigraphics 6" mode (contrary to most
- literature) will display "stripes" for video bytes from $00-$7F.  This is because the INTEXT pin on the MC6847 VDG is set, but AS
- is not and there is no external ROM. [npwoods]
- * This was reported by Jim Gerrie:  https://www.youtube.com/watch?v=VmsWqdiwH2o
-
 -wrally2: use dallas dumped from 2nd PCB, it confirms the byte fix made wrally2: use dallas dumped from 2nd PCB, it confirms the
  byte fix made to the previous dump and also highlighted another.  Also interestingly the startup code appears to have been patched
  slightly on the first board, maybe they knew ram was failing on it? [DavidHaywood]
-
--Changed Romload to show all actual hashes on a mismatch [npwoods]
-
--[ALICE90] Fixed regression [npwoods]
 
 -hp85: improvements Hi, this PR is for a set of improvements I made to HP85 emulation, namely: [fulivi]
  * More correct timing of video memory access. Test "F" of service ROM now passes.
@@ -741,8 +708,6 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
  test #1). Historical annotation: manufacturer info was hidden in last 4, 8 or 16 cylinders of a DEC RD5x hard disk, diagnostic area
  in the 4, 8 or 16 cylinders before, depending on the number of heads. At least manufacturer tracks used a format inaccessible to
  standard disk routines and thus were not writeable. [Bavarese]
-
--Cleaned up the MC-10 driver [npwoods]
 
 -Export additional functions for Emscripten builds This patch adds some additional static member functions and exports them to allow
  control of the running system via a Javascript API in the web builds.  Example: [jbaicoianu]
@@ -846,14 +811,7 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
 -split decocass class up so that the dongle types aren't polluting main class also emulate bootleg multigame, change accidental?
  drawing order change that was made a while back and broke several games [DavidHaywood]
 
--Fixed sorcerer unmount issue reported by Robert Report from Robert: [npwoods]
- * Start mame sorcerer, then enter the slots menu, empty the rs232 slot, then choose Reset. It crashes with an access violation.
-
 -identified dipswitches for a number of decocass sets [DavidHaywood]
-
--Fixed issue #2420 [npwoods]
-
--Made the debugger 'load' length field be optional, C++-ification [npwoods]
 
 
 New working machines
