@@ -1,22 +1,22 @@
 0.188
 -----
-- 05900: [Sound] (ddenlovr.cpp) funkyfig, funkyfiga: Missing music and partial sound FX (Osso)
+
+
+MAMETesters Bugs Fixed
+----------------------
+- 05900: [Sound] (ddenlovr.cpp) funkyfig, funkyfiga: Missing music and partial sound FX (Ivan Vangelista)
 - 06261: [Sound] (polepos.cpp) polepos2: Crowd Cheering sounds are messed up at the chequered flag (goal). (Robbbert)
-- 06370: [Save/Restore] (vegas.cpp) sf2049se, sf2049te: Crashes on reload (-str 8) in a staggered -str 20 run (tedgreen)
-- 06562: [Crash/Freeze] All sets in octopus.cpp, zorba.cpp: Fatal Error when using various terminal/printers in slots (Osso)
-- 06564: [Crash/Freeze] (ti99_4x.cpp) All sets in ti99_4x.cpp, ti99_4p.cpp: SuperAMS memory expansion card (samsmem) Fatal Error when mounted (Osso)
-- 06581: [Interface] Various problems with software loading/unloading: Various problems with software loading (npwoods)
-- 06588: [Interface] Regression loading softlist items from the command line with changed slot options (npwoods)
+- 06370: [Save/Restore] (vegas.cpp) sf2049se, sf2049te: Crashes on reload (-str 8) in a staggered -str 20 run (Ted Green)
+- 06562: [Crash/Freeze] All sets in octopus.cpp, zorba.cpp: Fatal Error when using various terminal/printers in slots (Ivan Vangelista)
+- 06564: [Crash/Freeze] (ti99_4x.cpp) All sets in ti99_4x.cpp, ti99_4p.cpp: SuperAMS memory expansion card (samsmem) Fatal Error when mounted (Ivan Vangelista)
+- 06581: [Interface] Various problems with software loading/unloading: Various problems with software loading (Nathan Woods)
+- 06588: [Interface] Regression loading softlist items from the command line with changed slot options (Nathan Woods)
 - 06592: [DIP/Input] (nbmj8891.cpp) chinmoku: DSW B should not exist. (Robbbert)
 - 06613: [Crash/Freeze] (rohga.cpp) schmeisr: Exception on exit (David Haywood)
 - 06620: [Crash/Freeze] (itech8.cpp) ninclown: During final boss Twisto the game can potentially crash (Phil Bennett)
 - 06624: [Misc.] (mc10.cpp) Emulation of the right-shift and rotate instructions (ASR, LSR, ROR) do not correctly modify the overflow flag (V) (AJR)
 - 06627: [Sound] (segas32.cpp) kokoroj2: Missing voice in game (Phil Bennett)
 - 06631: [Sound] (vgmplay.cpp) vgmplay: Attempting to play a .vgm/.vgz file containing 2 X POKEY does not play back correctly. (AJR)
-
-
-MAMETesters Bugs Fixed
-----------------------
 
 
 New working machines
@@ -39,6 +39,7 @@ New working clones
 ------------------
 Act-Fancer Cybernetick Hyper Weapon (World revision 3) [Corrado Tomaselli, The Dumping Union]
 Bubble Bobble (prototype on Tokio hardware) [Arzeno Fabrice, brizzo, Phil Bennett, rtw, Alex Meijer, The Dumping Union]
+Cobra-Command (World/US revision 4) [Bryan McPhail]
 Explorers of Space [hap, Igor]
 Fidelity Excel 68000 Mach III [CB-Emu]
 Fidelity Excel 68000 Mach II (rev. C+) [CB-Emu]
@@ -69,7 +70,7 @@ Machines promoted to working
 Alphatronic PC [R. Belmont, Carl, rfka01]
 Black Touch '96 [Angelo Salese]
 Game & Watch: Mickey Mouse [hap]
-Mega Double Poker (conversion kit, version 2.3 MD) [AJR]
+Mega Double Poker (conversion kit, version 2.3 MD) [Caps0ff, AJR]
 Ron II Mah-Jongg [Angelo Salese]
 The Roulette (Visco) [Team Europe, Luca Elia]
 Touch & Go (World)  [Morten Shearman Kirkegaard, Peter Wilhelmsen, David Haywood]
@@ -79,7 +80,7 @@ World Rally 2: Twin Racing [Morten Shearman Kirkegaard, Peter Wilhelmsen, David 
 Clones promoted to working
 --------------------------
 Frogger (bootleg on Amigo? hardware) [Ivan Vangelista]
-Mega Double Poker (conversion kit, version 2.1 MD) [AJR]
+Mega Double Poker (conversion kit, version 2.1 MD) [Caps0ff, AJR]
 Sega Ninja (315-5113) [David Haywood]
 Touch & Go (Non North America) [Morten Shearman Kirkegaard, Peter Wilhelmsen, David Haywood]
 Touch & Go (earlier revision)  [Morten Shearman Kirkegaard, Peter Wilhelmsen, David Haywood]
@@ -138,6 +139,51 @@ Translations added or modified
 
 Source Changes
 --------------
+-z8: Fixed disassembly of DECW RR opcode, added more control registers to state for debugger. [AJR]
+
+-Added support for experimental overclocking of sound devices through UI sliders with -cheat enabled. [AJR]
+
+-ym2151, ymf271, namco: Added support for dynamic changes to clock frequency. [AJR]
+
+-Fixed scheduler overflow when a device executes for more cycles than there are in a second. [AJR]
+
+-nibbler, levers: Changed joysticks to 4-way as documented in manuals. [AJR]
+
+-megadpkr: Hooked up 68705P5 MCU, figured out banking, and added timekeeper RAM and inputs. [AJR]
+
+-colt: Fixed colors. [AJR]
+
+-vgmplay enhancements: [AJR]
+ * Added support for YMZ280B and YMF271.
+ * Fixed clock speed for dual POKEY.
+ * Produce error message when nonexistent file is specified.
+
+-froggeram: Fixed PPI accesses allowing sound emulation to work. [AJR]
+
+-listxml enhancements: [AJR]
+ * Match arguments against device names as well as driver names.
+ * Allowed DTD output for -listxml, -listsoftware and -getsoftlist to be suppressed with -nodtd option.
+
+-gunfront: Corrected "Upright Controls" DIP switch - OFF is Single, and should not be the default. [AJR]
+
+-mrdo: Load protection PAL data (not used at the moment). [AJR]
+
+-mastboy: Changed parallel EEPROM type to "EAROM" (rather than generic NVRAM). [AJR]
+
+-MC6800: Fixed LSR/ROR/ASR overflow flag generation (N XOR C). [AJR]
+
+-funystrp: Added serial EEPROM for high score entries. [AJR]
+
+-Added correct palette weighting for all dec8 games. [Bryan McPhail]
+
+-Made DECO RM-C3 into a device used by dec8 and karnov.cpp games. [Bryan McPhail]
+
+-Fixed colours in Crude Buster (verified against real hardware); added documentation to cbuster.cpp. [Bryan McPhail]
+
+-pc9801: Moved cbus to bus and added WIP mpu401 support. [Carl]
+
+-plugins/cheat: Added UI support for joystick hotkeys; poll for setting hotkeys. [Carl]
+
 -Rewrote MCS-40 (4004/4040) emulation/disassembly: [Vas Crabb]
  * Added support for all 4040 features besides interrupts.
  * Split address/status, RAM/ROM ports, and program memory into separate addres spaces.
@@ -206,62 +252,19 @@ Source Changes
 
 -ti99: Changed Hexbus chaining [Michael Zapf]
 
--z8: Fix disassembly of DECW RR opcode [AJR]
-
--z8: Add more control registers for debug state [AJR]
-
 -Added samples to PT Reach Mahjong [Lord Nightmare, Angelo Salese]
 
 -Fixed issue #2413, caused by options regression [Nathan Woods]
-
--Allow experimental overclocking of sound devices through UI sliders with -cheat enabled [AJR]
-
--ym2151: Support dynamic changes to clock frequency [AJR]
-
--ymf271: Support dynamic changes to clock frequency [AJR]
-
--namco: Support dynamic changes to clock frequency [AJR]
-
--froggeram: Game has sound now [AJR]
-
--pc9801: move cbus to bus and add WIP mpu401 [Carl]
-
--vgmplay: Add YMF271 support [AJR]
 
 -Fixed issue loading reset_on_load() images (#2414) [Nathan Woods]
 
 -Fixed state save menu UI issues (#2411) [Nathan Woods]
 
--Fix scheduler overflow when a device executes for more cycles than there are in a second [AJR]
-
--vgmplay: Add YMZ280B support [AJR]
-
--Add alternate revision of Cobra Command.  Add correct palette weighting for all Dec8 games [Bryan McPhail]
-
--Add alternate revision of Cobra Command.  Add correct palette weighting for all Dec8 games [Bryan McPhail]
-
 -Fixed issue #2420 [Nathan Woods]
-
--Make DECO RM-C3 into a device and use for dec8 games [Bryan McPhail]
-
--Fix merge error(?) [Bryan McPhail]
-
--Revert custom DECO conversion in emu dir [Bryan McPhail]
-
--Revert custom DECO conversion in emu dir [Bryan McPhail]
-
--Fix colours in Crude Buster (verified against real hardware) [Bryan McPhail]
 
 -ygv608.cpp: added CRTC function, moved irqs in handler callbacks [Angelo Salese]
 
  * cbuster.cpp: Add a x3 hack to the YM2203 clock frequency to fix incorrect pitch [Phil Bennett]
-
--New working clone - Logger Rev 2 [briantro]
-
--Added a little more documention to cbuster.cpp.  No emulation changes [Bryan McPhail]
-
--karnov.cpp - all games use the Deco RM-C3 palette.  This is really just a documentation change as the previous colour weighting was
- correct so there is no visual difference with this change [Bryan McPhail]
 
 -tehkanwcd has a different dipswitch setup to the other sets (different locations populated on PCB?) so fix it in MAME so the
  dipswitch reading works also hook up diplocations etc. for all sets in driver. [David Haywood]
@@ -410,11 +413,6 @@ Source Changes
 
 -retofinv.cpp: Add dipswitch locations and document edge connectors [Brian Troha]
 
--XML listing enhancements [AJR]
- * The -listxml command will try to find and list any devices whose shortnames are specified on the command line. Any number of
-    devices can be listed at once, and wildcards will be compared against device names as well as driver names.
- * DTD output for -listxml, -listsoftware and -getsoftlist can be disabled by a new -nodtd option. It remains enabled by default.
-
 -hh_sm510: Added background graphics to nupogodi.svg [Igor, hap] hh_sm510: Added background graphics to gnw_dm53.svg
  [O.Galibert, hap]
 
@@ -447,8 +445,6 @@ Source Changes
  * Added notes on top and promoted game with MACHINE_IS_INCOMPLETE, having many bugs that are actually from very sloppy coding;
 
 -new clone added - Xevious 3D/G (World) [briantro]
-
--nibbler, levers: Change joysticks to 4-way as documented in manuals [AJR]
 
 -abc80_flop.xml: Added ABCDatastorm demo. [Genesis Project]
 
@@ -486,21 +482,13 @@ Source Changes
 
 -mc14411: code reduction [Joakim Larsson Edstrom]
 
--megadpkr: Hook up 68705P5 MCU, figure out banking, add timekeeper RAM and inputs, parent set (but not clone) is now WORKING [AJR]
-
 -chihiro.cpp: add Quest of D Firmware Update DVD dump [ShouTime]
 
 -new clone added - The Ninja Warriors [briantro]
 
--colt: Fix colors [AJR]
-
 -freekick.cpp: Dumped the color proms for Omega by Nihon System correcting the colors. [ShouTime]
 
--gunfront: Correct "Upright Controls" DIP switch - OFF is Single, and should not be the default [AJR]
-
 -ncr5390: improve tcounter, dma/drq handling [Patrick Mackinlay]
-
--mrdo: Load protection PAL data (not used at the moment) [AJR]
 
 -interpro: serial dma [P. Mackinlay]
  * interpro: serial dma
@@ -527,8 +515,6 @@ Source Changes
 -targeth.cpp update [Brian Troha]
  * Added PCB layout Base CPU clocks on actual OSC/Resonator Corrected OKI clock Corrected program rom labels for Target Hits v1.1
 
--plugins/cheat: add ui support for joystick hotkeys [Carl]
-
 -use Caps0ff dump for srdarwin (#2464) [David Haywood]
  * use Caps0ff dump for srdarwin handcraft MCU rom for srdarwinj like was done for other games in the driver so the old sim can be
     killed off, marked as BAD_DUMP seems stable, although I had to boost the interleave.
@@ -536,17 +522,11 @@ Source Changes
 
 -Fix issue 2468 [Olivier Galibert]
 
--mastboy: Use parallel EEPROM type for "EAROM" rather than generic NVRAM [AJR]
-
--plugins/cheat: poll for setting hotkeys [Carl]
-
 -new clone added  - PE Plus PP0006 Standard Poker [briantro]
 
 -fccpu1: newer version of firmware added, Force Debugger v1.1 [Joakim Larsson Edstrom]
 
 -Add dipswitches to tsukande [einstein95]
-
--MC6800 LSR/ROR/ASR instructions set overflow flag to N XOR C (MT #6624) [AJR]
 
 -Implemented dipswitches and tweaked inputs for Bubble Bobble prototype so that the edit mode works. [Lord Nightmare]
 
@@ -669,10 +649,6 @@ Source Changes
 
 -MT 06261 [Robbbert]
 
--vgmplay: Bug fixes [AJR]
- * Fix clock speed for dual POKEY (MT #6631)
- * Produce error message when nonexistent file specified rather than create a spurious empty file and segfault trying to read it
-
 -sda5708: Added layout with generated bezels + program snippet to redo it as a comment, to be able to generate with new offsets,
  scale and/or dotmatrix later [Joakim Larsson Edstrom]
 
@@ -696,8 +672,6 @@ Source Changes
  * added dumping of 82586 configuration
  * i82586: state save
  * Changed address handling and filtering.
-
--funystrp: Add serial EEPROM for high score entries [AJR]
 
 -Fix include path with USE_LIBSDL on macOS [Joshua Root]
  * The cflags will contain an include path ending in "SDL2", not just "SDL", and removing just the latter leaves a stray "2" on the
@@ -1057,7 +1031,6 @@ Nichbutsu High Rate DVD BIOS
 
 New working clones
 ------------------
-Cobra-Command (World/US revision 4)
 Dirty Harry (LF-2)
 Solar Assault (ver JAA)
 
