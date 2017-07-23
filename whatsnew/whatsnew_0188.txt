@@ -15,7 +15,7 @@ MAMETesters Bugs Fixed
 - 06613: [Crash/Freeze] (rohga.cpp) schmeisr: Exception on exit (David Haywood)
 - 06620: [Crash/Freeze] (itech8.cpp) ninclown: During final boss Twisto the game can potentially crash (Phil Bennett)
 - 06624: [Misc.] (mc10.cpp) Emulation of the right-shift and rotate instructions (ASR, LSR, ROR) do not correctly modify the overflow flag (V) (AJR)
-- 06627: [Sound] (segas32.cpp) kokoroj2: Missing voice in game (Phil Bennett)
+- 06627: [Sound] (segas32.cpp) kokoroj2: Missing voice in game (Arzeno Fabrice)
 - 06631: [Sound] (vgmplay.cpp) vgmplay: Attempting to play a .vgm/.vgz file containing 2 X POKEY does not play back correctly. (AJR)
 
 
@@ -53,6 +53,9 @@ Operation Wolf (Japan, SC)  [ShouTime]
 Player's Edge Plus (PP0006) Standard Draw Poker [BrianT]
 Return of the Invaders (bootleg no MCU set 3) [f205v]
 Silk Worm (prototype?) [frsj8112]
+Solar Assault (ver JAA)
+  [ShouTime, pablopelos, Dullaron, Paul Vining, Jason Wible, Surgeville, Sean Sutton, David Mercer, John Cunningham, Smitdogg,
+  The Dumping Union]
 Solar Assault Revised (ver JAA)
   [ShouTime, pablopelos, Dulleron, Paul Vining, Jason Wible, Surgeville, Sean Sutton, David Mercer, John Cunningham, Smitdogg,
   The Dumping Union]
@@ -174,6 +177,24 @@ Source Changes
 
 -funystrp: Added serial EEPROM for high score entries. [AJR]
 
+-ygv608.cpp: Added CRTC function, turned IRQs into handler callbacks, added border color. [Angelo Salese]
+
+-blackt96.cpp improvements: [Angelo Salese]
+ * Added flip screen and coin counter support.
+ * Reimplemented text layer as tilemap.
+ * Added notes and promoted game to MACHINE_IS_INCOMPLETE - many bugs are actually caused by very sloppy coding.
+
+-cvs.cpp: Kludged a protection check in Superbike that was resetting the machine under certain conditions. [Angelo Salese]
+ * Also demoted to MACHINE_UNEMULATED_PROTECTION since game can lock indefinitely under specific conditions.
+
+-Wrote a new device container for Nichibutsu sound hardware, used by csplayh5.cpp and niyanpai.cpp. [Angelo Salese]
+
+-Standardized button layout for PCE bootlegs. [Angelo Salese]
+
+-Fixed screen misalignment regression in Bionic Commando. [Angelo Salese]
+
+-Added sound samples to PT Reach Mahjong. [Lord Nightmare, Angelo Salese]
+
 -Added correct palette weighting for all dec8 games. [Bryan McPhail]
 
 -Made DECO RM-C3 into a device used by dec8 and karnov.cpp games. [Bryan McPhail]
@@ -183,6 +204,10 @@ Source Changes
 -pc9801: Moved cbus to bus and added WIP mpu401 support. [Carl]
 
 -plugins/cheat: Added UI support for joystick hotkeys; poll for setting hotkeys. [Carl]
+
+-cbuster.cpp: Added a x3 hack to the YM2203 clock frequency to fix incorrect pitch. [Phil Bennett]
+
+-Improved -romident performance by dynamically allocating large arrays at device_start time. [Phil Bennett]
 
 -Rewrote MCS-40 (4004/4040) emulation/disassembly: [Vas Crabb]
  * Added support for all 4040 features besides interrupts.
@@ -225,7 +250,41 @@ Source Changes
 
 -Cleaned up Gaelco protection MCU interface device. [Vas Crabb]
 
+-segas32.cpp: Redumped kokoroj2 sound data ROM. [Arzeno Fabrice]
+
+-r9751: Added preliminary SMIOC device with 8237 DMA controllers and RS-232 ports. [Brandon Munger]
+
 -Fixed default dipswitch settings for Parodius [Jack Li]
+
+z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match datasheet. [Patrick Mackinlay]
+
+-ncr5390 improvements: [Patrick Mackinlay]
+ * Improved initiator transfer information logic.
+ * Split transfer count/counter.
+ * Added rudimentary 53C90A/53C94 support.
+ * Reworked initiator transfer information state machine, should now support all SCSI phases
+ * Improved handling of DMA/non-DMA commands.
+ * Added an undocumented hack to make InterPro work.
+ * Implemented interrupt status flag in status register for 53C90A (critical for InterPro).
+ * Improved tcounter and DMA/DRQ handling.
+ * Corrected tcounter and transfer count zero handling (based on transfers to/from SCSI bus, not DMA).
+ * Prevent fifo over/underrun, requires restarting state machine from dma_r()/dma_w().
+ * Corrected bus/function complete with FIFO (interrupt only when it empties, but state detected based on SCSI bus).
+ * Clear status, istatus and sequence when reading istatus (not status) with active interrupt.
+ * Tweaked DRQ behaviour - only assert if there is insufficient data in FIFO.
+
+-nscsi_hd: Corrected INQUIRY command handling when a non-zero LUN is requested. [Patrick Mackinlay]
+
+-interpro: Got SCSI working and other improvements: [Patrick Mackinlay]
+ * Reworked DMA, added eth registers.
+ * Improved 5390 device, removed legacy 539x SCSI stuff.
+ * Passes all iogadiag tests if bus error hack is enabled.
+ * Implemented basic serial DMA.
+ * Switched to ncr53c94.
+ * Initial preparation for Ethernet implementation.
+ * Implemented timer-based DMA.
+
+-Implemented i82586 Ethernet MAC, ~90% complete. [Patrick Mackinlay]
 
 -Reintroduced a state save menu, take two (#2358) [npwoods]
  * This turns the current state save feature to a menu; one can still press 0-9, but you can also browse a menu when loading and
@@ -252,8 +311,6 @@ Source Changes
 
 -ti99: Changed Hexbus chaining [Michael Zapf]
 
--Added samples to PT Reach Mahjong [Lord Nightmare, Angelo Salese]
-
 -Fixed issue #2413, caused by options regression [Nathan Woods]
 
 -Fixed issue loading reset_on_load() images (#2414) [Nathan Woods]
@@ -261,10 +318,6 @@ Source Changes
 -Fixed state save menu UI issues (#2411) [Nathan Woods]
 
 -Fixed issue #2420 [Nathan Woods]
-
--ygv608.cpp: added CRTC function, moved irqs in handler callbacks [Angelo Salese]
-
- * cbuster.cpp: Add a x3 hack to the YM2203 clock frequency to fix incorrect pitch [Phil Bennett]
 
 -tehkanwcd has a different dipswitch setup to the other sets (different locations populated on PCB?) so fix it in MAME so the
  dipswitch reading works also hook up diplocations etc. for all sets in driver. [David Haywood]
@@ -284,25 +337,11 @@ Source Changes
 
 -identified dipswitches for a number of decocass sets (#2425) [David Haywood]
 
--r9751: Add initial SMIOC device (#2423) [Brandon Munger]
-
 -dectalk.cpp: removed unnecessary driver init and replaced with machine_start [Lord Nightmare]
 
 -dectalk.cpp: nuked anonymous timers, added savestate support [Lord Nightmare]
 
 -kinst.cpp: updated hardware info [Guru]
-
--improved initiator transfer information logic [Patrick Mackinlay]
- * split transfer count/counter
- * added rudimentary 53c90a/53c94 support
- * reworked initiator transfer information state machine: should now support all scsi phases
- * improved handling of dma/non-dma commands
- * added an undocumented hack to make InterPro work
-
--yg608.cpp: added border color [Angelo Salese]
- * (Yes, it makes the POST screens to be black and not green)
-
--match updated 5390 device [Patrick Mackinlay]
 
 -sdl: Add SDL_WINDOW_BORDERLESS for fullscreen, required by some window managers on linux [O. Galibert]
  * Breakage was in 8338e0d7a490c8d33f924b55582223e70015c195 (march 2015), and yes, fullscreen didn't work correctly for me since
@@ -319,19 +358,6 @@ Source Changes
 
 -hh_sm510: added background vector graphics to gnw_ml102 [ChoccyHobNob]
 
--inherit memory map [Patrick Mackinlay]
-
--ncr5390: Improve [P. Mackinlay]
- * improved initiator transfer information logic
- * split transfer count/counter
- * added rudimentary 53c90a/53c94 support
- * reworked initiator transfer information state machine: should now support all scsi phases
- * improved handling of dma/non-dma commands
- * added an undocumented hack to make InterPro work
- * match updated 5390 device
- * inherit memory map
- * implemented interrupt status flag in status register for 53c90a, this is critical for InterPro
-
 -plugins/cheat: link simple cheats [cracyc]
 
 -stv.cpp: corrected Taiwan BIOS label [cpsystem3]
@@ -343,8 +369,6 @@ Source Changes
     drawing order change that was made a while back and broke several games
 
 -sun1: replace console hack with upd7201 device [Sergey Svishchev]
-
--Improve the speed of romident by dynamically allocating some large device member arrays at device_start time instead [Phil Bennett]
 
 -Rename AS_DECRYPTED_OPCODES to AS_OPCODES [O. Galibert]
 
@@ -365,11 +389,6 @@ Source Changes
 -shootaw2: added dumped EEPROM image [Smitdogg, The Dumping Union]
 
 -hh_sm510: improved gnw_jr55 LCD segments [hap, JonasP]
-
--interpro: scsi is working  [P. Mackinlay]
- * reworked dma, added eth regs
- * passing all iogadiag tests if bus error hack is enabled
- * improved 5390 device, removed legacy scsi stuff
 
 -megasys1.cpp: Add information regarding R&T (Rod-Land Prototype) [Ryou]
 
@@ -403,8 +422,6 @@ Source Changes
  obvious which are bootlegs. Verified XTAL, dividers, and SN76489A type from pcb pictures. Added missing original Taito CLUT PROMs
  and fixed video/retofinv.cpp to be able to use those or the single bootleg CLUT prom. [Corrado Tomaselli, Lord Nightmare, brizzo]
 
--z80scc: basic wait/dma request implementation [Patrick Mackinlay]
-
 -Include -output option in documentation [Michael.S.G]
  * Include -output and it's available options in documentation.
 
@@ -418,33 +435,10 @@ Source Changes
 
 -better handle the case where HTTP is not enabled. [Christian Brunschen]
 
--z80scc: renamed WRDY to WREQ to match datasheet, minor touch-up [Patrick Mackinlay]
-
--oops [Patrick Mackinlay]
-
--z80scc: basic wait/dma request support (#2441) [Patrick Mackinlay]
- * improved initiator transfer information logic
- * split transfer count/counter
- * added rudimentary 53c90a/53c94 support
- * reworked initiator transfer information state machine: should now support all scsi phases
- * improved handling of dma/non-dma commands
- * added an undocumented hack to make InterPro work
- * match updated 5390 device
- * inherit memory map
- * z80scc: basic wait/dma request implementation
- * z80scc: renamed WRDY to WREQ to match datasheet, minor touch-up
-
 -load some recent Caps0ff MCU dumps, not hooked up for now. [David Haywood]
 
 -load Caps0ff c-chip dumps, checksum on MASK rom part passes, but game specific EPROM is still bad for the time being
  [David Haywood]
-
--blackt96.cpp: various changes/fixes [Angelo Salese]
- * Added flip screen & coin counter support;
- * Rewritten text layer to tilemap;
- * Added notes on top and promoted game with MACHINE_IS_INCOMPLETE, having many bugs that are actually from very sloppy coding;
-
--new clone added - Xevious 3D/G (World) [briantro]
 
 -abc80_flop.xml: Added ABCDatastorm demo. [Genesis Project]
 
@@ -488,15 +482,6 @@ Source Changes
 
 -freekick.cpp: Dumped the color proms for Omega by Nihon System correcting the colors. [ShouTime]
 
--ncr5390: improve tcounter, dma/drq handling [Patrick Mackinlay]
-
--interpro: serial dma [P. Mackinlay]
- * interpro: serial dma
- * implemented basic serial dma
- * switch to ncr53c94
- * initial ethernet preparation
- * timer-based dma
-
 -ti99: Moved Hexbus one level up [Michael Zapf]
 
 -Corrected ITT3030 70 track drive type and added 35 drive type and format definition. [helwie44 and rfka01]
@@ -506,9 +491,6 @@ Source Changes
 -fccpu1: Added machine configuration for baud rates for all three serial ports using the mc14411 device [Joakim Larsson Edstrom]
 
 -macpci: Added more Pippin ROM sets [unknown]
-
--cvs.cpp: kludged a protection check in Superbike that was resetting the machine under certain conditions [Angelo Salese]
- * (Also demoted to MACHINE_UNEMULATED_PROTECTION since game can lock indefinitely under a specific case scenario)
 
 -wrally.cpp: Added World Rally PCB layout. [Brian Troha]
 
@@ -551,33 +533,15 @@ Source Changes
 -Hook up ibm5150 softlist to compc and europc drivers. Change europc to use a single built-in 3.5" drive like the real machine.
  [Justin Kerk]
 
--MAMETesters Bugs Fixed [Phil Bennett]
- * 06620: [Crash/Freeze] ninclown: During final boss Twisto the game can potentially crash (Phil Bennett)
-
--MAMETesters Bugs Fixed [Phil Bennett]
- * 06627: [Sound] kokoroj2: Missing voice in game (Arzeno Fabrice)
- * segas32.cpp: Redumped kokoroj2 sound data ROM [Arzeon Fabrice]
-
 -Improve WD2010 emulation [Bavarese]
  * Better feedback on cylinder positions. Almost all checks of the winchester test pass (option 16 @ RX50DIAG.TD0 diskette), except
     low level tests expecting manufacturer or diagnostic tracks (write test #1).
 
 -Cleaned up the MC-10 driver (#2480) [npwoods]
 
--Wrote a new device container for nichibutsu sound HW, merged usage for csplayh5.cpp and niyanpai.cpp [Angelo Salese]
-
 -Redumped color proms in Time Limit [ShouTime, TServo2049, pablopelos, The Dumping Union]
 
--New clones added [Phil Bennett]
- * Solar Assault (ver JAA)
-    [ShouTime, pablopelos, Dullaron, Paul Vining, Jason Wible, Surgeville, Sean Sutton, David Mercer, John Cunningham, Smitdogg, The
-    Dumping Union]
-
--Fix niyanpai.cpp:689:31: error: unused variable 'daisy_chain_sound' [-Werror,-Wunused-const-variable] -nw- [Phil Bennett]
-
 -sms.xml fixes [Enik Land]
-
--Minor doc update for slrasslt/slrassltj -nw- [Phil Bennett]
 
 -new clone added - Solar Assault Revised [briantro]
 
@@ -610,8 +574,6 @@ Source Changes
 -New not working machine [superctr]
  * TG100 [vampirefrog, superctr, bmos, Valley Bell]
 
--r9751: smioc - add 8237 DMA controllers, rs232 ports, and update documentation [Brandon Munger]
-
 -[ALICE90] Fixed regression [Nathan Woods]
 
 -alphatro: Added correct banking and partial floppy support. [R. Belmont]
@@ -628,8 +590,6 @@ Source Changes
 
 -snk.cpp: added pals to victroad [Kevin Eshbach, The Dumping Union]
 
--Standardize button layout for PCE bootlegs [Angelo Salese]
-
 -gaelco / ds5002fp changes: [David Haywood]
  * made ds5002fp store internal ram and sfr registers to nvram as they're battery backed
  * this includes the 'configuration' details which are actually programmable, so don't belong in the 'MACHINE_CONFIG' section but
@@ -644,8 +604,6 @@ Source Changes
     To do this a wrapper / interface device for the Gaelco Dallas + SRAM box was created.
  * out of whatsnew Alligator Hunt was dumped and works, but not yet added, want to verify on a 2nd PCB first as the process does
     corrupt some bytes and a couple had to be handfixed, so the only way to know for sure is multiple dumps.
-
--Fixed screen mis-alignment regression in Bionic Commando [Angelo Salese]
 
 -MT 06261 [Robbbert]
 
@@ -666,12 +624,6 @@ Source Changes
 -alphatro: real machine only has 2 drives + fix drive B: [R. Belmont]
 
 -naomi.cpp: dumped earlier Sega Gun Board firmware [Darksoft]
-
--i82586: functional, ~90% complete (#2498) [Patrick Mackinlay]
- * i82586: functional, ~90% complete
- * added dumping of 82586 configuration
- * i82586: state save
- * Changed address handling and filtering.
 
 -Fix include path with USE_LIBSDL on macOS [Joshua Root]
  * The cflags will contain an include path ending in "SDL2", not just "SDL", and removing just the latter leaves a stray "2" on the
@@ -746,15 +698,6 @@ Source Changes
  * out of whatsnew Alligator Hunt was dumped and works, but not yet added, want to verify on a 2nd PCB first as the process does
     corrupt some bytes and a couple had to be handfixed, so the only way to know for sure is multiple dumps.
 
--i82586: functional, ~90% complete Not sure if I'm too late for the next release, but 82586/82596 is functional and working with
- InterPro. [pmackinlay]
- * Some work remains, but nothing major:
- * testing for 82586 and 82596 big endian and non-linear modes
- * more complete statistics capturing
- * 82596 monitor mode
- * throttle timers and diagnostic command
- * special case handling for different 82596 steppings in big endian mode
-
 -[MC6847] Fixed the "Semigraphics 6" mode on the CoCo/MC-10 On these systems, the "Semigraphics 6" mode (contrary to most
  literature) will display "stripes" for video bytes from $00-$7F.  This is because the INTEXT pin on the MC6847 VDG is set, but AS
  is not and there is no external ROM. [npwoods]
@@ -767,8 +710,6 @@ Source Changes
 -Changed Romload to show all actual hashes on a mismatch [npwoods]
 
 -[ALICE90] Fixed regression [npwoods]
-
--r9751: smioc - add 8237 DMA controllers, rs232 ports, and update documentation [bmunger]
 
 -hp85: improvements Hi, this PR is for a set of improvements I made to HP85 emulation, namely: [fulivi]
  * More correct timing of video memory access. Test "F" of service ROM now passes.
@@ -843,26 +784,6 @@ Source Changes
  rfka01] This change reflects the originally available drive types and will allow easier data exchange with machines from the same
  design company (SKS): alphatronic P1, P2, P3, P4, sks nano and others. [rfka01]
 
--interpro: serial dma is working Serial DMA is the main change, now the driver gets a "Booting system" message during operating
- system rebuild (but hangs soon after). Also: [pmackinlay]
- * switch to ncr53c94 (older models use 53c90a, newer use 53c94)
- * initial Ethernet preparation
- * timer-based DMA (per discussion with @galibert, to be optimised later)
- * some C++'ifying fixes to the disassembler
-
--ncr5390: tcounter and dma/drq changes Several changes here that fixes the DRQ/DMA/fifo behaviour for subsequent changes to InterPro
- that rely on DRQ to trigger DMA transfers., please check my hacking carefully @galibert. [pmackinlay]
- * Specifically:
- * ncr5390: corrected tcounter and transfer count zero handling, count/zero should be based on transfers to/from SCSI bus, and not
-    to/from DMA
- * ncr5390: prevent fifo over/underrun, requires restarting state machine from dma_r()/dma_w()
- * ncr5390: corrected bus/function complete with fifo - interrupt should occur only when it empties, but state is detected based on
-    SCSI bus
- * ncr5390: clear status, istatus and sequence when reading istatus (not status) with active interrupt
- * ncr5390: tweak DRQ behaviour, only assert if there is insufficient data in fifo
- * nscsi_hd: correction to INQUIRY command when a non-zero LUN is requested
- * Again, appreciate anyone who can test with Sun4 or NeXT and let me know if I've broken anything new.
-
 -New device: MC14411 Bit Rate Generator [JoakimLarsson]
 
 -Added available Commodore PC10-III ROM dumps The guys over at the German vintage computer forum have collected the PC10-III system
@@ -900,14 +821,6 @@ Source Changes
 
 -Include -output option in documentation Include -output and it's available options in documentation. [OzFalcon]
 
--z80scc: basic wait/dma request support I've done the absolute minimum necessary to get serial DMA working for the InterPro.
- [pmackinlay]
- * This involved implementing some unimplemented logic around the SCC "wait/dma request" behaviour on transmit. I have not attempted
-    to tackle either the "wait function" or receive, so this is partial at best. It's also possible that there are some other points
-    where the transmit buffer can be filled/emptied and the new check_waitrequest() function needs to be called.
- * Appreciate a review from those with more detailed understanding of the SCC device, but it's working for me at the moment and I
-    think there are few side-effects.
-
 -misc cchip prep + notes create c-chip device with correct CPU type in it and a bunch of notes (pinout etc.) create a uPD78C11
  derived CPU type for this purpose, with internal ROM map use internal ROM map for other uPD78C10 chips as it's always present. add
  missing NO_DUMP definitions to various games using C-Chips with correct size etc. pump megablast through the device code as really
@@ -918,13 +831,6 @@ Source Changes
 
 -decrypted SEGA_315_5133 used by 'seganinja' set, promoted it to working [David Haywood] it's the exact same code revision as the
  other sets, just for a different encrypted CPU, so not actually that interesting. [DavidHaywood]
-
--interpro: scsi is working [pmackinlay]
- * removed legacy 539x device support
- * improved dma
- * scsi is working with modified 5390
- * all ioga diagnostics pass (with hacks)
- * stubbed eth registers
 
 -m62 proposed cleanups. I've split the massive PROM blocks up into something more modern looking (the single PROM region with all
  PROMs crammed into it is an old MAME thing from when only one PROM region was allowed)  I've also made use of multipe palettes and
@@ -940,26 +846,10 @@ Source Changes
 -split decocass class up so that the dongle types aren't polluting main class also emulate bootleg multigame, change accidental?
  drawing order change that was made a while back and broke several games [DavidHaywood]
 
--ncr5390 changes - for review only, don't commit With some help from OG yesterday, I've made some important changes to the "transfer
- information" logic in ncr5390. In theory, this will help Sun4 (it should now handle all phases), hopefully won't break NeXT, and my
- emerging InterPro is happy with it now. [pmackinlay]
- * In more detail, the things I've modified are:
- * split transfer count/counter (count is latched and used to reset the counter when DMA commands start, while the counter is
-    read-only and tracks the actual transfers)
- * added rudimentary 53c90a/53c94 support (although the extra registers are essentially ignored for now)
- * reworked initiator transfer information state machine: should now support all SCSI phases
- * improved handling of DMA/non-DMA commands
- * added an undocumented hack to make InterPro work (i.e. setting the sequence to non-zero after a message accept)
- * This PR is a placeholder for smarter people to comment before I commit this; I don't have the inputs necessary to test NeXT/Sun4
-    and don't want to break them. Also, I'm tampering with a fairly complex bit of code and I'd prefer if at least Olivier takes a
-    good look first.
-
 -Fixed sorcerer unmount issue reported by Robert Report from Robert: [npwoods]
  * Start mame sorcerer, then enter the slots menu, empty the rs232 slot, then choose Reset. It crashes with an access violation.
 
 -identified dipswitches for a number of decocass sets [DavidHaywood]
-
--r9751: Add initial SMIOC device [bmunger]
 
 -Fixed issue #2420 [npwoods]
 
@@ -1021,8 +911,6 @@ Comparing 0.187 (mame0187) to 0.187 (mame0187-578-gba3d0a8)
 
 Renames
 fantasy -> fantasyg Fantasy (Germany)
-xevi3dg -> xevi3dgj Xevious 3D/G (Japan, XV31/VER.A)
-kageki -> kagekiu Kageki (US)
 
 New working machines
 --------------------
@@ -1032,7 +920,6 @@ Nichbutsu High Rate DVD BIOS
 New working clones
 ------------------
 Dirty Harry (LF-2)
-Solar Assault (ver JAA)
 
 Machines promoted to working
 ----------------------------
