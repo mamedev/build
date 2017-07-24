@@ -43,6 +43,7 @@ New working clones
 Act-Fancer Cybernetick Hyper Weapon (World revision 3) [Corrado Tomaselli, The Dumping Union]
 Bubble Bobble (prototype on Tokio hardware) [Arzeno Fabrice, brizzo, Phil Bennett, rtw, Alex Meijer, The Dumping Union]
 Cobra-Command (World/US revision 4) [Bryan McPhail]
+Deco Cassette System Multigame (ROM based) [David Haywood]
 Explorers of Space [hap, Igor]
 Fidelity Excel 68000 Mach III [CB-Emu]
 Fidelity Excel 68000 Mach II (rev. C+) [CB-Emu]
@@ -75,6 +76,7 @@ Machines promoted to working
 ----------------------------
 Alphatronic PC [R. Belmont, Carl, rfka01]
 Black Touch '96 [Angelo Salese]
+Explorer (DECO Cassette) (US) [Brian Troha, David Haywood]
 Game & Watch: Mickey Mouse [hap]
 Mega Double Poker (conversion kit, version 2.3 MD) [Caps0ff, AJR]
 Ron II Mah-Jongg [Angelo Salese]
@@ -129,6 +131,7 @@ Commodore PC 10 [rfka01]
 Dirty Harry (LF-2) [PinMAME]
 Fighting Vipers (Revision B) [Phil Bennett, MooglyGuy, Tourniquet, Smitdogg, The Dumping Union]
 Motocross Go! (MG2 Ver. A, set 2) [ShouTime, Bill D, The Dumping Union]
+New Super Triv III [Smitdogg, The Dumping Union]
 Tazz-Mania (Rodmar bootleg) [Arcade Hacker, The Dumping Union]
 Triv Five Special Edition [Smitdogg, The Dumping Union]
 
@@ -268,6 +271,24 @@ Source Changes
 
 -ti99: Changed Hexbus chaining; moved Hexbus up one level (from bus/ti99 to bus). [Michael Zapf]
 
+-Overhauled MAME options handling. [Nathan Woods]
+ * The new options system is more dynamic and should detect errors earlier.
+ * The slot menu now shows updated options in response to selections made by the user.
+
+-Added a menu listing existing state files displayed when choosing a position to save/load. [Nathan Woods]
+ * Any position may be selected with keyboard 0-9/A-Z or joystick buttons.
+ * Existing positions may be selected using UI navigation controls.
+
+-Made the length parameter for debugger 'load' command optional (defaults to lenth of file), converted code from stdio to iostream.
+ [Nathan Woods]
+
+-MC6847: Fixed "Semigraphics 6" mode on CoCo/MC-10 (issue reported by Jim Gerrie). [Nathan Woods]
+ * Displays "stripes" for video bytes $00-$7F because INT/EXT is asserted but A/S is not, and there is no external ROM.
+
+-Cleaned up the MC-10 driver. [Nathan Woods]
+
+-Fixed regression in ROM loading that resulted in not all actual hashes being printed on mismatch. [Nathan Woods]
+
 -sdl: Added SDL_WINDOW_BORDERLESS for fullscreen, required by some Linux window managers. [O. Galibert]
 
 -dvdisasm: Simplified by decoupling information creation and display rendering. [O. Galibert]
@@ -364,6 +385,16 @@ Source Changes
 -srdarwin: Replace MCU simulation with internal ROM dump: [Caps0ff, David Haywood]
  * Using real dump for srdarwin, and hand-modified version to satisfy srdarwinj.
  * Fixes incorrect behaviour for 6th boss (no longer skips first form).
+
+-Split decocass state class up so that the dongle types aren't polluting base class. [David Haywood]
+ * Also added support for bootleg multigame and fixed regression caused by change in draw order.
+
+-tehkanwc.cpp: Fixed DIP switches for tehkanwcd (different setup to other sets); added DIP switch locations for all sets in driver.
+ [David Haywood]
+
+-Irem M62 cleanups: [David Haywood]
+ * Split PROM regions up by function (legacy from when MAME only allowed a single PROM region per system).
+ * Made use of multiple palettes and gfxdecode structures.
 
 -Identified DIP switches for a number of DECO Cassette sets. [David Haywood]
 
@@ -469,45 +500,18 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
 
 -abcheck: Added default EEPROM so the game boots without going into service mode first. [Guru, R. Belmont]
 
+-Updated compiling instructions for Fedora Linux. [inflatador]
+
+-Updated hiscore.dat. [Leezer]
+
 -Added -output option to documentation with description of available choices. [OzFalcon]
 
 -megasys1.cpp: Added information regarding R&T (Rod-Land Prototype). [Ryou]
 
+-SDL sound: Fill buffer with silence on underrun. [057a3dd61f99517a3afea0051a49cb27994f94d]
 
 
--Introduced a state save menu (#2358) [Nathan Woods]
- * This turns the current state save feature to a menu; one can still press 0-9/A-Z or use the joystick, but you can also browse a menu when loading and saving state
 
--Overhaul to how MAME handles (#2341) [Nathan Woods]
- * The slot menu will now show updated options in response to selections made by the user.
-
--Fix sound_sdl::sdl_callback, fill buffer with silence when underflow. [057a3dd61f99517a3afea0051a49cb27994f94d]
- * The problem is most noticeable when you are saving state, and the save takes a relatively long time, short period of audio gets
-    played repeatedly, which is usually unpleasant.
- * I found out it's caused by sdl_sound::sdl_callback not fill the audio buffer with silence when underflow occurs. According to
-    https://wiki.libsdl.org/SDL_AudioSpec, if there's nothing to play, the callback should fill the buffer with silence.
- * I tested this change and the problem is gone.
-
--Made the debugger 'load' length field be optional, C++-ification [Nathan Woods]
-
--tehkanwcd has a different dipswitch setup to the other sets (different locations populated on PCB?) so fix it in MAME so the
- dipswitch reading works also hook up diplocations etc. for all sets in driver. [David Haywood]
- * I think maybe this driver also needs some kind of PPI devices? not sure which tho.
-
--split decocass class up so that the dongle types aren't polluting main class (#2429) [David Haywood]
- * split decocass class up so that the dongle types aren't polluting main class, emulate bootleg multigame, change accidental?
-    drawing order change that was made a while back and broke several games
-
--m62 proposed cleanups. [David Haywood]
- * I've split the massive PROM blocks up into something more modern looking (the single PROM region with all PROMs crammed into it
-    is an old MAME thing from when only one PROM region was allowed)  I've also made use of multipe palettes and gfxdecode
-    structures (required using rgb32 to draw to)
- * As the boards are quite modular this seems to make sense to me, the palette for the sprites and the sprite decode + sprite
-    palette decode is the same across all games while the rest of the hardware changes a bit.  This should allow us to step closer
-    to converting the various boards into devices and piecing them together more logically.
-
--Updated Fedora instructions [Brian King]
- * DNF is now preferred package manager. alsa-lib-devel is also required (not mentioned in the current docs)
 
 -create c-chip device with correct CPU type in it and a bunch of notes (pinout etc.) create a uPD78C11 derived CPU type for this
  purpose, with internal ROM map use internal ROM map for other uPD78C10 chips as it's always present. add missing NO_DUMP
@@ -526,10 +530,6 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
 -load Caps0ff c-chip dumps, checksum on MASK rom part passes, but game specific EPROM is still bad for the time being
  [David Haywood]
 
--hiscore.dat: Updates [Leezer]
-
--Cleaned up the MC-10 driver (#2480) [Nathan Woods]
-
 -A number of DS5002FP chips were dumped using the method published by Morten Shearman Kirkegaard and Peter Wilhelmsen as documented
  at (#2484) [David Haywood]
  * http://www.afdelingp.dk/files/articles/ds5002fp/ds5002fp.pdf
@@ -538,13 +538,6 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
     extraction (steering logic was broken but bad byte was identified and fixed as the code for that command handler was identical
     to World Rally 1) and TH Strikes Back is crashing at the first boss (could also be a CPU core issue)  Glass was also dumped, but
     at the time the data wasn't extracted, only the code, and the board has since died, so needs redoing.
-
--[MC6847] Fixed the "Semigraphics 6" mode on the CoCo/MC-10 [Nathan Woods]
- * On these systems, the "Semigraphics 6" mode (contrary to most literature) will display "stripes" for video bytes from $00-$7F.
-    This is because the INTEXT pin on the MC6847 VDG is set, but AS is not and there is no external ROM.
- * This was reported by Jim Gerrie:  https://www.youtube.com/watch?v=VmsWqdiwH2o
-
--Changed Romload to show all actual hashes on a mismatch [Nathan Woods]
 
 -wrally2: use dallas dumped from 2nd PCB, it confirms the byte fix made to the previous dump and also highlighted another.  Also
  interestingly the startup code appears to have been patched slightly on the first board, maybe they knew ram was failing on it?
@@ -601,8 +594,6 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
     currently being sent for dumping / verification.
  * therefore
 
--load some recent Caps0ff MCU dumps, not hooked up for now. (+ load cchip dumps) [DavidHaywood]
-
 -Add an external panel for the Ensoniq VFX family of keyboards ... with a websocket interface and an HTML/Javascript implementation
  that can be served over HTTP. [cbrunschen]
  * This was previously proposed with a different HTTP & Websocket server; in this pull request, the functionality has been ported un
@@ -613,21 +604,6 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
  missing NO_DUMP definitions to various games using C-Chips with correct size etc. pump megablast through the device code as really
  all it ever does is bank the c-chip window and test the RAM. [DavidHaywood]
 
--Updated Fedora instructions DNF is now preferred package manager. alsa-lib-devel is also required (not mentioned in the current
- docs) [inflatador]
-
--m62 proposed cleanups. I've split the massive PROM blocks up into something more modern looking (the single PROM region with all
- PROMs crammed into it is an old MAME thing from when only one PROM region was allowed)  I've also made use of multipe palettes and
- gfxdecode structures (required using rgb32 to draw to) [DavidHaywood]
- * As the boards are quite modular this seems to make sense to me, the palette for the sprites and the sprite decode + sprite
-    palette decode is the same across all games while the rest of the hardware changes a bit.  This should allow us to step closer
-    to converting the various boards into devices and piecing them together more logically.
-
--fix 06613, game sets rowscroll to be bigger than assumed size of tilemap [DavidHaywood]
-
--split decocass class up so that the dongle types aren't polluting main class also emulate bootleg multigame, change accidental?
- drawing order change that was made a while back and broke several games [DavidHaywood]
-
 
 New working machines
 --------------------
@@ -636,35 +612,10 @@ Casino Strip VIII [?]
 Casino Strip IX [?]
 
 
-New working clones
-------------------
-(presumably different locations populated on PCB, test mode indicates as such) [DavidHaywood]
-without this demo sound dipswitch etc. isn't mapped properly. [DavidHaywood]
-also hook up diplocations etc. for all sets in driver. [DavidHaywood]
-I think maybe this driver also needs some kind of PPI devices? not sure which tho. [DavidHaywood]
-
-
 Comparing 0.187 (mame0187) to 0.187 (mame0187-578-gba3d0a8)
-
-Renames
-fantasy -> fantasyg Fantasy (Germany)
-
-New working machines
---------------------
-Deco Cassette System Multigame (ROM based)
-Nichbutsu High Rate DVD BIOS
-
-Machines promoted to working
-----------------------------
-Explorer (DECO Cassette) (US)
 
 New machines marked as NOT_WORKING
 ----------------------------------
 Casino Strip
 Casino Strip IX
 Casino Strip VIII
-
-New clones marked as NOT_WORKING
---------------------------------
-Killer Instinct 2 (Upgrade kit)
-New Super Triv III
