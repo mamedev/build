@@ -50,7 +50,7 @@ Kageki (World) [frsj8112, The Dumping Union]
 Logger (Rev.2) [Andrew Welburn, Craig Anstett, The Dumping Union]
 Nu, pogodi! [hap, Igor]
 Operation Wolf (Japan, SC)  [ShouTime]
-Player's Edge Plus (PP0006) Standard Draw Poker [BrianT]
+Player's Edge Plus (PP0006) Standard Draw Poker [Brian Troha]
 Return of the Invaders (bootleg no MCU set 3) [f205v]
 Silk Worm (prototype?) [frsj8112]
 Solar Assault (ver JAA)
@@ -107,7 +107,6 @@ PokoaPoka Onsen de CHU - Bijin 3 Shimai ni Kiotsukete! (Japan) [system11, The Du
 Renai Mahjong Idol Gakuen (Japan) [system11, The Dumping Union]
 Sharp FontWriter FW-700 (German) [R. Belmont, rfka01]
 Super Derby II [Phil Bennett, Hammy]
-TG100 [vampirefrog, superctr, bmos, Valley Bell]
 Tsuugakuro no Yuuwaku (Japan) [system11, The Dumping Union]
 VG Pocket Mini (VG-1500) [BeckieRGB]
 VG Pocket (VG-2000) [BeckieRGB]
@@ -117,11 +116,14 @@ VT330 [Toshi]
 WaiWai Drive [Arzeno Fabrice, brizzo]
 War: The Final Assault (EPROM 1.91 Apr 13 1999, GUTS 1.3 Apr 7 1999, GAME Apr 7 1999) [rtw, Smitdogg, The Dumping Union]
 World Kicks PCB (World, WKC2 Ver.A) [rtw, Smitdogg, The Dumping Union]
+Yamaha TG100 [vampirefrog, superctr, bmos, Valley Bell]
 
 
 New clones marked as NOT_WORKING
 --------------------------------
 Beat the Clock (with flasher support) [noahpdavis]
+Commodore PC 10 [rfka01]
+Dirty Harry (LF-2) [PinMAME]
 Fighting Vipers (Revision B) [Phil Bennett, MooglyGuy, Tourniquet, Smitdogg, The Dumping Union]
 Motocross Go! (MG2 Ver. A, set 2) [ShouTime, Bill D, The Dumping Union]
 Tazz-Mania (Rodmar bootleg) [Arcade Hacker, The Dumping Union]
@@ -130,14 +132,28 @@ Triv Five Special Edition [Smitdogg, The Dumping Union]
 
 New working software list additions
 -----------------------------------
+abc80_flop: ABCDatastorm [Genesis Project]
+coco_flop: Pacman (z80 to 6809 Transcoded - v1.01) (512kb) [Glen Hewlett]
+gameboy: Sachen 4 in 1 (Euro, 4B-003) [Tauwasser]
+ibm5150:
+  Le Manoir de Mortevielle [breiztiger]
+  Battle Chess, Blades of Steel, Castlevania, Double Dribble, Earl Weaver Baseball, Future Wars - Adventures in Time,
+  Gamer's Edge Sampler - Catacomb and Dangerous Dave, Hardball 2, Heroes of the Lance, John Madden Football, King's Bounty,
+  Lakers vs Celtics and the NBA Playoffs, Links - Championship Course - Bountiful Golf Course, Links - The Challenge of Golf,
+  Mean Streets, Monopoly v2.00 (Shareware), Monty Python's Flying Circus, Ninja Gaiden II, Nova 9, Over the Net, Pharaoh's Pursuit,
+  Secret of the Silver Blades, Speedball II, Street Fighting Man, Super C, Superstar Ice Hockey, Superstar Indoor Soccer,
+  Superstar Indoor Sports, Superstar Outdoor Soccer, The Cycles, Top 10 Solid Gold Volume II, Wings of Fury, Zool [Justin Kerk]
+ibm5170:
+  B-17 Flying Fortress, Body Blows, Corncob Deluxe, DOS/V (multiple versions), Dune, Global Conquest, King's Quest V, Lightspeed,
+  MS-DOS (Version 6.22, Brazilian Portuguese), Star Trek - 25th Anniversary [Justin Kerk]
+pce_tourvision: Doraemon - Nobita no Dorabian Night, Majin Eiyuu Den Wataru [system11, The Dumping Union]
+x68k_flop: Chourensha 68k (v1.00) [Justin Kerk]
 
 
 New NOT_WORKING softwre list additions
 --------------------------------------
-
-
-Translations added or modified
-------------------------------
+ibm5150: Boulder Dash Construction Kit [Justin Kerk]
+ibm5170: IBM Personal Computer DOS (Version J5.00/V) (Japanese), PC-DOS (multiple sets using XDF disk format) [Justin Kerk]
 
 
 Source Changes
@@ -203,11 +219,40 @@ Source Changes
 
 -pc9801: Moved cbus to bus and added WIP mpu401 support. [Carl]
 
--plugins/cheat: poll for setting hotkeys. [Carl]
+-plugins/cheat updates: [Carl]
+ * Poll for setting hotkeys.
+ * Link simple cheats.
+
+-ti99: Changed Hexbus chaining; moved Hexbus up one level (from bus/ti99 to bus). [Michael Zapf]
+
+-sdl: Added SDL_WINDOW_BORDERLESS for fullscreen, required by some Linux window managers. [O. Galibert]
+
+-dvdisasm: Simplified by decoupling information creation and display rendering. [O. Galibert]
+
+-debugcpu: Eliminated direct() from read_opcode. [O. Galibert]
+
+-options: Set the value when setting the default as before. [O. Galibert]
+
+-mameopts: Don't lose the system inipath when looking for hashpath. [O. Galibert]
+
+-dimemory: Lifted cap on number of address spaces per device, renamed AS_DECRYPTED_OPCODES to AS_OPCODES. [O. Galibert]
+
+-Fixed media option numbering with custom instance names (github issue 2468). [O. Galibert]
 
 -cbuster.cpp: Added a x3 hack to the YM2203 clock frequency to fix incorrect pitch. [Phil Bennett]
 
 -Improved -romident performance by dynamically allocating large arrays at device_start time. [Phil Bennett]
+
+-m377xx: Added preliminary M37720 support. [R. Belmont]
+
+-alphatro improvements: [R. Belmont]
+ * Added correct banking and partial floppy support.
+ * Corrected motor on and FDC reset.
+ * Corrected number of driver (real machine only has two), and fixed B: drive.
+
+-output: Fleshed out network output provider to have the same capabilities as legacy Win32 provider: [R. Belmont]
+ * Messages are of form "verb = value\1"; "hello = 1" on successful connection, "mamerun = 0" on shutdown.
+ * Send "send_id = n" to query IDs where n=0 means machine shortname, and n=1-? are output node names.
 
 -Rewrote MCS-40 (4004/4040) emulation/disassembly: [Vas Crabb]
  * Added support for all 4040 features besides interrupts.
@@ -250,11 +295,61 @@ Source Changes
 
 -Cleaned up Gaelco protection MCU interface device. [Vas Crabb]
 
+-hh_sm510 artwork updates:
+ * Added background vector graphics to gnw_ml102. [ChoccyHobNob]
+ * Improved gnw_mw56 SVG screen and added background graphics. [hap, ChoccyHobNob, Tanukichi]
+ * Improved gnw_jr55 LCD segments. [hap, JonasP]
+ * Added background graphics to nupogodi.svg. [Igor, hap]
+ * Added background graphics to gnw_dm53.svg.  [O. Galibert, hap]
+
+-segas16b.cpp: Replaced goldnaxe2 317-0122 i8751 bad dump with working redump from undamaged chip and removed simulation code.
+ [anonymous, digshadow]
+
 -segas32.cpp: Redumped kokoroj2 sound data ROM. [Arzeno Fabrice]
+
+-Added Commodore D9060 82S137 PROM dumps. [Bo Zimmerman, Andrew Welburn]
 
 -r9751: Added preliminary SMIOC device with 8237 DMA controllers and RS-232 ports. [Brandon Munger]
 
--Fixed default dipswitch settings for Parodius [Jack Li]
+-Fixed QT 5.5.1 for Ubuntu 14.04 "Trusty Tahr" (allows Travis CI build to complete). [dankan1890]
+
+-naomi.cpp: Dumped earlier Sega Gun Board firmware. [Darksoft]
+
+-srdarwin: Replace MCU simulation with internal ROM dump: [Caps0ff, David Haywood]
+ * Using real dump for srdarwin, and hand-modified version to satisfy srdarwinj.
+ * Fixes incorrect behaviour for 6th boss (no longer skips first form).
+
+-Identified DIP switches for a number of DECO Cassette sets. [David Haywood]
+
+-Decrypted SEGA_315_5133 used by 'seganinja' set. [David Haywood]
+ * Shares identical code with other sets, just encryped with a different key.
+
+-Add DIP switches to Tsukande Toru Chicchi. [einstein95]
+
+-Initial HP series 80 emulation: [F.Ulivi]
+ * Working HP-85A with 16kB RAM, including Capricorn CPU, keyboard, CRT text/graphics modes, timers, and beeper.
+ * DC100 cassete, extension ROMs, I/O modules, and integrated printer are not supported.
+
+-ITT3030: Corrected 70-track drive type, and added 35-track drive type and format definition. [helwie44, rfka01]
+
+-Added Commodore PC10-III ROM dumps collected by German vintage computer forum users. [rfka01]
+
+-Added original Commodore PC 10/PC 20/ PC 30 in two BIOS variants. [rfka01]
+
+-Fixed default DIP switch settings for Parodius. [Jack Li]
+
+-Enhanced Emscripten support: [James Baicoianu]
+ * Fixed save/load support and scheduled exit.
+ * Improved main loop, simplified integration points, and made JavaScript entry points static members of running_machine.
+ * Exposed soft_reset, hard_reset, exit load and save functions, allowing more control of emulation session from JavaScript.
+
+-Fixed #include path with USE_LIBSDL on macOS. [Joshua Root]
+
+-Hooked up ibm5150 softlist to compc and europc drivers; changed europc to use single built-in 3.5" drive.  [Justin Kerk]
+
+-snk.cpp: Added PAL dumps to victroad. [Kevin Eshbach, The Dumping Union]
+
+-wolfpack: Fixed missing Torpedo trail. [MASH]
 
 z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match datasheet. [Patrick Mackinlay]
 
@@ -286,6 +381,54 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
 
 -Implemented i82586 Ethernet MAC, ~90% complete. [Patrick Mackinlay]
 
+-Improved wheel board on Midway Seattle and Vegas, and added layout for sf2049. [Risugami]
+
+-sun1: Replaced console hack with upd7201 device. [shattered]
+
+-chihiro.cpp: Added Quest of D Firmware Update DVD dump. [ShouTime]
+
+-freekick.cpp: Dumped color PROMs for Omega (Nihon System), correcting the colors. [ShouTime]
+
+-Redumped Time Limit color PROMs. [ShouTime, TServo2049, pablopelos, The Dumping Union]
+
+-shootaw2: Added dumped EEPROM image. [Smitdogg, The Dumping Union]
+
+-Added skeleton driver for Yamaha TG100 MIDI module. [superctr]
+ * H8/520 CPU is not implemented, sound chip is Yamaha YMW258-F (likely to be identical to Sega MultiPCM).
+
+-Game Boy/Super Game Boy improvements: [Tauwasser]
+ * Added Super Chinese Land 1.2.3' to MBC1 Collection check code.
+ * Fixed MMM01 zero-adjust logic for ROM bank.
+ * Fixed Super Game Boy VRAM transfers and removed border hack.
+ * Fixed various code style and comment issues.
+
+-macpci: Added more Pippin ROM sets. [unknown]
+
+-retofinv.cpp: Added DIP switch locations and documented edge connectors. [Brian Troha]
+
+-wrally.cpp: Added World Rally PCB layout. [Brian Troha]
+
+-targeth.cpp: Added PCB layout, defined CPU clocks in terms of OSC/resonator, corrected OKI clock, and corrected Target Hits v1.1
+ program ROM labels. [Brian Troha]
+
+-stv.cpp: Corrected Taiwan BIOS label. [cpsystem3]
+
+-sms.xml updates: [Enik Land]
+ * Fix The Terminator by adding their on-cart RAM.
+ * Added notes for games with SK-1100 keyboard support.
+ * Corrected Great Baseball (Euro, USA, Bra) release year.
+ * Corrected Teddy Boy Blues (Jpn, Ep-MyCard, Prototype) and Ghost House (Sega Card, Prototype) interface types.
+
+-kinst.cpp: Updated hardware info. [Guru]
+
+-abcheck: Added default EEPROM so the game boots without going into service mode first. [Guru, R. Belmont]
+
+-Added -output option to documentation with description of available choices. [OzFalcon]
+
+-megasys1.cpp: Added information regarding R&T (Rod-Land Prototype). [Ryou]
+
+
+
 -Introduced a state save menu (#2358) [Nathan Woods]
  * This turns the current state save feature to a menu; one can still press 0-9/A-Z or use the joystick, but you can also browse a menu when loading and saving state
 
@@ -301,8 +444,6 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
 
 -Made the debugger 'load' length field be optional, C++-ification [Nathan Woods]
 
--ti99: Changed Hexbus chaining [Michael Zapf]
-
 -tehkanwcd has a different dipswitch setup to the other sets (different locations populated on PCB?) so fix it in MAME so the
  dipswitch reading works also hook up diplocations etc. for all sets in driver. [David Haywood]
  * I think maybe this driver also needs some kind of PPI devices? not sure which tho.
@@ -315,46 +456,13 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
  wrong" sound. Added some notes about bootleg roms and what sets they are copied from or derived from. Updated note about hidden
  credits with hiscore initials. [Lord Nightmare]
 
--identified dipswitches for a number of decocass sets (#2425) [David Haywood]
-
 -dectalk.cpp: removed unnecessary driver init and replaced with machine_start [Lord Nightmare]
 
 -dectalk.cpp: nuked anonymous timers, added savestate support [Lord Nightmare]
 
--kinst.cpp: updated hardware info [Guru]
-
--sdl: Add SDL_WINDOW_BORDERLESS for fullscreen, required by some window managers on linux [O. Galibert]
- * Breakage was in 8338e0d7a490c8d33f924b55582223e70015c195 (march 2015), and yes, fullscreen didn't work correctly for me since
-    then.  Shows how much I use it, I guess.  FWTW my window manage is the venerable fvwm2.  CourierSud, if you happen to remember
-    why you changed that (in the middle of a lot of other changes), let me know, and we'll see how to make it work for everybody.
-
--dvdisasm: Simplify by decoupling information creation and display rendering [O. Galibert]
-
--debugcpu: Eliminate direct() from read_opcode [O. Galibert]
-
--options: Set the value when setting the default as before [O. Galibert]
-
--mameopts: Don't lose the system inipath when looking for hashpath [O. Galibert]
-
--hh_sm510: added background vector graphics to gnw_ml102 [ChoccyHobNob]
-
--plugins/cheat: link simple cheats [Carl]
-
--stv.cpp: corrected Taiwan BIOS label [cpsystem3]
-
--abcheck: add default EEPROM so the game boots w/o going into service mode first. [Guru, R. Belmont]
-
 -split decocass class up so that the dongle types aren't polluting main class (#2429) [David Haywood]
  * split decocass class up so that the dongle types aren't polluting main class, emulate bootleg multigame, change accidental?
     drawing order change that was made a while back and broke several games
-
--sun1: replace console hack with upd7201 device [Sergey Svishchev]
-
--Rename AS_DECRYPTED_OPCODES to AS_OPCODES [O. Galibert]
-
--dimemory: Lift the cap on the number of address spaces per device [O. Galibert]
-
--fix 06613, game sets rowscroll to be bigger than assumed size of tilemap [David Haywood]
 
 -m62 proposed cleanups. [David Haywood]
  * I've split the massive PROM blocks up into something more modern looking (the single PROM region with all PROMs crammed into it
@@ -364,32 +472,8 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
     palette decode is the same across all games while the rest of the hardware changes a bit.  This should allow us to step closer
     to converting the various boards into devices and piecing them together more logically.
 
--hh_sm510: improved gnw_mw56 SVG screen and added background graphics [hap, ChoccyHobNob, Tanukichi]
-
--shootaw2: added dumped EEPROM image [Smitdogg, The Dumping Union]
-
--hh_sm510: improved gnw_jr55 LCD segments [hap, JonasP]
-
--megasys1.cpp: Add information regarding R&T (Rod-Land Prototype) [Ryou]
-
--decrypted SEGA_315_5133 used by 'seganinja' set, promoted it to working [David Haywood]
- * it's the exact same code revision as the other sets, just for a different encrypted CPU, so not actually that interesting.
-
 -Updated Fedora instructions [Brian King]
  * DNF is now preferred package manager. alsa-lib-devel is also required (not mentioned in the current docs)
-
--segas16b.cpp: Replace goldnaxe2 317-0122 i8751 bad dump with working redump from undamaged chip. Remove MCU HLE code.
- [anonymous, digshadow]
-
--output: Fleshed out network output provider so it has the same capability as legacy Win32. [arbee]
- * Clients:
- * Connect to TCP port 8000
- * Messages will be of the form "verb = value\1"; if your client is busy when MAME is spamming, you may get multiple messages glued
-    together by \1 separators.  (\1 was chosen because it's neutral on Win32/Mac/Linux).
- * You will get a "hello = 1" message upon connection to MAME, and a "mamerun = 0" message when MAME shuts down.
- * You may send "send_id = n" to MAME to get IDs where n=0 means ROM set name of current game, 1-? = output node names
- * MAME will reply "req_id = string\1"; this is currently the only case where a string will be returned instead of an integer value.
- * A working example POSIX client will be released soon.
 
 -create c-chip device with correct CPU type in it and a bunch of notes (pinout etc.) create a uPD78C11 derived CPU type for this
  purpose, with internal ROM map use internal ROM map for other uPD78C10 chips as it's always present. add missing NO_DUMP
@@ -402,16 +486,8 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
  obvious which are bootlegs. Verified XTAL, dividers, and SN76489A type from pcb pictures. Added missing original Taito CLUT PROMs
  and fixed video/retofinv.cpp to be able to use those or the single bootleg CLUT prom. [Corrado Tomaselli, Lord Nightmare, brizzo]
 
--Include -output option in documentation [Michael.S.G]
- * Include -output and it's available options in documentation.
-
 -Add an external panel for the Ensoniq VFX family of keyboards, with a websocket interface and an HTML/Javascript implementation
  that can be served over HTTP. [Christian Brunschen]
-
--retofinv.cpp: Add dipswitch locations and document edge connectors [Brian Troha]
-
--hh_sm510: Added background graphics to nupogodi.svg [Igor, hap] hh_sm510: Added background graphics to gnw_dm53.svg
- [O.Galibert, hap]
 
 -better handle the case where HTTP is not enabled. [Christian Brunschen]
 
@@ -420,16 +496,9 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
 -load Caps0ff c-chip dumps, checksum on MASK rom part passes, but game specific EPROM is still bad for the time being
  [David Haywood]
 
--abc80_flop.xml: Added ABCDatastorm demo. [Genesis Project]
-
--Added available Commodore PC10-III ROM dumps [rfka01]
-
 -mc14411: NEW DEVICE Motorola MC14411 Bit Rate Generator [Joakim Larsson Edstrom]
 
 -fccpu1: Updated LOG system and replaced CLOCK_SIGNAL_HANDLER with a real MC14411 BRG device [Joakim Larsson Edstrom]
-
--Added the original PC 10 / PC 20 / PC 30 in two BIOS variants ... Complains about 'Timer2 control function failed', keyboard not
- working [rfka01]
 
 -taitocchip.cpp: hooked up the four 'asic ram' shared bytes/semaphores/command registers between external cpu and the c-chip, and
  got rid of the 'return 0x01' hack for megablast. [Lord Nightmare]
@@ -438,92 +507,21 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
 
 -MT 06592 [Robbbert]
 
--Begin of HP80 emulation (#2448) [fulivi]
- * What works:
- * HP85A machine with 16K of RAM
- * Capricorn CPU works
- * Keyboard works (with minor issues)
- * CRT text / graphics modes work (correct speed is not emulated yet so service ROM complaints)
- * BASIC is usable
- * What is missing (and I'll have hopefully working soon):
- * HW timers
- * Beeper
- * Integral printer
- * DC100 cassette drive
- * Extension ROMs
- * I/O modules (especially the HPIB interface so that we can hook up floppy drives)
- * Other models in the family (e.g. HP86)
-
 -mc14411: code reduction [Joakim Larsson Edstrom]
-
--chihiro.cpp: add Quest of D Firmware Update DVD dump [ShouTime]
-
--new clone added - The Ninja Warriors [briantro]
-
--freekick.cpp: Dumped the color proms for Omega by Nihon System correcting the colors. [ShouTime]
-
--ti99: Moved Hexbus one level up [Michael Zapf]
-
--Corrected ITT3030 70 track drive type and added 35 drive type and format definition. [helwie44 and rfka01]
 
 -mc14411: new methods added for disabling all output timers and set line methods for RSA and RSB inputs [Joakim Larsson Edstrom]
 
 -fccpu1: Added machine configuration for baud rates for all three serial ports using the mc14411 device [Joakim Larsson Edstrom]
 
--macpci: Added more Pippin ROM sets [unknown]
-
--wrally.cpp: Added World Rally PCB layout. [Brian Troha]
-
--targeth.cpp update [Brian Troha]
- * Added PCB layout Base CPU clocks on actual OSC/Resonator Corrected OKI clock Corrected program rom labels for Target Hits v1.1
-
--use Caps0ff dump for srdarwin (#2464) [David Haywood]
- * use Caps0ff dump for srdarwin handcraft MCU rom for srdarwinj like was done for other games in the driver so the old sim can be
-    killed off, marked as BAD_DUMP seems stable, although I had to boost the interleave.
- * NOTE, this game has never been emulated correctly
-
--Fix issue 2468 [Olivier Galibert]
-
--new clone added  - PE Plus PP0006 Standard Poker [briantro]
-
 -fccpu1: newer version of firmware added, Force Debugger v1.1 [Joakim Larsson Edstrom]
 
--Add dipswitches to tsukande [einstein95]
-
 -Implemented dipswitches and tweaked inputs for Bubble Bobble prototype so that the edit mode works. [Lord Nightmare]
-
--m377xx: preliminary M37720 support [R. Belmont]
-
--Fix save/load states in Emscripten build (#2470) [James Baicoianu]
- * Fix save/load states in Emscripten build
- * Simplified Emscripten integration points
- * Moved standalone JS functions to be static member functions of running_machine
- * Improved Emscripten main loop
- * Use convenience functions for cleaner code
- * As an added bonus, this now allows for proper shutdown of the running machine when running in the Emscripten environment -
-    previously, attempts to exit the program were just being ignored.
-
--Gameboy v8 (#2477) [Tauwasser]
- * Miscellaneous Game Boy changes:
- * gameboy: add Super Chinese Land 1.2.3' to MBC1 Collection check code
- * gameboy: fix MMM01 zero-adjust logic for ROM bank
-
--Export soft_reset, hard_reset, exit, load, and save functions for Emscripten builds [James Baicoianu]
-
--Hook up ibm5150 softlist to compc and europc drivers. Change europc to use a single built-in 3.5" drive like the real machine.
- [Justin Kerk]
 
 -Improve WD2010 emulation [Bavarese]
  * Better feedback on cylinder positions. Almost all checks of the winchester test pass (option 16 @ RX50DIAG.TD0 diskette), except
     low level tests expecting manufacturer or diagnostic tracks (write test #1).
 
 -Cleaned up the MC-10 driver (#2480) [Nathan Woods]
-
--Redumped color proms in Time Limit [ShouTime, TServo2049, pablopelos, The Dumping Union]
-
--sms.xml fixes [Enik Land]
-
--new clone added - Solar Assault Revised [briantro]
 
 -A number of DS5002FP chips were dumped using the method published by Morten Shearman Kirkegaard and Peter Wilhelmsen as documented
  at (#2484) [David Haywood]
@@ -543,28 +541,15 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
     This is because the INTEXT pin on the MC6847 VDG is set, but AS is not and there is no external ROM.
  * This was reported by Jim Gerrie:  https://www.youtube.com/watch?v=VmsWqdiwH2o
 
--hp85: improved CRT access timing, implemented hw timers and beeper [fulivi]
-
 -missb2: Fix oki read/write bitswap so what seem to be the correct sound effects are played. Used the bublpong oki rom in place of
  the badly dumped missb2 oki rom due to all non-corrupted areas being identical, so they're most likely supposed to be the same, but
  marked it as BAD_DUMP until redump. Add watchdog (same as parent bublbobl hardware has). [Lord Nightmare]
-
--New not working machine [superctr]
- * TG100 [vampirefrog, superctr, bmos, Valley Bell]
-
--alphatro: Added correct banking and partial floppy support. [R. Belmont]
-
--alphatro: Correct motor on and FDC reset. [R. Belmont]
-
--Added Commodore D9060 82S137 prom dumps [Bo Zimmerman, Andrew Welburn]
 
 -Changed Romload to show all actual hashes on a mismatch [Nathan Woods]
 
 -wrally2: use dallas dumped from 2nd PCB, it confirms the byte fix made to the previous dump and also highlighted another.  Also
  interestingly the startup code appears to have been patched slightly on the first board, maybe they knew ram was failing on it?
  [David Haywood]
-
--snk.cpp: added pals to victroad [Kevin Eshbach, The Dumping Union]
 
 -gaelco / ds5002fp changes: [David Haywood]
  * made ds5002fp store internal ram and sfr registers to nvram as they're battery backed
@@ -581,8 +566,6 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
  * out of whatsnew Alligator Hunt was dumped and works, but not yet added, want to verify on a 2nd PCB first as the process does
     corrupt some bytes and a couple had to be handfixed, so the only way to know for sure is multiple dumps.
 
--MT 06261 [Robbbert]
-
 -sda5708: Added layout with generated bezels + program snippet to redo it as a comment, to be able to generate with new offsets,
  scale and/or dotmatrix later [Joakim Larsson Edstrom]
 
@@ -596,62 +579,6 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
 -improve naming etc. [David Haywood]
 
 -change description on this since we have a screenshot [David Haywood]
-
--alphatro: real machine only has 2 drives + fix drive B: [R. Belmont]
-
--naomi.cpp: dumped earlier Sega Gun Board firmware [Darksoft]
-
--Fix include path with USE_LIBSDL on macOS [Joshua Root]
- * The cflags will contain an include path ending in "SDL2", not just "SDL", and removing just the latter leaves a stray "2" on the
-    end.
-
--gameboy: fix SGB VRAM transfers (#2504) [Tauwasser]
- * gameboy.xml: remove misleading comment
- * Sachen 4B-003 was recently added
- * Signed-off-by: Tauwasser <tauwasser@tauwasser.eu>
- * gameboy: fix Super Game Boy VRAM transfer
- * A basic implementation of VRAM transfer. It fixes a number of games and removes the SGB border hack. However, it's very likely
-    that the bahvior is much more complex. The old implementation was good enough for the majority of games, so this should suffice
-    until such time when SGB is implemented on top of SNES.
- * The attribute data was resized to 4096 bytes, so a whole VRAM transfer can take place even though only 4050 bytes are used. The
-    idea is that the whole 4096 bytes are _probably_ transferred to WRAM and a game might theoretically upload a small executable
-    and use that data. However, running native SNES code is currently unsupported anyway.
- * Signed-off-by: Tauwasser <tauwasser@tauwasser.eu>
- * gameboy: various code style/comment fixes
-   - return GB_MBC_NONE instead of magic 0 value
-   - add MLT_REQ case in sgb code and mention where it's actually handled
-   - add PAL_PRI to list of known SGB commands (not implemented)
-   - fix two comments
- * Signed-off-by: Tauwasser <tauwasser@tauwasser.eu>
- * gameboy: coding style fixes for gb_lcd
- * Signed-off-by: Tauwasser <tauwasser@tauwasser.eu>
-
--improved wheel board on seattle and vegas added layout for sf2049 [Risugami]
-
--fixed QT 5.5.1 for trusty. [dankan1890]
-
--Update .travis.yml [Dankan1890]
-
--Update .travis.yml [Dankan1890]
-
--Improved wheel board on flagstaff and vegas That leader lamp bit makes me question the purpose of that "valid" bit as they are in
- every write on the vegas wheelboard, but I wouldn't know how to go about testing that. Added a layout for sf2049 as well. There is
- something on lamp4, but I can't identify it. [Risugami]
-
--Fix include path with USE_LIBSDL on macOS The cflags will contain an include path ending in "SDL2", not just "SDL", and removing
- just the latter leaves a stray "2" on the end. [jmroot]
-
--Fixed default dipswitch settings for Parodius The arcade operator's manual lists the default extend setting as 30000/100000 rather
- than 20000/80000. [jackrjli]
-
--gameboy: fix SGB VRAM transfers I noticed that there was an ugly SGB border hack in the Game Boy system. I looked at it and
- realized that the SGB VRAM transfer method was broken (even though it works for most games due to Nintendo's SGB SDK). [Tauwasser]
- * The SGB VRAM transfer is actually done through the display signals, so the contents have to be shown on screen. It's not really
-    known if window and bg scroll take/attributes take effect or not, so somebody with actual hardware might need to investigate
-    further. If that's the case, a possible redesign would be to make the PPU render to a frame buffer and use that frame for VRAM
-    access and final rendering, but that would entail a big change and it's unclear if it wouldn't be easier to actually emulate the
-    SGB on a SNES with a GB slot.
- * Anyway, the actual transfers work now as expected and the hack for certain games (Donkey Kong 2 and 3 amongst others) are gone.
 
 -SDA5708 layout for dbox This works enough to give some output improving the driver. Right now the driver hangs right after putting
  the BIOS version on the display and I have a film of the real hardware what texts should be put there when it works correctly so it
@@ -678,13 +605,6 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
  byte fix made to the previous dump and also highlighted another.  Also interestingly the startup code appears to have been patched
  slightly on the first board, maybe they knew ram was failing on it? [DavidHaywood]
 
--hp85: improvements Hi, this PR is for a set of improvements I made to HP85 emulation, namely: [fulivi]
- * More correct timing of video memory access. Test "F" of service ROM now passes.
- * Added beeper
- * Implemented the hardware timers. Test "J" passes.
- * Thanks.
- * -F.Ulivi
-
 -A number of DS5002FP chips were dumped....  [Morten Shearman Kirkegaard,Peter Wilhelmsen, David Haywood] A number of DS5002FP chips
  were dumped using the method published by Morten Shearman Kirkegaard and Peter Wilhelmsen as documented at
  http://www.afdelingp.dk/files/articles/ds5002fp/ds5002fp.pdf [DavidHaywood]
@@ -696,86 +616,17 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
     currently being sent for dumping / verification.
  * therefore
 
--sms.xml fixes [Enik Land]
- * fix The Terminator versions by adding their on-cart RAM.
- * add notes for games with SK-1100 keyboard support.
- * correct Great Baseball (Euro, USA, Bra) release year (title screen as reference).
- * correct Teddy Boy Blues (Jpn, Ep-MyCard, Prototype) interface type.
- * correct Ghost House (Sega Card, Prototype) interface type.
-
 -Improve WD2010 emulation Better feedback on cylinder positions. Most checks contained in winchester test suite pass now (option 16
  at  RX50DIAG.TD0 diskette), except subtest #4 - and few low level tests that require specially crafted manufacturer tracks (write
  test #1). Historical annotation: manufacturer info was hidden in last 4, 8 or 16 cylinders of a DEC RD5x hard disk, diagnostic area
  in the 4, 8 or 16 cylinders before, depending on the number of heads. At least manufacturer tracks used a format inaccessible to
  standard disk routines and thus were not writeable. [Bavarese]
 
--Export additional functions for Emscripten builds This patch adds some additional static member functions and exports them to allow
- control of the running system via a Javascript API in the web builds.  Example: [jbaicoianu]
- * ```js JSMESS.save('statename'); JSMESS.load('statename'); JSMESS.soft_reset(); JSMESS.hard_reset(); JSMESS.exit(); ```
-
--Gameboy v8 Miscellaneous Game Boy changes. Please use fast-forward merge to preserve the commit comments. [Tauwasser]
- * Fixes an issue with a previous pull request where I forgot one MBC1 collection game.
- * Fixes an issue with MMM01 emulation of ROMB0 switching (broken select ROM bank 0x00 at 0x4000-0x7FFF; not visible due to games
-    behaving themselves)
- * add Sachen 4B-003 that was dumped a little while ago to xml
-
--Add dipswitches to tsukande Backup Memory set to Clear otherwise it keeps complaining of bad backup RAM [einstein95]
-
 -fccpu1: newer version of firmware added, Force Debugger v1.1 [JoakimLarsson]
-
--Fix save/load states in Emscripten build Slightly rearranges the ```running_machine::run()``` function so that the Emscripten build
- can share the same codepath, allowing it to access the scheduler to process any save/load commands that may have been queued.
- [jbaicoianu]
-
--use Caps0ff dump for srdarwin use Caps0ff dump for srdarwin handcraft MCU rom for srdarwinj like was done for other games in the
- driver so the old sim can be killed off, marked as BAD_DUMP seems stable, although I had to boost the interleave. [DavidHaywood]
- * NOTE, this game has never been emulated correctly - there was the following comment
- * -------- The table below is hopefully correct thanks to Jose Miguel Morales Farreras, but Boss #6 is uncomfirmed as correct.
- * if (m_i8751_value == 0x8000) m_i8751_return = 0xf580 +  0; /* Boss #1: Snake + Bees */ if (m_i8751_value == 0x8001)
-    m_i8751_return = 0xf580 + 30; /* Boss #2: 4 Corners */ if (m_i8751_value == 0x8002) m_i8751_return = 0xf580 + 26; /* Boss #3:
-    Clock */ if (m_i8751_value == 0x8003) m_i8751_return = 0xf580 +  2; /* Boss #4: Pyramid */ if (m_i8751_value == 0x8004)
-    m_i8751_return = 0xf580 +  6; /* Boss #5: Snake + Head Combo */ if (m_i8751_value == 0x8005) m_i8751_return = 0xf580 + 24; /*
-    Boss #6: LED Panels */ if (m_i8751_value == 0x8006) m_i8751_return = 0xf580 + 28; /* Boss #7: Dragon */ if (m_i8751_value ==
-    0x8007) m_i8751_return = 0xf580 + 32; /* Boss #8: Teleport */ if (m_i8751_value == 0x8008) m_i8751_return = 0xf580 + 38; /* Boss
-    #9: Octopus (Pincer) */ if (m_i8751_value == 0x8009) m_i8751_return = 0xf580 + 40; /* Boss #10: Bird */ if (m_i8751_value ==
-    0x800a) m_i8751_return = 0xf580 + 42; /* End Game(bad address?) */
- * ----------
- * The value for Boss 6 was actually incorrect, the boss is meant to have 2 states, it was starting in the 2nd, skipping the first
-    entirely; this even caused priority errors on the boss.  With the real MCU values the boss works as it should.
 
 -mc14411 and fccpu1 improvements [JoakimLarsson]
 
--Corrected ITT3030 70 track drive type and added 35 track ... drive type and for… drive type and format definition. [helwie44 and
- rfka01] This change reflects the originally available drive types and will allow easier data exchange with machines from the same
- design company (SKS): alphatronic P1, P2, P3, P4, sks nano and others. [rfka01]
-
 -New device: MC14411 Bit Rate Generator [JoakimLarsson]
-
--Added available Commodore PC10-III ROM dumps The guys over at the German vintage computer forum have collected the PC10-III system
- BIOS versions in one thread. http://forum.classic-computing.de/index.php?page=Thread&postID=119037#post119037 [rfka01]
- * I've added the version 4.36b and added the roms for those which were marked "NO DUMP" until now.
-
--Begin of HP80 emulation Hi, [fulivi]
- * this commit is the start of my work on emulating the HP80 series computers. There are already a couple of stand-alone emulators
-    for this series around, but none in MAME. This is WIP, so there are a lot of things that are not emulated yet. What works:
- * HP85A machine with 16K of RAM
- * Capricorn CPU works
- * Keyboard works (with minor issues)
- * CRT text / graphics modes work (correct speed is not emulated yet so service ROM complaints)
- * BASIC is usable
- * What is missing (and I'll have hopefully working soon):
- * HW timers
- * Beeper
- * Integral printer
- * DC100 cassette drive
- * Extension ROMs
- * I/O modules (especially the HPIB interface so that we can hook up floppy drives)
- * Other models in the family (e.g. HP86)
- * Just a quick BASIC program to test: ``` 10 FOR I=1 TO 10 @ DISP TAB(I);"Hello MAME!" @ NEXT I 20 END ```
- * @ is used in this variant of BASIC to separate statements on the same line (what would be a colon in other BASICs).
- * I'm sending the relevant ROM images to the usual MAME email address.
- * Thanks.
- * -F.Ulivi
 
 -load some recent Caps0ff MCU dumps, not hooked up for now. (+ load cchip dumps) [DavidHaywood]
 
@@ -784,8 +635,6 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
  * This was previously proposed with a different HTTP & Websocket server; in this pull request, the functionality has been ported un
     top of the web & websocket server that is exposed through the http_manager.
 
--Include -output option in documentation Include -output and it's available options in documentation. [OzFalcon]
-
 -misc cchip prep + notes create c-chip device with correct CPU type in it and a bunch of notes (pinout etc.) create a uPD78C11
  derived CPU type for this purpose, with internal ROM map use internal ROM map for other uPD78C10 chips as it's always present. add
  missing NO_DUMP definitions to various games using C-Chips with correct size etc. pump megablast through the device code as really
@@ -793,9 +642,6 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
 
 -Updated Fedora instructions DNF is now preferred package manager. alsa-lib-devel is also required (not mentioned in the current
  docs) [inflatador]
-
--decrypted SEGA_315_5133 used by 'seganinja' set, promoted it to working [David Haywood] it's the exact same code revision as the
- other sets, just for a different encrypted CPU, so not actually that interesting. [DavidHaywood]
 
 -m62 proposed cleanups. I've split the massive PROM blocks up into something more modern looking (the single PROM region with all
  PROMs crammed into it is an old MAME thing from when only one PROM region was allowed)  I've also made use of multipe palettes and
@@ -806,12 +652,8 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
 
 -fix 06613, game sets rowscroll to be bigger than assumed size of tilemap [DavidHaywood]
 
--sun1: replace console hack with upd7201 device [shattered]
-
 -split decocass class up so that the dongle types aren't polluting main class also emulate bootleg multigame, change accidental?
  drawing order change that was made a while back and broke several games [DavidHaywood]
-
--identified dipswitches for a number of decocass sets [DavidHaywood]
 
 
 New working machines
@@ -819,20 +661,6 @@ New working machines
 Casino Strip [?]
 Casino Strip VIII [?]
 Casino Strip IX [?]
-ibm5150: Battle Chess, Blades of Steel, Castlevania, Earl Weaver Baseball, Hardball 2, John Madden Football, Lakers vs Celtics and
-  the NBA Playoffs [Justin Kerk]
-ibm5150: Le Manoir de Mortevielle [breiztiger]
-ibm5170: B-17 Flying Fortress, Body Blows, DOS/V (multiple sets) [Justin Kerk]
-x68k_flop: Chourensha 68k (v1.00) [Justin Kerk]
-ibm5150: The Cycles, Double Dribble, Future Wars, Gamer's Edge Sampler, Heroes of the Lance, Links - The Challenge of Golf, Mean
-  Streets, Monopoly, Monty Python's Flying Circus, Ninja Gaiden II, Nova 9, Over the Net, Pharaoh's Pursuit, Secret of the Silver
-  Blades, Speedball II, Street Fighting Man, Super C, Superstar Ice Hockey, Superstar Indoor Soccer, Superstar Indoor Sports,
-  Superstar Outdoor Soccer, Top 10 Solid Gold Volume II, Wings of Fury, Zool [Justin Kerk]
-ibm5170: Corncob Deluxe, Dune, Global Conquest, King's Quest V, Lightspeed, MS-DOS (Version 6.22, Brazilian Portuguese), Star Trek -
-  25th Anniversary [Justin Kerk]
-gameboy.xml: Sachen 4 in 1 (Euro, 4B-003) [Tauwasser]
-coco_flop: Pacman (z80 to 6809 Transcoded - v1.01) (512kb)  [Glen Hewlett]
-pce_tourvision:  Majin Eiyuu Den Wataru (Tourvision PCE bootleg) [system11, The Dumping Union]
 This is only half done but it is a good branch point where I will implement the LED display both using a small video display and in
   a separate branch using the layout system to compare performance [JoakimLarsson]
 Anyway there are work on the 68340 too and the Dbox now can display some ascii art characters using the LOG macro printouts proving
@@ -848,23 +676,6 @@ also hook up diplocations etc. for all sets in driver. [DavidHaywood]
 I think maybe this driver also needs some kind of PPI devices? not sure which tho. [DavidHaywood]
 
 
-New machines marked as NOT_WORKING
-----------------------------------
-ibm5170: PC-DOS (multiple sets using XDF disk format) [Justin Kerk]
-ibm5150: Boulder Dash Construction Kit [Justin Kerk]
-Doraemon - Nobita no Dorabian Night (Tourvision PCE bootleg) [system11, The Dumping Union]
-This is a MIDI sound module, but this skeleton driver does not have anything like that included as the CPU (H8/520) is not emulated.
-  [superctr]
-Sound chip is Yamaha YMW258-F. This is almost certainly identical to the MultiPCM chip used in the Sega arcade boards. 12-bit
-  samples are used, which are not supported by the current multipcm.cpp core, but is supported by the OPL4 (ymf278b.cpp) which uses
-  a similar sample format. [superctr]
-
-
-New clones marked as NOT_WORKING
---------------------------------
-Dirty Harry (LF-2) [PinMAME]
-
-
 Comparing 0.187 (mame0187) to 0.187 (mame0187-578-gba3d0a8)
 
 Renames
@@ -874,10 +685,6 @@ New working machines
 --------------------
 Deco Cassette System Multigame (ROM based)
 Nichbutsu High Rate DVD BIOS
-
-New working clones
-------------------
-Dirty Harry (LF-2)
 
 Machines promoted to working
 ----------------------------
@@ -891,6 +698,5 @@ Casino Strip VIII
 
 New clones marked as NOT_WORKING
 --------------------------------
-Commodore PC 10
 Killer Instinct 2 (Upgrade kit)
 New Super Triv III
