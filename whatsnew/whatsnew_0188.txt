@@ -7,14 +7,17 @@ MAMETesters Bugs Fixed
 - 05900: [Sound] (ddenlovr.cpp) funkyfig, funkyfiga: Missing music and partial sound FX (Ivan Vangelista)
 - 06261: [Sound] (polepos.cpp) polepos2: Crowd Cheering sounds are messed up at the chequered flag (goal). (Robbbert)
 - 06370: [Save/Restore] (vegas.cpp) sf2049se, sf2049te: Crashes on reload (-str 8) in a staggered -str 20 run (Ted Green)
-- 06562: [Crash/Freeze] All sets in octopus.cpp, zorba.cpp: Fatal Error when using various terminal/printers in slots (Ivan Vangelista)
-- 06564: [Crash/Freeze] (ti99_4x.cpp) All sets in ti99_4x.cpp, ti99_4p.cpp: SuperAMS memory expansion card (samsmem) Fatal Error when mounted (Ivan Vangelista)
+- 06562: [Crash/Freeze] All sets in octopus.cpp, zorba.cpp: Fatal Error when using various terminal/printers in slots
+  (Ivan Vangelista)
+- 06564: [Crash/Freeze] (ti99_4x.cpp) All sets in ti99_4x.cpp, ti99_4p.cpp: SuperAMS memory expansion card (samsmem) Fatal Error
+  when mounted (Ivan Vangelista)
 - 06581: [Interface] Various problems with software loading/unloading: Various problems with software loading (Nathan Woods)
 - 06588: [Interface] Regression loading softlist items from the command line with changed slot options (Nathan Woods)
 - 06592: [DIP/Input] (nbmj8891.cpp) chinmoku: DSW B should not exist. (Robbbert)
 - 06613: [Crash/Freeze] (rohga.cpp) schmeisr: Exception on exit (David Haywood)
 - 06620: [Crash/Freeze] (itech8.cpp) ninclown: During final boss Twisto the game can potentially crash (Phil Bennett)
-- 06624: [Misc.] (mc10.cpp) Emulation of the right-shift and rotate instructions (ASR, LSR, ROR) do not correctly modify the overflow flag (V) (AJR)
+- 06624: [Misc.] (mc10.cpp) Emulation of the right-shift and rotate instructions (ASR, LSR, ROR) do not correctly modify the
+  overflow flag (V) (AJR)
 - 06627: [Sound] (segas32.cpp) kokoroj2: Missing voice in game (Arzeno Fabrice)
 - 06631: [Sound] (vgmplay.cpp) vgmplay: Attempting to play a .vgm/.vgz file containing 2 X POKEY does not play back correctly. (AJR)
 
@@ -211,6 +214,31 @@ Source Changes
 
 -Added sound samples to PT Reach Mahjong. [Lord Nightmare, Angelo Salese]
 
+-socrates: Reimplemented keyboard MCU simulation as a separate timer-driven function. [Lord Nightmare]
+ * Fixes issues with super painter and a few other games not recognizing keyboard input.
+ * Also eliminated anonymous timers and keyboard tagmap lookups, and added savestate support.
+
+-arkanoid.cpp: Added machine definition for Akranoid bootleg with 68705P3 and AY-3-8910, matching real hardware. [Lord Nightmare]
+ * Also added notes about which sets bootlegs are derived from.
+
+-dectalk.cpp: Removed unnecessary driver init and replaced with machine_start, eliminated anonymous timers, and added savestate
+ support. [Lord Nightmare]
+
+-taitocchip.cpp: Hooked up the four 'ASIC RAM' shared bytes/semaphores/command registers between external CPU and the C-chip, got
+ rid of hack for megablast. [Lord Nightmare]
+
+-Implemented DIP switches and tweaked inputs for Bubble Bobble prototype so that the stage editor works. [Lord Nightmare]
+
+-missb2 updates: [Lord Nightmare]
+ * Fixed OKI read/write bitswap so what seem to be the correct sound effects are played.
+ * Replaced the corrupt OKI ROM dump with the bublpong OKI ROM - all non-corrupted areas are identical.
+ * Added watchdog.
+
+-retofinv.cpp: Added original Taito 68705 MCU dump. [Corrado Tomaselli, Lord Nightmare, brizzo]
+ * Moved bootleg 68705 MCU to its own set, renamed sets to make it more obvious which are bootlegs.
+ * Verified XTAL, dividers, and SN76489A type from PCB pictures.
+ * Added missing original color PROMs and allowed video/retofinv.cpp to use either those or the single bootleg color PROM.
+
 -Added correct palette weighting for all dec8 games. [Bryan McPhail]
 
 -Made DECO RM-C3 into a device used by dec8 and karnov.cpp games. [Bryan McPhail]
@@ -222,6 +250,21 @@ Source Changes
 -plugins/cheat updates: [Carl]
  * Poll for setting hotkeys.
  * Link simple cheats.
+
+-Added Motorola MC14411 Bit Rate Generator device. [Joakim Larsson Edstrom]
+
+-fccpu1 updates: [Joakim Larsson Edstrom]
+ * Updated LOG system and replaced CLOCK_SIGNAL_HANDLER with real MC14411 BRG device.
+ * Added machine configuration for baud rates for all three serial ports using MC14411 device.
+ * Added newer version of firmware Force Debugger v1.1.
+
+-68340: Added configuration macros and callbacks for 8-bit ports A and B, updated LOG system. [Joakim Larsson Edstrom]
+
+-sda5708: Added layout support and state saving. [Joakim Larsson Edstrom]
+
+-sda5708: Added layout with generated bezels and program snippet to redo it as a comment. [Joakim Larsson Edstrom]
+
+-dbox: Added sda5708 matrix diplay layout (displays version number on start but hangs shortly thereafter). [Joakim Larsson Edstrom]
 
 -ti99: Changed Hexbus chaining; moved Hexbus up one level (from bus/ti99 to bus). [Michael Zapf]
 
@@ -306,6 +349,9 @@ Source Changes
  [anonymous, digshadow]
 
 -segas32.cpp: Redumped kokoroj2 sound data ROM. [Arzeno Fabrice]
+
+-Improved WD2010 emulation: [Bavarese]
+ * Better feedback on cylinder positions, almost all checks pass except low level tests expecting manufacturer or diagnostic tracks.
 
 -Added Commodore D9060 82S137 PROM dumps. [Bo Zimmerman, Andrew Welburn]
 
@@ -448,18 +494,6 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
  dipswitch reading works also hook up diplocations etc. for all sets in driver. [David Haywood]
  * I think maybe this driver also needs some kind of PPI devices? not sure which tho.
 
--socrates: reimplemented keyboard mcu hle as a separate timer-driven function, fixing issues with super painter and a few other
- games not recognizing keyboard input. Got rid of anonymous timers. Got rid of keyboard tagmap lookups. Added savestate support.
- [Lord Nightmare [Lord-Nightmare]
-
--arkanoid.cpp: added machine def for "akranoid bootleg with 68705p3 mcu and ay-3-8910" for the ark1ball bootleg, so it has "properly
- wrong" sound. Added some notes about bootleg roms and what sets they are copied from or derived from. Updated note about hidden
- credits with hiscore initials. [Lord Nightmare]
-
--dectalk.cpp: removed unnecessary driver init and replaced with machine_start [Lord Nightmare]
-
--dectalk.cpp: nuked anonymous timers, added savestate support [Lord Nightmare]
-
 -split decocass class up so that the dongle types aren't polluting main class (#2429) [David Haywood]
  * split decocass class up so that the dongle types aren't polluting main class, emulate bootleg multigame, change accidental?
     drawing order change that was made a while back and broke several games
@@ -482,10 +516,6 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
 
 -use DERIVED_CLOCK [David Haywood]
 
--retofinv.cpp: Added original Taito 68705 MCU dump, and moved bootleg 68705 MCU to its own new set. Renamed sets to make it more
- obvious which are bootlegs. Verified XTAL, dividers, and SN76489A type from pcb pictures. Added missing original Taito CLUT PROMs
- and fixed video/retofinv.cpp to be able to use those or the single bootleg CLUT prom. [Corrado Tomaselli, Lord Nightmare, brizzo]
-
 -Add an external panel for the Ensoniq VFX family of keyboards, with a websocket interface and an HTML/Javascript implementation
  that can be served over HTTP. [Christian Brunschen]
 
@@ -496,30 +526,7 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
 -load Caps0ff c-chip dumps, checksum on MASK rom part passes, but game specific EPROM is still bad for the time being
  [David Haywood]
 
--mc14411: NEW DEVICE Motorola MC14411 Bit Rate Generator [Joakim Larsson Edstrom]
-
--fccpu1: Updated LOG system and replaced CLOCK_SIGNAL_HANDLER with a real MC14411 BRG device [Joakim Larsson Edstrom]
-
--taitocchip.cpp: hooked up the four 'asic ram' shared bytes/semaphores/command registers between external cpu and the c-chip, and
- got rid of the 'return 0x01' hack for megablast. [Lord Nightmare]
-
 -hiscore.dat: Updates [Leezer]
-
--MT 06592 [Robbbert]
-
--mc14411: code reduction [Joakim Larsson Edstrom]
-
--mc14411: new methods added for disabling all output timers and set line methods for RSA and RSB inputs [Joakim Larsson Edstrom]
-
--fccpu1: Added machine configuration for baud rates for all three serial ports using the mc14411 device [Joakim Larsson Edstrom]
-
--fccpu1: newer version of firmware added, Force Debugger v1.1 [Joakim Larsson Edstrom]
-
--Implemented dipswitches and tweaked inputs for Bubble Bobble prototype so that the edit mode works. [Lord Nightmare]
-
--Improve WD2010 emulation [Bavarese]
- * Better feedback on cylinder positions. Almost all checks of the winchester test pass (option 16 @ RX50DIAG.TD0 diskette), except
-    low level tests expecting manufacturer or diagnostic tracks (write test #1).
 
 -Cleaned up the MC-10 driver (#2480) [Nathan Woods]
 
@@ -532,18 +539,10 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
     to World Rally 1) and TH Strikes Back is crashing at the first boss (could also be a CPU core issue)  Glass was also dumped, but
     at the time the data wasn't extracted, only the code, and the board has since died, so needs redoing.
 
--68340: Added config macros and callbacks for 8 bit ports A and B [Joakim Larsson Edstrom]
-
--68340SIM: Added 8 bit ports A and B, updated LOG system [Joakim Larsson Edstrom]
-
 -[MC6847] Fixed the "Semigraphics 6" mode on the CoCo/MC-10 [Nathan Woods]
  * On these systems, the "Semigraphics 6" mode (contrary to most literature) will display "stripes" for video bytes from $00-$7F.
     This is because the INTEXT pin on the MC6847 VDG is set, but AS is not and there is no external ROM.
  * This was reported by Jim Gerrie:  https://www.youtube.com/watch?v=VmsWqdiwH2o
-
--missb2: Fix oki read/write bitswap so what seem to be the correct sound effects are played. Used the bublpong oki rom in place of
- the badly dumped missb2 oki rom due to all non-corrupted areas being identical, so they're most likely supposed to be the same, but
- marked it as BAD_DUMP until redump. Add watchdog (same as parent bublbobl hardware has). [Lord Nightmare]
 
 -Changed Romload to show all actual hashes on a mismatch [Nathan Woods]
 
@@ -566,25 +565,11 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
  * out of whatsnew Alligator Hunt was dumped and works, but not yet added, want to verify on a 2nd PCB first as the process does
     corrupt some bytes and a couple had to be handfixed, so the only way to know for sure is multiple dumps.
 
--sda5708: Added layout with generated bezels + program snippet to redo it as a comment, to be able to generate with new offsets,
- scale and/or dotmatrix later [Joakim Larsson Edstrom]
-
--dbox: added sda5708 matrix diplay layout, it works and displays version number on start but dbox driver hangs shortly thereafter
- [Joakim Larsson Edstrom]
-
--sda5708: added layout support, state saving and a credits section [Joakim Larsson Edstrom]
-
 -x [David Haywood]
 
 -improve naming etc. [David Haywood]
 
 -change description on this since we have a screenshot [David Haywood]
-
--SDA5708 layout for dbox This works enough to give some output improving the driver. Right now the driver hangs right after putting
- the BIOS version on the display and I have a film of the real hardware what texts should be put there when it works correctly so it
- is useful. [JoakimLarsson]
- * Ideally one would like the sda5708 device to offer a sub-layout element to the dbox driver layout to place on the right spot of
-    the dbox-1 front. Maybe there is a way to do that I don't know about.
 
 -gaelco / ds5002fp changes: gaelco / ds5002fp changes: [DavidHaywood]
  * made ds5002fp store internal ram and sfr registers to nvram as they're battery backed
@@ -615,18 +600,6 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
     at the time the data wasn't extracted, only the code, and the board has since died, so needs redoing.  Several other boards are
     currently being sent for dumping / verification.
  * therefore
-
--Improve WD2010 emulation Better feedback on cylinder positions. Most checks contained in winchester test suite pass now (option 16
- at  RX50DIAG.TD0 diskette), except subtest #4 - and few low level tests that require specially crafted manufacturer tracks (write
- test #1). Historical annotation: manufacturer info was hidden in last 4, 8 or 16 cylinders of a DEC RD5x hard disk, diagnostic area
- in the 4, 8 or 16 cylinders before, depending on the number of heads. At least manufacturer tracks used a format inaccessible to
- standard disk routines and thus were not writeable. [Bavarese]
-
--fccpu1: newer version of firmware added, Force Debugger v1.1 [JoakimLarsson]
-
--mc14411 and fccpu1 improvements [JoakimLarsson]
-
--New device: MC14411 Bit Rate Generator [JoakimLarsson]
 
 -load some recent Caps0ff MCU dumps, not hooked up for now. (+ load cchip dumps) [DavidHaywood]
 
@@ -661,10 +634,6 @@ New working machines
 Casino Strip [?]
 Casino Strip VIII [?]
 Casino Strip IX [?]
-This is only half done but it is a good branch point where I will implement the LED display both using a small video display and in
-  a separate branch using the layout system to compare performance [JoakimLarsson]
-Anyway there are work on the 68340 too and the Dbox now can display some ascii art characters using the LOG macro printouts proving
-  the sda5708 hookup is somewhat correct [JoakimLarsson]
 
 
 New working clones
