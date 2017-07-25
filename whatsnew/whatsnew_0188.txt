@@ -81,7 +81,7 @@ Game & Watch: Mickey Mouse [hap]
 Mega Double Poker (conversion kit, version 2.3 MD) [Caps0ff, AJR]
 Ron II Mah-Jongg [Angelo Salese]
 The Roulette (Visco) [Team Europe, Luca Elia]
-Touch & Go (World)  [Morten Shearman Kirkegaard, Peter Wilhelmsen, David Haywood]
+Touch & Go (World) [Morten Shearman Kirkegaard, Peter Wilhelmsen, David Haywood]
 World Rally 2: Twin Racing [Morten Shearman Kirkegaard, Peter Wilhelmsen, David Haywood]
 
 
@@ -378,9 +378,20 @@ Source Changes
 
 -r9751: Added preliminary SMIOC device with 8237 DMA controllers and RS-232 ports. [Brandon Munger]
 
+-Added an external panel for the Ensoniq VFX family of keyboards, with a websocket interface and an HTML/Javascript implementation
+ that can be served over HTTP. [Christian Brunschen]
+
 -Fixed QT 5.5.1 for Ubuntu 14.04 "Trusty Tahr" (allows Travis CI build to complete). [dankan1890]
 
 -naomi.cpp: Dumped earlier Sega Gun Board firmware. [Darksoft]
+
+-opwolf, opwolfa, opwolfj, opwolfjsc, opwolfu: Added C-chip dumps (game-specific EPROM still bad). [Caps0ff, David Haywood]
+
+-Touch & Go, World Rally 2, TH Strikes Back: Dumped DS5002FP security modules, replaced simulation.
+ [Morten Shearman Kirkegaard, Peter Wilhelmsen, David Haywood]
+
+-Created Taito C-chip device and used in asuka.cpp, opwolf.cpp, rbisland.cpp, taito_f2.cpp, taito_x.cpp and volfied.cpp.
+ [David Haywood]
 
 -srdarwin: Replace MCU simulation with internal ROM dump: [Caps0ff, David Haywood]
  * Using real dump for srdarwin, and hand-modified version to satisfy srdarwinj.
@@ -392,11 +403,20 @@ Source Changes
 -tehkanwc.cpp: Fixed DIP switches for tehkanwcd (different setup to other sets); added DIP switch locations for all sets in driver.
  [David Haywood]
 
+-Identified DIP switches for a number of DECO Cassette sets. [David Haywood]
+
 -Irem M62 cleanups: [David Haywood]
  * Split PROM regions up by function (legacy from when MAME only allowed a single PROM region per system).
  * Made use of multiple palettes and gfxdecode structures.
 
--Identified DIP switches for a number of DECO Cassette sets. [David Haywood]
+-upd7810, upd7811: Added internal address maps. [David Haywood]
+
+-gaelco/ds5002fp udates: [David Haywood]
+ * Made ds5002fp store battery-backed internal RAM and SFR registers as NVRAM.
+ * Made SFR defaults configurable in ROM loading like NVRAM defaults.
+ * Made external SRAM persistent as well (some games store scores etc. in it).
+ * Cleaned up Touch & Go dump and added preconfigured internal RAM.
+ * Created device for Gaelco protection module and removed remaining simulation code.
 
 -Decrypted SEGA_315_5133 used by 'seganinja' set. [David Haywood]
  * Shares identical code with other sets, just encryped with a different key.
@@ -510,106 +530,6 @@ z80scc: Added basic wait/DMA request support, renamed WRDY to WREQ to match data
 
 -SDL sound: Fill buffer with silence on underrun. [057a3dd61f99517a3afea0051a49cb27994f94d]
 
-
-
-
--create c-chip device with correct CPU type in it and a bunch of notes (pinout etc.) create a uPD78C11 derived CPU type for this
- purpose, with internal ROM map use internal ROM map for other uPD78C10 chips as it's always present. add missing NO_DUMP
- definitions to various games using C-Chips with correct size etc. pump megablast through the device code as really all it ever does
- is bank the c-chip window and test the RAM. [David Haywood]
-
--use DERIVED_CLOCK [David Haywood]
-
--Add an external panel for the Ensoniq VFX family of keyboards, with a websocket interface and an HTML/Javascript implementation
- that can be served over HTTP. [Christian Brunschen]
-
--better handle the case where HTTP is not enabled. [Christian Brunschen]
-
--load some recent Caps0ff MCU dumps, not hooked up for now. [David Haywood]
-
--load Caps0ff c-chip dumps, checksum on MASK rom part passes, but game specific EPROM is still bad for the time being
- [David Haywood]
-
--A number of DS5002FP chips were dumped using the method published by Morten Shearman Kirkegaard and Peter Wilhelmsen as documented
- at (#2484) [David Haywood]
- * http://www.afdelingp.dk/files/articles/ds5002fp/ds5002fp.pdf
- * namely Touch and Go, World Rally 2, and TH Strikes Back
- * a 2nd verification pass is still needed on them from additional boards, as bad bits existed in World Rally 2 even prior to
-    extraction (steering logic was broken but bad byte was identified and fixed as the code for that command handler was identical
-    to World Rally 1) and TH Strikes Back is crashing at the first boss (could also be a CPU core issue)  Glass was also dumped, but
-    at the time the data wasn't extracted, only the code, and the board has since died, so needs redoing.
-
--wrally2: use dallas dumped from 2nd PCB, it confirms the byte fix made to the previous dump and also highlighted another.  Also
- interestingly the startup code appears to have been patched slightly on the first board, maybe they knew ram was failing on it?
- [David Haywood]
-
--gaelco / ds5002fp changes: [David Haywood]
- * made ds5002fp store internal ram and sfr registers to nvram as they're battery backed
- * this includes the 'configuration' details which are actually programmable, so don't belong in the 'MACHINE_CONFIG' section but
-    rather as part of the default NVRAM
- * as the exact format of the NVRAM storage is not known, and as not to break compatibility with the 'wrally' set Gaelco offer these
-    bytes are now configured in the ROM LOADING like default NVRAM.  Slightly awkward, but probably the best way.
- * made the SRAM (external to DS5002FP, but still powered by the same battery) also save content, some games actually use it to
-    store scores etc. as well as the game code.
- * cleaned up the Touch and Go Dallas dump, and added some preconfigured internal RAM so that it actually loads the score data from
-    the SRAM properly
- * prepared all other drivers for the adding of the SRAM dumps, removing old 'never going to work' simulation code in the process.
-    To do this a wrapper / interface device for the Gaelco Dallas + SRAM box was created.
- * out of whatsnew Alligator Hunt was dumped and works, but not yet added, want to verify on a 2nd PCB first as the process does
-    corrupt some bytes and a couple had to be handfixed, so the only way to know for sure is multiple dumps.
-
--x [David Haywood]
-
--improve naming etc. [David Haywood]
-
--change description on this since we have a screenshot [David Haywood]
-
--gaelco / ds5002fp changes: gaelco / ds5002fp changes: [DavidHaywood]
- * made ds5002fp store internal ram and sfr registers to nvram as they're battery backed
- * this includes the 'configuration' details which are actually programmable, so don't belong in the 'MACHINE_CONFIG' section but
-    rather as part of the default NVRAM
- * as the exact format of the NVRAM storage is not known, and as not to break compatibility with the 'wrally' set Gaelco offer these
-    bytes are now configured in the ROM LOADING like default NVRAM.  Slightly awkward, but probably the best way.
- * made the SRAM (external to DS5002FP, but still powered by the same battery) also save content, some games actually use it to
-    store scores etc. as well as the game code.
- * cleaned up the Touch and Go Dallas dump, and added some preconfigured internal RAM so that it actually loads the score data from
-    the SRAM properly
- * prepared all other drivers for the adding of the SRAM dumps, removing old 'never going to work' simulation code in the process.
-    To do this a wrapper / interface device for the Gaelco Dallas + SRAM box was created.
- * out of whatsnew Alligator Hunt was dumped and works, but not yet added, want to verify on a 2nd PCB first as the process does
-    corrupt some bytes and a couple had to be handfixed, so the only way to know for sure is multiple dumps.
-
--wrally2: use dallas dumped from 2nd PCB, it confirms the byte fix made wrally2: use dallas dumped from 2nd PCB, it confirms the
- byte fix made to the previous dump and also highlighted another.  Also interestingly the startup code appears to have been patched
- slightly on the first board, maybe they knew ram was failing on it? [DavidHaywood]
-
--A number of DS5002FP chips were dumped....  [Morten Shearman Kirkegaard,Peter Wilhelmsen, David Haywood] A number of DS5002FP chips
- were dumped using the method published by Morten Shearman Kirkegaard and Peter Wilhelmsen as documented at
- http://www.afdelingp.dk/files/articles/ds5002fp/ds5002fp.pdf [DavidHaywood]
- * namely Touch and Go, World Rally 2, and TH Strikes Back
- * a 2nd verification pass is still needed on them from additional boards, as bad bits existed in World Rally 2 even prior to
-    extraction (steering logic was broken but bad byte was identified and fixed as the code for that command handler was identical
-    to World Rally 1) and TH Strikes Back is crashing at the first boss (could also be a CPU core issue)  Glass was also dumped, but
-    at the time the data wasn't extracted, only the code, and the board has since died, so needs redoing.  Several other boards are
-    currently being sent for dumping / verification.
- * therefore
-
--Add an external panel for the Ensoniq VFX family of keyboards ... with a websocket interface and an HTML/Javascript implementation
- that can be served over HTTP. [cbrunschen]
- * This was previously proposed with a different HTTP & Websocket server; in this pull request, the functionality has been ported un
-    top of the web & websocket server that is exposed through the http_manager.
-
--misc cchip prep + notes create c-chip device with correct CPU type in it and a bunch of notes (pinout etc.) create a uPD78C11
- derived CPU type for this purpose, with internal ROM map use internal ROM map for other uPD78C10 chips as it's always present. add
- missing NO_DUMP definitions to various games using C-Chips with correct size etc. pump megablast through the device code as really
- all it ever does is bank the c-chip window and test the RAM. [DavidHaywood]
-
-
-New working machines
---------------------
-Casino Strip [?]
-Casino Strip VIII [?]
-Casino Strip IX [?]
 
 
 Comparing 0.187 (mame0187) to 0.187 (mame0187-578-gba3d0a8)
