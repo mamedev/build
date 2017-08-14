@@ -45,8 +45,6 @@ goto :eof
 copy %1\%3.sym %2\. /Y > nul
 copy ..\build\whatsnew\whatsnew_%5.txt %2\whatsnew.txt /Y > nul
 
-7za x ..\build\mamedirs.zip -o%2 >nul
-
 mkdir %2\artwork 2> nul
 xcopy artwork\* %2\artwork /s /i /y > nul
 mkdir %2\bgfx 2> nul
