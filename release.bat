@@ -2,7 +2,8 @@
 IF "%1"=="" goto :error
 @echo Starting release of MAME %1 ...
 @echo Remove old release directories ...
-rm -r -f build\release
+rm -rf build\release\src
+rm -f build\release\*.zip build\release\*.exe build\release\*.xml build\release\*.txt
 @echo Creating release directories ...
 @mkdir build\release\src 2> nul 
 @mkdir build\release\x32\Release\mame 2> nul 
