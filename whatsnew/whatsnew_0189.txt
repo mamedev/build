@@ -49,13 +49,16 @@ Crazy Climber (US set 2) [John of http://www.johnsarcade.com]
 Crime Fighters 2 (Japan, 4 Players, ver. N) [Guy B]
 Cool Minigame Collection (Italy) [Hammy]
 Daiku no Gensan (Japan, M82) [Hammy, Jon H, The Dumping Union]
+DoDonPachi III (World, 2002.05.15 Master Ver) [neohyphengeo productions]
 Donkey Kong Jr. (bootleg on Moon Cresta hardware, set 2) [The Dumping Union / Team Recreativas.org, AJR]
 Fidelity Sensory Chess Challenger 12 [hap, Berger, yoyo_chessboard]
+Mega Zone (program code L) [Corrado Tomaselli, The Dumping Union]
 Ordyne (World) [Corrado Tomaselli]
 Popeye (Japan, Sky Skipper hardware, Older)  [Justin Rudebaugh]
 Port Man (Japan) [ShouTime]
 Street Fighter (World) (protected) [Corrado Tomaselli]
 Street Fighter II: The World Warrior (Quicken, bootleg) [Moffitt]
+Super Athena (bootleg) [Hammy]
 Super Chase - Criminal Termination (1992/01/18 18:29:18 CHASE 3 VER 1.30, prototype) [Trol]
 Vamf x1/2 (Europe, version 1.0.0903) [Rod_Wod, TeamEurope, The Dumping Union]
 
@@ -68,14 +71,17 @@ Night Gal Summer [BET] (Japan 850702 NGS 0-01) [Angelo Salese]
 
 Clones promoted to working
 --------------------------
+International Toote II (v1.24, P387.V01) [Gerald (COY)]
 Virtua Bowling (Hong Kong, V101HJS) [Abelardator2, Luca Elia]
 
 
 New machines marked as NOT_WORKING
 ----------------------------------
 Altos 8600 [Carl, Al Kossow]
+AT&T Teletype 4425 [shattered]
 Konnano Hajimete! (Japan) [Ralph Wallace, system11, The Dumping Union]
 Learning-Window Teaching Machine (Rev 3) [Kevin Horton]
+Mannesmann Kienzle System 9002 Terminal [Miodrag Milanovic]
 Mephisto RISC 1MB [Sandro Ronco]
 Nurete Mitaino... - Net Idol Hen [Ralph Wallace, system11, The Dumping Union]
 Sengoku Mahjong Kurenai Otome-tai [Ralph Wallace, system11, The Dumping Union]
@@ -100,10 +106,20 @@ Star Wars (1.06, Display S1.05) [Jubex77, JMan, Gore Daimon]
 
 New working software list additions
 -----------------------------------
+ibm5150:
+  B.A.T. [ArcadeShadow]
+  Superbase 5 Demo [breiztiger]
+ibm5170:
+  B.A.T. II, Wing Commander, Wing Commander: The Secret Missions, Wing Commander: The Secret Missions 2,
+  Wing Commander II - Vengeance of the Kilrathi [ArcadeShadow]
+  RobotC2 Demo [breiztiger]
+  Diagnostics Diskette for IBM Personal System/2 model 70/80 (v1.06, Finnish). [Curt Coder]
+  Ami [Justin Kerk]
 
 
 New NOT_WORKING software list additions
 ---------------------------------------
+princ: Hobby Club, Kodomo no Omacha [TeamEurope]
 
 
 Translations added or modified
@@ -124,6 +140,30 @@ Swedish [Joakim Larsson Edstrom]
 
 Source Changes
 --------------
+-pengadvb: Added start/continue button (partially fixes MT04528). [Angelo Salese]
+
+-Added a very preliminary PC9801 AMD98 sound board emulation [Angelo Salese]
+
+-namcos1.cpp: Fixed joystick dropping inputs bug for crouching/running actions in Beraboh Man. [Angelo Salese]
+
+-labyrunr.cpp: Fixed tile-sprite priorities, mostly visible when exiting an area in most stages. [Angelo Salese]
+
+-deco32.cpp: Rewrote interrupt handling; improved lightgun support for Locked Loaded. [Angelo Salese]
+
+-chanbara.cpp: Identified sprite flip X bit (player sword thrusts). [Angelo Salese]
+
+-Wrote a new device for Taito Yoke based inputs (found in Midnight Landing and Top Landing). [Angelo Salese]
+
+-taitoair.cpp: Added screen raw parameters, fixes pilot acknowledge sound sample timing. [Angelo Salese]
+
+-ioport.cpp: Log explicit error if inp file isn't found on playback, added error code number for other errors. [Angelo Salese]
+
+-jangou_blitter.cpp: Rewrote blitter setters. [Angelo Salese]
+
+-nightgal.cpp improvements: [Angelo Salese]
+ * Fixed Night Gal Summer GFX ROM out-of-bounds accesses.
+ * Added preliminary protection emulation for Night Gal Summer.
+
 -luaengine: Added debugger_manager support. [Carl]
 
 -plugins/cheat: Catch errors in cheat scripts, added preliminary breakpoint/watchpoint support. [Carl]
@@ -160,6 +200,16 @@ Source Changes
  * Updated diagnostic ROM info.
  * Adjusted some memory region sizes.
  * Removed unused DRIVER_INIT.
+
+-igs011.cpp update: [Luca Elia]
+ * Decrypted vbowlhk and added its own bitswaps for IGS003 and IGS011.
+ * Found DIP switches to perform a protection test in vbowl, changed IGS012 mode toggling to pass the test.
+ * Changed IGS003 command 48 in lhb2 and vbowl to potentially work in more cases (based on lhb2 tables).
+
+-jockeyc: Added layout with keyboards. [Luca Elia]
+ * Cleaned up inputs, added own DIP switches.
+ * Corrected RTC, emulated hoppers.
+ * Hooked up outputs, NVRAM, and trackball (for hidden editor).
 
 -Overhauled internal UI: [Vas Crabb]
  * Use proper font metrics and handle space glyphs with null baounding box on OS X.
@@ -242,6 +292,24 @@ Source Changes
 
 -Added Atomiswave security notes. [brizzo, MetalliC]
 
+-apple2: Update screen on mode-switch only if really switching. [Peter Ferrie]
+
+-Rainbow-100: Use Z80SIO instead of Z80DART, make UCSD Pascal boot again. [Bavarese]
+
+-triforce.cpp: Redumped Virtua Striker 4 Ver.2006 (GDT-0020D). [rtw]
+
+-Added better dump of PAL Dreamcast Flash ROM. [rtw]
+
+-snes.xml documentation updates: [Inigo Martinez]
+ * Fixed ROM name and added extra information for Dragon Ball Z - Super Gokuu Den - Kakusei Hen.
+ * Added information about an earlier Euro Ranma 1/2 revision.
+ * Added information about an earlier Spanish release of Donkey Kong Country 2 - Diddy's Kong Quest.
+ * Added information about the Spanish release of Pilotwings to the Euro dump.
+
+-nes.xml documentation updates: [Inigo Martinez]
+ * Added information about Super Mario Bros. PCB.
+ * Fixed serial values and added PCB information for Pinball, Super Mario Bros. 2, and Trog!.
+
 -gb.cpp: optimize the channel update methods. [057a3dd61f99517a3afea0051a49cb27994f94d]
  * I recently noticed that it takes very long to load a gba state, sometimes dozens of seconds, and the older the state is, the
     longer it takes to load.
@@ -301,14 +369,9 @@ Source Changes
 
 -Imgtool:  Merged normalize_filename() into cannonicalize_path(), C++-ification (#2527) [npwoods]
 
--new working clone - B.Rap Boys Special (World) [briantro]
-
 -Imgtool:  Eliminated Imgtool-specific rand() function [Nathan Woods]
 
 -seattle: Set proper blitz99 dip settings and add gearshift to calspeed. Fixes MT 00975 (calspeed). [Ted Green]
-
--Rainbow-100: use Z80SIO instead of Z80DART; make UCSD Pascal boot again (#2524) [Bavarese]
- * Incorporates change from Z80DART to Z80SIO proposed by Edstrom. Also make UCSD Pascal boot again.
 
 -mario: Add coin counters and 74LS259 [AJR]
 
@@ -321,27 +384,9 @@ Source Changes
 
 -v25: Make IDB register state visible to debugger [AJR]
 
--Partially fix MT #04528 [angelosa]
-
 -SAM6883: Fixed a bug by which VDG addressing incorrectly honored the page bit [Nathan Woods]
  * This affected the CoCo/Dragon family of drivers
  * Special thanks to Ciaran Anscomb for identifying this problem
-
--snes.xml: fixed rom name and also added extra information for Dragon Ball Z - Super Gokuu Den - Kakusei Hen. [Iñigo Martínez]
-
--snes.xml: added information about an earlier Euro Ranma ½ revision. [Iñigo Martínez]
-
--snes.xml: added information about an earlier spanish release of Donkey Kong Country 2 - Diddy's Kong Quest. [Iñigo Martínez]
-
--snes.xml: added information about the spanish release of Pilotwings to the Euro dump. [Iñigo Martínez]
-
--nes.xml: added information about Super Mario Bros. PCB. [Iñigo Martínez]
-
--nes.xml: fixed serial value and added information about Pinball PCB. [Iñigo Martínez]
-
--nes.xml: fixed serial value and added information about Super Mario Bros. 2 PCB. [Iñigo Martínez]
-
--nes.xml: fixed serial value and added information about Trog! PCB. [Iñigo Martínez]
 
 -[Imgtool] C++-ification of imgtool_forkent structure [Nathan Woods]
 
@@ -362,8 +407,6 @@ Source Changes
  * Better documentation for midvunit wheel board
  * Added part numbers
 
--Added a very preliminary PC9801 AMD98 sound board emulation [Angelo Salese]
-
 -Looking at attract mode, graphics rom 39 is obviously bad. The 32/33 & 38 match the combined 3m rom in cawing, so I extracted 39
  from that. [smf-]
 
@@ -372,8 +415,6 @@ Source Changes
     explicitly stop the asio::io_context.
 
 -ceci: Add QUIT and TEST keys (hold down TEST while resetting for diagnostic) [R. Belmont]
-
--Fix MT #6645 [AJR]
 
 -ceci: complete keyboard, fix banking so Chinese mode doesn't crash [R. Belmont]
 
@@ -386,15 +427,9 @@ Source Changes
 
 -didact: Updated LOG support to latest cut [Joakim Larsson Edstrom]
 
--new working clone - Mega Zone (program code L) [briantro]
-
 -Adding #include <cctype> [Nathan Woods]
 
 -alphatro: added cart slot and hook for cartridge software list. [R. Belmont]
-
--MT 06649 [Robbbert]
-
--new working clone - Crime Fighters 2 (Japan, 4 Players, ver. N) [briantro]
 
 -changela: Change default DIP setting to keep coin counters separate [AJR]
 
@@ -411,8 +446,6 @@ Source Changes
  * Add and document a secret input that rewrites the EEPROM for any region
 
 -Delay data capture timing for MSM5205 and MSM6585 (should help with synchronization later) [AJR]
-
--namcos1.cpp: Fixed joystick dropping inputs bug for crouching/running actions in Beraboh Man [Angelo Salese]
 
 -Update mos6526.cpp [David Viens]
  * Some new demos and song uses CIA1/CIA2's timer values and serial shift register as code to execute! In order to properly debug
@@ -435,16 +468,8 @@ Source Changes
 -fmtowns_flop.xml: add several entries [r09]
  * Added Illusion City and Ving Software Collection, both from yukin (Tokugawa Corporate Forums).
 
--labyrunr.cpp: fixed tile-sprite priorities, mostly visible when exiting an area in most stages. [Angelo Salese]
-
 -new machines promoted to WORKING - TH Strikes Back [David Haywood, Kevin Eshbach]
  * note, if you have old nvram file delete it or you won't see any improvement.
-
--deco32.cpp: rewritten interrupt handling [Angelo Salese]
-
--deco32.cpp: improved lightgun support for Locked N Loaded [Angelo Salese]
- * it's now possible to actually play the game to some extent assuming you recalibrate the guns by holding both service buttons.
-    Game randomly crashes tho so not yet markable as working.
 
 -irem_cpu.cpp: add some infos about the Superior Soldiers sound CPU [caius]
 
@@ -468,18 +493,11 @@ Source Changes
  * Now passes Lorenz testsuite-2.15's cputiming.prg (and does not break laxay.prg) Ref: NMOS 6510 Unintended Opcodes no more secrets
     (v0.91 - 24/12/16) http://csdb.dk/release/?id=152327 page 14 ($BF) cycles = 3 to read, and 4+1 if page boundary.
 
--igs011.cpp update [Luca Elia]
- * Decrypted vbowlhk and added its own bitswaps for IGS003 and IGS011
- * Found dips to perform a protection test in vbowl. Changed IGS012 mode toggling to pass the test.
- * Changed IGS003 command 48 in lhb2 and vbowl to potentially work in more cases (based on lhb2 tables)
-
 -alphatro: added BIOS set for machine w/Bicom graphics [Team Europe, rfka01, R. Belmont]
 
 -unkfr belongs in 4enraya (which was my guess when it was mentioned) (#2572) [David Haywood]
  * unkfr belongs in 4enraya (which was my guess when it was mentioned) doesn't seem much point in having a complete non-working
     driver in the source for it when it boots as a romswap.
-
--chanbara.cpp: identified sprite flip X (player sword thrusts) [Angelo Salese]
 
 -dectalk.cpp: fixed firmware 1.8 to use different dsp rom from firmware 2.0, and some driver cleanup [Lord Nightmare]
 
@@ -496,15 +514,9 @@ Source Changes
 
 -alphatro_flop: replace bad dumps for CP/M and BASIC with good ones. [R. Belmont]
 
--PT_BR language updated [Ashura-X]
-
 -fmtowns: improve graphic layer placment.  Games with different sized layers now display better. [mahlemiut]
 
 -decomult: Replace gross hack for banking "dongle" with something likelier [AJR]
-
--Written a new device for Taito Yoke based inputs, i.e. ones found in Midnight Landing and Top Landing [Angelo Salese]
-
--taitoair.cpp: added screen raw parameters, fixes pilot acknowledge sound sample timing [Angelo Salese]
 
 -Adding Alex Kidd in Miracle World 2 (#2566) [Shideravan]
  * Fan made release, which runs in original system and was also released and (limited) distributed as a physical copy. More info:
@@ -521,14 +533,6 @@ Source Changes
 -mb8421: Create 16-bit expanded variant and add it to thndzone/dassault [AJR]
 
 -mastninj: Implement dual OPN + dual MSM5205 ADPCM sound system as in Automat [AJR]
-
--triforce.cpp: redumped Virtua Striker 4 Ver.2006 (GDT-0020D) [rtw]
-
--apple2: update screen on mode-switch only if really switching [Peter Ferrie]
-
--att4425: new skeleton (AT&T 4425 / Teletype 56D text terminal) [Sergey Svishchev]
-
--new working clone - Vamf x1/2 (Europe, version 1.0.0903) [briantro]
 
 -dvk_ksm: baud rate generator + source cleanup (#2432) [Sergey Svishchev]
 
@@ -563,15 +567,6 @@ Source Changes
 
 -imgtool: hopefully fixed the "GET" command [fulivi]
 
--ioport.cpp: return explicit "file not found" error if inp file isn't found on playback, added error code number to any other error
- found [Angelo Salese]
-
--jangou_blitter.cpp: rewritten blitter setters [Angelo Salese]
-
--nightgal.cpp: Fix Night Gal Summer GFX ROM out of bounds accesses [Angelo Salese]
-
--nightgal.cpp: added preliminary protection emulation for Night Gal Summer [Angelo Salese]
-
 -Rewrite mmodular.cpp to use the new mmboard device. [Sandro Ronco]
 
 -acorn_dsk: Added OPUS_DDCPM_FORMAT [Nigel Barnes]
@@ -596,20 +591,11 @@ Source Changes
 
 -c64_cass.xml: Added Shado BBC Emulator Software. [Curt Coder]
 
--ibm5170.xml: Added Diagnostics Diskette for IBM Personal System/2 model 70/80 (v1.06, Finnish). [Curt Coder]
-
 -fmtowns: add preliminary RS232C port. [mahlemiut]
-
--add better dump of PAL Dreamcast flash ROM [rtw]
 
 -bbc: minor video improvements [Nigel Barnes]
  * fixed cursor size
  * double clock in MODE7 to counteract non-implemented interlace
-
--jockeyc: add layout with keyboards [Luca Elia]
- * clean up inputs, add own dips
- * correct rtc, emulate hoppers
- * hook up outputs, nvram, trackball (for hidden editor)
 
 -imgtool: a fix for the "GET" command bug Hi, this PR is for my attempt at fixing the bug in imgtool I mentioned here:
  http://forums.bannister.org//ubbthreads.php?ubb=showflat&Number=110649 [fulivi]
@@ -641,9 +627,6 @@ Source Changes
    - Joypad doesn't work properly.
    - Keyboard doesn't work if it has plugged during MAME running.
    - autoframeskip or 8 frameskip is required for proper working.
-
--att4425: new skeleton (AT&T 4425 / Teletype 56D text terminal) (take 2) Updated after review in
- https://github.com/mamedev/mame/pull/2522 [shattered]
 
 -new drivers for "Control ID x628" fingerprint-reader and for the NT7534 LCD controller [felipesanches]
 
@@ -697,8 +680,6 @@ Source Changes
  * Use std::weak_ptr from websocket_connection_impl to webpp::Connection to avoid reference cycles.
  * When shutting down the HTTP server, also explicitly stop the asio::io_context; this allows the built binary to exit cleanly.
 
--fix MT 06644 [DavidHaywood]
-
 -Better documentation for midvunit wheel board Found manual with schematics and it all fits well. Couldn't find any jeds for the
  PALs however, so had to work backwards for them. [Risugami]
 
@@ -710,33 +691,6 @@ Source Changes
 -Imgtool:  Classic Mac:  Made the logic for B&W icon able to handled non-masked set pixels [npwoods]
 
 -Imgtool:  Fixed features.supports_geticoninfo [npwoods]
-
--Added NES carts information I've been extended the information in the NES game list with some games I own. Although I have kept the
- dates in the game list, they vary in my games, so they may need to be changed: [inigomartinez]
- * Super Mario Bros.: The date in my cart's PCB is 1986 instead of 1987.
- * Super Mario Bros. 2: The date in my cart's PCB is 1988 instead of 1989.
- * Trog!: The date in my cart's PCB is 1986 instead of 1991.
- * I have also uploaded some images of Pinball that verify the information that has been added.
- * Finally I followed the current rom naming from the game list, as I did in #2537 with SNES, and again, strictly speaking and
-    looking at the labels on the carts, shouldn't the names be in uppercase?
-
--Added SNES carts information The following information has been added to the SNES game list: [inigomartinez]
- * Dragon Ball Z - Super Gokuu Den - Kakusei Hen: Chip names on the PCB layout have been added. Also the rom name has been fixed by
-    renaming it to the proper program name. I kept the date in the game list, which is the date in the cart label (1995), though the
-    date in the PCB label is different (1993).
- * Ranma ½: I have added information of an earlier Ranma ½ revision, dated 1992 instead of 1993. It uses two roms as program roms,
-    which could be 2Mb each summing up 4Mb like the 1993 version, or 1Mb U1 and 512Kb U2 like the French version. I have tried to
-    find information about the ROM chips without any success. I have also added the chip names on the PCB layout.
- * Donkey Kong Country 2 - Diddy's Kong Quest: I have added information of an earlier Donkey Kong Country 2 revision. The current
-    dump is SPAL-ADNP-1, while this car is SPAL-ADND-0. It uses SNSP-AxyD-suffix as product code which actually is not documented in
-    the Europe's catalogue product code. I kept the date in the game list, thought the cart label has 1992 as date, and the PCB has
-    1993. I don't know which one is the correct one. I have also kept the `cart_revision`value as A, though I don't know how to
-    check it, and the program ROM size, which I suppose will also be 4Mb.
- * Pilotwings. The information on my cart matches the one in the game list, though the `serial` and `cart_back_label` values are
-    different as the cart corresponds to the spanish market. I have also added the proper `CIC` type.
- * The new Ranma ½ and Donkey Kong Country 2 - Diddy's Kong Quest are commented as `Pending` until the information can be verified.
- * Finally I followed the current rom naming from the game list, though strictly speaking and looking at the labels on the carts,
-    shouldn't the names be in uppercase?
 
 -SAM6883: Fixed a bug by which VDG addressing incorrectly honored the page bit This affected the CoCo/Dragon family of drivers
  [npwoods]
@@ -750,9 +704,6 @@ Source Changes
 -Imgtool:  Eliminated Imgtool-specific rand() function [npwoods]
 
 -Imgtool:  Merged normalize_filename() into cannonicalize_path(), C++-ification [npwoods]
-
--Rainbow-100: use Z80SIO instead of Z80DART; make UCSD Pascal boot again Incorporate change from Z80DART to Z80SIO proposed by
- Edstrom. Also make UCSD Pascal boot again. [Bavarese]
 
 -ms0515: add sound, change clock rate to real one [shattered]
 
@@ -781,14 +732,8 @@ New working machines
 --------------------
 lynx: Crystal Mines II - Buried Treasure (Euro, USA) [anonymous]
 apple2: Nightmare Gallery [Ian B.]
-ibm5150: Superbase 5 Demo [breiztiger]
-ibm5150: B.A.T. [ArcadeShadow]
-ibm5170: RobotC2 Demo [breiztiger]
-ibm5170: B.A.T. II, Wing Commander [ArcadeShadow]
 Anpanman Pico Wakuwaku Pan Koujou (Jpn) [Team Europe, The Dumping Union]
 Ett År med Nalle Puh (Swe) [Team Europe, The Dumping Union]
-ibm5170: Amí [Justin Kerk]
-ibm5170: Wing Commander: The Secret Missions, Wing Commander: The Secret Missions 2 [ArcadeShadow]
 Mephisto Polgar 10MHz [Sandro Ronco]
 bbcb_flop: Acornsoft Hits 1 & 2, The Quill, Snapple Hopper, Trivial Pursuit (Genus/Baby Boomer/Young Players Editions),
   [Nigel Barnes]
@@ -801,38 +746,22 @@ bbc_flop_65c102: all items now supported [Nigel Barnes]
 bbc_flop_68000: all items now supported [Nigel Barnes]
 bbc_flop_80186: all items now supported and added Master 512 Technical Guide Programs [Nigel Barnes]
 bbc_flop_z80: all items now supported and added Double Density CP/M [Nigel Barnes]
-ibm5170: Wing Commander II - Vengeance of the Kilrathi [ArcadeShadow]
 
 
 New working clones
 ------------------
-DoDonPachi III (World, 2002.05.15 Master Ver) [neohyphengeo productions]
-note, 'new parent' as technically it's the newest non-Japan set (actually the only non-Japan set) and is actually newer than the
-  original Japanese release (but older than Black Label)  Some may disagree with this designation but it follows 'MAME standard'
-  [David Haywood]
-Mega Zone (program code L) [Corrado Tomaselli, The Dumping Union]
 this has been sitting around for about 7 years, so no idea about the credit. [David Haywood]
-Super Athena (bootleg) [Hammy]
 this was purchased as part of the quest to find a 2nd working Alligator Hunt still using the DS5002FP rather than the unprotected
   code, took a gamble on it because it was an unknown set, turns out it's unrprotected but very different to the set in MAME.
   [DavidHaywood]
 also unrelated but marked unkfr as working since I can't find an issue with it [DavidHaywood]
 this has been sitting around for about 7 years, so no idea about the credit. [DavidHaywood]
-DoDonPachi III (World, 2002.05.15 Master Ver) [neohyphengeo productions]
-note, 'new parent' as technically it's the newest non-Japan set (actually the only non-Japan set) and is actually newer than the
-  original Japanese release (but older than Black Label)  Some may disagree with this designation but it follows 'MAME standard'
-  [DavidHaywood]
 
 
 Machines promoted to working
 ----------------------------
 dumped using the method developed by Morten Shearman Kirkegaard and Peter Wilhelmsen [DavidHaywood]
 note, if you have old nvram file delete it or you won't see any improvement. [DavidHaywood]
-
-
-Clones promoted to working
---------------------------
-International Toote II (v1.24, P387.V01) [Gerald (COY)]
 
 
 New machines marked as NOT_WORKING
@@ -847,17 +776,10 @@ Access Virus Rack XL [R. Belmont, tbd]
 Access Virus Classic [R. Belmont, tbd]
 Kurzweil K2000 [David Ryskalczyk, R. Belmont]
 Unknown French encrypted game [Roberto Fresca, Arzeno Fabrice]
-princ: Hobī Kurabu [TeamEurope]
-princ: Kodomo No Omocha [TeamEurope]
 Lejonkungen Äventyr (Swe) [Team Europe, The Dumping Union]
 Mephisto RISC II [Sandro Ronco]
-Mannesmann Kienzle System 9002 Terminal [Miodrag Milanovic]
 Magic Reel  [TeamEurope]
 Super Game (Sega Master System Multi-game bootleg) (alt games)  [David Haywood, TeamEurope]
-note, at least 1 bad dump (gfx rom) and 1 suspect dump (sound rom) [DavidHaywood]
-hardware is definitely bootleg / cloned power spikes, fonts etc. are video system, and the code I think is hacked up Power Spikes
-  too. [DavidHaywood]
-sprite system / tilemaps etc. are modified tho so needs work. [DavidHaywood]
 
 
 
@@ -885,14 +807,10 @@ New working clones
 1943: Midway Kaisen (Japan, no protection hack)
 Alligator Hunt (unprotected, set 2)
 Crazy Climber (US set 2)
-International Toote II (v1.24, P387.V01)
-Mega Zone (program code H)
-Mega Zone (program code J)
 Mephisto Nigel Short
 Mephisto Polgar 10MHz
 Mephisto Portorose 68000
 Mephisto Portorose 68020
-Super Athena (bootleg)
 WWF Superstars (US revision 4)
 WWF Superstars (US revision 6)
 WWF Superstars (US revision 7)
@@ -921,7 +839,6 @@ Mephisto Vancouver 68020
 
 New machines marked as NOT_WORKING
 ----------------------------------
-AT&T Teletype 4425
 GameCube (Japan)
 Honey Pot (03J00241, NSW/ACT)
 K2000
@@ -929,9 +846,7 @@ Kick Ball
 Machinedrum SPS-1 MK2
 Magic Reels
 Monomachine SFX6 MK2
-Star Wars: Racer Arcade
 Super Game (Sega Master System Multi-game bootleg) (alt games)
-System 9002 Terminal
 Venice (02J02056, Venezuela)
 Virus A
 Virus B (Ver. T)
