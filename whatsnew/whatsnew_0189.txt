@@ -72,6 +72,7 @@ Night Gal Summer [BET] (Japan 850702 NGS 0-01) [Angelo Salese]
 Clones promoted to working
 --------------------------
 Forty-Love (Japan) [ShouTime, Angelo Salese]
+BBC Master Turbo [Nigel Barnes]
 International Toote II (v1.24, P387.V01) [Gerald (COY)]
 Virtua Bowling (Hong Kong, V101HJS) [Abelardator2, Luca Elia]
 
@@ -108,6 +109,26 @@ Star Wars (1.06, Display S1.05) [Jubex77, JMan, Gore Daimon]
 
 New working software list additions
 -----------------------------------
+bbcb_flop:
+  Acornsoft Hits 1 & 2, The Quill, Snapple Hopper, Trivial Pursuit (Genus/Baby Boomer/Young Players Editions),
+  Modem Master, and various educational titles. [Nigel Barnes]
+  BeebSID 1-17, Beeb SID Quiz [PitfallJones]
+bbcm_flop:
+  SID Music 1 & 2 [Tom Walker]
+bbc_flop_6502:
+  All items now supported. [Nigel Barnes]
+bbc_flop_65c102:
+  All items now supported. [Nigel Barnes]
+bbc_flop_68000:
+  All items now supported. [Nigel Barnes]
+bbc_flop_80186:
+  All items now supported and added Master 512 Technical Guide Programs [Nigel Barnes]
+bbc_flop_z80:
+  All items now supported and added Double Density CP/M [Nigel Barnes]
+c64_cass:
+  Shado BBC Emulator Software. [Curt Coder]
+electron_flop:
+  All Electron User Group (5.25") disks, Starspell Dictionary Disk (3.5" and 5.25") [Nigel Barnes]
 ibm5150:
   B.A.T. [ArcadeShadow]
   Superbase 5 Demo [breiztiger]
@@ -212,7 +233,7 @@ Source Changes
 
 -Overhauled internal UI: [Vas Crabb]
  * Use proper font metrics and handle space glyphs with null bounding box on OS X.
- * Patched GNU xgettext to support C++14 parsing so localistions can be updated.
+ * Patched GNU xgettext to support C++14 parsing so localisations can be updated.
  * Restored ability to localise info box headings.
  * Fixed info box navigation when system selection menu doesn't have focus.
  * Fixed keyboard navigation of software filter box, added support for home/end to jump to beginning/end of filter list.
@@ -533,7 +554,7 @@ Source Changes
 
 -new WORKING clones  Alligator Hunt (unprotected, set 2) [David Haywood, Peter Wilhelmsen]
  * this was purchased as part of the quest to find a 2nd working Alligator Hunt still using the DS5002FP rather than the unprotected
-    code, took a gamble on it because it was an unknown set, turns out it's unrprotected but very different to the set in MAME.
+    code, took a gamble on it because it was an unknown set, turns out it's unprotected but very different to the set in MAME.
  * also unrelated but marked unkfr as working since I can't find an issue with it
 
 -mitchell.cpp: added pals and eeprom dumps to pkladiesla, also corrected rom labels [f205v]
@@ -544,37 +565,38 @@ Source Changes
 
 -floppy: Added FLOPPY_HFE_FORMAT to default_floppy_formats. [Nigel Barnes]
 
--bbc: BeebSID slot device for the 1MHz bus. [Nigel Barnes]
-
 -imgtool: hopefully fixed the "GET" command [fulivi]
 
 -Rewrite mmodular.cpp to use the new mmboard device. [Sandro Ronco]
 
 -acorn_dsk: Added OPUS_DDCPM_FORMAT [Nigel Barnes]
- * Removed ACORN_CPM_FORMAT, same geometry as ACORN_SSD_FORMAT/ACORN_DSD_FORMAT
- * Improved find_size/identify for SSD/DSD formats
- * ACORN_DOS_FORMAT 640K now handled as ACORN_ADFS_OLD_FORMAT
- * Fixed geometry for ACORN_DOS_FORMAT 800K
- * bbc_acorn8271: Added Amcom DFS A7874
- * bbc_opus8272: New Opus 8272 FDC device with DDOS 3.00, not yet working.
- * wd177x_dsk: Apply sector_count and gaps to track description.
+ * Removed ACORN_CPM_FORMAT, same geometry as ACORN_SSD_FORMAT/ACORN_DSD_FORMAT.
+ * Improved find_size/identify for SSD/DSD formats.
+ * ACORN_DOS_FORMAT 640K now handled as ACORN_ADFS_OLD_FORMAT.
+ * Fixed geometry for ACORN_DOS_FORMAT 800K.
+
+-wd177x_dsk: Apply sector_count and gaps to track description. [Nigel Barnes]
 
 -tube: New TUBE device. Acorn Tube ULA for use in Acorn 2nd Processors [Nigel Barnes]
 
 -bbc: Added various 2nd processors as Tube slot devices: [Nigel Barnes]
- * Acorn 6502 2nd Processor, Acorn 65C102 Co-Processor, Acorn Z80 2nd Processor, Acorn 80186 Co-Processor, Casper 68000 2nd
-    Processor
+ * Acorn 6502 2nd Processor, Acorn 65C102 Co-Processor, Acorn Z80 2nd Processor, Acorn 80186 Co-Processor,
+   Casper 68000 2nd Processor
+
+-bbc: BeebSID slot device for the 1MHz bus. [Nigel Barnes]
+
+-bbc: Minor video improvements [Nigel Barnes]
+ * Fixed cursor size.
+ * Double clock in MODE7 to counteract non-implemented interlace.
+
+-bbc_acorn8271: Added Amcom DFS A7874. [Nigel Barnes]
+
+-bbc_opus8272: New Opus 8272 FDC device with DDOS 3.00, not yet working. [Nigel Barnes]
 
 -new machine NOT WORKING : Kick Ball [Darksoft, Sean Sutton, Surgeville, Smitdogg, The Dumping Union] (#2595) [David Haywood]
  * new machine NOT WORKING : Kick Ball [Darksoft, Sean Sutton, Surgeville, Smitdogg, The Dumping Union] hardware is definitely
     bootleg / cloned power spikes, fonts etc. are video system, and the code I think is hacked up Power Spikes too. sprite system /
     tilemaps etc. are modified tho so needs work.
-
--c64_cass.xml: Added Shado BBC Emulator Software. [Curt Coder]
-
--bbc: minor video improvements [Nigel Barnes]
- * fixed cursor size
- * double clock in MODE7 to counteract non-implemented interlace
 
 -imgtool: a fix for the "GET" command bug Hi, this PR is for my attempt at fixing the bug in imgtool I mentioned here:
  http://forums.bannister.org//ubbthreads.php?ubb=showflat&Number=110649 [fulivi]
@@ -697,17 +719,6 @@ apple2: Nightmare Gallery [Ian B.]
 Anpanman Pico Wakuwaku Pan Koujou (Jpn) [Team Europe, The Dumping Union]
 Ett År med Nalle Puh (Swe) [Team Europe, The Dumping Union]
 Mephisto Polgar 10MHz [Sandro Ronco]
-bbcb_flop: Acornsoft Hits 1 & 2, The Quill, Snapple Hopper, Trivial Pursuit (Genus/Baby Boomer/Young Players Editions),
- [Nigel Barnes]
-Modem Master, and various educational titles. [Nigel Barnes]
-BeebSID 1-17, Beeb SID Quiz [PitfallJones]
-bbcm_flop: SID Music 1 & 2 [Tom Walker]
-electron_flop: All Electron User Group (5.25") disks, Starspell Dictionary Disk (3.5" and 5.25") [Nigel Barnes]
-bbc_flop_6502: all items now supported [Nigel Barnes]
-bbc_flop_65c102: all items now supported [Nigel Barnes]
-bbc_flop_68000: all items now supported [Nigel Barnes]
-bbc_flop_80186: all items now supported and added Master 512 Technical Guide Programs [Nigel Barnes]
-bbc_flop_z80: all items now supported and added Double Density CP/M [Nigel Barnes]
 
 
 New working clones
@@ -789,7 +800,6 @@ TH Strikes Back
 
 Clones promoted to working
 --------------------------
-BBC Master Turbo
 Mephisto Berlin Pro London Upgrade
 Mephisto Genius 68030 London Upgrade
 Mephisto London 68020
