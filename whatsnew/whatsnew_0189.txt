@@ -39,7 +39,7 @@ NFL Football (Konami handheld) [hap, Sean Riddle]
 Poosho Poosho [caius, Brian Troha, Smitdogg, Ryan Holtz, rtw, The Dumping Union]
 Tekken Battle Scratch [ShouTime, Jan Stuhler, pablopelos, Smitdogg, The Dumping Union]
 The Adventures of Bayou Billy (Konami handheld) [hap, Sean Riddle]
-unknown 'Space Invaders' gambling game [Roberto Fresca, Arzeno Fabrice]
+unknown 'Space Invaders' gambling game [Roberto Fresca, Arzeno Fabrice, David Haywood]
 
 
 New working clones
@@ -152,26 +152,22 @@ Star Wars (1.06, Display S1.05) [Jubex77, JMan, Gore Daimon]
 New working software list additions
 -----------------------------------
 apple2: Nightmare Gallery [Ian B.]
+bbc_flop_80186: Master 512 Technical Guide Programs [Nigel Barnes]
+bbc_flop_z80: Double Density CP/M [Nigel Barnes]
 bbcb_flop:
-  Acornsoft Hits 1 & 2, The Quill, Snapple Hopper, Trivial Pursuit (Genus/Baby Boomer/Young Players Editions),
-  Modem Master, and various educational titles. [Nigel Barnes]
+  The Acornsoft Hits Vol.1, The Acornsoft Hits Vol.2, Centre Ville, Chick Chase, The Christmas Adventures of 4-T and his Friends,
+  The Fantastic Adventures of 4-T, First Filer, The Great British Fun Run, Integra Windows 1.00, Look After Yourself!,
+  Knitwear Designer, Modem Master, Note Invaders, Numbers and Pictures, NumbersCope, Pirate, The Quill (A00), The Quill (A03),
+  Rhythm Maker, Science - Start Here!, Shape Up, Snapple Hopper, Spell!, Starspell Plus, TimeShare,
+  Trivial Pursuit - Baby Boomer Edition, Trivial Pursuit - Genus Edition, Trivial Pursuit - Young Players Edition, Word Skill
+  [Nigel Barnes]
   BeebSID 1-17, Beeb SID Quiz [PitfallJones]
 bbcm_flop:
-  SID Music 1 & 2 [Tom Walker]
-bbc_flop_6502:
-  All items now supported. [Nigel Barnes]
-bbc_flop_65c102:
-  All items now supported. [Nigel Barnes]
-bbc_flop_68000:
-  All items now supported. [Nigel Barnes]
-bbc_flop_80186:
-  All items now supported and added Master 512 Technical Guide Programs [Nigel Barnes]
-bbc_flop_z80:
-  All items now supported and added Double Density CP/M [Nigel Barnes]
-c64_cass:
-  Shado BBC Emulator Software. [Curt Coder]
+  Morley Hard Disc Utilities v3.00 [Nigel Barnes]
+  SID Music 1, Sid Music 2 [Tom Walker]
+c64_cass: Shado BBC Emulator Software [Curt Coder]
 electron_flop:
-  All Electron User Group (5.25") disks, Starspell Dictionary Disk (3.5" and 5.25") [Nigel Barnes]
+  Electron User Group #00-#74 (5.25"), Starspell Dictionary Disk (3.5"), Starspell Dictionary Disk (5.25") [Nigel Barnes]
 fmtowns_cd:
   DOR Special Edition '93 (alt), Gokko Vol. 03 - Etcetera [r09, redump.org]
   Europa Sensen, Inindou - Datou Nobunaga, Nobunaga no Yabou - Bushou Fuunroku [r09, Reuental]
@@ -188,11 +184,23 @@ ibm5170:
   Ami [Justin Kerk]
 lynx: Crystal Mines II - Buried Treasure (Euro, USA) [anonymous]
 pico: Anpanman Pico Wakuwaku Pan Koujou (Jpn), Ett Ar med Nalle Puh (Swe) [TeamEurope, The Dumping Union]
+sms: Alex Kidd in Miracle World 2 (World, hack) [Shideravan]
+
+
+Software list items promoted to working
+---------------------------------------
+bbc_flop_6502:
+  6502 Development Package, Bitstik Graphics System, Bitstik 2, Econet Level 2 Fileserver Software, Hi-InterSheet, Hi-View,
+  Hi-Wordwise Plus [Nigel Barnes]
+bbc_flop_65c102: 65C102 Co-Processor Support Disc [Nigel Barnes]
+bbc_flop_68000: Casper Support Discs [Nigel Barnes]
+bbc_flop_80186: BBC Master 512 System Discs, Dabs Shareware Vol.1, Dabs Shareware Vol.2 [Nigel Barnes]
+bbc_flop_z80: Acorn CP/M System Discs, Acorn CP/M Program Discs, Colossal Cave [Nigel Barnes]
 
 
 New NOT_WORKING software list additions
 ---------------------------------------
-pico: Lejonkungen Äventyr (Swe) [TeamEurope, The Dumping Union]
+pico: Lejonkungen Aventyr (Swe) [TeamEurope, The Dumping Union]
 princ: Hobby Club, Kodomo no Omacha [TeamEurope]
 
 
@@ -359,6 +367,21 @@ Source Changes
 
 -dectalk.cpp: Use correct DSP ROM for firmware 1.8, some driver cleanup. [Lord Nightmare]
 
+-ceci: Added driver for China Education Computer I (Apple II clone). [R. Belmont]
+ * Added QUIT and TEST keys (hold down TEST while resetting for diagnostic), completed keyboard.
+ * Fixed banking - Chinese mode works.
+ * Added HGR color killer softswitch.
+
+-k2000: Added sample ROMs. [R. Belmont]
+
+-alphatro_flop: Replaced bad dumps for CP/M and BASIC with good ones. [R. Belmont]
+
+-alphatro: Added cart slot, support for 8K carts from the command line, and cart software list. [R. Belmont]
+
+-alphatro: Added BIOS set for machine with Bicom graphics. [TeamEurope, rfka01, R. Belmont]
+
+-multipcm: Confirmed to be Yamaha YMW-258-F. [any, R. Belmont]
+
 -Added new 74LS259/9334/CD4099 devices. [AJR]
  * Added wcoin counters and/or lockouts to Atari System 1 games, Basketball, Gauntlet, Gyruss, Hana Yayoi, Hole Land, Jr. Pac-Man,
     Mahjong Sisters, Pooyan, Roc'n Rope, Squash, Thunder Hoop, Time Limit, Time Pilot '84 and many others.
@@ -472,16 +495,48 @@ Source Changes
 
 -dvk_ksm: Implemented Baud rate generator and cleaned up source. [shattered]
 
+-Refactored server_{ws,http}.hpp into separate interface and implementation. [Christian Brunschen]
+ * Use std::weak_ptr from websocket_connection_impl to webpp::Connection to avoid reference cycles.
+ * When shutting down the HTTP server, also explicitly stop the asio::io_context; this allows the built binary to exit cleanly.
+
 -mos6526.cpp: Show state of registers that can be read without side effects in debugger. [David Viens]
 
 -om6502.lst: Corrected cycle counts for undocumented $BF instruction. [David Viens]
  * Now passes Lorenz testsuite-2.15's cputiming.prg (and does not break laxay.prg).
+
+-Improved Android build support. [Miso Kim]
+ * Updated for NDK r14b, build-tools 21.1.2, gradle 2.2.1, and jdk1.8.0_144.
+
+-Renamed 'grtesoro' sets to 'play2000', gave it it's own machine structure and memory map. [David Haywood]
+ * Added some workarounds so that it actually boots, fixed GFX ROM loading.
+
+-Added basic Saturn CD Block device to load the ROMs. [David Haywood]
+
+-imgtool modernisation and miscellaneous fixes: [Nathan Woods]
+ * Fixed a std::string(nullptr) bug.
+ * Proper cleanup of floppy object after create/open failure.
+ * Merged normalize_filename() into cannonicalize_path().
+ * Eliminated Imgtool-specific rand() function.
+ * Modernised mgtool_forkent structure.
+ * Fixed features.supports_geticoninfo.
+
+-Partially fixed MT6621 (save state path not honoured). [Nathan Woods]
+ * Still doesn't honour software name for multipart software loaded from internal UI.
+
+-imgtool: Made Mac ICN# drawing logic never draw pixels outside mask. [Nathan Woods]
+
+-SAM6883: Fixed VDG addressing incorrectly honoring page bit. [Nathan Woods, Ciaran Anscomb]
+
+-gb.cpp: Optimized channel update methods - greatly reduces time to load state. [057a3dd61f99517a3afea0051a49cb27994f94d]
 
 -Added better documentation and part numbers for midvunit wheel board. [Risugami]
 
 -Rainbow-100: Use Z80SIO instead of Z80DART, make UCSD Pascal boot again. [Bavarese]
 
 -Added Control ID X628 fingerprint reader skeleton driver and NT7534 bitmap LCD controller device. [Felipe Sanches]
+
+-Added HD647180X MCU dumps to Whoopee and Ghox. [Caps0ff]
+ * Allows sound emulation in both of games, and fixes the high score table background in Ghox.
 
 -Road Runner (Midway): Replaced bad ROM with good one, added notes. [rogerxy, blinddog]
 
@@ -490,6 +545,8 @@ Source Changes
 -triforce.cpp: Redumped Virtua Striker 4 Ver.2006 (GDT-0020D). [rtw]
 
 -dccons.cpp: Added better dump of PAL Dreamcast Flash ROM. [rtw]
+
+-aristmk5 updates: Fixed some sets, added honeypot and venicea5. [Heihachi_73]
 
 -snes.xml documentation updates: [Inigo Martinez]
  * Fixed ROM name and added extra information for Dragon Ball Z - Super Gokuu Den - Kakusei Hen.
@@ -501,194 +558,14 @@ Source Changes
  * Added information about Super Mario Bros. PCB.
  * Fixed serial values and added PCB information for Pinball, Super Mario Bros. 2, and Trog!.
 
+-thoop2.cpp: Added PCB layout for TH Strikes Back. [Brian Troha]
+
 -fmtowns_cd.xml: Update undumped list, merged the Towns and Marty list. [r09]
 
 -irem_cpu.cpp: Added some info about the Superior Soldiers sound CPU. [caius]
 
 -mitchell.cpp: Added PALs and EEPROM dumps to pkladiesla, and corrected ROM labels. [f205v]
 
--gb.cpp: optimize the channel update methods. [057a3dd61f99517a3afea0051a49cb27994f94d]
- * I recently noticed that it takes very long to load a gba state, sometimes dozens of seconds, and the older the state is, the
-    longer it takes to load.
- * I found out it's caused by gameboy_sound_device does not save the m_last_updated variable, and after loading a state, in the
-    update_state method, now could end up being much larger than m_last_updated, and leads to substantial yet wasted calculation of
-    the channel state.
- * Simply adding save_item(NAME(m_last_updated)) should fix the problem, however, since it will break current existing saved states,
-    and optimize the channel update methods is in the TODO list, I took the latter choice, now the calculation to update the channel
-    state is really negligible and the state loading is almost instantaneous.
+-mario.cpp: Identified marioj as Revision C. [Corrado Tomaselli]
 
--gb.cpp: save m_last_updated and m_snd_control.cycles [057a3dd61f99517a3afea0051a49cb27994f94d]
- * These two variables are added later but not saved, however, since they are used in the update_state method to control how many
-    cycles to feed to the channel update methods, they should be saved to ensure correct emulation.
-
--Imgtool:  Changed a pointer to a reference, and fixed a std::string(nullptr) bug [Nathan Woods]
-
--Imgtool: Proper cleanup of floppy object after create/open failure [Nathan Woods]
-
--changed set names for 'grtesoro' sets to 'play2000' to more accurately represent the name of the game gave it it's own machine
- structure and memory map instead of borrowing Maniac Square one added some workarounds so that it actually boots, it might not be
- heavily protected compared to the Gaelco titles and there doesn't seem much chance of us finding a working one. fixed GFX rom
- loading for the game based on above work. [David Haywood]
-
--multipcm: confirmed as Yamaha YMW-258-F. [any, R. Belmont]
-
--Imgtool:  Merged normalize_filename() into cannonicalize_path(), C++-ification (#2527) [Nathan Woods]
-
--Imgtool:  Eliminated Imgtool-specific rand() function [Nathan Woods]
-
--add  HD647180X MCU dumps to Whoopee and Ghox, allowing for sound emulation in both of them. This also fixes the high score table
- background in Ghox, which was also MCU related [Team Caps0ff]
-
--SAM6883: Fixed a bug by which VDG addressing incorrectly honored the page bit [Nathan Woods]
- * This affected the CoCo/Dragon family of drivers
- * Special thanks to Ciaran Anscomb for identifying this problem
-
--[Imgtool] C++-ification of imgtool_forkent structure [Nathan Woods]
-
--Imgtool:  Fixed features.supports_geticoninfo [Nathan Woods]
-
--Imgtool:  Classic Mac:  Made the logic for B&W icon able to handled non-masked set pixels [Nathan Woods]
-
--misc housekeeping / one-liners [David Haywood]
- * removed am already dumped game from the undumped list in balsente.cpp
- * change copy+pasted comment in hangzo to better reflect that the tiles are not encrypted
- * fixed typo in ghox memory map
-
--Refactor server_{ws,http}.hpp into separate interface and implementation. (#2548) [Christian Brunschen]
- * Refactor server_{ws,http}.hpp into separate interface and implementation headers. When shutting down the HTTP server, also
-    explicitly stop the asio::io_context.
-
--ceci: Add QUIT and TEST keys (hold down TEST while resetting for diagnostic) [R. Belmont]
-
--ceci: complete keyboard, fix banking so Chinese mode doesn't crash [R. Belmont]
-
--ceci: Cleanup, fixed several banking errors, Chinese mode works now [R. Belmont]
-
--ceci: Fixed spacebar bug that made it impossible to type BASIC programs, fixed C300 banking, added HGR color killer softswitch.
- [R. Belmont]
-
--Adding #include <cctype> [Nathan Woods]
-
--alphatro: added cart slot and hook for cartridge software list. [R. Belmont]
-
--alphatro: support 8K carts from the command line + add cart software list [R. Belmont]
-
--Fix to MameTesters bug #6657 (#2560) [Nathan Woods]
- * The source of the issue is that the logic for rotating slot options was broken.  It would count selectable options and skip over
-    options that were not selectable, except for the specific scenario where the index was zero.  I ended up largely replacing the
-    logic to be more C++-ish.
-
--mario.cpp: identified marioj as Revision C [Corrado Tomaselli]
-
--add basic device for saturn_cdb to load the roms. [David Haywood]
-
--hiscore.dat: Updates [Leezer]
-
--alphatro: added BIOS set for machine w/Bicom graphics [Team Europe, rfka01, R. Belmont]
-
--unkfr belongs in 4enraya (which was my guess when it was mentioned) (#2572) [David Haywood]
- * unkfr belongs in 4enraya (which was my guess when it was mentioned) doesn't seem much point in having a complete non-working
-    driver in the source for it when it boots as a romswap.
-
--Fixed MameTesters bug #6621 [Nathan Woods]
-
--aristmk5 updates (from Heihachi_73) fixes some sets, adds honeypot and venicea5 [David Haywood]
-
--alphatro_flop: replace bad dumps for CP/M and BASIC with good ones. [R. Belmont]
-
--Adding Alex Kidd in Miracle World 2 (#2566) [Shideravan]
- * Fan made release, which runs in original system and was also released and (limited) distributed as a physical copy. More info:
-    https://youtu.be/6ntwR94J6iM https://goo.gl/9efrGv
-
--Modification for Android build (NDK r14b, build-tools 21.1.2 and gradle 2.2.1) (#2585) [Miso Kim]
-
--thoop2.cpp: Added PCB layout for TH Strikes Back [Brian Troha]
-
--k2000: added sample ROMs [R. Belmont]
-
--Modification for Android build (NDK r14b, build-tools 21.1.2 and gradle 2.2.1) # Preparation for Android build [meesokim]
- * NDK-14b: https://developer.android.com/ndk/downloads/older_releases.html#ndk-14b-downloads SDK: command line tools
-    https://developer.android.com/studio/index.html#downloads build-tools: 21.1.2 by using sdkmamager in the Android SDK. JDK:
-    jdk1.8.0_144
- * *The following environmental variables required (examples for your understanding).** ``` export ANDROID_HOME=/opt/android export
-    ANDROID_NDK_ROOT=/opt/android-ndk-r14b export
-    ANDROID_NDK_ARM=$ANDROID_NDK_ROOT/toolchains/arm-linux-androideabi-4.9/prebuilt/windows export
-    ANDROID_NDK_ARM64=$ANDROID_NDK_ROOT/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 export
-    ANDROID_NDK_LLVM=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/windows export ANDROID_NDK_HOME=$ANDROID_NDK_ROOT export
-    JAVA_HOME=/opt/jdk1.8.0_144 ```
- * # Step by Step for Android build
- * *- build command for libSDL2.so and libmain.so** `$ make android-arm` for 32bit `$ make android-arm64` for 64bit
- * *- copy some rom files into the following directory for initial work** android-project/app/src/main/assets/roms
- * *- build command for android apk by using gradle** `$ android-project/gradlew -p android-project assembleDebug`
- * *- Installation of final output by using adb** `$ adb install -r android-project/app/build/outputs/apk/app-debug.apk`
- * *- additional roms path in your android phone/tablet** /Android/data/org.mamedev.mame/roms /sdcard/Download /mame/roms
- * *Known issues**
-   - Mouse doesn't work properly. It works fine by a USB or a bluetooth keyboard.
-   - Joypad doesn't work properly.
-   - Keyboard doesn't work if it has plugged during MAME running.
-   - autoframeskip or 8 frameskip is required for proper working.
-
--aristmk5 updates (from Heihachi_73) fixes some sets, adds honeypot and venicea5 [David Haywood]
-
--Fixed MameTesters bug #6621 [Nathan Woods]
-
--unkfr belongs in 4enraya (which was my guess when it was mentioned) doesn't seem much point in having a complete non-working driver
- in the source for it when it boots as a romswap. [David Haywood]
-
--add basic device for saturn_cdb to load the roms seems to make more sense than just sitting on the ROMs, which as far as I can tell
- benefits absolutely nobody... [David Haywood]
-
--Adding Alex Kidd in Miracle World 2 Fan made release, which runs in original system and was also released and (limited) distributed
- as a physical copy. More info: https://youtu.be/6ntwR94J6iM https://goo.gl/9efrGv [Shideravan]
-
--Fix to MameTesters bug #6657 The source of the issue is that the logic for rotating slot options was broken.  It would count
- selectable options and skip over options that were not selectable, except for the specific scenario where the index was zero.  I
- ended up largely replacing the logic to be more C++-ish. [Nathan Woods]
- * I also changed the options list to be std::map instead of std::unordered_map.  Rotating the latter is indeterminate.
-
--Adding #include <cctype> This seems to be necessary for MSVC to get std::tolower() [Nathan Woods]
-
--Refactor server_{ws,http}.hpp into separate interface and implementation. Refactor server_{ws,http}.hpp into separate interface and
- implementation files. [cbrunschen]
- * Use std::weak_ptr from websocket_connection_impl to webpp::Connection to avoid reference cycles.
- * When shutting down the HTTP server, also explicitly stop the asio::io_context; this allows the built binary to exit cleanly.
-
--misc housekeeping / one-liners [David Haywood]
- * removed am already dumped game from the undumped list in balsente.cpp
- * change copy+pasted comment in hangzo to better reflect that the tiles are not encrypted
- * fixed typo in ghox memory map
-
--Imgtool:  Classic Mac:  Made the logic for B&W icon able to handled non-masked set pixels [Nathan Woods]
-
--Imgtool:  Fixed features.supports_geticoninfo [Nathan Woods]
-
--SAM6883: Fixed a bug by which VDG addressing incorrectly honored the page bit This affected the CoCo/Dragon family of drivers
- [Nathan Woods]
- * Special thanks to Ciaran Anscomb for identifying this problem
-
--add HD647180X MCU dumps to Whoopee and Ghox [Team Caps0ff] This adds  HD647180X MCU dumps to Whoopee and Ghox, allowing for sound
- emulation in both of them. It also fixes the high score table background in Ghox, which was also MCU related [Team Caps0ff]
-
--[Imgtool] C++-ification of imgtool_forkent structure [Nathan Woods]
-
--Imgtool:  Eliminated Imgtool-specific rand() function [Nathan Woods]
-
--Imgtool:  Merged normalize_filename() into cannonicalize_path(), C++-ification [Nathan Woods]
-
--revert the speed fix in Galaxia/Astro Wars that caused all sets to sound wrong The present S2636 core has been rewritten more than
- a year ago by Vas to adapt the tone frequency from the refresh rate, and this made me realize that my speed fixes for galaxia.cpp
- were incorrect. [kazblox]
-
--changed set names for 'grtesoro' sets to 'play2000' to more accurately represent the name of the game [David Haywood]
- * gave it it's own machine structure and memory map instead of borrowing Maniac Square one added some workarounds so that it
-    actually boots, it might not be heavily protected compared to the Gaelco titles and there doesn't seem much chance of us finding
-    a working one. fixed GFX rom loading for the game based on above work.
-
--gb.cpp: optimize the channel update methods. I recently noticed that it takes very long to load a gba state, sometimes dozens of
- seconds, and the older the state is, the longer it takes to load. [057a3dd61f99517a3afea0051a49cb27994f94d]
- * I found out it's caused by gameboy_sound_device does not save the m_last_updated variable, and after loading a state, in the
-    update_state method, now could end up being much larger than m_last_updated, and leads to substantial yet wasted calculation of
-    the channel state.
- * Simply adding save_item(NAME(m_last_updated)) should fix the problem, however, since it will break current existing saved states,
-    and optimize the channel update methods is in the TODO list, I took the latter choice, now the calculation to update the channel
-    state is really negligible and the state loading is almost instantaneous.
+-hiscore.dat: Updated for recent changes. [Leezer]
