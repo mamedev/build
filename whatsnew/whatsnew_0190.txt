@@ -5,9 +5,6 @@
 MAMETesters Bugs Fixed
 ----------------------
 - 00490: [Sound] (homedata.cpp) hourouki: It is missing voices of "Reach", "Ron" etc. (smf)
-- 06639: [Crash/Freeze] (coco3.cpp) coco3, coco3h: crash of emulated system accessing multiple floppy drives (Duke)
-- 06640: [Core] (coco3.cpp) coco3, coco3h: TRS-80 Color Computer FDC data corruption issue (Duke)
-- 06641: [Color/Palette] (pce.cpp) pce [sonson2]: Black & White mode doesn't work properly (Angelo Salese)
 - 06658: [Plugins] (mappy.cpp) mappy, mappyj: When using cheats driven by <parameter, left arrow doesn't change displayed value (crazyc)
 - 06672: [Sound] (starwars.cpp) starwars: Missing/malfunctioning sound (AJR)
 - 06673: [DIP/Input] (subsino.cpp) stbsub: Missing dip-switch info. (D Go Go Fan)
@@ -17,30 +14,84 @@ MAMETesters Bugs Fixed
 
 New working machines
 --------------------
+Altered Beast (Tiger handheld) [hap, Sean Riddle]
+Mephisto Modena [yoyo_chessboard, Sandro Ronco]
+Mephisto Monte Carlo [Sandro Ronco]
+Mephisto Super Mondial II [yoyo_chessboard, Sandro Ronco]
+Mephisto Super Mondial [yoyo_chessboard, Sandro Ronco]
+unknown Italian poker game [caius, AJR, Ivan Vangelista, Roberto Fresca]
 
 
 New working clones
 ------------------
+Alligator Hunt (World, protected) [Pablo]
+Beast Busters (Japan, Version 2, J3) [Layer @ jammaplus]
+Chuka Taisen (Japan) (P0-025-A PCB) [Pacman70]
+Iron Horse (version K) [Coolmod, The Dumping Union]
+Kick Off (bootleg) [caius, The Dumping Union]
+Lady Master of Kung Fu (set 2, older) [Corrado Tomaselli, The Dumping Union]
+Maniac Square (protected, Version 1.0, Checksum DEEE)
+  [Peter Wilhelmsen, Morten Shearman Kirkegaard, Charles MacDonald, David Haywood]
+R-Zone: Batman Forever [hap, Sean Riddle]
+R-Zone: Indy 500 [hap, Sean Riddle]
+Royal Card / Royal Jackpot (with a third draw)(encrypted) [Roberto Fresca, Team Europe]
+Syvalion (US, PS2 Taito Legends 2) [MetalliC, rtw, Zerochan]
+Syvalion (World, PS2 Taito Legends 2) [MetalliC, rtw, Zerochan]
 
 
 Machines promoted to working
 ----------------------------
+Alligator Hunt (Spain, protected) [David Haywood, Darksoft, Morten Shearman Kirkegaard, Peter Wilhelmsen]
+Glass (Ver 1.1, Break Edition, Checksum 49D5E66B, Version 1994) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood]
+Great Guns [Angelo Salese]
+Maniac Square (protected, Version 1.0, Checksum CF2D)
+  [Peter Wilhelmsen, Morten Shearman Kirkegaard, Charles MacDonald, David Haywood]
+Mephisto Mega IV [Sandro Ronco]
 
 
 Clones promoted to working
 --------------------------
+Glass (Ver 1.0, Break Edition, Checksum C5513F3C) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood]
+Glass (Ver 1.0, Break Edition, Checksum D3864FDB) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood]
+Mephisto Monte Carlo IV LE [Sandro Ronco]
+Slap Fight (A76 set, GX-006-A PCB) [Corrado Tomaselli, The Dumping Union]
 
 
 New machines marked as NOT_WORKING
 ----------------------------------
+Cisco/Fisco 400 [TTL] [Andrew Welburn]
+Convergent Miniframe [rfka01, R. Belmont]
+Gaelco Football [Peter Wilhelmsen, Smitdogg, The Dumping Union]
+Gran Trak 10/Trak 10/Formula K [TTL] [Andrew Welburn]
+Gran Trak 20/Trak 20/Twin Racer [TTL] [Andrew Welburn]
+Le Mans [TTL] [Andrew Welburn]
+Qwak!/Quack [TTL] [Andrew Welburn]
+Triumph-Adler alphatronic P3 [Dirk Best, rfka01]
 
 
 New clones marked as NOT_WORKING
 --------------------------------
+Bingo Wave [Harcsa Béla, caius]
+Guns N Roses (2.00) [Gore Daimon, Guilherme Cobra]
+Meteor (Stern, set 2) [Gore Daimon, Guilherme Cobra]
+Robot Hunting (bootleg of Death Race) [TTL] [f205v, Any]
+Shootout Pool Prize (Export) / Shootout Pool The Medal (Japan) Version B -P [Ordyne]
 
 
 New working software list additions
 -----------------------------------
+apple2: Thief [san inc. & TRex]
+archimedes: SCSI Support Disc [Nigel Barnes]
+bbcb_flop: ArcPinball [Nigel Barnes]
+c128_cart: VizaWrite 128 [terror]
+ibm5150:
+  Concurrent PC DOS 3.2, Concurrent PC DOS 4.1, Concurrent DOS XM 6.0, Concurrent DOS XM 6.01, Concurrent DOS XM 6.21 [Justin Kerk]
+ibm5170:
+  Freddy Pharkas, Frontier Pharmacist [ArcadeShadow]
+  Wing Commander II - Special Operations 1, Wing Commander II - Special Operations 2 [breiztiger]
+  Concurrent DOS 386 2.0, Concurrent DOS 386 3.01 [Justin Kerk]
+kayproii: Digital Keyboards' Synergy Host Control System [shattered]
+spectrum_cass: Currah MicroSpeech Demo, Fuller Box Orator Demonstration, Shadow of the Unicorn, Spectrum Voice Chess [Nigel Barnes]
 
 
 New NOT_WORKING software list additions
@@ -49,10 +100,87 @@ New NOT_WORKING software list additions
 
 Translations added or modified
 ------------------------------
+Dutch [Jos van Mourik]
+Italian [Tharabas17]
+Spanish [A. Viloria]
+Turkish [Kadir Eksi]
 
 
 Source Changes
 --------------
+-gstriker.cpp updates: [Angelo Salese]
+ * Added MCU simulation to clone romset twrldc94a.
+ * Added buffered spriteram (sprites being ahead 2 frames).
+ * Fixed tournament logic for Tecmo World Cup '94.
+ * Improved mb60553 zooming alignment (mostly noticeable in Tecmo World Cup '94).
+ * Added rotation to mb60553 core (used by V Goal Soccer during football field display).
+
+-ninjaw.cpp: Changed to saner interleave CPU timings, attempted to fix missing enemies bug in Ninja Warriors. [Angelo Salese]
+
+-rockrage.cpp: Fixed priorities and text tile banking for Rock N Rage. [Angelo Salese]
+ * Fixes stage 1 boss eyes flashing and Shena display inside the bubble at stage 5 boss.
+
+-mb_vcu.cpp updates: [Angelo Salese]
+ * Added multi-layer drawing.
+ * Improved layer clearing for Mazer Blazer, fixed layer clearing for Great Guns.
+ * Added collision detection feature, specific to Mazer Blazer.
+
+-mazerbla.cpp: Added backup RAM, fixed lightgun inputs for Great Guns. [Angelo Salese]
+
+-itech8.cpp: Ninja Clowns improvements: [Angelo Salese]
+ * Fixed palette read accesses, fixes many color bugs.
+ * Fixed 0x40000-0x7ffff constant area, program ROM now checksums correctly.
+ * Moved vblank IRQ generation - fixes frames per second jerkiness.
+
+-model2.cpp: Fixed luma overflow (Virtua Striker flag colors). [Angelo Salese]
+
+-ymf271.cpp: Added slot end status bits (fixes at least missing shots samples for Desert War). [Angelo Salese]
+
+-saturn.cpp: Fire a VDP1 IRQ when an illegal sprite opcode is encountered (fixes Sexy Parodius booting). [Angelo Salese]
+
+-pce_cd.cpp: Fixed few bogus CD-ROM state bugs (fixes booting for Snatcher). [Angelo Salese]
+
+-ladyfrog.cpp: Added missing DAC sound chip (fixes death scream in Touche Me). [Angelo Salese]
+
+-flstory.cpp: Merged memory maps and fixed gfx bank default (fixes Onna Sanshirou POST messages). [Angelo Salese]
+
+-bigevglf.cpp: Added DAC (cup in, crowd applauses samples). [Angelo Salese]
+
+-buggychl.cpp updates: [Angelo Salese]
+ * Fixed sound timer IRQ frequency (fixes enter initials BGM tempo).
+ * Fixed background pen and clipping enable (fixes title screen and stage 3 graphics).
+
+-vicdual.cpp: Added sound samples to Borderline. [Angelo Salese, Corrado Tomaselli]
+
+-leland: Fixed missing DAC sounds in later Ataxx-era audio. [Barry Rodewald]
+
+-c64_cart.xml: Added accompanying disk to 4040+Fast Hack'em cartridge. [Curt Coder]
+
+-dccons.cpp: Virginized DC Flash ROM dumps to fresh factory state and docuemtned Dreamcast Flash ROM structure. [MetalliC]
+
+-unkitpkr improvements: [Roberto Fresca]
+ * Improved the input system and mapped remaining inputs, hooked the AY8912 port and rerouted the DIP switches there.
+ * Added technical notes about the hacked code.
+ * Added proper palette resnet.
+ * Confirmed the bipolar PROM dump, it matches the Wall Crash one.
+
+-cgc7900: Attached keyboard and serial port, and force cold boot. [shattered]
+
+-Royal Jackpot improvements: [Roberto Fresca]
+ * Added proper inputs/DIP switches and default NVRAM, changed game description and promoted to working.
+ * Added the three missing PLDs as NO_DUMP.
+ * Added a DIP switches table from manual and implemented default positions from factory.
+ * Added some notes about the third draw feature.
+
+-Cleaned up and optimised common code: [Vas Crabb]
+ * Made natural keyboard prefer lower shift states and eliminated O(n) character lookup.
+ * Turned most ROM entry accessor macros into templates and made them work on tiny_rom_entry/rom_entry pointers/references.
+ * Started adding iterable class wrappers for specific types of ROM entries.
+ * Added support for C++ output streams to logmacro.h using LOG_OUTPUT_STREAM macro.
+ * Improved -listxml performance by another 10% or so.
+
+-Made ROM BIOS reported in -listxml output match what ROM loading does. [Vas Crabb]
+
 -Correct regions for  Cyber Cycles， Dirt Dash, Time Crisis, Tokyo Wars and Armadillo Racing sets [sjy96525]
 
 -vamphalf.cpp: Add speedup to Cool Mini set. [Brian Troha]
@@ -62,42 +190,17 @@ Source Changes
     and use the TEAC FD-55F drive instead of the generic one.
  * This is some basic first work to better model the real hardware and floppy drive setups in the future.
 
--Updated Greek Translation [BraiNKilleRGR]
-
 -add and use INS8250 register defines (#2601) [Sven Schnelle]
  * replace LSR bits by defines
  * replace MCR by bit defines
  * replace LCR by bit defines
 
--Fix typo in Swedish translation [valgrind]
-
--gstriker.cpp: added MCU simulation to clone romset twrldc94a [Angelo Salese]
-
--c64_cart.xml: Added accompanying disk to 4040+Fast Hack'em cartridge. [Curt Coder]
-
 -buggychl: remove nmi trampolines; add details and mirrors to memory map based on schematics; add note about the maybe unused
  scoreboard hookup, similar to Grand Champion. [Lord Nightmare]
-
--mb60553.cpp: improved zooming alignment, mostly noticeable in Tecmo World Cup '94 [Angelo Salese]
-
--gstriker.cpp: added buffered spriteram (sprites being ahead 2 frames) [Angelo Salese]
-
--gstriker.cpp: fixed tournament logic for Tecmo World Cup '94 [Angelo Salese]
 
 -hp85: support of opt. ROMs (#2604) [fulivi]
  * hp85: added support for optional ROM cartridges. Started optional ROM sw list (not finished).
  * hp85: refactored mapping of opt. ROMs according to cuavas' comments
-
--unkitpkr: Improved the input system. Mapped the remaining inputs. Hooked the AY8912 port and rerouted the dip switch there. All
- inputs from the test mode are working. Added technical notes about the hacked code. Flagged the game as IMPERFECT GRAPHICS due to
- the bookkeeping is not completely readable due to the graphics bank hack needed to show the ingame graphics properly.
- [Roberto Fresca]
-
--unkitpkr: Added proper palette resnet. Confirmed the bipolar PROM dump: it matches the Wall Crash one.[Roberto Fresca]
- [RobertoFresca]
-
--new working machine [briantro]
--Newer version of Chuka Taisen on older hardware.  Commit now to keep other changes and wait for proper color proms.
 
 -Improvements to 28XX parallel EEPROM emulation [AJR]
  * Emulate direct manipulation of /OE line for read/write mode control.
@@ -108,19 +211,7 @@ Source Changes
 
 -upd765: added i82072 (#2607) [Patrick Mackinlay]
 
--Mame 0.189 Italian Language 100% translated. (#2608) [Tharabas17]
-
--ninjaw.cpp: saner interleave CPU timings, attempt to fix missing enemies bug in Ninja Warriors [Angelo Salese]
-
--rockrage.cpp: fixed priorities and text tile banking for Rock N Rage [Angelo Salese]
- * Fixes stage 1 boss eyes flashing and Shena display inside the bubble at stage 5 boss;
-
 -dblewing: Modernize soundlatch; improve IRQ arbitration for (hopefully) less dropped sound commands [AJR]
-
--gstriker.cpp: added rotation to mb60553 core, used by V Goal Soccer during display of football field [Angelo Salese]
-
--Update strings.po [aviloria]
- * Translated one missing string
 
 -a2arcadebd: add port mirrors so all programs on the test disk work. [Golden Child]
 
@@ -128,14 +219,8 @@ Source Changes
 
 -cninjabl2: Fix sound banking [AJR]
 
--mb_vcu.cpp: added multi-layer drawing [Angelo Salese]
-
--mb_vcu.cpp: improved layer clearances for Mazer Blazer [Angelo Salese]
-
 -add apple2_cass softlist (#2605) [Dagarman]
  * Create apple2_cass softlist
-
--c128_cart.xml: Added VizaWrite 128. [terror]
 
 -tnzs.cpp: Add correct color proms for Chuka Taisen (Japan) (P0-025-A PCB) [Pacman70]
 
@@ -152,23 +237,12 @@ Source Changes
 
  * nds: Skeleton driver. [Ryan Holtz]
 
--Royal Jackpot: Added proper inputs & DIP switches, changed game description and promoted to working. [Roberto Fresca]
-
--Royal Jackpot: Added default NVRAM. [Roberto Fresca]
-
--Royal Jackpot: Added the three missing PLDs as NO_DUMP. [Roberto Fresca]
-
 -Returning a reference from various corestr.cpp calls to avoid unnecessary string copies (#2613) [npwoods]
-
--starwars: Remedy for MT #6672 [AJR]
 
 -upd7725: update ov1 and s1 flag calculation to be correct based on AWJ's nesdev forums post and the original datasheets.
  [AWJ, Lord Nightmare]
 
 -segasp.cpp: dumped origin CF card of "Dinosaur King - Operation: Dinosaur Rescue" [Hellfromabove]
-
--Royal Jackpot: Added a DIP switches table from manual and implemented default positions from factory. Added some notes about the
- third draw feature. [Roberto Fresca]
 
 -z8: Make data space optional; fix stack pop semantics [AJR]
 
@@ -206,13 +280,9 @@ Source Changes
 
 -z8: Interrupts are working now [AJR]
 
--100% complete Dutch translation [Jos van Mourik]
-
 -tnzs.cpp: Corrected rom PCB locations and added Guru-Readme for the P0-25-A PCB. [Guru]
 
 -HP9000/300: Add SN76494 sound device [Sven Schnelle]
-
--vicdual.cpp: Added sound samples to Borderline [Angelo Salese, Corrado Tomaselli]
 
 -dbox: added 29F800B flash boot device [Joakim Larsson Edstrom]
 
@@ -232,12 +302,6 @@ Source Changes
 
 -dbox: hooked up rs232/modem ports [Joakim Larsson Edstrom]
 
--mb_vcu.cpp: Fixed layer clearances for Great Guns [Angelo Salese]
-
--mazerbla.cpp: added backup RAM [Angelo Salese]
-
--mazerbla.cpp: fixed lightgun inputs for Great Guns [Angelo Salese]
-
 -Added a natural keyboard validation to check for valid natural keyboard (uni)codes (#2618) [npwoods]
 
 -i82586: fixed 82586 initialisation [Patrick Mackinlay]
@@ -245,10 +309,6 @@ Source Changes
  * include heartbeat indicator on all transmits to pass InterPro diagnostic
  * also corrected a bug affecting long frames - now allows up to 64k, slightly worried about the increase in save state, but don't
     have a better idea
-
--natural keyboard: prefer lower shift states, eliminate O(n) lookup [Vas Crabb]
- * allows Alt-combos on European Amiga keyboards to be restored as MAME will now prefer the simpler Shift-combos to get characters
-    that can be typed in more than one way
 
 -clipper: interrupt handling fixes [Patrick Mackinlay]
  * improve interrupt vector handling
@@ -263,11 +323,6 @@ Source Changes
 -hp9k_3xx: add 98603 ROM card [Sven Schnelle]
  * Even if BASIC doesn't boot yet it's handy to have the ROM card in the code and BASIC in the software list.
 
--promoted protected Maniac Square sets to working [Peter Wilhelmsen, Morten Shearman Kirkegaard, Charles MacDonald, David Haywood]
- Maniac Square (protected, Version 1.0, Checksum DEEE) Maniac Square (protected, Version 1.0, Checksum CF2D) [David Haywood]
-
--Apply part of "Fix MT #00490" lost in merge [Kale]
-
 -mpu401: fix rom name, add full label and version note. [Lord Nightmare]
 
 -demote Megaplay to not working, see notes [David Haywood]
@@ -276,17 +331,7 @@ Source Changes
 
 -new clones : Land Breaker (World) / Miss Tang Ja Ru Gi (Korea) (pcb ver 1.0) (AT89c52 protected) [Hammy]
 
--promoted to WORKING [angelosa]
- * ------------------ Great Guns [Angelo Salese]
-
 -68340: Fixed -validate errors and made slight cleanup [Joakim Larsson Edstrom]
-
--leland: fix missing DAC sounds in later Ataxx-era audio. [mahlemiut]
-
--cgc7900: attach keyboard and serial port, force cold boot (#2612) [Sergey Svishchev]
-
--new Apple II softlist addition [briantro]
- * apple2.xml: Theif [san inc. & TRex]
 
 -superqix.cpp: Correctly implemented 8751 port2 latch based on pcb tracing. Fixed semaphores implementation to match pcb tracing.
  Got rid of z80<->mcu 'pending' communication hacks by using synchronize calls. Moved superqix specific variables and member
@@ -298,8 +343,6 @@ Source Changes
 
 -hp16500: connect HIL MLC [Sven Schnelle]
  * Signed-off-by: Sven Schnelle <svens@stackframe.org>
-
--mb_vcu.cpp: added collision detection feature, specific to Mazer Blazer [Angelo Salese]
 
 -68340: simplified code by making the timer module implementation a device and created two independent instanses, as it should be
  [Joakim Larsson Edstrom]
@@ -318,13 +361,6 @@ Source Changes
 
 -Changing switch statement in ioport_field::key_name() to MAME favored formatting [Nathan Woods]
 
--itech8.cpp: Ninja Clowns improvements [Angelo Salese]
- * Fixed palette read accesses, fixes many color bugs (title screen fade-in, water spray properly blue, color cycle effects in bonus
-    stage);
- * Fixed 0x40000-0x7ffff constant area, now program ROM checksum correctly returns OK status;
-
--itech8.cpp: moved vblank irq generation for Ninja Clowns, fixes frames per second jerkiness [Angelo Salese]
-
 -demote Panic Road (panicr) to MACHINE_NOT_WORKING playtesting shows that the collisions aren't right, broken collisions = broken
  game logic = MACHINE_NOT_WORKING flag, we have higher standards. [David Haywood]
 
@@ -336,8 +372,6 @@ Source Changes
  * Add T register to debugger state on devices where it only affects SKT.
  * The SIO state is now displayed in binary when it is defined as a shift register.
  * Skipped instructions and the SKIP flag can be debugged by compile-time switch (disabled by default).
-
--dccons.cpp: virginize DC flash ROM dumps to fresh factory state [MetalliC]
 
 -fix corrupt bytes in two mc68705 dumps after re-analysis of raw dump data.  [Lord Nightmare, ShouTime]
 
@@ -364,13 +398,7 @@ Source Changes
 
 -hexion.cpp: fix music pitch for hexionb bootleg [Lord Nightmare]
 
--MT #06680 [angelosa]
-
--dccons.cpp: documented Dreamcast flash ROM structure [MetalliC]
-
 -qb3: Fix sound (MT #6682) [AJR]
-
--kayproii softlist: add Digital Keyboards' Synergy Host Control System software [Sergey Svishchev]
 
 -notetaker.cpp: update notes, add more info about the emulator processor, add two of the three proms typed from source listings.
  [Lord Nightmare]
@@ -383,9 +411,10 @@ Source Changes
 
 -deco_irq: Use a device map, move screen include to header [Dirk Best]
 
--AEG Olympia Olytext 30 added. Additional Z80 card needs to be emulated to run original word processor. [rfka01]
+-Added comments and EuroPC II and EuroXT variants, corrected memory size on EuroPC and slots. EMS memory doesn't work. (#2659)
+ [rfka01]
 
--model2.cpp: fix luma overflow (Virtua Striker flag colors) [Angelo Salese]
+-AEG Olympia Olytext 30 added. Additional Z80 card needs to be emulated to run original word processor. [rfka01]
 
 -sms/gamegear misc fixes [Enik Land]
 
@@ -396,31 +425,13 @@ Source Changes
  * Initial support for viewing the logic equations of the PLS100, 82S100, PLS101 and 82S101.
  * Rename jed file from uppercase to lowercase.
 
--ymf271.cpp: added slot end status bits, fixes at least missing shots samples for Desert War [Angelo Salese]
-
--saturn.cpp: fire a VDP1 irq when a sprite illegal opcode is encountered, fixes Sexy Parodius booting [Angelo Salese]
-
 -notetaker.cpp: add the disk data separator state machine prom, based on the source listing [Lord Nightmare]
-
--Turn most of the ROM entry accessor macros into templates, and make them work on tiny_rom_entry/rom_entry pointers/references, also
- claw back a little performance lost in the ROM entry refactoring [Vas Crabb]
 
 -m68k: fix abcd/sbcd/nbcd to pass 68k-bcd-verifier [notaz]
  * Flamewing has a test that claims to exhaustively test BCD instructions: https://github.com/flamewing/68k-bcd-verifier I've
     verified the test indeed passes on my Megadrive model1 (68000).
 
--pce_cd.cpp: Fixed few bogus CD-ROM state bugs, fixes booting for Snatcher [Angelo Salese]
-
--Make ROM BIOS reported in listxml output match what ROM loading does [Vas Crabb]
-
--Added comments and EuroPC II and EuroXT variants, corrected memory size on EuroPC and slots. EMS memory doesn't work. (#2659)
- [rfka01]
-
--ladyfrog.cpp: Added missing DAC sound chip, fixes death scream in Touche Me [Angelo Salese]
-
 -Added basic stub layout with drive LEDs [rfka01]
-
--flstory.cpp: merged memory maps, and fixed gfx bank default (fixes Onna Sanshirou POST messages) [Angelo Salese]
 
 -Attempted to sanitize/rationalize how we access UTF-8 command line arguments (#2532) [npwoods]
  * Specifically, this creates a call osd_get_command_line() that returns UTF-8 command line arguments as std::vector<std::string>.
@@ -431,27 +442,14 @@ Source Changes
     having a wmain() or _tmain() declaration specific for Windows is a worse solution.  C'est la vie.
  * I'm very open to the idea that src/osd/osdcore.[cpp|h] is not the best place to do this.  Let me know if I should move it.
 
--bigevglf.cpp: added DAC (cup in, crowd applauses samples) [Angelo Salese]
-
--buggychl.cpp: fixed sound timer irq frequency, fixes enter initials BGM tempo [Angelo Salese]
-
 -Candela PAL driven address map (#2657) [Joakim Larsson Edström]
  * mc6840ptm/mc6850acia: fixed so that LOG_OUTPUT_FUNC can be defined as printf
  * can09t: replaced static address map with a PAL driven address map enabling several BASIC commands previously failing
- * logmacro.h: Added support for C++ output streams using LOG_OUTPUT_STREAM instead of using printf as LOG_OUTPUT_FUNC [Vas]
  * 6840: removed c_str() in LOG statements
-
--Update strings.po (#2637) [Kadir Ekşi]
- * Update strings.po
- * a few new translations added(170907_1531)
- * Update strings.po
- * typo fixes and a few new translations
 
 -weststry: Prevent mistimed interrupts that were killing sound [AJR]
 
 -Correct ROM name [rfka01]
-
--buggychl.cpp: fixed background pen and clipping enable (fixes title screen and stage 3 graphics) [Angelo Salese]
 
 -m68k: fix another nbcd mistake [notaz]
  * Verified on 68000 with an updated bcd-verifier: https://github.com/flamewing/68k-bcd-verifier/pull/1 Megadrive ROM:
@@ -488,9 +486,6 @@ Source Changes
 -am9513: New device [AJR]
 
 -deco156: Palette cleanup [Dirk Best]
-
--Start adding stuff for iterating ROM entries in a more C++ way without needing to allocate everywhere, improve performance of
- -listxml by another 10% or so [Vas Crabb]
 
 -Promoted machines from NOT_WORKING. bbhsc, bbhsca, bbh2sp, and bbhcotw. [Ted Green]
 
@@ -540,8 +535,6 @@ Source Changes
 
 -Correct regions for remaining Namco System 22 and Namco System Super 22 sets [sjy96525]
 
--kayproii softlist: add Digital Keyboards' Synergy Host Control System software [shattered]
-
 -Changing switch statement in ioport_field::key_name() to MAME favored formatting [npwoods]
 
 -epc: Added ROM:s for NEW PC clone, Ericsson PC, needs additional emulation to be complete, runs but no boot screen visible. These
@@ -560,8 +553,6 @@ Source Changes
 -hp16500: connect HIL MLC Signed-off-by: Sven Schnelle <svens@stackframe.org> [sschnelle]
 
 -68340: Fixed -validate errors and made slight cleanup Tried to address all of Vas comments from my previous commit [JoakimLarsson]
-
--Update strings.po a few new translations added(170907_1531) [kadireksi]
 
 -demote Megaplay to not working, see notes basically I don't feel it's ever worked properly, and it has only got worse over the
  years, time to demote it. [DavidHaywood]
@@ -607,8 +598,6 @@ Source Changes
 
 -HP9000/300: Add SN76494 sound device [sschnelle]
 
--Dutch language strings fully translated Hi. These are all the translations needed for MAME 0.189. Hope this will help. [mourix]
-
 -HP9000/300: disable DMA controller workaround Faking the DMA register set with RAM makes the 'Failed' message go away, but makes
  the ROM use DMA functionality even if there's none. Seen this while working on HPIB support which tries to transfer data via DMA
  and fails. When disabling the DMA hack the ROM falls back to PIO mode. [sschnelle]
@@ -629,12 +618,6 @@ Source Changes
 
 -Returning a reference from various corestr.cpp calls to avoid unnecessary string copies [npwoods]
 
--cgc7900: attach keyboard and serial port, force cold boot [shattered]
-
--Update strings.po Translated one missing string [aviloria]
-
--Mame 0.189 Italian Language 100% translated. Hi, I've updated the translation of the Italian language for Mame 0.189. [Tharabas17]
-
 -upd765: added i82072 Minimal support for i82072: write access to the data rate select register is enough for InterPro 2000 support
  right now. [pmackinlay]
 
@@ -654,63 +637,17 @@ Source Changes
  * I'm very open to the idea that src/osd/osdcore.[cpp|h] is not the best place to do this.  Let me know if I should move it.
 
 
-New working machines
---------------------
-unknown Italian poker game [caius, AJR, Ivan Vangelista, Roberto Fresca]
-arcadia.xml:  American Football [TeamEurope]
-ibm5170: Wing Commander II - Special Operations 1, Wing Commander II - Special Operations 2 [breiztiger]
-Convergent Miniframe [rfka01, R. Belmont]
-R-Zone: Indy 500 [hap, Sean Riddle]
-Glass (Ver 1.1, Break Edition, Checksum 49D5E66B, Version 1994) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood]
-Glass (Ver 1.0, Break Edition, Checksum C5513F3C) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood]
-Glass (Ver 1.0, Break Edition, Checksum D3864FDB) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood]
-we actually got a perfect SRAM read from this one, no stray bytes, no bad bytes, verified with previous dumps. [David Haywood]
-Slap Fight (A76 set, GX-006-A PCB) [Corrado Tomaselli, The Dumping Union]
-R-Zone: Batman Forever [hap, Sean Riddle]
-Mephisto Super Mondial [yoyo_chessboard, Sandro Ronco]
-Mephisto Super Mondial II [yoyo_chessboard, Sandro Ronco]
-archimedes.xml: SCSI Support Disc [Nigel Barnes]
-bbcb_flop.xml: ArcPinball [Nigel Barnes]
-spectrum.xml: Currah MicroSpeech Demo, Fuller Box Orator Demonstration, Shadow of the Unicorn, Spectrum Voice Chess [Nigel Barnes]
-ibm5150: Concurrent PC DOS, Concurrent DOS XM [Justin Kerk]
-ibm5170: Concurrent DOS 386 [Justin Kerk]
-ibm5170: Freddy Pharkas, Frontier Pharmacist [ArcadeShadow]
-Altered Beast (Tiger handheld) [hap, Sean Riddle]
-
-
 New working clones
 ------------------
-Alligator Hunt (World, protected) [Pablo]
 from a dead board, howver, this also shows where the region byte is and uncovers that there's an alt. title of Lizard Hunt, maybe
   that was used for the US region? [David Haywood]
-Chuka Taisen (Japan) (P0-025-A PCB) [Pacman70]
-Royal Card / Royal Jackpot (with a third draw)(encrypted) [Roberto Fresca, Team Europe]
-Syvalion (US, PS2 Taito Legends 2) [MetalliC, rtw, Zerochan]
-Syvalion (World, PS2 Taito Legends 2) [MetalliC, rtw, Zerochan]
-Iron Horse (version K) [Coolmod, The Dumping Union]
-Lady Master of Kung Fu (set 2, older) [Corrado Tomaselli, The Dumping Union]
-Kick Off (bootleg) [caius, The Dumping Union]
-Beast Busters (Japan, Version 2, J3) [Layer @ jammaplus]
 see title. [DavidHaywood]
 
 
 Machines promoted to working
 ----------------------------
-Alligator Hunt (Spain, protected) [David Haywood, Darksoft, Morten Shearman Kirkegaard, Peter Wilhelmsen]
 data was verified using a 2nd board, only 1 byte changed in the code area, data table is also verified by checksum in the code, and
   by the unprotected set as reference.  This is a good read. [David Haywood]
-Mephisto Modena [yoyo_chessboard, Sandro Ronco]
-Mephisto Monte Carlo [Sandro Ronco]
-Mephisto Monte Carlo IV LE [Sandro Ronco]
-Mephisto Mega IV [Sandro Ronco]
-Maniac Square (protected, Version 1.0, Checksum DEEE)
-  [Peter Wilhelmsen, Morten Shearman Kirkegaard, Charles MacDonald, David Haywood]
-Maniac Square (protected, Version 1.0, Checksum CF2D)
-  [Peter Wilhelmsen, Morten Shearman Kirkegaard, Charles MacDonald, David Haywood]
-Glass (Ver 1.1, Break Edition, Checksum 49D5E66B, Version 1994) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood]
-Glass (Ver 1.0, Break Edition, Checksum C5513F3C) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood]
-Glass (Ver 1.0, Break Edition, Checksum D3864FDB) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood]
-Alligator Hunt (Spain, protected) [David Haywood, Darksoft, Morten Shearman Kirkegaard, Peter Wilhelmsen]
 data was verified using a 2nd board, only 1 byte changed in the code area, data table is also verified by checksum in the code, and
   by the unprotected set as reference.  This is a good read. [DavidHaywood]
 
@@ -719,33 +656,11 @@ New machines marked as NOT_WORKING
 ----------------------------------
 pce_tourvision:  Bomberman 93, Die Hard, Hit The Ice, Knight Rider Special [system11]
 tourvis:  Added new BIOS dump, clarified BIOS names, and updated several games with newly discovered ID codes.  [system11, Tafoid]
-unknown Italian poker game [caius]
 Not much work has been done here except on graphics decoding. Emulation gets only as far as the attract screen, which doesn't appear
   to include a title but does show the message "CONFORME ALLA LEGGE N.904 DEL 17.12.1986." [AJR]
 Royal Jackpot (TAB / Video Klein, encrypted) [Roberto Fresca, Team Europe]
-Guns N Roses (2.00) [Gore Daimon, Guilherme Cobra]
-Bingo Wave [Harcsa Béla, caius]
-Gaelco Football [Peter Wilhelmsen, Smitdogg, The Dumping Union]
-Cisco/Fisco 400 [Andrew Welburn]
-Gran Trak 10/Trak 10/Formula K [Andrew Welburn]
-Gran Trak 20/Trak 20/Twin Racer [Andrew Welburn]
-Le Mans [Andrew Welburn]
-Qwak!/Quack [Andrew Welburn]
 Fixed rom size for Tank (atarittl.cpp) based on recent verification dump [Andrew Welburn]
-Triumph-Adler alphatronic P3 [Dirk Best, rfka01]
 Mostly a skeleton driver, but shows the initial boot message. [Dirk Best]
-
-
-New clones marked as NOT_WORKING
---------------------------------
-Maniac Square (protected, Version 1.0, Checksum DEEE) [Peter Wilhelmsen]
-came from a working protected board so we're going to attempt to dump the SRAM and verify the dump we have using it before
-  committing that.  All going well this will be promoted to working in a few days, all going badly, we'll have to find another.
-  Either way, it appears to be a newer set due to extra code being inserted causing lots of other code to be offset (despite still
-  identifying as Version 1.0) and becomes the new parent [David Haywood]
-Meteor (Stern, set 2) [Gore Daimon, Guilherme Cobra]
-Shootout Pool Prize (Export) / Shootout Pool The Medal (Japan) Version B -P [Ordyne]
-Robot Hunting (bootleg of Death Race) [f205v, Any]
 
 
 Comparing 0.189 (mame0189) to 0.189 (mame0189-462-ga734a3b)
@@ -767,67 +682,33 @@ tws96 -> twsoc96 Tecmo World Soccer '96
 
 New working machines
 --------------------
-Altered Beast (handheld)
 Laser 2001
-Mephisto Modena
-Mephisto Monte Carlo
-Mephisto Super Mondial
-Mephisto Super Mondial II
-R-Zone: Batman Forever
-R-Zone: Indy 500
 unknown Italian poker game
 
 New working clones
 ------------------
-Alligator Hunt (Spain, protected)
-Beast Busters (Japan, Version 2, 3 Player)
 Big Buck Hunter - Shooter's Challenge (v1.60.01)
-Chuka Taisen (Japan) (P0-025-A PCB)
-Iron Horse (version H)
-Kick Off (bootleg)
-Lady Master of Kung Fu (set 2, older)
 Land Breaker (World) / Miss Tang Ja Ru Gi (Korea) (pcb ver 1.0) (AT89c52 protected)
-Maniac Square (unprotected, Version 1.0, Checksum BB73)
-Royal Card / Royal Jackpot (with a third draw)(encrypted)
-Syvalion (US, PS2 Taito Legends 2)
-Syvalion (World, PS2 Taito Legends 2)
 
 Machines promoted to working
 ----------------------------
-Alligator Hunt (World, protected)
 Big Buck Hunter - Shooter's Challenge (v1.60.01)
 Big Buck Hunter Call of the Wild (v3.02.5)
 Big Buck Hunter II - Sportsman's Paradise (v2.02.11)
 Glass (Ver 1.1, Break Edition, Checksum 49D5E66B, Version 1994)
-Great Guns
 Mazer Blazer (set 1)
-Mephisto Mega IV
 Tecmo World Cup '94 (set 1)
 Virtual Pool
 
 Clones promoted to working
 --------------------------
 Big Buck Hunter - Shooter's Challenge (v1.50.07)
-Glass (Ver 1.0, Break Edition, Checksum C5513F3C)
-Glass (Ver 1.0, Break Edition, Checksum D3864FDB)
-Maniac Square (protected, Version 1.0, Checksum CF2D)
 Mazer Blazer (set 2)
-Mephisto Monte Carlo IV LE
-Slap Fight (A76 set, GX-006-A PCB)
 Tecmo World Cup '94 (set 2)
 
 New machines marked as NOT_WORKING
 ----------------------------------
-Bingo Wave
-Cisco/Fisco 400 [TTL]
 DS
-Gaelco Football
-Gran Trak 10/Trak 10/Formula K [TTL]
-Gran Trak 20/Trak 20/Twin Racer [TTL]
-Le Mans [TTL]
-Miniframe
-Qwak!/Quack [TTL]
-alphatronic P3
 
 New clones marked as NOT_WORKING
 --------------------------------
@@ -835,10 +716,5 @@ EURO PC II
 EURO XT
 Ericsson PC
 Ericsson Portable PC
-Guns N Roses (2.00)
-Meteor (Stern, set 2)
 Olytext 30
 PC/AT 386SX (VGA, MF2 Keyboard)
-Robot Hunting (bootleg of Death Race) [TTL]
-Shootout Pool Prize (Export) / Shootout Pool The Medal (Japan) Version B -P
-
