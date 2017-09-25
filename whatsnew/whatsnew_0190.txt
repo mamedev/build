@@ -15,6 +15,7 @@ MAMETesters Bugs Fixed
 New working machines
 --------------------
 Altered Beast (Tiger handheld) [hap, Sean Riddle]
+Laser 2001 [cvemu]
 Mephisto Modena [yoyo_chessboard, Sandro Ronco]
 Mephisto Monte Carlo [Sandro Ronco]
 Mephisto Super Mondial II [yoyo_chessboard, Sandro Ronco]
@@ -32,6 +33,7 @@ Chuka Taisen (Japan) (P0-025-A PCB) [Pacman70]
 Iron Horse (version K) [Coolmod, The Dumping Union]
 Kick Off (bootleg) [caius, The Dumping Union]
 Lady Master of Kung Fu (set 2, older) [Corrado Tomaselli, The Dumping Union]
+Land Breaker (World) / Miss Tang Ja Ru Gi (Korea) (pcb ver 1.0) (AT89c52 protected) [Hammy]
 Maniac Square (protected, Version 1.0, Checksum DEEE)
   [Peter Wilhelmsen, Morten Shearman Kirkegaard, Charles MacDonald, David Haywood]
 Royal Card / Royal Jackpot (with a third draw)(encrypted) [Roberto Fresca, Team Europe]
@@ -42,6 +44,9 @@ Syvalion (World, PS2 Taito Legends 2) [MetalliC, rtw, Zerochan]
 Machines promoted to working
 ----------------------------
 Alligator Hunt (Spain, protected) [David Haywood, Darksoft, Morten Shearman Kirkegaard, Peter Wilhelmsen]
+Big Buck Hunter - Shooter's Challenge (v1.60.01) [Ted Green]
+Big Buck Hunter Call of the Wild (v3.02.5) [Ted Green]
+Big Buck Hunter II - Sportsman's Paradise (v2.02.11) [Ted Green]
 Glass (Ver 1.1, Break Edition, Checksum 49D5E66B, Version 1994) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood]
 Great Guns [Angelo Salese]
 Maniac Square (protected, Version 1.0, Checksum CF2D)
@@ -51,6 +56,7 @@ Mephisto Mega IV [Sandro Ronco]
 
 Clones promoted to working
 --------------------------
+Big Buck Hunter - Shooter's Challenge (v1.50.07) [Ted Green]
 Glass (Ver 1.0, Break Edition, Checksum C5513F3C) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood]
 Glass (Ver 1.0, Break Edition, Checksum D3864FDB) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood]
 Mephisto Monte Carlo IV LE [Sandro Ronco]
@@ -65,22 +71,29 @@ Gaelco Football [Peter Wilhelmsen, Smitdogg, The Dumping Union]
 Gran Trak 10/Trak 10/Formula K [TTL] [Mike Salay]
 Gran Trak 20/Trak 20/Twin Racer [TTL] [Ed Fries]
 Le Mans [TTL] [teeray]
+Nintendo DS [Ryan Holtz]
 Qwak!/Quack [TTL] [Ed Fries]
 Triumph-Adler alphatronic P3 [Dirk Best, rfka01]
 
 
 New clones marked as NOT_WORKING
 --------------------------------
-Bingo Wave [Harcsa Béla, caius]
+AEG Olympia Olytext 30 [rfka01]
+Bingo Wave [Harcsa Bela, caius]
+Ericsson PC [Joakim Larsson Edstrom, Joel Tegner]
+Ericsson Portable PC [Joakim Larsson Edstrom, Joel Tegner, FakeShemp]
 Guns N Roses (2.00) [Gore Daimon, Guilherme Cobra]
 Meteor (Stern, set 2) [Gore Daimon, Guilherme Cobra]
 Robot Hunting (bootleg of Death Race) [TTL] [f205v, Any]
+Schneider EURO PC II [rfka01]
+Schneider EURO XT [rfka01]
 Shootout Pool Prize (Export) / Shootout Pool The Medal (Japan) Version B -P [Ordyne]
 
 
 New working software list additions
 -----------------------------------
 apple2: Thief [san inc. & TRex]
+apple2_cass: Color Demosoft / Little Brickout, Lords of Karma, Startrek / Starwars [Dagarman]
 archimedes: SCSI Support Disc [Nigel Barnes]
 bbcb_flop: ArcPinball [Nigel Barnes]
 c128_cart: VizaWrite 128 [terror]
@@ -91,6 +104,8 @@ ibm5170:
   Wing Commander II - Special Operations 1, Wing Commander II - Special Operations 2 [breiztiger]
   Concurrent DOS 386 2.0, Concurrent DOS 386 3.01 [Justin Kerk]
 kayproii: Digital Keyboards' Synergy Host Control System [shattered]
+laser2001_cart: Salora Disk Drive [cvemu]
+pce_tourvision: Bomberman 93, Die Hard, Hit The Ice, Knight Rider Special [system11]
 spectrum_cass: Currah MicroSpeech Demo, Fuller Box Orator Demonstration, Shadow of the Unicorn, Spectrum Voice Chess [Nigel Barnes]
 
 
@@ -159,7 +174,69 @@ Source Changes
 
 -c64_cart.xml: Added accompanying disk to 4040+Fast Hack'em cartridge. [Curt Coder]
 
+-Demoted Megaplay to not working. [David Haywood]
+
+-Demoted Panic Road to not working  - playtesting shows that the collisions aren't right. [David Haywood]
+
+-floppy: Added drive LED callback. [Dirk Best]
+
+-Added Data East IRQ Controller device used by games in the cninja and deco32 drivers. [Dirk Best]
+
+-pktgaldx: Added vblank interrupt acknowledge. [Dirk Best]
+
+-deco32 improvements and cleanups: [Dirk Best]
+ * Emulated LC7535-based volume control for Dragon Gun board based games.
+ * Added DSW3 and DIP switch locations to Captain Avenger.
+
+-deco156: Cleaned up palette. [Dirk Best]
+
+-Miscellaneous Master System/Game Gear fixes: [Enik Land]
+ * Corrected author of the SMS multipad device hardware.
+ * Map upper addresses of the SMS2/GG memory map unused by devices to RAM (fixes 'shero' GG game).
+ * Added PCB info for 'termntr' and fixed mapper of 'jangpun2' entries of the SMS software list.
+ * Fixed a soft reset bug in the mapper code for the '4pak' entry of the SMS software list.
+ * Remove two obsolete comments from the period when MESS didn't support BIOS selection.
+ * Changed two comments to document that player inputs on GG aren't disabled even in SMS mode.
+
+-hp85: Added support for optional ROM cartridges and started a software list. [F.Ulivi]
+
+-a2arcadebd: Added port mirrors so all programs on the test disk work. [Golden Child]
+
+-apple2: Added preliminary support for the Synetix SuperSprite card. [Golden Child, R. Belmont]
+
+-dbox: Added 29F800B flash boot device, hooked up RS232/modem ports. [Joakim Larsson Edstrom]
+
+-mc68681: Added the DUART-compatible 68340 serial module. [Joakim Larsson Edstrom]
+
+-68340tmu: Fixed MCR register enum error, silenced some logerror spam by turning them into LOGx statements. [Joakim Larsson Edstrom]
+
+-68340 improvements: [Joakim Larsson Edstrom]
+ * Deskeletonized the serial module as a device derived from the DUART device (defined in mc68681.cpp).
+ * Fixed SIM module read register bug and added informative chip select logic LOG messages.
+ * Simplified code by making the timer module implementation a device with two independent instances.
+
+-Implemented Candela PAL-driven address map (fixes several BASIC commands). [Joakim Larsson Edstrom]
+
+-Added support for viewing PLS100/82S100/PLS101/82S101 equations to jedutil. [Kevin Eshbach]
+
+-Adding PAL dumps from Guzzler (Swimmer Conversion). [Kevin Eshbach]
+
 -dccons.cpp: Virginized DC Flash ROM dumps to fresh factory state and documented Dreamcast Flash ROM structure. [MetalliC]
+
+-m68k: Fixed abcd/sbcd/nbcd to pass 68k-bcd-verifier. [notaz]
+
+-upd765: Added support for i82072 including sense interrupt status logic and motor on/off logic. [Patrick Mackinlay]
+
+-i82586: Fixed 82586 initialisation. [Patrick Mackinlay]
+
+-clipper interrupt handling fixes: [Patrick Mackinlay]
+ * Improved interrupt vector handling.
+ * Fixed C300 interrupt entry and stack frame.
+ * Fixed pushw where source register is same as stack register.
+
+-apple2e: Don't update 80-column screen immediately on page switch. [Peter Ferrie]
+
+-psi98: Added basic stub layout with drive LEDs. [rfka01]
 
 -unkitpkr improvements: [Roberto Fresca]
  * Improved the input system and mapped remaining inputs, hooked the AY8912 port and rerouted the DIP switches there.
@@ -167,13 +244,33 @@ Source Changes
  * Added proper palette resnet.
  * Confirmed the bipolar PROM dump, it matches the Wall Crash one.
 
--cgc7900: Attached keyboard and serial port, and force cold boot. [shattered]
-
 -Royal Jackpot improvements: [Roberto Fresca]
  * Added proper inputs/DIP switches and default NVRAM, changed game description and promoted to working.
  * Added the three missing PLDs as NO_DUMP.
  * Added a DIP switches table from manual and implemented default positions from factory.
  * Added some notes about the third draw feature.
+
+-arm7: Added ARM946ES variant, fixed up CPU ID values. [Ryan Holtz]
+
+-cgc7900: Attached keyboard and serial port, and force cold boot. [shattered]
+
+-Corrected regions/titles for Namco System 22 and System 23 games. [sjy96525]
+
+-Added named constants for INS8250 registers/bits (LSR/MCR/LSR). [Sven Schnelle]
+
+-HP HIL: Pass through commands between devices. [Sven Schnelle]
+
+-HP9000/300 improvements: [Sven Schnelle]
+ * Added HIL keyboard support.
+ * Fixed detection of DIO cards.
+ * Disabled DMA controller workaround (caused ROM to use unimplemented DMA functionality, now falls back to PIO).
+ * Added SN76494 sound device.
+
+-hp9k_3xx: Hooked up keyboard/sound to HP9000/332, added 98603 ROM card. [Sven Schnelle]
+
+-hp16500: Connected HIL MLC. [Sven Schnelle]
+
+-iteagle: Set medium resolution as default for virtpool and remove MACHINE_IMPERFECT_GRAPHICS. [Ted Green]
 
 -Cleaned up and optimised common code: [Vas Crabb]
  * Made natural keyboard prefer lower shift states and eliminated O(n) character lookup.
@@ -184,24 +281,12 @@ Source Changes
 
 -Made ROM BIOS reported in -listxml output match what ROM loading does. [Vas Crabb]
 
+-am9513: New device [AJR]
+
 -vamphalf.cpp: Add speedup to Cool Mini set. [Brian Troha]
-
--floppy: Add drive LED callback [Dirk Best]
- * This currently only works if you set the drive select lines correctly, which the upd765 does now. Hook it up to the psi98 driver
-    and use the TEAC FD-55F drive instead of the generic one.
- * This is some basic first work to better model the real hardware and floppy drive setups in the future.
-
--add and use INS8250 register defines (#2601) [Sven Schnelle]
- * replace LSR bits by defines
- * replace MCR by bit defines
- * replace LCR by bit defines
 
 -buggychl: remove nmi trampolines; add details and mirrors to memory map based on schematics; add note about the maybe unused
  scoreboard hookup, similar to Grand Champion. [Lord Nightmare]
-
--hp85: support of opt. ROMs (#2604) [fulivi]
- * hp85: added support for optional ROM cartridges. Started optional ROM software list (not finished).
- * hp85: refactored mapping of opt. ROMs according to cuavas' comments
 
 -Improvements to 28XX parallel EEPROM emulation [AJR]
  * Emulate direct manipulation of /OE line for read/write mode control.
@@ -210,18 +295,9 @@ Source Changes
  * Eliminate the Atari EEPROM interface devices, since their special features have been incorporated into the base device. To
     continue using old NVRAM files, rename them from eeprom_eeprom to eeprom.
 
--upd765: added i82072 (#2607) [Patrick Mackinlay]
-
 -dblewing: Modernize soundlatch; improve IRQ arbitration for (hopefully) less dropped sound commands [AJR]
 
--a2arcadebd: add port mirrors so all programs on the test disk work. [Golden Child]
-
--apple2: Preliminary support for the Synetix SuperSprite card. [Golden Child, R. Belmont]
-
 -cninjabl2: Fix sound banking [AJR]
-
--add apple2_cass softlist (#2605) [Dagarman]
- * Create apple2_cass softlist
 
 -tnzs.cpp: Add correct color proms for Chuka Taisen (Japan) (P0-025-A PCB) [Pacman70]
 
@@ -232,16 +308,12 @@ Source Changes
 -taitosj: Added synchronize calls on soundlatch write and bit7 clear, as well as for writing and clearing the secondary sound
  semaphore. Use input_merge for both nmi enable and the secondary semaphore. Added sound cpu mirroring. [Lord Nightmare]
 
- * arm7: Various changes: [Ryan Holtz]
-   - Added ARM946ES variant.
-   - Fixed up CPU ID values.
-
- * nds: Skeleton driver. [Ryan Holtz]
-
 -Returning a reference from various corestr.cpp calls to avoid unnecessary string copies (#2613) [npwoods]
 
 -upd7725: update ov1 and s1 flag calculation to be correct based on AWJ's nesdev forums post and the original datasheets.
  [AWJ, Lord Nightmare]
+
+ * validate will now report an error if no matches occur [npwoods]
 
 -segasp.cpp: dumped origin CF card of "Dinosaur King - Operation: Dinosaur Rescue" [Hellfromabove]
 
@@ -252,28 +324,6 @@ Source Changes
 
 -z8: Mask addresses for external memory accesses based on P0 control bits [AJR]
 
--HP HIL: passthrough commands between devices [Sven Schnelle]
- * The old code didn't loopback commands that are sent to a non-existing HIL address. Unfortunately the HP 9000/300 Boot ROM does
-    that: it send a IDD command to every possible address and fails if it's not looped back.
- * This also changes the API. HIL devices are now able to return true if the command should be passed on to the next devices, or
-    false it it shouldn't. This is required for initial configuration of the Bus and various other commands like POLL, which are
-    sent to the global address.
- * Signed-off-by: Sven Schnelle <svens@stackframe.org>
-
--HP9000/300: Add HIL keyboard support [Sven Schnelle]
- * Signed-off-by: Sven Schnelle <svens@stackframe.org>
-
--HP9000/300: fix detection of DIO cards [Sven Schnelle]
- * Install a buserror handler for the DIO/DIO-II card ranges. The 300 BOOT ROM expects to get a Buserror signal to detect if there's
-    a card. Also remove that memory of PC's doing invalid Bus accesses as this breaks this detection.
- * Signed-off-by: Sven Schnelle <svens@stackframe.org>
-
--HP9000/300: disable DMA controller workaround [Sven Schnelle]
- * Faking the DMA register set with RAM makes the 'Failed' message go away, but makes the ROM use DMA functionality even if there's
-    none. Seen this while working on HPIB support which tries to transfer data via DMA and fails. When disabling the DMA hack the
-    ROM falls back to PIO mode.
- * Signed-off-by: Sven Schnelle <svens@stackframe.org>
-
 -luaengine: translation support [Carl]
 
 -z8: Fix C flag polarity for CP, SBC, SUB and actually subtract with carry in SBC [AJR]
@@ -283,56 +333,13 @@ Source Changes
 
 -tnzs.cpp: Corrected rom PCB locations and added Guru-Readme for the P0-25-A PCB. [Guru]
 
--HP9000/300: Add SN76494 sound device [Sven Schnelle]
-
--dbox: added 29F800B flash boot device [Joakim Larsson Edstrom]
-
  * validate will now report an error if no matches occur [Nathan Woods]
-
--crvision: Added Laser 2001 ROM. [cvemu] laser2001_cart: Added Salora Disk Drive cartridge. [cvemu]
-
--mc68681: Added the duart compatible 68340 serial module [Joakim Larsson Edstrom]
-
--68340tmu: Fixed MCR register enum error [Joakim Larsson Edstrom]
-
--68340tmu: silenced some logerror spam by turning them into LOGx statements [Joakim Larsson Edstrom]
-
--68340: deskeletonized the serial module as a device derived from the duart device defined in mc68681.cpp [Joakim Larsson Edstrom]
-
--68340: fixed SIM module read register bug and added informative chip select logic LOG messages [Joakim Larsson Edstrom]
-
--dbox: hooked up rs232/modem ports [Joakim Larsson Edstrom]
 
 -Added a natural keyboard validation to check for valid natural keyboard (uni)codes (#2618) [npwoods]
 
--i82586: fixed 82586 initialisation [Patrick Mackinlay]
- * have now tested 82586 version successfully
- * include heartbeat indicator on all transmits to pass InterPro diagnostic
- * also corrected a bug affecting long frames - now allows up to 64k, slightly worried about the increase in save state, but don't
-    have a better idea
-
--clipper: interrupt handling fixes [Patrick Mackinlay]
- * improve interrupt vector handling
- * fix C300 interrupt entry and stack frame
- * fix pushw where source register is same as stack register
- * switch to logmacro.h logging
-
--hp9k_3xx: hook up keyboard/sound to HP9000/332 (#2630) [Sven Schnelle]
- * HP9000/300: Add SN76494 sound device
- * hp9k_3xx: hook up keyboard/sound to HP9000/332
-
--hp9k_3xx: add 98603 ROM card [Sven Schnelle]
- * Even if BASIC doesn't boot yet it's handy to have the ROM card in the code and BASIC in the software list.
-
 -mpu401: fix rom name, add full label and version note. [Lord Nightmare]
 
--demote Megaplay to not working, see notes [David Haywood]
-
 -megaplay: Make start buttons work properly through BIOS [AJR]
-
--new clones : Land Breaker (World) / Miss Tang Ja Ru Gi (Korea) (pcb ver 1.0) (AT89c52 protected) [Hammy]
-
--68340: Fixed -validate errors and made slight cleanup [Joakim Larsson Edstrom]
 
 -superqix.cpp: Correctly implemented 8751 port2 latch based on pcb tracing. Fixed semaphores implementation to match pcb tracing.
  Got rid of z80<->mcu 'pending' communication hacks by using synchronize calls. Moved superqix specific variables and member
@@ -342,28 +349,12 @@ Source Changes
 -superqix: added a sync trampoline for reading the semaphores via the ay-3-8910 #1, MCFG_QUANTUM_PERFECT is no longer needed.
  [Lord Nightmare]
 
--hp16500: connect HIL MLC [Sven Schnelle]
- * Signed-off-by: Sven Schnelle <svens@stackframe.org>
-
--68340: simplified code by making the timer module implementation a device and created two independent instanses, as it should be
- [Joakim Larsson Edstrom]
-
--eppc: Added ROM:s for NEW PC compatible, Ericsson Portable PC, needs additional emulation to be complete [Joakim Larsson Edstrom, Joel Tegner, FakeShemp]
-
--new working machine promoted from non-working [briantro]
-
 -quizpun2: Emulate COP402 MCU [AJR]
 
 -superqix: Traced out correct clock divider for cpu and mcu from pcb. Fixed issue with sqixb1 not working with the correct clock
  speed and synchronize fences. Added emulation of the 8031 bootleg mcu port 3 output latch. [Lord Nightmare]
 
--epc: Added ROM:s for NEW PC clone, Ericsson PC, needs additional emulation to be complete, runs but no boot screen visible
- [Joakim Larsson Edstrom, Joel Tegner]
-
 -Changing switch statement in ioport_field::key_name() to MAME favored formatting [Nathan Woods]
-
--demote Panic Road (panicr) to MACHINE_NOT_WORKING playtesting shows that the collisions aren't right, broken collisions = broken
- game logic = MACHINE_NOT_WORKING flag, we have higher standards. [David Haywood]
 
 -COP400 overhaul [AJR]
  * Rewrite the execution control logic to fetch each byte of an instruction separately in one pass of the main loop. This provides
@@ -375,18 +366,6 @@ Source Changes
  * Skipped instructions and the SKIP flag can be debugged by compile-time switch (disabled by default).
 
 -fix corrupt bytes in two mc68705 dumps after re-analysis of raw dump data.  [Lord Nightmare, ShouTime]
-
--apple2e: don't update 80-col screen immediately on page switch [Peter Ferrie]
-
--upd765: sense interrupt status and i82072 changes (#2632) [Patrick Mackinlay]
- * Yet another attempt at implementing the i82072 sense interrupt status logic. This time, I've separated the logic into the derived
-    class, so it won't affect the other devices. Also included motor on/off logic (unique to i82072) - motor on delay is incomplete.
-
--iteagle: Set medium resolution as default for virtpool and remove MACHINE_IMPERFECT_GRAPHICS. [Ted Green]
-
--New device: Data East IRQ Controller [Dirk Best]
- * Used by games in the cninja and deco32 drivers. This implies proper VBlank IRQ ack for all games now. Also added and improved raw
-    screen parameters for various games.
 
 -Fix retofinvb3 colors [Lord Nightmare]
 
@@ -406,33 +385,7 @@ Source Changes
 
 -hiscore.dat: Updates [Leezer]
 
--new working clone - Beast Busters (Japan, Version 2, J3) [briantro]
-
--Ace Driver, Ace Driver: Victory Lap, Alpine Racer, Alpine Racer 2, Prop Cycle, Alpine Surfer, Aqua Jet too. [sjy96525]
-
--deco_irq: Use a device map, move screen include to header [Dirk Best]
-
--Added comments and EuroPC II and EuroXT variants, corrected memory size on EuroPC and slots. EMS memory doesn't work. (#2659)
- [rfka01]
-
--AEG Olympia Olytext 30 added. Additional Z80 card needs to be emulated to run original word processor. [rfka01]
-
--sms/gamegear misc fixes [Enik Land]
-
--Added support for viewing the pls100 device to jedutil (#2658) [Kevin Eshbach]
- * Adding dump of PAL from Guzzler (Swimmer Conversion)
- * Adding dump of PAL from Guzzler (Swimmer Conversion)
- * Initial support for viewing the logic equations of the PLS100, 82S100, PLS101 and 82S101.
- * Initial support for viewing the logic equations of the PLS100, 82S100, PLS101 and 82S101.
- * Rename jed file from uppercase to lowercase.
-
 -notetaker.cpp: add the disk data separator state machine prom, based on the source listing [Lord Nightmare]
-
--m68k: fix abcd/sbcd/nbcd to pass 68k-bcd-verifier [notaz]
- * Flamewing has a test that claims to exhaustively test BCD instructions: https://github.com/flamewing/68k-bcd-verifier I've
-    verified the test indeed passes on my Megadrive model1 (68000).
-
--Added basic stub layout with drive LEDs [rfka01]
 
 -Attempted to sanitize/rationalize how we access UTF-8 command line arguments (#2532) [npwoods]
  * Specifically, this creates a call osd_get_command_line() that returns UTF-8 command line arguments as std::vector<std::string>.
@@ -443,18 +396,7 @@ Source Changes
     having a wmain() or _tmain() declaration specific for Windows is a worse solution.  C'est la vie.
  * I'm very open to the idea that src/osd/osdcore.[cpp|h] is not the best place to do this.  Let me know if I should move it.
 
--Candela PAL driven address map (#2657) [Joakim Larsson Edström]
- * mc6840ptm/mc6850acia: fixed so that LOG_OUTPUT_FUNC can be defined as printf
- * can09t: replaced static address map with a PAL driven address map enabling several BASIC commands previously failing
- * 6840: removed c_str() in LOG statements
-
 -weststry: Prevent mistimed interrupts that were killing sound [AJR]
-
--Correct ROM name [rfka01]
-
--m68k: fix another nbcd mistake [notaz]
- * Verified on 68000 with an updated bcd-verifier: https://github.com/flamewing/68k-bcd-verifier/pull/1 Megadrive ROM:
-    http://notaz.gp2x.de/md/rel/bcd-verifier-u1.zip
 
 -spectrum: Added expansion slot, and devices: [Nigel Barnes]
  * ZX Interface 1 (not working)
@@ -477,130 +419,13 @@ Source Changes
 
 -tube_casper: Clock is 4MHz. [Nigel Barnes]
 
--pktgaldx: Add vblank ack [Dirk Best]
-
--deco32: Improvements and cleanups [Dirk Best]
- * Emulate LC7535 based volume control for Dragon Gun board based games
- * Add DSW3 and DIP locations to Captain Avenger
- * Reorganize driver and start cleaning it up (in progress)
-
--am9513: New device [AJR]
-
--deco156: Palette cleanup [Dirk Best]
-
--Promoted machines from NOT_WORKING. bbhsc, bbhsca, bbh2sp, and bbhcotw. [Ted Green]
-
 -Implemented program counter break point to PlayStation CPU & re-added PlayStation EXE, CPE & PSF loading. [smf]
 
 -altos8600: add serial board [Carl]
 
 -rs232: Add 9615 baud rate actually used by a number of systems [AJR]
 
--Correct regions for remaining Namco System 23 and Namco System Super 23 sets [sjy96525]
-
--m68k: fix another nbcd mistake Verified on 68000 with an updated bcd-verifier: https://github.com/flamewing/68k-bcd-verifier/pull/1
- Megadrive ROM: http://notaz.gp2x.de/md/rel/bcd-verifier-u1.zip [notaz]
-
--EuroPC: Correct ROM name The Hashes were correct all along. [rfka01]
-
--Added basic stub layout with drive LEDs A more elaborate layout with a photo bezel and properly positioned drive LEDs is available.
- [rfka01]
-
--m68k: fix abcd/sbcd/nbcd to pass 68k-bcd-verifier Flamewing has a test that claims to exhaustively test BCD instructions:
- https://github.com/flamewing/68k-bcd-verifier I've verified the test indeed passes on my Megadrive model1 (68000). [notaz]
-
--Added comments and EuroPC II and EuroXT variants, corrected RAM size on EuroPC and slot configuration. EMS memory doesn't work on
- EuroPC II and XT (should be able to be configured from the BIOS, but options don't show up, DOS EMS driver doesn't load). [rfka01]
-
--Added support for viewing the pls100 device to jedutil [keshbach]
-
--Candela PAL driven address map tried a long time to use bank devices for this but as it used two levels of indirection, eg 2 banks
- of 16 banks each where each of the 16 banks can point to any device/ram/rom segment, it got very complex and it was never working
- and almost impossible to understand. So I rewrote it in plain code and a number of previously not working BASIC commands started
- working. There are more to do but this is a nice milestone towards booting OS9. [JoakimLarsson]
- * I also made some C11 strings legacy aware in the PTM and ACIA devices.
-
--sms/gamegear misc fixes [Enik Land]
- * correct author of the SMS multipad device hardware.
- * upper addresses of the SMS2/GG memory map unused by devices need to be mapped to RAM (fixes 'shero' GG game).
- * add PCB info for 'termntr' and fix mapper of 'jangpun2', entries of the SMS software list.
- * fix a soft reset bug in the mapper code for the '4pak' entry of the SMS software list.
- * remove two obsolete comments from the period when MESS didn't supported BIOS selection.
- * change two comments to document that player inputs on GG aren't disabled even in SMS mode.
-
--AEG Olympia Olytext 30 added. Additional Z80 card needs to be ... ... emulated to run original word processor. The Olytext 30 is an
- XT compatible, the BIOS works well with the PC emulation. The original word processor is running on a Z80 coprocessor card that
- needs to be emulated. Details in the "new dumps" thread on Bannister. [rfka01]
-
--Correct regions for remaining Namco System 22 and Namco System Super 22 sets [sjy96525]
-
 -Changing switch statement in ioport_field::key_name() to MAME favored formatting [npwoods]
-
--demote Panic Road (panicr) to MACHINE_NOT_WORKING demote Panic Road (panicr) to MACHINE_NOT_WORKING playtesting shows that the
- collisions aren't right, broken collisions = broken game logic = MACHINE_NOT_WORKING flag, we have higher standards. [DavidHaywood]
-
--68340: simplified code by making the timer module implementation a device and created two independent instances, as it should be
- [JoakimLarsson]
-
--hp16500: connect HIL MLC Signed-off-by: Sven Schnelle <svens@stackframe.org> [sschnelle]
-
--68340: Fixed -validate errors and made slight cleanup Tried to address all of Vas comments from my previous commit [JoakimLarsson]
-
--demote Megaplay to not working, see notes basically I don't feel it's ever worked properly, and it has only got worse over the
- years, time to demote it. [DavidHaywood]
-
--clipper: interrupt handling fixes [pmackinlay]
- * improve interrupt vector handling
- * fix C300 interrupt entry and stack frame
- * fix pushw where source register is same as stack register
- * switch to logmacro.h logging
- * Note: this does break the InterPro system - it compiles, but interrupts don't work. The relevant changes are tangled up with
-    other InterPro system changes that I'll submit later.
-
--upd765: sense interrupt status and i82072 changes [pmackinlay]
- * changed sense interrupt status drive busy bit handling for seek/recalibrate (only cleared when first result byte is read)
- * changed sis to return results in decrementing drive order
- * added i82072 motor on/off command
- * switched to logmacro.h logging convention
- * Note: I haven't tested the sense interrupt status change on anything other than the InterPro systems I'm targeting. Hopefully
-    someone else is set up to do so: only the change to the order of sis results is dubious - it's not covered by the documentation
-    I've seen so far, but relied on by the InterPro 2000 diagnostic code.
-
--i82586: fixed 82586 initialisation [pmackinlay]
- * tested 82586 device successfully (with InterPro 2000)
- * include heartbeat indicator on all transmits to pass InterPro diagnostic
- * corrected a bug affecting long frames (now allows up to 64k, slightly worried about the increase in save state, but don't have a
-    better idea)
-
--hp9k_3xx: hook up keyboard/sound to HP9000/332 [sschnelle]
-
--hp9k_3xx: add 98603 ROM card Even if BASIC doesn't boot yet it's handy to have the ROM card in the code and BASIC in the software
- list. [sschnelle]
-
--Improved 68340, 68681 and dbox support A cleaner PR than my previous. I reached my mile stone as I am able to hook up a terminal to
- the serial port. In theory it will now be possible to flash the dbox with a shareware called DVB2000 by using a PC utility that
- connects over serial, it is not tested yet as I need to figure out how to do that, either from a DOSbox or a second MAME instance.
- Please review in particular the way I created the serial module by inherit the duart driver. I think it works well but there could
- impurities in the way I did it. [JoakimLarsson]
-
--dbox: added 29F800B flash boot device This should be a clean merge as no dependencies from other drivers towards this new device
- exists. I am also pending on this being merged to rebase and PR the rest of my dbox/68340  work [JoakimLarsson]
-
- * validate will now report an error if no matches occur [npwoods]
-
--HP9000/300: Add SN76494 sound device [sschnelle]
-
--HP9000/300: disable DMA controller workaround Faking the DMA register set with RAM makes the 'Failed' message go away, but makes
- the ROM use DMA functionality even if there's none. Seen this while working on HPIB support which tries to transfer data via DMA
- and fails. When disabling the DMA hack the ROM falls back to PIO mode. [sschnelle]
- * Signed-off-by: Sven Schnelle <svens@stackframe.org>
-
--HP9000/300: fix detection of DIO cards Install a buserror handler for the DIO/DIO-II card ranges. The 300 BOOT ROM expects to get a
- Buserror signal to detect if there's a card. Also remove the memory of PC's doing invalid Bus accesses as this breaks this
- detection. [sschnelle]
- * Signed-off-by: Sven Schnelle <svens@stackframe.org>
-
--Hil keyboard support for HP9000/300 [sschnelle]
 
 -luaengine: translation support [Carl] Making a pull request for comment about whether this is wanted and if so how to add to
  workflow.  Seems to work fine with find with xgettext anyhow. [cracyc]
@@ -609,14 +434,6 @@ Source Changes
  enums around, and I also moved the "char casting" hack.  Vas might have opinions on how this was done. [npwoods]
 
 -Returning a reference from various corestr.cpp calls to avoid unnecessary string copies [npwoods]
-
--upd765: added i82072 Minimal support for i82072: write access to the data rate select register is enough for InterPro 2000 support
- right now. [pmackinlay]
-
--add apple2_cass softlist This starts a cassette softlist for the apple2 series. Includes tapes with ml, integer basic, and
- applesoft basic. [Dagarman]
-
--Correct regions for Cyber Cycles, Dirt Dash, Time Crisis, Tokyo Wars and Armadillo Racing sets [sjy96525]
 
 -Attempted to sanitize/rationalize how we access UTF-8 command line arguments Specifically, this creates a call
  osd_get_command_line() that returns UTF-8 command line arguments as std::vector<std::string>.  On non-Windows platforms, this does
@@ -628,28 +445,11 @@ Source Changes
  * I'm very open to the idea that src/osd/osdcore.[cpp|h] is not the best place to do this.  Let me know if I should move it.
 
 
-New working clones
-------------------
-from a dead board, howver, this also shows where the region byte is and uncovers that there's an alt. title of Lizard Hunt, maybe
-  that was used for the US region? [David Haywood]
-see title. [DavidHaywood]
-
-
-Machines promoted to working
-----------------------------
-data was verified using a 2nd board, only 1 byte changed in the code area, data table is also verified by checksum in the code, and
-  by the unprotected set as reference.  This is a good read. [David Haywood]
-data was verified using a 2nd board, only 1 byte changed in the code area, data table is also verified by checksum in the code, and
-  by the unprotected set as reference.  This is a good read. [DavidHaywood]
-
-
 New machines marked as NOT_WORKING
 ----------------------------------
-pce_tourvision:  Bomberman 93, Die Hard, Hit The Ice, Knight Rider Special [system11]
 tourvis:  Added new BIOS dump, clarified BIOS names, and updated several games with newly discovered ID codes.  [system11, Tafoid]
 Not much work has been done here except on graphics decoding. Emulation gets only as far as the attract screen, which doesn't appear
   to include a title but does show the message "CONFORME ALLA LEGGE N.904 DEL 17.12.1986." [AJR]
-Royal Jackpot (TAB / Video Klein, encrypted) [Roberto Fresca, Team Europe]
 Fixed rom size for Tank (atarittl.cpp) based on recent verification dump [Ed Fries]
 Mostly a skeleton driver, but shows the initial boot message. [Dirk Best]
 
@@ -671,21 +471,12 @@ wc90ba -> twcup90ba Euro League (Italian hack of Tecmo World Cup '90 - alt versi
 bbhsc -> bbhsca Big Buck Hunter - Shooter's Challenge (v1.50.07)
 tws96 -> twsoc96 Tecmo World Soccer '96
 
-New working machines
---------------------
-Laser 2001
-unknown Italian poker game
-
 New working clones
 ------------------
 Big Buck Hunter - Shooter's Challenge (v1.60.01)
-Land Breaker (World) / Miss Tang Ja Ru Gi (Korea) (pcb ver 1.0) (AT89c52 protected)
 
 Machines promoted to working
 ----------------------------
-Big Buck Hunter - Shooter's Challenge (v1.60.01)
-Big Buck Hunter Call of the Wild (v3.02.5)
-Big Buck Hunter II - Sportsman's Paradise (v2.02.11)
 Glass (Ver 1.1, Break Edition, Checksum 49D5E66B, Version 1994)
 Mazer Blazer (set 1)
 Tecmo World Cup '94 (set 1)
@@ -693,19 +484,9 @@ Virtual Pool
 
 Clones promoted to working
 --------------------------
-Big Buck Hunter - Shooter's Challenge (v1.50.07)
 Mazer Blazer (set 2)
 Tecmo World Cup '94 (set 2)
 
-New machines marked as NOT_WORKING
-----------------------------------
-DS
-
 New clones marked as NOT_WORKING
 --------------------------------
-EURO PC II
-EURO XT
-Ericsson PC
-Ericsson Portable PC
-Olytext 30
 PC/AT 386SX (VGA, MF2 Keyboard)
