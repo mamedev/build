@@ -279,6 +279,15 @@ Source Changes
 
 -dccons.cpp: Virginized DC Flash ROM dumps to fresh factory state and documented Dreamcast Flash ROM structure. [MetalliC]
 
+-Return a reference from corestr.cpp calls to avoid unnecessary string copies. [Nathan Woods]
+
+-Added validation checks for PORT_CHAR character values. [Nathan Woods]
+
+-Made -validate verb report an error if no drivers match pattern. [Nathan Woods]
+
+-Attempted to sanitize/rationalize UTF-8 command line arguments are accessed. [Nathan Woods]
+ * Also fixes a bug in imgtool where non-7 bit ASCII was not being handled correctly under Windows.
+
 -spectrum: Added expansion slot and devices, removed Kempston Joystick Interface from driver. [Nigel Barnes]
  * Working devices: Currah MicroSlot, Currah MicroSource, Currah MicroSpeech, Didaktik Melodik, Fuller Box,
     Kempston Joystick Interface, Mikro-Plus (Shadow of the Unicorn), Protek Joystick Interface, ZX Interface 2.
@@ -380,38 +389,3 @@ tourvis: Added new BIOS dump, clarified BIOS names, and updated several games wi
 -Updated hiscore.dat. [Leezer]
 
 -tnzs.cpp: Corrected ROM PCB locations and added Guru-Readme for the P0-25-A PCB. [Guru]
-
--Returning a reference from various corestr.cpp calls to avoid unnecessary string copies (#2613) [npwoods]
-
- * validate will now report an error if no matches occur [npwoods]
-
- * validate will now report an error if no matches occur [Nathan Woods]
-
--Added a natural keyboard validation to check for valid natural keyboard (uni)codes (#2618) [npwoods]
-
--Changing switch statement in ioport_field::key_name() to MAME favored formatting [Nathan Woods]
-
--Attempted to sanitize/rationalize how we access UTF-8 command line arguments (#2532) [npwoods]
- * Specifically, this creates a call osd_get_command_line() that returns UTF-8 command line arguments as std::vector<std::string>.
-    On non-Windows platforms, this does nothing more than build the vector.  On Windows, this invokes GetCommandLineW() and
-    CommandLineToArgvW().  This also attempts to unwind usage of wmain()/_tmain() on Windows, which is not standard.
- * Related to this, this fixes a bug in Imgtool; specifically, non-7 bit ASCII was not being handled correctly in Windows.
- * This is really an admission that the way that Windows handles Unicode and command line arguments sucks, and it is my belief that
-    having a wmain() or _tmain() declaration specific for Windows is a worse solution.  C'est la vie.
- * I'm very open to the idea that src/osd/osdcore.[cpp|h] is not the best place to do this.  Let me know if I should move it.
-
--Changing switch statement in ioport_field::key_name() to MAME favored formatting [npwoods]
-
--Added a natural keyboard validation to check for valid natural keyboard (uni)codes I had to shuffle the SHIFT_COUNT/SHIFT_STATE
- enums around, and I also moved the "char casting" hack.  Vas might have opinions on how this was done. [npwoods]
-
--Returning a reference from various corestr.cpp calls to avoid unnecessary string copies [npwoods]
-
--Attempted to sanitize/rationalize how we access UTF-8 command line arguments Specifically, this creates a call
- osd_get_command_line() that returns UTF-8 command line arguments as std::vector<std::string>.  On non-Windows platforms, this does
- nothing more than build the vector.  On Windows, this invokes GetCommandLineW() and CommandLineToArgvW().  This also attempts to
- unwind usage of wmain()/_tmain() on Windows, which is not standard. [npwoods]
- * Related to this, this fixes a bug in Imgtool; specifically, non-7 bit ASCII was not being handled correctly in Windows.
- * This is really an admission that the way that Windows handles Unicode and command line arguments sucks, and it is my belief that
-    having a wmain() or _tmain() declaration specific for Windows is a worse solution.  C'est la vie.
- * I'm very open to the idea that src/osd/osdcore.[cpp|h] is not the best place to do this.  Let me know if I should move it.
