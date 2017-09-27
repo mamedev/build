@@ -104,6 +104,7 @@ apple2_cass: Color Demosoft / Little Brickout, Lords of Karma, Startrek / Starwa
 archimedes: SCSI Support Disc [Nigel Barnes]
 bbcb_flop: ArcPinball [Nigel Barnes]
 c128_cart: VizaWrite 128 [terror]
+hp85_rom: Assembler ROM, I/O ROM, Matrix ROM, Service ROM, Service ROM (fixed) [F.Ulivi]
 ibm5150:
   Concurrent PC DOS 3.2, Concurrent PC DOS 4.1, Concurrent DOS XM 6.0, Concurrent DOS XM 6.01, Concurrent DOS XM 6.21 [Justin Kerk]
 ibm5170:
@@ -116,10 +117,6 @@ pce_tourvision: Bomberman 93, Die Hard, Hit The Ice, Knight Rider Special [syste
 spectrum_cass: Currah MicroSpeech Demo, Fuller Box Orator Demonstration, Shadow of the Unicorn, Spectrum Voice Chess [Nigel Barnes]
 
 
-New NOT_WORKING software list additions
----------------------------------------
-
-
 Translations added or modified
 ------------------------------
 Dutch [Jos van Mourik]
@@ -130,7 +127,7 @@ Turkish [Kadir Eksi]
 
 Source Changes
 --------------
--Added new am9513 device. [AJR]
+-Added new AM9513 System Timing Controller device. [AJR]
 
 -Improved 28XX parallel EEPROM emulation: [AJR]
  * Emulated direct manipulation of /OE line for read/write mode control.
@@ -144,7 +141,7 @@ Source Changes
 
 -z8 improvements: [AJR]
  * Made data space optional.
- * Fix stack pop semantics.
+ * Fixed stack pop semantics.
  * Mask addresses for external memory accesses based on P0 control bits.
  * Fixed C flag polarity for CP/SBC/SUB, and actually subtract with carry in SBC (lets amerihok pass initial checksum).
  * Fixed interrupts.
@@ -158,8 +155,8 @@ Source Changes
    - Provides EEPROM-compatible timing for the SIO shift register, allowing the 93C46 on quizpun2 to be read and written properly.
  * Added M pseudo-register (internal RAM referenced by B) to debugger state.
  * Added T register to debugger state on devices where it only affects SKT.
- * The SIO state is now displayed in binary when it is defined as a shift register.
- * Allowed skipped instructions and the SKIP to be debugged using a compile-time switch (disabled by default).
+ * Display SIO state in binary when it is defined as a shift register.
+ * Allowed skipped instructions and the SKIP flag to be debugged using a compile-time switch (disabled by default).
 
 -weststry: Prevent mistimed interrupts that were killing sound. [AJR]
 
@@ -216,7 +213,7 @@ Source Changes
 
 -leland: Fixed missing DAC sounds in later Ataxx-era audio. [Barry Rodewald]
 
--vamphalf.cpp: Added speedup for coolminii. [Brian Troha]
+-vamphalf.cpp: Added idle skipping speedup hack for coolminii. [Brian Troha]
 
 -luaengine: Added translation support. [Carl]
 
@@ -378,7 +375,7 @@ tourvis: Added new BIOS dump, clarified BIOS names, and updated several games wi
  * Traced out correct clock divider for CPU and MCU from PCB.
  * Added emulation of the 8031 bootleg MCU port 3 output latch.
 
--Fixed corrupt bytes in two MC68705 dumps after re-analysis of raw dump data. [Lord Nightmare, ShouTime]
+-Fixed corrupt bytes in two MC68705 dumps after re-analyzing raw dump data. [Lord Nightmare, ShouTime]
 
 -retofinvb3: Fixed colors. [Lord Nightmare]
 
