@@ -75,7 +75,9 @@ Dobou-Chan (ver. JAA) [R. Belmont, Rod_Wod]
 E-Touch Mahjong Series #2: Joshiryou de NE! [ShouTime, Team Japump, The Dumping Union]
 E-Touch Mahjong Series #6: Scandal Blue - Midara na Daishou [ShouTime, Team Japump, The Dumping Union]
 E-Touch Mahjong Series #7: Trap Zone - Yokubou no Kaisoku Densha [ShouTime, Team Japump, The Dumping Union]
+Elektronika MS 6102.02 [shattered]
 Gokidetor [Surgeville, Sean Sutton, Smitdogg, The Dumping Union]
+Mikrocomputer fuer Ausbildung [rfka01, Robbbert]
 Note Chance [Roberto Fresca, Ryan Holtz, Smitdogg, The Dumping Union]
 Ocha-Ken Hot Medal [Darksoft]
 Ton Puu Mahjong [ShouTime, The Dumping Union]
@@ -132,10 +134,37 @@ hx20_rom: SkiWriter [Nigel Barnes]
 
 Translations added or modified
 ------------------------------
+Chinese (Simplified) [YuiFAN]
+Chinese (Traditional) [YuiFAN]
+German [Raf Tacker]
+Greek [BraiNKilleRGR]
+Japanese [Katsuhiko Kagami]
 
 
 Source Changes
 --------------
+-coco3: Made banked cartridges actually work. [AJR]
+
+-z8: Fixed disassembly of LDE Irr, r. [AJR]
+
+-am9513: Implemented time-of-day mode. [AJR]
+
+-Actually make sure OSD options are included when saving through UI. [AJR]
+
+-Draw a nominal distinction between PC060HA and TC0140SYT. [AJR]
+
+-Explicitly allow floating point values for state registration. [AJR]
+
+-ccs2810: Major refinements. [AJR]
+ * Implemented power-on jump in a hardware-accurate manner, including full configuration options.
+ * Hooked up INS8250 device for RS-232 serial communication (requires ROM wait states simulatiom for baud rate to be recognized).
+ * Made serial port address configurable as well (although monitor expects it to be at the default setting).
+
+-S-100 bus refinements: [AJR]
+ * Made slots subdevices, eliminating the need to hardcode the bus tag.
+ * Clock the bus and its slots.
+ * Use correct XTAL for nshrz and added 2MHz variant.
+
 -legionna.cpp: Fixed Denjin Makai background pen colors. [Angelo Salese]
 
 -rx78.cpp: Added border area. [Angelo Salese]
@@ -178,7 +207,34 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
 
 -wheelfir.cpp: Converted to RAMDAC device. [Angelo Salese]
 
+-Added lua translation to makefile and regenerated translations. [Carl]
+
+-plugins/cheat: Added input sequence cheats. [Carl]
+
+-abc800 updates: [Curt Coder]
+ * Corrected Turbo Kontroller name to UNI DISK and identified CPU type.
+ * Added skeleton for Databoard 4112-23 floppy disk controller.
+ * Fixed Luxor 55-10828 "slow" floppy controller board logic.
+
+-supbtime.cpp: Cleaned up and merged with tumblep. [Dirk Best]
+ * Removed duplicate code, used screen raw parameters and XTAL values, added DIP switch locations to all games.
+
 -mc146818: Fixed main interrupt flag. [Jean-Francois DEL NERO]
+
+-abc310: Added 80286 2nd processor. [Nigel Barnes]
+
+-tube_z80: Check NMI state when paging in ROM. [Nigel Barnes]
+
+-acorn_dsk: Improved identifying SSD/DSD by comparing image size with sector counts. [Nigel Barnes]
+ * Also fixed DDCPM format to handle correct image of Double Density CP/M.
+
+-bbc: Added Torch Z80 Communicator as Tube slot device. [Nigel Barnes]
+
+-acorn_dsk: Removed CPN format, now handled with SSD/DSD. [Nigel Barnes]
+
+-hx20: Added optional ROM slot and software list. [Nigel Barnes]
+
+-vme_hcpu30: Added Besta HCPU30 VME board skeleton device. [shattered]
 
 -Generate tiled layouts for systems with three or more screens (fixes crash with four or more emulated screens). [Vas Crabb]
 
@@ -188,6 +244,10 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
 
 -Exposed condition for DIP switches, configuration entries, and adjusters in -listxml output. [Vas Crabb]
 
+-gauntlet.cpp: Reinstated correct size for 'gfx1' ROM, which was chopped off a long time ago. [f205v]
+
+-Added PAL dumps for supbtime. [Luiskiko/jammarcade.net]
+
 -z80sio/z80scc: now returns cpu specific default vector when no interrupt found to acknowledge [Edstrom]
 
 -Added support for multiple PORT_CHAR() bindings, and adopted in the CoCo driver  (addresses MT#2618) [Nathan Woods]
@@ -196,77 +256,37 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
 
 -t4426 cart: added 14411 BRG, 6850 acia as a second rs232 port and fixed banking [Edstrom]
 
--supbtime.cpp: Clean up and merge tumblep [Dirk Best]
- * Remove duplicate code
- * Screen raw parameters and XTAL values
- * Added PAL dumps for supbtime [Luiskiko/jammarcade.net]
- * Add dip switch locations to all games
-
--ms6102 (Elektronika MS6102.02, text terminal): new skeleton. [Sergey Svishchev]
-
 -proteus3: added mc14411 bit rate generator device and replaced the timer based clocks for the ACIA:s (#2678) [Edstrom]
-
--New not-working machine: Mickrocomputer fuer Ausbildung [rfka01, Robbbert]
 
 -mfabfz: more roms [Robbbert]
 
--Update strings.po for Japanese [Katsuhiko Kagami]
-
 -mfabfz: removed trampolines [Robbbert]
 
--add lua translation to makefile and update translations [cracyc]
-
--coco3: Make banked cartridges actually work [AJR]
-
 -dumped touchgo SRAM from 2 more boards, used that dump to verify / correct the SRAM image
  [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood]
 
 -update androidp year to 1987 based on ingame date showing after end credits [David Haywood]
 
--Update Chinese translations [YuiFAN]
-
 -dumped touchgo SRAM from 2 more boards, used that dump to verify / correct the SRAM image
  [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood]
 
 -update androidp year to 1987 based on ingame date showing after end credits [David Haywood]
-
--Update Chinese translations [YuiFAN]
 
 -ms6102 : decrypted chargen [Robbbert]
-
--gauntlet.cpp: reinstated correct size for 'gfx1' rom, which was chopped off a long time ago [f205v]
-
--Updated Greek Translation [BraiNKilleRGR]
-
--Updated German Strings (#2685) [Raf Tacker]
-
--abc310: Added 80286 2nd processor. [Nigel Barnes]
 
 -move sh2 / sh4 to a folder called superh [David Haywood]
 
 -use 'sh' instead of 'superh' [David Haywood]
 
--vme_hcpu30: Besta HCPU30 VME board, skeleton driver. [Sergey Svishchev]
-
--plugins/cheat: input sequence cheats [Carl]
-
 -Remove partial updates from Tokio video, fixes MT #06691 [Lord Nightmare]
 
 -Support for HP85 tapes added to imgtool (#2688) [fulivi]
-
--abc800: Fixed Turbo Kontroller name to UNI DISK and identified CPU type. [Curt Coder]
-
--Small fixes to general info panel [BraiNKilleRGR]
 
 -Note Chance: Added findings/notes about the sample system [Roberto Fresca]
 
 -Note Chance: Added crystal/oscillator to the harcoded list [Roberto Fresca]
 
--z8: Fix disassembly of LDE Irr, r [AJR]
-
 -Note Chance: There is not a resonator, so OKI clock is derived from main crystal [Roberto Fresca]
-
--abc800: Added skeleton for Databoard 4112-23 floppy disk controller. [Curt Coder]
 
 -add apple2_cass tapes (#2698) [Dagarman]
 
@@ -284,8 +304,6 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
 
 -taitoair.cpp: dumped ainferno's Controller PCB ROM  [ShouTime, The Dumping Union]
 
--am9513: Implement time-of-day mode [AJR]
-
 -Fixed an options overhaul regression (#2530) [npwoods]
  * This crash (discovered by Wizz) had the following symptoms: 1.  Start MAME 2.  Choose "Configure Machine" 3.  Choose "Video
     Options" CRASH
@@ -295,10 +313,6 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
  * I created a osd_setup_osd_specific_emu_options(emu_options &) function that given an emu_options, will slap on system specific
     options.  I see this as only marginally less gross, and I have zero opinion on whether this should be changed to return an
     emu_options (rather than have a reference parameter), be a static method on emu_options, or what have you.
-
--Actually make sure OSD options are included when saving through UI [AJR]
-
--apply comments from PR#2695 [Sergey Svishchev]
 
 -Note Chance: Corrected the release year. Added more technical notes [Roberto Fresca]
 
@@ -336,22 +350,11 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
 -Note Chance: Added more technical notes about inputs, outputs, error codes and DIP switches (thanks Vas for the error codes and DIP
  switches partial translation) [RobertoFresca]
 
--tube_z80: Check NMI state when paging in ROM. [Nigel Barnes]
-
--acorn_dsk: Improve identifying SSD/DSD by comparing image size with sector counts. [Nigel Barnes]
- * Fixed DDCPM format to handle correct image of Double Density CP/M.
-
--bbc: Added Torch Z80 Communicator as Tube slot device. [Nigel Barnes]
-
--acorn_dsk: Removed CPN format, now handled with SSD/DSD. [Nigel Barnes]
-
 -psx.xml: Added 76 new dumps, replaced 2 bad dumps (#2712) [aeternal606]
  * Based on the redump.org PSX dat from 2017-10-10, I've added 76 new dumps (mostly demos, cheat applications and Lightspan discs),
     replaced two bad dumps and renamed a couple of original images to keep them synced with their corresponding redump entries.
 
 -Preliminary SH3 / SH4 recompiler [David Haywood] (#2711) [David Haywood]
-
--Draw a nominal distinction between PC060HA and TC0140SYT [AJR]
 
 -fix CPS3/STV (we always use timers for SH2 DMA, and have done for years, just forgot to remove the #ifdef on this code when
  cleaning up) [David Haywood]
@@ -359,8 +362,6 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
 -new Working clone - TH Strikes Back [briantro]
 
 -Fix crash loading 80-track .mfm dumps of 40-track floppy disks on 40-track drives. [Justin Kerk]
-
--abc800: Fixed Luxor 55-10828 "slow" floppy controller board logic. [Curt Coder]
 
 -Added first and last known BIOS versions [rfka01]
 
@@ -374,10 +375,6 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
 
 -qix.cpp: added some documentation to the qixb set [ShouTime]
 
--Explicitly allow floating point values for state registers [AJR]
- * Note that the internal debugger's expression interpreter is not set up to handle floating point values at all, so they remain
-    disabled there.
-
 -Added Kaypro 16 [rfka01]
 
 -More inputs behaviour notes... [RobertoFresca]
@@ -387,13 +384,6 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
 -Kaypro: Added the Omni 4 Logic Analyzer [rfka01]
 
 -segas16b.cpp: some corrections to Aurail documentation [ekorz]
-
--ccs2810: Major refinements [AJR]
- * Implement power-on jump in a hardware-accurate manner, including full configuration options.
- * Hook up INS8250 device for RS-232 serial communication. This requires ROM wait states to be (crudely) simulated, or else the baud
-    rate recognition routine will mess up its timing.
- * Make serial port address configurable as well (although the monitor still expects it to be at the default setting). This will
-    help prepare for S-100 bus emulation.
 
 -new working clone - World Series: The Season (rev 0) [briantro]
 
@@ -407,11 +397,6 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
  * I concluded that invoking std::mktime on manually assembled std::tm is bad, because it is indeterminate how the std::tm members
     may be "dominant".  This required that I go further in imgtool, and update a number of drivers and eliminate the parameter of
     imgtool::datetime that takes std::tm.
-
--S-100 bus refinements [AJR]
- * Make slots subdevices, eliminating the need to hardcode the bus tag
- * Clock the bus and its slots
- * Use correct XTAL for nshrz and add 2MHz variant
 
 -Gamate sound is 100% AY8910 compatible according to Kevtris and Peter Wilhelmsen, us the AY8910 core. [David Haywood]
 
@@ -463,8 +448,6 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
 
 -Correct Waku Waku Doubutsu Land TonTon year [sjy96525]
  * In according Success website, Waku Waku Doubutsu Land TonTon (とんとん) year is 1987.
-
--hx20: Added optional ROM slot and softlist. [Nigel Barnes]
 
 -Fix MT#06487. [sjy96525] (#2737) [sjy96525]
  * Correct Pyon Pyon Jump year
@@ -590,8 +573,6 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
 
 -Small fixes to general info panel on internal UI [BraiNKilleRGR]
 
--vme_hcpu30: Besta HCPU30 VME board, skeleton driver. [shattered]
-
 -move sh2 / sh4 to a folder called superh the sh3 / sh4 core contains a lot of copy + pasted code from the sh2. [DavidHaywood]
  * the family name is SuperH, so it seems more logical to place them in a folder with that name.
  * the basic execution engine could be shared, the diassembler could be shared (most of it is a straight copy+paste at the moment)
@@ -605,10 +586,6 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
 -Support for HP85 tapes added to imgtool Hi, this PR adds support for HP85 tape images to imgtool. Thanks. [fulivi]
  * -F.Ulivi
 
--Updated Greek Translation [BraiNKilleRGR]
-
--Updated German Strings [RafTacker]
-
 -t4426: promoted to working after clarification from Vas, still needs work [Edstrom]
 
 -Gaelco touchgo improvement - new SRAM dump verified using 2 more boards in order to weed out the bad bytes, image is now trusted
@@ -617,8 +594,6 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
 
 -proteus3: added mc14411 bit rate generator device and replaced the timer based clocks for the ACIA:s [Edstrom]
 
--add lua translation to makefile and update translations [cracyc]
-
 -Terco 4426 programming station cart banking fixed Still some odd exits to a disabled BASIC prompt for last two main menu options.
  It is probably some memory map issue/main board modification not emulated yet. I will verify this on real hardware before hunting
  the cause of it. [Edstrom]
@@ -626,8 +601,6 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
     which is on my to do list to emulate, so the cart is working to an extent.
 
 -Added support for multiple PORT_CHAR() bindings, and adopted in the CoCo driver  (addresses MT#2618) [npwoods]
-
--Update strings.po for Japanese [k2-git]
 
 -z80sio/z80scc: now returns cpu specific default vector when no interrupt found to acknowledge. I failed to merge this correctly
  before for z80sio, it was merged but disabled. This is fixed now and also implemented this for z80scc. This fix should work for any
@@ -726,8 +699,6 @@ Casino Strip X (Poker version, for Sony LD)
 Casino Strip XI (Poker version, for Sony LD, set 1)
 Casino Strip XI (Shooting Game version, for Pioneer LD)
 Casino Strip XII (Poker version, for Sony LD)
-MS 6102.02
-Mikrocomputer fuer Ausbildung
 Ocha-Ken Hot Medal
 Time Warp (L-3)
 
