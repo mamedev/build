@@ -298,6 +298,8 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
 
 -Fixed crash loading 80-track .mfm dumps of 40-track floppy disks on 40-track drives. [Justin Kerk]
 
+-Hacked around MT06691 by suppressing partial updates in Tokio video - timing is likely wrong. [Lord Nightmare]
+
 -mc68901: Fixed TCDCR register - bits 6-4 are used for timer C bits 2-0 are used for timer D. [Nicolas PLANEL]
 
 -abc310: Added 80286 2nd processor. [Nigel Barnes]
@@ -341,6 +343,10 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
 
 -dynax.cpp: Fixed credits lost after exiting the game in tenkai. [Wei Mingzhi]
 
+-psx.xml: Synchronisd with redump.org, adding 76 new dumps and replacing two bad dumps. [aeternal606]
+
+-gaelco.cpp: Corrected various clock speeds and added PCB layout for Biomechanical Toy. [Brian Troha]
+
 -naomi.cpp: Decaped and identified Atomiswave 'ROMEO' ASIC. [brizzo]
 
 -segasp.cpp: Dumped Network firmware ver 1.25. [Darksoft]
@@ -369,49 +375,6 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
 
 -Added newer version of Mephisto Academy (German) as BIOS option. [yoyo_chessboard]
 
--Added support for multiple PORT_CHAR() bindings, and adopted in the CoCo driver  (addresses MT#2618) [Nathan Woods]
+-Added support for multiple PORT_CHAR() bindings, and adopted in the CoCo driver. [Nathan Woods]
 
--Remove partial updates from Tokio video, fixes MT #06691 [Lord Nightmare]
-
--psx.xml: Added 76 new dumps, replaced 2 bad dumps Based on the redump.org PSX dat from 2017-10-10, I've added 76 new dumps (mostly
- demos, cheat applications and Lightspan discs), replaced two bad dumps and renamed a couple of original images to keep them synced
- with their corresponding redump entries. [aeternal606]
-
--Fixed an options overhaul regression (#2530) [npwoods]
- * This crash (discovered by Wizz) had the following symptoms: 1.  Start MAME 2.  Choose "Configure Machine" 3.  Choose "Video
-    Options" CRASH
- * This was the result of the options editor not having a fully formed list of options where it was expecting one.  The fix is to
-    change the declaration of emu_options to one that have full OSD options (it is possible that SDLMAME needs something slightly
-    different)
- * I created a osd_setup_osd_specific_emu_options(emu_options &) function that given an emu_options, will slap on system specific
-    options.  I see this as only marginally less gross, and I have zero opinion on whether this should be changed to return an
-    emu_options (rather than have a reference parameter), be a static method on emu_options, or what have you.
-
--psx.xml: Added 76 new dumps, replaced 2 bad dumps (#2712) [aeternal606]
- * Based on the redump.org PSX dat from 2017-10-10, I've added 76 new dumps (mostly demos, cheat applications and Lightspan discs),
-    replaced two bad dumps and renamed a couple of original images to keep them synced with their corresponding redump entries.
-
--Created a more flexible imgtool::datetime structure for use within Imgtool (#2263) [npwoods]
- * Created a more flexible imgtool::datetime structure for use within Imgtool
- * This is intended to replace most usage of time_t
- * Changing the granularity of imgtool_clock from 1ms to 100ns, as per Vas' suggestion
- * Created arbitrary_datetime in timeconv.h to facilitate interpretation of datetime info
- * I concluded that invoking std::mktime on manually assembled std::tm is bad, because it is indeterminate how the std::tm members
-    may be "dominant".  This required that I go further in imgtool, and update a number of drivers and eliminate the parameter of
-    imgtool::datetime that takes std::tm.
-
--gaelco.cpp: Correct various clock speeds & add PCB layout for Biomechanical Toy. [Brian Troha]
-
--Added support for multiple PORT_CHAR() bindings, and adopted in the CoCo driver  (addresses MT#2618) [npwoods]
-
--Fixed an options overhaul regression This crash (discovered by Wizz) had the following symptoms: 1.  Start MAME 2.  Choose
- "Configure Machine" 3.  Choose "Video Options" CRASH [npwoods]
- * This was the result of the options editor not having a fully formed list of options where it was expecting one.  The fix is to
-    change the declaration of emu_options to one that have full OSD options (it is possible that SDLMAME needs something slightly
-    different)
- * Please scrutinize this fix.  I hate it.  I also hate how all of the OSD options are duplicatively declared in submenu.cpp, but
-    with a different data structure.  At the very least we should be having some sort of factory to create "full" options for the
-    pertinent platform; but I'm not sure how precisely we would want it to work.
-
--Created a more flexible imgtool::datetime structure for use within Imgtool This is intended to replace most usage of time_t
- [npwoods]
+-Created a more flexible date/time structure for use within imgtool intended to replace most usage of time_t. [Nathan Woods]
