@@ -128,7 +128,17 @@ Virtua Athletics / Virtua Athlete (prototype) [antron, MetalliC, rtw]
 
 New working software list additions
 -----------------------------------
+apple2_cass:
+  Alignment Test Tone / Renumber, Alignment Test Tone / Sampler, Apple Bowl, Applesoft IIa,
+  Applesoft ][ Floating Point BASIC / Floating Point BASIC Demo, Apple Trek, Apple-2 Trek, Apple-Vision / Biorhythms,
+  Basic Finance I/ Penny Arcade, Brian's Theme / Phone List, Brick out / Color Demonstration Programs,
+  Breakout / Color Graphics, Breakout / Color Demos, Checkbook, Color Sketch / Supermath, Datamover / Telepong,
+  High Resolution Graphics, Hangman / Color Math, Hopalong Cassidy / Lemonade Stand, Leases / Loans, Savings / Finance [Dagarman]
 bbc_flop_torch: Hard Disc Utilities v4.1, Torch System Disc v1.7 [Nigel Barnes]
+fmtowns_cd:
+  Ginga Eiyuu Densetsu III SP, Gulf War Soukouden, New 3D Golf Simulation: Harukanaru Augusta, TownsPAINT V1.1L20,
+  Video Koubou V1.3L10 [r09]
+fmtowns_flop: Sweet Angel [r09]
 gamate: Kiki Inland [Morten Shearman Kirkegaard, Peter Wilhelmsen]
 ibm5150:
   The Adventures of Captain Comic, Back to the Future Part II, Dragons of Flame, Gryzor, Loom (French), Kings of the Beach (3.5"),
@@ -163,6 +173,7 @@ bbc_flop_torch:
 
 New NOT_WORKING software list additions
 ---------------------------------------
+apple2_cass: Apple Stock Quote Reporter, Tape Measure / Alignment Test Tone [Dagarman]
 bbc_flop_torch: Basic Pack v2.0, Prog Dev Pack v2.0, Text Pack v2.0, Unix Upgrade Pack release 1.0 to 2.0 [Nigel Barnes]
 hx20_rom: SkiWriter [Nigel Barnes]
 rx78: Challenge Golf [SSJ, Team Europe, Dustin Hubbard]
@@ -256,10 +267,38 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
  * Added skeleton for Databoard 4112-23 floppy disk controller.
  * Fixed Luxor 55-10828 "slow" floppy controller board logic.
 
+-Updated androidp year to 1987 based on in-game date showed after end credits. [David Haywood]
+
+-Documented that the 'oldsplus' set identifies as "Oriental Legend 2" when the protection device supplies Korea as the region.
+ [David Haywood]
+
+-Gamate overhaul, fixes many games: [David Haywood]
+ * Sound is 100% AY8910 compatible according to kevtris and Peter Wilhelmsen - use the AY8910 core.
+ * Rewrote the video implementation from scratch using kevtris' document and Peter Wilhelmsen's notes this fixes many games.
+ * Added some mirroring to memory map.
+ * Converted cartridges to slot devices that handle protection themselves.
+ * Rewrote protection emulation from scratch based on notes from kevtris and Peter Wilhelmsen.
+
+-Merged Hitachi SuperH CPU cores and implemented a preliminary SH3/SH4 recompiler. [David Haywood]
+ * Recompiler is currently enabled for Cave CV-1000 but disabled for Sega NAOMI.
+ * Recompiler can more than double the benchmark speed of CV-1000 games.
+
 -supbtime.cpp: Cleaned up and merged with tumblep. [Dirk Best]
  * Removed duplicate code, used screen raw parameters and XTAL values, added DIP switch locations to all games.
 
+-z80sio/z80scc: Return CPU-specific default vector when no interrupt found to acknowledge. [Edstrom]
+
+-t4426 cart: Added MC14411 BRG, 6850 ACIA as a second RS232 port and fixed banking; promoted to working. [Edstrom]
+
+-proteus3: Added MC14411 bit rate generator device and replaced the timer based clocks for the ACIAs. [Edstrom]
+
+-imgtool: Added support for HP85 tape. [F.Ulivi]
+
 -mc146818: Fixed main interrupt flag. [Jean-Francois DEL NERO]
+
+-Fixed crash loading 80-track .mfm dumps of 40-track floppy disks on 40-track drives. [Justin Kerk]
+
+-mc68901: Fixed TCDCR register - bits 6-4 are used for timer C bits 2-0 are used for timer D. [Nicolas PLANEL]
 
 -abc310: Added 80286 2nd processor. [Nigel Barnes]
 
@@ -288,6 +327,8 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
 
 -ax80: Added roms, notes, and flesh. [Robbbert]
 
+-Note Chance: Added skeleton driver with front panel layout, sound, and extensive notes. [Roberto Fresca]
+
 -vme_hcpu30: Added Besta HCPU30 VME board skeleton device. [shattered]
 
 -Generate tiled layouts for systems with three or more screens (fixes crash with four or more emulated screens). [Vas Crabb]
@@ -298,11 +339,24 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
 
 -Exposed condition for DIP switches, configuration entries, and adjusters in -listxml output. [Vas Crabb]
 
+-dynax.cpp: Fixed credits lost after exiting the game in tenkai. [Wei Mingzhi]
+
+-naomi.cpp: Decaped and identified Atomiswave 'ROMEO' ASIC. [brizzo]
+
 -segasp.cpp: Dumped Network firmware ver 1.25. [Darksoft]
+
+-segas16b.cpp: Made some corrections to Aurail documentation. [ekorz]
 
 -gauntlet.cpp: Reinstated correct size for 'gfx1' ROM, which was chopped off a long time ago. [f205v]
 
 -Added PAL dumps for supbtime. [Luiskiko/jammarcade.net]
+
+-Dumped touchgo SRAM from two more boards, and used that dump to verify/correct the SRAM image.
+ [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood]
+
+-Fixed zexall build target. [RandomArts]
+
+-EuroPC: Added first and last known BIOS versions. [rfka01]
 
 -taitoair.cpp: Dumped ainferno's Controller PCB ROM. [ShouTime, The Dumping Union]
 
@@ -311,51 +365,17 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
 -Corrected years for Final Furlong 2, Crisis Zone, Big 10, Waku Waku Doubutsu Land TonTon, Pyon Pyon Jump, and Sui Sui Pyon Pyon.
  [sjy96525]
 
--Added newer version of Mephisto Academy (German) as BIOS option. [yoyo_chessboard]
+-pv2000.xml: Desoldered and redumped ROMs for rakugaki and excitem2. [SSJ, Team Europe, Dustin Hubbard]
 
--z80sio/z80scc: now returns cpu specific default vector when no interrupt found to acknowledge [Edstrom]
+-Added newer version of Mephisto Academy (German) as BIOS option. [yoyo_chessboard]
 
 -Added support for multiple PORT_CHAR() bindings, and adopted in the CoCo driver  (addresses MT#2618) [Nathan Woods]
 
--t4426: promoted to working after clarification from Vas, still needs works [Edstrom]
-
--t4426 cart: added 14411 BRG, 6850 ACIA as a second RS232 port and fixed banking [Edstrom]
-
--proteus3: added mc14411 bit rate generator device and replaced the timer based clocks for the ACIA:s (#2678) [Edstrom]
-
--dumped touchgo SRAM from 2 more boards, used that dump to verify / correct the SRAM image
- [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood]
-
--update androidp year to 1987 based on ingame date showing after end credits [David Haywood]
-
--dumped touchgo SRAM from 2 more boards, used that dump to verify / correct the SRAM image
- [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood]
-
--update androidp year to 1987 based on ingame date showing after end credits [David Haywood]
-
--use 'sh' instead of 'superh' [David Haywood]
-
 -Remove partial updates from Tokio video, fixes MT #06691 [Lord Nightmare]
 
--Support for HP85 tapes added to imgtool (#2688) [fulivi]
-
--Note Chance: Added findings/notes about the sample system [Roberto Fresca]
-
--Note Chance: Added crystal/oscillator to the hardcoded list [Roberto Fresca]
-
--Note Chance: There is not a resonator, so OKI clock is derived from main crystal [Roberto Fresca]
-
--add apple2_cass tapes (#2698) [Dagarman]
-
--dynax.cpp: fix credits lost after exiting the game. The game checks for the the string "A WARNING.IF YOU COPY OUR ITEMS,WE REVENGE
- BY ALL MEANS." at address 0x6E17, and will reset everything if the string does not match. I'm not sure what the exact nvram address
- is, but at least this works. [Wei Mingzhi]
-
--Note Chance: Added a lamps panel for debugging purposes. Also added notes about some inputs [Roberto Fresca]
-
--mc68901 : fix TCDCR register [Nicolas PLANEL]
- * bits 6-4 are used for timer C bits 2-0 are used for timer D
- * https://www.nxp.com/docs/en/reference-manual/MC68901UM.pdf page 43 Signed-off-by: Nicolas PLANEL <nplanel@redhat.com>
+-psx.xml: Added 76 new dumps, replaced 2 bad dumps Based on the redump.org PSX dat from 2017-10-10, I've added 76 new dumps (mostly
+ demos, cheat applications and Lightspan discs), replaced two bad dumps and renamed a couple of original images to keep them synced
+ with their corresponding redump entries. [aeternal606]
 
 -Fixed an options overhaul regression (#2530) [npwoods]
  * This crash (discovered by Wizz) had the following symptoms: 1.  Start MAME 2.  Choose "Configure Machine" 3.  Choose "Video
@@ -367,56 +387,9 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
     options.  I see this as only marginally less gross, and I have zero opinion on whether this should be changed to return an
     emu_options (rather than have a reference parameter), be a static method on emu_options, or what have you.
 
--Note Chance: Corrected the release year. Added more technical notes [Roberto Fresca]
-
--here too... [RobertoFresca]
-
--Note Chance: Added more lamps to the testing panel. [RobertoFresca]
-
--Note Chance: Mapped the port FFh to the lamps panel for debugging purposes. [Roberto Fresca]
-
--Note Chance: Found another input and documented the game behaviour. Added more notes. [Roberto Fresca]
-
--Note Chance: Documenting the second bank of samples... [Roberto Fresca]
-
--Note Chance: Documented the second bank of samples. [Roberto Fresca]
-
--Note Chance: OKI frequency and pin7 status match the real sounds. [Roberto Fresca]
-
--Note Chance: Rearranged the test panel lamps to be D7-->D0. Also arranged the notes to talk about ports and lines instead of lamps.
- Added technical notes about the 4-bit counter found in port FFh. [Roberto Fresca]
-
--Note Chance: Samples numbered by bank. Recognized a couple of them. [Roberto Fresca]
-
--Note Chance: Added more technical notes about inputs, outputs, error codes and DIP switches (thanks Vas for the error codes and DIP
- switches partial translation) [RobertoFresca]
-
 -psx.xml: Added 76 new dumps, replaced 2 bad dumps (#2712) [aeternal606]
  * Based on the redump.org PSX dat from 2017-10-10, I've added 76 new dumps (mostly demos, cheat applications and Lightspan discs),
     replaced two bad dumps and renamed a couple of original images to keep them synced with their corresponding redump entries.
-
--Preliminary SH3 / SH4 recompiler [David Haywood] (#2711) [David Haywood]
-
--fix CPS3/STV (we always use timers for SH2 DMA, and have done for years, just forgot to remove the #ifdef on this code when
- cleaning up) [David Haywood]
-
--Fix crash loading 80-track .mfm dumps of 40-track floppy disks on 40-track drives. [Justin Kerk]
-
--Added first and last known BIOS versions [rfka01]
-
--Further comments [rfka01]
-
--Corrected notes... [RobertoFresca]
-
--Added Kaypro 16 [rfka01]
-
--More inputs behaviour notes... [RobertoFresca]
-
--Remove duplicated notes... [RobertoFresca]
-
--Kaypro: Added the Omni 4 Logic Analyzer [rfka01]
-
--segas16b.cpp: some corrections to Aurail documentation [ekorz]
 
 -Created a more flexible imgtool::datetime structure for use within Imgtool (#2263) [npwoods]
  * Created a more flexible imgtool::datetime structure for use within Imgtool
@@ -427,179 +400,9 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
     may be "dominant".  This required that I go further in imgtool, and update a number of drivers and eliminate the parameter of
     imgtool::datetime that takes std::tm.
 
--Gamate sound is 100% AY8910 compatible according to Kevtris and Peter Wilhelmsen, us the AY8910 core. [David Haywood]
-
--document that the 'oldsplus' set identifies as "Oriental Legend 2" when the protection device supplies Korea as the region, as it
- keeps showing up for sale that way. [David Haywood]
-
--fmtowns_cd.xml: several additions, revamped missing list [r09]
- * Added:
- * Ginga Eiyuu Densetsu III SP
- * Gulf War Soukouden
- * New 3D Golf Simulation: Harukanaru Augusta
- * TownsPAINT V1.1L20
- * Video Koubou V1.3L10
-
--fmtowns_flop.xml: 1 addition, revamped missing list [r09]
- * Added:
- * Sweet Angel
-
--fmtowns_cd.xml: fixed minor typo [r09]
-
--fmtowns_cd.xml: fix accidental deletion [r09]
- * Somehow I deleted a softlist entry while adding the new ones. It's now fixed.
-
--rewrote the Gamate video implementation from scratch using Kevtris' document and Peter Wilhelmsen's notes this fixes many games, we
- can probably mark them all as supported. [David Haywood]
-
--gamate: add some mirroring to memory map gamate.xml: mark all software as supported [David Haywood]
- * (next step, make it use a bus / cartridge device instead of protection and banking being hardcoded in driver)
-
--use slot device for gamate cartridge slot, do protection handling there (it's a mapper chip in the cartridge) protection handled
- etc. written from scratch based on notes from Kevtris and Peter [David Haywood]
- * banking in the slot system seems somewhat archaic compared to proper modern banking, but this is how all other drivers I saw
-    using slot roms did it.
-
--dump 2 new kov3 clones, redump existing v102 set.  new dumps are directly from the rom on the rom+fpga module that plugs in the
- usual rom socket, complete with extra layer of scrambling it provides [XingXing]
-
--naomi.cpp: decap and identify Atomiswave 'ROMEO' ASIC [brizzo]
-
--fixed zexall build target [RandomArts]
-
--new working clone - Biomechanical Toy [briantro]
-
 -gaelco.cpp: Correct various clock speeds & add PCB layout for Biomechanical Toy. [Brian Troha]
 
--dump 2 new kov3 clones, redump existing v102 set. [DavidHaywood]
--new dumps are dirctly from the rom on the rom+fpga module that plugs in the usual rom socket, complete with extra layer of
- scrambling it provides [XingXing]
-
--gamate, further improvements, mark software as working as it appears ok. gamate: add some mirroring to memory map, fix AY frequency
- gamate.xml: mark all software as supported [DavidHaywood]
- * (next step, make it use a bus / cartridge device instead of protection and banking being hardcoded in driver)
-
--rewrote the Gamate video implementation from scratch using Kevtris' document and Peter Wilhelmsen's notes this fixes many games, we
- can probably mark them all as supported. [DavidHaywood]
-
--fmtowns_cd.xml: fix accidental deletion Somehow I deleted a softlist entry while adding the new ones. It's now fixed. [rzero9]
-
--FM Towns softlists: new missing lists, several additions I have completely revamped the missing lists with about 700 new entries. I
- romanized most of the titles pretty much on my own, but my Japanese isn't quite the best so I may have made some mistakes,
- especially in titles with wordplay or obscure words. A second look at the list would be appreciated. [rzero9]
- * The new lists are based on "FMTOWNS用市販ソフトウェアデータベース Ver.0.3" (http://fmtowns.a.la9.jp/db/sdb.html), which is probably the most
-    complete list of commercial software for the FM Towns that exists out there.
- * Also, I have added several of my own dumps, both CD and floppy. See the commits for details.
-
--document that the 'oldsplus' set identifies as "Oriental Legend 2" when set to Korea The (undumped) protection device internal ARM
- roms provide the region. [DavidHaywood]
- * As this has no external ROM for the ARM we have no way to trojan it out.
-
--Gamate sound is 100% AY8910 compatible according to Kevtris and Peter Wilhelmsen, use the AY8910 core. there's really no need to
- have a partial reimplementation as GPL code sitting in the audio folder... [DavidHaywood]
-
--Kaypro: Added the Omni 4 Logic Analyzer Story and files here
- https://hackaday.io/project/20151-floppy-fun-backing-up-a-unique-kay-pro-disk The software runs, but obviously complains about the
- missing i/o board. [rfka01]
-
--Added Kaypro 16 ROM, manual and disk set are available on the internet (cf. Bannister & FTP) The Kaypro CGA character ROM still
- needs to be dumped, and the harddisk controller originally used in the Kaypro 16 (WD1002-HD0, connected from a mainboard port
- rather than an ISA card) is not emulated yet. The configuration presented here is essentially the Kaypro 16/2, a version without
- harddisk and with two 360K floppies. [rfka01]
-
--EuroPC: Added first and last known BIOS versions I never saw an earlier or later BIOS version mentioned for the original EuroPC in
- a discussion thread. The 2.04 (and also the 2.05 that is already in MAME) don't work for now because according to one site memory
- management has been changed afterwards. They just show a dash on the top left of the screen. [rfka01]
-
--fix CPS3/STV (we always use timers for SH2 DMA, and have done for years, just forgot to remove the #ifdef on this code when
- cleaning up) [DavidHaywood]
-
--psx.xml: Added 76 new dumps, replaced 2 bad dumps Based on the redump.org PSX dat from 2017-10-10, I've added 76 new dumps (mostly
- demos, cheat applications and Lightspan discs), replaced two bad dumps and renamed a couple of original images to keep them synced
- with their corresponding redump entries. [aeternal606]
-
--SH3 / SH4 recompiler, first pass. This is an SH3 recompiler / preliminary SH4 recompiler.  I would appreciate help with the issues
- listed below (including general cleanups) as I feel at this point I've taken this as far as I can go and am starting to feel burnt
- out with it, so if another team member can take it further that would help immensely. [DavidHaywood]
- * A lot of code has been saved by eliminating all the copy+paste between the sh2 and sh4 cores, they now share a common execution
-    engine with the additions in SH3/4 supported using a derived class.  It should be possible to further split these as currently
-    the SH3 still has the SH4 functions available (as it did in the original core) however that was not the scope of this initial
-    set of changes.
- * The work done allows the SH3/4 cores to use the UML based recompiler.  All the common ops are shared with SH2, while the SH3/4
-    specific ones, which are used relatively rarely in the code, are handled with cfunc callbacks like the maths operations on the
-    SH2 were.
- * Everything I've tested works exactly the same as it did before when the DRC is turned off.
- * Fastram support etc. from the SH2 core has been implemented
- * The changes made currently works very well for the CaveSH3 (CV1K) driver where the DRC has been enabled.
- * For SH4 based drivers 'MCFG_CPU_FORCE_NO_DRC()' has been used in the individual drivers to turn off the DRC until some bugs are
-    fixed.  Currently some Naomi games, such as Crazy Taxi and Capcom vs SNK will boot and run with the DRC if you remove this line
-    and enable it and they have noticable performance benefits when using it, however the majority do not boot for reasons unknown.
-    If you want to test the Naomi driver with the recompiler make sure to remove the MCFG_CPU_FORCE_NO_DRC() line.
- * Example performance
- * mame64 pinkswts -nodrc -bench 150 Average speed: 458.40% (149 seconds)
- * mame64 pinkswts -bench 150 Average speed: 1027.86% (149 seconds)
- * So speed is more than doubled for the Cave driver.
- * ISSUES:
- * General code tidy up still needed.  public, private, protected members etc. aren't fully verified, and as the sh2 / 4 cores had
-    diverged slightly over time there were naming differences etc. for many things, leading to some inconsistency after merging,
-    although I've tried to address the majority of these some things could definitely benefit from improved naming.  What belongs in
-    each header is up for debate too, the previous core #included some .cpp files, which is never optimal, the new one doesn't, but
-    maybe things should still be split up.
- * Doing the address masking when the opcodes are read in the frontend::describe function avoids the need to have extra AM_MIRROR
-    ranges required in the individual memory maps (as the proper opcode fetch mirroring is handled internally) however it seems to
-    stop the debugger from working, not sure how to fix that.
- * Something goes wrong with the majority of the SH4 based software, so until that's fixed the recompiler has to be disabled for
-    those titles.
-
--mc68901 : fix TCDCR register bits 6-4 are used for timer C bits 2-0 are used for timer D [nplanel]
- * https://www.nxp.com/docs/en/reference-manual/MC68901UM.pdf page 43 Signed-off-by: Nicolas PLANEL <nplanel@redhat.com>
-
--dynax.cpp: (tenkai) fix credits lost after exiting the game. The game checks for the the string "A WARNING.IF YOU COPY OUR ITEMS,WE
- REVENGE BY ALL MEANS." at address 0x6E17, and will reset everything if the string does not match when the game starts.
- [CecilHarvey]
- * In the current implementation only 0x7000-0x7fff is saved as nvram after exiting the game, which will cause the string to be
-    lost.
- * I'm not sure what the exact nvram address is, but at least this works.
-
--add apple2_cass tapes Trying to add more tapes. Passed checks first time. After changing feature name from "label" to "part_id" it
- failed a "Travis build" test with an error message about operators. Hopefully it will pass this time because all this is beyond my
- skill set right now. [Dagarman]
- * Files are at https://www.sendspace.com/file/efmxcv
- * aligren and aligsam marked partial due to cassette sound not emulated datamtel and aplstqrt marked partial/not supported due to
-    modem not emulated tapmatt marked not supported due to no tape measure prom
-
--move sh2 / sh4 to a folder called superh the sh3 / sh4 core contains a lot of copy + pasted code from the sh2. [DavidHaywood]
- * the family name is SuperH, so it seems more logical to place them in a folder with that name.
- * the basic execution engine could be shared, the diassembler could be shared (most of it is a straight copy+paste at the moment)
- * sh3/4 add things like fpu ops, mmu, 64-bit data bus but it should otherwise be possible to refactor and rebuild them around the
-    existing sh2 core.
- * longer term this should allow leverage of the sh2 recompiler with some modifications (most of the new FPU ops in sh3/sh3 could be
-    implemented with the UML cfunc callbacks like some of the existing SH2 maths ops still are, until somebody writes UML
-    implementations of them)
- * anyway, this just gets things in place for further refactoring, no actual code changes in this commit.
-
--Support for HP85 tapes added to imgtool Hi, this PR adds support for HP85 tape images to imgtool. Thanks. [fulivi]
- * -F.Ulivi
-
--t4426: promoted to working after clarification from Vas, still needs work [Edstrom]
-
--Gaelco touchgo improvement - new SRAM dump verified using 2 more boards in order to weed out the bad bytes, image is now trusted
- and correct. [DavidHaywood]
- * also set androidp to 1987, the date is shown during the end credits.
-
--proteus3: added mc14411 bit rate generator device and replaced the timer based clocks for the ACIA:s [Edstrom]
-
--Terco 4426 programming station cart banking fixed Still some odd exits to a disabled BASIC prompt for last two main menu options.
- It is probably some memory map issue/main board modification not emulated yet. I will verify this on real hardware before hunting
- the cause of it. [Edstrom]
- * Good news is that it is now possible to write a small CNC program and send it to a printer, or even better, the Terco 4490 CNC
-    which is on my to do list to emulate, so the cart is working to an extent.
-
 -Added support for multiple PORT_CHAR() bindings, and adopted in the CoCo driver  (addresses MT#2618) [npwoods]
-
--z80sio/z80scc: now returns cpu specific default vector when no interrupt found to acknowledge. I failed to merge this correctly
- before for z80sio, it was merged but disabled. This is fixed now and also implemented this for z80scc. This fix should work for any
- CPU now, not only 68000 as previously. [Edstrom]
 
 -Fixed an options overhaul regression This crash (discovered by Wizz) had the following symptoms: 1.  Start MAME 2.  Choose
  "Configure Machine" 3.  Choose "Video Options" CRASH [npwoods]
@@ -612,8 +415,3 @@ smpc: Simulate SETTIME bit behaviour if invalid NVRAM data is found for Sega Sat
 
 -Created a more flexible imgtool::datetime structure for use within Imgtool This is intended to replace most usage of time_t
  [npwoods]
-
-
-New working machines
---------------------
-pv2000.xml: desoldered and redumped ROMs for rakugaki and excitem2 [SSJ, Team Europe, Dustin Hubbard]
