@@ -445,7 +445,8 @@ Source Changes
 -apple2cp: Better "MIG" custom chip handling for apple2cp. [mgcaret, R. Belmont]
 
 -apple2: //e, //c, and friends now have No-Slot Clock support. [R. Belmont]
- * ds1315: Added support to emulate DS121x parts where the RTC sits in a ROM's address space. [R. Belmont]
+
+-ds1315: Added support to emulate DS121x parts where the RTC sits in a ROM's address space. [R. Belmont]
 
 -Added missing Kaypro models, distributed ROM files accordingly [rfka01]
 
@@ -546,8 +547,6 @@ Source Changes
 
 -vicdual depthch: added bonus sound sample [Jim Hernandez]
 
--arm7: add support for high vector option, fixed v5 BLX to save the return address in R14 [R. Belmont]
-
 -cv1k.cpp: document DIP switches [MetalliC]
 
 -bt459: various improvements [Patrick Mackinlay]
@@ -580,14 +579,21 @@ Source Changes
 
 -vicdual tranqgun: added sound samples [Jim Hernandez]
 
--arm7: Implement BLX Rn instruction for ARM9.  NDS ARM9 BIOS gets to the first checkpoint. [R. Belmont]
+-arm7: ARM v5TE support improvements [R. Belmont]
+ * add support for high vector option
+ * fixed v5 BLX to save the return address in R14
+ * implement BLX Rn form
+ * flesh out ARM946ES model, add movable DTCM and ITCM support
 
 -clipper: floating point improvements [Patrick Mackinlay]
  * switched to softfloat for fp
  * implemented fp macro instructions
  * implemented fp exceptions and rounding
 
--nds: add IPCSYNC, both CPUs now pass first checkpoint and ARM7 makes it to second. [R. Belmont]
+-nds: de-skeletonization [R. Belmont]
+ * add IPCSYNC
+ * add WRAM banking and more mirroring
+ * add timers, interrupt management, partial DMA, and ARM7 halt-until-IRQ
 
 -split pgm2 up into drivers/video, correct main ram size, make some notes etc. [David Haywood]
 
@@ -607,8 +613,6 @@ Source Changes
 
 -pntnpuzl: Add 8798 MCU dump [Reznor007]
 
--arm7: Flesh out ARM946ES, add movable DTCM and ITCM support. [R. Belmont]
-
 -z80scc: general cleanup and backport of z80sio improvements part I [Joakim Larsson Edstrom]
 
 -z80scc: general cleanup and backport of z80sio improvements part II [Joakim Larsson Edstrom]
@@ -624,8 +628,6 @@ Source Changes
 -Fixes to hcd62121 CPU emulation based on experiments with the actual hardware (using a CFX-9850G). [Ricardo Barreira]
  * With these fixes, the CFX-9850G is emulated just accurately enough for most of the RUN mode to work well.
  * Further reverse-engineering is ongoing.
-
--nds: added WRAM banking and more mirroring. [R. Belmont]
 
 -Rewritten Imagetek i4100 / i4220 / i4300 video display processor family, hooked it up to metro.cpp [Angelo Salese]
 
@@ -694,8 +696,6 @@ Source Changes
  * note, colour PROM was not included, could be wrong.  previous champbb2a set was just an incomplete dump of this (missing rom +
     mcu from subboard)
  * I did make some progress towards emulating this but can't find it right now, might have lost it
-
--nds: Added timers, interrupt management, partial DMA, and ARM7 halt-until-IRQ. [R. Belmont]
 
 -mrisc: added PROM dumps and removed the ARM boot hack. [RolandLangfeld, Sandro Ronco] mrisc: fixed opening book [CB-Emu]
 
