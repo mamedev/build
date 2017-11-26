@@ -64,6 +64,7 @@ Troopy (bootleg of Mr. Kougar) [MikeMcBike]
 Machines promoted to working
 ----------------------------
 Mephisto RISC 1MB [CB-Emu, RolandLangfeld, Sandro Ronco]
+Flower [Angelo Salese]
 Ping Pong King [Angelo Salese]
 Time Attacker [Angelo Salese]
 
@@ -305,7 +306,7 @@ Source Changes
 
 -i8155: Substantial rewrite of timer emulation [AJR]
 
--stvvdp1.cpp: fix line / polyline drawing (Die Hard Arcade wireframe map) [Angelo Salese]
+-stvvdp1.cpp: fix line / polyline drawing (Die Hard Arcade wireframe map between stages) [Angelo Salese]
 
 -interpro: expansion bus/slots and keyboard [Patrick Mackinlay]
  * added basic support for the system bus variously referred to as SR, SR bus, SRX and CBUS
@@ -367,13 +368,11 @@ Source Changes
 
 -isbc8030: Remove hacky and superfluous UI-configurable baud clock [AJR]
 
--ygv608.cpp: Fix rotation and scrolling [Agiri]
-
--ygv608.cpp: Add scrolling-by-row (used in NCV1 Xevious Arrangement) [Agiri]
-
--ygv608.cpp: small cleanups [Agiri]
-
--ygv608.cpp: Fix scaling effect (used in NCV2 Pacman Arrangement staffroll) [Agiri]
+-ygv608.cpp: various fixes/improvements: [Agiri]
+ * Fix rotation and scrolling;
+ * Add scrolling-by-row (used in NCV1 Xevious Arrangement);
+ * Fix scaling effect (used in NCV2 Pacman Arrangement staffroll);
+ * small cleanups;
 
 -n8080.cpp: Directly set 8035 IRQ line rather than generate fake pulses (restores some sounds in helifire) [AJR]
 
@@ -393,9 +392,8 @@ Source Changes
 
 -dec0.cpp: emulated sound protection state machine for Sly Spy and get rid of ROM patch [Angelo Salese]
 
--dec0.cpp: emulate Sly Spy RNG device at $31c00d. [Angelo Salese]
- * This makes gameplay to behave very differently than before, game extensively uses this port to mix up stuff especially with the
-    bosses.
+-dec0.cpp: first pass at emulating Sly Spy RNG device at $31c00d. [Angelo Salese]
+ * This makes gameplay to behave very differently than before, game extensively uses this port to mix up stuff especially with the bosses.
 
 -ti99_8: Hexbus WIP, added Hexbus write timing logic [Michael Zapf]
 
@@ -440,8 +438,7 @@ Source Changes
 -flower.cpp: rewritten driver from scratch, improvements wrt older version are: [Angelo Salese]
  * Fixed visible area to 288x224, fixes left-most columns (inside the big ship);
  * Background layers actually had reversed priority (outside and inside the big ship);
-
--flower.cpp: fixed zoom points for 32x32 sprites [Angelo Salese]
+ * fixed zoom points for 32x32 sprites;
 
 -apple2: preliminary support for AE TransWarp accelerator card [R. Belmont, Apple II Documentation Project]
 
@@ -496,7 +493,7 @@ Source Changes
 
 -apple2c: fix Slinky register return when no expansion RAM present. [R. Belmont, mgcaret]
 
--Added HMC20 and screen raw params for following drivers: [Angelo Salese]
+-Added/fixed screen raw params for following drivers: [Angelo Salese]
  * bogeyman.cpp, chanbara.cpp, dec0.cpp, dec8.cpp, firetrap.cpp, mystston.cpp, ssozumo.cpp,
 
 -cosmac: Added WAIT/CLEAR input lines. [Curt Coder]
@@ -510,9 +507,6 @@ Source Changes
 -arm7: handle DP-commands ROR <Rs> case where Rs=32/64, remove few outdated comments [MetalliC]
 
 -mice: Split into separate sets for each CPU-specific monitor program [AJR]
-
--Fixed previous Data East commit to use 12 MHz XTAL instead [Angelo Salese]
- * (out of whatsnew: above supposedly logs in whatsnew.txt, as a reminder for changing the log message)
 
 -mainevt.cpp: fixed sprite shadows for Devastators [Angelo Salese]
 
@@ -534,9 +528,10 @@ Source Changes
 
 -Better wraparound handling for relative inputs [AJR]
 
--chqflag.cpp: fixed dimmed screen condition bug when soft resetting [Angelo Salese]
-
--chqflag.cpp: improved shadow/highlight code (fixes black rain and lights at dawn) [Angelo Salese]
+-chqflag.cpp: various improvements [Angelo Salese]
+ * improved sprite shadow/highlight code (black rain and lights at dawn);
+ * k051937 actually sets up a register when background should be dimmed, fixes start/end pouring event colors:
+ * fixed dimmed screen condition bug when soft resetting;
 
 -sm7238: reverse video, 80/132 column switching, alternate font (#2652) [Sergey Svishchev]
 
@@ -584,9 +579,6 @@ Source Changes
  * pgm2 / ymz770 - use cached cos table for decoding
 
 -vicdual tranqgun: added sound samples [Jim Hernandez]
-
--chqflag.cpp: k051937 actually sets up a register when background should be dimmed, fixes start/end pouring event colors
- [Angelo Salese]
 
 -arm7: Implement BLX Rn instruction for ARM9.  NDS ARM9 BIOS gets to the first checkpoint. [R. Belmont]
 
@@ -939,14 +931,12 @@ Kaypro IV - 4/83
 Machines promoted to working
 ----------------------------
 ACI Destiny Prodigy
-Flower (US)
 Kaypro 10 - 1983
 MCB-216
 
 Clones promoted to working
 --------------------------
 CB-308
-Flower (Japan)
 Mephisto RISC II
 
 New machines marked as NOT_WORKING
