@@ -16,7 +16,7 @@ MAMETesters Bugs Fixed
 - 06518: [Graphics] (metro.cpp) blzntrnd: Sprite layer disappears entirely after completing single-player game. (Angelo Salese)
 - 06527: [Sound] (taitosj.cpp) elevator: Elevator Action sound balance is incorrect. (hap)
 - 06694: [Sound] (midtunit.cpp) mk: Missing music. (hap)
-- 06735: [Original Reference] (einstein.cpp) einstei2: Cursor not visiable in 80-column B/W screen! (Dirk Best)
+- 06735: [Original Reference] (einstein.cpp) einstei2: Cursor not visible in 80-column B/W screen! (Dirk Best)
 - 06736: [Original Reference] (einstein.cpp) einstei2: Character set selection (M004) in 80-column B/W screen! (Dirk Best)
 - 06742: [Graphics] (pacland.cpp) pacland and clones: Sprite priority problem in invincible state. (hap)
 - 06745: [Crash/Freeze] (marinedt.cpp) marinedt: MAME crashes when starting game. (Angelo Salese)
@@ -150,6 +150,13 @@ Wyse WY-85 [Robbbert]
 
 New working software list additions
 -----------------------------------
+archimedes: ALPS - Adventure Language Programming System, Euclid v2.06, APEC Utils Disc v1.3, Archimedes Hard Disc Utilities Disc
+  [Nigel Barnes]
+bbca_cass: 100 Programs for the BBC Microcomputer [Nigel Barnes]
+bbcb_cass: Fairy Tale, Starter Word Splits, WestQuest 1847, Instant Recall [Nigel Barnes]
+bbcb_flop: Acornsoft Demo Disk v1.0, Revs Demo, Superior Software - Demonstration Disc, Tree of Knowledge [Nigel Barnes]
+electron_cart: Starspell, Starspell and Starword, Starspell and View, Stop Press [Nigel Barnes]
+bbcb_flop: BeebSID 18 - Club Hits [PitfallJones]
 fmtowns_cd:
   AnotherTOWNS - Anata~ Free Software Collection, Dragon Shock, NHK Jissen Eikaiwa, Okumanchouja II, Oshare Cooking II,
   Tom Snyder's Puppy Love 2, Toushin Toshi II [r09]
@@ -183,6 +190,8 @@ ibm5150: Ikari Warriors (alt) [breiztiger]
 New NOT_WORKING software list additions
 ---------------------------------------
 dragon_cart: Dragon 32 Soak Test [Nigel Barnes]
+electron_cart: Click, Advanced Plus 3, Advanced Plus 4, Cumana Floppy Disc System, Pegasus 400, Sound Expansion v1, Sound Expansion
+  v3 [Nigel Barnes]
 fmtowns_cd: Suikoden - Tenmei no Chikai [r09]
 ibm5170:
   1830 - Railroads & Robber Barons, 5th Fleet, Alfalinux 0.3.1 -Laetitia-, Brutalware Linux 1.1, DLX Linux Demodisk V1.0,
@@ -191,6 +200,13 @@ ibm5170:
 lynx: Alpine Games [anonymous]
 mtx_cart: MTX Node Ring [Nigel Barnes]
 mtx_cass: Demonstration Tape, MTX Draughts [Nigel Barnes]
+px8_cart: Epson BASIC, Clock, DAKComm, dBase II, Geneva Connection, Intext 1.1, Intext 1.0, Othello, Oval IRM, Portable Calc,
+  Portable WordStar, SuperCalc, The Traveling Appointment Manager, The Traveling Expense Manager, The Traveling Time Manager, Turbo
+  Pascal (unofficial ROM), CP/M Utilities [Nigel Barnes]
+vsmile_cart: Disney La sirenetta - Ariel e la crociera magica (Ita), Disney Cenerentola - I desideri magici di Cenerentola (Ita),
+  Disney Il re leone - La grande avventura di Simba (Ita), Kung Fu Panda - Path of the Panda (UK), Disney/Pixar Up (UK),
+  Disney/Pixar Ratatouille - Le nuove ricette di Remy (Ita), Scooby-Doo! - Avventura a Funland (Ita), Zayzoo: An Earth Adventure
+  (UK) [tag2015]
 
 
 Translations added or modified
@@ -209,7 +225,7 @@ Source Changes
  * Removed redundant einstei2 driver.
  * Added user port bus interface with support for speech cartridge and mouse.
  * Corrected default floppy drive types, and added support for more types.
- * Added ADC0844 devie, emulated analogue joystick, and fixed minor issues with memory map.
+ * Added ADC0844 device, emulated analogue joystick, and fixed minor issues with memory map.
  * Marked Einstein 256 ROM dump as bad.
  * Added support for the Silicon Disc RAM drive as a pipe device (appears as drive 3).
  * Fixed centronics port - printing now works.
@@ -220,7 +236,7 @@ Source Changes
 
 -floppy: Added TEAC FD-30A 3 inch floppy drive [Dirk Best]
 
--Added a generic Z80 dasisy chain device, for use in drivers with non-Z80 peripherals. [Dirk Best]
+-Added a generic Z80 daisy chain device, for use in drivers with non-Z80 peripherals. [Dirk Best]
 
 -midvunit: Use ADC0844 device. [Dirk Best]
 
@@ -286,8 +302,8 @@ Source Changes
  * Implemented enough of synchronous reception to pass uts20 loopback tests (not accurate, but helps understanding).
  * Disabled automatic CRC transmission in 1-byte sync mode (necessary to pass uts20 loopback tests).
 
--e132xs: Templated most Hyperstone register-register and immeodate opcode handlers to reduce code duplication. [Vas Crabb]
- * Also fixed behaviour in some corner cases including priveleged register traps and SR as source in subtraction.
+-e132xs: Templated most Hyperstone register-register and immediate opcode handlers to reduce code duplication. [Vas Crabb]
+ * Also fixed behaviour in some corner cases including privileged register traps and SR as source in subtraction.
 
 -uts20 updates - all self-tests now pass: [Vas Crabb]
  * Hacked in permanent loopback on SIO channel A TxD -> RxD and SIO channel B TxD -> RxD and WAIT/READY -> DCD+RTS.
@@ -408,11 +424,6 @@ Source Changes
  32.768kHz  crystal  these  3  bits  are  used to  turn  the  oscillator  on  or  off  and  to  reset  the  countdown  chain. There
  are not used anymore to select the main clock divider value. [Jean-François DEL NERO]
 
--Fix DS128X/DS1288X main frequency divider. The output frequency must be fixed to 1HZ with these devices. In  the  MC146818, DV2-DV0
- were  used  to  select  the input frequency to provide a proper time base. Since the DS12885/87 and DS1685/87 use only the
- 32.768kHz  crystal  these  3  bits  are  used to  turn  the  oscillator  on  or  off  and  to  reset  the  countdown  chain. There
- are not used anymore to select the main clock divider value. [Jean-François DEL NERO]
-
 -added Attache 8:16 ROMs, and revision H BIOS [mahlemiut]
 
 -Fix potential buffer overflow [Frank Palazzolo]
@@ -467,8 +478,6 @@ Source Changes
 
 -zx: added extra RAM options for ts1000 [Barry Nelson]
 
--bbcb: Added Computer Village 1797 FDC (LVL Dos), not working. [Nigel Barnes]
-
 -gladiatr.cpp: added preliminary MCU simulation for Ping Pong King inputs [Angelo Salese]
 
 -cyclemb.cpp: Added preliminary audio for Cycle Maabou/Sky Destroyer [Angelo Salese]
@@ -485,7 +494,7 @@ Source Changes
  * Translations updated
  * ------------------- Spanish
 
--attache: add preliminary communcations between the Z80 and 8086. [mahlemiut]
+-attache: add preliminary communications between the Z80 and 8086. [mahlemiut]
 
 -arm7: LDR/LDRM switch to Thumb mode on ARMv5T [David Haywood, MetalliC]
  * note - why we don't have archflags for cpu architecture versions ? this feature present not on all CPUs with Thumb IA.
@@ -518,7 +527,7 @@ Source Changes
 -Fix logs, typos, and memset replaced by std::fill. [Jean-François DEL NERO]
 
 -Correct Spikeout: Final Edition year [sjy96525]
- * Spikeout: Final Edition titlescreen says 1999, and released date is 1999 confirmed from  Arcade TV Game List Kokunai - Kaigai Hen
+ * Spikeout: Final Edition title screen says 1999, and released date is 1999 confirmed from  Arcade TV Game List Kokunai - Kaigai Hen
     (1971 - 2005) at Page 38. https://i.imgur.com/897HPm2.png https://i.imgur.com/IOUUZgO.png
 
 -Correct Ehrgeiz, Golgo 13 Kiseki no Dandou Year [sjy96525]
@@ -621,9 +630,11 @@ Source Changes
 
 -bbc: Added ARM Evaluation System co-processor device. [Nigel Barnes]
 
--cfa3000: Added input devices on userport, analogue, and 1MHz bus. [Nigel Barnes]
+-bbcb: Added Computer Village 1797 FDC (LVL Dos), not working. [Nigel Barnes]
 
 -bbcm: Switch between internal/external tube ports. [Nigel Barnes]
+
+-cfa3000: Added input devices on userport, analogue, and 1MHz bus. [Nigel Barnes]
 
 -Fixes to hcd62121 CPU emulation based on experiments with the actual hardware (using a CFX-9850G). [Ricardo Barreira]
  * With these fixes, the CFX-9850G is emulated just accurately enough for most of the RUN mode to work well.
@@ -747,8 +758,8 @@ Source Changes
 -epc: fixed rom order for newer rom, now same error as old rom recently submitted, Keyboard Error. Also set EGA as default as it
  works [JoakimLarsson]
 
--Correct Daytona USA Year (Exclude Daytona USA Deluxe '93) Daytona USA titlescrreen says 1994 and released date is March 1994,
- Daytona USA Deluxe '93 titlescrreen says 1993. [sjy96525]
+-Correct Daytona USA Year (Exclude Daytona USA Deluxe '93) Daytona USA title screen says 1994 and released date is March 1994,
+ Daytona USA Deluxe '93 title screen says 1993. [sjy96525]
 
 -Added alternative Ericsson PC BIOS [rfka01]
 
@@ -757,7 +768,7 @@ Source Changes
 -interpro: clipper floating point improvements and use new 28f010 flash memory [pmackinlay]
 
 -pgm2 / ymz770 - use cached cos table for decoding this significantly improves pgm2 / ymz770 performance by caching the cos values,
- as recommended by aaron [DavidHaywood]
+ as recommended by Aaron [DavidHaywood]
 
 -pgm2 - support sprite zooming for flipped / reversed cases (lightly tested, only seems used by lightning on orleg2 char select at
  the moment) [DavidHaywood]
@@ -780,7 +791,7 @@ Source Changes
 -vt240: palette, screen size fix Bit order in Video Output Map verified via ReGIS palette escape sequences.   Raster width is
  specified as 800 on page 6-40 of technical manual. [shattered]
 
--Correct Spikeout: Final Edition year Spikeout: Final Edition titlescreen says 1999, and released date is 1999 confirmed from
+-Correct Spikeout: Final Edition year Spikeout: Final Edition title screen says 1999, and released date is 1999 confirmed from
  Arcade TV Game List Kokunai - Kaigai Hen (1971 - 2005) at Page 38. https://i.imgur.com/897HPm2.png https://i.imgur.com/IOUUZgO.png
  [sjy96525]
 
@@ -806,7 +817,7 @@ Source Changes
  * added kaypro1084, kaypro1, kaypro4x, kaypro284 and kaypronew2 as well as II plus 88
  * made kaypro484 the parent for the later non-10/non-Robie machines
  * made the 4 plus 88 a '84 generation machine in keeping with adverts of the time and photographic evidence - the plus 88 board is
-    a CoPower 88 from SWP and could also be bought indepentently
+    a CoPower 88 from SWP and could also be bought independently
  * distributed ROMs evenly, and marked dumps bad where appropriate
  * put handyman ROM into kaypro2x, this ROM can be added to all other Kaypro drivers once it's got its own 16K RAM added and
     connected
@@ -885,28 +896,6 @@ Source Changes
 -sm7238: reverse video, 80/132 column switching, alternate font [shattered]
 
 
-New working machines
---------------------
-archimedes: ALPS - Adventure Language Programming System, Euclid v2.06, APEC Utils Disc v1.3, Archimedes Hard Disc Utilities Disc
-  [Nigel Barnes]
-bbca_cass: 100 Programs for the BBC Microcomputer [Nigel Barnes]
-bbcb_cass: Fairy Tale, Starter Word Splits, WestQuest 1847, Instant Recall [Nigel Barnes]
-bbcb_flop: Acornsoft Demo Disk v1.0, Revs Demo, Superior Software - Demonstration Disc, Tree of Knowledge [Nigel Barnes]
-electron_cart: Starspell, Starspell and Starword, Starspell and View, Stop Press [Nigel Barnes]
-bbcb_flop: BeebSID 18 - Club Hits [PitfallJones]
-
-
-New machines marked as NOT_WORKING
-----------------------------------
-vsmile_cart:Disney La sirenetta - Ariel e la crociera magica (Ita), Disney Cenerentola - I desideri magici di Cenerentola (Ita),
-  Disney Il re leone - La grande avventura di Simba (Ita), Kung Fu Panda - Path of the Panda (UK), Disney/Pixar Up (UK),
-  Disney/Pixar Ratatouille - Le nuove ricette di Remy (Ita), Scooby-Doo! - Avventura a Funland (Ita), Zayzoo: An Earth Adventure
-  (UK) [tag2015]
-px8_cart: Epson BASIC, Clock, DAKComm, dBase II, Geneva Connection, Intext 1.1, Intext 1.0, Othello, Oval IRM, Portable Calc,
-  Portable WordStar, SuperCalc, The Traveling Appointment Manager, The Traveling Expense Manager, The Traveling Time Manager, Turbo
-  Pascal (unofficial ROM), CP/M Utilities [Nigel Barnes]
-electron_cart: Click, Advanced Plus 3, Advanced Plus 4, Cumana Floppy Disc System, Pegasus 400, Sound Expansion v1, Sound Expansion
-  v3 [Nigel Barnes]
 
 
 Comparing 0.191 (mame0191) to 0.191 (mame0191-819-gfd195fd)
