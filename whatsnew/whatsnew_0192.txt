@@ -273,10 +273,6 @@ Source Changes
  * Kanji in fixed ROM font now displays correctly, making boot messages intelligible.
  * Scrolling imperfect but better than before - fixes scrolling/positioning issues in multiple games.
 
--arm7: Added rudimentary instruction prefetch buffer. Fixes GBA NES Classics games. [Ryan Holtz]
-
--gba: Made GPIO ports pass ROM through on read by default - fixes Doom 2 and Duke Nukem Advance. [Ryan Holtz]
-
 -e132xs: Reworked all opcodes to reduce runtime branches and unnecessary work - now considerably faster. [Ryan Holtz]
 
 -Added 32- and 64-bit population count utilities. [Vas Crabb]
@@ -368,8 +364,6 @@ Source Changes
 -Updated Greek Translation [BraiNKilleRGR]
 
 -cv1k.cpp: demote all sets to imperfect speed, set audio output to mono [MetalliC]
-
--ymz770.cpp: add pan, main volume level and clip limit control [MetalliC]
 
 -ringking: NMI gate was misconfigured; works again now [AJR]
 
@@ -468,11 +462,32 @@ Source Changes
 
 -apple2cp: MIG RAM is 2K, not 0.5K. [mgcaret, R. Belmont]
 
--dumped internal IGS036 rom for Oriental Legend 2 [Morten Shearman Kirkegaard and Peter Wilhelmsen] started adding some devices to
- the driver to support it [David Haywood] derived IGS036 type in ARM7/9 core, because it seems like mmu could be different, and
- there are probably other internal devices [David Haywood] fixed(?) BLX (LO) thumb opcode in ARM7/9 core, was storing a return
- address that skipped the following opcode [David Haywood]
- * I think there might still be ARM9 issues.
+-pgm2: various improvements [David Haywood, Morten Shearman Kirkegaard, Peter Wilhelmsen]
+ * dumped internal IGS036 rom for Oriental Legend 2 and Knights of Valour 2 New Legend
+ * fleshed out driver, creating devices for the Atmel ARM AIC and a derived IGS036 CPU type
+ * wrote mostly complete emulation of the IGS037 video hardware, this covers sprites with full zooming support, tilemaps including
+    rowscroll support, and the priority system.
+ * sets still marked as NOT WORKING due to missing memcard emulation (undumped MCU, will require simulation)
+
+-ymz770: various improvements for PGM2 [MetalliC, David Haywood]
+  * use cached cos table for decoding to give a significant speedup to the PGM2 emulation as suggested by Aaron Giles
+  * added support for the YMZ774-S, used by PGM2
+  * added pan, main volume level and clip limit control 
+
+-arm7: various ARM9 fixes for PGM2 [David Haywood, MetalliC]
+  * fixed BLX (LO) thumb opcode in ARM9 core needed to PGM2 boot, stored return address was incorrect
+  * allowed LDR/LDRM switch to Thumb mode on ARMv5T
+  * handle DP-commands ROR <Rs> case where Rs=32/64, remove few outdated comments
+
+-arm7: Added rudimentary instruction prefetch buffer. Fixes GBA NES Classics games. [Ryan Holtz]
+
+-arm7: ARM v5TE support improvements [R. Belmont]
+ * added support for high vector option
+ * fixed v5 BLX to save the return address in R14
+ * implement BLX Rn form
+ * flesh out ARM946ES model, add movable DTCM and ITCM support
+
+-gba: Made GPIO ports pass ROM through on read by default - fixes Doom 2 and Duke Nukem Advance. [Ryan Holtz]
 
 -zx: ts1000 display circuitry is identical to zx81, not cyan [Barry Nelson]
 
@@ -496,11 +511,6 @@ Source Changes
 
 -attache: add preliminary communications between the Z80 and 8086. [mahlemiut]
 
--arm7: LDR/LDRM switch to Thumb mode on ARMv5T [David Haywood, MetalliC]
- * note - why we don't have archflags for cpu architecture versions ? this feature present not on all CPUs with Thumb IA.
-
--preliminary PGM2 emulation, most video features emulated, Oriental Legend 2 mostly OK, see notes. [David Haywood]
-
 -apple2c: fix Slinky register return when no expansion RAM present. [R. Belmont, mgcaret]
 
 -Added/fixed screen raw params for following drivers: [Angelo Salese]
@@ -513,8 +523,6 @@ Source Changes
 -tmc600: Added Euro bus skeleton. [Curt Coder]
 
 -tmc600: Fixed printer handshake, RAM/ROM region sizes, and implemented video according to actual hardware. [Curt Coder]
-
--arm7: handle DP-commands ROR <Rs> case where Rs=32/64, remove few outdated comments [MetalliC]
 
 -mice: Split into separate sets for each CPU-specific monitor program [AJR]
 
@@ -552,8 +560,6 @@ Source Changes
 
 -support switching between 40 & 80 columns with F1 & blink/underline/highlight/reverse attribute [smf]
 
--pgm2 - add kov2nl internal rom [Morten Shearman Kirkegaard, Peter Wilhelmsen]
-
 -vicdual depthch: added bonus sound sample [Jim Hernandez]
 
 -cv1k.cpp: document DIP switches [MetalliC]
@@ -567,32 +573,13 @@ Source Changes
  * Implementation of 28F010 and family flash memory devices. These are not compatible with the JEDEC-standard flash command protocol
     implemented in intelfsh.
 
--add yshrink for sprites [David Haywood]
-
--add line doubling [David Haywood]
-
--add sprite xgrow/xshrink for basic non-flipped cases (need to work out the correct logic for flipped cases, searching for evidence)
- [David Haywood]
-
--pgm2 - support sprite zooming for flipped / reversed cases (lightly tested, only seems used by lightning on orleg2 char select at
- the moment) [David Haywood]
-
 -Allow switching between upper case/lower case character rom with shift+commodore key [smf]
 
 -amusco.cpp: improved colors [Angelo Salese]
 
 -fmtowns: Separate palette into a 256 colour palette, and two 16 colour palettes for each layer.  Fixes colours in Abel. [mahlemiut]
 
--pgm2 / ymz770 - use cached cos table for decoding (#2812) [David Haywood]
- * pgm2 / ymz770 - use cached cos table for decoding
-
 -vicdual tranqgun: added sound samples [Jim Hernandez]
-
--arm7: ARM v5TE support improvements [R. Belmont]
- * add support for high vector option
- * fixed v5 BLX to save the return address in R14
- * implement BLX Rn form
- * flesh out ARM946ES model, add movable DTCM and ITCM support
 
 -clipper: floating point improvements [Patrick Mackinlay]
  * switched to softfloat for fp
@@ -603,8 +590,6 @@ Source Changes
  * add IPCSYNC
  * add WRAM banking and more mirroring
  * add timers, interrupt management, partial DMA, and ARM7 halt-until-IRQ
-
--split pgm2 up into drivers/video, correct main ram size, make some notes etc. [David Haywood]
 
 -Added alternative Ericsson PC BIOS [rfka01]
 
@@ -767,17 +752,6 @@ Source Changes
 
 -interpro: clipper floating point improvements and use new 28f010 flash memory [pmackinlay]
 
--pgm2 / ymz770 - use cached cos table for decoding this significantly improves pgm2 / ymz770 performance by caching the cos values,
- as recommended by Aaron [DavidHaywood]
-
--pgm2 - support sprite zooming for flipped / reversed cases (lightly tested, only seems used by lightning on orleg2 char select at
- the moment) [DavidHaywood]
-
--pgm2 - add sprite xgrow/xshrink for basic non-flipped cases (need to work out the correct logic for flipped cases, searching for
- evidence) [DavidHaywood]
-
--pgm2 - add yshrink for sprites [DavidHaywood]
-
 -bt459: various improvements [pmackinlay]
  * support for blinking (pixel planes and cursors)
  * fixes for dual-cursor and X Window mode
@@ -785,8 +759,6 @@ Source Changes
 
 -28fxxx: initial commit for new flash memory device Implementation of 28F010 and family flash memory devices. These are not
  compatible with the JEDEC-standard flash command protocol implemented in intelfsh. [pmackinlay]
-
--pgm2 - add kov2nl internal rom [Morten Shearman Kirkegaard, Peter Wilhelmsen]
 
 -vt240: palette, screen size fix Bit order in Video Output Map verified via ReGIS palette escape sequences.   Raster width is
  specified as 800 on page 6-40 of technical manual. [shattered]
@@ -803,13 +775,6 @@ Source Changes
  [DavidHaywood]
 
 -Correct Dip Switches for Sky Destroyer. [sjy96525]
-
--dumped internal IGS036 rom for Oriental Legend 2 [Morten Shearman Kirkegaard and Peter Wilhelmsen] dumped internal IGS036 rom for
- Oriental Legend 2 [Morten Shearman Kirkegaard and Peter Wilhelmsen] started adding some devices to the driver to support it [David
- Haywood] derived IGS036 type in ARM7/9 core, because it seems like mmu could be different, and there are probably other internal
- devices [David Haywood] fixed(?) BLX (LO) thumb opcode in ARM7/9 core, was storing a return address that skipped the following
- opcode [David Haywood]
- * I think there might still be ARM9 issues.
 
 -Added missing Kaypro models, distributed ROM files accordingly [rfka01]
  * renamed kaypro4 to kayproiv (cf. boot message) and kaypro4a to kaypro484
