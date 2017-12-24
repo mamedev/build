@@ -56,6 +56,9 @@ def print_wrapped(stream, paragraph, level):
                             pos = opening
                     line = paragraph[0:pos].strip()
                     paragraph = paragraph[pos:].strip()
+                else:
+                    line = paragraph
+                    paragraph = ''
             else:
                 line = paragraph
                 paragraph = ''
