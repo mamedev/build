@@ -34,6 +34,10 @@ Street Fighter II (Tiger handheld) [hap, Sean Riddle]
 TelePachi Fever Lion (V1.0) [Rod_Wod, Hammy, The Dumping Union]
 The Shadow (Tiger handheld) [hap, Sean Riddle]
 Vulcan XL 25 [hap, Sean Riddle]
+The King of Fighters '98: Ultimate Match HERO (China, V100, 09-08-23) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood, _MetalliC_]
+Oriental Legend 2 (World & China) [Jeremy Romine, Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood, _MetalliC_]
+Dodonpachi Daioujou Tamashii (V201, China) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood, _MetalliC_]
+Knights of Valour 2 New Legend (China) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood, _MetalliC_]
 
 
 New working clones
@@ -321,7 +325,21 @@ Source Changes
 
 -twinkle: many fixes to waveram banking + DMA.  Most sets are semi-playable now. [R. Belmont, Sarah Purohit]
 
--pgm2: make RTC ticking, removed orleg2 patch, its not needed anymore [MetalliC]
+-pgm2.cpp: make RTC ticking, removed orleg2 patch, its not needed anymore [MetalliC]
+ * document debug features [MetalliC]
+ * tell igs036 emulation to use uploaded tables for kov2nl / orleg2 [David Haywood]
+ * use sprite decryption keys uploaded by games where we have internal rom [MetalliC, David Haywood]
+ * ICRW sim improvements [MetalliC, Lord Nightmare]
+ * memcard reader now uses image_device stuff, cards can be inserted / removed and get saved.  As each game/region requires a valid
+    default card in order to save the default cards are now part of romset. [Metallic, David Haywood]
+
+-Atmel AIC: rewrite logic at the level enough for pgm2. [MetalliC]
+
+-igs036crypt.cpp
+ * Updates to support kof98umh. [Andreas Naive]
+ * The format of the key tables is now compatible with the real ones provided by the internal ARM. [Andreas Naive]
+
+-igs036 CPU seems to be derived from a 946 type core based on using MPU not MMU, change it to be such. [David Haywood]
 
 -Update strings.po (#2875) [theheroGAC]
  * Translations added or modified
@@ -340,8 +358,6 @@ Source Changes
  [smf, Guru]
 
 -route16.cpp: added player 2 inputs to T.T. Mahjong [Angelo Salese]
-
--pgm2: document debug features [MetalliC]
 
 -[compc.cpp, pc10iii] Added BIOS v4.35c and matching char ROM [rfka01]
 
@@ -394,14 +410,7 @@ Source Changes
     with the amount of code executed per run() call. This introduced non-determinism and badly influenced usage of savestates while
     debugging. machine().time() would also return wrong values after that, since it adds remaining cycles.
 
--dumped Internal rom from an Oversea (English) region "Oriental Legend 2" cartridge confirming only the region byte changes in that
- case.  [Jeremy Romine, Peter Wilhelmsen, Morten Shearman Kirkegaard]
- * Other regions, including Japan single PCB need confirming to see if there are further changes in those cases or not.
- * As the Oversea version ignores the Card Reader MCU we can mark it as working, so
-
 -explain the rewind command in debughlp fix a typo in the stateload description [vadosnaprimer]
-
--igs036crypt.cpp: Updates to support kof98umh. [Andreas Naive]
 
 -RF5C400: State save the external memory registers. Move static variable into device state. Fix the commented out osd_printf_debug.
  Fix "always values". Added skeleton for reading and writing channel register 0x0F (which is used by the beatmania IIDX games).
@@ -412,13 +421,6 @@ Source Changes
 -fmtowns: fixed mouse cursor moving on its own in Data West games [r09]
 
 -attache816: enabled MCFG_QUANTUM_PERFECT_CPU on the 8086, fixes deadlock when writing to the RAM disk. [mahlemiut]
-
--igs036crypt: The format of the key tables is now compatible with the real ones provided by the internal ARM. [Andreas Naive]
-
--pgm2 : use uploaded tables for kov2nl / orleg2 [David Haywood]  (#2906) [David Haywood]
- * pgm2 : use uploaded tables for kov2nl / orleg2 [David Haywood]
-
--pgm2: use sprite decryption keys uploaded by games where we have internal rom [MetalliC, David Haywood]
 
 -MT 06683 [Robbbert]
 
@@ -438,21 +440,12 @@ Source Changes
 
 -New generic ripple counter device [AJR]
 
--pgm2: memcard reader now uses image_device stuff, cards can be inserted / removed and get saved [Metallic, David Haywood] promoted
- China set of Oriental Legend 2 to working promoted Knights of Valour 2 New Legend to working [David Haywood]
- * as each game/region requires a valid default card in order to save said cards are part of romset.
- * (there's probably a cleaner way to do the device finder stuff but I forgot and can't find reference)
-
 -stlforce.cpp: corrected OKI clock for twinbrat and clones [caius]
-
--igs036 seems to be derived from a 946 type core based on using MPU not MMU, change it to be such. [David Haywood]
 
 -add command to print all debugger help to html file tweak static_help_list spacing to always pad commands and never pad
  explanations [vadosnaprimer]
 
 -debughlp - fix gcc build [vadosnaprimer]
-
--pgm2: ICRW sim improvements [MetalliC, Lord Nightmare]
 
 -alphatp3: Two distinct ROM sets. (#2918) [rfka01]
  * alphatp3: Two distinct ROM sets.
@@ -483,9 +476,6 @@ Source Changes
  * Instead, an error message is logged telling the plugin is not found.
  * Trigger a fatal error when console was asked but the console plugin not found.
 
--dumped internal rom for kof98umh igs036 [Morten Shearman Kirkegaard, Peter Wilhelmsen]
- * (game boots, but not yet working properly, MAME hangs during attract, also needs screen mode registers finding)
-
  * gngprot: Added correct character ROM [chris @ windy gaming, Joe Magiera, nightmaretony]
 
 -ymz774: implement SQC thing on top of sequencers, fix sequencers timers setup [MetalliC]
@@ -506,8 +496,6 @@ Source Changes
 -ymz774: when SQC stopped stop SEQ too, make SEQ/SQC save state-friendly, cleanups [MetalliC]
 
 -fmtowns: implement sprite rotation [r09]
-
--Atmel AIC: rewrite logic at the level enough for pgm2. [MetalliC]
 
 -atlantis/vegas: Fixed DCS audio banking for DENVER and DSIO DCS audio. [Ted Green]
 
@@ -604,9 +592,6 @@ Source Changes
 
 -tms9995: Fixed READY check on RESET (auto-waitstate) [Michael Zapf]
 
--dumped internal rom from ddpdojh igs036, promoted to WORKING [Morten Shearman Kirkegaard, Peter Wilhelmsen, MetalliC] marked as
- MACHINE_IMPERFECT_GRAPHICS because of gfx glitches, further investigation needed. [MetalliC]
-
 -alphatpx: identified more keys [helwie44], added P30 ROMs and labels [rfka01] (#2950) [rfka01]
  * alphatpx: identified more keys [helwie44], added alphatronic P30 ROMs and labels [rfka01]
  * alphatpx: more keys identified and cleaner list of keys
@@ -695,18 +680,10 @@ Source Changes
  * Fixes most (but not all) graphical glitches in After Burner 1 and 3.
  * As with the half-size attributes, rotation of 16-bit color sprites is untested as I haven't found any test cases yet.
 
--dumped internal rom for kof98umh igs036 [Morten Shearman Kirkegaard, Peter Wilhelmsen] (game boots, but not yet working properly,
- MAME hangs during attract, also needs screen mode registers finding) [DavidHaywood]
-
 -Command to print all debugger help to html file Chapter links are sorted. [vadosnaprimer]
  * The current code generated this file: https://vadosnaprimer.github.io/debughelp.html
  * Also tweaked static_help_list spacing to always pad commands and never pad explanations. Not sure about the macro though.
  * rst file could be generated in a similar way, might try that later.
-
--pgm2: memcard reader now uses image_device stuff, cards can be inserted / removed and get saved [Metallic, David Haywood] promoted
- China set of Oriental Legend 2 to working promoted Knights of Valour 2 New Legend to working [DavidHaywood]
- * as each game/region requires a valid default card in order to save said cards are part of romset.
- * (there's probably a cleaner way to do the device finder stuff but I forgot and can't find reference)
 
 -fmtowns: implement half-size mode for sprites This change implements attribute bits 10-11 for sprites, which enable half-size
  rendering. The exact algorithm is unknown (AFAIK), so I'm just rendering alternate pixels / lines. [rzero9]
@@ -723,10 +700,6 @@ Source Changes
  * Instead, an error message is logged telling the plugin is not found.
 
 -agat7: 840KB floppy HLE; minor fixes -> mark WORKING [shattered]
-
--pgm2: use sprite decryption keys uploaded by games where we have internal rom [MetalliC, David Haywood]
-
--pgm2 : use uploaded tables for kov2nl / orleg2 [David Haywood]
 
 -fmtowns: fixed mouse cursor moving on its own in Data West games This change fixes a bug that caused the mouse cursor to move
  downwards on its own in some Data West games (Misty, Psychic Detective series, The 4th Unit series). These games seem to poll the
@@ -911,8 +884,6 @@ New machines marked as NOT_WORKING
 ----------------------------------
 Real Battle Super Phoenix Mahjong (Version 4.1) [Peter Wilhelmsen, The Dumping Union]
 alphatpx: many improvements [rfka01, helwie44, Carl]
-The King of Fighters '98: Ultimate Match HERO (China, V100, 09-08-23) [ Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood]
-The King of Fighters '98: Ultimate Match HERO (China, V100, 09-08-23) [ Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood]
 
 
 New clones marked as NOT_WORKING
@@ -961,9 +932,6 @@ West Story (bootleg of Blood Bros., set 2)
 
 Machines promoted to working
 ----------------------------
-Dodonpachi Daioujou Tamashii (V201, China)
-Knights of Valour 2 New Legend (V302, China)
-Oriental Legend 2 (V104, Oversea)
 San Francisco Rush: The Rock (boot rom L 1.0, GUTS Oct 6 1997 / MAIN Oct 16 1997)
 
 Clones promoted to working
