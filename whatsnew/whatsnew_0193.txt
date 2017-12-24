@@ -34,7 +34,7 @@ Street Fighter II (Tiger handheld) [hap, Sean Riddle]
 TelePachi Fever Lion (V1.0) [Rod_Wod, Hammy, The Dumping Union]
 The Shadow (Tiger handheld) [hap, Sean Riddle]
 Vulcan XL 25 [hap, Sean Riddle]
-In Your Face (World, prototype) [ShouTime, Darksoft, Ryan Holtz, Surgeville, Sean Sutton, gamez fan, Smitdogg, The Dumping Union, dink]
+In Your Face (North America, prototype) [ShouTime, Darksoft, Ryan Holtz, Surgeville, Sean Sutton, gamez fan, Smitdogg, The Dumping Union, dink]
 The King of Fighters '98: Ultimate Match HERO (China, V100, 09-08-23)
   [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood, _MetalliC_]
 
@@ -44,6 +44,7 @@ New working clones
 A-Blast (Japan) [system11, The Dumping Union]
 Amigo (bootleg of Amidar, set 2) [f205v, The Dumping Union]
 Attack (Defender bootleg) [ARPA, Recreativas.org, The Dumping Union]
+Blood Bros. (US) [Bill D., The Dumping Union]
 Blue's Journey / Raguy (ALH-001) [Razoola]
 Fantasy (Germany, set 2) [Corrado Tomaselli, The Dumping Union]
 Fidelity Designer Mach IV Master 2325 [hap, yoyo_chessboard]
@@ -56,6 +57,8 @@ Super Bagman (Itisa, Spain) [f205v]
 Teki Paki (location test)
   [ShouTime, Mouloud Bessaad, Dulleron, Christian Ricolleau, Marisol Nuñez Serrano, Renato Mucciarelli, Jeffrey Gray, John Wilke,
   Darksoft, Ryan Holtz, Smitdogg, The Dumping Union]
+Twin Brats (set 1) [caius, The Dumping Union]
+West Story (bootleg of Blood Bros., set 2) [Osso, caius, The Dumping Union]
 
 
 Machines promoted to working
@@ -373,10 +376,6 @@ Source Changes
 
 -segae.cpp: Correct ROM labels for Hang On Jr. [ShouTime]
 
--new clone added  - Teki Paki (location test) [briantro]
-
--new clone added  - Twin Brats [briantro]
-
 -HLE of HP9845 internal printer (#2884) [fulivi]
  * hp9845 & hp64k: fixed breakage caused by c46e1007a8
  * hp9845: HLE of internal printer added
@@ -512,8 +511,6 @@ Source Changes
 
 -vgmplay.cpp: added preliminary ym2608 OPNA hookup [Angelo Salese]
 
--New prom for In Your Face [dink] (#2944) [gamez-fan]
-
 -myb3k: Added three new ISA8 cards, one COM card and two FDC, specific for the MyBrain 3000 and its branded variants JB-3000 and
  Ericsson PC step/one [Joakim Larsson Edstrom]
 
@@ -539,8 +536,6 @@ Source Changes
 -Atmel AIC: implement most of features [MetalliC]
 
 -fmtowns: fix kana input and identify missing keys [r09]
-
--new working clone - A-Blast [briantro]
 
 -Stop including random strings of question marks in key names [AJR]
 
@@ -825,48 +820,10 @@ Source Changes
 
 New working machines
 --------------------
-img = new_img [fulivi]
-return img [fulivi]
-def print_line(img , line , pixels): [fulivi]
-img = ensure_space(img , line + 24) [fulivi]
-for x , p in enumerate(pixels): [fulivi]
-if p == '*': [fulivi]
-img.putpixel((x * 2 , line) , 0) [fulivi]
-img.putpixel((x * 2 + 1 , line) , 0) [fulivi]
-img.putpixel((x * 2 , line + 1) , 0) [fulivi]
-img.putpixel((x * 2 + 1 , line + 1) , 0) [fulivi]
-return img [fulivi]
-def fatal(msg): [fulivi]
-print("{}: Fatal error:{}".format(sys.argv[ 0 ] , msg) , file=sys.stderr) [fulivi]
-sys.exit(1) [fulivi]
-def main(): [fulivi]
-parser = argparse.ArgumentParser(description="Convert HP9845 printer bitbanger to image") [fulivi]
-parser.add_argument('inp_file', help="Input bitb file") [fulivi]
-parser.add_argument('out_file', help="Output image file") [fulivi]
-args = parser.parse_args() [fulivi]
-try: [fulivi]
-inp = open(args.inp_file , "rt") [fulivi]
-except IOError: [fulivi]
-fatal("Can't open input file ({})".format(args.inp_file)) [fulivi]
-mg = re.compile(r"(\d+):([ *]{560})") [fulivi]
-img = Image.new("1" , (1120 , 0) , 1) [fulivi]
-for line_no , l in enumerate(inp): [fulivi]
-mo = mg.match(l) [fulivi]
-if mo: [fulivi]
-img = print_line(img , int(mo.group(1)) , mo.group(2)) [fulivi]
-else: [fulivi]
-print("Can't parse line {} in input file".format(line_no + 1)) [fulivi]
-img.save(args.out_file) [fulivi]
-if __name__ == '__main__': [fulivi]
-main() [fulivi]
-``` [fulivi]
 
 
 New working clones
 ------------------
-Blood Bros. (US) [Bill D., The Dumping Union]
-West Story (bootleg of Blood Bros., set 2) [Osso, caius, The Dumping Union]
-Twin Brats (set 1) [caius, The Dumping Union]
 Slot (unknown bootleg?) [Alessandro Ghirardi, Lorenzo Fongaro]
 
 
@@ -904,22 +861,15 @@ New working machines
 --------------------
 4-in-1
 HP 2645A
-In Your Face (US, prototype)
 Joker Poker With Hi-Lo Double-Up
 Slot (unknown bootleg?)
 
 New working clones
 ------------------
-Blood Bros. (Japan)
-Blood Bros. (Japan, rev A)
-Blood Bros. (US)
 Head to Head Hockey (COP420L version)
 Head to Head Soccer (COP420L version)
 Mario Bros. (US, Revision G)
 SWTPC 6800 Computer System (with MIKBUG)
-Twin Brats (set 3)
-West Story (bootleg of Blood Bros., set 1)
-West Story (bootleg of Blood Bros., set 2)
 
 Machines promoted to working
 ----------------------------
@@ -933,7 +883,6 @@ Real Battle Super Phoenix Mahjong (Version 4.1)
 
 New clones marked as NOT_WORKING
 --------------------------------
-A-Blast (bootleg)
 JB-3000
 Step/One
 Striker Xtreme (1.01 Italy)
