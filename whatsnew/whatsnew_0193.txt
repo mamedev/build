@@ -19,7 +19,7 @@ Batman Forever - Double Dose of Doom (Tiger handheld) [hap, Sean Riddle]
 Battletoads (Tiger handheld) [hap, Sean Riddle]
 Calcune (Japan, prototype)
   [David Haywood, ShouTime, gamez fan, Sacrilego, Paul Vining, Jeffrey Gray, Fabien Marsaud, Jarrod Wright, Darksoft, Rod_Wod,
-  Steven Young, Sean Sutton, Surgeville, The Dumping Union]
+  Sean Sutton, Surgeville, The Dumping Union]
 Chess King Master [hap, Berger]
 Fidelity Designer Mach III Master 2265 [hap, yoyo_chessboard]
 Fonas 3 in 1: Football, Basketball, Soccer [hap, Sean Riddle]
@@ -36,7 +36,7 @@ The Shadow (Tiger handheld) [hap, Sean Riddle]
 Vulcan XL 25 [hap, Sean Riddle]
 In Your Face (North America, prototype) [ShouTime, Darksoft, Ryan Holtz, Surgeville, Sean Sutton, gamez fan, Smitdogg, The Dumping Union, dink]
 The King of Fighters '98: Ultimate Match HERO (China, V100, 09-08-23)
-  [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood, _MetalliC_]
+  [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood, MetalliC]
 
 
 New working clones
@@ -68,9 +68,9 @@ beatmania IIDX 6th style (GCB4U JAB) [smf, R. Belmont, Sarah Purohit]
 beatmania IIDX 7th style (GCB44 JAA) [smf, R. Belmont, Sarah Purohit]
 beatmania IIDX 8th style (GCC44 JAA) [smf, R. Belmont, Sarah Purohit]
 beatmania IIDX Substream with DDR 2nd Club Version 2 (984 A01 BM) [smf, R. Belmont, Sarah Purohit]
-Oriental Legend 2 (World & China) [Jeremy Romine, Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood, _MetalliC_]
-Dodonpachi Daioujou Tamashii (V201, China) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood, _MetalliC_]
-Knights of Valour 2 New Legend (China) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood, _MetalliC_]
+Oriental Legend 2 (World & China) [Jeremy Romine, Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood, MetalliC]
+Dodonpachi Daioujou Tamashii (V201, China) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood, MetalliC]
+Knights of Valour 2 New Legend (China) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood, MetalliC]
 
 
 Clones promoted to working
@@ -330,21 +330,32 @@ Source Changes
 
 -twinkle: many fixes to waveram banking + DMA.  Most sets are semi-playable now. [R. Belmont, Sarah Purohit]
 
--pgm2.cpp: make RTC ticking, removed orleg2 patch, its not needed anymore [MetalliC]
+-pgm2.cpp changes:
+ * make RTC ticking, removed orleg2 patch, its not needed anymore [MetalliC]
  * document debug features [MetalliC]
  * tell igs036 emulation to use uploaded tables for kov2nl / orleg2 [David Haywood]
  * use sprite decryption keys uploaded by games where we have internal rom [MetalliC, David Haywood]
  * ICRW sim improvements [MetalliC, Lord Nightmare]
  * memcard reader now uses image_device stuff, cards can be inserted / removed and get saved.  As each game/region requires a valid
     default card in order to save the default cards are now part of romset. [Metallic, David Haywood]
+ * allow ddpdojh to actually run code from ram rather than treating ram as rom (even if the game doesn't actually care)
+ [David Haywood]
 
--Atmel AIC: rewrite logic at the level enough for pgm2. [MetalliC]
+-Atmel AIC: implement most of features [MetalliC]
 
 -igs036crypt.cpp
  * Updates to support kof98umh. [Andreas Naive]
  * The format of the key tables is now compatible with the real ones provided by the internal ARM. [Andreas Naive]
 
 -igs036 CPU seems to be derived from a 946 type core based on using MPU not MMU, change it to be such. [David Haywood]
+
+-ymz774 changes: [MetalliC]
+ * implemented sequencer and SQC,
+ * SEQ/SQC is save state friendly now,
+ * added channel volume delayed transition,
+ * implemented channel/SEQ pause/resume.
+
+-ymz770: handled CHAN/SEQ "keep playing" command. [MetalliC]
 
 -Update strings.po (#2875) [theheroGAC]
  * Translations added or modified
@@ -476,8 +487,6 @@ Source Changes
 
  * gngprot: Added correct character ROM [chris @ windy gaming, Joe Magiera, nightmaretony]
 
--ymz774: implement SQC thing on top of sequencers, fix sequencers timers setup [MetalliC]
-
 -New working machines: [Phil Bennett]
  * 4-in-1 [Joe Magiera] Joker Poker With Hi-Lo Double-Up [Joe Magiera]
  * Note: Not sure if these are the actual names for these games.
@@ -490,8 +499,6 @@ Source Changes
 
 -Revert "Revert "Merge branch 'master' of https://github.com/mamedev/mame"" [Firehawke]
  * This reverts commit 54155441e9ba9941e85d80c4834a66376a11e791.
-
--ymz774: when SQC stopped stop SEQ too, make SEQ/SQC save state-friendly, cleanups [MetalliC]
 
 -fmtowns: implement sprite rotation [r09]
 
@@ -525,8 +532,6 @@ Source Changes
  [Joakim Larsson Edstrom]
 
 -myb3k_kbd: removed unused timer variable [Joakim Larsson Edstrom]
-
--Atmel AIC: implement most of features [MetalliC]
 
 -fmtowns: fix kana input and identify missing keys [r09]
 
@@ -575,9 +580,6 @@ Source Changes
 -myb3k.cpp: Boots DOS 1.25, Keyboard and audio works. Graphics needs refactoring but supports 'basica demo.bas' quite well
  [Edstrom, Fredik Ohrstrom, Mattis Lind]
 
--ymz774: add volume delayed transition, CHAN/SEQ pause/resume, ymz770: handle CHAN/SEQ "keep playing" command, document other known
- SPU in this series [MetalliC]
-
 -apollo.cpp updates [Hans Ostermeyer]
  * use custom name 'disk' instead of 'harddisk' to preserve previous-MAME compatibility
  * fix: function keys didn't work with Num Lock on for SDL2 OSD
@@ -596,17 +598,8 @@ Source Changes
  * alphatpx: comments
  * alphatpx: comments
 
--allow ddpdojh to actually run code from ram rather than treating ram as rom (even if the game doesn't actually care)
- [David Haywood]
-
 -ARM Thumb: mask address lsb during 16/32 bit memory access, as per ARMv5/ARM9 behavior. this needed to be changed or split when we
  will be emulate ARMv6/ARM11 [MetalliC]
-
--Revert "ARM Thumb: mask address lsb during 16/32 bit memory access, as per ARMv5/ARM9 behavior." [arbee]
- * This reverts commit 1bc2a2ab12757e21a90ef191bf9fe69a541132e8.
-
--allow ddpdojh to actually run code from ram rather than treating ram as rom (even if the game doesn't actually care) allow ddpdojh
- to actually run code from ram rather than treating ram as rom (even if the game doesn't actually care) [DavidHaywood]
 
 -trs80m2kb.cpp: Added missing keyboard controller rom [Edstrom, Sean Riddle]
  * I sent my fried (don't ask) 8021 trs80m2 keyboard controller to Sean who decapped it (see
