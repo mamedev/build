@@ -250,7 +250,11 @@ Source Changes
 -Amatic Multi Game IV: Decrypted program ROM, added proper keys, created new machine configuration (also used for
  Switched Multi Game III), and added third 8255 PPI. [Roberto Fresca]
 
--arm7: Fixed misaligned 16-bit loads (thanks to Alegend45 for report). [Vas Crabb]
+-arm7 changes:
+ * Fixed misaligned 16-bit loads (thanks to Alegend45 for report). [Vas Crabb]
+ * igs036 CPU seems to be derived from a 946 type core based on using MPU not MMU, change it to be such. [David Haywood]
+ * LDMIA/STMIA always align to a 32-bit boundry [endrift, R. Belmont]
+ * misaligned memory access fixes. [MetalliC]
 
 -et3400: Added better layout views including display labels and clickable keypad (github #2862). [Vas Crabb]
 
@@ -344,8 +348,6 @@ Source Changes
  * Updates to support kof98umh. [Andreas Naive]
  * The format of the key tables is now compatible with the real ones provided by the internal ARM. [Andreas Naive]
 
--igs036 CPU seems to be derived from a 946 type core based on using MPU not MMU, change it to be such. [David Haywood]
-
 -ymz774 changes: [MetalliC]
  * implemented sequencer and SQC,
  * SEQ/SQC is save state friendly now,
@@ -387,8 +389,6 @@ Source Changes
  * hp9845: moved src/devices/machine/hp9845_printer.* to src/mame/machine
 
 -MT #6784 (ay ay ay) [AJR]
-
--arm7: LDMIA/STMIA always align to a 32-bit boundry [endrift, R. Belmont]
 
 -gba: add various mirrors and fix byte-wide VRAM/PRAM/OAM access. [R. Belmont]
 
@@ -583,9 +583,6 @@ Source Changes
  * alphatpx: comments
  * alphatpx: comments
  * alphatpx: comments
-
--ARM Thumb: mask address lsb during 16/32 bit memory access, as per ARMv5/ARM9 behavior. this needed to be changed or split when we
- will be emulate ARMv6/ARM11 [MetalliC]
 
 -Update of Mybrain 3000 Graphics still needs refactoring before machine is considered working but quite useful already.
  [Edstrom]
