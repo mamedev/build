@@ -229,6 +229,7 @@ Translations added or modified
 ------------------------------
 French [SSTSylvain]
 Italian [theheroGAC]
+Portuguese (Brazil) [Wellington Uemura]
 
 
 Source Changes
@@ -265,6 +266,8 @@ Source Changes
 
 -pet: Fixed video RAM mirroring. [Curt Coder]
 
+-weststory: Verified sprite data by converting to bootleg format and figuring out what was scrambled from there. [David Haywood]
+
 -micro3d: Added diagnostic terminals to the DrMath and VGB boards. [Dirk Best]
 
 -prodigy: Added basic LAY to SVG XSLT filter. [Edström]
@@ -280,11 +283,17 @@ Source Changes
 
 -trs80m2kb.cpp: Added missing keyboard controller ROM. [Edström, Sean Riddle]
 
+-Added a preliminary rewind feature based on save states. [feos]
+
 -myb3k: Added keyboard device and preliminary support for Ericsson Step/One keyboard. [Fredrik Öhrström]
 
 -hp9845: Added high-level emulation of internal printer. [F.Ulivi]
 
 -Fixed and improved metadata for CP-450 and CD-6809 CoCo FDCs. [Felipe Sanches]
+
+-omti8621: Use custom brief instance name “disk” for compatibility with previous MAME versions. [Hans Ostermeyer]
+
+-apollo_kbd: Handle virtual Num Lock toggle inside the devices. [Hans Ostermeyer]
 
 -Atmel AIC: Implemented most features. [MetalliC]
 
@@ -373,10 +382,19 @@ Source Changes
 -et3400: Added better layout views including display labels and clickable keypad (github #2862). [Vas Crabb]
 
 -arm7 changes:
- * Fixed misaligned 16-bit loads (thanks to Alegend45 for report). [Vas Crabb]
+ * Fixed misaligned 16-bit loads (thanks to MoochMcGee for report). [Vas Crabb]
  * Made IGS036 CPU derive from ARM946 (ARM9 implementation of ARMv5T with MPU). [David Haywood]
  * Made LDMIA/STMIA align to 32-bit boundary. [endrift, R. Belmont]
  * Made misaligned memory accesses match ARM9 behaviour. [MetalliC]
+
+-pgm2.cpp changes:
+ * Made RTC tick and removed now-unnecessary patch from orleg2. [MetalliC]
+ * Documented debug features. [MetalliC]
+ * Made igs036 emulation use uploaded decryption tables for kov2nl and orleg2. [David Haywood]
+ * Use sprite decryption keys uploaded by games where we have internal ROM. [MetalliC, David Haywood]
+ * ICRW sim improvements. [MetalliC, Lord Nightmare]
+ * Converted memory card to an image device and added default card images to ROM sets. [Metallic, David Haywood]
+ * Allow ddpdojh to run code from RAM rather than treating RAM as ROM. [David Haywood]
 
 -Fixed Batrider’s audio CPU clock (should be 32MHz/6). [Alex Marshall]
 
@@ -392,9 +410,15 @@ Source Changes
 
 -Added hand-made priority PROM for In Your Face. [dink]
 
+-aristmk5: Updated layouts. [Heihachi_73]
+
 -alphatpx: Identified more keys. [helwie44]
 
+-pc_vga.cpp: Left-shift CRTC start address depending on mode, thanks to DOSBox-X (github issue #2954). [MoochMcGee]
+
 -play_2.cpp: Updated cop402 ROM for zira. [PinMAME]
+
+-cps1.cpp, kenseim.cpp: Reqplaced ioc1 PAL logical equivalent with real dump from an unprotected device. [Porchy, The Dumping Union]
 
 -alphatpx: Added sound emulation. [rfka01]
 
@@ -416,192 +440,3 @@ Source Changes
 -Raise a fatal error if lua console is requested but the console plugin is not found (rather than crashing). [Sylvain Glaize]
 
 -cdi.cpp: Decapped and dumped quizard3 MCU. [Team Europe]
-
--Update for Brazilian Portuguese [Wellington Uemura]
- * All translation updated to follow GNOME Translation Rules for Brazilian Portuguese, this are the same rules for other Linux
-    Distributions, Manuals, etc. Now we can avoid translation conflicts. http://br.gnome.org/GNOMEBR/ErrosFrequentes
-    http://br.gnome.org/GNOMEBR/GuiaDoTradutor
- * Brazilian Portuguese REQUIRE context, it doesn't matter what a word say, we need to see what the program is doing instead of what
-    the word/phrase is saying to construct the phrase correctly.
- * That ROM AUDITION functions means nothing in Brazilian Portuguese, so the translation was adapted to "Condição", this reflects
-    better if the ROM is GOOD/BAD, etc.
- * OK has different meanings in Brazilian Portuguese, if you ask someone if the food was good and you reply "OK", it means that the
-    food  are between good and bad or more or less. Since "Ok" doesn't reflect if the ROM is good or not, the translation was
-    changed to "BOA" witch means "GOOD" following Brazilian Portuguese concordance rules "Estado dA ROM" this "A" tell us to use
-    "boA" (female) instead of "BOM"(male).
- * Some parts of the translation was also adapted to fit the screen or the space the phrase is at.
- * To our language, the correct translation to plugin is plug-in.
- * A few more mistakes were fixed like Enter (to type in) = Digite not "Entre" (to get inside of) or Search = Pesquisa not "Busca",
-    etc.
-
--weststory: verified sprite data by converting original mask rom into bootleg format and figuring out what was scrambled from there,
- it's a very simple but quite stupid bitswap on 2 of the roms.  made a note that one byte actually differs in the bootleg even after
- this, since it's been verified on 2 bootlegs it could be the original mask rom has a bad byte in it instead, should really be
- checked. [David Haywood]
-
--Update for Brazilian Portuguese [Wellington Uemura]
- * Minor fixes and typos. Added @felipesanches requests Shorted some strings as @felipesanches requests, not all "IU" was changed
-    because it breaks the interface or is too big. We will have to deal with the "parent" and "clone" thing later, maybe the use of
-    RAMIFICAÇÃO (RAMIFICATION OF) that will better reflect with our Language.
-
--pgm2.cpp changes:
- * make RTC ticking, removed orleg2 patch, its not needed anymore [MetalliC]
- * document debug features [MetalliC]
- * tell igs036 emulation to use uploaded tables for kov2nl / orleg2 [David Haywood]
- * use sprite decryption keys uploaded by games where we have internal rom [MetalliC, David Haywood]
- * ICRW sim improvements [MetalliC, Lord Nightmare]
- * memcard reader now uses image_device stuff, cards can be inserted / removed and get saved.  As each game/region requires a valid
-    default card in order to save the default cards are now part of romset. [Metallic, David Haywood]
- * allow ddpdojh to actually run code from ram rather than treating ram as rom (even if the game doesn't actually care)
-    [David Haywood]
-
--Rewind feature and RAM savestates. [vadosnaprimer]
- * This starts the work requested in #2398.
- * How RAM states work.
- * Implemented using util::vectorstream. Instead of dumping m_save.m_entry_list to file, it writes them as binary to vectorstream.
-    Compression is not used, as it would slow down the process. The header is written as usual, also in binary. When a state is
-    loaded, the savestate data gets binary-read from vectorstream.
- * How rewind works.
- * Rewind is optional, it can be turned off through MAME GUI while not running. Rewind capacity is available there too. Rewind step
-    hotkey is available from the standard hotkey menu. In the debugger you have the "rewind" command ("rw" shortcut) that works the
-    same as the hotkey.
- * Every time you advance a frame (pause step), rewinder captures a RAM savestate of the frame you were at. It does the same when
-    you do step into/over/out in the debugger. Every time it captures a new state (and when you unpause), it marks as invalid all
-    its states that go after the current machine time, because input might change, so they are not relevant anymore. It keeps their
-    buffers allocated though, for future use. When rewinder runs out of allowed amount of savestates it can have, it invalidates the
-    first state in the list and tosses its unique_ptr to the end of the list, then it uses its buffer to capture a new state. When
-    you hit the rewind step key, or use "rewind" command in the debugger, it loads a state that is immediately before the current
-    machine time. Invalid states between valid ones are not allowed to appear, as that breaks rewinder integrity and causes
-    problems. Rewinder keeps its own set of ram states as a vector of unique_ptr's. All rewinder operations and errors get reported
-    using machine().popmessage().
-
--icount was missing from the savestates [vadosnaprimer]
- * When you load a state, icount (*icountptr) would remain whatever it was before loading, messing with the remaining cycles and
-    with the amount of code executed per run() call. This introduced non-determinism and badly influenced usage of savestates while
-    debugging. machine().time() would also return wrong values after that, since it adds remaining cycles.
-
--explain the rewind command in debughlp fix a typo in the stateload description [vadosnaprimer]
-
--aristmk5 layout updates [Heihachi_73] (#2901) [David Haywood]
-
--add command to print all debugger help to html file tweak static_help_list spacing to always pad commands and never pad
- explanations [vadosnaprimer]
-
--debughlp - fix gcc build [vadosnaprimer]
-
--pc_vga.cpp: CRTC start address is supposed to be shifted left by 2, from 86Box [Melissa Goad]
-
--The proper fix, gleaned from DOSBox-X. [Melissa Goad]
-
--Fixup [Melissa Goad]
-
--rewind implementation fixes and improvements [vadosnaprimer]
- * reset scheduler savestate to what it was for years before rewind
- * - changing saved variables should be done after thorough testing. right now, adding some vars breaks some machines, adding other
-    vars breaks others
- * switch to megabyte-wise capacity
- * - savestate size greatly differs between machines, relying on state count is unstable
- * switch to internal indexing
- * - no longer depends on inaccurate machine time
- * rewind accelerator key in debugger (Ctrl+F11)
- * report capacity hit (once), with some useful info
- * make error reports saner
- * mention rewind and rewind_capacity in the docs
-
--missing return [vadosnaprimer]
-
--cps1.cpp, kenseim.cpp: substituted ioc1 pal logically equivalent replacement with real dump from an unprotected device
- [Porchy, The Dumping Union]
-
--apollo.cpp updates [Hans Ostermeyer]
- * use custom name 'disk' instead of 'harddisk' to preserve previous-MAME compatibility
- * fix: function keys didn't work with Num Lock on for SDL2 OSD
-
--Rewind implementation fixes and improvements [vadosnaprimer]
- * Reset scheduler savestate to what it was for years before rewind. Changing saved variables should be done after thorough testing.
-    Right now, adding some vars breaks some machines, adding other vars breaks others.
- * Switch to megabyte-wise capacity. Savestate size greatly differs between machines, relying on state count is unstable.
- * Switch to internal indexing. No longer depends on inaccurate machine time.
- * Rewind accelerator key in debugger (Ctrl+F11).
- * Report capacity hit (once), with some useful info.
- * Make error reports saner. On any error, basic complaint is posted to emulator window and debugger, details go to error.log. Since
-    timers are no longer dumped on every state operation, error.log is no longer getting spammed.
- * Mention rewind and rewind_capacity in the docs.
- * I'm really hoping to get this merged before feature freeze, because it fixes the rewind bugs that make it unstable. I'll be
-    around until then, please report if any fixes are still needed. Probably it could also be set to On by default (docs would need
-    to be tweaked too).
-
--pc_vga.cpp: CRTC start address is supposed to be shifted left by 2, from 86Box [Melissa Goad] Fixes #2954 [MoochMcGee]
-
--myb3k: WIP adding ISA bus, cards, devices and branded clones This is work in progress based on Ericsson step/one Service Manuals, a
- branded Mybrain 3000 [JoakimLarsson]
-
--Command to print all debugger help to html file Chapter links are sorted. [vadosnaprimer]
- * The current code generated this file: https://vadosnaprimer.github.io/debughelp.html
- * Also tweaked static_help_list spacing to always pad commands and never pad explanations. Not sure about the macro though.
- * rst file could be generated in a similar way, might try that later.
-
--aristmk5 layout updates [Heihachi_73]
-
--explain the rewind command in debughlp also fix a typo in the stateload description [vadosnaprimer]
-
--Rewind feature and RAM savestates. This starts the work requested in #2398. Rewind is also on @mmicko's roadmap. [vadosnaprimer]
- * ### How RAM states work.
- * Implemented using `util::vectorstream`. Instead of dumping `m_save.m_entry_list` to file, it writes them as binary to
-    `vectorstream`. Compression is not used, as it would slow down the process. The header is written as usual, also in binary. When
-    a state is loaded, the savestate data gets binary-read from `vectorstream`.
- * ### How rewind works.
- * Rewind is optional, it can be turned off through MAME GUI while not running. Rewind capacity is available there too. Rewind step
-    hotkey is available from the standard hotkey menu. In the debugger you have the `rewind` command (`rw` shortcut) that works the
-    same as the hotkey.
- * Every time you advance a frame (pause step), rewinder captures a RAM savestate of the frame you were at. It does the same when
-    you do step into/over/out in the debugger. Every time it captures a new state (and when you unpause), it marks as invalid all
-    its states that go after the current machine time, because input might change, so they are not relevant anymore. It keeps their
-    buffers allocated though, for future use. When rewinder runs out of allowed amount of savestates it can have, it invalidates the
-    first state in the list and tosses its `unique_ptr` to the end of the list, then it uses its buffer to capture a new state. When
-    you hit the rewind step key, or use `rewind` command in the debugger, it loads a state that is immediately before the current
-    machine time. Invalid states between valid ones are not allowed to appear, as that breaks rewinder integrity and causes
-    problems. Rewinder keeps its own set of ram states as a vector of `unique_ptr`'s. All rewinder operations and errors get
-    reported using `machine().popmessage()`.
- * ### icount
- * Since rewinder fully depends on accurate machine time, using it during debugging uncovered a bug in savestates that causes
-    non-determinism. I fixed that with a one-liner, savestates created in the past are not going to work anymore.
-
--Update for Brazilian Portuguese Minor fixes and typos. Added @felipesanches requests Shorted some strings as @felipesanches
- requests, not all "IU" was changed because it breaks the interface or is too long. We will have to deal with the "parent" and
- "clone" thing later, maybe the use of RAMIFICAÇÃO (RAMIFICATION OF) that will better reflect with our Language. [katananja]
-
--weststory: verified sprite data by converting original mask rom into bootleg format and figuring out what was scrambled from there,
- it's a very simple but quite stupid bitswap on 2 of the roms.  made a note that one byte actually differs in the bootleg even after
- this, since it's been verified on 2 bootlegs it could be the original mask rom has a bad byte in it instead, should really be
- checked. [DavidHaywood]
-
--Prodigy webinterface poc This is just a 1-to-1 mapping of the subset of features used by the Prodigy layout so far. The XSL
- stylesheet transforms the LAY XML to SVG and also inserts necessary javascript code to set up a web socket connection to the
- Prodigy driver. Only the key pad and the BCD display works atm The internal UI is in sync with the web UI at all times.
- [JoakimLarsson]
- * The code is quite driver independent and could be moved and refactored to go into the webserver core parts to provide SVG support
-    to any layout based driver, if that is the route we wanna take. I don't suggest this as a replacement of the internat UI but
-    instead a complement to add SVG style driver UI:s when needed. Additional SVG elements needs to be added to the LAY file
-    vocabulary that will be ignored by the internal UI. It would also be possible to convert the LAY file  once to SVG and go from
-    there.
- * Another idea is to write an XSL stylesheet transforming to WebGL meshes given that dimensions can be described in the LAY file.
- * Lastly, there is nothing that prevents this UI to be served over Internet, very little needs to be changed for that except for
-    A/V encoders for screens and audio that needs to be added.
-
--Update for Brazilian Portuguese [katananja]
- * All translation updated to follow GNOME Translation Rules for Brazilian Portuguese, this are the same rules followed by other
-    Linux Distributions, Manuals, etc. Now we can avoid translation conflicts. http://br.gnome.org/GNOMEBR/ErrosFrequentes
-    http://br.gnome.org/GNOMEBR/GuiaDoTradutor
- * Brazilian Portuguese REQUIRE context, it doesn't matter what a word say, we need to see what the program is doing instead of what
-    the word/phrase is saying to construct the phrase correctly.
- * That ROM AUDITION functions means nothing in Brazilian Portuguese, so the translation was adapted to "Condição", this reflects
-    better if the ROM is GOOD/BAD, etc.
- * OK has different meanings in Brazilian Portuguese, if you ask someone if the food was good and you reply "OK", it means that the
-    food  are between good and bad or more or less. Since "Ok" doesn't reflect if the ROM is good or not, the translation was
-    changed to "BOA" witch means "GOOD" following Brazilian Portuguese concordance rules "Estado dA ROM" this "A" tell us to use
-    "boA" (female) instead of "BOM"(male).
- * Some parts of the translation was also adapted to fit the screen or the space the phrase is at.
- * To our language, the correct translation to plugin is plug-in.
- * A few more mistakes were fixed like Enter (to type in) = Digite not "Entre" (to get inside of) or Search = Pesquisa not "Busca",
-    etc.
