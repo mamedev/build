@@ -1,0 +1,1682 @@
+0.194
+-----
+
+
+MAMETesters Bugs Fixed
+----------------------
+- 02076: [Graphics] (playch10.cpp) playch10 ALL using single BIOS: Playchoice-10 driver needs LEDs added for "Single BIOS" (cuavas)
+- 03790: [Crash/Freeze] (ms32.cpp) gratia, gratiaa: unhandled priority type f8 (Angelo Salese)
+- 05632: [Crash/Freeze] (nwk-tr.c) racingj2, racingj2j: [debug] Crash shortly after OK
+- 06282: [Crash/Freeze] (snes.cpp) snes [rivaltrfu, rushbeat]: Black Screen (Angelo Salese)
+- 06548: [Crash/Freeze] (namcos21.cpp) winrun, winrun91, winrungp: [debug] Assert when starting emulation (cuavas)
+- 06623: [Interface] Full Screen Brightness/Contrast/Gamma settings not working anymore (smf)
+- 06710: [Crash/Freeze] (snes.cpp) snes [blackhwk]: On the "blackhawk" cartridge rom from SNES, the game didn't start. (Angelo Salese)
+- 06791: [Graphics] (splash.cpp) splash and clones: Wrong sprite priority on bonus items (AJR)
+- 06799: [Crash/Freeze] (dynax.cpp) hjingi: Emulation hang (AJR)
+- 06804: [Crash/Freeze] (midyunit.cpp) strkforc: Black screen after rom check
+- 06806: [Graphics] Bitmap overlays don't display with bgfx video output
+- 06810: [Misc.] Memory leak in m6502 CPU cores (AJR)
+- 06811: [Misc.] Memory leak in m6809 CPU core (AJR)
+- 06813: [Misc.] Memory leak in options (AJR)
+- 06816: [Interface] AddressSanitizer: alloc-dealloc-mismatch when closing dipswitch menu (Firewave)
+- 06817: [Misc.] (naomi.cpp) mushi2k4: runtime error: index out of bounds (MetalliC)
+- 06825: [Sound] (gng.cpp) diamond: Missing Level Start Music (AJR)
+- 06831: [Crash/Freeze] (compucolor.cpp) compclr2: AddressSanitizer: FPE with -flop asndware (Firewave)
+- 06845: [Gameplay] (sms.cpp) gamegear [shinfrc2]: corrupt tiles on first in-game textbox, corrupt audio when loading save (Tafoid)
+- 06847: [Graphics] (hh_tms1k.cpp) bankshot: Missing leftmost column (hap)
+
+
+New working machines
+--------------------
+
+
+New working clones
+------------------
+
+
+Machines promoted to working
+----------------------------
+
+
+Clones promoted to working
+--------------------------
+
+
+New machines marked as NOT_WORKING
+----------------------------------
+
+
+New clones marked as NOT_WORKING
+--------------------------------
+
+
+New working software list additions
+-----------------------------------
+
+
+New NOT_WORKING software list additions
+---------------------------------------
+
+
+Translations added or modified
+------------------------------
+
+
+Source Changes
+--------------
+-new non-working driver: Scopus Sagitta 150/180 serial terminal [Felipe Corrêa da Silva Sanches]
+
+-sagitta180: declaring an rs232 serial port [Felipe Corrêa da Silva Sanches]
+
+-updating header with TODO and acknowledging Werner Moecke's help in inspecting the circuits and debugging the driver
+ [Felipe Corrêa da Silva Sanches]
+
+-sagitta180: documenting serial settings dipswitches [Felipe Corrêa da Silva Sanches]
+
+-sagitta180: declare DIPLOCATION for DSW1 [Felipe Corrêa da Silva Sanches]
+
+-fix indentation (use tabs instead of spaces) [Felipe Corrêa da Silva Sanches]
+
+-fix private/protected declarations on sagitta180 driver [Felipe Corrêa da Silva Sanches]
+
+-Added 34 entries to cd32 [EoceneMiacid]
+ * Arabian Nights [arabian]
+ * Base Jumpers [basejump]
+ * Beavers [beavers]
+ * Benefactor [benefact]
+ * Black Viper [blkviper]
+ * Battletoads [btoads]
+ * Bubba 'N' Stix [bubba]
+ * Bubble & Squeak [bubblesq]
+ * Bump 'N Burn [bumpburn]
+ * Chuck Rock [chuckrck]
+ * Chuck Rock II - Son of Chuck [chukrck2]
+ * Darkseed [darkseed]
+ * Deep Core [deepcore]
+ * D-Generation [dgen]
+ * Donk! The Samurai Duck! [donk]
+ * Dragonstone [dstone]
+ * Dangerous Streets [dstreets]
+ * Emerald Mines [emerald]
+ * Fireforce [fireforc]
+ * Flink [flink]
+ * Fly Harder [flyhard]
+ * Frontier - Elite II [frontier]
+ * Global Effect [global]
+ * Gloom [gloom]
+ * Guardian [guardian]
+ * International Karate + [ikplus]
+ * Kid Chaos [kidchaos]
+ * Marvin's Marvellous Adventure [marvin]
+ * Myth - History in the Making [myth]
+ * Naughty Ones [naughty]
+ * Overkill + Lunar-C [okillunc]
+ * Quik - the Thunder Rabbit [quik]
+ * Roadkill [roadkill]
+ * Skeleton Krew [skelkrew]
+
+-fmtowns: fix horizontal wrap for bitmap layers (#2964) [r09]
+ * fmtowns: fix horizontal wrap for bitmap layers
+ * fmtowns: use lambda expressions to check for wrapping
+ * return int instead of bool
+
+-new clone added - Pretty Soldier Sailor Moon (Ver. 95/03/21) [briantro]
+
+-New working machines: [Phil Bennett]
+ * Cyberstorm (prototype)
+    [ShouTime, The Dumping Union, Christophe Marignol, Sean Sutton, gamerfan, Brandon Munger, Renato Mucciarelli, Jan Stuhler,
+    Jeffrey Gray, Aaron Giles, Phil Bennett]
+
+-didact.cpp: split out of Candela computers in its own driver for clarity [Joakim Larsson Edstrom]
+
+-arm7: revert previous changes, explicit masking and rotating was unneeded (except for POP {Rlist} which is correct), handle v5
+ behavior (lsb address bit is ignored in 16bit loads) in arm946es_cpu_device::arm7_cpu_read16 instead, manually handle v4 and v5
+ difference for LDRSH signed halfword load. [MetalliC]
+ * note: it looks like all? v5 cores ignore least significant address bit during 16bit loads, so we should add something like
+    virtual uint32_t arm7_cpu_read16(uint32_t addr) override { return base_class::arm7_cpu_read16(addr & ~1)}; into theirs class
+    declaration.
+
+-didact.cpp: split out of Eseelte 100 computer in its own driver for clarity [Joakim Larsson Edstrom]
+
+-gross hack to fix kof10th state save, save_pointer() must be called after the pointer is set & does not cope with it changing.
+ [smf]
+
+-Big Tippers (Russian): Added proper date/year. [RobertoFresca]
+
+-Boom (Russian): Added proper date/year. [RobertoFresca]
+
+-Cash Crop (Russian): Added notes about date/year. [RobertoFresca]
+
+-WMS sets: These strings are not year. [RobertoFresca]
+
+-WMS sets: Batch of dates. [RobertoFresca]
+
+-WMS sets: Second batch of dates. [RobertoFresca]
+
+-mac: Support for "BootBug" NuBus remote debugger card [Al Kossow, R. Belmont]
+
+-WMS sets: Last batch of dates. [RobertoFresca]
+
+-Added workround for clang static builds and enable them again, don't force -O1 on clang builds. [smf]
+
+-added -lSDL2main to fix linking with gcc 7 [smf]
+
+-Use dynamic linking for windows SDL builds to workround an error during linking about liblualibs.a being corrupt, which is
+ dependant on the order of the .o files contained within it. [smf]
+
+-WMS sets: Added year. [RobertoFresca]
+
+-WMS sets: Added copyright, year and correct description to mame.lst. [RobertoFresca]
+
+-Add option to disable saving NVRAM on exit [AJR]
+
+-new clone added - Area 51 / Maximum Force Duo (R3000, 2/02/98) [briantro]
+
+-Changes in aristmk5.cpp [Heihachi_73]
+ * Green Lizard (AHG1623, US) and King Galah (AHG1625, US) were actually Cash Express versions (and Honky Tonk wasn't, oddly
+    enough). Updated the descriptions to suit.
+ * ROM name changes: chickna5b is now chickna5v chickna5qld is now chickna5ql eforsta5ub is now eforsta5cea glizardu is now glizrdce
+    kgalahu is now kgalahce pengpayuc is now pengpayce qnileub is now qnileceb
+ * Layout updates: Fixed bugs in qnilecea.lay, renamed dolphntrce.lay to adonisu.lay and added new layouts for chickna5v, pantmag
+    and tritreat
+
+-sort... [RobertoFresca]
+
+-fix building for windows with qt debugger. [smf]
+
+-Added new preliminary/skeleton driver for Odyssey (Silicon Gaming) [Roberto Fresca]
+
+-fmtowns: refactor line drawing, support zoom up to x16, better wrapping [r09]
+ * Refactored the line drawing code to make it less repetitive and more flexible.
+ * Added support for all 16 horizontal zoom levels supported by the hardware instead of just 5. As far as I know this is only used
+    in some Data West games (Misty, Rayxanber)
+ * Simplified the line wrap detection code and support all use cases (including vertical scrolling and layer 1 with sprites).
+
+-Basic anchor links for FAQ page (#2975) [Firehawke]
+
+-Correct Virtua Fighter 2, Behind Enemy Lines Year [sjy96525]
+ * Virtua Fighter 2 Titlescreen Says 1994 and release year is 1994 confirmed from Arcade TV Game List Kokunai - Kaigai Hen (1971 -
+    2005) at Page 37; Behind Enemy Lines Titlescreen Says 1997 and release year is 1997 confirmed from Arcade TV Game List Kokunai -
+    Kaigai Hen (1971 - 2005) at Page 38. Virtua Fighter 2: https://i.imgur.com/aX22bgo.png https://i.imgur.com/mrQk3wz.png Behind
+    Enemy Lines: https://i.imgur.com/9k1eLmp.png https://i.imgur.com/6xONXkL.png
+
+-Fix MT#06804 (#2979) [sjy96525]
+
+-MT06548 - yes, this should use required_device and optional_device, but I have limited time so custom validity check it is
+ [Vas Crabb]
+
+-pgm2.cpp: dumped internal firmware for kov3 [Peter Wilhelmsen, Morten Shearman Kirkegaard] not: FPGA comms emulation required,
+ currently hacked out. [MetalliC]
+
+-kov3: default sram, speedups, visible area fix [David Haywood]
+
+-Add verbose logging for CFG files (#2980) [Firehawke]
+ * Basic anchor links for FAQ page
+ * Add verbose logging for CFG files
+ * We already have verbose logging for INI files that get parsed, so having CFGs get similar treatment is useful.
+
+-fmtowns: fix single-layer 16 bit mode and multipage wrapping [r09]
+ * Doubled line size when in single-layer + high color mode. Software that uses this combination (secre2, debut2, ayayo123 "X68000
+    version") now looks mostly correct.
+ * Made the line wrapping code aware of VRAM page selection. Fixes a small number of cases where half of the screen would "shake"
+    without this check.
+
+-fmtowns: fix misplaced bottom lines [r09]
+
+-ymz770.cpp: docs update and cosmetics, no actual impact on emulation [MetalliC]
+
+-Update sorcerer_cass.xml (#2986) [Michael Borthwick]
+ * Updated year, publisher and developer for Orb of Halucidon from my original copy of the manual. Updated publisher for Air Traffic
+    Controller from my original copy of the manual.
+
+-blockhl.cpp: Restored missing player inputs [Mikejmoffitt]
+
+-Update wd2010.cpp [Bavarese]
+ * Use calculated access times - typical for MFM drives of that age - instead of hard coded values.
+
+ * e132xs: Hyperstone DRC. [Ryan Holtz]
+
+-added skeleton sega network device so that the rom can be moved from chihiro.zip to seganetw.zip, so the crc doesn't conflict with
+ segadimm.zip [smf]
+
+-vamphalf: improve mdig speedup, it appears to be faster and works for drc & interpreter, remove "space" calls, use e132xs state
+ enum instead of magic numbers. [smf]
+
+-Route16 : simulate protection [iq_132, Robbbert]
+
+-pgm2.cpp: emulate kov3 ROM module communication, remove hack. probably should be devicified later. [MetalliC]
+
+-csplayh5.cpp: redumped nuretemi's sound ROM [ShouTime, The Dumping Union]
+
+-c65.cpp: added some hw notes, corrected CPU clock [Guru]
+
+-Fix Two Issues with the glsl Bilinear Shader [Aaron]
+ * 1. Off-by-one pixel coordinates 2. Sampling of wrong pixels at some non-integer stretch factors
+ * First was noticed while comparing screenshots of the software and opengl w/glsl renderers (opengl output was shifted up and to
+    the right). Fixed by subtracting a 1/2 pixel from the texture coordinates when calculating the bottom left pixel to use for
+    interpolation.
+ * Second was apparent when running pac-man fullscreen on a 1920x1080 screen and allowing non-integer stretching. Manifested as
+    irregular horizontal 'steps' in the output. Fixed by sampling from the center of all pixels which should avoid any funny
+    business in regards to pixel coordinate rounding.
+
+-Add Bicubic Shader to OpenGL Backend [Aaron]
+ * This shader uses the equation described by R. Keys in the paper 'Cubic Convolution Interpolation for Digital Image Processing'
+    which is, in this case, the same as a Catmull-Rom spline. This produces a sharper upscaled image than bilinear filtering.
+ * The new shader is selected by setting gl_glsl_filter to 2. Consequently, gl_glsl_filter is now treated as an int rather than a
+    boolean.
+ * Also fixed a variable name problem in the code guarded by GLSL_SOURCE_ON_DISK.
+
+-metafox : simulate protection [iq_132]
+
+-ygv608.cpp: Add mosaic effect for Galaga Arrangement Ending/Staffroll [Agiri]
+
+-ygv608.cpp: small changes [Agiri]
+
+-new working clone - World Class Bowling v1.0 [briantro]
+
+-ygv608.cpp: R#13 is transparent color (?) [Agiri]
+
+-plugins/portname: new wip plugin for loading translations or alt names for input port fields [Carl]
+
+-pgm2: fixed fg tilemap size (fixes kov3 boss death sequences) [David Haywood]
+
+-ygv608.cpp: Fix a small graphics glitch in RALLY-X Arrangement [Agiri]
+
+-vg5k: Removed reference to VG-5000µ default ROM (CRC a6998ff8), making the "alternate" (CRC 57983260) the correct one. [S. Glaize]
+ * ROM was dumped from a Philips VG-5000µ and compared to the "alternate" (CRC 57983260) version to find it was the same.
+ * Analyze of the (CRC a6998ff8) and why it is faulty and useless to keep:
+ * Address $1000: correct instruction is DI ($F3) at start of boot; in faulty ROM, the instruction is INC BC ($03), which makes no
+    sense here.
+ * Address $2000: this is the start of the table pointing to BASIC instructions. It is matched with the table at $209e containing
+    the keywords. The first keyword (END) will cause the first address to be decoded (at $2519 to $2525) and executed. Correct
+    address is $2f3a, address found in the faulty ROM is $2f00, thus preventing END instruction to work.
+ * Address $3000: this part is the code for the NEXT instruction, starting at $2fe4. The faulty ROM at $3000 causes a CALL $CE02,
+    which is out of the memory range and leads to reboot with no RAM extension. With RAM extension, as the ROM is copied during the
+    memory test at boot, it causes a Syntax Error. The correct byte at $3000 is $03, leading to a CALL $0302, which is correct.
+
+-Add ER1400 serial EAROM device [AJR]
+
+-Improved Mr Kicker speedup & standardised the rest (except aoh). [smf]
+
+-Fix shader compilation error on AMD [Aaron]
+
+-kov3: treat this bit as 'sprite disable' - prevents stray horemen heads in kov3 attract, changes what you see in the shop
+ (improves, hopefully, I can't read Chinese) [David Haywood]
+
+-pgm2: handle MSB of zooming, used by kov3 [David Haywood]
+
+-Jolycdig: Document CPLD... [RobertoFresca]
+
+-Some PC AT 2D accelerator updates: [mahlemiut]
+ * s3: Hardware pointer colour select is now reset on reading CR45, as per documentation.
+ * mach8/mach32: limit sourcex/y to 11 bits, fixes mach32 detection in bundled win9x drivers.
+ * mach32: mapped hardware pointer registers
+ * mach32: added 8514/A compatible DAC registers, fixes I/O port conflict in DOS mach32 utilities, and 8ppp colours under win9x.
+
+-mc68hc11: Fix dissassembly of instructions with 16-bit operands (immediate or direct) [AJR]
+
+-fmtowns: fix vsync flag read from port cff86, Birdy Soft games now boot [r09]
+ * According to the FM Towns Technical Databook, when reading from port 0xcff86, bit 4 should always be set and bit 2 is the VSYNC
+    flag. With this change, Birdy Soft games (cal, myeyes, beast3...) boot instead of getting stuck in a loop waiting for the flag.
+
+-mac: added 1.3 ROM to BootBug card [Al Kossow]
+
+-pgm2: various updates (#3001) [David Haywood]
+ * remove no longer needed kov3 key from igs036crypt.cpp/.h add kov2nl overseas set rename ddpdojh -> ddpdojt because it's called
+    'Tamashii' also changed description to match format used by pgm1.cpp DDP titles. updated some notes
+
+-hh_sm510: renamed these romsets to more sensible/userfriendly: gnw_bx301 -> gnw_boxing, gnw_dj101 -> gnw_dkjr, gnw_dm53 ->
+ gnw_mickdon, gnw_eg26 -> gnw_egg, gnw_jr55 -> gnw_dkong2, gnw_mc25 -> gnw_mmouse, gnw_ml102 -> gnw_mariocm, gnw_mw56 -> gnw_mario,
+ [hap]
+
+-fmtowns: implemented hsync read from cff86, later 4th Unit games now boot (#3002) [r09]
+ * fmtowns: implemented hsync read from cff86, later 4th Unit games now boot
+ * Similar to PR #2999, the later games in the 4th Unit series (zero, dagain, merrygor, wyatt) were getting stuck waiting for the
+    HSYNC flag from 0xcff86 (bit 7). With this change they run past the initial menu.
+ * (this is largely copied from Barry's implementation for port 0xfda0, so credit goes to him)
+ * fmtowns: replaced machine().first_screen() with m_screen
+
+-mac: preliminary support for AE Quadralink 4-port serial [R. Belmont, Al Kossow]
+
+-pgm2 / arm9 : ensure savestates work from commandline (eg launching with -state 0)  tag driver as supporting states.
+ [David Haywood]
+
+-attache: Add RS-232 serial ports [AJR]
+
+-fmtowns: fix missing pixels in single-layer modes [r09]
+
+-blackt96 - fix pickup colours [David Haywood]
+
+-f1gp: Fix getting stuck on "ID CHECK" [AJR]
+
+-use C locale for int/float in XML files [Vas Crabb]
+
+-Updates "2017" strings to "2018" where relevant. [Jonathan Holt]
+
+-hook up sound in black touch '96 [David Haywood] (#3013) [David Haywood]
+ * and yes, I think it is meant to sound this awful, playing the coin sound repeatedly when you'd expect a typewriter sound..
+
+-mach8: Add Scan To X command, used by win9x drivers to write cursor data. mach32: get hardware cursor to display [mahlemiut]
+
+-Added asserts for index out of bounds (#3017) [Oliver Stöneberg]
+ * acia.cpp: added asserts for index out of bounds with e.g. mushi2k4
+ * ../../../../../src/devices/sound/aica.cpp:996:40: runtime error: index 130 out of bounds for type 'uint16_t [128]'
+    ../../../../../src/devices/sound/aica.cpp:916:37: runtime error: index 130 out of bounds for type 'uint16_t [128]'
+    ../../../../../src/devices/sound/aica.cpp:978:42: runtime error: index 224 out of bounds for type 'uint8_t [192]'
+ * ../../../../../src/mame/video/k054156_k054157_k056832.cpp:1152:2: runtime error: index 5 out of bounds for type 'uint16_t [4]'
+    ../../../../../src/mame/video/k054156_k054157_k056832.cpp:1152:2: runtime error: index 5 out of bounds for type 'uint16_t [4]'
+ * ../../../../../src/mame/drivers/vis.cpp:538:4: runtime error: index 49 out of bounds for type 'uint8_t [49]'
+ * ../../../../../src/devices/video/hp1ll3.cpp:557:5: runtime error: index 11 out of bounds for type 'uint16_t [11]'
+    ../../../../../src/devices/video/hp1ll3.cpp:555:5: runtime error: index 11 out of bounds for type 'uint16_t [11]'
+
+-ibm5170.xml:  Redumped ku2impact and kotobuki CD into .iso and .bincue and commented the source data.  Renamed moondrg .chd name to
+ avoid same name conflict. [Scott Stone]
+
+-stvvdp1.cpp: fix color calculations for non-mode 5 sprites (i.e. Virtual Hydlide avatar shadow) [Angelo Salese]
+
+-Override and fallback options for artwork (#2908) [phulshof]
+ * Added fallback_artwork and override_artwork as MAME options to allow default artwork to be loaded.
+ * Removed debug testing code.
+ * - Allow loading of built-in layouts even if override_artwork is specified.
+   - Allow loading of fallback_artwork if only default view have been found.
+   - Fixed order of built-in layouts with regards to fallback_artwork as agreed upon the forums.
+ * Changed |= true to = true, and changed override artwork so it only checks for default.lay if the <machine name>.lay is not found.
+
+-stvvdp1.cpp: fixed mode 2 transparent pen sprites for Scud: the Disposable Assassin [Angelo Salese]
+
+-didact.cpp: addressed review comment [Joakim Larsson Edstrom]
+
+-alphatpx: Add HSYNC callback [rfka01]
+
+-k001604: Implemented front layer rotate and zoom. [Ville Linde]
+
+-geneve: v9938 should abort a command when the mode is switched before completion. [Michael Zapf]
+
+-chdcd: recognize ISO images with 2336 byte sectors. [R. Belmont, Kale]
+
+-Lucky Ball 96: Hooked PPI 8255 for I/O [Roberto Fresca]
+
+-Lucky Ball 96: Documented the I/O circuitry (PPI 8255 + 3x 4099 + 3x 4512) [Roberto Fresca]
+
+-Lucky Ball 96: Documented PCB specs. Added technical notes. [Roberto Fresca]
+
+-Lucky Ball 96: Documented edge connector. [RobertoFresca]
+
+-Lucky Ball 96: Documented DIP switches. [RobertoFresca]
+
+-m6809: Fix disassembly of relative instructions [AJR]
+
+-Lucky Ball 96: Decrypt/descramble the program ROM. Documented the missing third crystal. Identified and confirmed the VDP.
+ [Roberto Fresca]
+
+-Lucky Ball 96: Added technical notes about how the code resets itself. [RobertoFresca]
+
+-Lucky Ball 96: Identify the VRAM (4x 4464 DRAM) and adjust the VDP accordingly. [RobertoFresca]
+
+-Lucky Ball 96: Identified the DIL28 IC as ST6265 MCU. [RobertoFresca]
+
+-Sort and company... [RobertoFresca]
+
+-Remove intruder BOM... [RobertoFresca]
+
+-z80 disassembler, stopped invalid dd & fd instructions from eating the next byte [smf]
+
+-Popeye hardware documentation update [Porchy]
+
+-VS Compile Fix [Björn Moser]
+
+-konmedal: additional hookups for shuriboy, POST now displays [R. Belmont]
+
+-hp2645: rs232 I/O, multiple char sets, beeper & option switches added. [fulivi]
+
+-hp2645: video blanking added [fulivi]
+
+-Maketrax : simulate protection [iq_132, Robbbert]
+
+-ms32.cpp: Improved and cleaned up tile-tile priorities [Angelo Salese]
+ * Fixes title screen in Suchie Pai 2, Gratia intermissions and Hayaoshi Quiz Nettou Namahousou flame screen during attract;
+
+-splash: Draw sprites in reverse order (fixes MT #6791) [AJR]
+
+-detect attached debugger on OSX before generating trace/breakpoint trap [Vas Crabb]
+
+-pgm2.cpp dumped kov3_102 rom module keys [Peter Wilhelmsen, Morten Shearman Kirkegaard] improved simulation using real data, make
+ fake keys for kov3 100 and 104 [MetalliC] note: mainly for documentation of rom module functioning, have no effect on emulation
+ [MetalliC]
+
+-Lucky Ball 96: Added the DAC 08, but not wired yet to the PPI 8255 due to troubles with mode 2. [RobertoFresca]
+
+-quickpick5: hooked up ROM readbacks, improved vis area [R. Belmont]
+ * The 53244/245 VROM readback doesn't want to cooperate yet.
+
+-Convert zippath directory to a C++ interface [Vas Crabb]
+
+-maketrax : fixed regression (teleport holes dip not working) [Robbbert]
+
+-Fix masking of signed integer types in debug state [AJR]
+
+-thepit.cpp: Fix Lives DIP for Intrepid bootleg sets.  [Tafoid]
+
+-quickpick5: POST passes, color RAM hooked up [R. Belmont]
+ * Sprites should be drawing according to printf but aren't appearing.  Help? :)
+
+-new NOT WORKING  Space Invaders (Radica, Arcade Legends TV Game) [Team Europe, Sean Riddle] (#3036) [David Haywood]
+ * new NOT WORKING Space Invaders (Radica, Arcade Legends TV Game) [Team Europe, Sean Riddle]
+ * (not sure what this is really called, it's a 5-in-1, it probably contains a customized 6502 core, or there should be an internal
+    bootstrap rom)
+
+-electron_plus1: Added Slogger Expansion 2.00 and 2.01. [Nigel Barnes]
+
+-electron_plus3: Added Advanced 1770 DFS 2.10. [Nigel Barnes]
+
+-bbc_opus8272: Connected TC strobe, device is now working. bbc_opus2791: Added DDOS 3.16. bbc_opus2793: Added DDOS 3.36.
+ [Nigel Barnes]
+
+-electron: Added Rombox, Rombox+ expansion devices, and electron_rom software list. [Nigel Barnes]
+
+-Differentiate between cartridge (cart) and romimage (rom) in generic slots. [Nigel Barnes]
+
+-dragon_fdc.cpp: Added Premier FDC, for DeltaDOS. [Nigel Barnes]
+ * Dragon FDC has READY line tied, fixes loading issues with Flex and OS9.
+
+-fmtowns: fix cdrom regressions [rzero9]
+
+-ti99: Fixed debugger interference with cartridge selection line. [Michael Zapf]
+
+-restored SANITIZE make option (#3043) [Oliver Stöneberg]
+ * restored basic support for SANITIZE make option
+
+-Popeye: Fixed background in popeyej, popeyejo & popeyebl. popeyej does not run on the exact same hardware as sky skipper & was the
+ basis for the popeyebl set. Fixed horizontal and vertical scroll register behaviour in popeye. Change function names from the game
+ name to the hardware id the functionality was first used in. [smf]
+
+-Some legacy floppy fixes and cleanups (#3047) [Oliver Stöneberg]
+
+-This causes huge changes in behaviour that can't be hand-waved away. [Vas Crabb]
+ * This reverts commit 1af133752a05079060c462e372c369ad0b7296ee.
+ * This reverts commit 1c6a7ab40ccd23b753777204c7a289e830b2adcb.
+
+-Mark ti83p, ti83pse, ti84p, and ti84pse as NOT_WORKING [jlachniet]
+ * These are not functional, and should be flagged as such.
+
+-popeye: fixed popeye background scrolling when screen is flipped [smf]
+
+-radica 6502 tvgames: identify where gfx are coming from in each of th… (#3050) [David Haywood]
+ * radica 6502 tvgames: identify where gfx are coming from in each of the games in the space invaders pack so we can attempt to find
+    the register that controls it, or dma etc.
+
+-new working clone (#3053) [incog]
+ * Added Game Fighter (bootleg)
+ * added Game Fighter (bootleg)
+
+-hng64.cpp: enabled preliminary ROZ floor for Fatal Fury Wild Ambition / Buriki One [Angelo Salese]
+
+-citycon: Fix sound CPU speed [AJR]
+
+-Various progress on the Radica 6502 stuff (#3057) [David Haywood]
+ * radica 6502 tvgames: identify where gfx are coming from in each of the games in the space invaders pack so we can attempt to find
+    the register that controls it, or dma etc.
+
+ * gba: Use correct initial mapping for movie cartridges. Fixes v_sharkt, v_shrek, v_shrek2, probably others. [endrift, Ryan Holtz]
+
+-this breaks more than it fixes. Revert "z80 disassembler, stopped invalid dd & fd instructions from eating the next byte [smf]"
+ [smf-]
+ * This reverts commit 347396faed6a2c63cfd6783caad88b34c7115723.
+
+-radica6502: better emulation of the video hardware, (#3058) [David Haywood]
+ * radica 6502 tvgames: identify where gfx are coming from in each of the games in the space invaders pack so we can attempt to find
+    the register that controls it, or dma etc.
+
+-citycon: Hook up PSG read (fixes cop car spin sound) [AJR]
+
+-fix disassembly when $ed, $dd & $fd prefixes are used but the instruction is not valid. [smf]
+
+-First pass of MAME Debugger help for documentation. (NW) [Firehawke]
+
+-snes_snd.cpp: TnDIV divides by 256 when setting written is 0 [Angelo Salese]
+
+-snes_snd.cpp: merge timer counters into one single function [Angelo Salese]
+
+-Add SY-889 ROM and machine type [David Shah]
+
+-Radica6502 : use palette selection bits in 4bpp mode, format still wrong tho. (#3063) [David Haywood]
+ * radica 6502 tvgames: identify where gfx are coming from in each of the games in the space invaders pack so we can attempt to find
+    the register that controls it, or dma etc.
+
+-Correct command heading case and adjustments to expressions (NW) [Firehawke]
+
+-SY-889 DMA and memory map correct [David Shah]
+
+-RGB palette support for correct SY-889 colours [David Shah]
+
+-geneve: Added VRAM selection 128K/192K; using logmacro [Michael Zapf]
+
+-Reset behaviour tweaks [David Shah]
+
+-konmedal: shuriboy now fully passes POST [R. Belmont]
+
+-radica 6502: preliminay sprites (#3068) [David Haywood]
+ * radica 6502 tvgames: identify where gfx are coming from in each of the games in the space invaders pack so we can attempt to find
+    the register that controls it, or dma etc.
+
+-mosaic.cpp: Add PCB layout for Mosaic & change CPU / Sound clocks to be derived from actual OSCs on PCB. [Brian Troha]
+
+-lc8670: Fix disassembler to make it not completely broken [AJR]
+
+-tigeroad, f1dream: Add DIP locations [AJR]
+
+-Add additional memory operators per request (NW) (#3067) [Firehawke]
+ * Add additional memory operators per request and further cleanups to expressions (NW)
+ * Requested adjustments to expressions. (NW)
+
+-Radica6502 : Added scrolling for Phoenix, enemy placements are a mess tho (#3071) [David Haywood]
+ * radica 6502 tvgames: identify where gfx are coming from in each of the games in the space invaders pack so we can attempt to find
+    the register that controls it, or dma etc.
+
+-new WORKING machine : Last KM (Ver 1.0.0275) [ Asociación Retroaccion, Ricardo Puerto]
+
+-electron: Re-implemented expansion port interface to access full 6502 bus. [Nigel Barnes]
+
+-update docs version [Stiletto]
+ * update docs version
+ * nw* just taking care of an annoyance. As far as we know, docs are in sync. If not, it's easily fixed.
+
+-gamegear.xml: Fix/comment nvram size for shinfrc2 and clones to allow game to function properly.  Fixed MT#06845
+ [einstein95, Tafoid]
+
+-Radica 6502: some hacks to improve the video,  (#3074) [David Haywood]
+ * Radica 6502: some hacks to improve the video, lack of test cases / makes these tricky to figure out properly
+
+-Added full specs for jolycdid. [RobertoFresca]
+
+-API Change: Machine configs are now a method of the owner class, and the prototype is simplified [O. Galibert]
+ * Beware, the device context does not follow in MCFG_FRAGMENT_ADD anymore due to the prototype change.  So creating a device then
+    configuring through a fragment doesn't work as-is.  The simplest solution is just to add a MCFG_DEVICE_MODIFY at the start of
+    the fragment with the correct tag.
+
+-blockout.cpp: various improvements: [Angelo Salese]
+ * Fixed Agress offsetted text layer, worked around initial VRAM check;
+ * Converted to SCREEN_RAW_PARAMS and fixed visible area for Agress and Block Out;
+ * Fixed input labels and hookups, following manual and in-game descriptions;
+
+-Mybrain 3000,JB-3000,Ericsson PC step/one feature complete (#3042) [Joakim Larsson Edström]
+ * Started graphics refactoring
+ * myb3k.cpp: refactored graphics circuit and added color in 320x200 mode
+ * myb3k.cpp: fixed speed issue by reducing CPU clock by 50% as suggested by RAM waitstates in the schematics where the CRTC uses
+    the other 50%
+ * myb3k: fixed text scrolling
+ * myb3k: -ramsize now supported with 128K option and 256K default
+ * myb3k: 80 character mode added, eg 640x200
+ * Emulate the INT7 pull down and up for the keyboard. Initial support for JB3000 keyboard.
+ * myb3k: Added hi-res 640x400 mode and crude cursor support for 40 character mode
+ * Keyboard improvements using BACKSLASH2 keycode.
+ * myb3k_fdc.cpp: addressed review comment
+ * myb3k.cpp: Added initial monochrome monitor support
+ * myb3k.cpp: Adjusted the monochrome color palette to match the 525Nm of P39 phoshor in the Ericsson DU4721 monochrome monitor
+ * myb3k.cpp: added printer support and completed interupt support including jumper settings
+ * myb3k.cpp: Added softlist for Ericsson step/one
+ * myb3k.cpp: cleanup and srcclean:ed
+ * myb3k.cpp: Fixed crude support for 36x25 color text mode
+ * Fixed build
+ * myb3k_fdc.cpp: fixed review comment
+ * mybr3k: fixed DOS 2.11 boot in 256KB mode
+ * myb3k.cpp: Added graphics mode 0 which have the peculiar characteristic of different resolutions depending on the monitor used (2
+    connectors)
+ * myb3k: Separated keyboards into separate device implementations.
+ * myb3k: addressed review comments
+
+-stepone_flop.xml: fixed validation error and added a couple of game collection disks [Joakim Larsson Edstrom]
+
+-myb3k.cpp: Graphics mode 0 corrected to reality, it is a 640x200 8 color/tones mode despite what service manual says
+ [Joakim Larsson Edstrom]
+
+-new clones : Samurai Shodown V / Samurai Spirits Zero (NGM-2700, set 2) [Sugoi Helsinki]
+ * I wonder if this is some kind of hack, although if it is the changes to the code appear rather extensive
+
+-radica6502: preliminary sound (#3076) [David Haywood]
+ * radica6502: first steps to a sound device, 4-bit adpcm format not understood (it isn't OKI ADPCM)
+
+-misc small bits (grudge, nesvt, kickgoal) (#3075) [David Haywood]
+ * Default FreePlay DSW to 'Off' for the recently added 'grudge' parent set (Free Play doesn't work properly on it anyway) Leave it
+    to 'On' for the previous set because Coin mode doesn't work properly there Add a note about (undumped) Majesco Frogger TV game
+    likely being nes_vt
+ * new clones : Kick Goal (set 2) and cleaned up driver so that it uses oki mem map etc.
+
+-fix compile (the online resolver didn't resolve this in the correct order or prompt me about it) [David Haywood]
+
+-tv910: Fix character row format [AJR]
+
+-swtpc09: Typo fix [O. Galibert]
+
+-isbc8010b: Typo fix [O. Galibert]
+
+-jtc_es40: Typo fix [O. Galibert]
+
+-attache: SIO mapping fix [O. Galibert]
+
+-tv910: Implement video attributes; make self-test work [AJR]
+
+-Fix a couple of Coverity bugs [Melissa Goad]
+
+-Add new BIOS files to ti84p (#3077) [jlachniet]
+ * Add new BIOS files to ti84p
+ * Add new BIOS files to ti84p [Julian Lachniet]
+ * Fix small typo
+
+-vt220: Split into two sets and fix ROM loading for the earlier version [AJR]
+
+-Ypovrixio: Change manufacturer... [RobertoFresca]
+
+-just prepare for decryption... the programs need to be decrypted. [RobertoFresca]
+
+-konmedal: hooked up I/O ports to shuriboy [R. Belmont]
+
+-Fixes for Coverity "Resource leak" warnings (#3089) [Oliver Stöneberg]
+
+-new KOV2 clone added [briantro]
+
+-tv910: Improve keyboard hookup; add character set switch [AJR]
+
+-Multiple nes_vt Improvements (#3099) [David Shah]
+ * Work on lexcyber
+ * Fix VT03 colours
+ * Video mode tweaks for various VTxx systems (WIP)
+ * Improve VTxx colours
+ * Add some more VTxx systems (all currently broken)
+ * Further graphical improvements for newer VTxx systems
+ * Tweak colours for newer VTxx systems
+ * Fix mirroring in VTxx games
+ * Promote some VTxx systems from MACHINE_NOT_WORKING
+ * Add BittBoy, remove non-VTxx systems, general ordering
+ * Work on MMC3 compatability in VT03 driver
+ * Address decoding fixes
+ * Connect BittBoy ROM A24 to GPIO
+ * More machine promotions following various fixes
+ * Fixes for dgun2500
+ * VTxxx tidying, remove debugging
+ * Fix nes_vt compilation after merge
+
+-New device: SN54/74166 8-Bit Parallel-In/Serial-Out Shift Register [Dirk Best, Luca Elia]
+
+-Popeye: Implemented tile palette banking on TNX1 hardware, the side bars in Sky Skipper are now darker on night time levels. This
+ is a guess based on the prom contents, due to lack of unmodified TNX1 boards. Implemented sprite priority & clipping according to
+ description in http://mametesters.org/view.php?id=3725 (fixes MT03725). [smf]
+
+-fmtowns_cd.xml: replace 3dgolfha floppy with proper dump [r09]
+
+-mcs48, s2650: Use paged mode for disassembler [AJR]
+
+-mcs48: Program counter wraps at 11 bits [AJR]
+
+-Ypovrixio: Decrypted the main set program and palette. Changed description to "Missing In Action / Ypovrixio" [Roberto Fresca].
+ [RobertoFresca]
+
+-Ypovrixio: Added manufacturer. Removed Imperfect colors flag from the main set. [RobertoFresca]
+
+-xtal.h is dead, long live to xtal.cpp [O. Galibert]
+
+-mcs48: More specific emulation of Intel 8021 [AJR]
+ * Separate disassembler for i802x (including unemulated 8022 instructions)
+ * Provide separate (though mostly just more limited) 8021 opcode table
+ * Writes to 8021 P0 no longer go through memory space
+
+-hiscore.dat: updates [Leezer]
+
+-mcs51: Add DPTR, P0, P1, P2 and P3 to debug state registration [AJR]
+
+-dec_lk201: More sensible natural keyboard assignments for 6 keys above cursor block [AJR, Bavarese]
+
+-vgmplay : Add K054539 Support qdrmfgp, djmain, konamigq : Moved sample RAM to K054539 address map plygonet : Add K054321
+ [DESKTOP-LP5JPA4\dbtlr]
+
+-vgmplay : typo [cam900]
+
+-vgmplay : typo [DESKTOP-LP5JPA4\dbtlr]
+
+-cps1.cpp: verified wofr1 program ROMs dump [hammy, The Dumping Union]
+
+-new WORKING clones - Bioplaything Cop (Ver. 1.0.1823, prototype) [Asociación Retroacción, Ricardo Puerto] (#3118) [David Haywood]
+
+-Overhaul commandline section of docs, includes index with linkable anchors. (#3112) [Firehawke]
+ * The first set of commandline overhauls. (NW)
+ * Correct case on headings, further improvements to index, spelling fix
+ * More updates to the index and cleanup to the commandline stuff. [NW]
+ * More core options in the index. [NW]
+ * Finished multiplatform commandline index [NW]
+ * Completion of first revision commandline index [NW]
+
+-new WORKING clones - Maniac Square (unprotected, Version 1.0, Checksum 66B1, 960419/1 PCB) [f205v]
+ * as expected this version lets you set the game options in service mode rather than using dipswitches as the PCB has none.
+
+-vgmplay : Add Qsound support (#3116) [cam900]
+ * vgmplay : Add Qsound support
+
+-various reorganization of radica and vtech stuff (#3108) [David Haywood]
+ * various reorganization of radica and vtech stuff
+ * further improvements to the Golden Tee Home Edition (radica eu3a14)
+ * added Radica Sensible Soccer [Sean Riddle]
+
+-drgnmst : Fix palette (#3117) [cam900]
+ * on palette of actual pcb, it has generic 12-bit RGB format with highest 4 bit has used for brightness.
+
+-Improved Nitro Ball priority / alpha mixing (#3110) [cam900]
+ * Demote Nitro Ball/Gun Ball with MACHINE_IMPERFECT…
+ * …_GRAPHICS, because it has wrong/unemulated alpha/priority functions.
+ * rohga : Various improvements of Nitro Ball / Gun Ball Priority / Alpha blend.
+ * rohga.cpp : typo
+ * fix compile
+ * rohga : Nitro Ball / Gun Ball priority fix
+ * rohga : Nitro Ball / Gun Ball priority update
+ * rohga.cpp : priority update, notes
+ * rohga : update
+ * rohga.cpp : update priority mode 0x20
+ * rohga : priority update
+ * rohga : Nitro Ball/ Gun Ball priority update
+
+-Get rid of nonbuffered_palette_w at decocomn (#3103) [cam900]
+ * Get rid of nonbuffered_palette_w at decocomn backfire.cpp : Palette cleanup deco156.cpp : Get rid of unused functions, nw
+    cninja.cpp : Add MCFG_SCREEN_RAWS dassault : Add MCFG_SCREEN_RAWS, Demote Thunder Zone/Desert Assault with
+    MACHINE_IMPERFECT_GRAPHICS, because blending effects aren't fully emulated
+ * dassault.cpp : notes rohga : Demote Nitro Ball / Gun Ball with MACHINE_IMPERFECT_GRAPHICS, because it has priority/blending issue
+
+-Split Data East ACE Chip Emulation (#3100) [cam900]
+ * Split Data East ACE Chip Emulation
+ * Add deco_ace.cpp
+ * Update deco_ace.cpp
+ * Update deco_ace.h
+ * Update boogwing.h
+ * Update boogwing.cpp
+ * alpha blend/palette effect improvements
+ * Update boogwing.cpp
+ * Update deco_ace.cpp
+ * Update deco32.h
+ * Update deco32.cpp
+ * split DECO ACE Emulation
+ * Update deco32.cpp
+ * Update deco32.cpp
+ * Update deco_ace.cpp
+ * Copyright holder / some update. Demote Boogie Wings with MACHINE_IMPERFECT_GRAPHICS
+ * Typo
+ * Typo(2)
+ * deco_ace.cpp : doc update
+ * deco_ace.cpp : revert copyright holder, update docs, convert multiplicative fade algorithm to fixed point, implement additive
+    fading effect.
+ * deco32.cpp : update docs
+ * boogwing.cpp : update alpha blending notes
+ * deco_ace : Revert "convert multiplicative fade algorithm to fixed point"
+
+-update documentation based on real pictures [f205v]
+
+-asteroid: Add coin counters, clarify leds [Dirk Best]
+
+-dassault : Fix compile (#3123) [cam900]
+ * Get rid of nonbuffered_palette_w at decocomn backfire.cpp : Palette cleanup deco156.cpp : Get rid of unused functions, nw
+    cninja.cpp : Add MCFG_SCREEN_RAWS dassault : Add MCFG_SCREEN_RAWS, Demote Thunder Zone/Desert Assault with
+    MACHINE_IMPERFECT_GRAPHICS, because blending effects aren't fully emulated
+ * dassault.cpp : notes rohga : Demote Nitro Ball / Gun Ball with MACHINE_IMPERFECT_GRAPHICS, because it has priority/blending issue
+ * dassault : Fix compile
+
+-deco16ic : Split pf1/2 size (#3124) [cam900]
+ * cninja : cleanup ioprot
+
+-Deco ACE: Fix color update (#3122) [cam900]
+ * Split Data East ACE Chip Emulation
+ * Add deco_ace.cpp
+ * Update deco_ace.cpp
+ * Update deco_ace.h
+ * Update boogwing.h
+ * Update boogwing.cpp
+ * alpha blend/palette effect improvements
+ * Update boogwing.cpp
+ * Update deco_ace.cpp
+ * Update deco32.h
+ * Update deco32.cpp
+ * split DECO ACE Emulation
+ * Update deco32.cpp
+ * Update deco32.cpp
+ * Update deco_ace.cpp
+ * Copyright holder / some update. Demote Boogie Wings with MACHINE_IMPERFECT_GRAPHICS
+ * Typo
+ * Typo(2)
+ * deco_ace.cpp : doc update
+ * deco_ace.cpp : revert copyright holder, update docs, convert multiplicative fade algorithm to fixed point, implement additive
+    fading effect.
+ * deco32.cpp : update docs
+ * boogwing.cpp : update alpha blending notes
+ * deco_ace : Revert "convert multiplicative fade algorithm to fixed point"
+ * deco_ace : fix color
+
+-Move Multipcm bank schemes to DEVICE_ADDRESS_MAP (#3113) [cam900]
+ * multipcm : Move bank schemes to DEVICE_ADDRESS_MAP, Allow 512 Samples (0x1800 Header size, 12byte Header per sample) segas32: Fix
+    multipcm banking(Chip doesn't have panning-related bankswitching)
+ * oops
+ * segas32 : configured banking, notes
+ * segam1audio : do configured banking
+
+-Add Systema TV Boy II (#3127) [David Shah]
+
+-fix/tidy tvboy driver (#3129) [David Haywood]
+
+-Changed the romset name ypovrixi to miaction. Changed the romset name ypovrixia to tigerslt and added the proper graphics ROMs.
+ Decrypted tigerslt program and palette. [Roberto Fresca]. [RobertoFresca]
+
+-Sstar97: Added original chinese name to the notes... [RobertoFresca]
+
+-vgmplay : Dual OKIM6295s, NMK112 banking support (#3114) [cam900]
+ * vgmplay : Implement NMK112, Dual OKIM6295 Chip Support
+ * oops
+ * typo
+
+-goldstar.cpp: Extended the lucky8 and derivatives maincpu region size from 0x8000 to 0x10000. Also defined the offset range
+ C000-F7FF as ROM space (needed for some sets) [Roberto Fresca]
+
+-Super972: Added technical notes... [RobertoFresca]
+
+-Kurukuru.cpp: Added the japanese names to the notes about Pyon Pyon series. [Roberto Fresca]
+
+-Neraidoula: Added technical notes about tiles from another game inside the graphics ROMs. Also changed the game description to just
+ Neraidoula. The rest of former description never was part of the title. [Roberto Fresca]
+
+-Good bye Ypovrixio... [RobertoFresca]
+
+-let's be dimensionally correct [Vas Crabb]
+
+-fixed some Coverity "Identical code for different branches" warnings (#3094) [Oliver Stöneberg]
+ * This reverts commit bdc1761996b8ead3ee7b0233a41ad0eff6f58311.
+
+-vgmplay : Allow HuC6280 stereo output (#3130) [cam900]
+
+-psikyo4:Cleanup YMF278B banking [DESKTOP-LP5JPA4\dbtlr]
+
+-taito_f3.cpp: Removed outdated kludge for Darius Gaiden [Angelo Salese]
+
+-electron: Re-implemented cartridge slot device, and added cartridge devices: [Nigel Barnes]
+ * Standard cartridge (2x16K ROM)
+ * Advanced Battery-Backed RAM (ABR)
+ * Slogger Click
+ * Slogger Pegasus 400
+
+-mach32: correct display of 16bpp video mode in Windows 9x (hardware pointer still needs work) [mahlemiut]
+
+-playch10: expose countdown LEDs through output system and render with artwork [Vas Crabb]
+
+-fmtowns softlists: documented all non-working items, minor fixes (#3140) [r09]
+ * fmtowns softlists: documented all non-working items, minor fixes
+ * forgot about this
+
+-r9751: Add keyboard input queue and add CBX OS stack tracing (#3106) [Brandon Munger]
+ * r9751: Add keyboard input queue and add CBX OS stack tracing
+ * r9751: Additional fixes
+
+-framework for adding 'gamebooster'  (need to figure out how it actually works / maps tho) (#3134) [David Haywood]
+ * mame64 psj -parallel gamebooster -cart tetris  now works
+
+-Popeye, Moved protection save state into driver_start() leaving driver init for decryption, combine sprite proms & invert bootleg
+ proms in the rom load, bank the sprite palette & only update the palette if the bank register changes, draw background directly
+ into bitmap & include the area above the background buffer (although it's not clear exactly where the values are fetched from on
+ real hardware). [smf]
+
+-mac: preliminary working but imperfect sound for maclc3 [R. Belmont]
+
+-x1.cpp: moved video functions into own file, also improved OO ownership of variables and functions [Angelo Salese]
+
+-74153: Improve interface [Dirk Best]
+
+-d88_dsk: Add some safety checks to avoid reading beyond the end of file [Dirk Best]
+
+-calchase.cpp: added some keyboard inputs [Angelo Salese]
+
+-lr35902: Fix disassembly [AJR]
+
+-fmtowns softlists: documented all non-working items, minor fixes [rzero9]
+ * Tested all software items (not extensively, but enough to know if they can be played for a while) and demoted to non- or
+    partially-supported accordingly.
+ * Removed extraneous bytes from lettuce and vzedit floppy images. They clearly are overdumps and this allows them to work with
+    MAME.
+ * Minor documentation fixes to the missing list and some SL entries.
+
+-psikyo4:Cleanup YMF278B banking [cam900]
+
+-framework for adding 'gamebooster'  (need to figure out how it actually works / maps tho) (code based on zx spectrum expansion port
+ code) [DavidHaywood]
+
+-vgmplay : Allow HuC6280 stereo output [cam900]
+
+-fix/tidy tvboy driver previously crashed due to MCFG_M6502_DISABLE_DIRECT() being after the bank definition not the CPU definition
+ [DavidHaywood]
+ * also simplified banking, doesn't need 2 layers of indireciton, just the one.
+
+-Add Systema TV Boy II The TV Boy II is a clone of the Atari 2600 with 126 built in games. This PR adds a driver for it, and also
+ refactors the Atari 2600 driver a bit (creating a2600.h) so it can be added as a proper clone of the a2600 rather than a fake
+ cartridge. [daveshah1]
+
+-deco16ic : Split pf1/2 size Data East Tilemap generator 55/56/74/141 chip is using separated pf1/pf2 ram, and size is separated
+ when ram size is different. cninja : cleanup ioprot [cam900]
+
+-dassault : Fix compile [cam900]
+
+-Deco ACE: Fix color update [cam900]
+
+-update documentation based on real pictures I went through all the pictures I have on my site for gaelco2.cpp games and updated
+ documentation accordingly. [f205v]
+
+-new WORKING clones - Bioplaything Cop (Ver. 1.0.1823, prototype) [Asociación Retroacción, Ricardo Puerto]
+
+-Implemented Dragon Master palette brightness value on Dragon Master, Palette has 12-bit RGB with Highest 4-bit for brightness, it
+ seems like CPS1 palette format. so I implemented this for palette fading fix. [cam900]
+
+-vgmplay : Add Qsound support [cam900]
+
+-Add vgmplay K054539 supports, add device_rom_interface to K054539 vgmplay : Add K054539 Support qdrmfgp, djmain, konamigq : Moved
+ sample RAM to K054539 address map plygonet : Add K054321 [cam900]
+
+-vgmplay : Dual OKIM6295s, NMK112 banking support [cam900]
+
+-Move Multipcm bank schemes to DEVICE_ADDRESS_MAP The real Multipcm(Yamaha YMW258-F) chip may not have any internal banking(and not
+ have panning-related banking), so I move bank schemes to device address map. Fix Multipcm Banking for Sega Multi32 Games ex.
+ Outrunners : This game uses Multipcm with Full 0x1800 Byte header for 512 samples, and 2 512KB Bank area for sound samples.
+ [cam900]
+
+-Overhaul commandline section of docs, includes index with linkable anchors. This is a substantial overhaul of the old commandline
+ section. [Firehawke]
+ * I found all options that were duplicated across SDL and Windows-specific sections and merged those with careful attention to note
+    what parameters are valid per-OS.
+ * Additionally added a new index page for commandline options that should be useful for providing support.
+ * While I did do my absolute best to make sure no errors crept in, the sheer size of this means it's entirely possible I may have
+    missed something. I didn't see anything obvious at a quick glance, in any case. As always, let me know and I'll do corrections
+    as needed.
+
+-Improved Nitro Ball priority / alpha mixing rohga : remove outdated comments. [cam900]
+
+-various reorganization of radica and vtech stuff this is a re-synced version of the previous PR as changes in master meant that no
+ longer compiled. (these are all TV game and similar Epoxy blob system related changes) [DavidHaywood]
+ * -
+ * split radica6502 driver up into multiple files
+ * devices now reside in their own files
+ * split vtech geniusiq driver up into multiple files
+ * several of the sets in here weren't even 68k based and need to have their CPUs identified properly
+ * added driver for VTech Reader Laptop E
+ * we know what CPU die this is, but don't know what it's copied from, if anything.
+ * correct parent/clone status of a number of sets in vii.cpp
+ * also marked vii as NOT WORKING as over half the games just give you a black screen and always have.
+ * elevated the Radica TV Games that were in the Megadrive softlist to be proper MAME sets
+ * they're standalone consoles, no need to treat them as fake cartridges anmore
+ * and..
+ * new machine marked as NOT WORKING : Radica Golden Tee Golf Home Edition [Sean Riddle]
+
+-r9751: Add keyboard input queue and add CBX OS stack tracing [bmunger]
+
+-fmtowns_cd.xml: replace 3dgolfha floppy with proper dump When initially dumping the floppy disk for New 3D Golf Simulation I didn't
+ realize that it had some kind of copy protection on track 2, so it didn't actually work. [rzero9]
+ * This replaces it with a new dump in HxC MFM format, converted from KryoFlux raw files. It's enough to let the game recognize the
+    system disk as original and start the user disk creation process as expected.
+
+-Get rid of nonbuffered_palette_w at decocomn backfire.cpp : Palette cleanup deco156.cpp : Get rid of unused functions, nw
+ cninja.cpp : mutantf : Add MCFG_SCREEN_RAWS dassault : Add MCFG_SCREEN_RAWS, Demote Thunder Zone/Desert Assault with
+ MACHINE_IMPERFECT_GRAPHICS, because blending effects aren't fully emulated [cam900]
+
+-Split Data East ACE Chip Emulation ACE chip(Data East 99) used on: boogwing.cpp (Boogie Wings / The Great Ragtime Show(Japan))
+ deco32.cpp (Tattoo Assassins / Night Slashers) ACE Chip is alpha blend/palette effect functions, but many unknown things.
+ Registers: Byte 0x00-0x1f: alpha control value (0x0:opaque, 0x10:half transparent, 0x20:fully transparent, 0x21~:unknown) Byte
+ 0x20: fadeptred Byte 0x21: fadeptgreen Byte 0x22: fadeptblue Byte 0x23: fadestred Byte 0x24: fadestgreen Byte 0x25: fadestblue Byte
+ 0x26: fadetype (0x1100:multiplicative, 0x1000:additive, 0x0000:normal, other:unknown) Byte 0x27: unknown [cam900]
+ * The 'ST' value lerps between the 'PT' value and the palette entries.  So, if PT==0, then ST ranging from 0 to 255 will cause a
+    fade to black (when ST==255 the palette becomes zero). 'fadetype' - 1100 for multiplicative fade, 1000 for additive.
+ * Logs: boogwing: Get rid of decocomn, Hooked up ACE Chip, improvement alpha blendings, implement color fade effects (at
+    transporter stage, end of each level, "DANGER" effects, and some flashing effects) deco32(Tattoo Assassins / Night Slashers):
+    split ACE Chip emulation to mame/machine source, implement palette additive fading
+
+-Multiple nes_vt Improvements This contains a number of improvements to the nes_vt driver, including: [daveshah1]
+ * Correct colours for games using the enhanced VT03 mode
+ * Fixed mirroring configuration in all VTxx systems
+ * Improved MMC3 emulation mode, although SMB3 is still broken
+ * Correctly emulate DMA quirk and TSYNEN so DGUN-2500 130 in 1 now has correct graphics
+ * Add a couple of new systems (BittBoy, and DGUN-2573, although the latter doesn't function at all).
+ * Promote now good systems from MACHINE_NOT_WORKING to a more appropriate statusp
+
+-fixed some Coverity "Identical code for different branches" warnings [firewave]
+
+-Fixes for Coverity "Resource leak" warnings [firewave]
+
+-Fix a couple of Coverity bugs [MoochMcGee]
+
+-fix compile (the online resolver didn't resolve this in the correct order or prompt me about it) [DavidHaywood]
+
+-Mybrain 3000: More stepone floppies and corrected Mode 0 graphics fixed softlist validation error and added three floppies to the
+ softlist with small games of various origins [JoakimLarsson]
+
+-Add new BIOS files to ti84p Add new BIOS files to ti84p [Julian Lachniet]
+
+-radica6502: preliminary sound the ADPCM format needs to be figured out. [DavidHaywood]
+ * OKI ADPCM sounds better than this (ie it doesn't destroy your ears) but is clearly NOT correct either.
+
+-misc small bits (grudge, nesvt, kickgoal) Default FreePlay DSW to 'Off' for the recently added 'grudge' parent set (Free Play
+ doesn't work properly on it anyway) Leave it to 'On' for the previous set because Coin mode doesn't work properly there
+ [DavidHaywood]
+ * Add a note about (undumped) Majesco Frogger TV game likely being nes_vt
+ * Did some cleanups to the Kick Goal driver and added a new clone.
+
+-Radica 6502: some hacks to improve the video, lack of test cases / makes these tricky to figure out properly [DavidHaywood]
+ * hopefully more games using this hardware will surface to supply more evidence.
+
+-new WORKING machine : Last KM (Ver 1.0.0275) [Asociación Retroaccion, Ricardo Puerto]]
+
+-Radica6502 : Added scrolling for Phoenix, enemy placements are a mess tho [DavidHaywood]
+
+-Add initial support for new VTxx handeld, SY-889 This adds initial support for the SY-889 handheld I dumped recently, which uses
+ some one of the VTxx enhanced-NES chips. The exact chipset is unknown and doesn't resemble any other VTxx system - as well as
+ software differences, it uses QSPI flash instead of the parallel flash used by all other known VRT chipsets. Credit to
+ NewRisingSun2 who helped with the reverse engineering. [daveshah1]
+ * At the moment the ROM will run, the colours are correct (the chipset uses a different palette format to the VT03, storing colours
+    as RGB555), but there are serious graphical glitches on the intro and when the menu scrolls. Most of the games seem to run OK
+    though. I think this is because of the scanline interrupt timing being off.
+ * Reverse engineering thread: http://s4.zetaboards.com/PGC_Forums/topic/30178284/1/
+
+-radica 6502: preliminay sprites [DavidHaywood]
+
+-Add additional memory operators per request (NW) Per request, added some info on other memory operators. Also cleaned up the text
+ formatting a bit further on expressions. [Firehawke]
+
+-Correct command heading case and adjustments to expressions (NW) Per request, adjust case of commands. [Firehawke]
+ * Additional small tweaks to the expressions section as well.
+
+-First pass of MAME Debugger help for documentation. (NW) Here's the first pass of debugger help for the documentation LOOSELY based
+ on PR #2948. [Firehawke]
+ * Some help text grammar has been corrected and will be backported back to the help command inside the debugger after the
+    documentation version (this) is cleaned up sufficiently.
+ * Known issues:
+ * There's no help for the history command. I need to work out what to do about that yet, but I didn't want it to delay getting the
+    basics in.
+ * There's still a little bit of "wall of text" in some descriptions. I'll be cleaning those up.
+ * There SHOULDN'T be any glaring errors in here, but I could have missed something. As always, drop me a note if I need to change
+    anything. This includes formatting-- if you really dislike the formatting, get in touch with me and we'll work something out.
+
+-Radica6502 : use palette selection bits in 4bpp mode, format still wrong tho. [DavidHaywood]
+
+-radica6502: better emulation of the video hardware, [DavidHaywood]
+
+-Various progress on the Radica 6502 stuff of note, what appears to be the tilemap mode register found. [DavidHaywood]
+
+-radica 6502 tvgames: identify where gfx are coming from in each of the games in the space invaders pack so we can attempt to find
+ the register that controls it, or dma etc. [DavidHaywood]
+
+-Mark ti83p, ti83pse, ti84p, and ti84pse as NOT_WORKING These are not functional, and should be flagged as such. [jlachniet]
+
+-Some legacy floppy fixes and cleanups When the legacy floppy code is used for lookups and the tags are not the expected ones it
+ will default to the first drive. Since atarifdc has the drives below the "fdc" the generic lookup function could not be used.
+ Making a copy of this is definitely ugly, but this is legacy code anyways and it fixes it. There's also some other drivers with
+ legacy floppy support that did it this way. [firewave]
+
+-fmtowns: fix cdrom regressions This fixes a regression introduced with commit 81f44e1e968b559330a0c9cefebcef0868e1e9f4 that caused
+ some games that were working previously (e.g. Emerald Dragon, several Cocktail Soft games, Indiana Jones and the Last Crusade) to
+ fail to boot. [rzero9]
+ * Everything that Carl's commit fixed (e.g. Shadow of the Beast 2, Ultima IV/V, Loom, etc.) is also working, so hopefully this
+    should make everyone happy.
+
+-restored SANITIZE make option I didn't test it with "thread" yet, that's why there's still a part of the commented code left.
+ [firewave]
+
+-Mybrain 3000,JB-3000,Ericsson PC step/one feature complete for main unit and the 5.25" QD FDC ISA card. The video support is HLE
+ and misses interlaced modes as the MC6845 doesn't perform well for these modes at the moment but most softwares uses color mode or
+ the 640x200 monochrome mode. This PR adds: [JoakimLarsson]
+ * a step/one softlist with the 5.25" disks [Mattis Lind]
+ * keyboard interrupt [Fredrik Öhrström]
+ * keyboard support specific for each brand/clone [Fredrik Öhrström]
+ * Centronics printer support
+ * Cursor support
+ * 36x25, 40x25 and 80x25 char modes
+ * 320x200 8 color, 640x200 monochome and a semi working interlaced 640x400 monochrome mode
+ * Color and Monochrome monitors
+ * RAM sizes of 128Kb and 256Kb
+ * We still lack a jb3000 bios dump but myb3k and stepone drivers are promoted to WORKING in this PR
+
+-Improvements to HP2645A Hi, [fulivi]
+ * this PR adds support for the following features to HP2645A terminal emulation:
+ * RS232 I/O
+ * Multiple character sets (line drawing, big characters, math symbols)
+ * Option switches
+ * Beeper
+ * The terminal can be used "out of the box" as long as you map the "REMOTE" key to something and press it (or else the terminal
+    will stay in local mode by default).
+ * I'm going to send the updated ROM set to the usual "code" e-mail.
+ * Thanks.
+ * -F.Ulivi
+
+-alphatpx: Add HSYNC callback This allows the P2 series machines to continue to their MOS monitor and boot disks. [rfka01]
+
+-didact.cpp: addressed review comment [JoakimLarsson]
+
+-Sound reference input [ajrhacker]
+
+-Added asserts for index out of bounds [firewave]
+
+-hook up sound in black touch '96 [David Haywood] and yes, I think it is meant to sound this awful, playing the coin sound
+ repeatedly when you'd expect a typewriter sound.. [DavidHaywood]
+
+-Updates "2017" strings to "2018" where relevant. Updates "2017" copyright string to "2018" where relevant, based on pull request
+ #2017. [jonathanholt]
+
+-fmtowns: fix missing pixels in single-layer modes This change fixes two issues that only happen with software that uses the
+ single-layer mode (PMODE bit = 0). [rzero9]
+ * In 16-bit color mode, if pixels in VRAM have the alpha bit enabled, it's ignored by the video hardware and drawn to the screen
+    anyway. This fixes the character dialogue in the Towns port of Hatchake Ayayo-san Pro-68k.
+ * 256-color mode can only be enabled as a single layer, so pixels with palette index 0 aren't transparent and need to be drawn.
+    This fixes black "spots" in Yami no Ketsuzoku and wrong colors in the Genocide Square FMVs.
+ * Along with this, I have simplified the towns_crtc_draw_scan_layer_256 function by removing the layer 1 drawing code (which is
+    never executed).
+
+-blackt96 - fix pickup colours [DavidHaywood]
+
+-pgm2 / arm9 : ensure savestates work from commandline (eg launching with -state 0) also tag driver as supporting states.
+ [DavidHaywood]
+
+-fmtowns: implemented hsync read from cff86, later 4th Unit games now boot Similar to PR #2999, the later games in the 4th Unit
+ series (zero, dagain, merrygor, wyatt) were getting stuck waiting for the HSYNC flag from 0xcff86 (bit 7). With this change they
+ run past the initial menu. [rzero9]
+ * (this is largely copied from Barry's implementation for port 0xfda0, so credit goes to him)
+
+-pgm2: various updates [DavidHaywood]
+
+-fmtowns: fix vsync flag read from port cff86, Birdy Soft games now boot According to the FM Towns Technical Databook, when reading
+ from port 0xcff86, bit 4 should always be set and bit 2 is the VSYNC flag. With this change, Birdy Soft games (cal, myeyes,
+ beast3...) boot instead of getting stuck in a loop waiting for the flag. [rzero9]
+
+-pgm2: handle MSB of zooming, used by kov3 [DavidHaywood]
+
+-kov3: treat this bit as 'sprite disable' - prevents stray horemen heads in kov3 attract also changes what you see in the shop
+ (improves, hopefully, I can't read Chinese) [DavidHaywood]
+
+-Removed reference to VG-5000µ default faulty ROM (CRC a6998ff8) making the"alternate" (CRC 57983260) the correct one. [Mokona]
+ * ROM was dumped from a Philips VG-5000µ and compared to the "alternate" (CRC 57983260) version to find it was the same.
+ * Analyze of the (CRC a6998ff8) and why it is faulty and useless to keep:
+ * Address $1000: correct instruction is DI ($F3) at start of boot; in faulty ROM, the instruction is INC BC ($03), which makes no
+    sense here.
+ * Address $2000: this is the start of the table pointing to BASIC instructions. It is matched with the table at $209e containing
+    the keywords. The first keyword (END) will cause the first address to be decoded (at $2519 to $2525) and executed. Correct
+    address is $2f3a, address found in the faulty ROM is $2f00, thus preventing END instruction to work.
+ * Address $3000: this part is the code for the NEXT instruction, starting at $2fe4. The faulty ROM at $3000 causes a CALL $CE02,
+    which is out of the memory range and leads to reboot with no RAM extension. With RAM extension, as the ROM is copied during the
+    memory test at boot, it causes a Syntax Error. The correct byte at $3000 is $03, leading to a CALL $0302, which is correct.
+
+-pgm2: fixed fg tilemap size (fixes kov3 boss death sequences) [DavidHaywood]
+
+-ygv608.cpp: Fix 'COLOR TEST' in ND-1 self test A few printf shows R#13(m_border_color) is written when entering ND-1 self test.
+ It's just a guesswork, but this change fixes 'COLOR TEST' screen in test mode. [agiri-san]
+
+-ygv608: Add mosaic effect for Galaga Arrangement Ending/Staffroll In Namco Classic Collection vol.1, mosaic effect is used in
+ Galaga Arrangement Ending/Staffroll scene. This patch adds emulation of the effect. [agiri-san]
+
+-GLSL Bilinear Filter Fixes and Add Bicubic Filter Hi! [webghost009]
+ * I've made a couple of fixes to the glsl bilinear filter and added a new bicubic glsl filter. I've done this for my own personal
+    use but want to offer the changes to the project. I've separated the fixes and the new filter into different commits in case you
+    want the fixes but not the new shader (assuming you want any of it! :))
+ * I also have the bicubic shader implemented for bgfx but do not have a windows machine to generate the DirectX shaders. If you
+    would consider merging such a change, I'll setup a VM for that purpose.
+ * Below are screenshots illustrating the differences. Of course, a browser is going to do whatever it wants in regards to scaling
+    and filtering. I find it easiest to compare by toggling between the before and after shots locally in a viewer I trust.
+ * Before and after the bilinear fixes. Note that the text is no longer cut-off at the top. This matches the software and bgfx
+    renderer behavior: !pacman_640x480_bilinear_opengl_orig !pacman_640x480_bilinear_opengl_fixed
+ * Bilinear and then bicubic, Pac-Man @ 640x480. Generally less blurry. The white text and pellets are brighter due to being
+    influenced less by the black surrounding them: !pacman_640x480_bilinear_opengl_fixed !pacman_640x480_bicubic_opengl
+ * Bilinear and then bicubic, MK @ 1920x1080 this time. Slightly different screenshots but the floor, wall, and skeletons are static
+    and illustrate the difference nicely: !mk_bilinear !mk_bicubic
+
+-Update wd2010.cpp Use calculated access times - typical for MFM drives of that age - instead of hard coded values. [Bavarese]
+
+-Update sorcerer_cass.xml Updated year, publisher and developer for Orb of Halucidon from my original copy of the manual. Updated
+ publisher for Air Traffic Controller from my original copy of the manual. [exidyboy]
+
+-fmtowns: fix single-layer 16 bit mode and multipage wrapping [rzero9]
+ * Doubled line size when in single-layer + high color mode. Software that uses this combination (secre2, debut2, ayayo123 "X68000
+    version") now looks mostly correct.
+ * Made the line wrapping code aware of VRAM page selection. Fixes a small number of cases where half of the screen would "shake"
+    without this check.
+ * The second commit fixes misplaced lines that sometimes appear at the bottom of the screen in some games (e.g. aburner3 intro),
+    due to the drawing code going beyond the last line of the layer.
+
+-kov3: default sram, speedups, visible area fix [DavidHaywood]
+
+-Restore buttons 2-3 for Quarth / Block Hole The actual Quarth / Block Hole board allows the use of buttons 2 and 3 as well as 1 to
+ fire blocks. Even though they all do the same thing, being able to hit multiple buttons in quick succession is critical for quick
+ and accurate play. [Mikejmoffitt]
+ * I restored joystick down as well, as the game does scan for it and read it (even though it is only reflected in the test menu).
+
+-Correct Virtua Fighter 2, Behind Enemy Lines Year Virtua Fighter 2 Titlescreen Says 1994 and release year is 1994 confirmed from
+ Arcade TV Game List Kokunai - Kaigai Hen (1971 - 2005) at Page 37; Behind Enemy Lines Titlescreen Says 1997 and release year is
+ 1997 confirmed from Arcade TV Game List Kokunai - Kaigai Hen (1971 - 2005) at Page 38. Virtua Fighter 2:
+ https://i.imgur.com/aX22bgo.png https://i.imgur.com/mrQk3wz.png Behind Enemy Lines: https://i.imgur.com/9k1eLmp.png
+ https://i.imgur.com/6xONXkL.png [sjy96525]
+
+-Add verbose logging for CFG files Similar to how .INI file parsing is logged in -verbose, this adds .CFG parsing logging.
+ [Firehawke]
+
+-Fix MT#06804 [sjy96525]
+
+-fmtowns: refactor line drawing, support zoom up to x16, better wrapping [rzero9]
+ * Refactored the line drawing code to make it less repetitive and more flexible.
+ * Added support for all 16 horizontal zoom levels supported by the hardware instead of just 5. As far as I know this is only used
+    in some Data West games (Misty, Rayxanber)
+ * Simplified the line wrap detection code and support all use cases (including vertical scrolling and layer 1 with sprites).
+
+-Basic anchor links for FAQ page [Firehawke]
+
+-Override and fallback options for artwork I've added a override_artwork and fallback_artwork to the MAME options. This will allow a
+ user to override (no other artwork is loaded) the artwork or provide a fallback scenario for artwork. In discussion on the forum,
+ the following order was agreed upon: [phulshof]
+ * If -override_artwork set: load override artwork, and return when successful
+ * Load explicit file, return when single file is set (UNCHANGED)
+ * Load driver name (UNCHANGED)
+ * Load internal default views (UNCHANGED)
+ * Load parent driver (UNCHANGED)
+ * Load parent of parent (will find bios artwork, e.g. neogeo for clones of neogeo games)
+ * If -fallback_artwork set: load fallback artwork
+ * For single screen: load internal horizont or vertical (UNCHANGED)
+ * If no layout has been found, load internal defaults based on number of screens (0, 2, 3, 4) (UNCHANGED)
+ * As this is to be my first contribution to this MAME repository, please be gentle but firm. :) I would like to learn as much as
+    possible, so any and all improvement suggestions are welcome.
+
+
+New working machines
+--------------------
+ibm5170_cdrom: [angelosa]
+Bakusou PC Choro Q [Rod_Wod]
+Battle BEAT 2000 L.E [Rod_Wod]
+Briganty - The Roots of Darkness for Windows [Rod_Wod]
+Geo Light Moon [Rod_Wod]
+Moon [Rod_Wod]
+Saru Suberi [Rod_Wod]
+Seraphim Saigo No Tenshi [Rod_Wod]
+Silicon Scream [Rod_Wod]
+Kotobuki [Rod_Wod]
+KU2 Impact [Rod_Wod]
+Command & Conquer: Red Alert [archive.org]
+S.T.G. [Uroko Sakanabito]
+Sound Blaster 16 CD driver [VOGONS]
+ibm5170_cdrom: [angelosa]
+3-D Ultra Pinball [archive.org]
+5 Plus One - Super Tetris [archive.org]
+688I Hunter-Killer [archive.org]
+A-10 Cuba! [archive.org]
+Ace Ventura [archive.org]
+Aces of the Pacific [archive.org]
+Aces over Europe [archive.org]
+Activision's Atari 2600 Action Pack [archive.org]
+Activision's Atari 2600 Action Pack 2 [archive.org]
+Activision Game Vault Volume 3 [archive.org]
+Advanced Destroyer Simulator [archive.org]
+Afterlife [archive.org]
+Air Warrior III [archive.org]
+Air Warrior Plus [archive.org]
+Alien Legacy [archive.org]
+Alien Odyssey [archive.org]
+Aliens - A Comic Book Adventure [archive.org]
+Amazon - Guardians of Eden [archive.org]
+Animal [archive.org]
+Arcade's Greatest Hits - The Midway Collection 2 [archive.org]
+Archibald Applebrook's Abenteuer [archive.org]
+Archon Ultra [archive.org]
+Are You Afraid of the Dark - The Tale of Orpheo's Curse [archive.org]
+Armored Fist [archive.org]
+Around the World in 80 Days [archive.org]
+Ascendancy [archive.org]
+Atari Arcade Hits [archive.org]
+A.T.F. - Advanced Tactical Fighters [archive.org]
+Awesome Adventures of Victor Vector & Yondo, The - The Cyberplasm Formula [archive.org]
+Halloween Harry - Alien Carnage [Archive.org]
+ibm5170_cdrom.xml: [angelosa]
+The 11th Hour - Der Nachfolger von 7th Guest [archive.org]
+Advanced Dungeons &amp; Dragons 2nd Edition Masterpiece Collection [archive.org]
+AH-64D Longbow [archive.org]
+Atlantis - Das sagenhafte Abenteuer [archive.org]
+Electronic Number Muncher [hap, Sean Riddle]
+Alphie - The Electronic Robot (patent) [hap]
+Thief in Garden [hap, Sean Riddle, ssj]
+TI unknown electronic maze game (patent) [hap, Sean Riddle]
+ibm5150: A-Train, Arcade Blockbusters! (Ghosts'n Goblins & Sarge) [Justin Kerk]
+ibm5170: A-Train Construction Set, Aces of the Pacific, Aces of the Pacific Expansion Disk - WWII: 1946, Aces Over Europe (French),
+  Byte Size Software #137 - Boppin' & Dits and Dats, Byte Size Software #149 - AJ's Quest & Machine Nation, Spectre Challenger
+  (V1.1, 1993-11-08) [Justin Kerk]
+ibm5170_cdrom.xml: [angelosa]
+Back to Baghdad [archive.org]
+Bad Mojo [archive.org]
+Banzai Bug [archive.org]
+BARQ - The Rise of Freedom [archive.org]
+Battle Bugs [archive.org]
+Baphomets Fluch [archive.org]
+Battle Isle 3 - Shadow of the Emperor [archive.org]
+Betrayal in Antara [archive.org]
+Bermuda Syndrome [archive.org]
+Bobby Fischer Teaches Chess [archive.org]
+Bioforge [archive.org]
+ibm5170_cdrom.xml: [angelosa]
+Blade Runner [archive.org]
+Blood Bowl [archive.org]
+Bloodwings - Pumpkinhead's Revenge [archive.org]
+Blue Force [archive.org]
+Bodyworks Voyager [archive.org]
+Brain Dead 13 Starring Fritz [archive.org]
+Bram Stoker's Dracula [archive.org]
+Beneath a Steel Sky [archive.org]
+Bud Tucker in Double Trouble [archive.org]
+Buried in Time - Verschollen in der Zeit [archive.org]
+Burntime [archive.org]
+Buichi Terasawa's Takeru - Letter of the Law [archive.org]
+Bundesliga Manager Professional [archive.org]
+X-Men: Children of the Atom (Brazil 950331) [SHVB, Haze, smf]
+Golden Axe (Tiger handheld) [hap, Sean Riddle]
+unknown electronic Space Invaders game (patent) [hap]
+The Incredible Crash Dummies (Tiger handheld) [hap, Sean Riddle]
+fmtowns_flop: 15 Puzzle, Abas, Abas New, B-Braker 3, Battle Fighters 2 - Yume o Kaketa Tatakai, Bau, Break of Tower, Ground Attack,
+  Haou Soudatsu Battle Fighters, Heboris, Heli-Command, Heli-Rescue, An Illusional World Kastalia, Iron Fist - The Revised Edition,
+  Mahjong Gensoukyoku / Mahjong Fantasia Taikenban, Mister - Meitantei Toujou, Panic Ball II, Quazzle [Justin Kerk]
+Vindicators (Tiger handheld) [hap, Sean Riddle]
+ibm5150: Paperboy 2 [Arcade Shadow]
+ibm5170: Inca (Italian), Inca 2: Wiracocha (French/German/English) [Arcade Shadow]
+Super Double Dragon (Tiger handheld) [hap, Sean Riddle]
+[Roberto Fresca] [RobertoFresca]
+Popeye (bootleg set 2) [Joe Magiera]
+Popeye (bootleg set 3) [caius]
+ibm5170_cdrom.xml: OS/2 Warp 4 [WinWorld]
+ibm5170_cdrom.xml: [angelosa]
+Caesar II [archive.org]
+Key CAD Complete Creations [archive.org]
+ibm5170_cdrom.xml: [angelosa]
+Campaign, Capitalism, Castle of Dr. Brain, Central Intelligence, Club Football - The Manager, Classic Games for OS/2 Warp, Chewy -
+  Esc from F5, Chill Manor, Championship Manager 2, Chronomaster, Civilization, Civilization & Mantis, The Civil War, Comix Zone
+  [archive.org]
+Introduce MCFG_SOUND_REFERENCE_INPUT to provide fixed inputs through the resampler, eliminating the need for the "voltage regulator"
+  device [AJR]
+Replace memset use in sound.cpp with std::fill [AJR]
+This was my third implementation of this concept. The previous two involved attaching sound streams to the dummy device (which
+  required giving it device_sound_interface and other modifications). [AJR]
+Skeleton Warriors - The Dark Crusade (Tiger handheld) [hap, Sean Riddle]
+ibm5170_cdrom.xml: [angelosa]
+Club Dead, Command Adventures: Starship, Command & Conquer, Conquest of the New World Deluxe Edition, Comanche CD, Comanche 3,
+  Combat Air Patrol, Conqueror AD 1086, Conspiracy, Creative Reader Collection, Crime City, Crusader - No Regret, CyberBykes -
+  Shadow Racer VR, Cyberia, Cyberia 2, Cyber Judas, The Complete Ultima VII [archive.org]
+electron_rom: Addcom, Advanced BASIC Editor Plus, Advanced BASIC Editor and Toolkit, Advanced Control Panel, Advanced Disc
+  Investigator, [Nigel Barnes]
+Advanced Disc Toolkit, Advanced EPROM Programmer, Advanced File Manager, Advanced ROM Manager, AMX Mouse Support, Electron BasicEd
+  DEMO, [Nigel Barnes]
+ElkMan, EPROM Programmer, Mode 7 Simulator, Pluscom Plus, Printer ROM, StarWord: Printer Driver Generator, Electron RAM Test,
+  StarGraph, [Nigel Barnes]
+StarMon, StarSpell, StarStore, StarStore II, StarWord, T2C3, T2CU, T2P3, T2P4, T2PEG400, T2SD, T2SEDFS, StarTrek, Utility,
+  WordPower, XBasic [Nigel Barnes]
+dragon_cart: FarmFax Trainer [Nigel Barnes]
+ibm5170_cdrom.xml: [angelosa]
+Darker, Detritus - The Daemon's Quest, Discoveries of the Deep, Dungeons of Kremlin, Dunkle Schatten 1 & 2 [archive.org]
+ibm5170_cdrom.xml: [angelosa]
+Cyclemania, EcoQuest 1 - The Search for Cetus, Enemy Star, Eric the Unready, Escape from Delirium, Plumber don't Wear Ties
+  [archive.org]
+ibm5170_cdrom.xml: [angelosa]
+Formula One Grand Prix, F-29 Retaliator, Front Page Sports - Baseball '94, Frankenstein - Life or Death, Fuzzy's World of Miniature
+  Space Golf [archive.org]
+ibm5150: Stellar 7 [Arcade Shadow]
+ibm5170: Blake Stone: Aliens of Gold (v2.1), Blake Stone: Aliens of Gold (v3.0), Simon the Sorcerer [Arcade Shadow]
+Kingsford Match Me [hap, Sean Riddle]
+bbc_flop_6502: Advanced BASIC [Nigel Barnes]
+bbc_flop_80186: Problem Solver 2.0, Rat Driver 1.0 [Nigel Barnes]
+Otakara Itadaki Luffy Kaizoku-Dan! (Japan, v1.02) [SpinalFeyd, Chris Penny, Luca Elia, The Dumping Union]
+ibm5150: Advanced Dungeons & Dragons - Eye of the Beholder II: The Legend of Darkmoon [breiztiger]
+ibm5170: Wing Commander II - Vengeance of the Kilrathi - Speech Accessory Pack [Arcade Shadow]
+ibm5170: Links 386 Pro, Links Championship Course: Bountiful Golf Club Championship Course [Arcade Shadow]
+electron_cart: Advanced Battery-Backed RAM [Nigel Barnes]
+electron_flop: P.R.E.S. ADFS E00, Advanced Electron DFS E00 [Nigel Barnes]
+Introduce MCFG_SOUND_REFERENCE_INPUT to provide fixed inputs through the resampler, eliminating the need for the "voltage regulator"
+  device [ajrhacker]
+Replace memset use in sound.cpp with std::fill [ajrhacker]
+This was my third implementation of this concept. The previous two involved attaching sound streams to the dummy device (which
+  required giving it device_sound_interface and other modifications). [ajrhacker]
+
+
+New working clones
+------------------
+Pretty Soldier Sailor Moon (Ver. 95/03/22, Europe) [rtw, ShouTime, The Dumping Union]
+Four Trax (Asia) [Arzeno Fabrice, The Dumping Union]
+Area 51 / Maximum Force Duo (R3000, 2/02/98) [Brian Troha, The Dumping Union]
+"Super World Court (World, bootleg)" [hammy, The Dumping Union]
+World Class Bowling (v1.0) [Brian Troha, The Dumping Union]
+Cookie & Bibi 2 (set 2) [Hammy]
+note, protection data needs verifying for this, I had to hack the parent data because there are absolute jumps to rom addresses in
+  the code provided by the MCU just to make sure it doesn't crash when inserting a coin, it's possible some ram addresses differ
+  too, hence need for verification. [David Haywood]
+Amstrad CPC6128 (Spain) [Enrique Ausina, Guru]
+Knights of Valour 2 / Sangoku Senki 2 (ver. 104, 102, 100HK) [twistedsymphony]
+Oriental Legend 2 (V104, Japan) [Peter Wilhelmsen, Morten Shearman Kirkegaard, ShouTime, [MetalliC]
+Mouloud Bessaad, Dulleron, Christian Ricolleau, Marisol Nunez Serrano, Renato Mucciarelli, [MetalliC]
+Jeffrey Gray, John Wilke, Darksoft, Ryan Holtz, Smitdogg, The Dumping Union] [MetalliC]
+Oriental Legend 2 (V103, Japan) [MetalliC]
+Oriental Legend 2 (V101, Japan) [MetalliC]
+Cadash (Spain, version 1) [caius, The Dumping Union]
+Track & Field (Centuri, unencrypted) [RiddledTV, Bryan McPhail, The Dumping Union]
+Driving Force (Galaxian conversion, Seatongrove UK) [Ivàn Adrià, The Dumping Union]
+Knights of Valour 3 (V101, China, Hong Kong, Taiwan) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood, MetalliC]
+TV Boy [David Shah]
+Super TV Boy [Sean Riddle,incog]
+Turbo Force (World, set 2) [Corrado Tomaselli, The Dumping Union]
+as expected this version lets you set the game options in service mode rather than using dipswitches as the PCB has none.
+  [DavidHaywood]
+I wonder if this is some kind of hack, although if it is the changes to the code appear rather extensive [DavidHaywood]
+Game Fighter (bootleg) [incog]
+Cookie & Bibi 2 (set 2) [Hammy]
+note, protection data needs verifying for this, I had to hack the parent data because there are absolute jumps to rom addresses in
+  the code provided by the MCU just to make sure it doesn't crash when inserting a coin, it's possible some ram addresses differ
+  too, hence need for verification. [DavidHaywood]
+
+
+Machines promoted to working
+----------------------------
+Knights of Valour 3 (V104, China, Hong Kong, Taiwan) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood, MetalliC]
+Knights of Valour 3 (V102, China, Hong Kong, Taiwan) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood, MetalliC]
+Knights of Valour 3 (V100, China, Hong Kong, Taiwan) [Peter Wilhelmsen, Morten Shearman Kirkegaard, David Haywood, MetalliC]
+Road Burners (ver 1.04) [Ted Green]
+Road Burners (ver 1.0) [Ted Green]
+TeleVideo Model 910 [R. Belmont, AJR]
+
+
+New machines marked as NOT_WORKING
+----------------------------------
+Odyssey [Roberto Fresca]
+ibm5150: ABC's Wide World of Sports Boxing [Justin Kerk]
+Trocana [trap15, The Dumping Union]
+fmtowns_flop: Battle Fighters 3 - Inishie no Jashin Densetsu, Dream Fighters, Image, Rumstorm, Rumuder [Justin Kerk]
+Lucky Ball 96 (Ver 3.50 - 627) [Roberto Fresca]
+Quick Pick 5 [R. Belmont, coolmod, Ryan Holtz, Smitdogg, The Dumping Union]
+Strike Zone (Purple Star) [unknown]
+ibm5170_cdrom.xml: [angelosa]
+3D Power Games Volume 1, Ark of Time, Battlecruiser 3000 AD, Blown Away, Baphomets Fluch II - Die Spiegel der Finsternis, Broken
+  Sword II - Las Fuerzas del Mal, Clif Danger, Creatures, The Curse of Monkey Island [archive.org]
+Tetris (Radica, Arcade Legends TV Game) [Sean Riddle, Incog]
+Tetris (Radica, Arcade Legends TV Game) [Sean Riddle, Incog]
+Tetris (Radica, Arcade Legends TV Game) [Sean Riddle, Incog]
+pretty sure these are the palettes.. format is a mystery tho [David Haywood]
+Sartorius-Werke GmbH 3733 [Mike McBike, rfka01, Vas Crabb]
+Tetris (Radica, Arcade Legends TV Game) [Sean Riddle, Incog]
+pretty sure these are the palettes.. format is a mystery tho [David Haywood]
+palette select bits in 4bpp mode (taito logo, game selection)  palette format is still wrong tho. [David Haywood]
+Tetris (Radica, Arcade Legends TV Game) [Sean Riddle, Incog]
+pretty sure these are the palettes.. format is a mystery tho [David Haywood]
+palette select bits in 4bpp mode (taito logo, game selection)  palette format is still wrong tho. [David Haywood]
+radica6502 : preliminary sprites [David Haywood]
+Tetris (Radica, Arcade Legends TV Game) [Sean Riddle, Incog]
+pretty sure these are the palettes.. format is a mystery tho [David Haywood]
+palette select bits in 4bpp mode (taito logo, game selection)  palette format is still wrong tho. [David Haywood]
+radica6502 : preliminary sprites [David Haywood]
+need to treat this as an RNG for collisions to work on Phoenix Stage 3 [David Haywood]
+palette is some form of hsl [David Haywood]
+Ypovrixio (Submarine, set 1) [Roberto Fresca, Ioannis Bampoulas]
+Ypovrixio (Submarine, set 2) [Roberto Fresca, Ioannis Bampoulas]
+Video Challenger [hap, Sean Riddle, incog]
+Tiger (slot) [Roberto Fresca, Ioannis Bampoulas]
+(from the former commit) [RobertoFresca]
+eletron_cart: Advanced Quarter Meg RAM, Slogger Electron Disk System [Nigel Barnes]
+Software list items promoted to working [Nigel Barnes]
+electron_cart: Click, Pegasus 400 [Nigel Barnes]
+Tetris (Radica, Arcade Legends TV Game) [Sean Riddle, Incog]
+(not sure what this is really called, it's a 5-in-1, it has Space Invaders printed on it, the title screen says Arcade Legends, it
+  was made by Radica) [DavidHaywood]
+
+
+New clones marked as NOT_WORKING
+--------------------------------
+Jolly Card (Italian, bootleg, set 2) [Roberto Fresca, Ioannis Bampoulas]
+Lucky Ball 96 (Ver 3.50 - 626) [Roberto Fresca]
+Lucky Ball 96 (Ver 3.50 - 623) [Roberto Fresca]
+Lucky Ball 96 (Ver 3.50 - 616) [Roberto Fresca]
+TVI-912B [modem7]
+tv912c: Redumped program ROM [Al Kossow]
+Super 97-2 (Witch Bonus) [Roberto Fresca, Ioannis Bampoulas]
+
+
+Comparing 0.193 (mame0193) to 0.193 (mame0193-831-g4e8bb7c)
+
+Renames
+kov2nl_300 -> kov2nl_300cn Knights of Valour 2 New Legend (V300, China)
+kov2nl_301 -> kov2nl_301cn Knights of Valour 2 New Legend (V301, China)
+gnw_bx301 -> gnw_boxing Game & Watch: Boxing
+47pie2o -> suchie2o Idol Janshi Suchie-Pai II (v1.0)
+gnw_ml102 -> gnw_mariocm Game & Watch: Mario's Cement Factory (new wide screen)
+47pie2 -> suchie2 Idol Janshi Suchie-Pai II (v1.1)
+chickna5qld -> chickna5ql Chicken (0200530V, Queensland)
+kov2nl -> kov2nl_302cn Knights of Valour 2 New Legend (V302, China)
+suchipi -> suchiesp Idol Janshi Suchie-Pai Special (Japan)
+gnw_dj101 -> gnw_dkjr Game & Watch: Donkey Kong Jr. (new wide screen)
+sailormno -> sailormnn Pretty Soldier Sailor Moon (Ver. 95/03/22, Europe)
+gnw_mw56 -> gnw_mario Game & Watch: Mario Bros.
+weststorya -> weststrya West Story (bootleg of Blood Bros., set 2)
+gnw_jr55 -> gnw_dkong2 Game & Watch: Donkey Kong II
+sailormnoj -> sailormnnj Pretty Soldier Sailor Moon (Ver. 95/03/22, Japan)
+sailormnok -> sailormnnk Pretty Soldier Sailor Moon (Ver. 95/03/22, Korea)
+sailormnoh -> sailormnnh Pretty Soldier Sailor Moon (Ver. 95/03/22, Hong Kong)
+pengpayuc -> pengpayce Penguin Pays - Cash Express (AHG1544, US)
+gnw_dm53 -> gnw_mickdon Game & Watch: Mickey & Donald
+gnw_mc25 -> gnw_mmouse Game & Watch: Mickey Mouse
+sailormnot -> sailormnnt Pretty Soldier Sailor Moon (Ver. 95/03/22, Taiwan)
+sailormnou -> sailormnnu Pretty Soldier Sailor Moon (Ver. 95/03/22, USA)
+gnw_eg26 -> gnw_egg Game & Watch: Egg
+weststory -> weststry West Story (bootleg of Blood Bros., set 1)
+
+New working machines
+--------------------
+Alphie - The Electronic Robot (patent)
+Cyberstorm (prototype)
+DoDonPachi Dai-Ou-Jou Tamashii (V201, China)
+Electronic Number Muncher
+Genesis Collection Volume 1 (Radica, Arcade Legends) (USA)
+Golden Axe (handheld)
+Last KM (Ver 1.0.0275)
+Match Me
+NEW Moero!! Pro Yakyuu Homerun Kyousou
+Otakara Itadaki Luffy Kaizoku-Dan! (Japan, v1.02)
+Sensible Soccer plus [Cannon Fodder, Mega lo Mania] (Radica, Arcade Legends) (Europe)
+Skeleton Warriors - The Dark Crusade (handheld)
+Space Invaders [Lunar Rescue, Colony 7, Qix, Phoenix] (Radica, Arcade Legends TV Game)
+Street Fighter II: Special Champion Edition [Ghouls'n Ghosts] (Radica, Arcade Legends) (Europe)
+Super Double Dragon (handheld)
+Super TV Boy (PAL)
+TV Boy II (PAL)
+The Incredible Crash Dummies (handheld)
+Thief in Garden
+Vindicators (handheld)
+unknown electronic Space Invaders game (patent)
+unknown electronic maze game (patent)
+
+New working clones
+------------------
+Amstrad CPC6128 (Spain)
+Area 51 / Maximum Force Duo (R3000, 2/02/98)
+Bioplaything Cop (Ver. 1.0.1823, prototype)
+Cadash (Spain, version 1)
+Cookie & Bibi 2 (set 2)
+Driving Force (Galaxian conversion, Seatongrove UK)
+Four Trax (Asia)
+Game Fighter (bootleg)
+Kick Goal (set 2)
+Knights of Valour 2 / Sangoku Senki 2 (ver. 104, 102, 100HK)
+Knights of Valour 2 New Legend (V300, Oversea)
+Knights of Valour 2 New Legend (V301, Oversea)
+Knights of Valour 2 New Legend (V302, Oversea)
+Knights of Valour 3 (V101, China, Hong Kong, Taiwan)
+Maniac Square (unprotected, Version 1.0, Checksum 66B1, 960419/1 PCB)
+Oriental Legend 2 (V101, Japan)
+Oriental Legend 2 (V103, Japan)
+Oriental Legend 2 (V104, Japan)
+Popeye (bootleg set 2)
+Popeye (bootleg set 3)
+Pretty Soldier Sailor Moon (Ver. 95/03/21, Europe)
+Pretty Soldier Sailor Moon (Ver. 95/03/21, Hong Kong)
+Pretty Soldier Sailor Moon (Ver. 95/03/21, Japan)
+Pretty Soldier Sailor Moon (Ver. 95/03/21, Korea)
+Pretty Soldier Sailor Moon (Ver. 95/03/21, Taiwan)
+Pretty Soldier Sailor Moon (Ver. 95/03/21, USA)
+Samurai Shodown V / Samurai Spirits Zero (NGM-2700, set 2)
+Sorcer Striker (Korea)
+Super World Court (World, bootleg)
+Track & Field (Centuri, unencrypted)
+Turbo Force (World, set 2)
+World Class Bowling (v1.0)
+X-Men: Children of the Atom (Brazil 950331)
+
+Machines promoted to working
+----------------------------
+100 in 1 (D-CAT8 8bit Console, set 1) (v5.01.11-frd, BL 20041217)
+110 in 1 CoolBaby (CoolBoy RS-1S)
+138 in 1 CoolBaby (CoolBoy RS-5, PCB060-10009011V1.3)
+777777 in 1 (8 bit Slim Station, NEWPXP-DVT22-A PCB)
+888888 in 1 (8 bit Slim Station, NEWPXP-DVT22-A PCB)
+Defender M2500P 120-in-1
+Game Prince RS-1
+Game Prince RS-16
+Knights of Valour 3 (V104, China, Hong Kong, Taiwan)
+MyBrain 3000
+Road Burners (ver 1.04)
+TeleVideo Model 910
+VG Pocket (VG-2000)
+VG Pocket Mini (VG-1500)
+dreamGEAR 101 in 1
+dreamGEAR 75-in-1
+dreamGEAR Wireless Motion Control with 130 games (DGUN-2500)
+
+Clones promoted to working
+--------------------------
+100 in 1 (D-CAT8 8bit Console, set 2)
+Knights of Valour 3 (V100, China, Hong Kong, Taiwan)
+Knights of Valour 3 (V102, China, Hong Kong, Taiwan)
+Road Burners (ver 1.0)
+Step/One
+
+New machines marked as NOT_WORKING
+----------------------------------
+3733 (digital scale)
+BittBoy Mini FC 300 in 1
+Game & Watch: Super Mario Bros. (new wide screen)
+Golden Tee Golf: Home Edition
+Green Lizard - Cash Express (AHG1623, US)
+Lucky Ball 96 (Ver 3.50 - 627)
+Missing In Action
+Odyssey
+Quick Pick 5
+Reader Laptop E (Germany)
+SY-889 300 in 1 Handheld
+Sagitta 180
+Strike Zone (Purple Star)
+Tetris (Radica, Arcade Legends TV Game)
+Tiger (slot)
+Trocana
+Video Challenger
+dreamGEAR My Arcade Gamer V Portable Gaming System (DGUN-2573)
+
+New clones marked as NOT_WORKING
+--------------------------------
+Chicken (01J01886, Venezuela)
+Enchanted Forest - Cash Express (AHG1615, US)
+Jolly Card (Italian, bootleg, set 2)
+King Galah - Cash Express (AHG1625, US)
+Lucky Ball 96 (Ver 3.50 - 616)
+Lucky Ball 96 (Ver 3.50 - 623)
+Lucky Ball 96 (Ver 3.50 - 626)
+Queen of the Nile - Cash Express (AHG1608, US)
+Super 97-2 (Witch Bonus)
+TVI-912B
+VT220 (Version 2.1)
+
