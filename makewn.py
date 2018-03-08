@@ -6,9 +6,268 @@
 import argparse
 import getpass
 import git
+import os.path
 import pygithub3
 import re
 import sys
+import xml.sax
+import xml.sax.handler
+
+
+class softlist_comparator(object):
+    class ErrorHandler(object):
+        def __init__(self, **kwargs):
+            super(softlist_comparator.ErrorHandler, self).__init__(**kwargs)
+            self.errors = 0
+            self.warnings = 0
+
+        def error(self, exception):
+            self.errors += 1
+            sys.stderr.write('error: %s\n' % (exception, ))
+
+        def fatalError(self, exception):
+            raise exception
+
+        def warning(self, exception):
+            self.warnings += 1
+            sys.stderr.write('warning: %s\n' % (exception, ))
+
+
+    class Categoriser(object):
+        def __init__(self, error_handler, **kwargs):
+            super(softlist_comparator.Categoriser, self).__init__(**kwargs)
+
+            # handling the XML
+            self.error_handler = error_handler
+            self.locator = None
+
+            # parse state
+            self.in_document = False
+            self.in_softlist = False
+            self.in_software = False
+            self.in_description = False
+            self.ignored_depth = 0
+
+            # attributes of current item
+            self.softname = None
+            self.is_clone = None
+            self.is_working = None
+            self.description = None
+
+            # output
+            self.listname = None
+
+        def startElement(self, name, attrs):
+            if not self.in_document:
+                self.error_handler.fatalError(xml.sax.SAXParseException(
+                        'Got start of element outside document',
+                        None,
+                        self.locator))
+            elif self.ignored_depth > 0:
+                self.ignored_depth += 1
+            elif not self.in_softlist:
+                if name != 'softwarelist':
+                    self.error_handler.fatalError(xml.sax.SAXParseException(
+                            'Found unexpected element %s' % (name, ),
+                            None,
+                            self.locator))
+                elif 'name' not in attrs:
+                    self.error_handler.fatalError(xml.sax.SAXParseException(
+                            'Expected attribute name not found',
+                            None,
+                            self.locator))
+                else:
+                    self.in_softlist = True
+                    self.listname = attrs['name']
+            elif not self.in_software:
+                if name != 'software':
+                    self.error_handler.fatalError(xml.sax.SAXParseException(
+                            'Found unexpected element %s' % (name, ),
+                            None,
+                            self.locator))
+                elif 'name' not in attrs:
+                    self.error_handler.fatalError(xml.sax.SAXParseException(
+                            'Expected attribute name not found',
+                            None,
+                            self.locator))
+                else:
+                    self.in_software = True
+                    self.softname = attrs['name']
+                    self.is_clone = 'cloneof' in attrs
+                    self.is_working = ('supported' not in attrs) or (attrs['supported'] != 'no')
+            elif not self.in_description:
+                if name == 'description':
+                    self.in_description = True
+                    self.description = ''
+                else:
+                    self.ignored_depth = 1
+            else:
+                self.ignored_depth = 1;
+
+        def endElement(self, name):
+            if self.ignored_depth > 0:
+                self.ignored_depth -= 1
+            elif self.in_description:
+                if name != 'description':
+                    self.error_handler.fatalError(xml.sax.SAXParseException(
+                            'End of element %s does not match start of element description' % (name, ),
+                            None,
+                            self.locator))
+                else:
+                    self.in_description = False
+            elif self.in_software:
+                if name != 'software':
+                    self.error_handler.fatalError(xml.sax.SAXParseException(
+                            'End of element %s does not match start of element software' % (name, ),
+                            None,
+                            self.locator))
+                else:
+                    if self.description is None:
+                        self.error_handler.error(xml.sax.SAXParseException(
+                                'Expected element description not found',
+                                None,
+                                self.locator))
+                    else:
+                        self.handleSoftware(self.softname, self.description, self.is_clone, self.is_working)
+                    self.in_software = False
+                    self.softname = None
+                    self.is_clone = None
+                    self.is_working = None
+                    self.description = None
+            elif self.in_softlist:
+                if name != 'softwarelist':
+                    self.error_handler.fatalError(xml.sax.SAXParseException(
+                            'End of element %s does not match start of element softwarelist' % (name, ),
+                            None,
+                            self.locator))
+                else:
+                    self.in_softlist = False
+            else:
+                self.error_handler.fatalError(xml.sax.SAXParseException(
+                        'Found unexpected end of element %s' % (name, ),
+                        None,
+                        self.locator))
+
+        def startDocument(self):
+            if self.in_document:
+                self.error_handler.fatalError(xml.sax.SAXParseException(
+                        'Got start of document inside document',
+                        None,
+                        self.locator))
+            else:
+                self.in_document = True
+
+        def endDocument(self):
+            if self.in_softlist:
+                self.error_handler.fatalError(xml.sax.SAXParseException(
+                        'Got end of document inside softwarelist element',
+                        None,
+                        self.locator))
+            else:
+                self.in_document = False
+
+        def setDocumentLocator(self, locator):
+            self.locator = locator
+
+        def startPrefixMapping(self, prefix, uri):
+            pass
+
+        def endPrefixMapping(self, prefix):
+            pass
+
+        def characters(self, content):
+            if self.in_description and (self.ignored_depth == 0):
+                self.description += content
+
+        def ignorableWhitespace(self, whitespace):
+            pass
+
+        def processingInstruction(self, target, data):
+            pass
+
+
+    def __init__(self, output, **kwargs):
+        super(softlist_comparator, self).__init__(**kwargs)
+        self.output = output
+
+    def compare(self, current, baseline):
+        error_handler = self.ErrorHandler()
+        content_handler = self.Categoriser(error_handler)
+        parser = xml.sax.make_parser()
+        parser.setErrorHandler(error_handler)
+        parser.setContentHandler(content_handler)
+        parser.setFeature(xml.sax.handler.feature_external_ges, False)
+
+        old_working = dict()
+        old_nonworking = dict()
+        old_descriptions = dict()
+        if baseline is not None:
+            def handle_old_software(shortname, description, is_clone, is_working):
+                if is_working: old_working[shortname] = description
+                else: old_nonworking[shortname] = description
+                old_descriptions[description] = shortname
+            content_handler.handleSoftware = handle_old_software
+            parser.parse(baseline.data_stream)
+
+        new_working = dict()
+        new_nonworking = dict()
+        added_working = set()
+        added_nonworking = set()
+        promoted = set()
+        renames = dict()
+        def handle_new_software(shortname, description, is_clone, is_working):
+            if is_working: new_working[shortname] = description
+            else: new_nonworking[shortname] = description
+            if (shortname in old_working) or (shortname in old_nonworking): old_name = shortname
+            elif description in old_descriptions: old_name = old_descriptions[description]
+            else: old_name = None
+            if (old_name is None) or (old_name in renames):
+                if is_working: added_working.add(description)
+                else: added_nonworking.add(description)
+            else:
+                if old_name != shortname:
+                    renames[old_name] = (description, shortname)
+                    if old_name in new_working: added_working.add(new_working[old_name])
+                    elif old_name in new_nonworking: added_nonworking.add(new_nonworking[old_name])
+                if is_working and (old_name not in old_working):
+                    promoted.add(description)
+        content_handler.handleSoftware = handle_new_software
+        parser.parse(current.data_stream)
+        listname = content_handler.listname
+
+        for shortname in new_working:
+            if shortname in old_working: del old_working[shortname]
+            elif shortname in old_nonworking: del old_nonworking[shortname]
+        for shortname in new_nonworking:
+            if shortname in old_working: del old_working[shortname]
+            elif shortname in old_nonworking: del old_nonworking[shortname]
+        for shortname in renames:
+            if shortname in old_working: del old_working[shortname]
+            elif shortname in old_nonworking: del old_nonworking[shortname]
+        removed = list()
+        for shortname, description in old_working.iteritems(): removed.append(description)
+        for shortname, description in old_nonworking.iteritems(): removed.append(description)
+        removed.sort()
+
+        if renames or removed or added_working or added_nonworking:
+            self.output.write(('%s (%s):\n' % (listname, current.name)).encode('UTF-8'))
+            if renames:
+                self.output.write('  Renames\n'.encode('UTF-8'))
+                for old_name, info in renames.iteritems():
+                    self.output.write(('    %s -> %s %s\n' % (old_name, info[1], info[0])).encode('UTF-8'))
+            if removed:
+                self.output.write('  Removed\n'.encode('UTF-8'))
+                for description in removed:
+                    self.output.write(('    %s\n' % (description, )).encode('UTF-8'))
+            if added_working:
+                self.output.write('  Working\n'.encode('UTF-8'))
+                for description in sorted(added_working):
+                    self.output.write(('    %s\n' % (description, )).encode('UTF-8'))
+            if added_nonworking:
+                self.output.write('  Non-working\n'.encode('UTF-8'))
+                for description in sorted(added_nonworking):
+                    self.output.write(('    %s\n' % (description, )).encode('UTF-8'))
+            self.output.write('\n'.encode('UTF-8'))
 
 
 releasetag_pat = re.compile('^mame0([0-9]+)$')
@@ -262,7 +521,7 @@ if __name__ == '__main__':
     tag = get_most_recent_tag(repo)
 
     placeholders = (
-            '0.%s' % (long(releasetag_pat.sub('\\1', tag.name)) + 1),
+            '0.%s' % (long(releasetag_pat.sub('\\1', tag.name)) + 1, ),
             'MAMETesters Bugs Fixed',
             'New working machines',                 'New working clones' ,
             'Machines promoted to working',         'Clones promoted to working',
@@ -281,3 +540,20 @@ if __name__ == '__main__':
     print_new_machines(stream, 'Clones promoted to working', new_promoted_clones);
     print_new_machines(stream, 'New machines marked as NOT_WORKING', new_broken_parents);
     print_new_machines(stream, 'New clones marked as NOT_WORKING', new_broken_clones);
+
+    comp = softlist_comparator(stream)
+    current = repo.commit('release0%ld' % (long(releasetag_pat.sub('\\1', tag.name)) + 1, )).tree['hash']
+    previous = repo.commit(tag).tree['hash']
+    for obj in current:
+        if obj.type == 'blob':
+            basename, extension = os.path.splitext(obj.name)
+            if extension == '.xml':
+                try:
+                    baseline = previous / obj.name
+                except KeyError:
+                    baseline = None
+                if obj != baseline:
+                    try:
+                        comp.compare(obj, baseline)
+                    except xml.sax.SAXException as err:
+                        sys.stderr.write('error processing software list %s: %s\n' % (obj.name, err))
