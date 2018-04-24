@@ -200,6 +200,43 @@ Source Changes
 
 -galivan.cpp, terracre.cpp: Rewrote NB1412M2 as a device. [Angelo Salese]
 
+-airbustr.cpp: Reduced code duplication and runtime tagmap lookups, removed unnecessary bitmap. [cam900]
+
+-hvyunit.cpp, lemmings.cpp, namcos11.cpp: Minor code cleanup and runtime tagmap lookup reduction. [cam900]
+
+-aerofgt.cpp: Reduced code duplication. [cam900]
+
+-psikyo.cpp, gundealr.cpp: Reduced code duplication and runtime tagmap lookups. [cam900]
+
+-dreamwld.cpp: Implemented tilemap size register, reduced code duplication, and reduced runtime tagmap lookups. [cam900]
+
+-namcos12.cpp: Cleaned up code, reduced runtime tagmap lookups, and made COH716 a separate configuration with correct GPU. [cam900]
+
+-djboy.cpp: Cleaned up code, reduced runtime tagmap lookups, modernised sound latches, and implemented stereo output. [cam900]
+
+-firefox.cpp: Cleaned up code, reduced runtime tagmap lookups, and modernised sound latches. [cam900]
+
+-arcadecl.cpp: Cleaned up graphics decode, fixed year in comment. [cam900]
+
+-coolpool.cpp: Modernised CPU-DSP communication latches, and split I/O maps for coolpool and nballsht. [cam900]
+
+-tlc34076: Allocate palette RAM and pens at start time. [cam900]
+
+-atarisy2.cpp: Minor cleanup, use address_map_bank_device for banked video RAM. [cam900]
+
+-cave.cpp: Fixed hotdogst metadata. [cam900]
+
+-pgm.cpp: Removed unused members and converted code to use object finders. [cam900]
+
+-pc9801_86.cpp: Improved PCM timer behaviour – actual master clock still unknown. [cam900]
+
+-partner.cpp, asuka.cpp: Use object finders for memory banks rather than string formatting and tagmap lookups. [cam900]
+
+-zn.cpp: Simplified Z80 bank switching for FX-1 games. [cam900]
+
+-pasha2.cpp: Added output finders for lamps, reduced runtime tagmap loopups, moved bitmap memory allocation to start time, and
+ simplified/de-duplicated code. [cam900]
+
 -abc80x: Implemented option ROM opcode fetch through character RAM. [Curt Coder]
 
 -Marked Blades of Steel sets as joystick/trackball to reduce confusion. [David Haywood]
@@ -361,146 +398,3 @@ Source Changes
 -amidars: Corrected Lives DIP switch. [Tafoid, GoldS_TCRF]
 
 -konblands.cpp: Added DIP switches from manual. [Tafoid]
-
-
-
-
-
-
--airbustr.cpp : Minor cleanups, Remove unnecessary bitmap (#3381) [cam900]
- * airbustr.cpp : Minor cleanups, Remove unnecessary bitmap
- * airbustr.cpp : Minor cleanup of duplicates
-
--hvyunit.cpp : Minor cleanup (#3382) [cam900]
-
--lemmings.cpp : Cleanups (#3390) [cam900]
- * lemmings.cpp : Minor cleanup
- * lemmings.cpp : Minor cleanup
-
--namcos11.cpp : Cleanup bankswitch handler, Reduce runtime tag lookups [cam900]
-
--aerofgt.cpp Cleanups (#3402) [cam900]
- * aerofgt.cpp : Cleanup duplicates, Split spinbrk ROM lookup function, Fix object finder names related sprite lookup tables
- * aerofgt.cpp : Minor gfxdecode cleanup
- * aerofgt.cpp : Reduce duplicates
-
--psikyo.cpp, dreamwld.cpp : Cleanups, Add notes (#3403) [cam900]
- * psikyo.cpp, dreamwld.cpp : Minor cleanups dreamwld.cpp : Add Tilemap size register, Add notes
- * dreamwld.cpp : Minor cleanup psikyo.cpp : Documents of PIC, Minor cleanup
- * psikyo.cpp : Fix background pen
- * psikyo.cpp : Minor fix
- * psikyo.cpp : Fix spacing
-
--namcos12.cpp cleanups (#3394) [cam900]
- * namcos12.cpp : Minor cleanups, Reduce runtime tag lookups, Split machine config for COH716 CPU Board case
- * namcos12.cpp : Minor cleanups
- * namcos12.cpp : Split motherboard and cpuboard configurations
- * namcos12.cpp : Fix GPU for COH716 board
-
--djboy.cpp : Fix tags, Minor cleanup, Add generic_latch_8_device for comms (#3383) [cam900]
- * djboy.cpp : Fix tags, Minor cleanup
- * djboy.cpp : Build fixes
- * djboy.cpp : Fix build
- * djboy.cpp : Add stereo sound output, Because PCB has stereo sound output connector and OKI is connected per each output (Set
-    "Stereo Output" dip on for stereo sound)
- * djboy.cpp : Cleanup OKI ROM loading
- * djboy.cpp : Fix tags
- * Revert DIP, Because it's doesn't effect on software
- * djboy.cpp Cleanup gfxdecode
- * djboy.cpp : Fix sound output level
- * djboy.cpp : Minor cleanups
-
--firefox.cpp : Cleanups, Add output finders/object finders, Reduce runtime tag lookups [cam900]
-
--arcadecl.cpp Minor cleanups (#3413) [cam900]
- * arcadecl.cpp : Get rid unnecessary gfxdecode for sparkz_state, Fix Sparkz Year on documents
- * arcadecl.cpp : Revert "Get rid unnecessary gfxdecode for sparkz_state", Add docs for sparkz (Both sprite chip and ROM socket are
-    exists but unpopulated)
-
--coolpool.cpp : Add generic_latch_16_device for cpu-dsp communications, Split coolpool DSP io map and nballsht DSP io map, Fix rom
- tags [cam900]
-
--coolpool.cpp : Remove unused values [cam900]
-
--Convert m_pens, m_local_paletteram into std::unique_ptr, Minor cleanup [cam900]
-
--atarisy2.cpp : Minor cleanups for bankswitching, Add address_map_bank_device for vram bankswitch handlers [cam900]
-
--cave.cpp : Fix hotdogst Name/Distributor tags [cam900]
- * (International) is piece of korean company name "Ace International Co., Ltd", the Exclusive Distributor of Hotdog Storm on Korea.
-
--gundealr.cpp : Cleanups (#3447) [cam900]
- * gundealr.cpp : Cleanups
- * gundealr.cpp : Fix build
-
--pgm.cpp : Fix object finder, Remove unused things (#3448) [cam900]
- * pgm.cpp : Fix object finder, Remove unused things
- * pgm.cpp : Fix build
-
--pc9801_86.cpp : Fix pcm timer rate, Add notes [cam900]
-
--partner.cpp : Cleanup bankswitch [cam900]
-
--zn.cpp : Simpler Z80 Bankswitching for FX-1 Games (#3440) [cam900]
- * zn.cpp : Simpler Z80 Bankswitching FX-1 Games
- * zn.cpp : Fix regression
- * zn.cpp : Fix Bank0 for coh1000ta
- * zn.cpp : Fix machine_reset
- * zn.cpp : Revert commits, Add notes
- * zn.cpp : Fix bankswitch for coh1000ta games, Change ROM region size for fix regressions
-
--gaelco2.cpp : Fix game name [cam900]
-
--asuka.cpp : Cleanups, Reduce duplicates/runtime tag lookup [cam900]
-
--pasha2.cpp Cleanups (#3472) [cam900]
- * pasha2.cpp : Cleanup duplicates, Cleanup bitmap write handlers, Add object finder instead runtime tag lookups, Fix tags, Hook up
-    AT89C52, Add notes, Add output finders, Convert m_bitmap* into std::unique_ptr
- * pasha2.cpp : Add object finder for audiocpu
- * pasha2.cpp : Fix output finders
- * pasha2.cpp : Fix compile
-
--pasha2.cpp Cleanups pasha2.cpp : Cleanup duplicates, Cleanup bitmap write handlers, Add object finder instead runtime tag lookups,
- Fix tags, Hook up AT89C52, Add notes, Add output finders, Convert m_bitmap* into std::unique_ptr [cam900]
-
--asuka.cpp : Cleanups, Reduce duplicates/runtime tag lookup, Fix notes [cam900]
-
--gaelco2.cpp : Fix game name [cam900]
-
--pc9801_86.cpp : Fix DAC PCM timer rate, Add notes [cam900]
-
--partner.cpp : Cleanup bankswitch [cam900]
-
--pgm.cpp : Fix object finder, Remove unused things [cam900]
-
--gundealr.cpp : Cleanups gundealr.cpp : Cleanup duplicates, Reduce runtime tag lookups, Fix some tags, etc... [cam900]
-
--cave.cpp : Fix hotdogst Name/Distributor tags (International) is piece of korean company name "Ace International Co., Ltd", the
- Exclusive Distributor of Hotdog Storm on Korea. [cam900]
-
--zn.cpp : Simpler Z80 Bankswitching for FX-1 Games [cam900]
-
--atarisy2.cpp Cleanups atarisy2.cpp : Minor cleanups for bankswitching, Add address_map_bank_device for vram bankswitch handlers
- [cam900]
-
--tlc34076.cpp Cleanups tlc34076.cpp : Convert m_pens, m_local_paletteram into std::unique_ptr, Minor cleanup [cam900]
-
--coolpool.cpp Updates coolpool.cpp : Add generic_latch_16_device for cpu-dsp communications, Split coolpool DSP io map and nballsht
- DSP io map, Fix ROM tags [cam900]
-
--firefox.cpp Cleanups firefox.cpp : Cleanups, Add output finders/object finders, Reduce runtime tag lookups [cam900]
-
--arcadecl.cpp Minor cleanups arcadecl.cpp : Get rid unnecessary gfxdecode for sparkz_state, Fix Sparkz Year on documents [cam900]
-
--psikyo.cpp, dreamwld.cpp : Cleanups, Add notes psikyo.cpp, dreamwld.cpp : Minor cleanups psikyo.cpp : Documents of PIC dreamwld.cpp
- : Add Tilemap size register, Add notes [cam900]
-
--aerofgt.cpp Cleanups aerofgt.cpp : Cleanup duplicates, Split spinbrk ROM lookup function, Fix object finder names related sprite
- lookup tables [cam900]
-
--namcos12.cpp cleanups namcos12.cpp : Minor cleanups, Reduce runtime tag lookups, Split machine config for COH716 CPU Board case
- [cam900]
-
--djboy.cpp : Fix tags, Minor cleanup, Add generic_latch_8_device for comms djboy.cpp : Fix tags, Minor cleanup, Add
- generic_latch_8_device for comms, Add stereo sound output, Because PCB has stereo sound output connector and OKI is connected per
- each output [cam900]
