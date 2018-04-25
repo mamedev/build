@@ -267,6 +267,10 @@ class softlist_comparator(object):
                 self.output.write('  Non-working\n'.encode('UTF-8'))
                 for description in sorted(added_nonworking):
                     self.output.write(('    %s\n' % (description, )).encode('UTF-8'))
+            if promoted:
+                self.output.write('  Promoted\n'.encode('UTF-8'))
+                for description in sorted(promoted):
+                    self.output.write(('    %s\n' % (description, )).encode('UTF-8'))
             self.output.write('\n'.encode('UTF-8'))
 
 
