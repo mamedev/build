@@ -1,0 +1,937 @@
+0.199
+-----
+
+
+MAMETesters Bugs Fixed
+----------------------
+- 07020: [DIP/Input] (lwings.cpp) trojan and clones: Dipswitches incorrectly numbered and info on unused dips (Tafoid)
+- 07010: [DIP/Input] (missile.cpp) missile and clones: Dip switch trackball size large/mini label reversed (Tafoid)
+- 07017: [Sound] (galaxian.cpp) kingball, kingballj: King's voice is not played correctly (Osso)
+- 07007: [Sound] (renegade.cpp) renegade, kuniokun: BGM stops playing after a while (AJR)
+- 06988: [Crash/Freeze] (kinst.cpp) kinst: Hangs during Attract Mode, noticable when a fight loads (Osso)
+- 06992: [DIP/Input] (hornet.cpp) sscope and clones: Analog inputs do not function. (tedgreen)
+- 06989: [Sound] (champbas.cpp) champbb2j: AY-3-8910 sound is completely missing (cuavas)
+- 06984: [Graphics] (esd16.cpp) jumppop, jumppope: Missing graphics in first stage (AJR)
+- 06983: [Sound] (mtouchxl.cpp) mtchxl6k (possibly others): All sounds play too fast (crazyc)
+- 06980: [Save/Restore] (spec128.cpp) specpls3: Unable to save state (Regression) (AJR)
+- 07006: [Media Support] (at.cpp) atvga, at386, at486: [possible] Unable load Floppy Diskettes (crazyc)
+
+
+New working machines
+--------------------
+
+
+New working clones
+------------------
+
+
+Machines promoted to working
+----------------------------
+
+
+Clones promoted to working
+--------------------------
+
+
+New machines marked as NOT_WORKING
+----------------------------------
+
+
+New clones marked as NOT_WORKING
+--------------------------------
+
+
+New working software list additions
+-----------------------------------
+
+
+New NOT_WORKING software list additions
+---------------------------------------
+
+
+Translations added or modified
+------------------------------
+
+
+Source Changes
+--------------
+-use plural names for output finders when there are multiple outputs (#3595) [wilbertpol]
+
+-Floppy robustification, better bitstream handling [John Keoni Morris, Peter Ferrie, Olivier Galibert]
+
+-tatsumi.cpp: improved road colors in Cycle Warriors [Angelo Salese]
+
+-apple2ees: Actually add this set to MAME [AJR]
+
+-senjyo.cpp : Simpler starforc bg color swap (#3604) [cam900]
+ * senjyo.cpp : Simpler starforc bg color swap
+ * senjyo.cpp : Fix color
+
+-seta.cpp : Add seperate value for tilemap banks (#3584) [cam900]
+ * seta.cpp : user_data'd tilemap banks
+ * seta.cpp : Fix tilemap updating
+ * seta.cpp : Minor cleanups; Add seperate value for rambank
+ * seta.cpp : Add output_finders, Fix build
+
+-tatsumi.cpp: removed an ugly kludge in Round Up 5, fixes soft resets [Angelo Salese]
+ * (Also demoted to not working for obvious reasons)
+
+-markham.cpp: Protection checkpoint for banbam and clones, improved simulation. Still imperfect, but all graphics are correct and
+ the games no longer crash. Marked MCU as good dump from observation and Phil Bennett's comments. [Jackson]
+
+-tatsumi.cpp: added vertical text scrolling to Round Up 5 [Angelo Salese]
+
+-tatsumi.cpp: fix Apache 3 out of bounds colors for sprites (trees and buildings) [Angelo Salese]
+
+-tatsumi.cpp: fixed Round Up 5 video priority on map screen after a play [Angelo Salese]
+
+-new WORKING clones (#3616) [David Haywood]
+ * new WORKING clones Metal Slug 3 (NGM-2560, earlier) [Razoola]
+ * date note
+
+-gave Tom Tom Magic a joystick and 3 buttons, as shown in attract mode [DavidHaywood]
+ * the Joystick at least is needed for high score name entry.
+ * played a bit, seems fine so...
+
+-tatsumi.cpp: added background bitmap layers to Round Up 5 [Angelo Salese]
+
+-ms32.cpp : CPU type identification (#3620) [cam900]
+ * ms32.cpp : CPU type identification
+ * ms32.cpp : Fix audiocpu clock
+
+-tatsumi.cpp: improved road clipping for Round Up 5 [Angelo Salese]
+
+-Add HP98543 medium-res color graphics card (#3575) [Sven Schnelle]
+ * Remove vram_rw and ctrl_rw wrapper functions
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+ * topcat: replace hardcoded display width by m_fb_width
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+ * topcat: prepare topcat for multi plane operation
+ * framebuffer vram is only 1 bit wide.
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+ * 98544: set single topcat plane
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+ * add nereid mapper used on HP98543/98545 graphic cards
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+ * prepare for multi-topcat operation
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+ * add HP 98543 4 plane graphics card
+ * hp9k_3xx: add hp98543 card
+ * topcat,nerid: disable VERBOSE
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+ * hp98543: use required_device_array
+ * 98543: use required_region_ptr
+ * 98544: use required_region_ptr
+ * topcat: add save state support
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+ * nereid: add save state support
+ * hp98544,hp98543,topcat: use shared memory space
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+ * nereid: remove redundant variable
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+ * topcat, nereid: remove trailing underscore from include guard
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+ * topcat,hp98543: code style fixes proposed in PR
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+
+-new working clone - Golden Tee Golf Joystick v3.3 [braintro]
+
+-Move the +1 to the proper place in the ROM BIOS macros - that's been confusing people for far too long.  Yes, this is a change in
+ behaviour. [Vas Crabb]
+ * Add a valdiation check for ROMs with BIOS flag set that are unselectable, fix the things it uncovers.
+
+-Fix the buggychl mcu to run at 3mhz as shown on the schematic, and add sound address map and other comments. [Lord Nightmare]
+
+-tatsumi.cpp: make Cycle Warriors sub CPU to not stall at soft resets [Angelo Salese]
+
+-voodoo: Reinstate texture address masking.  Fixes segmentation fault in warfa. [Ted Green]
+
+-fmtowns.cpp : Fix speaker output level (#3513) [cam900]
+ * fmtowns.cpp : Fix speaker output level
+ * fmtowns.cpp : Fix speaker output level because SPEAKER_SOUND has only 1 outputs
+ * fmtowns.cpp : Fix for current master
+
+-vis.cpp : Fix sample rate divider (#3622) [cam900]
+ * vis.cpp : Fix sample rate
+ * vis.cpp : Minor update(remove unnecessary)
+
+-Hopefully fix MT06989, obsolete #3417, and rather lazily separate parts specific to Exciting Soccer from Champion Baseball state
+ [Vas Crabb]
+
+-tatsumi.cpp: some video fixes to Cycle Warriors and Big Fight: [Angelo Salese]
+ * marked first drawn layer as opaque;
+ * added row and col scroll register select;
+
+-tatsumi.cpp: added shadow sprites to Cycle Warriors / Big Fight [Angelo Salese]
+
+-tatsumi.cpp: oki status is actually reversed active wise for Cycle Warriors and Big Fight, fixes "we got em" sample playback in
+ former [Angelo Salese]
+
+-Sorcerer_cass : 7 working games [Robbbert]
+
+-megaplay.cpp : Add notes of overlay [cam900]
+ * Demote Mega Play games with MACHINE_IMPERFECT_GRAPHICS, because Overlay bitmap is wrong (title screen, mega play logo, etc...)
+
+-esb: Fix ROM loading bug [AJR]
+
+-minor label fix from Razoola [DavidHaywood]
+
+-taito_b.cpp: Identify TC0180VCU as source of interrupts and change these into callbacks. The interval between the two has been
+ changed (no longer being an arbitrary multiple of the CPU clock), but the timing is still more or less guesswork. [AJR]
+
+-addrmap.h: reduce code duplication and add support for device finders in more places in memory maps [Vas Crabb]
+
+-tatsumi.cpp: cycle warriors and big fight bit 15 of tilemap code is per-tile high priority with regards to sprites. Fixes several
+ priority glitches [Angelo Salese]
+ * (out of whatsnew: also made a massive order cleanup)
+
+-tatsumi.cpp: Cycle Warriors & Big Fight bit 14 of tilemap is per-tile opacity enable [Angelo Salese]
+
+-tatsumi.cpp: Cycle Warriors & Big Fight color banks are HW configured. Fixes fade in/out effects and CRT test colors
+ [Angelo Salese]
+
+-hornet: Add separate DIP switch settings for gradius4. Allows gun to work with default settings in terabrst and sscope [Ted Green]
+
+-keytronic_pc3270: Correct INT0 line polarity (fixes keyboard error on tosh1000) [AJR]
+
+-No. [mooglyguy]
+
+-Added AppVeyor config [balr0g]
+
+-Update dcs audio to get sf2049 closer to working. [Ted Green]
+
+-exidy.cpp, victory.cpp: Full encapsulation of audio devices [AJR]
+
+-cybertnk.cpp : Cleanup duplicates, Reduce runtime tag lookups, Fix sound output(related to OST), Add notes [cam900]
+
+-Added missing primitives [krom]
+
+-witch.cpp: attempt to fix garbage graphics after a bonus stage in Keirin Ou [David Haywood]
+
+-machines promoted to WORKING (#3631) [David Haywood]
+ * machines promoted to WORKING War Mission (WM 4/6/87)  [Jordi Beltran Casany, Recreativas.org, ArcadeHacker, David Haywood]
+ * typ
+
+-new working clone - Bubble Memories: The Story Of Bubble Bobble III (Ver 2.5A 1996/02/21) [braintro]
+
+-Fix build. [mooglyguy]
+
+-Apple II: added buffering logic to the Echo II emulation [R. Belmont, Jonathan Gevaryahu]
+
+-vgmplay: das blinkenlights [Vas Crabb]
+
+-Next-gen config: make address map config not look like arse [Vas Crabb]
+
+-rltennis.cpp : Fix device finders, Minor cleanups (#3637) [cam900]
+ * rltennis.cpp : Fix device finders, Minor cleanups
+ * rltennis.cpp : Minor fix
+
+-atetrisb3: Hook up MCU to get working sound [AJR]
+
+-tatsumi.cpp: apply page wraparound for backgrounds, fixes various glitches in Big Fight and Cycle Warriors [Angelo Salese]
+
+-tatsumi.cpp: invert shadow product when a specific register is enabled, used by Big Fight when player fights against Chen to
+ simulate disco strobe lights [Angelo Salese]
+
+-as if millions of this pointers suddenly cried out in terror, and were suddenly silenced [Vas Crabb]
+ * streamline templates in addrmap.h
+ * get rid of overloads on read/write member names - this will become even more important in the near future
+
+-i8275: DMA refinements [AJR]
+ * Exclude FIFO characters from counting towards filling character buffer
+ * Extend DMA up to one character past an "end of DMA" control code
+
+-sblaster: direct DAC mode [Sergey Svishchev]
+
+-ninjakd2.cpp: attempt fixing bullets not shot by enemies in Omega Fighter [Angelo Salese]
+
+-taitosj.cpp: added input buttons mode to kikstart [Angelo Salese]
+
+-bking.cpp: updated rom labels for bking2 [Kevin Eshbach, The Dumping Union]
+
+-wicat: Reduce video glitchiness with more sensible interrupt handling [AJR]
+
+-Fixed m68000 makefile not respecting the VERBOSE build option [Julian Sikorski]
+
+-Discord plugin try 2 (#3640) [cracyc]
+ * plugins/discord: discord presence plugin [Carl]
+ * plugins/discord: use domain sockets and pipes [Carl]
+
+-apc: Reducing tag lookups [mooglyguy]
+
+-Dreamcast: GD_LEND should output number of bytes successfully DMA'd [snickerbockers]
+ * With this commit, Daytona USA 2001 boots.
+
+-geneve: Using bios selection; split genmod as a separate driver [Michael Zapf]
+
+-Add 9122c floppy (#3647) [Sven Schnelle]
+ * hp9k_3xx: fix timer connection for /320 models
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+ * hp9k_3xx: add HP9122C floppy
+ * Remove HP9895 from the default configuration. 3.5" where standard on /300 and there's almost no software on it available. If a
+    user really needs 8" floppy drives on /300, he can do that via commandline.
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+ * add Intel i8291a GPIB Talker/Listener
+ * Required for the HP 9122C floppy, and used in many other devices. Basic functionality was implemented to make the HP 9122C work,
+    a few things are still missing and will be added later. Most of the missing things where simply not used in the HP9122C so i
+    cannot test them.
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+ * Add HP 9122C floppy drive
+ * These drives where common on HP9000/300 workstations. With the current implementation TD0's from hpmuseum can be used to boot,
+    and initializing, reading and writing discs in HP basic works. Tested both high and double density media. Supported Media
+    formats are TD0 and MFI.
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+
+-Revert "Add 9122c floppy (#3647)" [Vas Crabb]
+ * This reverts commit c63c4e111e8ff196de5790bcf227b3ab2a92bb88.
+
+-ec1841: mouse emulation (Logitech bus mouse protocol) (#3623) [Sergey Svishchev]
+ * ec1841: mouse emulation (Logitech bus mouse protocol)
+ * follow-up to PR#3623
+
+-hp9k_3xx: fix part number of keyboard uC (#3648) [Sven Schnelle]
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+
+-trucocl.cpp: allow multiple coin insertion [Angelo Salese]
+
+-balsente.cpp: Split NVRAM between two X2212 devices [AJR]
+
+-a2echoii: replaced read flag, write flag and write latch implementation with one which matches actual hardware tracing
+ [Lord Nightmare, Tony Diaz]
+
+-asteroid.cpp: Document Asteroid Deluxe Revision 3 change and correct Difficulty dipswitch. [Brian Troha]
+
+-tms5220: fix the READYQ callback to poll the fifo state with a timer loop instead of always asserting the /ready via callback even
+ if there is no more room in the FIFO, to match hardware. Fix the speak vsm mode to assume that the ADDR/DATA pin floats high if no
+ VSM is attached, so that the speech chip doesn't get permanently stuck speaking silence if a spurious SPEAK VSM command is sent to
+ it. Fix some race conditions with the INTQ callback and status flags not being updated before the callback is called. General
+ cleanup and bool-ification of boolean variables. [Lord Nightmare]
+
+-Revert "tms5220: fix the READYQ callback to poll the fifo state with a timer loop instead of always asserting the /ready via
+ callback even if there is no more room in the FIFO, to match hardware. Fix the speak vsm mode to assume that the ADDR/DATA pin
+ floats high if no VSM is attached, so that the speech chip doesn't get permanently stuck speaking silence if a spurious SPEAK VSM
+ command is sent to it. Fix some race conditions with the INTQ callback and status flags not being updated before the callback is
+ called. General cleanup and bool-ification of boolean variables. [Lord Nightmare]" [Vas Crabb]
+ * This reverts commit 62fc2e8f068a67b84b324b1c2e9b55791850247e.
+ * See coments on https://github.com/mamedev/mame/commit/62fc2e8f068a67b84b324b1c2e9b55791850247e
+
+-jedi: Moderate driver overhaul [AJR]
+ * Split NVRAM between two 4-bit X2212 devices
+ * Guarantee an invalid checksum when default NVRAM data is used (so that the manufacturer's high scores will be installed)
+ * Soundlatch modernization
+ * Use WSQ handler to drive TMS5220
+
+-Dumped bios for ALG 3DO based arcade games [Mr Invader]
+
+-naomi.cpp: add alternate Ferrari F355 Challenge 2 program ROM dump [coolmod]
+
+-alien.cpp: redumped Pingu's Ice Block CF card [ShouTime, Dane Biegert, The Dumping Union]
+
+-alien.cpp: selfmade boot ROMs for Ping's Ice Block [MetalliC]
+
+-Added cdrom dump to Mad Dog II (3do Hardware) [incog, The Dumping Union]
+
+-new working game - Titan (Pac-man hack) [braintro]
+
+-alien.cpp: document known games [MetalliC]
+
+-cischeat.cpp: Big Run improvements: [Angelo Salese]
+ * Fixed road / sprite priorities;
+ * Fixed long standing road colors regression (dawn effect & left edge at start of game);
+ * Handtuned sound frequencies to match reference;
+
+-pc98.xml: softlist updates, part 1 (numbers) [r09]
+ * Added new entries from the Neo Kobe Collection:
+ * 2601 - Teikoku Kidoubutai no Koubou 3tsu no Negai 714 MIDI Jr. 714 MIDI Special 88 Kantai Monogatari 98 Eiwa Jiten 98 Stadium 98
+    Stadium 2 - Shouko no Chousen PC-9801N/NS/NV Teiban Free Software Shuu - 98NOTE no Hissu Aminosan
+ * Re-tested software entries with current MAME
+ * Corrected title of "Thousand Cranes". It's actually supposed to be a person's name (Chizuru), not a literal translation of 千鶴.
+ * Relabeled disks with their actual names
+ * Added usage notes for software that needs DOS
+ * Removed user disks from games where they aren't included in the original box, and the user is expected to create them
+ * Removed floppies for CD games that already exist in the CD softlist
+ * Removed notes stating that the FDD format is not supported, which is not true anymore
+
+-Enable building on riscv64 (#3655) [Julian Sikorski]
+ * First attempt at enabling building on riscv64
+ * PTR64=1 needs to be defined on riscv64 otherwise build fails
+
+-cischeat.cpp: hooked up sprite DMA to Wild Pilot (fixes flickering) [Angelo Salese]
+
+-new working clone - Jump Coaster (World) [braintro]
+
+-new working PE poker clones [braintro]
+
+-vta2000: Add speaker sound [AJR]
+
+-Turns out 98amino was already there with a translated title, we'll keep the Japanese one [r09]
+
+-sf.cpp : Cleanups (#3630) [cam900]
+ * sf.cpp : Reduce duplicates, Reduce RAM usage of tilemap, Reduce runtime tag lookups
+ * sf.cpp : Revert tilemap things - each tile of tilemaps are never updated, Fix build
+
+-ms1_tmap.cpp: initialize VRAM to sane default, fixes ugly back pen shown up in Big Run [Angelo Salese]
+
+-cischeat.cpp: added backup RAM to Captain Flag [Angelo Salese]
+
+-balsente.cpp: Use ACIA devices for sound communication [AJR]
+
+-jalmah.cpp: rewrote video by using Mega System 1 tilemap devices [Angelo Salese]
+ * jalmah.cpp: fixed Urashima Mahjong video priority during gameplay (score display and calls) [Angelo Salese]
+
+-jalmah.cpp: emulate video scrolling partial updates for Urashima Mahjong (fixes winning animations) [Angelo Salese]
+
+-jalmah.cpp: fixed color protection in Urashima Mahjong (girls and test mode) [Angelo Salese]
+
+-dreamwld.cpp : Add docs for mcu, Fix mcu region size (#3473) [cam900]
+
+-1945kiii : Minor cleanups, Add notes (#3614) [cam900]
+
+-x2212: Remove memory interface and clean up code [AJR]
+
+-new clone added - Hat Trick Hero '95 (Asia) [braintro]
+
+-williams.cpp : Cleanups (#3660) [cam900]
+ * williams.cpp : Reduce runtime tag lookups, Add input_merger for interrupts, Reduce duplicates, Fix naming, Device'd palette for
+    williams_state/blaster_state games, Split spdball Address map audio/williams.cpp : Reduce runtime tag lookups, Cleanup
+    duplicates
+ * williams.cpp : output_finder
+
+-ninjakd2.cpp : Reduce duplicates, Reduce runtime tag lookups (#3583) [cam900]
+ * ninjakd2.cpp : Reduce duplicates, Reduce runtime tag lookups
+ * ninjakd2.cpp : Fix build
+ * ninjakd2.cpp : Fix build
+ * ninjakd2.cpp : Fix build
+
+-m92.cpp : Updates/Cleanups (#3651) [cam900]
+ * m92.cpp : Cleanup duplicates, Reduce runtime tag lookups, Make EEPROM Save/loadable, Fix spacing, Split machine configs/address
+    maps related to main CPU ROM, Add notes
+ * m92.cpp : Minor fix spacing
+
+-Make wmg.cpp Working again, nw wmg.cpp : Cleanups, Add address_map_bank_device for IO Bankswitching, Add machine_start/reset
+ instead MCFG_MACHINE_START/RESET, Add save state, Fix naming, Fix crash [cam900]
+
+-hp9k_3xx: add software list (#3664) [Sven Schnelle]
+ * hp9k_3xx: add software list
+ * And remove the BASIC rom cards from the default config. As we can boot from floppy now.
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+ * change HP to Hewlett-Packard and fix spacing
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+
+-TMS5220 changes, bugfixes and updates (#3654) [Jonathan Gevaryahu]
+ * 5220 changes part 1: comments
+ * 5220 changes part 2: renaming improperly capitalized pseudo-macros, and remove pseudo-macros from lvalues
+ * 5220 part 3: reorganize savestate values into a sane, maintainable order
+ * 5220 changes part 4: remove the unused, deprecated time_to_ready and cycles_to_ready functions
+ * 5220 changes part 5: fix the race condition bug with m_buffer_low and m_buffer_empty flags not being updated before setting the
+    interrupt state
+ * 5220 changes part 6: fix the issue where if no VSM is actually attached to the 5220, the chip will get stuck speaking silence
+    forever if it gets a Speak VSM command. In reality (at least on the tms51xx and probably the same here) the pin reads as open
+    bus/noise, but will eventually hit a stop frame by reading 4 ones in a row.
+ * (missed lines from parts 1 and 2)
+ * 5220 changes part 7: add/fix debugger fences for read functions where they were missing, and a write function where it was
+    unnecessary and caused issues when issuing manual writes from the debugger
+ * 5220 changes part 8: change the types of the flag variables already used for boolean values to bool, and simplified comparisons
+    with them; also renamed the ambiguous m_data_register variable to the more descriptive name of m_read_byte_register
+ * (more missed lines from parts 1 and 2)
+ * 5220 changes part 9: change status_read such that reading the status register from the debugger returns a valid value instead of
+    0, but doesn't otherwise affect the emulation
+ * 5220 changes 10: make it so the /READY(readyq) callback only changes state to ready after a write during speak external mode, if
+    the write actually completed because there was room in the FIFO. If not, it polls the fifo state every 16 cycles until there is
+    room, and only then asserts the readyq callback.
+ * 5220 changes part 11: actually zero the fifo during initialization and when speak external goes active. replace memset calls with
+    std::fill
+ * commit two forgotten lines
+
+-neogeo.cpp : Add notes/Fix metadata of kof2003 (#3665) [cam900]
+ * neogeo.cpp : Add notes/Fix metadata of kof2003
+ * neogeo.cpp : Update info
+ * neogeo.cpp : Update info(2)
+ * neogeo.xml : Update info
+
+-powerins.cpp : Reduce duplicate, Reduce runtime tag lookups, Correct sprite lags, Add notes, Convert byte swapped gfx into
+ ROM_LOAD16_WORD_SWAP, Convert vblank irq into MCFG_SCREEN_VBLANK_CALLBACK (#3590) [cam900]
+
+-new PE+ Poker clone [braintro]
+
+-jalmah.cpp: wrote a snippet for sound banking in Urashima Mahjong/Mahjong Channel Zoom In/Mahjong Daireikai [Angelo Salese]
+
+-tms9928a: Expose internal palette through device_palette_interface [AJR]
+
+-20pacgal.cpp : Updates, Cleanups (#3642) [cam900]
+ * 20pacgal.cpp : Add palette_device, Move video start functions into video_start, Reduce runtime tag lookups, Convert some arrays
+    into std::unique_ptr, Make drawing sprite/chars functions related to cliprect, Add notes
+ * 20pacgal.cpp : Minor cleanup of palette
+
+-ddragon.cpp Cleanups (#3482) [cam900]
+ * ddragon.cpp : Minor cleanup, Fix bit manipulations,  Add object finders instead runtime tag lookups, Add address_map_bank_device
+    for darktowr_state bankswitching, Fix ADPCM ROM(Both MSM5205s hasn't share ROM space)
+ * ddragon.cpp : Fix compile, Fix bit manipulation, Minor cleanup
+
+-Add HP9122 floppy drive (#3657) [Sven Schnelle]
+ * Revert "Revert "Add 9122c floppy (#3647)""
+ * This reverts commit 0aa81fc184b225547091a10f4accb8f3ae7064da.
+ * Address pull request comments
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+ * MR#3657: address comments
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+ * MR#3657: address MR comments
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+ * MR#3657: address MR comments
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+
+-polepos.cpp: dumped the missing PROMs for grally and confirmed they match the ones from the other bootlegs.
+ [Jordi Beltran Casany, Recreativas.org, The Dumping Union]
+
+-upd765: Improved logging; removed status flag ST1.ND on missing IDAM/DAM [Michael Zapf]
+
+-68k: fix carry flag clear in divs instruction (#3670) [Sven Schnelle]
+ * 68k: fix carry flag clear in divs instruction
+ * I was debugging why the HP9000/300 selftests where hanging on hp9k_3xx. Debugger showed the following code:
+ * move.l (a2)+, d0 move.l (a2)+, d1 move d6, ccr divs.w d0,d1 loop: bcs.s loop
+ * Clearly this tests whether the carry flag is cleared - the Motorola Reference Manual says it's always cleared. However, in our
+    implementation, it's not cleared on overflow.
+ * 68k: fix carry flag clear in divu instruction
+ * It is always cleared, even on overflow.
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+
+-new clone added - Strikers 1945 (World) [braintro]
+
+-floppy: Add an optional spinup delay to prevent unrealistic fast responses. Defaults to 0. [Michael Zapf]
+
+-upd765: Add HEAD_LOAD state, used as a spinup delay by some systems. [Michael Zapf]
+
+-Revert "floppy: Add an optional spinup delay to prevent unrealistic fast responses. Defaults to 0." [Olivier Galibert]
+ * This reverts commit 3c144c5b48a340bb796e2b311c36588a7e75f48d.
+ * Returning attotime::never from get_next_transition when there eventually is going to be transitions without any externally
+    imposed state change is incorrect.
+
+-68k: fix pack instructions [Sven Schnelle]
+ * The following test code from the 'HP9000/300 series mainframe tests' fails:
+ * lea bytes, a0 pack -(a0),-(a1), #$FEDC move.b (a1),d0 cmbi.b #$E,d0 loop: bne.s loop
+ * bytes: 0x41 0x42
+ * It looks like most of the pack instructions have the byte order wrong, but the pack dx,dy variant seems to have been fixed
+    already.
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+
+-cyclemb.cpp: bumped sprite size in Cycle Maabou, fixed some missing sprites (for example how to play screen) [Angelo Salese]
+
+ * kbdc8042: Added rudimentary PS/2 mouse support. [Ryan Holtz]
+ * indy_indigo2: Added mouse cursor support to Newport graphics emulation. [Ryan Holtz]
+
+-dynax.cpp: Make "Rev. 2" blitter a device [AJR]
+
+ * 39in1: Split Intel XScale PXA255 peripherals into a separate device. [Ryan Holtz]
+ * note: will apply this change to any drivers using copy/pasted PXA255 code tomorrow.
+
+ * fixed the build : zaurus.cpp [Robbbert]
+
+-hp9k_3xx: hook up NMI line to keyboard controller [Sven Schnelle]
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+
+-New NOT WORKING computer: Olympia Olytext 20 [Robbbert]
+
+-pgmprot_igs027a_type2.cpp : Fix martmast metadata [cam900]
+ * USA distributor is Andamiro.
+
+-New working Machine - Megatouch 7 Encore Edition [braintro]
+
+-cidx628: Make this display something again [AJR]
+
+-new PE+ Slot game [braintro]
+
+-mips3: Added disassembler for Emotion Engine core opcodes. VU macro ops are still to-do. [Ryan Holtz]
+
+-6840ptm: fix divide by 8 mode [Sven Schnelle]
+ * In divide by 8 mode the value computed in compute_counter() is wrong because the function doesn't divide the clock before the
+    calculation.
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+
+-Topcat improvements (#3663) [Sven Schnelle]
+ * topcat: fix register accesses
+ * nereid: mask register address bits
+ * topcat: don't override contents before window move
+ * depending on the direction of the window move, we must start at the other end with move, otherwise we overwrite the data before
+    it is moved.
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+ * topcat: Fix cursor handling
+ * Old cursor handling hat a few problems:
+ * Changed VRAM contents which doesn't happen on real hardware
+ * Destroyed Image content on the line where the cursor is show
+ * Window mover copied the cursor
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+ * fix spacing
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+
+-debugger: add command for go_exception (#3682) [Patrick Mackinlay]
+
+-hp9k_3xx: simplify machine configs (#3678) [Sven Schnelle]
+ * hp9k_3xx: simplify machine configs
+ * add one hp9k3xx section that defines all the hardware that is common between the /300 models.
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+ * hp9k_3xx: make hp9k300 protected
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+
+-new machine marked as NOT WORKING (#3674) [David Haywood]
+ * new machine marked as NOT WORKING Stakes Winner / Stakes Winner - GI Kinzen  Seiha e no Michi (early development board) [ResO]
+    (SRAM content on board was dead, so most of the porgram is either lost or never existed)
+ * added Japan NEO-MVH MV1C BIOS [Razoola]
+
+-alpha68k.cpp : Updates/Cleanups ROM Region Defragmentation, Reduce runtime tag lookups, Reduce unnecessary values, Fix crash
+ [cam900]
+
+-shangha3.cpp : Cleanups Minor cleanups, ACCESSING_BITS cleanups, Fix spacing, Reduce unused, Cleanup blocken okibank Demote
+ Shanghai III with MACHINE_IMPERFECT_GRAPHICS related to MT #01002 [cam900]
+
+-snk.cpp : Cleanup unused, Reduce runtime tag lookup, Split countryc machine config & address map [cam900]
+
+-shangha3.cpp : Cleanups Minor cleanups, ACCESSING_BITS cleanups, Fix spacing, Reduce unused, Cleanup blocken okibank Demote
+ Shanghai III with MACHINE_IMPERFECT_GRAPHICS related to MT #01002 [cam900]
+
+-6840ptm: fix divide by 8 mode In divide by 8 mode the value computed in compute_counter() is wrong because the function doesn't
+ divide the clock before the calculation. [sschnelle]
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+
+-pgmprot_igs027a_type2.cpp : Fix martmast metadata USA distributor is Andamiro USA. [cam900]
+
+-snk.cpp : Cleanups snk.cpp : Cleanup unused, Reduce runtime tag lookup, Split countryc machine config & address map [cam900]
+
+-alpha68k.cpp : Updates/Cleanups ROM Region Defragmentation, Reduce runtime tag lookups, Reduce unnecessary values, Fix crash
+ [cam900]
+
+-hp9k_3xx: simplify machine configs add one hp9k3xx section that defines all the hardware that is common between the /300 models.
+ [sschnelle]
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+
+-hp9k_3xx: hook up NMI line to keyboard controller Signed-off-by: Sven Schnelle <svens@stackframe.org> [sschnelle]
+
+-68k: fix pack instructions The following test code from the 'HP9000/300 series mainframe tests' fails: [sschnelle]
+ * lea bytes, a0 pack -(a0),-(a1), #$FEDC move.b (a1),d0 cmbi.b #$E,d0 loop: bne.s loop
+ * bytes: 0x41 0x42
+ * It looks like most of the pack instructions have the byte order wrong, but the pack dx,dy variant seems to have been fixed
+    already.
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+
+-68k: fix carry flag clear in divs instruction I was debugging why the 'HP9000/300 mainframe tests' where hanging on hp9k_3xx.
+ Debugger showed the following code: [sschnelle]
+ * move.l (a2)+, d0 move.l (a2)+, d1 move d6, ccr divs.w d0,d1 loop: bcs.s loop
+ * Clearly this tests whether the carry flag is cleared - the Motorola Reference Manual says it's always cleared. However, in our
+    implementation, it's not cleared on overflow.
+ * You can reproduce this with latest mame: ./mame64 -flop1 300test -debug
+
+-taito_b.cpp, tc0180vcu.cpp : Updates/Cleanups taito_b.cpp : Move tc0180vcu functions into tc0180vcu.cpp, Minor cleanups
+ tc0180vcu.cpp : Minor cleanups, Convert some arrays into required_shared_ptr, Add notes [cam900]
+
+-Make wmg.cpp Working again, nw wmg.cpp : Cleanups, Add address_map_bank_device for IO Bankswitching, Add machine_start/reset
+ instead MCFG_MACHINE_START/RESET, Add save state, Fix naming, Fix crash [cam900]
+
+-neogeo.cpp : Add notes/Fix metadata of kof2003 [cam900]
+
+-hp9k_3xx: add software list And remove the BASIC rom cards from the default config. As we can boot from floppy now. [sschnelle]
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+
+-Topcat improvements These patches improve the window mover, and fix some cursor handling bugs. With that patches Pascal and other
+ software actually show somethings after boot on hp9k_3xx. [sschnelle]
+
+-williams.cpp : Cleanups williams.cpp : Reduce runtime tag lookups, Add input_merger for interrupts, Reduce duplicates, Fix naming,
+ Device'd palette for williams_state/blaster_state games, Split spdball Address map [cam900]
+ * audio/williams.cpp : Reduce runtime tag lookups, Cleanup duplicates
+
+-pc98.xml: softlist updates, part 1 (numbers) [rzero9]
+ * Added new entries from the Neo Kobe Collection:
+ * 2601 - Teikoku Kidoubutai no Koubou 3tsu no Negai 714 MIDI Jr. 714 MIDI Special 88 Kantai Monogatari 98 Eiwa Jiten 98 Stadium 98
+    Stadium 2 - Shouko no Chousen PC-9801N/NS/NV Teiban Free Software Shuu - 98NOTE no Hissu Aminosan ** this one was already in the
+    list with a translated title, I realized that after submitting the PR. I'm keeping the Japanese one for consistency.
+ * Re-tested software entries with current MAME
+ * Corrected title of "Thousand Cranes". It's actually supposed to be a person's name (Chizuru), not a literal translation of 千鶴.
+ * Relabeled disks with their actual names
+ * Added usage notes for software that needs DOS
+ * Removed user disks from games where they aren't included in the original box, and the user is expected to create them
+ * Removed floppies for CD games that already exist in the CD softlist
+ * Removed notes stating that the FDD format is not supported, which is not true anymore
+
+-Add HP9122 floppy drive [sschnelle]
+
+-Enable building on riscv64 This patchset allows mame to build on riscv64:
+ http://fedora-riscv.tranquillity.se/koji/buildinfo?buildID=32386 [belegdol]
+
+-TMS5220 changes, bugfixes and updates PR as requested, with changes (roughly) split. [Lord-Nightmare]
+
+-m92.cpp : Updates/Cleanups Cleanup duplicates, Reduce runtime tag lookups, Make EEPROM Save/loadable, Fix spacing, Split machine
+ configs/address maps related to main CPU ROM, Add notes [cam900]
+
+-hp9k_3xx: fix part number of keyboard uC Policy says we shouldn't change ROM names. However, in that case it's actually a part
+ number and not a arbitrary name. I was asked several where to get the ROM because people couldn't find it. So let's change the name
+ to make peoples life easier. [sschnelle]
+ * Signed-off-by: Sven Schnelle <svens@stackframe.org>
+
+-Add 9122c floppy [sschnelle]
+
+-Dreamcast: GD_LEND should output number of bytes successfully DMA'd With this commit, Daytona USA 2001 boots. [snickerbockers]
+
+-Fixed m68000 makefile not respecting the VERBOSE build option This commit fixes m68000 makefile ignoring the global makefile
+ VERBOSE setting. [belegdol]
+
+-sblaster: direct DAC mode Successfully tested in Scream Tracker 2.2. [shattered]
+
+-20pacgal.cpp : Updates, Cleanups 20pacgal.cpp : Add palette_device, Move video start functions into video_start, Reduce runtime tag
+ lookups, Convert some arrays into std::unique_ptr, Make drawing sprite/chars functions related to cliprect, Add notes [cam900]
+
+-Discord plugin try 2 Discord killed HTTP support so I fixed windows pipes and added unix domain sockets which is what they require
+ on each platform.  They also require passing the process id so I added that to osdlib. [cracyc]
+
+-rltennis.cpp : Fix device finders, Minor cleanups [cam900]
+
+-cybertnk.cpp Updates cybertnk.cpp : Cleanup duplicates, Reduce runtime tag lookups, Fix sound output(related to OST), Add notes
+ [cam900]
+
+-sf.cpp : Cleanups sf.cpp : Reduce duplicates, Reduce RAM usage of tilemap, Reduce runtime tag lookups [cam900]
+
+-megaplay.cpp : Add notes of overlay Demote Mega Play games with MACHINE_IMPERFECT_GRAPHICS, because Overlay bitmap is wrong
+ ("insert coin(s)" letter, mega play logo, etc...) [cam900]
+
+-ec1841: mouse emulation (Logitech bus mouse protocol) [shattered]
+
+-vis.cpp : Fix sample rate divider vis.cpp : Add note [cam900]
+
+-1945kiii : Minor cleanups, Add notes [cam900]
+
+-powerins.cpp Cleanups powerins.cpp : Reduce duplicate, Reduce runtime tag lookups, Correct sprite lags, Add notes, Convert byte
+ swapped gfx into ROM_LOAD16_WORD_SWAP, Convert vblank irq into MCFG_SCREEN_VBLANK_CALLBACK [cam900]
+
+-ninjakd2.cpp : Reduce duplicates, Reduce runtime tag lookups [cam900]
+
+-fmtowns.cpp : Fix speaker output level fmtowns.cpp : Fix speaker output level because SPEAKER_SOUND has only 1 outputs [cam900]
+
+-ddragon.cpp Cleanups ddragon.cpp : Minor cleanup, Fix bit manipulations,  Add object finders instead runtime tag lookups, Add
+ address_map_bank_device for darktowr_state bankswitching, Fix ADPCM ROM loading(Both MSM5205s hasn't share ROM space), Split
+ darktowr_state, toffy_state address maps for each game [cam900]
+
+-dreamwld.cpp : Add docs for mcu, Fix mcu region size [cam900]
+
+
+New working machines
+--------------------
+Tom Tom Magic [AJRhacker, David Haywood]
+R-Zone: Battle Arena Toshinden [hap, Sean Riddle]
+El Fin Del Tiempo [Esther Barranco, ARPA, Juegos 2.0, Recreativas.org, Roberto Fresca, The Dumping Union]
+ibm5150: DR DOS 6.0 (French), DR DOS 6.0 Business Update (French, 5.25"), DR DOS 6.0 Business Update (French, 3.5") [breiztiger]
+ibm5150: PC Games #3, Spontaneous Assembly (Version 2.0) [Foone Turing]
+ibm5170: Excel (Version 2.10) [darksabre76]
+Titan (Pac-Man hack) [Craig Anstett, CraftyMech]
+squale_cart: The Squale Intro [Jean-François DEL NERO / HxC2001]
+Megatouch 7 Encore Edition (9255-90-01 RO0, Standard version) [Brian Troha, The Dumping Union]
+Player's Edge Plus (X000827S+XS000002) Red, White & Blue Slots [BrianT]
+
+
+New working clones
+------------------
+Viper Phase 1 (New Version, Germany) [Fabrice Arzeno, The Dumping Union]
+Raiden Fighters (US, newer) [Fabrice Arzeno, The Dumping Union]
+Golden Tee Golf (Joystick, v3.3) [hammy, The Dumping Union]
+Ghost Pilots (prototype) [Brian Hargrove]
+Bubble Memories: The Story Of Bubble Bobble III (Ver 2.5A 1996/02/21) [Arnaldo Abrantes, Pascal Costa]
+Come-Cocos (Ms. Pac-Man) (Cocamatic bootleg) [Darksoft]
+Knights of Valour 2 Plus - Nine Dragons / Sanguo Zhan Ji 2 Qunxiong Zhengba / Sanguo Zhan Ji 2 Feilong Zai Tian / Sangoku Senki
+  Busyou Souha (ver. M200XX, 200, 100CN) [300wins, Bill D., The Dumping Union]
+Galaxy Wars II (Defender bootleg) [Juan Romero, Recreativas.org, The Dumping Union]
+Gran Rally (Spanish bootleg of Pole Position II) [Jordi Beltran Casany, Recreativas.org, The Dumping Union]
+Jump Coaster (World) [ShouTime, THe Dumping Union]
+Player's Edge Plus (PP0472) Deuces Wild Poker [BrianT]
+Player's Edge Plus (X002149P+XP000038) Triple Bonus Poker [BrianT]
+Hat Trick Hero '95 (Ver 2.6Asia 1994/11/17) [Artemio Urbina, The Dumping Union]
+Player's Edge Plus (X000057P+XP000038) Deuces Wild Poker (Stratosphere Players Club) [Kemel Haidar, BrianT]
+Hidden Catch (World) / Tul Lin Gu Lim Chat Ki '98 (Korea) (pcb ver 3.02) [hammy, The Dumping Union]
+Strikers 1945 (World, unprotected) [Blackfish, Brizzo, rtw]
+Ghost Pilots (prototype) [Brian Hargrove]
+
+
+Machines promoted to working
+----------------------------
+War Mission (WM 4/6/87)  [Jordi Beltran Casany, Recreativas.org, ArcadeHacker, David Haywood]
+
+
+Clones promoted to working
+--------------------------
+Head On (Sidam bootleg, set 2) [Angelo Salese]
+Head On 2 (Sidam bootleg) [Angelo Salese]
+
+
+New machines marked as NOT_WORKING
+----------------------------------
+Visual 550 [Al Kossow]
+Jaxis [SpinalFeyd]
+Shootout at Old Tucson (3do Hardware) [incog, The Dumping Union]
+Hikaru Check ROM Board [CoolMod]
+Stakes Winner / Stakes Winner - GI Kinzen  Seiha e no Michi (early development board) [ResO]
+(SRAM content on board was dead, so most of the porgram is either lost or never existed) [DavidHaywood]
+added Japan NEO-MVH MV1C BIOS [Razoola]
+
+
+New clones marked as NOT_WORKING
+--------------------------------
+Air Hockey (6.12?, encrypted) [unknown]
+The Key Of Avalon - The Wizard Master (client) (Rev C) (GDT-0006C) [rtw, ShouTime]
+The Key Of Avalon 2.5 - War of the Key (server) (Rev A) (GDT-0018A) [rtw, ShouTime]
+The Key Of Avalon 2.5 - War of the Key (client) (Rev A) (GDT-0019A) [rtw, ShouTime]
+Donkey Kong Banana Kingdom (satellite) [Will Richardson, Bill D, The Dumping Union]
+Power Stone 2 (bootleg) [Arzeno Fabrice, rtw]
+The Bally Game Show (LU-3) Europe [PinMAME]
+The Bally Game Show (LG-6) Germany [PinMAME]
+Puyo Pop Fever (World) (GDS-0034) [Arzeno Fabrice, rtw]
+Ferrari F355 Challenge (twin/deluxe, prototype) [coolmod]
+
+
+hp9k3xx_flop (hp9k3xx_flop.xml):
+  Working
+    300 series Mainframe Tests
+    300 series Terminal Emulator
+    AMS Utilities for 200/300 series
+    BASIC 4.0 Compiler
+    BASIC 5.0 Compiler
+    CS/80 Exerciser
+    Digital Filter Design
+    HP BASIC 4.0
+    HP BASIC 5.1
+    HP BASIC 6.4
+    HP Museum Basic 5 Boot Disc
+    HP Pascal 3.22
+    HP-UX 5.1
+    Interactive Test Generator
+    Techwriter
+    Texteditor for 200/300 series
+    Wordwise 300
+
+ibm5150 (ibm5150.xml):
+  Working
+    DR DOS 6.0 (French)
+    DR DOS 6.0 Business Update (French, 3.5")
+    DR DOS 6.0 Business Update (French, 5.25")
+    PC Games #3
+    Spontaneous Assembly (Version 2.0)
+
+ibm5170 (ibm5170.xml):
+  Working
+    Excel (Version 2.10)
+
+ibm5170_cdrom (ibm5170_cdrom.xml):
+  Non-working
+    Jaxis (Japan)
+
+neogeo (neogeo.xml):
+  Working
+    Ghost Pilots (prototype)
+    Metal Slug 3 (NGM-2560, earlier)
+  Non-working
+    Stakes Winner / Stakes Winner - GI Kinzen  Seiha e no Michi (early development board)
+
+pc98 (pc98.xml):
+  Removed
+    Inherit the Earth - Arashi no Orb
+    Ms. Detective File #2 - Sugatanaki Iraisha
+    PC-9801N/NS/NV Essential Vitamins
+    Shinpi no Sekai El-Hazard
+    Thousand Cranes
+    Viper-F40
+  Working
+    2601 - Teikoku Kidoubutai no Koubou
+    3tsu no Negai
+    714 MIDI Jr.
+    714 MIDI Special
+    88 Kantai Monogatari
+    98 Eiwa Jiten
+    98 Stadium
+    98 Stadium 2 - Shouko no Chousen
+    Chizuru
+    PC-9801N/NS/NV Teiban Free Software Shuu - 98NOTE no Hissu Aminosan
+  Promoted
+    0x0F exp.3
+    177
+    The 4th Unit 2
+
+sorcerer_cass (sorcerer_cass.xml):
+  Working
+    Checkers
+    Cross-Up
+    How The West Was Won
+    Lazer Fire
+    Mine Field
+    Nuclear Reaction
+    Pie Lob
+
+squale_cart (squale_cart.xml):
+  Working
+    The Squale Intro
+
+Comparing 0.198 (mame0198) to 0.198 (mame0198-505-gf871b84)
+
+Renames
+dynamoah -> dynamoaha Air Hockey (6.03, encrypted)
+puyofev -> puyofevj Puyo Puyo Fever (Japan) (GDS-0031)
+jumpcoas -> jumpcoasa Jump Coaster
+gtg -> gtgj31 Golden Tee Golf (Joystick, v3.1)
+
+New working machines
+--------------------
+El Fin Del Tiempo
+Geneve 9640 Mod
+Megatouch 7 Encore Edition (9255-90-01 R00, Standard version)
+Player's Edge Plus (X000827S+XS000002) Red, White & Blue Slots
+Player's Edge Plus (X002149P+XP000038) Triple Bonus Poker
+R-Zone: Battle Arena Toshinden
+
+New working clones
+------------------
+Apple //e (Spain)
+Bubble Memories: The Story Of Bubble Bobble III (Ver 2.5A 1996/02/21)
+Come-Cocos (Ms. Pac-Man) (Cocamatic bootleg)
+Galaxy Wars II (Defender bootleg)
+Ghost Pilots (prototype)
+Golden Tee Golf (Joystick, v3.3)
+Gran Rally (Spanish bootleg of Pole Position II)
+Hat Trick Hero '95 (Ver 2.6Asia 1994/11/17)
+Hidden Catch (World) / Tul Lin Gu Lim Chat Ki '98 (Korea) (pcb ver 3.02)
+Jump Coaster (World)
+Knights of Valour 2 Plus - Nine Dragons / Sanguo Zhan Ji 2 Qunxiong Zhengba / Sanguo Zhan Ji 2 Feilong Zai Tian / Sangoku Senki Busyou Souha (ver. M200XX, 200, 100CN)
+Metal Slug 3 (NGM-2560, earlier)
+Player's Edge Plus (PP0472) Deuces Wild Poker
+Player's Edge Plus (X000057P+XP000038) Deuces Wild Poker (Stratosphere Players Club)
+Raiden Fighters (US, newer)
+Strikers 1945 (World, unprotected)
+Titan (Pac-Man hack)
+Viper Phase 1 (New Version, Germany)
+
+Machines promoted to working
+----------------------------
+War Mission (WM 4/6/87)
+
+Clones promoted to working
+--------------------------
+Head On (Sidam bootleg, set 2)
+Head On 2 (Sidam bootleg)
+
+New machines marked as NOT_WORKING
+----------------------------------
+ALG 3DO Bios
+Hikaru Check ROM Board
+Mad Dog II: The Lost Gold (3DO hardware)
+Olympia Olytext 20
+Shootout at Old Tucson (3DO hardware)
+The Bally Game Show (LU-4) Europe
+Visual 550
+
+New clones marked as NOT_WORKING
+--------------------------------
+Air Hockey (6.12?, encrypted)
+Donkey Kong Banana Kingdom (satellite)
+Ferrari F355 Challenge (twin/deluxe, prototype)
+Power Stone 2 (bootleg)
+Puyo Pop Fever (World) (GDS-0034)
+Stakes Winner / Stakes Winner - GI Kinzen  Seiha e no Michi (early development board)
+The Bally Game Show (LA-3)
+The Bally Game Show (LG-6) Germany
+The Bally Game Show (LU-3) Europe
+The Key Of Avalon - The Wizard Master (client) (Rev C) (GDT-0006C)
+The Key Of Avalon 2.5 - War of the Key (client) (Rev A) (GDT-0019A)
+The Key Of Avalon 2.5 - War of the Key (server) (Rev A) (GDT-0018A)
+
