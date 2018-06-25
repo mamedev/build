@@ -531,6 +531,7 @@ if __name__ == '__main__':
             'Machines promoted to working',         'Clones promoted to working',
             'New machines marked as NOT_WORKING',   'New clones marked as NOT_WORKING',
             'New working software list additions',
+            'Software list items promoted to working',
             'New NOT_WORKING software list additions',
             'Translations added or modified')
     for heading in placeholders:
