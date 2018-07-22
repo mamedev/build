@@ -1,0 +1,848 @@
+0.200
+-----
+
+
+MAMETesters Bugs Fixed
+----------------------
+- 07027: [Sound] (vegas.cpp) warfa (and maybe clones): DCS2 OS Version Test Failed (tedgreen)
+- 04621: [Timing] (ironhors.cpp) ironhors: 30fps framerate seems abnormal (Angelo Salese)
+
+
+New working machines
+--------------------
+
+
+New working clones
+------------------
+
+
+Machines promoted to working
+----------------------------
+
+
+Clones promoted to working
+--------------------------
+
+
+New machines marked as NOT_WORKING
+----------------------------------
+
+
+New clones marked as NOT_WORKING
+--------------------------------
+
+
+New working software list additions
+-----------------------------------
+
+
+Software list items promoted to working
+---------------------------------------
+
+
+New NOT_WORKING software list additions
+---------------------------------------
+
+
+Translations added or modified
+------------------------------
+
+
+Source Changes
+--------------
+-x68k_flop: Add/Replace and Organize Login Soft Category [Wayder]
+
+-taito_b.cpp, tc0180vcu.cpp : Updates/Cleanups (#3668) [cam900]
+ * taito_b.cpp, tc0180vcu.cpp : Updates/Cleanups taito_b.cpp : Move tc0180vcu functions into tc0180vcu.cpp, Minor cleanups
+    tc0180vcu.cpp : Minor cleanups, Convert some arrays into required_shared_ptr, Add notes
+ * Fix taito_b.h
+ * taito_b.cpp : Minor cleanups
+ * taito_b.cpp : Reduce unnecessary gfxdecode (in Nastar schematics, TC0180VCU GFX ROM is 32-bit wide(CH0-31 is connected by data
+    bus))
+ * taito_b.cpp : Remove unused
+ * tc0180vcu.cpp : Internalize gfxdecode
+
+-Standardize "On"/"Off" items in UI menus. "On" is now consistently to the right of "Off", as with DIP switches. [AJR]
+
+-kr03: define native keyboard layout (partially fixes MT05818) [Sergey Svishchev]
+
+-apple2e: add debugger guards to avoid accidentally banking out ROM [R. Belmont]
+
+-Williams service buttons hard coding removal (#3662) [Michael.S.G]
+ * Update wmg.cpp
+ * Remove hard coded service button assignments and map to IPT_SERVICE buttons.
+ * Update williams.cpp
+ * Remove hard coded service button assignments and map to IPT_SERVICE buttons.
+ * Update wmg.cpp
+ * IPT_MEMORY_RESET used for high score reset
+ * Update williams.cpp
+ * IPT_MEMORY_RESET used for high score reset
+ * Update williams.cpp
+ * Correct comment
+
+-sonydriv: fixed long-standing disk-switch regression [R. Belmont]
+
+-x68000: Compute refresh rates from CRTC parameters and known XTAL values [AJR]
+
+-tzx_cas: no other copyright holders. initial version here:
+ https://github.com/mamedev/mess-cvs/commit/5a0a43eb8f79cc3385d957a7da45586de6c2a989#diff-26e48bc5e5a1dc7272914d9f9cd3249d [hap]
+
+-lastduel.cpp : Minor cleanups, Fix naming Cleanup duplicates, PALETTE_DECODER for palette, Reduce runtime tag lookups [cam900]
+
+-misc copyright assignment + privatization [DavidHaywood]
+
+-seta001.cpp : Convert arrays into std::unique_ptr, Minor cleanups (#3695) [cam900]
+ * seta001.cpp : Convert arrays into std::unique_ptr, Minor cleanups srmp2.cpp : Reduce runtime tag lookups, Minor cleanups
+    thedealr.cpp, seta.cpp, champbwl.cpp : Reduce runtime tag lookups taito_x.cpp : Reduce runtime tag lookups, Split kyustrkr
+    machine_config/address map related to output handler
+ * srmp2.cpp : Revert bit manipulation
+
+-cage.cpp Cleanups (#3416) [cam900]
+ * cage.cpp : Reduce runtime tag lookups, Minor cleanups atarigt.cpp : Convert m_expanded_mram into std::unique_ptr metalmx.cpp :
+    Minor cleanup, Reduce duplicates
+ * cage.cpp : Minor spacing fix
+ * cage.cpp : Minor spacing fix
+ * atarigt.cpp : Convert m_is_primrage into bool
+ * cage.cpp : Fix build gen_latch.cpp : Add seperated acknowloge case
+ * atarigt.cpp : Fix build
+ * atarigt.cpp : Fix builds
+ * cage.cpp : Fix logging
+ * cage.cpp : device finder
+ * cage.cpp : Fix communication (Revert many things)
+
+-atarigt.cpp : Updates, Cleanups (#3643) [cam900]
+
+-nmk16.cpp  Updates/Cleanups (#3589) [cam900]
+ * nmk16.cpp  Updates/Cleanups Cleanup duplicates Move tilemap ram bankswitching into seperated value Add save states Reduce
+    unnecessary routines Implement sprite limitation Simpler bit manipulations Add BAD_DUMP for tdragon3h ROMs when not from PCB Fix
+    acrobatm palette size related to palette RAM size
+ * nmk16.cpp : Add save state for protection values
+ * nmk16.cpp : Reduce some runtime tag lookup
+ * nmk16.cpp : Fix build, Fix naming
+ * nmk16.cpp : Minor cleanup
+ * nmk16.cpp : Sync to current master
+
+-st_flop.xml - Add new dump [Rebecca Wallander]
+
+-Eliminate "Atari VG EAROM" in favor of newer ER2055 device [AJR]
+
+ * ps2sony: Fleshing out the skeleton driver. [Ryan Holtz]
+   - Added ps2timer device to encapsulate Playstation 2 timers.
+   - Temporarily hacked R5900 core to always have scratchpad RAM mapped at 0x70000000.
+   - Added reference counting to divtlb so that it does not unmap pages that are still shared with other entries.
+   - Added a considerable amount of logging to ps2sony.cpp.
+ * mips3: Added basic Emotion Engine support. [Ryan Holtz]
+   - Added S bit to TLB mapping.
+   - Added support for VSUB, VIADD, VSQI, VISWR, VOR, LQ, SQ, MFSA, MTSA, MFHI1, MFLO1, MULT1, DIV1, DIVU1, PEXTLW, PADDUW, PMFHI,
+      PMFLO, PCPYLD, PCPYUD, SQC2, LQC2 opcodes. [Ryan Holtz]
+
+-pc88va.xml: add new dump [r09]
+ * Tetris (Bullet-Proof Software)
+
+-cischeat.cpp: reworked interrupt generation, fixed attract mode desyncs in Big Run [Angelo Salese]
+
+-cischeat.cpp: fixed Grand Prix Star stick tyre sprite in attract mode bug [Angelo Salese]
+
+-ironhors.cpp: fixed Iron Horse framerate to 61 Hz [Angelo Salese]
+
+-sigmab52.cpp: fixed framerate to 60 Hz [Angelo Salese]
+
+-tetrisp2.cpp: added support for YUV422 colors in Stepping Stage [Angelo Salese]
+
+-emumem: Backend modernization [O. Galibert]
+
+-Avoid multiple explicit instantiations definition of templates [Stefan Brüns]
+ * According to the C++ standard 14.7 clause 5, "an explicit instantiation definition shall appear at most once in a program".
+ * Move the instantiation from the individual implementation files to the interface implementation file.
+ * Signed-off-by: Stefan Brüns <stefan.bruens@rwth-aachen.de>
+
+-more private: use (K,L,M) (#3714) [David Haywood]
+
+-stronger private: use (N, O, P, Q, R) (#3717) [David Haywood]
+ * R (nt)
+
+-x68k_flop: fix redump bgelmntt and gradius2d [Wayder]
+
+-z80scc: fix transmit interrupt behavior that was locking up the Apple IIgs [R. Belmont]
+
+-private: use (W,X,Y,Z,#) (#3721) [David Haywood]
+ * private: use (W,X,Y,Z,#)
+
+-fixed a typo in the ibm5170 softlist [Cyril APAN]
+
+-unico.cpp : Variable cleanups (#3712) [cam900]
+ * unico.cpp : Variable cleanups Convert video RAMs into shared_ptrs, Reduce runtime tag lookups, Some ACCESSING_BITS Cleanups,
+    PALETTE_DECODER for palette
+ * unico.cpp : Cleanup/Correct namings
+ * unico.cpp : Fix build
+
+-silkroad.cpp : Cleanup duplicates, ACCESSING_BITS, Reduce unused (#3713) [cam900]
+
+-drgnmst.cpp : Cleanups, Reduce duplicates (#3705) [cam900]
+ * Add PALETTE_DECODER for palette
+
+-apple2gs: rewritten driver using bankdev. [R. Belmont]
+
+-x68k_flop: Added new/replace Login Soft list. and sorted [Wayder]
+
+-x68k_flop: return [Wayder]
+
+-x68k_flop: Added new/replace Login Soft list. and sorted [Wayder]
+
+-new non-working clone: Apache 3 (rev E) [braintro]
+
+-new non-working clone: Apache 3 (rev E) [braintro]
+
+-apple2gs: fixed issues with Jam Session and ACS Demo Disk #2 [R. Belmont]
+
+-es5503: fixed bad playback of synthLAB sampled-attack looped-sustain instruments [R. Belmont]
+
+-interpro: CLIX boots (on the ip2000) (#3730) [Patrick Mackinlay]
+ * Too many changes to describe in detail. A rewrite of the interrupt and dma code in the ioga, and fixes to the cpu and mmu were
+    the most important things.
+
+-nscsi: add support for CD-ROMs with 512-byte blocks (#3727) [Patrick Mackinlay]
+ * nscsi: add support for CD-ROMs with 512-byte blocks
+ * Older UNIX workstations used SCSI CD-ROM drives with 512-byte logical blocks instead of the now standard 2048. This change makes
+    the block size configurable, and adds logic to translate logical blocks to/from the underlying 2048 byte sectors as needed.
+ * add support for 512-byte logical blocks
+ * logmacro.h logging (turned on by default to retain current behaviour)
+ * added stub for "prevent/allow medium removal" command
+ * removed some unnecessary state
+ * minor fix for nscsi_hd "inquiry" command
+
+-devcb3 [Vas Crabb]
+ * There are multiple issues with the current device callbacks:
+ * They always dispatch through a pointer-to-member
+ * Chained callbacks are a linked list so the branch unit can't predict the early
+ * There's a runtime decision made on the left/right shift direction
+ * There are runtime NULL checks on various objects
+ * Binding a lambda isn't practical
+ * Arbitrary transformations are not supported
+ * When chaining callbacks it isn't clear what the MCFG_DEVCB_ modifiers apply to
+ * It isn't possible to just append to a callback in derived configuration
+ * The macros need a magic, hidden local called devcb
+ * Moving code that uses the magic locals around is error-prone
+ * Writing the MCFG_ macros to make a device usable is a pain
+ * You can't discover applicable MCFG_ macros with intellisense
+ * Macros are not scoped
+ * Using an inappropriate macro isn't detected at compile time
+ * Lots of other things
+ * This changeset overcomes the biggest obstacle to remving MCFG_ macros altogether.  Essentially, to allow a devcb to be
+    configured, call .bind() and expose the result (a bind target for the callback).  Bind target methods starting with "set" repace
+    the current callbacks; methods starting with "append" append to them.  You can't reconfigure a callback after resolving it.
+    There's no need to use a macro matching the handler signatures - use FUNC for everything.  Current device is implied if no
+    tag/finder is supplied (no need for explicit this).
+ * Lambdas are supported, and the memory space and offset are optional. These kinds of things work:
+ * .read_cb().set([this] () { return something; });
+ * .read_cb().set([this] (offs_t offset) { return ~offset; });
+ * .write_cb().set([this] (offs_t offset, u8 data) { m_array[offset] = data; });
+ * .write_cb().set([this] (int state) { some_var = state; });
+ * Arbitrary transforms are allowed, and they can modify offset/mask for example:
+ * .read_cb().set(FUNC(my_state::handler)).transform([] (u8 data) { return bitswap<4>(data, 1, 3, 0, 2); });
+ * .read_cb().set(m_dev, FUNC(some_device::member)).transform([] (offs_t &offset, u8 data) { offset ^= 3; return data; });
+ * It's possible to stack arbitrary transforms, at the cost of compile time (the whole transform stack gets inlined at compile
+    time).  Shifts count as an arbitrary transform, but mask/exor does not.
+ * Order of mask/shift/exor now matters.  Modifications are applied in the specified order.  These are NOT EQUIVALENT:
+ * .read_cb().set(FUNC(my_state::handler)).mask(0x06).lshift(2);
+ * .read_cb().set(FUNC(my_state::handler)).lshift(2).mask(0x06);
+ * The bit helper no longer reverses its behaviour for read callbacks, and I/O ports are no longer aware of the field mask.  Binding
+    a read callback to no-op is not supported - specify a constant.  The GND and VCC aliases have been removed intentionally -
+    they're TTL-centric, and were already being abused.
+ * Other quirks have been preserved, including write logger only logging when the data is non-zero (quite unhelpful in many of the
+    cases where it's used).  Legacy syntax is still supported for simple cases, but will be phased out.  New devices should not have
+    MCFG_ macros.
+ * I don't think I've missed any fundamental issues, but if I've broken something, let me know.
+
+-z80scc: Clear tranmitter interrupt if a written byte fills the FIFO.  Fixes Apple IIgs problems without breaking Intergraph.
+ [pmackinlay, R. Belmont]
+
+-Rename appveyor.yml [balr0g]
+
+-add AppVeyor badge back to the readme. [Stiletto]
+ * add AppVeyor badge back to the readme.
+
+-allow multiple digits in components of clang version (see PR #3733) [Vas Crabb]
+
+-namcoic.cpp : Simpler bit-swapped values (#3609) [cam900]
+ * namcoic.cpp : Simpler bit-swapped values
+ * namcoic.cpp : Fix Lucky & Wild
+ * namcoic.cpp : Fix bitswap
+ * namcoic.cpp : Convert ROZ tilemap code mangles into callback, Split config for each game when tilemap mangle is different, Reduce
+    duplicates, Move metalhawk swap xy function into gfxdecode, Fix metalhawk zoom namcos2.cpp : Add notes, demote with
+    MACHINE_IMPERFECT_GRAPHICS because tilemap and ROZ issue, Reduce duplicate fix gfxdecode name for namconb2, namcofl
+ * namcoic.cpp : Add notes, Fix finalapr* Title screen, Fix mask, Add c169 wraparound disable bit, Fix mask namconb1.cpp : Fix
+    builds
+
+-v550: Add keyboard dump [Al Kossow]
+
+-new working clone - Air Rescue (World) [braintro]
+
+-new working clone - Raiden DX (Portugal) [braintro]
+
+-Bug fix for multi-channel reads in cassette_get_samples(). (#3725) [Frank Palazzolo]
+ * Bug fix for multi-channel reads in cassette_get_samples(). Use the unused "sample_bytes" arg the same way as
+    cassette_put_samples() Can be used with multi-channel files now!
+ * Rename sample_bytes to more descriptive sample_spacing Add some comments about sample functions and sample_spacing variable
+
+-Allow layouts to specify screen tags rather than indices - makes order of instantiation irrelevant in Model 1 etc. [Vas Crabb]
+
+-Acorn Bus slot devices for:- Acorn Atom: [Nigel Barnes]
+ * AtomSID
+ * Acorn Atom Disc Pack
+ * Econet Board Acorn System:
+ * 32K Dynamic RAM Board
+ * 8K Static RAM Board
+ * Cassette Interface Board
+ * Econet Board
+ * Floppy Disc Controller Board
+ * 40 Column VDU Board
+ * 80x25 VDU Board
+ * Versatile Interface Board CMS:
+ * CMS 40/80 Video Terminal Card
+ * CMS Floppy Disc Controller
+ * CMS High Resolution Colour Graphics Card
+
+-a6809: Renamed to acrnsys3_6809, and rewritten with card slot devices.. [Nigel Barnes]
+ * Added FDC card.
+ * Cursor now generated by 6845.
+
+-ef9365: Clear framebuffer memory on reset. [Nigel Barnes]
+
+-PowerVR2: implement color [snickerbockers]
+ * PowerVR2 represents color using two components: a base color and an optional offset color.  The base color is combined with the
+    incoming texture sample (if any) according to the fixed-function specified by the tsinstruction in the per-polygon parameters,
+    and then the offset is added to this color (with the exception of alpha; the offset color has an alpha component but it does not
+    appear to ever be used).
+ * The base color and offset color can be specified on a per-vertex basis (as either a group of four 8-bit integers or a group of
+    four single-precision floating points) or they can be specified on a per-polygon basis (in floating-point only) and then scaled
+    based on per-vertex scalar values (also floating point).
+
+-amstrad: create 8255 PPI clone based on the Amstrad Plus ASIC, and use it with the Plus and GX4000 drives.  Fixes Plus detection in
+ some games, breaks inputs in Barbarian (correct behaviour). [mahlemiut]
+
+-Add dump of preprogrammed Z8671 MCU with BASIC/DEBUG interpreter [AJR]
+
+-vgmplay.cpp : Add GA20 Support iremga20.cpp : Minor cleanups, Remove MCFGs [cam900]
+
+-c140.cpp, c45.cpp, namco_c139.cpp : Remove MCFG_s (#3736) [cam900]
+ * c140.cpp, c45.cpp, namco_c139.cpp : Remove MCFG_s c45.cpp : Add region_ptr tceptor.cpp : Minor cleanup namcona1.cpp : Fix
+    spacing, Minor cleanups namcos2.cpp : Device'd C116 emulation namco_c116.cpp : Add notes from namcos2.cpp
+ * More remove MCFG for C116 namcoic.cpp : Move Namco NB-2 hardware specific ROZ Bankswitch into namconb1.cpp namconb1.cpp : Minor
+    cleanups
+
+-bbusters.cpp Update/Cleanups (#3666) [cam900]
+ * bbusters.cpp Update/Cleanups bbusters.cpp : Split mechatt_state(difference at tilemap size, number of sprite layer, gun
+    in/output, used register), Cleanup duplicates, Reduce runtime tag lookups, Move GFX byte-swap into ROM load
+ * bbusters.cpp : Fix mechatt regression
+
+-namcona1.cpp : Fix copy-n-paste error [cam900]
+
+-added 3x mstreet-6 sets (#3596) [Tom]
+
+-namcos2.cpp : Fix copy-n-paste error [cam900]
+
+-m107.cpp : Add buffered_spriteram16_device for buffered spriteram, Minor cleanups, Split address map/machine configs related to ROM
+ size/bankswitch (#3652) [cam900]
+
+-lynx.cpp : Reduce runtime tag lookups, Cleanup palette (#3626) [cam900]
+ * lynx.cpp : Reduce runtime tag lookups, Cleanup palette
+ * lynx.cpp : Minor cleanup of drawing
+
+-x68000: Separate VINAS/VICON CRTC device [AJR]
+
+-argus.cpp  updates (#3586) [cam900]
+ * argus.cpp : Remove tilemap hack of argus (Tilemap size can be larger than 65536) argus : Add MACHINE_NO_COCKTAIL tag because
+    Scroll is wrong when flip screen
+ * argus.cpp : Minor removes of duplicates
+ * argus.cpp : Reduce RAM usage of argus tilemap
+ * argus.cpp : Move butasan scanning into TILEMAP_MAPPER_MEMBER, Some reduce duplicates, Fix spacing
+ * argus.cpp : Fix build
+ * argus.cpp : Fix butasan
+ * argus.cpp : Fix build
+
+-ps2sony: Checkpoint. Adds a bunch of vector and parallel ops to the EE core, and skeleton GIF VIF1, and GS devices. [mooglyguy]
+
+-Add a driver for the original iPhone. (#3742) [Melissa Goad]
+ * Add ARM1176JZF-S CPU device and a driver for the original iPhone.
+
+-realbrk.cpp : Fix sprite priority, Add notes, Reduce runtime tag lookups (#3748) [cam900]
+ * realbrk.cpp : Fix sprite priority, Add notes, Reduce runtime tag lookups
+ * realbrk.cpp : Fix rotation bits, Add notes
+
+-New skeleton device: Western Digital WD1007A ESDI hard disk controller [Al Kossow]
+
+-Fix crash when running a DRC CPU core under Emscripten (#2794).  [Justin Kerk]
+
+-hiscore.dat: Updates [Leezer]
+
+-sknsspr.cpp : Add bitmap clearing disable bit suprnova.cpp : Make bitmap draw related to cliprect, Minor cleanup [cam900]
+
+-galpani3.cpp : Implement/Fix some effects(Background color fading in intro, Girl display in stage start), Add notes
+ kaneko_grap2.cpp : Add device_palette_interface for palette, Minor cleanups [cam900]
+
+-mc146818: support direct-access bus hookup method. [R. Belmont]
+ * This chip has 8 address/data lines and an address/data strobe.  Most users hooked it up so the low-order address bit is the
+    address/data strobe, allowing you to write an address and then read/write data at an adjacent address.
+ * But if you don't mind using a few more gates you can latch the low-order address bits from the CPU into the chip then latch the
+    data in or out of it so it works just like a RAM.  The MIPS DECstations did this in their I/O ASICs.
+
+-decstation.cpp: added more devices, now runs enough to give an interactive PROM monitor. [R. Belmont]
+
+-Allow per-device internal layouts and remove some more MCFG_ macros. Input and screen tags are now resolved relative to a layout's
+ owner device. [Vas Crabb]
+ * Easy way to demonstrate is with: mame64 intlc440 -tty ie15
+ * Previously you'd only get the IE15 terminal's layout and you'd be unable to use the INTELLEC 4/40 front panel.  Now you'll get
+    the choice of layouts from both the system and the terminal device in video options.
+
+-camplynx_cas: Added support for multiple files (concatenated) in TAP file. [Nigel Barnes]
+
+-Avoid some unintended undefined behavior in devices/cpu/i386. Spotted by cppcheck (#3753) [Melissa Goad]
+ * Avoid some unintended undefined behavior. Spotted by cppcheck
+
+-Scramble (bootleg, set 2) [hammy, The Dumping Union]
+
+-vgmplay.cpp : Fix nmk112 banked table mask [cam900]
+
+-namcos2.cpp : Fix finallap boot [cam900]
+
+-vgmplay.cpp : Add RF5C68/RF5C164 support, Add PCM Write handler (#3756) [cam900]
+ * vgmplay.cpp : Add RF5C68/RF5C164 support, Add PCM Write handler
+ * vgmplay : Fix pcm write command
+ * vgmplay.cpp : Fix address of chips
+ * vgmplay.cpp : Address space usage reduce
+ * vgmplay.cpp : Reduce Address space usage
+
+-render: improve behaviour in general for systems with two screens (sorry about occasional extra warning messages, it's unavoidable)
+ [Vas Crabb]
+
+-trs80 work in progress [Robbbert]
+ * split into separate sources
+ * fixed paste
+ * added uart and rs232
+ * added baud rate clock or brg depending on hardware
+ * fixed uart status on sys80
+ * fixed cassette waveform
+ * lots of tidy up
+
+-ht1080z : added ay8910 ; trs80 : added monitor documentation [Robbbert]
+
+-rendlay: allow user variables and repetition in layouts, also add a few more predefined variables [Vas Crabb]
+
+-315_5124.cpp updates (#3692) [enikland2]
+ * 315_5124.cpp updates
+ * requested changes, MD vdp changes
+ * correct typos, merge conflict
+ * correct commentary
+
+-vgmplay.lay : Add comments of RF5C68 Family (#3760) [cam900]
+ * vgmplay.lay : Add comments of RF5C68 Family
+ * vgmplay.lay : de-distortion
+
+-imgtool: fix parsing options with enum values When parsing an enumerated option, we should use the parameter of the enumerated
+ value, as an integer, instead of the raw identifier as a string. The behaviour probably changed around commit b60879e595, but
+ modules still expect the old behaviour. [fbellet]
+
+-vgmplay.lay : Add comments of RF5C68 Family [cam900]
+
+-vgmplay.cpp : Fix nmk112 banked table mask [cam900]
+
+-namcos2.cpp : Fix finallap boot [cam900]
+
+-vgmplay.cpp : Add RF5C68/RF5C164 support, Add PCM Write handler [cam900]
+
+-Avoid some unintended undefined behavior in devices/cpu/i386. Spotted by cppcheck [MoochMcGee]
+
+-galpani3.cpp Updates galpani3.cpp : Implement/Fix some effects(Background color fading in intro, Girl display in stage start), Add
+ notes [cam900]
+ * kaneko_grap2.cpp : Add device_palette_interface for palette, Minor cleanups
+
+-sknsspr.cpp : Add bitmap clearing disable bit suprnova.cpp : Make bitmap draw related to cliprect, Minor cleanup [cam900]
+
+-realbrk.cpp : Fix sprite priority, Add notes, Reduce runtime tag lookups [cam900]
+
+-namcos2.cpp : Fix copy-n-paste error [cam900]
+
+-namcona1.cpp : Fix copy-n-paste error [cam900]
+
+-Add a driver for the original iPhone. [MoochMcGee]
+
+-vgmplay.cpp : Add GA20 Support iremga20.cpp : Minor cleanups, Remove MCFGs [cam900]
+
+-PowerVR2: implement color PowerVR2 represents color using two components: a base color and an optional offset color.  The base
+ color is combined with the incoming texture sample (if any) according to the fixed-function specified by the tsinstruction in the
+ per-polygon parameters, and then the offset is added to this color (with the exception of alpha; the offset color has an alpha
+ component but it does not appear to ever be used). [snickerbockers]
+ * The base color and offset color can be specified on a per-vertex basis (as either a group of four 8-bit integers or a group of
+    four single-precision floating points) or they can be specified on a per-polygon basis (in floating-point only) and then scaled
+    based on per-vertex scalar values (also floating point).
+ * Before: !0007 After: !0042
+ * Before: !0005
+ * After: !0000
+ * Before: !0012 After: !0004
+
+-c140.cpp, c45.cpp, namco_c139.cpp : Remove MCFG_s c45.cpp : Add region_ptr tceptor.cpp : Minor cleanup namcona1.cpp : Fix spacing,
+ Minor cleanups namcos2.cpp : Device'd C116 emulation namco_c116.cpp : Add notes from namcos2.cpp [cam900]
+
+-interpro: CLIX boots (on the ip2000) Too many changes to describe in detail. A rewrite of the interrupt and dma code in the ioga,
+ and fixes to the cpu and mmu were the most significant things. [pmackinlay]
+
+-nscsi: add support for CD-ROMs with 512-byte blocks Older UNIX workstations used SCSI CD-ROM drives with 512-byte logical blocks
+ instead of the now standard 2048. This change makes the block size configurable, and adds logic to translate logical blocks to/from
+ the underlying 2048 byte sectors as needed. [pmackinlay]
+ * add support for configurable block sizes
+ * logmacro.h logging (turned on by default to retain current behaviour)
+ * added stub for "prevent/allow medium removal" command
+ * removed some unnecessary state
+ * minor fix for nscsi_hd "inquiry" command
+
+-x68k_flop: Added new/replace Login Soft list. and sorted [UED-Wayder]
+ * New software list additions to Login Soft category Stein
+ * Replace disk images to Login Soft category Galseed (Not included user data)
+ * Login Soft list is sorted in title order.
+ * More added release date to Login Soft list
+ * Added release date to The World of X68000 and II
+ * Rename alt_title (japanese) to The World of X68000 and II
+
+-Bug fix for multi-channel reads in cassette_get_samples(). Use the unused "sample_bytes" arg the same way as cassette_put_samples()
+ Can be used with multi-channel files now! Rename sample_bytes to more descriptive sample_spacing Add some comments about sample
+ functions and sample_spacing variable [palazzol]
+
+-fixed a typo in the ibm5170 softlist There is a minor typo in the ibm5170 softlist. Nothing fancy but it does bother my front-end
+ :p [xinyingho]
+
+-private: use (W,X,Y,Z,#) [DavidHaywood]
+
+-x68k_flop: fix redump "bgelmntt" and "gradius2d" [UED-Wayder]
+ * disk image was redumped because a disk image was broken. blade of the great elements (test version) (1990)(amusement).dim
+    (bgelmntt ) gradius ii gofer no yabou (demo) (1992)(konami).dim (gradius2d)
+ * Fevrie: added year and note.
+
+-stronger private: use (N, O, P, Q, R) [DavidHaywood]
+
+-Avoid multiple explicit instantiations definition of templates According to the C++ standard 14.7 clause 5, "an explicit
+ instantiation definition shall appear at most once in a program". [StefanBruens]
+ * Move the instantiation from the individual implementation files to the interface implementation file.
+ * This fixes issue #3639.
+ * Signed-off-by: Stefan Brüns <stefan.bruens@rwth-aachen.de>
+
+-more private: use (K,L,M) [DavidHaywood]
+
+-silkroad.cpp : Cleanup duplicates, ACCESSING_BITS, Reduce unused [cam900]
+
+-unico.cpp : Variable cleanups Convert video RAMs into shared_ptrs, Reduce runtime tag lookups, Some ACCESSING_BITS Cleanups,
+ PALETTE_DECODER for palette [cam900]
+
+-pc88va.xml: add new dump This is my own dump of Tetris for the PC-88VA, taken from an original 5.25" disk. The PC-88VA driver
+ doesn't work, of course, but I'd like to document it anyway in case something happens to the original disk or my computer. [rzero9]
+ * It seems to have some kind of protection on track 1 side 0 (I see some non-standard sector IDs, variable sector sizes, and wrong
+    CRCs) so I thought the HxC MFM format would be the safest choice.
+
+-Add new ST floppy dump I'm separating out all hardware from #3324 so as to make it easier for it to progress. [FakeShemp]
+ * Archived Kryoflux images: https://archive.org/details/STELanguageDiskSwedishAtariST.7z
+
+-drgnmst.cpp : Cleanups, Reduce duplicates Add PALETTE_DECODER for palette [cam900]
+
+-x68k_flop: Add/Replace and Organize Login Soft Category [UED-Wayder]
+ * New software list additions to Login Soft category
+   - (ldb_x68k conversion) is Converted archive from LOGiN Software Contest X68000 Kessaku Game-sen
+ * ajisai&nbsp;&nbsp;&nbsp;Ajisai (ldb_x68k conversion) camerot&nbsp;&nbsp;&nbsp;Camerot (ldb_x68k conversion)
+    choro2&nbsp;&nbsp;&nbsp;Choro Choro (Takeru version) choro2a&nbsp;&nbsp;&nbsp;Choro Choro (ldb_x68k conversion)
+    cuartoa&nbsp;&nbsp;&nbsp;Cuarto (ldb_x68k conversion) dungmana&nbsp;&nbsp;&nbsp;Dungeon Management (ldb_x68k conversion)
+    galseed2&nbsp;&nbsp;&nbsp;Galseed II (ldb_x68k conversion) kurupon&nbsp;&nbsp;&nbsp;Kurupon leshies&nbsp;&nbsp;&nbsp;Leshies
+    (Takeru version) overdrvr&nbsp;&nbsp;&nbsp;Over Driver (Takeru version) programa&nbsp;&nbsp;&nbsp;Programan Ace -Source68
+    sekaissa&nbsp;&nbsp;&nbsp;Sekai-Seifuku Set (ldb_x68k conversion) todayjob&nbsp;&nbsp;&nbsp;My Today's Job (Takeru version)
+ * Replace disk images and move software list to Login Soft category larjis&nbsp;&nbsp;->&nbsp;&nbsp;larjisa&nbsp;&nbsp;&nbsp;Larjis
+    (ldb_x68k conversion) leshies&nbsp;&nbsp;->&nbsp;&nbsp;leshiesa&nbsp;&nbsp;&nbsp;Leshies (ldb_x68k conversion)
+    todayjob&nbsp;&nbsp;->&nbsp;&nbsp;todayjoba&nbsp;&nbsp;&nbsp;My Today's Job (ldb_x68k conversion)
+    overdrvr&nbsp;&nbsp;->&nbsp;&nbsp;overdrvra&nbsp;&nbsp;&nbsp;Over Driver (ldb_x68k conversion) bradion&nbsp;&nbsp;&nbsp;Bradion
+    (ldb_x68k conversion) crarrow&nbsp;&nbsp;&nbsp;Cranked Arrow  *This software is 1 disk (Disk 2,3 is unrelated software)
+ * Move software list from &lt;doujin&gt; to Login Soft category astqueen&nbsp;&nbsp;&nbsp;Asteroid Queen
+    badroad&nbsp;&nbsp;&nbsp;Bad Road bakudanm&nbsp;&nbsp;&nbsp;Bakudanma (v1.00) conz&nbsp;&nbsp;&nbsp;C-On Z
+    cuarto&nbsp;&nbsp;&nbsp;Cuarto fevrie&nbsp;&nbsp;&nbsp;Fevrie flmdart&nbsp;&nbsp;&nbsp;Flaming Dart
+    guardans&nbsp;&nbsp;&nbsp;Guardians  *It isn't sofcon version hakobune&nbsp;&nbsp;&nbsp;Hakobune ni Notte (Alt)  *It isn't
+    sofcon version moloq&nbsp;&nbsp;&nbsp;Molo-Q nininbtl&nbsp;&nbsp;&nbsp;Ninin Battle sekaiss&nbsp;&nbsp;&nbsp;Sekai Seifuku Set
+    *It isn't sofcon version twinsoul&nbsp;&nbsp;&nbsp;Twin Soul
+ * Move software list from Login Soft to &lt;doujin&gt; category ohootsuk    Ohootsuku Ni Kiyu  *This software is Unofficial tiny
+    version
+ * Delete software list nininbtla   Ninin Battle (Alt)  *same as nininbtl
+ * Difference was user data (moji.dat) overwritten, and only changed the Human68k OS
+   - Added Missing dumps list to "Login Soft (sofcon)"
+   - Added alt_title (Japanese) to Login Soft Category
+
+-315_5124.cpp updates [enikland2]
+ * Rename GG VDP from sega315_5378 to sega315_5377 to match maintenance manual
+ * Created a sega315_5313_mode4_device class to emulate some specific 315-5313 behavior in mode 4
+ * Derivate sega315_5377 (GG) and sega315_5313_mode4 (MD) from sega315_5246 (SMS2) instead sega315_5124 (SMS1)
+ * Emulate some specific sega315_5377 timings verified on hardware
+ * Emulate some sega315_5313_mode4 timings and behavior verified with Flubba's VDP Test
+ * Emulate bits of the status register for the number of the first sprite that overflows
+ * Emulate sprite zoom limit of sega315_5124 and sega315_5313 VDPs
+ * Fix inaccurate scrolling reproduced with Charles' scrolling test
+ * Improve leftmost column color behaviour in mode 4 when fine scroll is applied
+ * Implement display modes 1 (text) and 3 (multicolor)
+ * Rename vram_write()/vram_read() to data_write()/data_read()
+ * Rename register_write()/register_read() to control_write()/control_read()
+ * Use "const" and the "BIT" macro where appropriate
+
+-bbusters.cpp Update/Cleanups bbusters.cpp: Split mechatt_state (difference is tilemap size, number of sprite layer, gun in/output,
+ used register), Cleanup duplicates, Reduce runtime tag lookups, Move GFX byte-swap into ROM load Add generic_latch_8_device for
+ sound status It's add video_start instead MCFG_VIDEO_START_OVERRIDE. [cam900]
+
+-m107.cpp : Updates/Cleanups Add buffered_spriteram16_device for buffered spriteram, Minor cleanups, Split address map/machine
+ configs related to ROM size/bankswitch [cam900]
+
+-lynx.cpp : Reduce runtime tag lookups, Cleanup palette Add address_map_bank_device for 0xfcxx/0xfdxx Bankswitching [cam900]
+
+-namcoic.cpp : Simpler bit-swapped values namcoic.cpp : Reduce duplicate [cam900]
+
+-argus.cpp  updates argus.cpp : Remove tilemap hack of argus (Tilemap size can be larger than 65536) [cam900]
+ * argus : Add MACHINE_NO_COCKTAIL tag because Scroll is wrong when flip screen
+
+
+New working machines
+--------------------
+ibm5150: Starflight 2: Trade Routes of the Cloud Nebula (3.5") [Arcade Shadow]
+ibm5170: LucasArts Air Combat Classics [Arcade Shadow]
+Acorn System 3 (6502 CPU) [Nigel Barnes]
+Acorn System 5 [Nigel Barnes]
+acrnsys_flop: System BBC BASIC, Atom/System 3 File Server, System 5 File Server, System 3 Utilities [Nigel Barnes]
+acrnsys_rom: Econet 2.40, Econet 3.40, Econet 3.50 [Nigel Barnes]
+camplynx_cass: 3D Monster Craze, Backgammon, Battle Brick, Centipede, Colossal Adventure, Dam Buster, Deathball, Digger Man, Dungeon
+  Adventure, Floyds Bank, Games Pack III, Games Pack IV, Gobble de Spook, Hangman, Introductory Tape, Labyrinthe, LogiChess 2.2,
+  Lynx Invaders, Mastermind, Mazeman, Mined Out, Moonfall, Lynx Muncher, Nuclear Invaders, Numerons, L'odyssée d'Astérix, Oh Mummy,
+  Panik, Pengo, Power Blaster, Racer, Rocketman, Spellbound, ScrabLynx, Siege Attack, Space Trek, Treasure Island, Twinkle, The
+  Worm, Ynxvaders, Zombie Panic, Aide (Label-Procedures), Card Index, Compass, Lynx Composer, Disassembler, Lynx Disassembler,
+  Générateur Basic, Générateur de Caracteres, Word Processor, Maths, MODER-80, Music Master, 6845p, Chopin, Cinema, The Forest, Grid
+  Trap, Hi-Lo, IntelTab, Maxi-Mots, Planets, Rising Moon, Screen Dump, Star Rover, Triangles, Tron Blocker [Nigel Barnes]
+ibm5150: PC Globe 3.0, PC Globe 4.0, PC Globe 5.04, PC Globe 5.0 (Spanish) [Arcade Shadow]
+ibm5170: The Incredible Machine (alt), The Incredible Machine 2 [Arcade Shadow]
+ibm5170: Excel (Version 3.0a) [darksabre76]
+Milmar Laser //c [R. Belmont, Peter Ferrie, KansasFest 2018 [arbee]
+apple2: fixed floating bus reads, syncs Talbot Fantasy Seven credits screen [R. Belmont]
+ibm5150: Cadaver (5.25"), Cadaver (3.5") [Chism]
+ibm5170: Cadaver (3.5", Quest and Glory Compilation), MS-DOS (Version 6.22, Thai) [Justin Kerk]
+
+
+New working clones
+------------------
+Hayaoshi Quiz Nettou Namahousou (ver 1.2) [Apocalypse, The Dumping Union]
+Pink Sweets: Suicide Club (2017/10/31 SUICIDECLUB VER., bootleg) [MetalliC]
+Apache 3 (rev E) [coolmod, The Dumping Union]
+Apache 3 (rev E) [coolmod, The Dumping Union]
+Air Rescue (World) [Porchy, Muddymusic, The Dumping Union]
+Raiden DX (Portugal) [Jorge Silva, Atro, Kravex]
+Led Storm Rally 2011 (US, prototype 12) [system11, Coolfox, The Dumping Union]
+Acorn System 2 [Nigel Barnes]
+Acorn System 4 [Nigel Barnes]
+3x "MSTREET-6" bootleg sets added. [TwistedTom]
+
+
+New machines marked as NOT_WORKING
+----------------------------------
+Donkey Kong / Donkey Kong Jr / Mario Bros [Michael Moffitt, coolmod, The Dumping Union]
+Captain Zodiac [Siftware]
+Marbella Vice [Recreativas.org, The Dumping Union]
+Boris - Electronic Chess Computer [TrevEB, Sean Riddle, The Dumping Union]
+Topaz (Inder) [PinMAME]
+Fever Chance [GoneMad]
+CMS 6502 Development System [Nigel Barnes]
+acrnsys_rom: System/3 Econet 1.48 [Nigel Barnes]
+DECstation 5000/133 [R. Belmont, Al Kossow]
+ibm5170: POWER DoLLS [Justin Kerk]
+
+
+New clones marked as NOT_WORKING
+--------------------------------
+Jokerz! (G-4) [PinMAME]
+Safe Cracker (1.0) [PinMAME]
+
+
+acrnsys_flop (acrnsys_flop.xml):
+  Working
+    Atom/System 3 File Server
+    System 3 Utilities
+    System 5 File Server
+    System BBC BASIC
+
+acrnsys_rom (acrnsys_rom.xml):
+  Working
+    Econet 2.40
+    Econet 3.40
+    Econet 3.50
+  Non-working
+    System/3 Econet 1.48
+
+camplynx_cass (camplynx_cass.xml):
+  Working
+    3D Monster Craze
+    6845p
+    Aide (Label-Procedures) (Fra)
+    Backgammon
+    Battle Brick
+    Card Index (96K)
+    Centipede
+    Chopin (Fra)
+    Cinema (96K)
+    Colossal Adventure
+    Compass
+    Dam Buster
+    Deathball
+    Digger Man
+    Disassembler (Fra)
+    Dungeon Adventure
+    Floyds Bank
+    Games Pack III
+    Games Pack IV
+    Gobble de Spook
+    Grid Trap (Fra)
+    Générateur Basic (Fra)
+    Générateur de Caracteres (96K)(Fra)
+    Hangman
+    Hi-Lo (96K)
+    IntelTab (96K)(Fra)
+    Introductory Tape (48K)
+    L'odyssée d'Astérix (96K)(Fra)
+    Labyrinthe (Fra)
+    LogiChess 2.2
+    Lynx Composer (96K)
+    Lynx Disassembler (Fra)
+    Lynx Invaders
+    Lynx Muncher
+    MODER-80
+    Mastermind (96K)(Fra)
+    Maths (Fra)
+    Maxi-Mots (96K)(Fra)
+    Mazeman
+    Mined Out
+    Moonfall
+    Moonfall (Fra)
+    Music Master
+    Nuclear Invaders
+    Numerons (Fra)
+    Oh Mummy
+    Panik
+    Pengo
+    Planets
+    Power Blaster
+    Racer
+    Rising Moon
+    Rocketman
+    ScrabLynx (96K)(Fra)
+    Screen Dump
+    Siege Attack
+    Space Trek
+    Spellbound
+    Star Rover
+    The Forest (96K)
+    The Worm
+    The Worm (96K)(Fra)
+    Treasure Island
+    Triangles (96K)
+    Tron Blocker (96K)(Fra)
+    Twinkle
+    Word Processor
+    Ynxvaders
+    Zombie Panic (Fra)
+
+ibm5150 (ibm5150.xml):
+  Working
+    Cadaver (3.5")
+    Cadaver (3.5", Quest and Glory Compilation)
+    Cadaver (5.25")
+    PC Globe 3.0
+    PC Globe 5.0 (Spanish)
+    PC Globe 5.04
+    Starflight 2: Trade Routes of the Cloud Nebula (3.5")
+  Non-working
+    PC Globe 4.0
+
+ibm5170 (ibm5170.xml):
+  Removed
+    Incredible Machine
+  Working
+    Excel (Version 3.0a)
+    LucasArts Air Combat Classics
+    MS-DOS (Version 6.22, Thai)
+    The Incredible Machine
+    The Incredible Machine (alt)
+    The Incredible Machine 2
+  Non-working
+    POWER DoLLS
+
+pc88va (pc88va.xml):
+  Non-working
+    Tetris
+
+st_flop (st_flop.xml):
+  Working
+    STE Language Disk (Swe, Rev. B)
+
+x68k_flop (x68k_flop.xml):
+  Removed
+    GJ
+    Larjis
+    Ninin Battle (Alt)
+    Overdriver
+  Working
+    Ajisai (ldb_x68k conversion)
+    Camerot (ldb_x68k conversion)
+    Choro Choro
+    Choro Choro (ldb_x68k conversion)
+    Cuarto (ldb_x68k conversion)
+    Dungeon Management (ldb_x68k conversion)
+    Galseed II (ldb_x68k conversion)
+    Kurupon
+    Larjis (ldb_x68k conversion)
+    Leshies (ldb_x68k conversion)
+    My Today's Job (ldb_x68k conversion)
+    Over Driver
+    Over Driver (ldb_x68k conversion)
+    Programan Ace -Source68
+    Sekai Seifuku Set (ldb_x68k conversion)
+    Stein
+
+Comparing 0.199 (mame0199) to 0.199 (mame0199-389-gc0ab1c5-dirty)
+
+Renames
+arescue -> arescueu Air Rescue (US)
+
+New working machines
+--------------------
+Acorn System 3 (6502 CPU)
+Acorn System 5
+
+New working clones
+------------------
+Acorn System 2
+Acorn System 3 (6809 CPU)
+Acorn System 4
+Air Rescue (World)
+Hayaoshi Quiz Nettou Namahousou (ver 1.2)
+Laser //c
+Led Storm Rally 2011 (US, prototype 12)
+Pink Sweets: Suicide Club (2017/10/31 SUICIDECLUB VER., bootleg)
+Raiden DX (Portugal)
+Safe Cracker (1.0)
+Scramble (bootleg, set 2)
+Street Fighter II': Champion Edition (Mstreet-6, bootleg, set 1)
+Street Fighter II': Champion Edition (Mstreet-6, bootleg, set 2)
+Street Fighter II': Champion Edition (Mstreet-6, bootleg, set 3)
+
+New machines marked as NOT_WORKING
+----------------------------------
+Boris - Electronic Chess Computer
+CMS 6502 Development System
+Captain Zodiac
+DECstation 5000/133
+Donkey Kong / Donkey Kong Jr / Mario Bros
+Fever Chance
+Marbella Vice
+Topaz (Inder)
+iPhone (A1203)
+
+New clones marked as NOT_WORKING
+--------------------------------
+Apache 3 (Kana Corporation license, rev G)
+Jokerz! (G-4)
+
