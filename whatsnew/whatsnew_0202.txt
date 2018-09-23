@@ -1,0 +1,1060 @@
+0.202
+-----
+
+
+MAMETesters Bugs Fixed
+----------------------
+- 06991: [Crash/Freeze] (model1.cpp) swa: crash with access violation after a while (AJR)
+- 06258: [Graphics] (taitogn.cpp) usagi: Weird background color for score recap (smf)
+- 07096: [Crash/Freeze] (micro3d.cpp) All sets in micro3d.cpp: Hang during the boot process (AJR)
+- 07076: [Graphics] (psikyo.cpp) tengaij, tengai and maybe more: [possible] Bad glitch graphic on some stages (jkm900)
+- 07091: [DIP/Input] (namcos2.cpp) sgunner2, sgunner2j: Player 1 and Player 2 Coin buttons missing (AJR)
+- 05904: [Graphics] (sshangha.cpp) sshangha, sshanghaj: Sprite priority bug with the ingame message boxes (David Haywood)
+- 07074: [Graphics] (skykid.cpp) drgnbstr: The title logo is not displayed correctly. (kunikuni)
+- 07092: [DIP/Input] (targeth.cpp) targeth, targeth10, targetha: Player2 controls not working. Y axis broken, X axis inverted (AJR)
+- 06020: [Color/Palette] (sshangha.cpp) sshangha, sshanghab, sshanghaj: Black sprites in some cutscenes (David Haywood)
+- 07085: [Crash/Freeze] (mcr.cpp) Most machines in mcr.cpp, mcr3.cpp: [debug] Assertion Failed! Expression: m_target (cuavas)
+- 07090: [Crash/Freeze] (astrocde.cpp) tenpindx: [debug] Assertion Failed! Expression: !fmt.format_at_end(it) (cuavas)
+- 07089: [Crash/Freeze] (pacman.cpp) Assorted machines in aristmk4.cpp, bagman.cpp, gts3a.cpp, mac.cpp, pacman.cpp, others: [debug] Assertion Failed! Expression: fulltag[0] == ':' (cuavas)
+- 06874: [Gameplay] (seattle.cpp) blitz: hangs on a black screen if the power on self test is enabled (tedgreen)
+- 05059: [Documentation] Games with wrong year listed (-Misc Reporters-)
+- 05881: [Documentation] (whitestar.cpp) rctycn and all clones: Description wrong (-Misc Reporters-)
+- 07021: [DIP/Input] (vtech2.cpp) laser500: Reset key is not mapped (hap)
+- 06967: [Crash/Freeze] (msx.cpp) canonv30f: [debug] Assertion Failed! m_entrymap.find(name) == m_entrymap.end() (Robbbert)
+- 06998: [Interface] software lists titles directories not working (Robbbert)
+- 07086: [Crash/Freeze] (r9751.cpp) r9751: [debug] Assertion Failed! Expression: m_functions.empty() (Osso)
+- 07087: [Crash/Freeze] (atari400.cpp) a400, a400pal, a800, a800pal: [debug] Assertion Failed! Expression: !this->m_resolved (cuavas)
+
+
+New working machines
+--------------------
+
+
+New working clones
+------------------
+
+
+Machines promoted to working
+----------------------------
+
+
+Clones promoted to working
+--------------------------
+
+
+New machines marked as NOT_WORKING
+----------------------------------
+
+
+New clones marked as NOT_WORKING
+--------------------------------
+
+
+New working software list additions
+-----------------------------------
+
+
+Software list items promoted to working
+---------------------------------------
+
+
+New NOT_WORKING software list additions
+---------------------------------------
+
+
+Translations added or modified
+------------------------------
+
+
+Source Changes
+--------------
+-c64_flop.xml - Add Bill Budge: Pinball Construction Set [Rebecca Wallander]
+
+-c64_flop.xml - Add JingleDisk [Rebecca Wallander]
+
+-c64_flop.xml - Add Sargon III [Rebecca Wallander]
+
+-Fix MT 05881 [sjy96525]
+
+-emumem: Fix ioports/membanks in internal maps [O. Galibert]
+ * PS: That may break things, we'll see.
+
+ * bgfx: Improved rendering with artwork by 5-10x or more. [Ryan Holtz]
+
+-Correct Heuk Sun Baek Sa year [sjy96525]
+ * In according with F2 System website, Black & White (Heuk Sun Baek Sa) released year is 1997 .
+ * http://www.f2.co.kr/company/ourstory03.php
+
+-ibm5150.xml - Add some new dumps (#3878) [Rebecca Wallander]
+ * ibm5150.xml - Add new dumps
+ * ibm5150.xml - Add a few dumps
+ * ibm5150.xml - Remove PC AT-only disks
+ * ibm5150.xml - Remove baddump tag as I have no proof they're actually bad
+
+-Update mastboyo.cpp [Roberto Fresca]
+ * Translated last two DIP switches...
+
+-Lucky Ball 96 updates: Banking, new sets, rebuild parent/clones, inputs, demux, and a lot of work to get the game working properly
+ [Roberto Fresca, Grull Osgo]
+
+-forgot.... [Roberto Fresca]
+
+-vamphalf.cpp: Complete redump of Cool Minigame Collection (Italy) [coolmod, Brian Troha]
+ * out of whatsnew: redump removes all BAD_DUMP from rom def. first 6 graphics roms were the same, only the last 2 were different
+    for the Italian version.
+ * Sound rom was also bad, various blocks of 0x80 bytes were 0xff.  Redeump proved it should match the parent.
+
+-new WORKING machines (#3911) [David Haywood]
+ * new WORKING machines Pitapat Puzzle [David Haywood, ClawGrip, Brian Troha, The Dumping Union]
+ * also fixed up tile banking in the driver which should fix some Bestri bugs
+
+-Add Jongputer support (#3912) [yukaritamura]
+ * Add Jongputer support
+ * Jongputer was an origin of mahjong video games, developed by Alpha Denshi at 1981. T.T Mahjong by Taito that was already
+    supported by mame, and Computer Mahjong by Nichibutsu were licensed variants of the Jongputer.
+ * This patch reuses T.T Mahjong's proms to decide palette colors for rendering. This may be inaccurate in terms of emulating the
+    real devices, since I could not find relevant proms on the Jongputer's PCB.
+ * Also j1 rom placed beside the AY-3-8910 is still unknown. Address pins seems to be managed by counter logic chips, and probably
+    this is used to realize pseudo sampling voice, "reach".
+ * Jongputer support cleanups
+   - BAD_DUMP marks for reused proms
+   - Mark T.T Mahjong as a clone of Jongputer
+   - Use jongpute instead of ttmahjng since the jongpute is parent now
+   - Sort mame.lst entry in the dict order
+
+-opwolf: Move cchip simulation out of driver, initial clean ups [Dirk Best]
+
+-pipibibsbl: Bootleg has different clocks [AJR]
+
+-opwolfb: use z80 to read inputs instead of directly mapping them [Dirk Best]
+
+-Lucky Ball 96: Rewrite of the whole multiplexed input system as requested, and standardized each input. Also explained some things
+ about the hardware behaviour. Cleaned up the driver. [Grull Osgo, Roberto Fresca]
+
+-Lucky Ball 96: Changes of the whole multiplexed input system as requested, and DIP switches locations. [Grull Osgo, Roberto Fresca]
+
+-Lucky Ball 96: ASCII diagram of Inputs/Outputs through 3x 4099 addressable channels and 3x 4512 data selectors [Roberto Fresca]
+
+-Lucky Ball 96: Translated pinout. [Roberto Fresca]
+
+-Correct Dirt Dash revision (#3894) [sjy96525]
+
+-Update documentation on konamigx.cpp [f205v]
+ * Versus Net Soccer - verified on real PCB
+ * added Konami custom number for Xilinx FPGA protection chip
+ * corrected package type for a number of Konami customs
+
+-Update documentation for konamim2.cpp [f205v]
+ * corrected a few package information, verified on real PCB.
+
+-tumbleb.cpp: better documentation for tumbleb2 set.
+ [Tomas Garcia-Meras (ClawGrip), Roberto Fresca, Recreativas.org, The Dumping Union]
+
+-chihiro.cpp: brute forced security key for "Quest of D Oukoku no Syugosya" [Peter Wilhelmsen, Morten Shearman Kirkegaard]
+
+-Fixed Speed Ball START key [MASH]
+
+-32x, Fix FIFO & number of dac bits. [smf]
+
+-vgmplay: Support 32x sound [smf]
+
+-group Raiden 2 / DX sets by code revision so that we can more easily see which just differ by region byte, make it clear what
+ features determine game type (normal, easier, harder) (#3922) [David Haywood]
+
+-Add PLDs to "rthun2j" [Tomas Garcia-Meras (ClawGrip), Roberto Fresca, Recreativas.org, The Dumping Union] (#3918) [ClawGrip]
+
+-Correct Chess Challenge 2 year from MT 05059 (#3902) [sjy96525]
+ * Correct Chess Challenge 2 year from MT 05059
+
+-Update strings.po [Neius]
+ * Updating and touching up some words
+
+-NES APU: remove read/write trampolines and zero $4015 at reset https://wiki.nesdev.com/w/index.php/CPU_power_up_state [smf]
+
+-vgmplay: Added detection of bad nes rips where no audio channels are enabled. Updated messages to make it clear that the hacks are
+ required due to bad rips. When a bad 32x rip is detected then both the left and right channels are enabled. [smf]
+
+-memory: Fix unmapped values with subunits [smf]
+
+-FM Towns softlists: add several dumps [r09]
+ * fmtowns_cd.xml:
+ * Branmarker 2 Extra Disc [DamienD / Tokugawa Corporate Forums]
+ * Super Real Mahjong PII & PIII + [DamienD / Tokugawa Corporate Forums]
+ * Teito Taisen [r09 / redump.org]
+ * Teitoku no Ketsudan II [r09 / redump.org]
+ * The Visitor [DamienD / Tokugawa Corporate Forums]
+ * Zoku Youjuu Senki - Suna no Mokushiroku [r09 / redump.org]
+ * fmtowns_flop.xml:
+ * Daisenryaku III '90 Map Collection Vol. 1 [r09]
+ * All of them are working.
+
+-nereid: add support for reading colormap entries [Sven Schnelle]
+
+-nereid: add save_item() for missing member [Sven Schnelle]
+
+-Topcat fixes (#3930) [dxl]
+
+-I8291 improvements (#3931) [dxl]
+ * set BO bit only if receiver is ready (NRFD not asserted, fix MJMN bit, and implement DCAS
+
+-zsg2.cpp: properly reset emphasis filter state at key on [superctr]
+ * zsg2.cpp: update documentation
+
+-vgmplay: report incorrect header size and replace with default [smf]
+
+-mip3: Proper DMULT(U) implementation from git issue #3718 [bryanperris] (#3746) [tedgreen99]
+ * mip3: Proper DMULT(U) implementation from git issue #3718 [bryanperris]
+ * mips3: Updated dmult(u) implementation.
+
+-More topcat fixes (#3933) [dxl]
+
+-lethalj.cpp : Reduce runtime tag lookups, Fix naming [cam900]
+
+-artmagic.cpp : Reduce runtime tag lookups, Cleanup naming etc... [cam900]
+
+-mcr68: mapped 6840 to lower data bits on all mcr68 games, which matches the blasted schematics. I used cswidth as different games
+ write at odd or even addresses, even though the boards look visually similar. Byte writes will work in either case as the 68000
+ puts the same data on the upper and lower part of the bus. Reads are a mix of odd and even addresses, International team laser and
+ spy hunter 2 exclusively read at even addresses. It's unclear whether this is a bug in those games or not. [smf]
+
+-raiden2.cpp : Fix zeroteam OKI clock [cam900]
+
+-r2dx_v33.cpp : Fix nzerotea/zerotm2k OKI clock [cam900]
+
+-Update sigmab52.cpp [Roberto Fresca]
+ * Just cleanup a bit...
+
+-pacland: sprites bugfix (#3935) [kunikuni]
+ * pacland: sprites bugfix Fixed the difference with real hardware:
+ * fixed: incomplete priority of sprites on fg
+ * fixed: sprites could not be displayed at the bottom of the screen
+   - Update pacland.cpp
+
+-Lucky Ball 96: Changes to the memory map and banking after an exhaustive hardware analysis. [Grull Osgo]
+
+-raiden2.cpp : Fix zeroteam OKI pin7() [cam900]
+
+-r2dx_v33.cpp : Fix nzerotea/zerotm2k OKI pin7 [cam900]
+
+-legionna.cpp : Fix denjinmk year [cam900]
+ * Denjin Makai is released on February 1, 1994 (from Wikipedia), And Title screen says 1994 copyright.
+
+-new clone added - Midnight Run (Japan) [braintro]
+
+-new clone added - Simpsons 4P (Asia) [braintro]
+
+-voodoo_pci: Change readback value of PCI config 0x40 based on voodoo card type.  Fixes MT06874. [Ted Green]
+
+-new clone added - River Patrol unprotected [braintro]
+ * Out of what's new: This set is verified removes the botched silver land conversion set as the program roms where from the
+    unprotected set_entry 9.2t has bad bits, it's replaced with the new dump which matches the bootleg
+
+-new NeoGeo 'sp1-u4' BIOS (from a US, 4-slot) [ack] (#3940) [David Haywood]
+ * new NeoGeo 'sp1-u4' BIOS (from a US, 4-slot) [ack]
+
+-Move imperfect graphics flag down into PSX GPU device [AJR]
+
+-psikyo.cpp : Fix rowscroll [cam900]
+
+-galaxian.cpp: Video and timing updates from #3783 [kazblox]
+ * Correct sync in Take Off, Explorer, and set 2 of Amigo. Sidam bootlegs of Konami games have a 12MHz pixel clock with video being
+    scaled by two pixels instead of 3.
+ * Correct Jump Bug background hardware behavior, as per real hardware. Stars actually show up until the 232nd pixel.
+ * Correct bullet behavior in Scramble. Shells are now two pixels long, and have been verified on real hardware.
+ * Fix(?) clocks on jungsub. The Subelectro 113 board has no XTALs, and I am assuming the CLK lines come from the pixel clock on the
+    Konami L-1200-2 board.
+ * Given Take Off's hardware hierarchy, correct the year from 1980 to 1981 as a guess.
+ * Correct machine setup for Take Off, Explorer, and set 2 of Amigo. All are now correctly set up as per the 12 MHz pixel clock.
+ * Mark Explorer and set 2 of Amigo as MACHINE_IMPERFECT_SOUND. Explorer requires the same sound timer as Take Off, which I have no
+    idea how it works. The latter probably has a similar case, although it might be different from Explorer.
+ * Mark Take Off as MACHINE_WRONG_COLORS. See the reference video for more; some colors that are purple with the default
+    palette_init are green on real hardware.
+ * Correct background hardware on SF-X and Monster Zero to now show stars and RGB backgrounds. Colors may not be correct, and the
+    current schematics scans are not easy to read.
+ * Converted galaxian.cpp to use MCFG_SCREEN_VBLANK_CALLBACK.
+ * turpins is likely more derived from Super Cobra hardware than Scramble hardware. Change the set description to match this
+    statement.
+
+-mandinga: Fix sound by adding sound CPU ROMs from Amidar; mark them as BAD_DUMP. Chances that they may be different are unknown.
+ [kazblox]
+
+-huc6230.cpp : Fix PSG, Timer'd ADPCM update, Implement CD-DA Volume (#3919) [cam900]
+ * huc6272.cpp : Make CD-DA Playable
+
+-Fix protection in The End and Scramble. theend now shows the HIT UFO screen after the CHANCE TIME round. [kazblox]
+ * This uses the code rewrite from #3783, but with improved indentation.
+
+-mimonscr: Fix mirroring for video writes. Score display shows correctly now. [kazblox] (from #3783) [AJR]
+
+-digel804.cpp: added bios set for Celectronic Berlin/Digelec Promicron 2000 programmer v2.3 [MikeMcBike]
+
+-dreamwld.cpp : Fix rowscroll (#3950) [cam900]
+ * dreamwld.cpp : Fix rowscroll
+ * dreamwld.cpp : More fixes
+
+-psikyo.cpp : More fixes (#3949) [cam900]
+ * psikyo.cpp : More fixes
+ * psikyo.cpp :Minor fix
+
+-sn76496.cpp: rename NCR7496 to NCR8496 for Tandy 1000TX and similar machines based on PCB pictures and service manual parts list;
+ add support for PSSJ-3 ASIC used in later Tandy 1000 machines. Fix noise generatior behavior in NCR8496 and PSSJ-3 to match
+ hardware tests. [Lord Nightmare, Qbix, ValleyBell, NewRisingSun]
+
+-new clone added [MASHinfo]
+
+-new WORKING clones - Toki no Senshi - Chrono Soldier (MC-8123, 317-0040) [ShouTime] (#3952) [David Haywood]
+ * new WORKING clones - Toki no Senshi - Chrono Soldier (MC-8123, 317-0040) [ShouTime]
+ * (key was brute forced)
+ * dipswitch is inverted compared to other set
+
+-New NOT WORKING clone (#3951) [ClawGrip]
+ * New clones marked as NOT_WORKING
+   - ----------------------------------------- Chouji Meikyuu Legion (Japan ver 1.05, bootleg set 2)
+      [Tomas Garcia-Meras (ClawGrip), Roberto Fresca, Recreativas.org, The Dumping Union]
+ * Revert whitespaces
+ * Update armedf.cpp
+ * Rename fist bootleg Legion set
+
+-interpro: notworking -> networking (#3815) [Patrick Mackinlay]
+ * interpro: notworking -> networking
+ * These changes combine to make InterPro networking work on Windows with the TAP-Windows6 driver.
+ * osdnet: add a receive delay (1 frame) after transmit to avoid a time-travel problem
+ * taptun: pad short Ethernet frames and append FCS (Windows-only until Linux taptun behaviour is verified)
+ * clipper: fix bugs in carry flag handling, prefer sign bit for tests
+ * i82586: fix transmit bug, handle reset
+ * networking: delayed transmit/receive
+ * A second attempt to fix networking on InterPro systems, by introducing somewhat realistic delays into network transmit and
+    receive paths. This version works by adding functions to device_network_interface which enable a device to be informed when the
+    transmit or receive completes. The delay is only crudely approximated based on the specified bandwidth and the number of bytes
+    being transmitted, but it should be good enough in practice. Existing drivers should not be impacted by these changes;
+    overriding the new functions (and no longer overriding recv_cb) is necessary to obtain the new behaviour.
+ * Changes from the previous commit:
+ * i82586: improve interrupt handling, implement delayed transmit/receive behaviour
+ * dinetwork: add transmit/receive delay timers, handlers and logic
+ * osdnet: remove receive delay, add the ability to start the receive timer
+
+-yunsun16.cpp : Cleanups Cleanup duplicates, Reduce runtime tag lookups, Reduce unused, Fix notes, Cleanup tilemap scanning [cam900]
+
+-Removed Usagi imperfect graphics flag (#3948) [sjy96525]
+ * Because Taito GNET System uses PSX GPU device, and imperfect graphics flag into PSX GPU device
+
+-funybubl.cpp : Update/Cleanups Cleanup naming, Convert tilemap, Add address_map_bank_device for banked vram, Cleanup OKI banking,
+ Fix OKI clock related to On-PCB XTAL, Add palette decoder member for palette, Cleanup/fix naming, Fix palette entry, Reduce runtime
+ tag lookups [cam900]
+
+-PSX GPU: Added Textured Dot rendering [smf]
+
+-Beast Busters - fix sprite priority [bmcphail]
+ * Credit to Daniel Filner for information.
+ * Palettes 0xc-0xf on 2nd sprite chip behind the tilemap - confirmed on level 2 and matches real hardware video.  Removed
+    imperfect_graphics flags as no open bugs.
+ * (question - why is this marked as imperfect audio when there are no notes in the driver or open mametesters bugs?)
+
+-Megatech - add some label info from manual [bmcphail]
+
+-hh_tms1k: Fixed lockups in stopthief, corrected 1 bad bit after double checking the ROM with the decap. Also noted that stopthiefp
+ actually works fine already. [Mike]
+
+-seta001 remove a kludge [DavidHaywood]
+
+-improve sshangha mixing and palette handling (#3959) [David Haywood]
+ * improve sshangha mixing and palette handling helps with the issues listed in MT6020 ( https://mametesters.org/view.php?id=6020 )
+
+-sshangha.cpp : Fix OKI clock/pin7 [cam900]
+ * Reference : https://www.youtube.com/watch?v=buCb-exoJWo
+
+-Beast Busters - use single pass sprite render with priority buffer in case of cut-out effects [bmcphail]
+
+-Beast Busters - remove imperfect sound [bmcphail]
+ * Reference video at https://www.youtube.com/watch?v=i3txCb5tpkc
+
+-MT 7092 [AJR]
+
+-Make SET instruction in Mitsubishi M740 subfamily actually affect execution [AJR]
+ * This fixes MT 7091, and may fix subtle problems in other drivers as well.
+
+-Add PAL dump to "rtype2j" [Tomas Garcia-Meras (ClawGrip), Roberto Fresca, Recreativas.org, The Dumping Union] (#3963) [ClawGrip]
+
+-Tandy 1000: Improve keyboard HLE in basic on 1000 tx msdos floppy [smf]
+
+-MT 06998 [Robbbert]
+
+-MT 07074 [kunikuni]
+
+-MT 7096 [AJR]
+
+-Add "Frogger (Video Dens, Spanish bootleg on Scramble hardware)" [ClawGrip]
+
+-Add "froggervd" [ClawGrip]
+
+-new working clone - 800 Fathoms (older) [braintro]
+
+-fix cam900 damage in fuukifg2 / fg3 from May (#3971) [David Haywood]
+
+-New WORKING clone (#3967) [ClawGrip]
+ * Add "Hard Head 2 (v2.0, Music Program v2.0)"
+ * Add "hardhea2a"
+
+-New WORKING clone (#3962) [ClawGrip]
+ * Add the common 1986 year hack set
+ * Add tehkanwch
+
+-m79152pc: Add cursor, scrolling support and some video attributes [AJR]
+
+-froggervd: Patch program ROMs; promote to WORKING [AJR]
+
+-stage1 namcoc65 / c68 devicification (#3974) [David Haywood]
+ * stage1 namcoc65 / c68 devicification
+ * progress (c68 button mappings currently incorrect)
+
+-apple2e.cpp: correct I/O intercepts to match hardware [Peter Ferrie]
+
+-apple2e: fix issues with cards in slots 1 & 2 that use the $C800 space. [R. Belmont, Peter Ferrie]
+
+ * sun4: DMA fixes, began work on AMD LANCE skeleton, fails loopback test. [Ryan Holtz]
+
+-vastar.cpp: dumped PROMs for dogfightp [ShouTime]
+
+ * am79c90: Added rudimentary AMD 79C90 LANCE ethernet controller support, enough to make sun4 happy. [Ryan Holtz]
+
+-decstation: Emulated accelerated quasi-blitter enough to get a working console [R. Belmont]
+
+-vegas.cpp: various updates (#3975) [Hydreigon223]
+ * Promote Cart Fury to working (I could not find any major bugs let alone sound or graphical bugs)
+ * Removed no sound flag from gauntleg12 as I couldn't find any major sound bugs in recent versions.
+ * Add imperfect sound flags sf2049 and clones, nbashowt, nbafl, and nbagold (previous flagged as no sound.)
+
+ * sparc: Fixed TBR masking when taking traps and interrupts. [Ryan Holtz]
+
+ * sun4c: Ignore writes to ASIs 12-14, as we do not emulate the cache. [Ryan Holtz]
+
+-powervr2.cpp: store different types of polygons in different lists [snickerbockers]
+
+-powervr2.cpp: make opaque polygons opaque [snickerbockers]
+ * Previously, MAME's pvr2 implementation treated all polygons as transparent.
+ * This resolves missing graphics in certain games which were rendering opaque polygons with alpha values which would make them
+    transparent if they weren't on the opaque list.
+ * In the future, Punch-through polygons will also require special consideration. These are polygons which support transparency but
+    not blending (every pixel is either entirely transparent or entirely opaque).  For now, they're still treated the same as
+    transparent polygons.
+
+-use c68 for more games, fix what looks like more cam900 damage (luckywld) due to bad ram size assumptions. (#3976) [David Haywood]
+ * use c68 for more games, fix what looks like more cam900 damage (luckywld) due to bad ram size assumptions.
+ * fix crash I introduced by trying things in a slightly different way
+
+-Update "getstarb1" [ClawGrip]
+ * Added missing PROMs, update an already added PROM (was different on the PCB), add a PAL as NO_DUMP (protected), update ROM labels
+    and verified some ROMs that were corrupt when set was originally dumped
+    [Tomas Garcia-Meras (ClawGrip), Roberto Fresca, Recreativas.org, The Dumping Union]
+
+-nmg5.cpp : Various cleanups (#3904) [cam900]
+ * nmg5.cpp : copybitmap_trans for bitmap layer, Cleanup duplicates/ACCESSING_BITs
+ * nmg5.cpp : Cleanup filling bitmap layer
+
+-Primal Rage II - Hooked up watchdog [smf, coolmod]
+
+-uzebox.xml: added 6 new titles [ArcadeShadow]
+
+-Add "WEC Le Mans 24 (v2.01)" [ClawGrip]
+
+-Add "wecleman" (v2.01 as new parent) [ClawGrip]
+
+-decstation: added LANCE controller, started IRQ handling in gate array. [R. Belmont]
+
+-wecleman.cpp update info for WEC Le Mans 24 based on PCB pictures [f205v]
+
+-namcos2 / namcos21 - use configured banking for audiocpu (#3986) [David Haywood]
+ * namcos2 / namcos21 - use configured banking for audiocpu
+
+-valtric: Redumped and corrected Text ROM "vt_07.bin" (#3988) [ClawGrip]
+ * Text ROM was overdumped (although both halfs were not identical, having two different bytes). The ROM socket on the PCB was
+    labeled as "27128", pointing that the new size is the right one.
+
+ * sun4: Fixed MMU page fault handling. SunOS installer now boots. [Ryan Holtz]
+
+-PSX GPU Implement transparent dots & lines (which fixes MT 06528) & declare variables on first use. [smf]
+
+ * sun4: Added SBus slot bus and basic bwtwo slot device. [Ryan Holtz]
+
+ * sbus: Added preliminary cgthree support. [Ryan Holtz]
+
+ * sun4: Added basic support for cgsix/TurboGX SBus card. [Ryan Holtz]
+
+ * turbogx: Added logging of FBC accesses. [Ryan Holtz]
+
+-Add missing short commands [Wellington Uemura]
+ * I've noticed this while I was translating the manual.
+
+ * sun4: Added enough ROP support to turbogx to make scrolling work in the sun4_60 boot monitor. [Ryan Holtz]
+
+-imds2: Split out emulation of I/O controller board as separate device [AJR]
+ * Add and identify some extra IOC firmware revisions (v1.3 from Bitsavers)
+ * More descriptive names for ROMs of latest IOC revision (from Bitsavers)
+ * imds: Remove skeleton driver; ROMs preserved as v1.4 of imds2ioc
+
+-split namco c169 roz chip, c123 tilemap chip and c355 sprite chip from namcos2 shared state by making them devices (#3991)
+ [David Haywood]
+ * some reorganization still needed (eg move init stuff to config)
+ * use std::fill instead of memset
+ * split out c123 tilemap chip
+ * namco system2 sprite chip is a device, move content of machine/namcoic.h to a text file in 'etc' as it's not really code at all,
+    and the cpp file is no longer needed
+ * Namco System 2 ROZ is a device (so only gets created on games that have it, avoids a crash in old code in tilemap viewer)
+ * untangle namcofl from namcos2 now that things are devices
+ * untangle namconb1 from namcos2
+ * untangle gal3.cpp from namcos2
+ * untangle namcos2 and namcos21 - part 1 (ugly part)
+ * untangle system2 and system21, part 2
+ * use c68 for c68 based games in namcos21.cpp and some cleanup / notes / reorganization / default nvrams
+ * c123 - move init to device config
+ * c169 init -> device config
+ * c355 init -> device config
+ * new clones Four Trax (Japan) [ShouTime, The Dumping Union]
+ * note, one of the gfx roms in the MAME set has an 'fx2' label, it should be verified.
+ * also replaced the ROMs for the fourtraxa set, the old ones had a 0x00 fill instead of a 0xff fill but were otherwise identical,
+    it's a weird mod of the World set that hides most of the advertising banners, replacing them with generic ones, presumably for
+    legal reasons?
+
+-seta2.cpp: Document undumped Guardians on the P0-113A PCB and provide a PCB layout for the P0-113A PCB [Brian Troha]
+
+-pacland.cpp: Changed to approach real hardware behavior (#3998) [kunikuni]
+ * Update pacland.h
+ * Update pacland.cpp
+
+-HLSL: Move scanline to occur before defocus [W. M. Martinez]
+ * On branch scanline Changes to be committed: modified:   hlsl/post.fx Remove scanline effect
+
+-Port scanline modification to BGFX [W. M. Martinez]
+
+ * cgthree,turbogx: Hooked up Bt458 RAMDAC instead of custom palette handling. [Ryan Holtz]
+
+ * sbus: Added a skeleton device for the SunPC 5x86 Accelerator SBus board. [Ryan Holtz, Andrew Liles]
+
+ * sbus: Added a skeleton device for the SunSwift 10/100 + Fast Wide SCSI SBus board. [Ryan Holtz, Andrew Liles]
+
+ * cgsix: Renamed turbogx.* to cgsix.* and added TurboGX+ support. [Ryan Holtz, Andrew Liles]
+
+-hiscore.dat: updates [Leezer]
+
+ * nscsi_cd: Return mid-sector data when initiating a read mid-sector in 512-byte block mode. [Ryan Holtz]
+
+ * sun4: Trigger memory access exceptions on access to undefined memory types. [Ryan Holtz]
+
+ * sbus: Added a skeleton device for the Artecon SB300P 3-serial 1-parallel SBus card. [Ryan Holtz]
+
+-Extended CoCo 3's keyboard to include a second shift level. This enabled natural keyboard support for {, }, [, ], \, |, _, and ^.
+ [tim lindner]
+
+-tzx_cass.cpp: 1ms pause is always required [AmatCoder]
+ * Not only when pause from block is greater than zero . Otherwise the last pulse is not terminated properly in some cases.
+
+ * sbus: Added an alternate FCode PROM for the bwtwo video board. [Ryan Holtz]
+
+ * sun4: Fixed timekeeper type and fixed timekeeper behavior that could cause it to miss updates. [Ryan Holtz]
+
+-Missed a file, nw. [mooglyguy]
+
+-z80dart: Miscellaneous bug fixes [AJR]
+ * Default RXD to 1 to eliminate spurious break condition
+ * Correct CTS level in RR0 after "Reset External/Status Interrupt" command
+ * Allow immediate inactivation of RTS output when nothing is being transmitted
+
+-Extended CoCo 1/2's keyboard to include a second shift level. This enabled natural keyboard support for {, }, [, ], \, |, _, ~, and
+ ^. [tim lindner]
+
+-pcx: Make display work again in new resolution [AJR]
+ * This includes a workaround for a regression that likely occurred with e39e873875b98ee1cd4a0bc81226a9e56b169497.
+
+-Add Sun mouse port and hook it up to sun3, sun3x, sun4, and sun4c. Also add notes to Sun keyboard emulation. [Vas Crabb]
+ * There's a hack to make the 1200 Baud mouse actually run at 9600 Baud. This is necessary because the SCC is incorrectly expecting
+    9600 Baud rather than 1200 Baud.  I don't have time to fix the SCC, so I'd appreciate it if someone else would.
+ * There's no way it should be expecting 9600 Baud on the mouse port. Solaris 2.3 and later support 1200 Baud and 4800 Baud, and
+    earlier versions support 1200 Baud only.  No version of Solaris works with a 9600 Baud mouse.
+ * The workaround allows the mouse to be used in SunView on sun4_60 - I haven't tested any other drivers.
+
+-bbcb: Added floppy disc controller options:- [Nigel Barnes]
+ * AMS 3" Microdrive Disc System
+ * Microware DDFS FDC (not working)
+
+-bbc: Added Acorn Bitstik and Bitstik 2 analogue controllers. [Nigel Barnes]
+
+-acorn_fdc/atom_discpack: Set READY on HEAD_LOAD. [Nigel Barnes]
+
+ * fix not set default uniforms for vector pass (#4008) [ImJezze]
+
+-Change nforcepc_h to mame_machine_nforcepc_h [S.Z]
+
+-Generate layouts for dual-screen machines rather than loading dualhsxs.lay - this ensures aspect ratio is correct for non-4:3
+ screens. [Vas Crabb]
+
+-namcos2.cpp: Minor ROM name correction and use correct FX CHR-2 for the Japan set of Four Trax [ShouTime, The Dumping Union]
+
+-vgmplay: Support ym2608, ym2610, ym2612 & y8950 samples [smf]
+
+-Re-write serial mouse support: [Vas Crabb]
+ * Separate Microsoft 2-button mouse and Logitech 3-button Microsoft-compatible mouse
+ * Add Microsoft wheel mouse
+ * Make Mouse Systems mouse behave more realistically
+ * Add Mouse Systems "rotatable" mouse
+ * Simplify code and eliminate timers
+
+-dsk_dsk.cpp: sectors must be read even if it contains Deleted Mark [AmatCoder]
+ * FDC will read the data if SK bit is not set.
+ * Fixes MameTesters bug #07081
+
+-OS X has different ideas about mouse button numbering - see #4010 [Vas Crabb]
+
+-Machines now WORKING [Robbbert]
+ * CompJU+TEr
+ * CompJU+TEr (EMR-ES 1988)
+ * CompJU+TEr (ES 2.3)
+ * CompJU+TEr (ES 4.0)
+
+-PSX: implemented GPU STP draw and checking, which is used on Aquarush for water effects. [smf]
+
+-neogeo.cpp, neopcb.cpp : Eliminate register_postload, Cleanup naming (#4011) [cam900]
+ * neogeo.cpp : Remove some MCFGs neogeocd.cpp : Cleanup regions/naming neogeo_spr.cpp : Fix crash when fix bios is not exists
+
+-vgmplay: fixed off by one error that caused a bogus error to be flagged up [smf]
+
+-correct name for f1superb [f205v]
+ * The correct name for f1superb is "F-1 Super Battle" according to manual and to game title screen.
+
+ * sun4, sparc: Optimized the SPARC core and the sun4 driver. [Ryan Holtz]
+
+-Verified the dump of 5000026.u18 on the very earliest (prototype?) IBM 5160 XT BIOS revision. [MicroCoreLabs]
+
+-Namco System 21 and other related refactors (#4013) [David Haywood]
+ * namco checkpoint (including cam900 submission)
+ * optional -> required don't use fake bootstrap on older type, suspend CPU instead
+ * split namco21 driver into 3 drivers as the different configurations really are entirely different boardsets with similar
+    components, not a real 'system' emulated entire PCB set for driveyes (
+    http://www.tvspels-nostalgi.com/Bilder/PCB/Namco/driverseye_cage_inside.jpg ) although how the PCBs communicate is not yet known
+    (C139 maybe, which might also be an MCU)
+ * mark cybsledj as World instead, there's nothing about this set other than the CY1 code to indicate that it's a Japanese set, and
+    I don't think the Namco codes represent region, just release order.
+
+-suprnova.cpp: verified plds' dumps [caius]
+
+ * sun4: Added a sun4c MMU device. Currently wraps the functionality of S4-buffer, S4-cache, and S4-MMU, will eventually be split.
+    [Ryan Holtz]
+ * sun4: Significant optimization, from 150% -> 330% unthrottled on an i7-5930K. [Ryan Holtz]
+
+-vgmplay: added sample player support for SN76496, YM2203 & C6280 [smf]
+
+-correct name for f1superb The correct name for f1superb is "F-1 Super Battle" according to manual and to game title screen. [f205v]
+
+-Namco System 21 and other related refactors note this includes cam900s changes and thus supersedes his submission (
+ https://github.com/mamedev/mame/pull/3999 ) as it was working on the same code. [DavidHaywood]
+ * gave an option for tms320c25 to use an internal ROM config (it's controlled by a pin)
+ * converted Namco C67 to be a tms320c25 type with internal ROM
+ * reorganized and split out the older and newer System 21 DSP boards into their own board devices (this can now be shared with
+    Galaxian 3 which has 2 DSP boards identical to the later System 21 one)
+ * split out the 3D renderer into a device too (likewise, this will enable us to use it with Galaxian 3)
+ * corrected bad documentation (I've contacted owners of 3 Star Blade PCBs and in all cases their boards have been identical to
+    Cyber Sled, the configuration previously described does not appear to exist and is not logical)
+ * various cleanups (eg suspend the DSP CPU in the earlier S21 type rather than running a dummy program before the 68k uploads to
+    RAM)
+ * I consider this to be a checkpoint that will serve as the base for futher cleanups (and work on things like Galaxian 3 + the
+    proper Drivers Eyes PCB cage setup, which I'll look into soon)
+
+-neogeo.cpp, neopcb.cpp : Eliminate register_postload, Cleanup naming neogeo.cpp : Remove some MCFGs neogeocd.cpp : Cleanup
+ regions/naming neogeo_spr.cpp : Fix crash when fix bios is not exists [cam900]
+
+-dsk_dsk.cpp: sectors must be read even if it contains deleted mark FDC will read the data if SK bit is not set. [AmatCoder]
+ * Fixes MameTesters bug #07081
+
+-More CoCo driver second level shift work. Implemented this for the coco 1 and 2. Also fixed an omission for the coco3 driver.
+ [tlindner]
+
+-tzx_cass.cpp: 1ms pause is always required Not only when pause from block is greater than zero . Otherwise the last pulse is not
+ terminated properly in some cases. [AmatCoder]
+
+-CoCo 3 Second Level shift Extended CoCo 3's keyboard to include a second shift level. This enables natural keyboard support for {,
+ }, [, ], \, |, _, and ^. [tlindner]
+
+-Make HLSL scanline shader happen before defocus The current behavior in MAME has scanlines rendered after the defocus shader, which
+ results in no blurring able to be done to scanlines. This has an odd effect that can be seen when the Y defocus parameter is large.
+ This change makes the scanline be rendered first. This allows the scanlines be blurred. At high enough defocus the scanlines will
+ lose distinction. [anikom15]
+
+-pacland.cpp: Changed to approach real hardware behavior Currently, when drawing the topmost-sprites, only draw non-transparent
+ pixels of fg, but originally it is correct to draw the whole screen. However, it is necessary to keep sprite-sprite priorities
+ intact. [kunikunijp]
+ * I think that approached the real hardware behavior. Also, I was able to reduce unnecessary bitmap memory area.
+
+-Add missing short commands I've noticed this while I was translating the manual. [katananja]
+
+-split namco c169 roz chip, c123 tilemap chip and c355 sprite chip from namcos2 shared state by making them devices some
+ reorganization still needed (eg move init stuff to config) [DavidHaywood]
+
+-Redumped and corrected Text ROM "vt_07.bin" [Tomas Garcia-Meras (ClawGrip), Roberto Fresca, Recreativas.org, The Dumping Union]
+ Text ROM was overdumped (although both halfs were not identical, having two different bytes). The ROM socket on the PCB was labeled
+ as "27128", pointing that the new size is the right one. [clawgrip]
+
+-wecleman.cpp update info for WEC Le Mans 24 based on PCB pictures update info for WEC Le Mans 24 based on PCB pictures [f205v]
+
+-namcos2 / namcos21 - use configured banking for audiocpu [DavidHaywood]
+
+-Update "getstarb1" Added missing PROMs, update an already added PROM (was different on the PCB), add a PAL as NO_DUMP (protected),
+ update ROM labels and verified some ROMs that were corrupt when set was originally dumped
+ [Tomas Garcia-Meras (ClawGrip), Roberto Fresca, Recreativas.org, The Dumping Union]
+
+-powervr2.cpp: implement opaque polygons PowerVR 2 treats opaque polygons as a separate class of polygon from transparent polygons.
+ Pixels rasterized from opaque polygons are always completely opaque regardless of what their alpha values are. [snickerbockers]
+ * This PR resolves missing graphics in games which render opaque polygons with non-opaque alpha values.
+ * There's also a third class of polygon called punch-through, which supports transparency but not blending (so every pixel is
+    either entirely opaque or entirely transparent).  Those haven't been implemented, and are still being treated as if they were
+    transparent polygons.
+ * Before: !0001 After: !0000
+ * Before: !0007 After: !0001
+
+-use c68 for more games, fix what looks like more cam900 damage (luckywld) due to bad ram size assumptions. [DavidHaywood]
+
+-vegas.cpp various updates Promoting Cart Fury to working status and removing the no sound flag because I couldn't find any major
+ bugs from all the recent versions I played this game on. [Hydreigon223]
+ * Tested Gauntlet Legends 1.2 in MAME to check if sound works and it does so removed the no sound flag from that. However, 1.2 runs
+    slower in MAME than 1.6.
+ * Replaced "no sound" with "imperfect sound" for Rush 2049 and NBA Showtime related games. Rush 2049 has obvious sound glitches
+    while NBA Showtime has various other issues while sound itself works.
+
+-stage1 namcoc65 / c68 devicification NOT ready for merging yet, cleanups to be done, and I want to pull c68 out and make the
+ difference as transparent to the drivers as possible first. [DavidHaywood]
+
+-fix cam900 damage in fuukifg2 / fg3 from May prevents MAME from crashing trying to access tilemap[0x42] instead of tilemap[0x3]
+ [DavidHaywood]
+
+-MT 07074 [kunikunijp]
+
+-Add PAL dump to "rtype2j" [Tomas Garcia-Meras (ClawGrip), Roberto Fresca, Recreativas.org, The Dumping Union]
+
+-sshangha.cpp : Fix OKI clock/pin7 Reference : https://www.youtube.com/watch?v=buCb-exoJWo [cam900]
+
+-improve sshangha mixing and palette handling helps with the issues listed in MT6020 ( https://mametesters.org/view.php?id=6020 )
+ [DavidHaywood]
+
+-seta001 remove a kludge [DavidHaywood]
+
+-yunsun16.cpp : Cleanups Cleanup duplicates, Reduce runtime tag lookups, Reduce unused, Fix notes, Cleanup tilemap scanning [cam900]
+
+-small fixes stv.cpp : znpwfvt - set default bios to Taiwan for this set as it only works with the Taiwan bios lastduel.cpp : fix
+ dipswitches for leds2011 / leds2011p [DavidHaywood]
+
+-dreamwld.cpp : Fix rowscroll [cam900]
+
+-psikyo.cpp : More fixes [cam900]
+
+-Removed Usagi imperfect graphics flag Because Taito GNET System uses PSX GPU device, and imperfect graphics flag into PSX GPU
+ device [sjy96525]
+
+-funybubl.cpp : Update/Cleanups Cleanup naming, Convert tilemap, Add address_map_bank_device for banked vram, Cleanup OKI banking,
+ Fix OKI clock related to On-PCB XTAL, Add palette decoder member for palette, Cleanup/fix naming, Fix palette entry, Reduce runtime
+ tag lookups [cam900]
+
+-psikyo.cpp : Fix rowscroll [cam900]
+
+-legionna.cpp : Fix denjinmk year Denjin Makai is released on February 1, 1994 (from Wikipedia), And Title screen says 1994
+ copyright. [cam900]
+
+-r2dx_v33.cpp : Fix nzerotea/zerotm2k OKI pin7 [cam900]
+
+-raiden2.cpp : Fix zeroteam OKI pin7 [cam900]
+
+-new NeoGeo 'sp1-u4' BIOS (from a US, 4-slot) [ack]
+
+-r2dx_v33.cpp : Fix nzerotea/zerotm2k OKI clock [cam900]
+
+-raiden2.cpp : Fix zeroteam OKI clock [cam900]
+
+-pacland: sprites bugfix Fixed the difference with real hardware: [kunikunijp]
+ * fixed: incomplete priority of sprites on fg
+ * fixed: sprites could not be displayed at the bottom of the screen
+
+-More topcat fixes [hp9k]
+
+-zsg2.cpp: properly reset emphasis filter state at key on zsg2.cpp: update documentation [superctr]
+ * This should fix the popping that sometimes happens at the beginning of raystorm song 12 (Slaughter Hour). Remaining noise in this
+    game (and gdarius) is likely due to bad sample ROM dumps.
+
+-I8291 improvements [hp9k]
+
+-Topcat fixes [hp9k]
+ * Implement Interrupts
+ * Add reading of cursor registers
+ * Implement Pixel Replacement Rules
+
+-nereid: implement reading palette [hp9k]
+
+-FM Towns softlists: add several dumps fmtowns_cd.xml: [rzero9]
+ * Branmarker 2 Extra Disc [DamienD / Tokugawa Corporate Forums]
+ * Super Real Mahjong PII & PIII + [DamienD / Tokugawa Corporate Forums]
+ * Teito Taisen [r09 / redump.org]
+ * Teitoku no Ketsudan II [r09 / redump.org]
+ * The Visitor [DamienD / Tokugawa Corporate Forums]
+ * Zoku Youjuu Senki - Suna no Mokushiroku [r09 / redump.org]
+ * fmtowns_flop.xml:
+ * Daisenryaku III '90 Map Collection Vol. 1 [r09]
+ * All of them are working.
+
+-Update strings.po I've updated and touched up some words for this language. [Neius]
+
+-Fixed Speed Ball P1 START Seems to be a "Moogly" typo in MAME 0.201... It was just a joke ;) [MASHinfo]
+
+-group Raiden 2 / DX sets by code revision so that we can more easily see which just differ by region byte, make it clear what
+ features determine game type (normal, easier, harder) [DavidHaywood]
+ * identified new dump that was added as 'harder' based on tanks on the first bridge
+
+-Update PC-FX Sound huc6230.cpp : Fix PSG, Timer'd ADPCM update, Implement CD-DA Volume huc6272.cpp : Make CD-DA Playable [cam900]
+
+-Add PLDs to "rthun2j" [Tomas Garcia-Meras (ClawGrip), Roberto Fresca, Recreativas.org, The Dumping Union]
+
+-Update documentation for konamim2.cpp corrected a few package information, verified on real PCB. [f205v]
+
+-Update documentation on konamigx.cpp Versus Net Soccer - verified on real PCB [f205v]
+ * added Konami custom number for Xilinx FPGA protection chip
+ * corrected package type for a number of Konami customs
+
+-nmg5.cpp : Various cleanups nmg5.cpp : copybitmap_trans for bitmap layer, Cleanup duplicates/ACCESSING_BITs [cam900]
+
+-Correct Chess Challenge 2 year from MT 05059 [sjy96525]
+
+-Correct Dirt Dash revision [sjy96525]
+
+-c64_flop.xml - Add a few new dumps Three new dumps from original floppies. [FakeShemp]
+ * Kryoflux RAW images are on archive.org https://archive.org/details/BillBudgePinballConstructionSetCommodore64.7z
+    https://archive.org/details/JingleDiskHolidayMusicalStoryWithComputerAnimationCommodore64AndAppleIIc.7z
+    https://archive.org/details/Sargon3Commodore64AndAtari8bit.7z
+
+-artmagic.cpp : Reduce runtime tag lookups, Cleanup naming etc... [cam900]
+
+-lethalj.cpp : Reduce runtime tag lookups, Fix naming [cam900]
+
+-interpro: notworking -> networking These changes combine to make InterPro networking work on Windows with the TAP-Windows6 driver.
+ [pmackinlay]
+ * osdnet: add a receive delay (1 frame) after transmit to avoid a time-travel problem
+ * taptun: pad short Ethernet frames and append FCS (Windows-only until Linux taptun behaviour is verified)
+ * clipper: fix bugs in carry flag handling, prefer sign bit for tests
+ * i82586: fix transmit bug, handle reset
+
+-mip3: Proper DMULT(U) implementation from git issue #3718 [bryanperris] Proper DMULT(U) implementation from git issue #3718
+ [bryanperris] Need to be vetted especially with regards to signed/unsigned types. [tedgreen99]
+
+
+New working machines
+--------------------
+Lucky Ball 96 (Ver 4.01) [Roberto Fresca, Grull Osgo, Daniel Gallimberti]
+bbc_flop_6502: P-System [Nigel Barnes]
+camplynx_cass: Super Air Raid [Nigel Barnes]
+Separate scanline effect into its own shader [W. M. Martinez]
+modified:   src/osd/modules/render/d3d/d3dhlsl.cpp [W. M. Martinez]
+Add scanline effect [W. M. Martinez]
+modified:   src/osd/modules/render/d3d/d3dhlsl.h [W. M. Martinez]
+Add scanline effect [W. M. Martinez]
+ibm5170: Heimdall, Heimdall 2: Into the Hall of Worlds [Arcade Shadow]
+Emma II trainer [Robbbert]
+
+
+New working clones
+------------------
+Lucky Ball 96 (Ver 3.01) [Roberto Fresca, Grull Osgo, Daniel Gallimberti]
+TouchDown Fever 2 (bootleg) [ClawGrip, Roberto Fresca, Recreativas.org, Dumping Union]
+Meteorite (Proel bootleg of Asteroids) [MikeMcBike]
+Mandanga (bootleg of Mandinga on Galaxian hardware, set 1) [Ivan Vangelista, Dumping Union]
+Mandanga (bootleg of Mandinga on Galaxian hardware, set 2) [Ivan Vangelista, Dumping Union]
+Pac-Man (Video Dens, Spanish bootleg on Galaxian hardware) [Roberto Fresca]
+[Tomas Garcia-Meras (ClawGrip), Roberto Fresca, Recreativas.org, [Roberto Fresca]
+The Dumping Union] [Roberto Fresca]
+Midnight Run: Road Fighters 2 (JAD, Japan v1.10) [ShouTime, The Dumping Union]
+The Simpsons (4 Players Asia) [Leonard S. Oliveira]
+River Patrol (Japan, unprotected)
+  [ShouTime, Henrique Areias Pontes, Dane Biegert, Evan Korzon, Mario Mantese, Smitdogg, The Dumping Union]
+Botanic (English / Spanish, with TMS5110) [Tomas Garcia-Meras (ClawGrip), Roberto Fresca, Recreativas.org, The Dumping Union]
+800 Fathoms (older) [ShouTime, The Dumping Union]
+Midnight Landing (Japan) [ShouTime]
+(maybe should rename this to 'Japanese / English' and the other set to 'Japanese / German'?) [Ivan Vangelista]
+Acorn Electron (Trial) [Centre for Computing History, ABUG]
+Gals Panic 4 (Europe) [nomax, The Dumping Union]
+Vendetta (World, 4 Players, ver. ?) [Jorge Silva]
+Star Castle (cocktail) [Brent Walker]
+WEC Le Mans 24 (v2.01) [Tomas Garcia-Meras (ClawGrip), Roberto Fresca, Recreativas.org, The Dumping Union]
+Hard Head 2 (v2.0, Music Program v2.0) [Tomas Garcia-Meras (ClawGrip), Roberto Fresca, Recreativas.org, [clawgrip]
+The Dumping Union] [clawgrip]
+I know it's a common and already known hack, but I've found it on two different bootleg PCBs. Maybe it should be included, at least
+  to have it documented and avoid confusion. [clawgrip]
+Tehkan World Cup (1986 year hack) [Tomas Garcia-Meras (ClawGrip), Roberto Fresca, Recreativas.org, The Dumping Union]
+Defend the Terra Attack on the Red UFO (bootleg, set 2) [Siftware, MASH]
+rom: 5049.zip [MASHinfo]
+Romident: [MASHinfo]
+5049.1h = ruhja                 redufob    Defend the Terra Attack on the Red UFO (bootleg) [MASHinfo]
+5049.1k = rukla                 redufob    Defend the Terra Attack on the Red UFO (bootleg) [MASHinfo]
+5049.5              NO MATCH [MASHinfo]
+5049.6  = ru6a                  redufob    Defend the Terra Attack on the Red UFO (bootleg) [MASHinfo]
+5049.6l = 6l.bpr                redufob    Defend the Terra Attack on the Red UFO (bootleg) [MASHinfo]
+5049.7f             NO MATCH [MASHinfo]
+5049.7h             NO MATCH [MASHinfo]
+5049.7k = ru3a                  redufob    Defend the Terra Attack on the Red UFO (bootleg) [MASHinfo]
+5049.7m             NO MATCH [MASHinfo]
+Out of 9 files, 5 matched, 4 did not match. [MASHinfo]
+(actually new parent) [DavidHaywood]
+
+
+New machines marked as NOT_WORKING
+----------------------------------
+Wyse WY-75 [Robbbert]
+bbcm_cart: Smart Cartridge [Centre for Computing History, ABUG]
+unnamed Video-Lich gambling game [Robbbert]
+Hazeltine 1420 Video Display Terminal [AJR]
+Lee Data 1214D Display Terminal [Al Kossow]
+
+
+New clones marked as NOT_WORKING
+--------------------------------
+The House of the Dead (prototype) [Andy Geezer]
+Diner (LF-2) French  [PinMAME]
+Acorn Communicator (prototype) [Centre for Computing History, ABUG]
+Acorn Briefcase Communicator [Centre for Computing History, ABUG]
+Acorn Communicator (Italian) [Centre for Computing History, ABUG]
+Hazeltine 1552 [Al Kossow]
+I'm adding this as NON WORKING just to save some time to whoever wants to work on it. [clawgrip]
+Frogger (Video Dens, Spanish bootleg on Scramble hardware)
+  [Tomas Garcia-Meras (ClawGrip), Roberto Fresca, Recreativas.org, The Dumping Union]
+Chouji Meikyuu Legion (Japan ver 1.05, bootleg set 2) [clawgrip]
+[Tomas Garcia-Meras (ClawGrip), Roberto Fresca, Recreativas.org, The Dumping Union] [clawgrip]
+
+
+bbc_flop_6502 (bbc_flop_6502.xml):
+  Working
+    P-System
+
+bbcm_cart (bbcm_cart.xml):
+  Non-working
+    Smart Cartridge
+
+c64_flop (c64_flop.xml):
+  Working
+    Bill Budge: Pinball Construction Set
+    JingleDisk - Holiday Musical Story with Computer Animation
+    Sargon III
+
+camplynx_cass (camplynx_cass.xml):
+  Working
+    Super Air Raid
+
+fmtowns_cd (fmtowns_cd.xml):
+  Working
+    Super Real Mahjong PII & PIII +
+    Teito Taisen
+    Teitoku no Ketsudan II
+    The Visitor
+    Zoku Youjuu Senki - Suna no Mokushiroku
+
+fmtowns_flop (fmtowns_flop.xml):
+  Working
+    Daisenryaku III '90 Map Collection Vol. 1
+
+ibm5150 (ibm5150.xml):
+  Working
+    2630 Fourier Analyzer (Demo)
+    Easy-PC Demonstrator for Printed Circuit Boards and Schematics
+    Mitt första ordbehandlingsprogram (Swe)
+    Ranger 1 (Demo)
+    The Great International Paper Airplane Construction Kit
+
+ibm5170 (ibm5170.xml):
+  Working
+    Heimdall
+    Heimdall 2: Into the Hall of Worlds
+
+interpro (interpro.xml):
+  Working
+    Intergraph Mechanical Software
+
+uzebox (uzebox.xml):
+  Working
+    Babylon Tower
+    Bomber
+    Bugz
+    Fifteen Puzzle
+    Holey Moley
+    Joyrider
+
+Comparing 0.201 (mame0201) to 0.201 (mame0201-518-g250c06a)
+
+Renames
+luckybalc -> luckybald Lucky Ball 96 (Ver 3.50 - 616)
+simpsons4pa -> simpsons4pe The Simpsons (4 Players World, set 2)
+galpani4 -> galpani4j Gals Panic 4 (Japan)
+weclemanb -> weclemanc WEC Le Mans 24 (v1.26)
+
+New working machines
+--------------------
+Emma II trainer
+Pitapat Puzzle
+Video 21
+
+New working clones
+------------------
+800 Fathoms (older)
+Acorn Electron (Trial)
+Botanic (English / Spanish, set 2)
+Chouji Meikyuu Legion (Japan ver 1.05, bootleg set 2)
+Defend the Terra Attack on the Red UFO (bootleg, set 2)
+Four Trax (Japan)
+Frogger (Video Dens, bootleg on Scramble hardware)
+Gals Panic 4 (Europe)
+Hard Head 2 (v2.0, Music Program v2.0)
+Lucky Ball 96 (Ver 3.01)
+Lucky Ball 96 (Ver 3.50 - 623)
+Mandanga (bootleg of Mandinga on Galaxian hardware, set 1)
+Mandanga (bootleg of Mandinga on Galaxian hardware, set 2)
+Meteorite (Proel bootleg of Asteroids)
+Midnight Landing (Japan)
+Midnight Run: Road Fighters 2 (JAD, Japan v1.10)
+Pac-Man (Video Dens, Spanish bootleg on Galaxian hardware)
+River Patrol (Japan, unprotected)
+Star Castle (cocktail)
+Tehkan World Cup (1986 year hack)
+The Simpsons (4 Players Asia)
+Toki no Senshi - Chrono Soldier (prototype?)
+TouchDown Fever 2 (bootleg)
+Vendetta (World, 4 Players, ver. ?)
+WEC Le Mans 24 (v2.00, set 2)
+
+Machines promoted to working
+----------------------------
+Air Combat 22 (Rev. ACS1 Ver.B, Japan)
+Cart Fury
+CompJU+TEr
+Lucky Ball 96 (Ver 4.01)
+
+Clones promoted to working
+--------------------------
+CompJU+TEr (EMR-ES 1988)
+CompJU+TEr (ES 2.3)
+CompJU+TEr (ES 4.0)
+Lucky Ball 96 (Ver 3.50 - 616)
+Lucky Ball 96 (Ver 3.50 - 623)
+Lucky Ball 96 (Ver 3.50 - 626)
+Lucky Ball 96 (Ver 3.50 - 627)
+Stop Thief (Electronic Crime Scanner) (patent)
+
+New machines marked as NOT_WORKING
+----------------------------------
+1214D Display Terminal
+1420 Video Display Terminal
+Hazeltine 1552
+Jongputer
+Magnum R4000 (big)
+Magnum R4000 (little)
+Nvidia nForce PC (CRUSH11/12)
+
+New clones marked as NOT_WORKING
+--------------------------------
+Acorn Briefcase Communicator
+Acorn Communicator (Italian)
+Acorn Communicator (prototype)
+Cyber Sled (CY1, World?)
+Diner (LF-2) French
+The House of the Dead (prototype)
+WY-75
+
