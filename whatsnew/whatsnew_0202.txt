@@ -267,6 +267,27 @@ Source Changes
  * Implemented banking and I/O multiplexing.
  * Added DIP switch locations, and added pinout and I/O connections to notes.
 
+-Added preliminary AMD LANCE Ethernet controller device. [Ryan Holtz]
+
+-sun4.cpp updates: [Ryan Holtz]
+ * Ignore writes to ASIs used by unemulated write-through cache controller.
+ * Fixed DMA and MMU page fault handling.
+ * Trigger memory access exceptions on access to undefined memory types.
+ * Added SBus slots with support for bwtwo, cgthree and cgsix cards.
+ * Added an alternate FCode PROM for the bwtwo framebuffer.
+ * Added a skeleton Artecon SB300P 3-serioal/1-parallel SBus card device.
+ * Corrected timekeepr type.
+ * Added sun4c MMU device implementing S4-buffer, S4-cache and S4-MMU functionality.
+
+-sparc: Fixed TBR masking on traps and interrupts, and refactored CPU/MMU interface for better performance. [Ryan Holtz]
+
+-nscsi_cd: Return data from correct offset when initiating read at a block that isn’t on a sector boundary. [Ryan Holtz]
+
+-timekpr.cpp: Fixed issue that could cause updates to be missed. [Ryan Holtz]
+
+-Added skeleton SunPC 5x86 Accelerator, SunSwift 10/100 Ethernet + Fast Wide SCSI, and TurboGX+ SBus card devices.
+ [Ryan Holtz, Andrew Liles]
+
 -32x: Improved audio FIFO behaviour and corrected DAC resolution. [smf]
 
 -NES APU: Removed read/write trampolines and corrected channel enable reset state. [smf]
@@ -355,55 +376,3 @@ Source Changes
 -taitogn.cpp: Removed redundant flag from Usagi. [sjy96525]
 
 -Added abbreviated forms of some command-line options to documentation. [Wellington Uemura]
-
-
-
-
-
-
-
- * sun4: DMA fixes, began work on AMD LANCE skeleton, fails loopback test. [Ryan Holtz]
-
- * am79c90: Added rudimentary AMD 79C90 LANCE ethernet controller support, enough to make sun4 happy. [Ryan Holtz]
-
- * sparc: Fixed TBR masking when taking traps and interrupts. [Ryan Holtz]
-
- * sun4c: Ignore writes to ASIs 12-14, as we do not emulate the cache. [Ryan Holtz]
-
- * sun4: Fixed MMU page fault handling. SunOS installer now boots. [Ryan Holtz]
-
- * sun4: Added SBus slot bus and basic bwtwo slot device. [Ryan Holtz]
-
- * sbus: Added preliminary cgthree support. [Ryan Holtz]
-
- * sun4: Added basic support for cgsix/TurboGX SBus card. [Ryan Holtz]
-
- * turbogx: Added logging of FBC accesses. [Ryan Holtz]
-
- * sun4: Added enough ROP support to turbogx to make scrolling work in the sun4_60 boot monitor. [Ryan Holtz]
-
- * cgthree,turbogx: Hooked up Bt458 RAMDAC instead of custom palette handling. [Ryan Holtz]
-
- * sbus: Added a skeleton device for the SunPC 5x86 Accelerator SBus board. [Ryan Holtz, Andrew Liles]
-
- * sbus: Added a skeleton device for the SunSwift 10/100 + Fast Wide SCSI SBus board. [Ryan Holtz, Andrew Liles]
-
- * cgsix: Renamed turbogx.* to cgsix.* and added TurboGX+ support. [Ryan Holtz, Andrew Liles]
-
- * nscsi_cd: Return mid-sector data when initiating a read mid-sector in 512-byte block mode. [Ryan Holtz]
-
- * sun4: Trigger memory access exceptions on access to undefined memory types. [Ryan Holtz]
-
- * sbus: Added a skeleton device for the Artecon SB300P 3-serial 1-parallel SBus card. [Ryan Holtz]
-
- * sbus: Added an alternate FCode PROM for the bwtwo video board. [Ryan Holtz]
-
- * sun4: Fixed timekeeper type and fixed timekeeper behavior that could cause it to miss updates. [Ryan Holtz]
-
--Missed a file, nw. [mooglyguy]
-
- * sun4, sparc: Optimized the SPARC core and the sun4 driver. [Ryan Holtz]
-
- * sun4: Added a sun4c MMU device. Currently wraps the functionality of S4-buffer, S4-cache, and S4-MMU, will eventually be split.
-    [Ryan Holtz]
- * sun4: Significant optimization, from 150% -> 330% unthrottled on an i7-5930K. [Ryan Holtz]
