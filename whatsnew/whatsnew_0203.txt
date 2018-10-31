@@ -9,9 +9,9 @@ MAMETesters Bugs Fixed
 - 06157: [Graphics] (cps3.cpp) jojo, jojoba and clones: Combo meter graphics missing for second player. (David Haywood)
 - 06164: [Graphics] (namcos22.cpp) ridgerac: Title screen graphics are missing from second attract loop onwards. (hap)
 - 06171: [Core] System-specific INI file settings are retained when starting a new emulation session. (Ryan Holtz)
-- 06616: [Crash/Freeze] (coco3.cpp) coco3: Cartridges using 32k external ROM mode don’t work. (Tim Lindner)
-- 07088: [Crash/Freeze] (interpro.cpp) ip6000, ip6700, ip6800: 1 Hz DSP clock causes assertion failure in scheduler. (pmackinlay)
-- 07110: [DIP/Input] (snk.cpp) tdfever: The “Allow Continue” DIP switch is reversed. (Angelo Salese)
+- 06616: [Crash/Freeze] (coco3.cpp) coco3: Cartridges using 32k external ROM mode don't work. (Tim Lindner)
+- 07088: [Crash/Freeze] (interpro.cpp) ip6000, ip6700, ip6800: 1 Hz clock causes assertion failure in scheduler. (Patrick Mackinlay)
+- 07110: [DIP/Input] (snk.cpp) tdfever: The "Allow Continue" DIP switch is reversed. (Angelo Salese)
 - 07111: [Graphics] (namcos22.cpp) dirtdash: Speedometer displayed incorrectly. (hap)
 - 07115: [Sound] (cps2.cpp) spf2t (qsound): Sound effects are distorted, mainly on left channel. (superctr)
 - 07123: [Documentation] (megadriv.cpp) megadriv [dstrike]: Title is inaccurate. (Tafoid)
@@ -54,7 +54,7 @@ Pocket Gal Deluxe (Asia v3.00) [Jorge Silva]
 PuLiRuLa (World, earlier?) [Jorge Silva]
 Rapid Hero (NMK) [pacman70]
 Rim Rockin' Basketball (V1.2, bootleg) [ClawGrip, Roberto Fresca, Recreativas.org, The Dumping Union]
-Soldier Girl Amazon (Tecfri license) [Fredric Sjöholm]
+Soldier Girl Amazon (Tecfri license) [Fredric Sjoholm]
 Street Fighter II: The World Warrior (World 910204) [Erik Preston]
 Super Street Fighter II: The Tournament Battle (USA 930911) [Steve Gordon]
 Tazz-Mania - El Trompa (U.R.V. BBCPE bootleg) [Ricky2001, Recreativas.org]
@@ -151,7 +151,7 @@ ibm5170:
   NexNIC ND010 PCI Adapter (Ethernet/Fast Ethernet), Norton CrashGuard for Windows 95, Nova 9 (International Version, 5.25"),
   NuSound PnP Install Disk, Postnummerkatalogen 1996 (Swe), Scroll 3D Mouse Setup Disk for PS/2 and Serial, SoundWave 32 Series,
   TMS320C5x DSK - Applications Guide/Application Software, Tango Printed Circuit Design Evaluation,
-  Tango Schematic Capture Evaluation, The Greatest Little PIC Book, Thunderhawk AH-73M, WordFinder Lexikon på PC (Swe),
+  Tango Schematic Capture Evaluation, The Greatest Little PIC Book, Thunderhawk AH-73M, WordFinder Lexikon pa PC (Swe),
   Write On! for Windows [FakeShemp]
 pc98:
   Ballade3, Bible Master - Crash of the Blleot Rutz, Bible Master - Crash of the Blleot Rutz (Alt), Bind - Kinbaku Jinmon Densetsu,
@@ -199,14 +199,14 @@ Source Changes
 --------------
 -Emulated National DP8350 CRT controller family. [AJR]
 
--mcs48: Set lower 4 bits of P2 to input during (and after) MOVD A,Pp. [AJR]
+-mcs48: Set lower 4 bits of P2 to input during (and after) MOVD A,Pp. [AJR]
 
 -i8243: Release P2 output after completion of read operation. [AJR]
 
 -sbrain.cpp: Driver overhaul: [AJR]
  * Added cursor and scrolling through CRT controller registers.
  * Corrected number of interrupts per frame.
- * Actually show the “insert diskette” message.
+ * Actually show the "insert diskette" message.
  * Added options for RAM size and two or more floppy drives.
  * Added RS232 ports and DIP switches for Baud clock selection.
 
@@ -223,10 +223,10 @@ Source Changes
 
 -Invalidate memory access caches when removing watchpoints (prevents crashes on subsequent accesses to the same areas). [AJR]
 
--mcs96: Made SFRs more accessible to the debugger, and made disassembler show names for directly-addressed SFRs. [AJR]
- * Also corrected disassembler output for some forms of ADDCB, SUBCB, MULB, ANDB, JBC and JBS.
- * Replaced I/O space with callbacks.
- * Added internal address space for non-executable register file & SFR area.
+-mcs96 updates: [AJR]
+ * Replaced I/O space with callbacks, and added internal address space for non-executable register file and SFR area.
+ * Made SFRs more accessible to the debugger, and made disassembler show names for directly-addressed SFRs.
+ * Corrected disassembler output for some forms of ADDCB, SUBCB, MULB, ANDB, JBC and JBS.
 
 -unidasm: Added st62xx support. [AJR]
 
@@ -241,8 +241,8 @@ Source Changes
 
 -rainbow.cpp: Connected WD2010 write fault input, and changed default serial port device to Microsoft 2-button mouse. [Bavarese]
 
--r9751 updates – Disktool is now fully functional: [Brandon Munger, Stephen Stair]
- * i86: Allow ’188 to advance DMA immediately if DRQ is held high when source synchronous DMA is started.
+-r9751 updates - Disktool is now fully functional: [Brandon Munger, Stephen Stair]
+ * i86: Allow '188 to advance DMA immediately if DRQ is held high when source synchronous DMA is started.
  * Connected SMIOC DMA to 68k CPU and fixed communication.
  * Emulated SCC2698B octal UART and connected to SMIOC.
  * Improved logging.
@@ -301,31 +301,31 @@ Source Changes
 -mwarr.cpp, stlforce.cpp: Converted video code to a device. [David Haywood]
 
 -cps3.cpp: Implemented score layer row scroll effects, and cleaned up code. [David Haywood]
- * Fixes combo meters in jojoba (MT06157, GitHub #4033).
+ * Fixes combo meters in jojoba (MT06157, GitHub #4033).
 
 -wecleman.cpp: Marked weclemanb as a hack. [David Haywood]
 
 -XaviX updates: [David Haywood]
  * Renamed members based on strings in code, moved audio stubs to a separate file, and updated notes.
- * Hooked up sprite addressing mode control register, improved sprite RAM hookup, and hooked up “text array“ pattern generator.
+ * Hooked up sprite addressing mode control register, improved sprite RAM hookup, and hooked up "text array" pattern generator.
  * Fixed multiplier unit use in rad_madf.
  * Added inputs for rad_bass, rad_crdn, taitons1 and taitons2.
  * Improved palette mode used by taitons2, improved sprite positioning, implemented sprite flipping, and improved priorities.
  * Added support for RAM-based tiles used in rad_bb2 test mode, and 24-bit tile addressing used by epo_efdx.
  * Improved CALLF, RETF and BRK, allowing namcons2 to boot and rad_ping to get past the first screen.
  * Mapped BIOS into second external bus space for e-kara sets, and implemented DMA register read-back.
- * Improved transparency handling, and implemented “arena control” clipping effect.
+ * Improved transparency handling, and implemented "arena control" clipping effect.
  * Re-implemented Super XaviX opcodes based on observed usage.
  * Allow some opcodes to bypass zero page, as required by namcons1.
- * Hooked up I²C memory.
+ * Hooked up I2C memory.
  * Implemented per-line rendering and raster interrupts (improves backgrounds in rad_snow and xavtenni).
 
--Don’t set the SDL_WINDOW_OPENGL extra flag if -video none is set. [dslegend]
+-Don't set the SDL_WINDOW_OPENGL extra flag if -video none is set. [dslegend]
  * Allows a true headless run when the environment variable SDL_VIDEODRIVER=dummy is set.
 
 -hphybrid: Added support for the 09825-67907 variant, and updated the hk64k and hp9845 drivers as necessary. [F.Ulivi]
 
--Emulated HP 9825B desktop computer, including DC100 tape drive, internal printer, and matrix display. [F.Ulivi]
+-Emulated HP 9825B desktop computer, including DC100 tape drive, internal printer, and matrix display. [F.Ulivi]
 
 -namcos22: Added view matrix reflection. [hap, Ryan Holtz]
  * Fixes alpinr2b character selection screen, raveracw/ridgera2 rear-view mirrors, and secret mirror track in raveracw.
@@ -333,19 +333,19 @@ Source Changes
 -namcos22 updates: [hap]
  * Added save state support and improved performance.
  * Corrected pixel clock and DSP clocks.
- * Fixed coin 2 not working.
- * Implemented rendering from point RAM (used on Alpine Racer 2 and Ridge Racer 2 title screens).
- * Improved System 22 fader and background color (fixes Victory Lap attract mode).
- * Improved Super System 22 fog and spot (improves graphics in Aqua Jet, Dirt Dash and Time Crisis).
- * Fixed polygon layer sometimes rendering when it shouldn’t
+ * Fixed coin 2 not working.
+ * Implemented rendering from point RAM (used on Alpine Racer 2 and Ridge Racer 2 title screens).
+ * Improved System 22 fader and background color (fixes Victory Lap attract mode).
+ * Improved Super System 22 fog and spot (improves graphics in Aqua Jet, Dirt Dash and Time Crisis).
+ * Fixed polygon layer sometimes rendering when it shouldn't
  * Added preliminary POSIRQ implementation (partial updates are not enabled yet).
- * Fixed window clipping on Ace Driver rear view mirrors and Alpine Racer 2 character selection screen.
+ * Fixed window clipping on Ace Driver rear view mirrors and Alpine Racer 2 character selection screen.
  * Fixed hitboxes for helicopter in Time Crisis and tanks in Tokyo Wars (error in 68020 CHK2).
- * Added Super System 22 lamp and motor outputs.
+ * Added Super System 22 lamp and motor outputs.
 
--pokey: Return most recent m_ALLPOT value and freeze POT counters during SK_RESET. [Jürgen Buchmüller]
+-pokey: Return most recent m_ALLPOT value and freeze POT counters during SK_RESET. [Juergen Buchmueller]
 
--Allow undefined GL symbols for WebAssembly target (GitHub #4187). [Justin Kerk]
+-Allow undefined GL symbols for WebAssembly target (GitHub #4187). [Justin Kerk]
 
 -Fixed compilation with X11 XInput enabled (NO_USE_XINPUT=0). [Kiall Mac Innes]
 
@@ -353,16 +353,16 @@ Source Changes
 
 -liblrabl, toypop: Improved cocktail mode emulation, and corrected DIP switch settings. [kunikuni]
 
--warpwarp.cpp: Corrected player 2 shot/ball offset in cocktail mode. [kunikuni]
+-warpwarp.cpp: Corrected player 2 shot/ball offset in cocktail mode. [kunikuni]
 
--pacland: Corrected “Bonus Life” DIP switch values. [kunikuni]
+-pacland: Corrected "Bonus Life" DIP switch values. [kunikuni]
 
 -ti99: Added guards against selecting non-existent drives. [Michael Zapf]
 
 -bbc_tube_6502/65c102: Added ReCo6502 Tube 1.21 ROM. [Nigel Barnes]
 
 -bbc.cpp updates: [Nigel Barnes]
- * Reimplemented the addressable latch using the ’LS259 device.
+ * Reimplemented the addressable latch using the 'LS259 device.
  * Added 32K ROM slots in B+ and Master variants.
  * Use bankdev to switch IO/ROM in Master.
  * Use ram_device instead of ROM_REGION for RAM.
@@ -373,22 +373,22 @@ Source Changes
 
 -bbcmc: Added expansion port and Mertec Companion expansion device. [Nigel Barnes]
 
--phoenix: Don’t configure_entries and set_base on the same bank. [O. Galibert]
+-phoenix: Don't configure_entries and set_base on the same bank. [O. Galibert]
 
 -Added a skeleton driver for MIPS Computer Systems ROSC/os machines, with initial focus on the RC2030 headless workstation.
  [Patrick Mackinlay]
 
--GENie: Changed minimum target macOS version to 10.6 to allow building on macOS 10.14 “Mojave” with latest Xcode tools. [R. Belmont]
+-GENie: Changed minimum target macOS version to 10.6 to allow building on macOS 10.14 "Mojave" with latest Xcode tools. [R. Belmont]
 
--Fixed compilation with SDL 2.0.8 and later on macOS. [R. Belmont]
+-Fixed compilation with SDL 2.0.8 and later on macOS. [R. Belmont]
 
--hapyfish: Replaced driver with clone of mini2440, allowing it to boot from NAND Flash. [R. Belmont]
+-hapyfish: Replaced driver with clone of mini2440, allowing it to boot from NAND Flash. [R. Belmont]
  * Boot loader now comes up and fails because it can't find both Flash chips.
 
 -gamecom.cpp: Made all games besides lostwrld playable, and updated notes. [Robbbert]
 
--sorcerer.cpp: Added DDMON 1.3 and ADSMON BIOS options. [Robbbert]
- * ADSMON requires an 80 column card that is not emulated.
+-sorcerer.cpp: Added DDMON 1.3 and ADSMON BIOS options. [Robbbert]
+ * ADSMON requires an 80 column card that is not emulated.
 
 -sm8500: Improved logging of unknown opcodes. [Robbbert]
 
@@ -396,9 +396,9 @@ Source Changes
  * Changed FDC to and fixed mapping.
  * Added save state support.
  * Added machine configuration for SPARCstation SLC (4/20), IPX (4/50), 1+ (4/65) and 2 (4/75).
- * Added RAM size options and fixed mirroring in 4 MB configurations.
+ * Added RAM size options and fixed mirroring in 4 MB configurations.
  * Improved MMU/cache behaviour, and added support for full-width memory mask on segment map writes.
- * Re-wrote timers to tick at 1 MHz (allows NetBSD to progress further).
+ * Re-wrote timers to tick at 1 MHz (allows NetBSD to progress further).
 
 -sbus: Added font register and fixed drawing endianness for cgsix card. [Ryan Holtz]
 
@@ -408,24 +408,24 @@ Source Changes
 
 -vii.cpp updates: [Ryan Holtz]
  * Fixed titles and publishers.
- * Ported current µ'nSP 1.0 CPU core and serial EEPROM emulation from Unununium.
- * Made µ'nSP instructions that use post-increment/decrement addressing modes update segment register on rollover.
- * Fixed road layer in several Zone 60 games.
+ * Ported current u'nSP 1.0 CPU core and serial EEPROM emulation from Unununium.
+ * Made u'nSP instructions that use post-increment/decrement addressing modes update segment register on rollover.
+ * Fixed road layer in several Zone 60 games.
  * Added an optional visual debugger for audio (may be enabled with a preprocessor macro).
  * Converted SPG24x and SPG28x SoCs to devices, added saturation and fade offset control, and implemented sound output.
  * Added SPG24x/SPG28x chip select callbacks and rudimentary analog inputs.
  * Hooked up walle NVRAM.
- * Added preliminary V.Smile support – runs BIOS and boots games.
+ * Added preliminary V.Smile support - runs BIOS and boots games.
 
 -osdwindows: Fixed BGFX not rendering in multiple windows (internal UI is still glitchy). [Ryan Holtz]
 
--ibm5150.cpp: Hooked up cassette data output (GitHub #4076). [Ryan Holtz, BigAlUK]
+-ibm5150.cpp: Hooked up cassette data output (GitHub #4076). [Ryan Holtz, BigAlUK]
 
--Fixed compilation with libjpeg for environments where TRUE and FALSE aren’t preprocessor macros. [Ryan Schmidt]
+-Fixed compilation with libjpeg for environments where TRUE and FALSE aren't preprocessor macros. [Ryan Schmidt]
 
 -vt100, ec1841, mc1502, poisk1, km035 and ms7004: Made keyboards Lua-friendly and updated mappings. [shattered]
 
--PlayStation GPU: Copy the textures’ STP bit (improves Silent Hill). [smf]
+-PlayStation GPU: Copy the textures' STP bit (improves Silent Hill). [smf]
 
 -PlayStation GTE: Use helper functions to count leading zero/one bits rather than implementing locally. [smf]
 
@@ -445,7 +445,7 @@ Source Changes
  * Add Special Status Word to exception frames.
  * Raise MMU configuration exception if SRP/CRP is invalid.
  * Factored out code to set bus error details, perform address translation cache lookup, match TT register, and walk tables.
- * Added support for short indirect descriptors (used by HP-UX 9).
+ * Added support for short indirect descriptors (used by HP-UX 9).
  * Set MMU status flags when performing address translation cache lookup.
  * Split PLOAD and PTEST code from m68881_ops into separate functions, and corrected the name to m68851_ops.
  * Correctly disassemble more forms of PTEST and PFLUSH instructions.
@@ -470,8 +470,8 @@ Source Changes
 
 -Fixed command line parsing for the long form of the first instance of a media option. [Tim Lindner]
 
--Fixed CoCo 16k cartridge banking, CoCo 3 32k external ROM mode, and Zumwalt banking through the CoCo Multi-Pak. [Tim Lindner]
- * Addresses MT06616 and GitHub #2746.
+-Fixed CoCo 16k cartridge banking, CoCo 3 32k external ROM mode, and Zumwalt banking through the CoCo Multi-Pak. [Tim Lindner]
+ * Addresses MT06616 and GitHub #2746.
 
 -coco3.cpp: Added workaround to show only one screen by default. [Tim Lindner]
 
@@ -484,11 +484,11 @@ Source Changes
 
 -jazz.cpp: Added PS/2 keyboard/mouse controller emulation. [Vas Crabb]
 
--krz2000.cpp: Dumped the Kurzweil K2000 “ROM1 – Orchestral” and “ROM2 – Contemporary” add-on modules. [anonymous]
+-krz2000.cpp: Dumped the Kurzweil K2000 "ROM1 - Orchestral" and "ROM2 - Contemporary" add-on modules. [anonymous]
 
 -namcops2.cpp: Re-dumped superdbz DVD and confirmed that gundzaft DVD dump is good. [Arcade-Projects]
 
--Dumped the IBM Model M PC/AT and PS/2 keyboard microcontroller. [Brandon Ermita]
+-Dumped the IBM Model M PC/AT and PS/2 keyboard microcontroller. [Brandon Ermita]
 
 -paradise.cpp: Updated information about Spinner Controls Daughtercard, and added DIP switch locations for Mad Ball. [Brian Troha]
 
