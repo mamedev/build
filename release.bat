@@ -35,6 +35,12 @@ popd
 build\mingw-gcc\bin\x64\Release\mame64.exe -listxml > mame%1.xml
 7za a -mpass=4 -mfb=255 -y -tzip build\release\mame%1lx.zip mame%1.xml
 
+@echo Calculating digests....
+pushd build\release
+sha1sum mame%1b_32bit.exe mame%1b_64bit.exe mame%1lx.zip mame%1s.exe mame%1s.zip whatsnew_%1.txt > SHA1SUMS
+sha256sum mame%1b_32bit.exe mame%1b_64bit.exe mame%1lx.zip mame%1s.exe mame%1s.zip whatsnew_%1.txt > SHA256SUMS
+popd
+
 @echo Finished creating release....
 goto :eof
 
