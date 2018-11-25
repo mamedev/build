@@ -186,9 +186,10 @@ class softlist_comparator(object):
             pass
 
 
-    def __init__(self, output, **kwargs):
+    def __init__(self, output, verbose=False, **kwargs):
         super(softlist_comparator, self).__init__(**kwargs)
         self.output = output
+        self.verbose = verbose
 
     def compare(self, current, baseline):
         error_handler = self.ErrorHandler()
@@ -203,6 +204,8 @@ class softlist_comparator(object):
         old_descriptions = dict()
         if baseline is not None:
             def handle_old_software(shortname, description, is_clone, is_working):
+                if self.verbose:
+                    sys.stderr.write('item %s (%s) previously %sworking\n' % (shortname, description, '' if is_working else 'not '))
                 if is_working: old_working[shortname] = description
                 else: old_nonworking[shortname] = description
                 old_descriptions[description] = shortname
@@ -216,21 +219,31 @@ class softlist_comparator(object):
         promoted = set()
         renames = dict()
         def handle_new_software(shortname, description, is_clone, is_working):
+            if self.verbose:
+                sys.stderr.write('item %s (%s) now %sworking' % (shortname, description, '' if is_working else 'not '))
             if is_working: new_working[shortname] = description
             else: new_nonworking[shortname] = description
             if (shortname in old_working) or (shortname in old_nonworking): old_name = shortname
             elif description in old_descriptions: old_name = old_descriptions[description]
             else: old_name = None
             if (old_name is None) or (old_name in renames):
+                if self.verbose:
+                    sys.stderr.write(' (added)\n')
                 if is_working: added_working.add(description)
                 else: added_nonworking.add(description)
             else:
                 if old_name != shortname:
+                    if self.verbose:
+                        sys.stderr.write(' (was %s)\n' % (old_name, ))
                     renames[old_name] = (description, shortname)
                     if old_name in new_working: added_working.add(new_working[old_name])
                     elif old_name in new_nonworking: added_nonworking.add(new_nonworking[old_name])
                 if is_working and (old_name not in old_working):
+                    if self.verbose:
+                        sys.stderr.write(' (promoted)\n')
                     promoted.add(description)
+                elif self.verbose:
+                    sys.stderr.write('\n')
         content_handler.handleSoftware = handle_new_software
         parser.parse(current.data_stream)
         listname = content_handler.listname
@@ -249,7 +262,7 @@ class softlist_comparator(object):
         for shortname, description in old_nonworking.iteritems(): removed.append(description)
         removed.sort()
 
-        if renames or removed or added_working or added_nonworking:
+        if renames or removed or added_working or added_nonworking or promoted:
             self.output.write(('%s (%s):\n' % (listname, current.name)).encode('UTF-8'))
             if renames:
                 self.output.write('  Renames\n'.encode('UTF-8'))
@@ -506,6 +519,7 @@ def parse_args():
     parser.add_argument('-u', '--user', metavar='<username>', type=str, help='github username')
     parser.add_argument('-o', '--out', metavar='<file>', type=str, help='output file')
     parser.add_argument('-a', '--append', action='store_const', const=True, default=False, help='append to output file')
+    parser.add_argument('-v', '--verbose', action='store_const', const=True, default=False, help='verbose output')
     return parser.parse_args()
 
 
@@ -546,13 +560,15 @@ if __name__ == '__main__':
     print_new_machines(stream, 'New machines marked as NOT_WORKING', new_broken_parents);
     print_new_machines(stream, 'New clones marked as NOT_WORKING', new_broken_clones);
 
-    comp = softlist_comparator(stream)
+    comp = softlist_comparator(stream, args.verbose)
     current = repo.commit('release0%ld' % (long(releasetag_pat.sub('\\1', tag.name)) + 1, )).tree['hash']
     previous = repo.commit(tag).tree['hash']
     for obj in current:
         if obj.type == 'blob':
             basename, extension = os.path.splitext(obj.name)
             if extension == '.xml':
+                if args.verbose:
+                    sys.stderr.write('checking software list %s\n' % (obj.name, ))
                 try:
                     baseline = previous / obj.name
                 except KeyError:
@@ -562,3 +578,5 @@ if __name__ == '__main__':
                         comp.compare(obj, baseline)
                     except xml.sax.SAXException as err:
                         sys.stderr.write('error processing software list %s: %s\n' % (obj.name, err))
+                elif args.verbose:
+                    sys.stderr.write('no changes since previous release\n')
