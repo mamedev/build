@@ -1,0 +1,1856 @@
+0.204
+-----
+
+
+MAMETesters Bugs Fixed
+----------------------
+- 07151: [Gameplay] (asteroid.cpp) astdelux and clones: [possible] On launch a series of FFFFFF display multiple times in high-score position 1. (AJR)
+- 06474: [Graphics] (segas16b.cpp) goldnaxe: scroll issues (hap)
+- 07046: [Gameplay] (deco32.cpp) dragngun, dragngunj: Screen goes black on 3rd stage and game stops (hap)
+- 07149: [Graphics] (docastle.cpp) dowild: When level 1 completed (either by player or via attract mode), top of screen flickers (hap)
+- 06607: [Sound] (xmen.cpp) xmen and clones: Instruments in the music are playing back at the wrong volume (regression) (hap)
+- 05613: [Graphics] (prehisle.cpp) prehislek: Introductory Text (Korean?) not displayed properly
+- 07154: [Documentation] (megadriv.cpp) megadriv [ppersia2]: Incorrect release year
+- 06718: [Crash/Freeze] (mbc55x.cpp) mbc55x: Basic freezes after syntax error (AJR)
+
+
+New working machines
+--------------------
+
+
+New working clones
+------------------
+
+
+Machines promoted to working
+----------------------------
+
+
+Clones promoted to working
+--------------------------
+
+
+New machines marked as NOT_WORKING
+----------------------------------
+
+
+New clones marked as NOT_WORKING
+--------------------------------
+
+
+New working software list additions
+-----------------------------------
+
+
+Software list items promoted to working
+---------------------------------------
+
+
+New NOT_WORKING software list additions
+---------------------------------------
+
+
+Translations added or modified
+------------------------------
+
+
+Source Changes
+--------------
+-tecmo.cpp : Cleanups Cleanup duplicates, Reduce some runtime tag map lookups, Convert scroll array into shared_ptr, Remove
+ unnecessary handler installs, Fix spacing, Naming [cam900]
+
+-serflash.cpp : Updates Support address for when overall size is more/less than 0x8400000 bytes, or Flash page size is more/less
+ than 2048+64 Fix block erase command, Add notes, Fix overflow [cam900]
+
+-c6280.cpp : Fix LFO scale bit [cam900]
+
+-new working clone - Street Fighter II: The World Warrior (USA 910522, Rev. H) [braintro]
+
+-allow i2cmem to work with nostalgia games (page support causes hangs) [DavidHaywood]
+
+-new working clone - Touchmaster 4000 (v6.02 England) [braintro]
+
+-gottlieb.cpp : Minor cleanups, Reduce unnecessary arguments Fix namings, Spacings, Cleanup gfxdecodes sound/gottlieb.cpp : Reduce
+ unnecessary arguments of handlers [cam900]
+
+-New working clone (#4211) [Michael Moffitt]
+ * ---------------- Hacha Mecha Fighter Prototype [Mike Moffitt]
+
+-hotblock.cpp : Minor cleanups PALETTE_FORMAT for palette, Add notes, Cleanup video update routine, Convert VRAM array into
+ std::unique_ptr, confirmed XTAL (PCB is only has 24 MHz XTAL) [cam900]
+
+-Document the Tecfri license Pinball Action set (#4214) [ClawGrip]
+
+-prehisle.cpp: dumped correct char ROM for prehislek set, fixes MT05613 [Guru]
+
+-luaengine: add description comments for emu.item() [feos]
+
+-forgot newline [feos]
+
+-fantland.cpp : Minor cleanups (#4215) [cam900]
+ * fantland.cpp : Minor cleanups Reduce ACCESSING_BITs, Runtime tag map lookups, duplicates, Fix some namings, Spacings, remove
+    unnecessary MACHINE_START_CALL_MEMBER, MACHINE_RESET_CALL_MEMBER
+ * fantland.cpp : Split borntofi state related to ADPCM, input Fix naming/spacing, Reduce/correct ROM region usage, Reduce some
+    trampoline
+ * fantland.cpp : Minor correction
+
+-actually use offset argument in item:read_block(offset, count) improve comment wording [feos]
+
+-v25: Add address space for internal data area and SFRs [AJR]
+
+-restore tilemap offset to tumblep and chinatwn that were lost when driver was merged with supbtime (verified with hardware videos)
+ [DavidHaywood]
+
+-v53: overhaul [Patrick Mackinlay]
+ * An attempt to add the NEC V50 to the existing V53/V53A devices. Also overhauled for devcb3, and made some required changes to the
+    peripherals. Because this is a pretty wide-ranging change, I thought I'd solicit feedback before merging it.
+ * v53: refactor and add v50, devcb3, use templates and other general cleanup
+ * am9517a: add 16 bit transfer support to v5x_dmau variant
+ * i8251: minor tidy on v5x_scu variant
+ * hng64: update to match v53 changes
+ * mpc3000: update to match v53 changes
+
+-i8008: I/O addressing is only 5 bits [AJR]
+
+-mb87030: support padding mode [Sven Schnelle]
+ * This makes Pascal 3.25 boot/run from SCSI on hp9k_3xx. Pascal is now a fully running OS like BASIC on these machines. While at it
+    also clean up a few style issues.
+
+-dsk_dsk.cpp: Avoid to use uninitialized booleans [AmatCoder]
+ * Fix MameTesters #07134. Thanks to Klez for testing.
+
+-segasp.cpp: add alternate network board 1.23 firmware, dumped and documented one more Bingo Galaxy satellite PCB [Darksoft]
+
+-m52: improvements to alpha1v (promoted to working) (#4223) [David Haywood]
+ * split alpha1v into different class etc.
+ * fix sprite colours, looks like mpatrol could potentially support 3bpp anyway and the existing kludigng of the sprite clut prom
+    was to save memory
+ * mark it as working, I'm pretty sure 99% of the badness now is just the game
+
+-XaviX - ignore unaligned palette select bits in bpp modes > 4 (ttv_lotr boot screen) (#4213) [David Haywood]
+ * ignore unaligned palette select bits in bpp modes > 4
+
+-pbaction: hooked up Tecfri external pinball display on Pinball Action (working but missing some comms) (#4219) [David Haywood]
+ * started looking at Tecfri external display hookup on Pinball Action (not yet correct)
+
+-Xavix - basic timer, move ekara carts to a Softlist (#4227) [David Haywood]
+ * basic timer stuff (fixed frequency for now)
+ * ekara now uses a Software List
+
+-m68kmmu improvements (#4229) [dxl]
+   - handle RW bit in ATC cache properly
+   - add page table walk that result in BUSERROR to ATC
+   - fix ptest instruction
+   - trap if PLOAD is called with MMU disabled on MC68851
+   - don't skip descriptor status update for page descriptors
+   - set address in ptest to last descriptor address
+   - add function code page table lookup
+   - fix ptest level report in MMU SR
+   - fix TT register matching (test RW bit, fix masking of bits)
+   - decode fc field for pload instruction
+   - fix decoding of pload instruction
+ * m68kmmu: abort table search when WP is encountered
+ * m68kmmu: various improvements
+ * hp9k_3xx: call MMU buserror handler
+ * m68kmmu: set M bit if root descriptor is of page type
+ * It seems like at least the 68030 sets the M bit in the MMU SR if the root descriptor is of PAGE type, so do a logical and between
+    RW and the root type.
+ * m68kmmu: fix comment
+ * m68kmmu: rename descriptor types to more useful names
+ * m68kmmu: set type for 8 byte table descriptors
+ * m68kmmu: use iterative approach for table walking
+ * Otherwise we might return an arbitrary value if ptest can't find an entry. Shouldn't matter for the OS, but that change makes at
+    least the compiler happy.
+
+-Add ini/examples to dist.mak (#4234) [Westley M. Martinez]
+
+-XaviX - preliminary wheel input for rad_mtrk (#4232) [David Haywood]
+ * preliminary wheel input for rad_mtrk
+
+-pc9801_86.cpp: add stereo sound [r09]
+
+-various drivers: A few Rom/rom to ROM [braintro]
+
+-m68kmmu: don't change Page table/ATC state during translations caused by debugger [Sven Schnelle]
+
+-XaviX - fix opcode access in upper banks (needed for rad_fb) + basic input mapping to push things along (#4237) [David Haywood]
+ * start looking at the football
+
+-earthjkr appears to be a bad dump [DavidHaywood]
+
+-Added ROM version 4.02 from an 820-II and 5.00 from an 820-II 16/8 (#4238) [rfka01]
+ * Added ROM version 4.02 from an 820-II and 5.00 from an 820-II 16/8
+ * moved v50 to x186 where it belongs and marked it as a bad dump. Added v50 ROM set from Bitsavers.
+
+-actually mark the correct rom as BAD_DUMP [DavidHaywood]
+
+-namcos2.cpp : Fix c123 video RAM mirroring issue (#4244) [cam900]
+ * namcos2.cpp : Fix c123 video RAM mirroring issue
+ * namcos2.cpp : Typo
+
+-gp9001.cpp : Cleanup/Fix naming, Reduce unnecessary handler (#3921) [cam900]
+ * gp9001.cpp : Cleanup/Fix naming, Reduce unnecessary handler toaplan2.cpp : Fix batrider gfx, Cleanup naming
+ * toaplan2.cpp : Remove unused, register_postload, Cleanup naming
+
+-luaengine: Added pixel(x,y) function. [Ryan Holtz]
+
+-mbc55x: Various additions and refinements [AJR]
+ * Correct all clocks and derive them from the master XTAL
+ * Correct I/O address decoding
+ * Enable speaker output from 8251 USART
+ * Add ISA expansion slot, Centronics printer and RS232 "line" ports
+ * Add backspace key to HLE keyboard and note undumped MCU
+
+-hp9825: added internal expansion ROMs. Fixed authorship of hp9825.lay. [fulivi]
+
+-new clones - U.N. Defense Force: Earth Joker (US / Japan, set 2) [Phil Bennett]
+ * note, it's very close to the parent (71 differences in each ROM) but there are enough intentional changes (including a small
+    block of 00/ff right before the data ends) that it can't be considered a direct replacement for the bad set; these aren't all
+    single bit changes that could be attibuted to the bitrot.
+ * also changed descriptions, as these sets aren't Japan only except for the prototype. also lowered sound levels so that they don't
+    clip badly due to the MSM
+
+-mu100: Make some noise [O. Galibert]
+ * Two sample roms are missing, sad.  Volume is not taken into account yet (because the registers are not yet understood), pan is
+    though. Don't even think about reverb or effects :-)
+ * Current code plays a scale in a loop.  Comment the timer alloc in machine_reset to kill that.
+ * Demo song (missing lots of sounds, because roms): U then > until demo then ENTER ENTER.
+
+-hpc3: Improved DMA transfer behavior. The IRIX installer now loads, but panics. [Ryan Holtz]
+
+-x820ii: Added new v50 v018 ROMset from Bitsavers, ROM error like the v50 set in x168 [rfka01]
+
+-corrected dumps for audiocpu ROMs for toppin and pinclown [PinMAME]
+
+-New working machine added (#4259) [algestam]
+ * New working machine added
+   - ---------- Tropical Fish (Nintendo Game & Watch) [algestam]
+ * Improved naming of gnw_tfish
+ * Fixed lcd screen description for gnw_tfish
+
+-c117.cpp : Remove MCFG macros [cam900]
+
+-r3000: modernize, add tlb support [Patrick Mackinlay]
+ * replaced memory accessors
+ * implemented tlb and address translation
+ * corrected exception vector logic
+ * improved cache isolation behaviour
+ * comments/formatting
+
+-debugger: add 'gp' command [Sven Schnelle]
+ * gp 'go privilege' starts execution until the privilege mode changes. This can be used to break on task switches. I.e on m68k, one
+    could do:
+ * gp { ~sr & 0x2000 && crp_aptr == 0x1234567 }
+ * which would execute until the privilege mode changes to user mode and the CPU root pointer is 0x1234567.
+ * for cpu code, all that is needed to make this work is calling debugger_privilege_hook() when the execution level changes.
+
+-m68000: show PMMU registers for 68020/030/040 in debugger [Sven Schnelle]
+
+-mu100: Store some stuff, apply some filters [O. Galibert]
+
+-hp9k_3xx: fix mem map for /360 [Sven Schnelle]
+
+-hp9k_3xx: fix RTC corruption [Sven Schnelle]
+ * pre-init the latch clock variable to 1, so the first write to the latch doesn't cause invalid data latched which would trigger an
+    invalid write to the RTC, causing an invalid time.
+
+-Woops... [Olivier Galibert]
+
+-XaviX - improve inputs in e-kara, rad_rh (#4260) [David Haywood]
+
+-Hpux final fixes (#4257) [dxl]
+ * It was the maximum configuration on /370, and allows us to have a pretty usable HP VUE Environment.
+
+-hpc3: Fixed up and re-enabled audio DMA. Gets SGI Indy driver its boot chime back. [Ryan Holtz]
+
+-segaxbd: add Royal Ascot satellite ROMs [Ordyne]
+
+-i8251: Implement send break command [AJR]
+
+-z80dart: Stop resetting receiver whenever WR5 changes [AJR]
+
+-XaviX - sound related notes + logging (#4267) [David Haywood]
+
+-midyunit.cpp: Add SL1 revision sound ROM to Smash T.V. V3.01 [Jim Hernandez]
+
+-tec1 : replaced roms with ones from the original designers [Robbbert]
+
+-new NOT WORKING machine : Sperry Univac UTS-10 [Robbbert]
+
+-exidy.cpp: correct PROM PCB locations [Jim Hernandez]
+
+ * indy_indigo2.cpp: Various changes: [Ryan Holtz]
+   - Split Indigo 2 into a derived class.
+   - Eliminated MACHINE_CONFIG_START/END.
+   - Hooked up pullups on EISA I/O space.
+ * ioc2.cpp: Various changes: [Ryan Holtz]
+   - Converted to use logmacro.
+   - Made logging more verbose.
+   - Added savestate support.
+   - Hooked up Timer1/Timer0 interrupts.
+ * hpc3.cpp: Various changes: [Ryan Holtz]
+   - Updated to MAME code standards.
+   - Converted to use logmacro.
+   - Made logging more verbose.
+   - Added savestate support.
+   - Partially hooked up second SCSI controller for Indigo 2.
+   - Hooked up second DAC.
+   - Fixed a bug that prevented the DAC DMA timer from stopping.
+   - Hooked up PIO/DMA config register logging.
+ * sgi.cpp: Various changes: [Ryan Holtz]
+   - Updated to MAME code standards.
+   - Converted to use logmacro.
+   - Made logging more verbose.
+   - Made RPSS counter more accurate.
+   - Added semaphore registers.
+ * newport.cpp: Various changes: [Ryan Holtz]
+   - Updated to MAME code standards.
+   - Converted to use logmacro.
+   - Made logging more verbose.
+
+-x820ii: Marked iffy ROM from bitsavers as BAD_DUMP [rfka01]
+
+ * hpc3.cpp: Hooked up INT3 and PIT register accessors. [Ryan Holtz]
+ * ioc2.cpp: Various changes: [Ryan Holtz]
+   - Hooked up z80scc and 8042kbdc interrupts.
+   - Fixed IRQ-lowering logic to actually clear the MIPS IRQ line.
+   - Hooked up 8042kbdc reset.
+ * Gets Gentoo Linux booting (though it hangs during startup), and the IRIX 5.3 installer runs until it fails due to SCSI emulation
+    issues.
+
+-stadhero.cpp : Minor cleanups, Add notes Removal some MCFGs, Fix some namings, Cleanup gfxdecode, Reduce unnecessary handlers
+ [cam900]
+
+-namco_c123tmap.cpp : Reduce unnecessary handlers, Duplicates, Add Namco System 1 implementation (#4171) [cam900]
+ * namcos1.cpp, c117.cpp : Remove MCFGs namcos1.cpp : Remove MCFGs, Cleanup duplicates, Correct device types, XTAL'd YM2151 clock,
+    Namings, Device'fied C123 namco_c123tmap.cpp : Reduce unnecessary handlers, Duplicates, Add Namco System 1 implementation
+ * namco_c123tmap.cpp : Fix naming for 16 bit handlers, Cleanup palette changing behavior namcos2.cpp : Fix mirroring c123 videoram
+
+-deco16ic.cpp : Add support for gfxdecode device... [cam900]
+ * ... pointer
+
+-wrally.cpp : Cleanup gfxdecode, Duplicates, ACCESSING_BITS, Runtime tag lookups (#4060) [cam900]
+
+-XaviX - very preliminary sound (#4275) [David Haywood]
+ * new e-kara Software List entry e-kara UK / Europe Volume 1 (UK-E001) [Team Europe]
+
+-deco32.cpp : Cleanups (#4278) [cam900]
+ * deco32.cpp : Cleanups Fix spacing, Move tilegen configurations into video_start, Remove VIDEO_START_MEMBER, Fix namings, Cleanup
+    duplicates in gfxdecode, Reduce unnecessary address_space arguments, Reduce unnecessary arrays, Fix tattass* metadata related to
+    date in ROM/RAM check screen
+ * deco32.cpp : Fix tattass eeprom logging
+
+-Piccolo Poker 100 updates... [Roberto Fresca]
+ * Protection understood, documented, and completelly simulated.
+ * Removed the ugly patch/hack in the driver_init that formerly allows to boot.
+ * Some clean-ups...
+ * Added technical notes.
+
+-thoop2.cpp : Cleanup duplicate, naming, Reduce runtime tag lookup (#4062) [cam900]
+
+-gaelco.cpp : Reduce duplicate, Cleanup naming, Reduce runtime tag lookup, Cleanup gfxdecode (#4059) [cam900]
+
+-z80ctc: Allow a fixed-rate clock input to be configured for each channel. This improves performance by alleviating the need to
+ drive the CLK/TRG inputs with high-frequency timers. [AJR]
+
+ * t10sbc.cpp: Added support for Format Parameters and Geometry Parameters pages. [Ryan Holtz]
+ * hpc3.cpp: Added support for single-byte SCSI DRQ functionality. [Ryan Holtz]
+
+-new working clone - Xmen COTA Asia [braintro]
+
+-i386: Signal a privilege change to the debugger whenever protected mode is enabled or disabled or the CS descriptor flags are
+ changed [AJR]
+
+-backfire.cpp : Minor cleanups Cleanup duplicates, Remove unused, Convert arrays into std::unique_ptr, Add notes, Fix metadata
+ related to regional warning screen (Both dumped sets are Japan release) [cam900]
+
+-Driver magic10.cpp (#4280) [f205v]
+ * Driver magic10.cpp
+   - added clone "Magic Colors (ver. 1.6)"
+   - updated game list with hardware setup
+   - more detailed hardware setup description
+   - updated boot instructions for all games
+   - corrected a few ROMs names as per real labels
+   - added PLDs (as NO DUMP) where appropriate
+   - changed manufacturer name from "ABM Electronics" to "ABM Games"
+   - normalised "Ver." tag in game names
+   - renamed "Music Sort (ver 2.02, English)" to "Music Sort (ver. 2.02)" (all games have a mixture of English and Italian text, but
+      they are all released for "Italy" only, as stated in the games disclaimers)
+
+-alpha68k.cpp : Add notes [cam900]
+
+-uzebox.xml: added 2 new entries [ArcadeShadow]
+
+ * indigo.cpp; Various changes: [Ryan Holtz]
+   - Switched to new Z80SCC implementation.
+   - Hooked up RS232 ports.
+   - Fleshed out SCSI.
+   - Added PIT8254 device (currently disabled).
+   - Converted to logmacro.
+   - Started fleshing out HPC1 implementation.
+   - Split into separate indigo3k/indigo4k classes.
+   - Renamed variables to MAME code standards.
+   - Removed unused screen device.
+
+-New WORKING machine (#4286) [ClawGrip]
+ * Add "Dance Dance Revolution Disney Mix" TV Game [zino, ClawGrip, The Dumping Union, Recreativas.org]
+ * Add "ddrdismx"
+
+-new ekara Software List entries [Team Europe + contributors] (#4285) [David Haywood]
+ * new ekara Software List entries [Team Europe + contributors]
+ * EC0003-  J-Pop Mix Volume 3
+ * EC0006-  ENK Volume 1
+ * EC0010-  Kid's Mix Volume 1
+ * EC0012-  J-Pop Mix Volume 7
+ * EC0013-  J-Pop Mix Volume 8
+ * EC0015-  Artist Selection Volume 2 - unknown artist
+ * EC0022-  J-Pop Mix Volume 10
+ * EC0026-  J-Pop Mix Volume 14
+ * EC0027-  J-Pop Mix Volume 15
+ * EC0029-  Artist Selection Volume 3 - Dreams Come True
+ * EC0031-  Artist Selection Volume 4 - unknown artist
+ * EC0034-  Kid's Mix Volume 3
+ * EC0036-  Artist Selection Volume 6 - KinKi Kids
+ * EC0042-  J-Pop Mix Volume 19
+ * EC0044-  Artist Selection Volume 9 - Every Little Thing
+ * EC0045-  Artist Selection Volume 10 - Mr. Children
+ * EC0048-  ENK Volume 6
+ * EC0049-  Artist Selection Volume 11 - Judy and Mary
+ * EC0054-  J-Pop Mix Volume 23
+ * GC0002-  BHT Volume 1
+ * e-kara UK / Europe Volume 7 (UK-E007) e-kara Germany 5-Songs Starter (GER-M001)
+ * confirmed we go up to 76
+
+-fix Konami logo in recently added ddrdismx [DavidHaywood]
+
+ * dp8573.cpp: Added DP8573 Real-Time Clock emulation. [Ryan Holtz]
+ * indigo.cpp: Hooked up new DP8573 implementation. [Ryan Holtz]
+
+-electron: Add Ewgeebez to cassette list [AJR]
+
+-clifront.cpp: 'a brief list of options' is a lie, make it more truthful. [mooglyguy]
+
+ * scsicd512.cpp: Added various legacy SCSI CD-ROM devices which support 512-byte blocks by default. [Ryan Holtz]
+ * nscsi_cd.cpp: Added various new-SCSI CD-ROM devices which support 512-byte blocks by default. [Ryan Holtz]
+ * sgikbd.cpp: Added a rudimentary HLE SGI Indigo keyboard device. Still needs keys to be mapped. [Ryan Holtz]
+ * indigo.cpp: Various changes: [Ryan Holtz]
+   - Expanded logging.
+   - Enabled PIT8254 timer. Has the wrong clock value; the correct clock causes a hang.
+   - Improved RAM layout.
+   - Added stubs for DSP RAM and Entry-level graphics.
+
+-indigo.cpp: Hooked up palette setup for LG1 graphics board. [Ryan Holtz]
+
+-indigo.cpp: Added basic block-draw command for LG1. [Ryan Holtz]
+
+ * indigo.cpp: Added pattern drawing support to LG1. [Ryan Holtz]
+ * newport.cpp: Fixed a long-standing bug with color resolution. [Ryan Holtz]
+
+-hlekbd.cpp: Hooked up basic keycodes, enough to get to the Indigo monitor. [Ryan Holtz]
+
+-XaviX - add rate control to sound (#4290) [David Haywood]
+ * XaviX - add rate control to sound
+ * new e-kara Software List entries [Team Europe + contributors] e-kara UK / Europe Volume 2 (UK-E002) e-kara UK / Europe Volume 3
+    (UK-E003) e-kara UK / Europe Volume 6 (UK-E006)
+ * also verified UK vols 1 + 7 on second cartridges, and documented what UK volumes 4+5 are (the collection that was picked up came
+    with a sale sheet advertising them all, complete with track listings)
+ * note
+
+-Replace dump of SAA5050 internal character generator ROM with verified copy from decap. This also matches the Signetics and Mullard
+ SAA5050 datasheet pixel listings. [Sean Riddle, ClawGrip, The Dumping Union]
+
+-gamecom : lostwrld works now. [Robbbert]
+
+-nes_vt.cpp: Update notes and add MACHINE_IMPERFECT_SOUND for ddrdismx (nt) [ClawGrip]
+ * The Konami logo is no longer invisible (Haze fixed the palette).
+ * As per Haze's notes, it's missing a few PCM sounds (hence the MACHINE_IMPERFECT_SOUND )
+
+-atvtrack.cpp: Add notes (nt) [ClawGrip]
+ * About a known but undumped Smashing Drive Spain/Portugal set with different checksum.
+
+ * hlekbd.cpp: Fixed up SGI HLE keyboard mapping. [Ryan Holtz]
+ * indigo.cpp: Added support for remaining commands used by the Indigo PROM monitor. [Ryan Holtz]
+
+-imagetek_i4100.cpp : Updates, Minor cleanups, Remove MCFGs Add supported for buffered sprites, Cleanup sprite drawing routine,
+ Internalize gfxdecode(All driver shared same gfxdecodes) hyprduel.cpp : Cleanup ACCESSING_BITS metro.cpp : Fix namings, Cleanup
+ ACCESSING_BITS, Duplicates, Unnecessary address_space arguments, Fix sprite lags for blzntrnd/gstrik2, Fix metadata(Japanese title)
+ for karatourj [cam900]
+
+-namcos1.cpp : Fix priority issue [cam900]
+
+-new working clone - Street Fighter II: The World Warrior (World 910204) [braintro]
+ * out of whatsnew: Technically this isn't a unique set, but it's a verified labeled set versus the sf2en conversion set.
+
+-mame.lst: Cut-n-paste error for new SF2 set [braintro]
+
+ * hlemouse.cpp: Added support for the SGI Indigo mouse. [Ryan Holtz]
+ * indigo.cpp: Added framebuffer copy command to LG1. [Ryan Holtz]
+
+-New machines marked as NOT_WORKING [mooglyguy]
+ * --------------------------------- SGI Crimson (R4000, 100MHz, Ver. 4.0.3) [Ryan Holtz, NekoChan]
+
+-New machines marked as NOT_WORKING [mooglyguy]
+ * --------------------------------- SGI 4D/20 (Version 4.0 Fri Apr 26 17:12:22 PDT 1991) SGI O2 (version 4.18) SGI Octane (Version
+    6.5 Rev 4.9 05/22/03)
+
+-blmbycar.cpp : Cleanups/Updates (#3977) [cam900]
+ * Cleanup duplicates, ACCESSING_BITS, runtime tag lookups Fix memory map, Sound output(Both chip and PCB can't support stereo
+    output) blmbycar.h : Use private:
+
+-lordgun.cpp : Cleanup duplicates, Naming, Unnecessary handlers (#3978) [cam900]
+ * Fix aliencha YMF278B clock ( reference: https://www.youtube.com/watch?v=_RaCpHwyS78 )
+
+-hiscore.dat: Updates [Leezer]
+
+-bmcpokr.cpp : Cleanups (#4034) [cam900]
+ * bmcpokr.cpp : Cleanups Cleanup duplicates, Redundants, ACCESSING_BITs, Use private:, Remove MCFGs, register_postload, Correct
+    value types, Correct sound output channel
+ * bmcpoker.cpp: Fix regression
+
+-dec0.cpp : buffered_spriteram16_device for sprite RAM Minor spacing fixes, Cleanup some naming [cam900]
+
+-XaviX: fixes to allow ttv_sw to show graphics, and ttv_lotr to play music on title (#4302) [David Haywood]
+
+-LB-4 : hooked up some devices and the video. [Robbbert]
+
+-lb4: Fix error when connecting the builtin terminal [Dirk Best]
+
+-Xavix - CPU flag fixes (improves ttv_mx road) (#4303) [David Haywood]
+ * Xavix - CPU flag fixes (improves ttv_mx road)
+
+-namcond1.cpp: Redumped the graphics for Abnormal Check [the Guru]
+
+-lb4: Screen raw parameters, fix some dividers [Dirk Best]
+
+-karnov.cpp : Cleanups Convert background tilemap into generic MAME tilemap system, Cleanup handlers, Reduce unnecessary values,
+ address_space arguments, Duplicates, Region sizes [cam900]
+
+-pc9801_86.cpp: fix PSG regression (#4306) [r09]
+
+-LB-4 : fixed problem with scrolling; restored status line; default rs232 to keyboard; marked as working. [Robbbert]
+
+-debugger: add %c to logerror [Sven Schnelle]
+ * This is useful for catching putchar() like functions and printing the written value to error.log.
+ * On hp9k_3xx, i'm using this with the HP 300 test software, to log test error messages that get printed on screen to error.log, so
+    i have the message directly after the debug messages from my driver.
+ * Example:
+ * wpset 0xfffe36be,80,w,1,{ logerror "%c", wpdata; g }
+
+-nereid: add overlay support [Sven Schnelle]
+ * Required for the upcoming HP 98550A support.
+
+ * screen.cpp: Added a devcb for easier hooking of the scanline timer. [Ryan Holtz]
+ * zerozone, zexall, zr107, zrt80, zt8802, zwackery, zx: Removed MACHINE_CONFIG_START/_END. [Ryan Holtz]
+
+-qvt102: Previous 'LB4' was identified as Qume QVT-102 [Dirk Best]
+ * Rename driver
+ * Remove skeleton QVT-102 we already had, add its alternate ROM to the driver along with the keyboard MCU ROM
+ * Major gfx rendering update, supports all attributes but needs verification
+ * Add NVRAM
+
+-taito_o.cpp : Fix volume [cam900]
+ * parentj uses FM channel of YM2203 for jingle/musics
+
+-atetris.cpp: decapped  Intel P8749H. Matches already existing dump [Team Caps0ff, ClawGrip]
+
+-igs011.cpp : Remove unnecessary palette handler, Convert memory_region into region_ptr (#4042) [cam900]
+
+-f1gp.cpp : Various cleanups (#3886) [cam900]
+ * Cleanup duplicate/naming, Split f1gp2 specific functions into driver state, Move GFX swap into rom load, Add shared_ptr for GFX
+    RAM
+
+-Fix SAA5051 internal character ROM to match datasheet (one pixel was missing on the 'j' character) [Lord Nightmare]
+
+-XaviX - Improve sprite positioning + 24 new ekara dumps (#4307) [David Haywood]
+ * unrelated, but this is from 2006 (as somebody mentioned on my YouTube video)
+ * https://plugplaytvgames.wikia.com/wiki/Dance_Dance_Revolution_Disney_Mix
+    https://gamespot.com/articles/ddr-hits-dance-floor-with-disney/1100-6154416/﻿
+ * added 24 new e-kara dumps [Sean Riddle, Clawgrip,  Peter Wilhelmsen]
+ * ekara:ec0002 J-Pop Mix Volume 2 (Japan) (EC0002-JPM) ekara:ec0008 unknown (Japan) (EC0008-G79) ekara:ec0014 Artist Selection
+    Volume 1 (unknown) (Japan) (EC0014-ATS) ekara:ec0023 J-Pop Mix Volume 11 (Japan) (EC0023-JPM) ekara:ec0025 J-Pop Mix Volume 13
+    (Japan) (EC0025-JPM) ekara:ec0035 Artist Selection Volume 5 (Matsuda Seiko) (Japan) (EC0035-ATS) ekara:ec0041 Artist Selection
+    Volume ? (unknown) (Japan) (EC0041-ATS) ekara:ec0068 J-Pop Mix Volume ? (Japan) (EC0068-JPM) ekara:ec0070 J-Pop Mix Volume ?
+    (Japan) (EC0070-JPM) ekara:ec0072 J-Pop Mix Volume ? (Japan) (EC0072-JPM) ekara:ec0076 J-Pop Mix Volume ? (Japan) (EC0076-JPM)
+ * ekara:gc0006 BHT Volume ? (Japan) (GC0006-BHT)
+ * ekara:mc0001 Mini Volume 1 (Japan) (MC0001-ATM)
+ * ekara:sc0005 unknown (Japan) (SC0005-SAI) ekara:sc0006 unknown (Japan) (SC0006-SAI) ekara:sc0009 unknown (Japan) (SC0009-SAI)
+    ekara:sc0010 unknown (Japan) (SC0010-HKW) ekara:sc0019 unknown (Japan) (SC0019-SAI) ekara:sc0021 unknown (Japan) (SC0021-SAI)
+    ekara:sc0022 unknown (Japan) (SC0022-SAI)
+ * ekara:us_vol3 e-kara US Volume 3 (US-E003) ekara:us_vol8 e-kara US Volume 8 'No Boys Allowed' (US-E008) ekara:us_vol9 e-kara US
+    Volume 9 'No Boys Allowed' (US-E009)
+ * ekara:ekaraweb e-kara Web cartridge 28M (Japan)
+ * details of some of them to be filled in once I have cart scans, and in some cases a translation.  the e-kara web thing is
+    probably useless these days as it was meant to work with PC software (there's an MCU + USB interface in the unit) to transfer
+    downloaded songs etc. from a specific service into the cartridge for use on the system, and like many of these online services
+    from 15+ years ago, the listed site no longer resolves.
+
+-bbc: ROMs required by expansion devices are now allocated empty slots in host machine at startup. [Nigel Barnes]
+ * Removed machine().root_device() from all bbc expansion devices.
+ * Added configuration option to fit Econet upgrade.
+ * Added OS 0.92 as BIOS option in bbca and bbcb
+ * Added Opus Challenger ADFS 1MHz bus device (Master only).
+ * Moved torch MCP ROMs to bbc_tube_zep100 device, to be inserted at startup.
+ * bbc_acorn8271: Removed lesser known DFS ROMs, they are now softlisted if required.
+ * bbc_opus8272: Added Opus DDOS 3.05.
+ * bbc_opus2791: Added Opus DDOS 3.12.
+
+ * o2.cpp: Added CRIME and MACE skeleton devices. [Ryan Holtz]
+ * mips3.cpp: Various changes: [Ryan Holtz]
+   - Added an #ifdef to display DPRINTF calls from the SGI O2 PROM.
+   - Switched R4000BE/LE, R4400BE, R4600BE, and R5000BE to 64-bit data bus.
+   - Fixed a bug that caused a crash with 64-bit data bus and the DRC.
+ * indy_indigo2.cpp: Moved a number of devices into HPC3. [Ryan Holtz]
+ * hpc3.cpp: Fixed an oversight with IRQs. [Ryan Holtz]
+
+-add Bare Knuckle III inputs, promoted to working. [MetalliC]
+
+-add HP98550 high-res color graphic card [Sven Schnelle]
+ * Used in the high end HP9000/300 machines. Provides a resolution of 1280x1024 @ 8bpp. It also provides two overlay planes and one
+    phantom plane. Each plane contains two window movers that are used for copying characters and tiles on the screen. It also has a
+    RUG for line/vector drawing. The current state implements everything that is required to have a working HP Visual user
+    environment in MAME.
+ * Working:
+ * window mover
+ * pixel replacement rules
+ * window replacement rules
+ * f0 tripple replacement rule (copy src or keep destination depending on pattern register)
+ * VRAM bit access mode
+ * solid line drawing
+ * Not implemented yet:
+ * drawing circles
+ * linetype vector/circles
+ * rectangles
+ * filling areas
+ * tripple replacement rules other than f0
+
+-decap + hook up PIC in kickgoal [Caps0ff, balrog, David Haywood] (#4312) [David Haywood]
+ * hook up PIC in kickgoal [David Haywood]
+ * it's possible the banking is wrong on the OKI still as the game really doesn't attempt to use the majority of the sounds in the
+    rom, there are only a few screens where music even plays.
+
+-am79c90: enable communication [Patrick Mackinlay]
+ * decstation, mips and sun4 all updated to match
+
+-mips: networking and floppy [Patrick Mackinlay]
+ * added mac address prom
+ * hook up lance
+ * mapped floppy drive controller
+
+-XaviX - Improve Monster Truck tile flipping (#4315) [David Haywood]
+ * trying to make more sense of the inline tilemode used in Monster Truck
+ * update to the ekara Software List XML, filling in some gaps (translations still needed in many cases)
+ * this updates the list from the previous batch with the following titles (volume numbers filled in for many cases)
+ * ekara:ec0002 J-Pop Mix Volume 2 (Japan) (EC0002-JPM) ekara:ec0008 1979-81 Volume 1 (Japan) (EC0008-G79) ekara:ec0014 Artist
+    Selection Volume 1 (unknown) (Japan) (EC0014-ATS) ekara:ec0023 J-Pop Mix Volume 11 (Japan) (EC0023-JPM) ekara:ec0025 J-Pop Mix
+    Volume 13 (Japan) (EC0025-JPM) ekara:ec0035 Artist Selection Volume 5 (Matsuda Seiko) (Japan) (EC0035-ATS) ekara:ec0041 Artist
+    Selection Volume 8 (unknown) (Japan) (EC0041-ATS) ekara:ec0068 J-Pop Mix Volume 33 (Japan) (EC0068-JPM) ekara:ec0070 J-Pop Mix
+    Volume 34 (Japan) (EC0070-JPM) ekara:ec0072 J-Pop Mix Volume 36 (Japan) (EC0072-JPM) ekara:ec0076 J-Pop Mix Volume 39 (Japan)
+    (EC0076-JPM) ekara:gc0006 BHT Volume 3 (Japan) (GC0006-BHT) ekara:mc0001 Mini Volume 1 (Japan) (MC0001-ATM) ekara:sc0005 SAI
+    Volume 1 (Japan) (SC0005-SAI) ekara:sc0006 SAI Volume 2 (Japan) (SC0006-SAI) ekara:sc0009 SAI Volume 3 (Japan) (SC0009-SAI)
+    ekara:sc0010 HWK (Japan) (SC0010-HKW) ekara:sc0019 SAI Volume 6 (Japan) (SC0019-SAI) ekara:sc0021 SAI Volume 7 (Japan)
+    (SC0021-SAI) ekara:sc0022 SAI Volume 8 (Japan) (SC0022-SAI) ekara:us_vol3 e-kara US Volume 3 (US-E003) ekara:us_vol8 e-kara US
+    Volume 8 'No Boys Allowed' (US-E008) ekara:us_vol9 e-kara US Volume 9 'No Boys Allowed' (US-E009) ekara:ekaraweb e-kara Web
+    cartridge 28M (Japan)
+
+-Initial version of Commodore A2065 Ethernet card [Dirk Best]
+
+-amstr_pc: Machines have internal 3.5" floppy drive. [Nigel Barnes]
+
+-bbc: Added Aries B488 and Acorn IEEE488 Interface devices on 1MHz bus. [Nigel Barnes]
+
+-new clone added - Shinobi Set 5 [braintro]
+ * Out of whatsnew:
+ * Set is the same as shinobi3 but with standard Z80.  Notice new Sega ID#s for this unprotected set.
+ * So the following can be deduced:
+ * Main board 837-6500-01 is standard 68000 + stardard Z80 Main board 837-6500-02 is standard 68000 + MC8123B (317-0054)
+ * ROM board 834-6499-03 is the MC8123B verson of 834-6499-01?? ROM board 834-6499-04 is the MC8123B verson of 834-6499-02
+ * Information verified from multiple eBay auction pictures.
+
+-mips: add rx3230 aka MIPS Magnum 3000 [Patrick Mackinlay]
+
+-a2065: Fix DMA/memory accesses [Dirk Best]
+
+-st0020.cpp : Reduce duplicate, Device finder, Cleanup tilemap mapping (#3881) [cam900]
+ * st0020.cpp : Reduce duplicate, Device finder, Cleanup tilemap mapping
+ * st0020.cpp : Minor spacing fix
+
+-Add HP98643 LANIC network card [Sven Schnelle]
+
+-ncd17c: dumped 6805 and hooked up comms with main CPU  [R. Belmont, Al Kossow]
+
+-World Rally / Blomby Car improvements (shadow / headlight in Blomby Car) (#4318) [David Haywood]
+
+-cave.cpp : Cleanups (#4020) [cam900]
+ * cave.cpp : Remove unnecessary palette init, Add notes, Fix spacings, Remove some MCFGs, Cleanup namings, Remove register_postload
+    cave.h : Use private:
+ * cave,cpp : Fix save
+ * cave.cpp : Fix spacing
+ * cave.cpp : Cleanup some ACCESSING_BITs, Write handlers, Inputs, gfxdecodes, Correct namings, Fix tilemap update
+
+-ncd17c.cpp: implemented soft ints, fixed ncd19 LANCE DMA [R. Belmont]
+
+-drgnmst.cpp : Add notes, Fix 8x8 tile bank [cam900]
+
+-nmk112.cpp : Remove MCFGs, Unnecessary arguments of CPU interface [cam900]
+
+-hp9k_3xx: use 98550A on newer models [Sven Schnelle]
+ * use the HP98550A card on HP9000/360 and 370 models so we have a more realistic machine for using HP-UX.
+
+-XaviX - cheap hack to get epo_efdx to show a title screen + dumps of the remaining US e-kara carts (#4322) [David Haywood]
+ * cheap hack to get epo_efdx to show a title screen
+ * ekara.xml: added e-kara US volumes 4,5,6,7  [Team Europe + contributors]
+ * ekara:us_vol4 e-kara US Volume 4 (US-E004) ekara:us_vol5 e-kara US Volume 5 (US-E005) ekara:us_vol6 e-kara US Volume 6 (US-E006)
+    ekara:us_vol7 e-kara US Volume 7 (US-E007)
+ * (and verified starter,1,2,3)
+ * shows 2002
+
+-segas32.cpp : Cleanup duplicates, ACCESSING_BITs, naming (#3823) [cam900]
+
+-gp9001.cpp : Make tilemap drawing routine related to cliprect, buffered_spriteram16 for sprite RAM (#4317) [cam900]
+
+-Corrected file checksums and sizes for gnw_climber [Henrik Algestam]
+
+-improve documentation of Japanaese e-kara carts, and systems they work with based on codes contained on carts (#4332)
+ [David Haywood]
+ * improve documentation of Japanaese e-kara carts, and systems they work with based on codes contained on carts
+
+-improve documentation of Japanaese e-kara carts, and systems they work with based on codes contained on carts [DavidHaywood]
+
+-hp9k_3xx: use 98550A on newer models use the HP98550A card on HP9000/360 and 370 models so we have a more realistic machine for
+ using HP-UX. [hp9k]
+
+-nmk112.cpp : Remove MCFGs, Unnecessary arguments of CPU interface [cam900]
+
+-drgnmst.cpp : Add notes, Fix 8x8 tile bank [cam900]
+
+-XaviX - cheap hack to get epo_efdx to show a title screen + dumps of the remaining US e-kara carts hopefully this makes it easier
+ for me to trace why the i2cmem hookup fails, and if it's due to code execution problems causing the unwanted writes, if the device
+ should be less sensitive to them, or if there's an error in the driver hookup. [DavidHaywood]
+ * still not entirely sure the game is happy with what it gets this way, but it's something to work with.
+
+-Add HP98643 LANIC network card [hp9k]
+
+-World Rally / Blomby Car improvements (shadow / headlight in Blomby Car) Blomby Car is a bootleg of World Rally, many things are
+ similar, but not quite the same, including the sprites. [DavidHaywood]
+ * Previous emulation of Blomby Car was missing the shadow and highlight effect entirely.  This was implemented on World Rally.
+ * Bringing the video implementations closer together has allowed me to add this missing effect to Blomby Car.
+ * Also looking at some reference material it seems the emulation of the shadow / highlight effect on World Rally was 'too good' in
+    some cases, for example, looking at original hardware videos it looks very much like you're meant to see a car shaped shadow as
+    your headlights pass through the starting arch.  This wasn't present on previous emulation which used 2 pass drawing, but is
+    present with the single pass drawing and mixing.
+
+-gp9001.cpp : Updates Make tilemap drawing routine related to screen cliprect, buffered_spriteram16 for sprite RAM, Minor fix
+ spacing [cam900]
+
+-XaviX - Improve Monster Truck tile flipping [DavidHaywood]
+
+-add HP98550 high-res color graphic card Used in the high end HP9000/300 machines. Provides a resolution of 1280x1024 @ 8bpp. It
+ also provides two overlay planes and one phantom plane. Each plane contains two window movers that are used for copying characters
+ and tiles on the screen. It also has a RUG for line/vector drawing. The current state implements everything that is required to
+ have a working HP Visual user environment in MAME. [hp9k]
+ * Working:
+ * window mover
+ * pixel replacement rules
+ * window replacement rules
+ * f0 tripple replacement rule (copy src or keep destination depending on pattern register)
+ * VRAM bit access mode
+ * solid line drawing
+ * Not implemented yet:
+ * drawing circles
+ * linetype vector/circles
+ * rectangles
+ * filling areas
+ * tripple replacement rules other than f0
+
+-decap + hook up PIC in kickgoal [Caps0ff, balrog, David Haywood] it's possible the banking is wrong on the OKI still as the game
+ really doesn't attempt to use the majority of the sounds in the rom, there are only a few screens where music even plays.
+ [DavidHaywood]
+
+-taito_o.cpp : Fix volume parentj uses FM channel of YM2203 for jingle/musics [cam900]
+
+-nereid: add overlay support Required for the upcoming HP 98550A support. [hp9k]
+
+-debugger: add %c to logerror This is useful for catching putchar() like functions and printing the written value to error.log.
+ [hp9k]
+ * On hp9k_3xx, i'm using this with the HP 300 test software, to log test error messages that get printed on screen to error.log, so
+    i have the message directly after the debug messages from my driver.
+ * Example:
+ * wpset 0xfffe36be,80,w,1,{ logerror "%c", wpdata; g }
+
+-XaviX - Improve sprite positioning + 24 new ekara dumps bit of a kludge for now to keep the Taito Nostalgia logo correct (and a few
+ other cases) where the upper bits have to be ignored.  There's no obvious switch, hopefully something will uncover the real way
+ this gets enabled later [DavidHaywood]
+
+-pc9801_86.cpp: fix PSG regression This change fixes a regression introduced with the MCFG removal (commit
+ cc59e2123eaa5e6c5c71317d28b55f425bb6a333) that caused the PSG part of the YM2608 to sound extremely loud compared to the rest of
+ the channels. [rzero9]
+
+-karnov.cpp : Cleanups Convert background tilemap into generic MAME tilemap system, Cleanup handlers, Reduce unnecessary values,
+ address_space arguments, Duplicates, ROM region sizes [cam900]
+
+-Xavix - CPU flag fixes (improves ttv_mx road) [DavidHaywood]
+
+-XaviX: fixes to allow ttv_sw to show graphics, and ttv_lotr to play music on title [DavidHaywood]
+
+-dec0.cpp : buffered_spriteram16_device for sprite RAM Minor spacing fixes, Cleanup some naming [cam900]
+
+-namcos1.cpp : Fix priority issue It fixes #4171 's regression. [cam900]
+
+-imagetek_i4100.cpp : Updates, Minor cleanups, Remove MCFGs Add support for buffered sprites, Cleanup sprite drawing routine,
+ Internalize gfxdecode(All driver shared same gfxdecodes) hyprduel.cpp : Cleanup ACCESSING_BITS metro.cpp : Fix namings, Cleanup
+ ACCESSING_BITS, Duplicates, Unnecessary address_space arguments, Fix sprite lags for blzntrnd/gstrik2, Fix metadata(Japanese title)
+ for karatourj, Add notes [cam900]
+
+-atvtrack.cpp: Add notes (nt) About a known but undumped Smashing Drive Spain/Portugal set with different checksum. [clawgrip]
+
+-nes_vt.cpp: Update notes and add MACHINE_IMPERFECT_SOUND for ddrdismx (nt) [clawgrip]
+ * The Konami logo is no longer invisible (Haze fixed the palette).
+ * As per Haze's notes, it's missing a few PCM sounds (hence the MACHINE_IMPERFECT_SOUND )
+
+-cpu/nec: force bits 12..15 of flag word to 1 in POPF, to match Intel 8086 Avoids runtime error 200 in Turbo Pascal 7 runtime.   Not
+ tested on the real thing (yet). [shattered]
+
+-XaviX - add rate control to sound [DavidHaywood]
+
+-fix Konami logo in recently added ddrdismx [DavidHaywood]
+
+-alpha68k.cpp : Add notes [cam900]
+
+-backfire.cpp : Minor cleanups Cleanup duplicates, Remove unused, Convert arrays into std::unique_ptr, Add notes, Fix metadata
+ related to regional warning screen (Both dumped sets are Japan release) [cam900]
+
+-Driver magic10.cpp Driver magic10.cpp [f205v]
+ * added clone "Magic Colors (ver. 1.6)"
+ * updated game list with hardware setup
+ * more detailed hardware setup description
+ * updated boot instructions for all games
+ * corrected a few ROMs names as per real labels
+ * added PLDs (as NO DUMP) where appropriate
+ * changed manufacturer name from "ABM Electronics" to "ABM Games"
+ * normalised "Ver." tag in game names
+ * renamed "Music Sort (ver 2.02, English)" to "Music Sort (ver. 2.02)" (all games have a mixture of English and Italian text, but
+    they are all released for "Italy" only, as stated in the games disclaimers)
+
+-deco32.cpp : Cleanups Fix spacing, Move tilegen configurations into video_start, Remove VIDEO_START_MEMBER, Fix namings, Cleanup
+ duplicates in gfxdecode, Reduce unnecessary address_space arguments, Reduce unnecessary arrays, Fix tattass* metadata related to
+ date in ROM/RAM check screen [cam900]
+
+-deco16ic.cpp : Add support for gfxdecode device... ... pointer [cam900]
+
+-XaviX - very preliminary sound [DavidHaywood]
+
+-stadhero.cpp : Minor cleanups, Add notes Removal some MCFGs, Fix some namings, Cleanup gfxdecode, Reduce unnecessary handlers
+ [cam900]
+
+-x820ii: Marked iffy ROM from bitsavers as BAD_DUMP Al commented in the last PR: [rfka01]
+ * > here are the diffs, there are three bits that changed. I think there may be two bad bits in the U35 dump I just uploaded
+ * Changing two of the three bits (in all possible combinations) did not cure the problem, so I've marked the dump as bad for the
+    moment.
+
+-XaviX - sound related notes + logging [DavidHaywood]
+
+-hp9k_3xx: fix RTC corruption pre-init the latch clock variable to 1, so the first write to the latch doesn't cause invalid data
+ latched which would trigger an invalid write to the RTC, causing an invalid time. [hp9k]
+
+-hp9k_3xx: fix mem map for /360 [hp9k]
+
+-debugger: add 'gp' command gp 'go privilege' starts execution until the privilege mode changes. This can be used to break on task
+ switches. I.e on m68k, one could do: [hp9k]
+ * gp { ~sr & 0x2000 && crp_aptr == 0x1234567 }
+ * which would execute until the privilege mode changes to user mode and the CPU root pointer is 0x1234567.
+ * for cpu code, all that is needed to make this work is calling debugger_privilege_hook() when the execution level changes.
+
+-c117.cpp : Remove MCFG macros [cam900]
+
+-m68000: show PMMU registers for 68020/030/040 in debugger [hp9k]
+
+-XaviX - improve inputs in e-kara, rad_rh also fix sprite addressing mode for rad_th [DavidHaywood]
+
+-x820ii: Added new v50 v018 ROMset from Bitsavers. ROM error like the v50 set in x168 [rfka01]
+
+-Hpux final fixes With these workarounds/fixes HPUX-9 runs stable with VUE (Visual User Environment - HP's X desktop) [hp9k]
+
+-HP9825: added internal expansion ROMs Hi, this PR adds the internal expansion ROMs to hp9825b emulation. I'll send the ROM images
+ to code@... as usual. I've also fixed the author in hp9825.lay (it was probably copy-pasted from hp9k_3xx.lay). Thanks. [fulivi]
+ * -F.Ulivi
+
+-earthjkr - actually mark the correct rom as BAD_DUMP [DavidHaywood]
+
+-namcos2.cpp : Fix c123 video RAM mirroring issue This PR is fixes metlhawk intermission. [cam900]
+
+-earthjkr (Earth Joker) appears to be a bad dump, mark it as such the bad code is a single bit wrong and causes the last stage in
+ the game to make invalid ROM writes due to using A2 as a pointer instead of A0, and thus breaking the rowscroll on that stage.
+ (noticed the bug while watching MAME roulette video) [DavidHaywood]
+ * the prototype clone has correct code here, and works fine, so it seems very likely a case of bitrot on the parent set.  (the ROM
+    check done by the game is useless)
+
+-Added ROM version 4.02 from an 820-II and 5.00 from an 820-II 16/8 The 820-II driver is not working at the moment. The 5.00 ROM
+ shows "ROM error". Both additions have the extra ROMs for the low profile keyboard. [rfka01]
+
+-XaviX - fix opcode access in upper banks (needed for rad_fb) + basic input mapping to push things along (studying what each game is
+ doing for IO before working out better solutions) [DavidHaywood]
+
+-pc9801_86.cpp: add stereo sound This change adds stereo sound routing for the FM/rhythm channels of the YM2608 on the PC-9801-86
+ and Speak Board cards (the PSG part is always mono). [rzero9]
+
+-Add ini/examples to dist.mak This adds the ini/examples to the release. [anikom15]
+
+-XaviX - preliminary wheel input for rad_mtrk [DavidHaywood]
+
+-m68kmmu improvements [hp9k]
+ * handle RW bit in ATC cache properly
+ * add page table walk that result in BUSERROR to ATC
+ * fix ptest instruction
+ * trap if PLOAD is called with MMU disabled on MC68851
+ * don't skip descriptor status update for page descriptors
+ * set address in ptest to last descriptor address
+ * add function code page table lookup
+ * fix ptest level report in MMU SR
+ * fix TT register matching (test RW bit, fix masking of bits)
+ * decode fc field for pload instruction
+ * fix decoding of pload instruction
+ * handle 8 byte indirect descriptors
+
+-Xavix - basic timer, move ekara carts to a Softlist [DavidHaywood]
+
+-dsk_dsk.cpp: Avoid to use uninitialized booleans Fix MameTesters #07134. Thanks to Klez for testing. [AmatCoder]
+
+-mb87030: support padding mode This makes Pascal 3.25 boot/run from SCSI on hp9k_3xx. Pascal is now a fully running OS like BASIC on
+ these machines. While at it also clean up a few style issues. [hp9k]
+
+-m52: improvements to alpha1v (promoted to working) It's meant to be a conversion, or at least was given to us that way, but it
+ disagreed with certain things about the way the existing mpatorl driver worked.  I think some of these things were optimizations in
+ the mpatrol driver to save memory back in the day. [DavidHaywood]
+ * it's a Kyle Hodgetts abomination, so without reference material it's very difficult to work out how things should be, eg. the
+    power orbs you collect are part of the text tilemap, which must scroll, but with the scroll offsets and sprite positioning we
+    have they only collide with the very back of your huge ship,  I think this is correct however.
+ * It seems to expect double height background images, which strongly suggests that moon patrol should have this too, and is simply
+    not populating the lower half, hence the 'solid colour' pull-up.  I've modified the driver to support this.
+ * The game also has 3bpp sprites instead of 2bpp, the existing Moon Patrol sprite CLUT decode looks like it's been kludged to work
+    with 2bpp instead of 3bpp, strongly suggesting that the board supports 3bpp and Moon Patrol just didn't use it, again leaving
+    areas unpopulated.  This has been adjusted, removing the kludge and treating Moon Patrol sprites as 3bpp with 2bpp used.
+ * As part of driver cleanups this also splits the palette/gfx etc. into multiple decodes and splits the PROMs into multiple named
+    regions rather than kludging them all into one (this made it easier to work out the above, and also makes it easier to see in
+    the F4 viewer which palettes etc. belong to which elements)
+ * Overall this makes it look somewhat more like a game, but as mentioned without reference material it's difficult to know how this
+    should look / play.  I've marked it as working because I think most of the badness is just from the game.
+
+-restore tilemap offset to tumblep and chinatwn they were lost when the driver was merged with supbtime (verified with hardware
+ videos) [DavidHaywood]
+
+-v53: overhaul An attempt to add the NEC V50 to the existing V53/V53A devices. Also overhauled for devcb3, and made some required
+ changes to the peripherals. Because this is a pretty wide-ranging change, I'm soliciting feedback before merging. [pmackinlay]
+ * v53: refactor and add v50, devcb3, exploit templates and other general cleanup
+ * am9517a: add 16 bit transfer support to v5x_dmau variant
+ * i8251: minor tidy on v5x_scu variant
+ * hng64: update to match v53 changes
+ * mpc3000: update to match v53 changes
+
+-pbaction: hooked up Tecfri external pinball display on Pinball Action (working but missing some comms) display is hooked up and
+ functions, although there seems to be some communication back to the maincpu from the sub that is incorrect (attempting to hook it
+ up prevents flippers from working) [DavidHaywood]
+ * also killed off an anonymous timer.
+
+-luaengine: add description comments for emu.item() While testing, found out that read_range ignores offset/index, and that it
+ returns char data only. Is any of that a bug? [vadosnaprimer]
+ * Don't see an option to request a review, but these questions are mostly directed to @cracyc.
+
+-hotblock.cpp : Minor cleanups PALETTE_FORMAT for palette, Add notes, Cleanup video update routine, Convert VRAM array into
+ std::unique_ptr, confirmed XTAL (PCB is only has 24 MHz XTAL) [cam900]
+
+-XaviX - ignore unaligned palette select bits in bpp modes > 4 (ttv_lotr boot screen) [DavidHaywood]
+
+-gottlieb.cpp : Minor cleanups, Reduce unnecessary arguments Fix namings, Spacings, Cleanup gfxdecodes audio/gottlieb.cpp : Reduce
+ unnecessary arguments of handlers [cam900]
+
+-serflash.cpp : Updates Support address for when overall size is more/less than 0x8400000 bytes, or Flash page size is more/less
+ than 2048+64 Fix block erase command, Add notes, Fix overflow [cam900]
+
+-tecmo.cpp : Cleanups Cleanup duplicates, Reduce some runtime tag map lookups, Convert scroll array into shared_ptr, Remove
+ unnecessary handler installs, Fix spacing, Naming [cam900]
+
+-namco_c123tmap.cpp : Reduce unnecessary handlers, Duplicates, Add Namco System 1 implementation namcos1.cpp : Remove MCFGs, Cleanup
+ duplicates, Correct device types, XTAL'd YM2151 clock, Namings, Device'fied C123 namcos1.cpp, c117.cpp : Remove MCFGs [cam900]
+
+-thoop2.cpp : Cleanup duplicate, naming, Reduce runtime tag lookup [cam900]
+
+-wrally.cpp : Minor cleanups wrally.cpp : Cleanup gfxdecode, Duplicates, ACCESSING_BITS, Runtime tag lookups [cam900]
+
+-gaelco.cpp : Minor cleanups gaelco.cpp : Reduce duplicate, Cleanup naming, Reduce runtime tag lookup, Cleanup gfxdecode [cam900]
+
+-igs011.cpp : Minor cleanups igs011.cpp : Remove unnecessary palette handler, Convert memory_region into region_ptr [cam900]
+
+-bmcpokr.cpp : Cleanups Cleanup duplicates, Redundants, ACCESSING_BITs, Use private:, Remove MCFGs, register_postload, Correct value
+ types, Correct sound output channel [cam900]
+
+-cave.cpp : Cleanups cave.cpp : Remove unnecessary palette init, Add notes, Fix spacings, Remove some MCFGs, Cleanup namings,
+ Inputs, Gfxdecodes, ACCESSING_BITs, Write handlers, Remove register_postload cave.h : Use private: [cam900]
+
+-lordgun.cpp : Cleanup duplicates, Naming, Unnecessary handlers Fix aliencha save state, YMF278B clock ( reference:
+ https://www.youtube.com/watch?v=_RaCpHwyS78 ) [cam900]
+
+-blmbycar.cpp : Cleanups/Updates Cleanup duplicates, ACCESSING_BITS, runtime tag lookups Fix memory map, Sound output(Both chip and
+ PCB can't support stereo output) Fix metadata related to check screen blmbycar.h : Use private: [cam900]
+
+-gp9001.cpp : Cleanup/Fix naming, Reduce unnecessary handler toaplan2.cpp : Fix batrider gfx, Cleanup naming [cam900]
+
+-f1gp.cpp : Various cleanups Cleanup duplicate/naming, Split f1gp2 specific functions into driver state, Move GFX swap into ROM
+ load, Add shared_ptr for GFX RAM, Banking [cam900]
+
+-st0020.cpp : Reduce duplicate, Device finder, Cleanup tilemap mapping [cam900]
+
+-segas32.cpp : Cleanup duplicates, ACCESSING_BITs, naming [cam900]
+
+
+New working machines
+--------------------
+gbcolor: Pocket GT (Eur, Prototype?) [VampierMSX, Porchy, The Dumping Union]
+bbc_rom: Over 600 new ROMs supported. [Nigel Barnes]
+Centurion - Defender of Rome (Euro, Prototype, 19910528) [ArcadeShadow]
+Climber (Nintendo Game & Watch) [algestam]
+Climber (Nintendo Game & Watch) [algestam]
+Dance Dance Revolution Disney Mix [zino, ClawGrip, The Dumping Union, Recreativas.org]
+Notes: [clawgrip]
+The console has stereo output (via two RCA cables), but the driver outputs mono. [clawgrip]
+I've marked the game as MACHINE_IMPERFECT_GRAPHICS as every other game on the driver, [clawgrip]
+but I see no graphical differences with the real game. [clawgrip]
+I recorded a video of it: https://www.youtube.com/watch?v=PTmwcrRqufI [clawgrip]
+The original console shows a "Konami" banner on startup, but it seems to be missing on the emulation. [clawgrip]
+MAME crashes when the game is resetted (F3) on a MAME debug build. [clawgrip]
+EC0003-  J-Pop Mix Volume 3 [DavidHaywood]
+EC0006-  ENK Volume 1 [DavidHaywood]
+EC0010-  Kid's Mix Volume 1 [DavidHaywood]
+EC0012-  J-Pop Mix Volume 7 [DavidHaywood]
+EC0013-  J-Pop Mix Volume 8 [DavidHaywood]
+EC0015-  Artist Selection Volume 2 - unknown artist [DavidHaywood]
+EC0022-  J-Pop Mix Volume 10 [DavidHaywood]
+EC0026-  J-Pop Mix Volume 14 [DavidHaywood]
+EC0027-  J-Pop Mix Volume 15 [DavidHaywood]
+EC0029-  Artist Selection Volume 3 - Dreams Come True [DavidHaywood]
+EC0031-  Artist Selection Volume 4 - unknown artist [DavidHaywood]
+EC0034-  Kid's Mix Volume 3 [DavidHaywood]
+EC0036-  Artist Selection Volume 6 - KinKi Kids [DavidHaywood]
+EC0042-  J-Pop Mix Volume 19 [DavidHaywood]
+EC0044-  Artist Selection Volume 9 - Every Little Thing [DavidHaywood]
+EC0045-  Artist Selection Volume 10 - Mr. Children [DavidHaywood]
+EC0048-  ENK Volume 6 [DavidHaywood]
+EC0049-  Artist Selection Volume 11 - Judy and Mary [DavidHaywood]
+EC0054-  J-Pop Mix Volume 23 [DavidHaywood]
+GC0002-  BHT Volume 1 [DavidHaywood]
+e-kara UK / Europe Volume 7 (UK-E007) [DavidHaywood]
+e-kara Germany 5-Songs Starter (GER-M001) [DavidHaywood]
+Tropical Fish (Nintendo Game & Watch) [algestam]
+
+
+New working clones
+------------------
+Street Fighter II: The World Warrior (USA 910522, Rev. H) [Chris Gleed]
+Touchmaster 4000 (v6.02 England) [Porchy, Brian Troha, The Dumping Union]
+Xevious 3D/G (World, XV32/VER.A) [pacman70, Asayuki, smf]
+I changed the other World set to VER.B, as there is a note in the driver that the board had that label. Someone may have forgotten
+  to update test mode build text. The only difference I've found between the two sets is song 30 in test mode. [smf-]
+Centipede (bootleg, set 2) [Joe Magiera, The Dumping Union]
+Shin Ib Sa Won - Seok Dol I [gp-lee, Guru]
+Snow Bros. 2 - With New Elves / Otenki Paradise (bootleg, set 2)  [xuserv]
+X-Men: Children of the Atom (Asia 941219) [Brad Hicks]
+Street Fighter II: The World Warrior (World 910204) [Brian Troha, The Dumping Union]
+Battle Mania Daiginjou (Jpn, Prototype, 19910528) [ArcadeShadow]
+Shinobi (set 5, System 16B) (unprotected) [Brian Troha]
+Klax (Japan, version 4) [farzeno, The Dumping Union]
+note, it's very close to the parent (71 differences in each ROM) but there are enough intentional changes (including a small block
+  of 00/ff right before the data ends) that it can't be considered a direct replacement for the bad set; these aren't all single bit
+  changes that could be attributed to the bitrot. [DavidHaywood]
+also changed descriptions, as these sets aren't Japan only except for the prototype. [DavidHaywood]
+also lowered sound levels so that they don't clip badly due to the MSM [DavidHaywood]
+
+
+New machines marked as NOT_WORKING
+----------------------------------
+Bingo Galaxy (main) [Darksoft]
+Bingo Galaxy (satellite) [Darksoft]
+added SystemSP Network Board firmware ver 1.23 [Darksoft]
+Sport 2000 [PinMAME]
+Come Back [PinMAME]
+Network Computing Devices NCD-17C [R. Belmont, Al Kossow]
+Network Computing Devices NCD-19 [R. Belmont, Al Kossow]
+Model 931 Video Display Terminal [Al Kossow]
+Liberty Bell LB-4 [Al Kossow]
+TS-2624 [Al Kossow]
+Network Computing Devices HMX PRO [R. Belmont, Al Kossow]
+Bare Knuckle III (bootleg of Megadrive version) [ShouTime]
+unknown Elsy game [f205v]
+electron_flop: E2P Operating System (Disk), E2P Hi-Basic [Nigel Barnes]
+TS-1 (v2.13.0) [Bitsavers, bhilpert]
+Network Computing Devices Explora Pro XQ [R. Belmont, Jonathan Gevaryahu]
+Skate Board [PinMAME]
+went with PinMAME's spelling, but could also be Skateboard. IPDB's images aren't super clear [Ivan Vangelista]
+Doko Demo Issho: Toro's Fishing [ShouTime, Dane Biegert, rtw, The Dumping Union]
+
+
+New clones marked as NOT_WORKING
+--------------------------------
+Fighting Vipers 2 [CoolMod, The Dumping Union]
+Virtual On 2: Oratorio Tangram [CoolMod, The Dumping Union]
+Star Wars Trilogy Arcade (prototype, 16.09.98) [CoolMod, The Dumping Union]
+Arizona 10 (v1.1) [f205v]
+Simplified rabbitpk decryption [O. Galibert]
+Capitan Uncino (Version 2) [f205v]
+Top T. Cash [f205v]
+Smashing Drive (World) [ClawGrip, MetalliC]
+Smashing Drive (Spain, Portugal) [ClawGrip, Gines Vivanco, Undergamers, Recreativas.org]
+Sega Rally 2 (prototype, 8 Dec 1997) [Ordyne]
+Sega Rally 2 (prototype, 29 Dec 1997) [Ordyne]
+The Lost World (older) [Ordyne]
+Dirt Devils (Germany) [Ordyne]
+Falco 5220s [Al Kossow]
+Note: The other set in the same driver has been renamed from falco5220 to falco5220e. [AJR]
+Klax (set 2, bootleg set 2) [PaTrYcK]
+
+
+bbc_rom (bbc_rom.xml):
+  Renames
+    speech -> speechcc Speech
+  Working
+    ADE 1.00
+    ADE 1.9Z
+    ADE 2.01
+    ADE 2.02
+    ADE+
+    ADFS Utilities
+    AID
+    AIDS II Utility ROM
+    AIDS Utility ROM
+    AMS Disc Utility
+    AMX MAX Desktop
+    AMX Mouse Support 2.10
+    AMX Mouse Support 2.11
+    AMX Pagemaker 1.0
+    AMX Pagemaker Plus 1.3
+    AMX Pagemaker Plus 1.7
+    AMX Stop Press 1.9
+    AMX Super Rom 3.31
+    AMX Super Rom 3.41
+    AMX Super Rom 3.61
+    AMX Super Rom M3.61
+    ARTS Communication ROM
+    ASM 1.1
+    ASM 2.2
+    ATS 2.58
+    ATS 2.59 (Morley)
+    ATS 3.0
+    ATS 3.1
+    Acorn ADFS 1.30
+    Acorn ANFS 4.08
+    Acorn ANFS 4.18
+    Acorn ANFS 4.21
+    Acorn ANFS 4.24
+    Acorn ANFS 4.25
+    Acorn DFS 0.90
+    Acorn DFS 0.98
+    Acorn DFS 2.10
+    Acorn DFS 2.20
+    Acorn DFS 2.22
+    Acorn DFS 2.23
+    Acorn DFS 2.25
+    Acorn DFS 2.26
+    Acorn DNFS 1.00
+    Acorn DNFS 1.20
+    Acorn NFS 3.34
+    Acorn NFS 3.60
+    AddComm 1.00
+    AddComm 1.10
+    AddComm 1.20
+    AddComm 1.30
+    Advanced 1770 DFS 1.00 (Master)
+    Advanced 1770 DFS 1.04 (Master)
+    Advanced 1770 DFS 1.08 (B)
+    Advanced 1770 DFS 1.08 (Master)
+    Advanced BASIC
+    Advanced Control Panel 1.00
+    Advanced Control Panel 1.02
+    Advanced Control Panel 1.03
+    Advanced Control Panel 1.04
+    Advanced Control Panel 3.01
+    Advanced DFS 1770 2.00 (B)
+    Advanced Disc Investigator 1.00 S/N:43700
+    Advanced Disc Investigator 1.10 S/N:43543
+    Advanced Disc Investigator 1.20 S/N:43950
+    Advanced Disc Investigator 1.20 S/N:43970
+    Advanced Disc Investigator 1.22 S/N:44712
+    Advanced Disc Investigator 2.00 S/N:43690
+    Advanced Disc Toolkit 1.20
+    Advanced Disc Toolkit 1.40
+    Advanced Disc Toolkit 1.50
+    Advanced Disc Toolkit 1.60
+    Advanced Disc Toolkit 1.72
+    Advanced Disc Toolkit 1.73
+    Advanced Disc Toolkit 1.74
+    Advanced Disc Toolkit 1.75
+    Advanced Disc Toolkit 1.76
+    Advanced Disc Toolkit 1.77 [cracked]
+    Advanced Disc Toolkit 1.78
+    Advanced Disc Toolkit 2.00
+    Advanced File Manager 1.06
+    Advanced File Manager 1.07
+    Advanced File Manager 1.09
+    Advanced ROM Manager 1.00
+    Advanced ROM Manager 1.10
+    Advanced ROM Manager 1.12
+    Advanced ROM Manager 1.13
+    Amcom DFS S/N:00000
+    Amcom DFS S/N:A4534
+    Amcom DFS S/N:A4554
+    Amcom DFS S/N:A7259
+    Amcom DFS S/N:A7874
+    Amcom DFS S/N:B4084
+    Amcom DFS S/N:B4088
+    Amcom DFS S/N:B4218
+    Amcom E-Net 4.55
+    Amcom E-Net 5.17
+    Amcom E-Net Client 6.23M
+    Arabic ROM
+    Artist
+    BASIC (1981)
+    BASIC Extensions
+    BASIC2 (1982)
+    BCPL
+    BROM 1.06
+    BROM 1.12
+    BROM 1.14
+    BROM Plus
+    BS-DOS 2.19
+    BS-DOS 2.22
+    BeeBASE-1 1.06
+    BeeBASE-1 1.07
+    Beeb ROM
+    BeebAid
+    BeebFont
+    BeebFont [alt]
+    BeebMan
+    BeebMon
+    BeebPen 1.1
+    BeebPen 1.22
+    Beebtel 2.00
+    Beebtel 2.10
+    Beebug C 1.4
+    Beebug C 1.5
+    Bitstik ROM 2.0
+    Bitstik Service ROM 1.0
+    Buffer & Backup ROM
+    C.U.C. DOS 1.00
+    COMAL
+    CP-ROM 1.01
+    CP-ROM 2.00
+    Castle Quest (ROM Version)
+    Centurion 1.03
+    Centurion 1.05
+    Chauffeur
+    Colour Screenprint 1.30s
+    CommPanion
+    CommSoft
+    Command 1.00
+    Command 1.01
+    Command 1.04
+    Command Master 3.11
+    Commstar 1008
+    Commstar 1051
+    Commstar 3033
+    Commstar 6290
+    Commstar 6397
+    Commstar 6973
+    Commstar 7537
+    Commstar 8179
+    Commstar 882A 1.40
+    Commstar 9057
+    Commstar II 2.22
+    Commstar II 2.31
+    Commstar II 2.40
+    Commstar R032
+    Communicator 1.05
+    Crossware 65C02XR
+    Crossware 68000XR
+    Crossware Z80XR
+    D-Master
+    DIS-ASM
+    DMON A1.08
+    DMON A1.14
+    DTT Version 7
+    Data Scribe 1.01
+    Data Scribe 1.20
+    Data Scribe 1.31
+    DataBeeb
+    DataStag 1.0
+    Database 1.00
+    Database 1.20
+    DesROM
+    Diagram
+    Diary / Planner
+    Digital Drawings DD/B834
+    Digitiser 1.00
+    Digitiser 1.00 [alt]
+    Disc Servant
+    Disc-Aid
+    DotPrint-Plus
+    DoubleView
+    Dumpmaster II 1.00
+    Dumpmaster II 2.00
+    Dumpmaster II 2.15
+    Dumpout 0.5c
+    Dumpout 0.5d
+    Dumpout 3.0m
+    Dumpout 3.0p
+    Dumpout 3.2g
+    Dumpout 3.2j
+    Dumpout 3.30
+    EXMON 1.0a
+    EXMON 1.1a
+    EXMON II 1.00
+    EXMON II 1.03
+    EXMON II 2.01
+    EXMON II 2.02
+    EXROM: The Extension ROM
+    Easy Talk 1.01
+    Easy Talk 2.00
+    Edword 1.02
+    Edword 1.02E
+    Edword 2.00E
+    Enigma Disc Imager 0.04
+    Enigma Disc Imager 1.05
+    Enigma Disc Imager 1.06
+    Enigma Disc Imager 1.07
+    Enigma Disc Imager 1.08
+    Envelopes ROM
+    Epson Dump ROM
+    Epson NLQ
+    Everest
+    Extras
+    FORTH 1.03
+    Fanfare 1.40
+    File-Plus
+    First Aid 1.1
+    Floppy Copy 1.2
+    Floppy-Wise 2.1
+    Floppy-Wise 2.3
+    Floppy-Wise MASTER 2.2
+    Floppy-Wise PLUS 1.7
+    Floppy-Wise PLUS 1.8
+    Floppy-Wise PLUS 1.9
+    Floppy-Wise PLUS 1.C
+    Floppy-Wise PLUS 1.D
+    FontAid 1.01
+    FontAid 1.10
+    Forth 79
+    G:Forth 0.95
+    G:Forth 2.30
+    GINN Language Chip
+    GXR 0.37 (B)
+    GXR Model B
+    GXR Model B+
+    Giant Text ROM
+    GrafPad 2
+    Graphics Terminal 2.01
+    Help 1.0
+    Help 1.01
+    Help II
+    Helping Hand 1.29
+    Helping Hand 1.36
+    HyperDriver 1.00
+    HyperDriver 1.10
+    ISO-Pascal 1.00
+    ISO-Pascal 1.10
+    Ice-Box
+    Ice-Box [alt2]
+    Ice-Box [alt3]
+    Ice-Box [alt]
+    Icon Master 1.00
+    Index Utility 2.05b
+    Index Utility 3.00
+    Index Utility 3.03a
+    JWB Forth 2.0
+    JWB Forth 2.4
+    JWB Forth 2.5
+    Kermit 1.02
+    Kermit 1.30
+    Kermit 1.33
+    Kermit 1.45
+    Kmon
+    LISP 1.00
+    LISP 2.00
+    LISP 4.06
+    LISP 5.00
+    LOGO
+    LOGO (Logotron)
+    LOGO 1.00 (Catsoft)
+    LOGO 1.20 (Catsoft)
+    LVL Dos 0.91
+    Le Modem 1.00
+    Le Modem 1.04
+    Linemaster
+    Logo-Forth
+    MACH 1 1.00
+    MACH 1 1.01
+    MASS
+    MASTERcopy
+    MOS Plus 1.14
+    MOS Plus 1.15
+    MUROM 1.00
+    MUROM 1.01
+    MUROM 1.10
+    MUROM 1.2
+    Master Emulation ROM 1.00
+    Master Emulation ROM 2.01
+    Master Emulation ROM 2.02
+    Master ROM 1.01
+    Master ROM 1.03
+    MedMon-B
+    Mega-ROM 1.00
+    Mega-ROM 1.01
+    Menu ROM 1.00
+    Menu ROM 1.20
+    Merlin
+    Meta Assembler 2.13R
+    Meta Assembler 2.13R [alt]
+    Meta Assembler 3.40A
+    Micro Prolog
+    Micro-C 1.0
+    Micronet 1.30
+    Micronet 1.40
+    Micronet 2000
+    Microtext 3.3D
+    Microtext Plus 3.54
+    Microtext Plus 3.55R
+    Microware DDFS 0.90
+    Monitor 0.01
+    Monitor 1.60
+    Monitor v2.01
+    Mouse Pac Driver
+    Movie Maker 1.0
+    Movie Maker 1.1
+    Multi-FORTH 83
+    Multi-FORTH 83 [alt]
+    Multi-Font NLQ
+    MultiFont
+    NLQ Designer 1.2
+    NLQ Designer 1.3
+    NTQ Font Extension ROM 1
+    NTQ Font Extension ROM 1 [alt]
+    NovaCAD 1.06
+    NovaCAD 2.0N
+    NovaCAD 3.3K
+    Numerator 1.00
+    Oak Mentor
+    Opus DDOS 3.00
+    Opus DDOS 3.05
+    Opus DDOS 3.12
+    Opus DDOS 3.15
+    Opus DDOS 3.16
+    Opus DDOS 3.35
+    Opus DDOS 3.36
+    Opus DDOS 3.45
+    Opus DDOS 3.46
+    Opus EDOS 0.4
+    Overlay BASIC
+    Oxford Pascal 1.1
+    Oxford Pascal 2.0
+    Oxford Pascal 2.1
+    PCB 1.01
+    PCB 1.03
+    PCB 1.07
+    PCB 3.02
+    PCB 4.02
+    PCB 4.03
+    PCB Auto-Routing 1.03
+    PCB Auto-Routing 1.04
+    PHX 1.00
+    PHX 2.00
+    PMS Multi-Font NTQ 1.0
+    PMS Multi-Font NTQ 1.3
+    PMS Multi-Font NTQ 1.4
+    Pascal-T
+    Pen-Friend 1.20
+    Pen-Friend 1.24
+    PenDown 1.13
+    Pointer
+    PowerFont NTQ
+    Prestel Terminal
+    PrintBox 1.22
+    Printer Controller
+    Printer Server 1.00
+    Printer Server 1.11
+    ProWord 1.2
+    ProWord 1.3
+    Probe 4.02
+    Probe 4.05
+    ProgramSmith 0.80
+    QFS 1.02
+    QFS 2.00
+    Quest 2.1A
+    ROM Manager 1.00
+    ROM Manager 1.10
+    ROM Manager 2
+    ROM Master
+    ROM-Spell 1.00
+    ROM-Spell 1.02
+    ROM-Utils 1.70
+    ROMAS 3.00
+    ROMAS 3.02
+    Ramrod 1.82
+    Ramrod 4.00c
+    Romit 0.9
+    Romit 1.01
+    Romit 1.02
+    SPY 1.00
+    SPY 1.11
+    SPY 2.01
+    SPY 2.10
+    SPY 2.12
+    Screen Dump ROM 1.01
+    Screen Dump ROM 2.01
+    Screenprint 0.20
+    Screenprint 1.00
+    Scribe 1.10
+    Scribe 1.30
+    ScribeChec 1.10
+    Scythe
+    SecurIt
+    Slave 0.01
+    Slave 1.04
+    Slave 1.34
+    Sleuth 1.00
+    Sleuth 1.05
+    Sleuth 1.05a
+    Sleuth 1.06
+    Softlife EPS Software Mk2
+    Softlife Keypad Software
+    Solidisk ADFS 2.1D Issue 2
+    Solidisk ADFS 2.1M
+    Solidisk ADFS 2.1M Issue 2
+    Solidisk ADFS 20/2 Issue 2
+    Solidisk DFS 2.00 (8271/1770)
+    Solidisk DFS 2.1M Issue 2
+    Solidisk DFS 2.2D
+    Solidisk DFS 2.2J Issue 2
+    Solidisk DFS 2.2M Issue 2
+    Source Library Manager
+    Spark Dump
+    Speech!
+    SpellCheck II
+    SpellCheck III
+    StarBASE 2.00
+    StarBASE 2.00 (CUC)
+    StarBASE 2.10
+    StarGraph 2.01
+    StarMon 1.20b
+    StarStick 1.41
+    StarStick 2.23
+    StarStick 2.24
+    StarStore II
+    StarWord 1.01
+    SuperFont
+    Supervisor
+    System Delta
+    TUBE Editor
+    Tape to Disc 'TD' ROM (1770)
+    Tape to Disc 'TD' ROM (8271)
+    Teletext 1.04A
+    Teletext RTFROM
+    Teletext Support ROM
+    Termulator
+    Text Library Manager
+    The BASIC Editor 1.32
+    Toolkit 1.01 (Algotek)
+    Toolkit 1.10
+    Toolkit 1.20
+    Toolkit 1.21
+    Toolkit 1.22
+    Toolkit 1.23
+    Toolkit 1.25b
+    Toolkit Plus 2.00
+    Toolkit Plus 2.02
+    Toolkit Plus 2.04
+    Toolkit Plus 2.05
+    Toolstar 1.77 1262
+    Toolstar 1.77 1511
+    Trackerball 0.01
+    TransfeROM (SD) 0.95
+    TransfeROM (SD) 0.96
+    TransfeROM (SD) 1.10
+    U-Tools
+    U-Tools Demonstration
+    UDM DDFS 2.00
+    UROM 1.2
+    UROM 1.3
+    UVIPROM 1.1
+    UVIPROM 1E1
+    UVIPROM 2.1
+    Ultracalc
+    Ultracalc 2
+    Upgrade 2.2C
+    Upgrade 3.00
+    UserDUMP
+    UserROM
+    VASM 2.0C
+    VASM 2.0E
+    Viditel
+    View A2.1
+    View A3.0
+    View B3.0
+    View D2.1
+    View Professional 1.0
+    View Professional 2.0
+    ViewShape
+    ViewSheet A0.7
+    ViewSheet B1.0
+    ViewSpell 1.0
+    ViewSpell 1.1
+    ViewStore 0.5
+    ViewStore 1.0
+    ViewStore 1.1
+    ViewStore 1.2
+    ViewStore 1.5
+    WYSIWYG Plus
+    Watford Electronics DDFS 1.40
+    Watford Electronics DDFS 1.50
+    Watford Electronics DDFS 1.53
+    Watford Electronics DDFS 1.54T
+    Watford Electronics DDFS+ 0.91
+    Watford Electronics DFS 1.00
+    Watford Electronics DFS 1.10
+    Watford Electronics DFS 1.20
+    Watford Electronics DFS 1.30
+    Watford Electronics DFS 1.41
+    Watford Electronics DFS 1.42
+    Watford Electronics DFS 1.43
+    Watford Electronics DFS 1.44
+    Watford PRINT-ROM 0.1C
+    Watford PRINT-ROM 0.1E
+    Watford SFS 0.90
+    Watford SFS 0.92
+    Window 1025
+    Window 1045
+    Wizard Joystick Utility 1.12
+    Word Power
+    Word-Aid
+    WordEase
+    Workstation 1.4
+    XTend
+  Non-working
+    ADDER
+    AMX Design
+    Advanced BASIC Editor
+    EPROM 1.04
+    EPROM 1.08
+    Epromer II
+    Inter-Word 1.O2
+    MASTERboard
+    Micron EPROM Programmer 1.4a
+    Micron Plus EPROM Programmer 1.30
+    Micron Plus EPROM Programmer 1.40
+    Prestel 1.1
+    Prestel 4.7n
+    Prestel 4.8n
+    Printer Buffer 1.00
+    Printer Buffer 2.10
+    Pro-Performer 2.1
+    Pro-Performer 2.2
+    Replay System 8271 1.00
+    Replay System 8271 1.10
+    Replay System WD1770 1.01
+    Replay System WD1770A 1.17
+    STL Clock & Desk
+    SideAid128
+    SideAid256
+    Solidisk ADFS 2.1S
+    Solidisk DDFS 1.5
+    Solidisk DDFS 1.9
+    Solidisk DFS 2.0J (8271/1770)
+    Solidisk DFS 2.0L (8271/1770)
+    Solidisk DFS 2.0m (8271/1770)
+    Solidisk DFS 2.1 (8271/1770)
+    Solidisk DFS 2.1A (1770)
+    Solidisk DFS 2.1J Issue 1
+    Solidisk DFS 2.1J Issue 2
+    Solidisk DFS 2.2N Issue 2
+    TED 1.11
+    Tic-Toc RTC
+
+ekara (ekara.xml):
+  Working
+    1979-81 Volume 1 (Japan) (EC0008-G79)
+    Artist Selection Volume 1 (unknown) (Japan) (EC0014-ATS)
+    Artist Selection Volume 10 (Mr. Children) (Japan) (EC0045-ATS)
+    Artist Selection Volume 11 (Judy and Mary) (Japan) (EC0049-ATS)
+    Artist Selection Volume 2 (unknown) (Japan) (EC0015-ATS)
+    Artist Selection Volume 3 (Dreams Come True) (Japan) (EC0029-ATS)
+    Artist Selection Volume 4 (unknown) (Japan) (EC0031-ATS)
+    Artist Selection Volume 5 (Matsuda Seiko) (Japan) (EC0035-ATS)
+    Artist Selection Volume 6 (KinKi Kids) (Japan) (EC0036-ATS)
+    Artist Selection Volume 8 (unknown) (Japan) (EC0041-ATS)
+    Artist Selection Volume 9 (Every Little Thing) (Japan) (EC0044-ATS)
+    BHT Volume 1 (Japan) (GC0002-BHT)
+    BHT Volume 3 (Japan) (GC0006-BHT)
+    ENK Volume 1 (Japan) (EC0006-ENK)
+    ENK Volume 6 (Japan) (EC0048-ENK)
+    HWK (Japan) (SC0010-HKW)
+    J-Pop Mix Volume 10 (Japan) (EC0022-JPM)
+    J-Pop Mix Volume 11 (Japan) (EC0023-JPM)
+    J-Pop Mix Volume 13 (Japan) (EC0025-JPM)
+    J-Pop Mix Volume 14 (Japan) (EC0026-JPM)
+    J-Pop Mix Volume 15 (Japan) (EC0027-JPM)
+    J-Pop Mix Volume 19 (Japan) (EC0042-JPM)
+    J-Pop Mix Volume 2 (Japan) (EC0002-JPM)
+    J-Pop Mix Volume 23 (Japan) (EC0054-JPM)
+    J-Pop Mix Volume 3 (Japan) (EC0003-JPM)
+    J-Pop Mix Volume 33 (Japan) (EC0068-JPM)
+    J-Pop Mix Volume 34 (Japan) (EC0070-JPM)
+    J-Pop Mix Volume 36 (Japan) (EC0072-JPM)
+    J-Pop Mix Volume 39 (Japan) (EC0076-JPM)
+    J-Pop Mix Volume 7 (Japan) (EC0012-JPM)
+    J-Pop Mix Volume 8 (Japan) (EC0013-JPM)
+    Kid's Mix Volume 1 (Japan) (EC0010-KID)
+    Kid's Mix Volume 3 (Japan) (EC0034-KID)
+    Mini Volume 1 (Japan) (MC0001-ATM)
+    SAI Volume 1 (Japan) (SC0005-SAI)
+    SAI Volume 2 (Japan) (SC0006-SAI)
+    SAI Volume 3 (Japan) (SC0009-SAI)
+    SAI Volume 6 (Japan) (SC0019-SAI)
+    SAI Volume 7 (Japan) (SC0021-SAI)
+    SAI Volume 8 (Japan) (SC0022-SAI)
+    e-kara Germany 5-Songs Starter (GER-M001)
+    e-kara UK / Europe Volume 1 (UK-E001)
+    e-kara UK / Europe Volume 2 (UK-E002)
+    e-kara UK / Europe Volume 3 (UK-E003)
+    e-kara UK / Europe Volume 6 (UK-E006)
+    e-kara UK / Europe Volume 7 (UK-E007)
+    e-kara US 5-Songs Starter (US-M001)
+    e-kara US Volume 1 (US-E001)
+    e-kara US Volume 2 (US-E002)
+    e-kara US Volume 3 (US-E003)
+    e-kara US Volume 4 (US-E004)
+    e-kara US Volume 5 (US-E005)
+    e-kara US Volume 6 (US-E006)
+    e-kara US Volume 7 (US-E007)
+    e-kara US Volume 8 'No Boys Allowed' (US-E008)
+    e-kara US Volume 9 'No Boys Allowed' (US-E009)
+    e-kara Web cartridge 28M (Japan)
+
+electron_cass (electron_cass.xml):
+  Working
+    Ewgeebez
+
+electron_flop (electron_flop.xml):
+  Non-working
+    E2P Hi-Basic
+    E2P Operating System (Disk)
+
+gamecom (gamecom.xml):
+  Promoted
+    The Lost World - Jurassic Park
+
+gbcolor (gbcolor.xml):
+  Working
+    Pocket GT (Eur, Prototype?)
+
+megadriv (megadriv.xml):
+  Working
+    Battle Mania Daiginjou (Jpn, Prototype, 19910528)
+    Centurion - Defender of Rome (Euro, Prototype, 19910528)
+
+uzebox (uzebox.xml):
+  Working
+    Wuergertime (Demo)
+    Wuergertime with Music (Demo)
+
+Comparing 0.203 (mame0203) to 0.203 (mame0203-537-gf99c502)
+
+Renames
+smashdrv -> smashdrvb Smashing Drive (UK)
+xevi3dg -> xevi3dga Xevious 3D/G (World, XV32/VER.A)
+sf2en -> sf2ea Street Fighter II: The World Warrior (World 910204)
+xmcotaar1 -> xmcotaar2 X-Men: Children of the Atom (Asia 941217)
+
+New working machines
+--------------------
+Bare Knuckle III (bootleg of Megadrive version)
+Dance Dance Revolution Disney Mix
+Game & Watch: Climber (new wide screen)
+Game & Watch: Tropical Fish
+
+New working clones
+------------------
+Centipede (bootleg, set 2)
+Dragon Master (set 2)
+Hacha Mecha Fighter (Location Test Prototype, 19th Sep. 1991)
+Klax (Germany, version 2)
+Klax (Japan, version 3)
+Klax (Japan, version 4)
+Klax (version 4)
+Klax (version 5)
+Pinball Action (Tecfri license)
+Shin Ib Sa Won - Seok Dol I
+Shinobi (set 6, System 16B) (unprotected)
+Snow Bros. 2 - With New Elves / Otenki Paradise (bootleg, set 2)
+Street Fighter II: The World Warrior (USA 910522, Rev. H)
+Street Fighter II: The World Warrior (World 910204, conversion)
+Touchmaster 4000 (v6.02 England)
+U.N. Defense Force: Earth Joker (US / Japan, set 2)
+X-Men: Children of the Atom (Asia 941219)
+Xevious 3D/G (World, XV32/VER.B)
+
+Machines promoted to working
+----------------------------
+Abnormal Check
+Alpha One (Vision Electronics)
+MU100
+QVT-102
+
+Clones promoted to working
+--------------------------
+MU100 Rackable version
+
+New machines marked as NOT_WORKING
+----------------------------------
+4D/410
+Bingo Galaxy (main)
+Capitan Uncino (High Video, version 2)
+Come Back
+Crimson (R4000, 100MHz, Ver. 4.0.3)
+Doko Demo Issho: Toro's Fishing
+Falco 5220e
+Model 931 Video Display Terminal
+NCD Explora Pro XQ
+NCD HMX PRO
+NCD-17C
+NCD-19
+O2 (version 4.18)
+Octane (Version 6.5 Rev 4.9 05/22/03)
+RC3230
+RS3230
+Skate Board (Inder)
+Sport 2000
+TS-1 (v2.13.0)
+TS-2624
+Top T. Cash
+e-kara (NTSC)
+unknown Elsy game
+
+New clones marked as NOT_WORKING
+--------------------------------
+Arizona 10 (v1.1)
+Bingo Galaxy (satellite)
+ConnecTV Table Tennis (PAL)
+Dirt Devils (Germany?)
+Falco 5220s
+Fighting Vipers 2
+Klax (version 5, bootleg set 1)
+Klax (version 5, bootleg set 2)
+Magic Colors (ver. 1.6)
+Sega Rally 2 (prototype, 29 Dec 1997)
+Sega Rally 2 (prototype, 8 Dec 1997)
+Smashing Drive (Spain, Portugal)
+Smashing Drive (World)
+Star Wars Trilogy Arcade (location test, 16.09.98)
+The Lost World (older)
+UTS-10
+Virtual On 2: Oratorio Tangram
+
