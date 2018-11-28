@@ -312,7 +312,7 @@ Source Changes
 
 -lordgun.cpp: Corrected aliencha YMF278B clock, reduced duplication, simplified code, and improved member names. [cam900]
 
--Cleaned up code to better adhere to current best practices, and changed sound output to mono. [cam900]
+-bmcpokr.cpp: Cleaned up code to better adhere to current best practices, and changed sound output to mono. [cam900]
 
 -dec0.cpp: Converted sprite RAM to buffered_spriteram16_device, cleaned up graphics decode description, and improved member names.
  [cam900]
@@ -418,6 +418,74 @@ Source Changes
 
 -mb87030: Implemented padding mode (allows Pascal 3.24 to boot and run from SCSI on hp9k_3xx). [Sven Schnelle]
 
+-luaengine: Added functions to screen_dev class for getting packed RGB pixel values. [Ryan Holtz, Carl]
+
+-hpc3.cpp updates: [Ryan Holtz]
+ * Improved DMA transfer behaviour
+ * Fixed audio DMA, hooked up second DAC, and fixed a bug that prevented the audio DAC DMA timer from stopping.
+ * Partially hooked up second SCSI controller for Indigo².
+ * Hooked up INT3 and PIT register access.
+ * Added support for single-byte SCSI DMA requests.
+ * Fixed an oversight with interrupt requests.
+ * Also converted logging to use logmacro, added more verbose logging, added stave state support, and cleaned up code.
+ * Restores SGI Indy boot chime, and allows IRIX installer to run until it fails with a SCSI error.
+
+-ioc2.cpp updates: [Ryan Holtz]
+ * Hooked up Timer1/Timer0, z80scc and 8042kbdc interrupts.
+ * Hooked up 8042kbdc reset.
+ * Fixed IRQ-lowering logic so it actually clears the MIPS IRQ line.
+ * Also converted logging to use logmacro, made logging more verbose, and added save state support.
+ * Allows Gentoo Linux to boot, although it hangs during startup.
+
+-newport.cpp: FIxed a long-standing bug with color resolution. [Ryan Holtz]
+ * Also updated to current coding standards, converted logging to use logmacro, and made logging more verbose.
+
+-dp8573.cpp: Added DP8573 real-time clock emulation. [Ryan Holtz]
+
+-sgi.cpp: Made RPSS counter more accurate, and added semaphore registers. [Ryan Holtz]
+ * Also converted logging to use logmacro, made logging more verbose, and updated to meet coding standards.
+
+-indy_indigo2.cpp updates: [Ryan Holtz]
+ * Moved Indigo² to a derived state class, and moved a number of devices into HPC3.
+ * Eliminated use of MACHINE_CONFIG_START/MACHINE_CONFIG_END macros.
+ * Hooked up pull-ups on EISA I/O space.
+
+-indigo.cpp updates: [Ryan Holtz]
+ * Separated indigo3k and indigo4k state classes.
+ * Hooked up RS-232 ports.
+ * Switched to new Zilog SCC implementation, and added PIT8254 device (uses incorrect clock value to work around hang).
+ * Fleshed out SCSI and started fleshing out HPC1 implementation.
+ * Hooked up new DP8573 real-time clock implementation.
+ * Improved RAM layout.
+ * Added stubs for DSP RAM and Entry-Level Graphics (LG1/LG2).
+ * Implemented LG1 palette setup, block drawing, pattern drawing, frame buffer copy, and remaining commands used by PROM monitor.
+ * Removed unused screen device.
+ * Expanded logging and converted to use logmacro, and renamed variables to meet MAME coding standards.
+
+-t10sbc.cpp: Added support for Format Parameters and Geometry Parameters pages. [Ryan Holtz]
+
+-scsicd512.cpp: Added various legacy SCSI CD-ROM devices that use 512-byte blocks by default. [Ryan Holtz]
+
+-nscsi_cd.cpp: Added various new-SCSI CD-ROM devices that use 512-byte blocks by default. [Ryan Holtz]
+
+-sgikbd: Added basic SGI Indigo keyboard high-level emulation. [Ryan Holtz]
+
+-rs232/hlemouse.cpp: Added support for SGI Indigo mouse. [Ryan Holtz]
+
+-o2.cpp: Added CRIME and MACE skeleton devices. [Ryan Holtz]
+
+-mips3.cpp updates: [Ryan Holtz]
+ * Corrected R4400BE, R4400LE, R4600BE and R5000BE bus width to 64 bits.
+ * Fixed a bug that caused a crash with 64-bit data bus and the DRC.
+ * Added ability to log SGI O2 boot PROM DPRINTF calls (enabled with a preprocessor macro).
+
+-clifront.cpp: Improved descriptions of -showusage and -showconfig options. [Ryan Holtz]
+
+-screen.cpp: Added a device callback to make it easier to hook the scan line timer. [Ryan Holtz]
+
+-zerozone.cpp, zexall.cpp, zr107.cpp, zrt80.cpp, zt8802.cpp, zwackery.cpp, zx.cpp: Eliminated MACHINE_CONFIG_START/_END macros.
+ [Ryan Holtz]
+
 -m68kmmu improvements: [Sven Schnelle]
  * Handle RW bit in address translation cache properly.
  * Add page table walk resulting in BUSERROR to address translation cache.
@@ -470,6 +538,8 @@ Source Changes
 
 -exidy.cpp: Corrected PCB locations for PROM in mtrap and clones. [Jim Hernandez]
 
+-hiscore.dat: Updated for latest changes in MAME. [Leezer]
+
 -Changed hand-made SAA5051 character ROM to match the datasheet (one pixel was missing on the ‘j’ character). [Lord Nightmare]
 
 -segaxbd.cpp: Added Royal Ascot satellite ROMs. [Ordyne]
@@ -481,107 +551,3 @@ Source Changes
 -xerox820.cpp: Added ROM versions 4.02 (820-II), v50 v018 (820-II), and 5.00 (820-II 16/8). [rfka01, Bitsavers]
 
 -Decapped and extracted internal ROM from SAA5050 character generator. [Sean Riddle, ClawGrip, The Dumping Union]
-
-
-
-
-
-
--luaengine: Added pixel(x,y) function. [Ryan Holtz]
-
--hpc3: Improved DMA transfer behavior. The IRIX installer now loads, but panics. [Ryan Holtz]
-
--hpc3: Fixed up and re-enabled audio DMA. Gets SGI Indy driver its boot chime back. [Ryan Holtz]
-
- * indy_indigo2.cpp: Various changes: [Ryan Holtz]
-   - Split Indigo 2 into a derived class.
-   - Eliminated MACHINE_CONFIG_START/END.
-   - Hooked up pullups on EISA I/O space.
- * ioc2.cpp: Various changes: [Ryan Holtz]
-   - Converted to use logmacro.
-   - Made logging more verbose.
-   - Added savestate support.
-   - Hooked up Timer1/Timer0 interrupts.
- * hpc3.cpp: Various changes: [Ryan Holtz]
-   - Updated to MAME code standards.
-   - Converted to use logmacro.
-   - Made logging more verbose.
-   - Added savestate support.
-   - Partially hooked up second SCSI controller for Indigo 2.
-   - Hooked up second DAC.
-   - Fixed a bug that prevented the DAC DMA timer from stopping.
-   - Hooked up PIO/DMA config register logging.
- * sgi.cpp: Various changes: [Ryan Holtz]
-   - Updated to MAME code standards.
-   - Converted to use logmacro.
-   - Made logging more verbose.
-   - Made RPSS counter more accurate.
-   - Added semaphore registers.
- * newport.cpp: Various changes: [Ryan Holtz]
-   - Updated to MAME code standards.
-   - Converted to use logmacro.
-   - Made logging more verbose.
-
- * hpc3.cpp: Hooked up INT3 and PIT register accessors. [Ryan Holtz]
- * ioc2.cpp: Various changes: [Ryan Holtz]
-   - Hooked up z80scc and 8042kbdc interrupts.
-   - Fixed IRQ-lowering logic to actually clear the MIPS IRQ line.
-   - Hooked up 8042kbdc reset.
- * Gets Gentoo Linux booting (though it hangs during startup), and the IRIX 5.3 installer runs until it fails due to SCSI emulation
-    issues.
-
- * t10sbc.cpp: Added support for Format Parameters and Geometry Parameters pages. [Ryan Holtz]
- * hpc3.cpp: Added support for single-byte SCSI DRQ functionality. [Ryan Holtz]
-
- * indigo.cpp; Various changes: [Ryan Holtz]
-   - Switched to new Z80SCC implementation.
-   - Hooked up RS232 ports.
-   - Fleshed out SCSI.
-   - Added PIT8254 device (currently disabled).
-   - Converted to logmacro.
-   - Started fleshing out HPC1 implementation.
-   - Split into separate indigo3k/indigo4k classes.
-   - Renamed variables to MAME code standards.
-   - Removed unused screen device.
-
- * dp8573.cpp: Added DP8573 Real-Time Clock emulation. [Ryan Holtz]
- * indigo.cpp: Hooked up new DP8573 implementation. [Ryan Holtz]
-
--clifront.cpp: 'a brief list of options' is a lie, make it more truthful. [mooglyguy]
-
- * scsicd512.cpp: Added various legacy SCSI CD-ROM devices which support 512-byte blocks by default. [Ryan Holtz]
- * nscsi_cd.cpp: Added various new-SCSI CD-ROM devices which support 512-byte blocks by default. [Ryan Holtz]
- * sgikbd.cpp: Added a rudimentary HLE SGI Indigo keyboard device. Still needs keys to be mapped. [Ryan Holtz]
- * indigo.cpp: Various changes: [Ryan Holtz]
-   - Expanded logging.
-   - Enabled PIT8254 timer. Has the wrong clock value; the correct clock causes a hang.
-   - Improved RAM layout.
-   - Added stubs for DSP RAM and Entry-level graphics.
-
--indigo.cpp: Hooked up palette setup for LG1 graphics board. [Ryan Holtz]
-
--indigo.cpp: Added basic block-draw command for LG1. [Ryan Holtz]
-
- * indigo.cpp: Added pattern drawing support to LG1. [Ryan Holtz]
- * newport.cpp: Fixed a long-standing bug with color resolution. [Ryan Holtz]
-
--hlekbd.cpp: Hooked up basic keycodes, enough to get to the Indigo monitor. [Ryan Holtz]
-
- * hlekbd.cpp: Fixed up SGI HLE keyboard mapping. [Ryan Holtz]
- * indigo.cpp: Added support for remaining commands used by the Indigo PROM monitor. [Ryan Holtz]
-
- * hlemouse.cpp: Added support for the SGI Indigo mouse. [Ryan Holtz]
- * indigo.cpp: Added framebuffer copy command to LG1. [Ryan Holtz]
-
--hiscore.dat: Updates [Leezer]
-
- * screen.cpp: Added a devcb for easier hooking of the scanline timer. [Ryan Holtz]
- * zerozone, zexall, zr107, zrt80, zt8802, zwackery, zx: Removed MACHINE_CONFIG_START/_END. [Ryan Holtz]
-
- * o2.cpp: Added CRIME and MACE skeleton devices. [Ryan Holtz]
- * mips3.cpp: Various changes: [Ryan Holtz]
-   - Added an #ifdef to display DPRINTF calls from the SGI O2 PROM.
-   - Switched R4000BE/LE, R4400BE, R4600BE, and R5000BE to 64-bit data bus.
-   - Fixed a bug that caused a crash with 64-bit data bus and the DRC.
- * indy_indigo2.cpp: Moved a number of devices into HPC3. [Ryan Holtz]
- * hpc3.cpp: Fixed an oversight with IRQs. [Ryan Holtz]
