@@ -8,6 +8,8 @@ MAMETesters Bugs Fixed
 - 04053: [Graphics] (ssv.cpp) eaglshot, dynagear: Missing raster effect. (David Haywood)
 - 04954: [Graphics] (cps2.cpp) mvscu, xmvsf, mshvsf: Sprite priority problem on final stage with Onslaught. (hap)
 - 05732: [Crash/Freeze] All games using MCS-48: Crash when trying to set watchpoint with wpd in MCS-48 games. (AJR)
+- 06539: [Crash/Freeze] (konamim2.cpp) All sets in konamim2.cpp: [debug] Assertion failure on VTLB fill. (Phil Bennett)
+- 06566: [Crash/Freeze] (vic20.cpp) All sets in vic20.cpp: Mounting Data 20 Video Pak (videopak) causes an exception. (Ryan Holtz)
 - 07005: [Crash/Freeze] (vamphalf.cpp) wolrdadv, luplup, poosho (possibly more): Games crash after 36 minutes with DRC. (Ryan Holtz)
 - 07022: [DIP/Input] (vtech2.cpp) laser500: Some keys are not working. (Robbbert)
 - 07049: [Media Support] (ct486.cpp) ct486: MAME writes to floppy images opened in read-only mode. (AJR)
@@ -342,6 +344,19 @@ Source Changes
 
 -brkthru.cpp: Fixed brkthrut PROM addressing and added notes. [Roberto Fresca]
 
+-e132xs.cpp: Fixex CMPB and SUBC instruction emulation and instruction length flags when using the DRC. [Ryan Holtz]
+
+-midtunit.cpp: Converted video emulation to a device and removed static global variables. [Ryan Holtz]
+ * Also added a DMA blitter graphics viewer that can be enabled with a preprocessor macro.
+
+-midtunit.cpp, midxunit.cpp: Cleaned up code and converted logging to use logmacro. [Ryan Holtz]
+
+-pocketc.cpp cleanup: [Ryan Holtz]
+ * Reduced duplication, improved member names, reduced runtime tag map lookups, and converted logging to use logmacro.
+ * Removed MCFG_ macros, made better use of language and framework features, re-formatted code, and cleaned up comments.
+
+-Updated bgfx and bx to latest upstream code. [Ryan Holtz]
+
 -pasopia7: Increased keyboard poll rate to 5 kHz – allows de-bounce code to work. [shattered]
 
 -hp_dio: Added DMA enable to control register of human interface card. [Sven Schnelle]
@@ -385,24 +400,9 @@ Source Changes
 
 
 
--e132xs.cpp: Fixed CMPB opcode comparing source register against source register. [Ryan Holtz]
-
--e132xs: Fixed SUBC flag calculation for DRC, and fixed instruction length flags. Fixes hang in DRC. [Ryan Holtz]
-
--videopak.cpp: Fixed MT#06566, Mounting Data 20 Video Pak (videopak) causes exception. [Ryan Holtz]
-
 -tms32031.cpp: Fixed the disassembler. [Ryan Holtz]
 
--Initial attempt at device-ifying midtunit video, only midtunit.cpp compiles right now [mooglyguy]
-
- * midtunit.cpp: Various cleanups. Removed MCFG, converted to video device and removed static globals. [Ryan Holtz]
- * midwunit.cpp,midxunit.cpp: Various cleanups. Removed MCFG, converted to logmacro. [Ryan Holtz]
-
 -tms34010: Removed MCFG. [Ryan Holtz]
-
--3rdparty: Updated bgfx, bimg, and bx to latest upstream. [Ryan Holtz]
-
--midtunit.cpp: Added an optional DMA-blitter viewer behind a #define. [Ryan Holtz]
 
  * z8000, tmpz84c015: Removed MCFG macros. [Ryan Holtz]
 
@@ -418,20 +418,6 @@ Source Changes
 
  * scmp, sc61860: Removed MCFG macros. [Ryan Holtz]
  * mk14: Removed MACHINE_CONFIG macros. [Ryan Holtz]
- * pocketc: Various cleanups: [Ryan Holtz}
-   - First pass on cleaning up duplicate code.
-   - Removed redundant driver-name prefixes from member functions.
-   - Mostly fixed ghastly spacing.
-   - Removed use of ioport() and made use of required_ioport_array for keys.
-   - Added logmacro support.
-   - Removed MACHINE_CONFIG macros.
-   - Cleaned up spelling errors and random use of German in comments.
-   - Eliminated use of machine().system().name in favor of a subclass.
-   - Eliminated use of an anonymous timer.
-   - Mostly switched to using BIT() macro instead of direct masks.
-   - Imposed some order via protected/private.
-   - Removed ancient #ifdef'd-out code.
-   - Made use of modern inline variable declarations instead of C-style.
 
  * keyboard/a1200, changela, goldnpkr, m68705prg, mexico86, pipeline, pitnrun, qix, quizpun2, stfight, tigeroad: Removed
     MACHINE_CONFIG. [Ryan Holtz]
