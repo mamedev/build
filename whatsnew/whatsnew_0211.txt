@@ -1,0 +1,2707 @@
+0.211
+-----
+
+
+MAMETesters Bugs Fixed
+----------------------
+- 06264: [Interface] UI: Hitting ALT+TAB causes assert message (hap)
+- 07347: [Flip Screen/Cocktail] (galaxian.cpp) skybase: Inverted upright and cocktail switches (MetalGod)
+- 07354: [Flip Screen/Cocktail] (taitosj.cpp) spacecr: Upright mode dipswitch does exactly the same as cocktail mode (MetalGod)
+- 07351: [DIP/Input] (subsino2.cpp) ptrain: pay button does not work (Duke)
+- 07345: [Graphics] (dec0.cpp) birdtry: sprite problems on the title screen and during gameplay (jkm900)
+- 07343: [Gameplay] (carpolo.cpp) carpolo: Unable to Move + Issues with collision detection (hap)
+- 07333: [Gameplay] (bbusters.cpp) bbusters and clones: Strange players AI behaviour in attract mode of Beast Busters world version. (Duke)
+- 07361: [Sound] (coco12.cpp) coco: Speech/Sound Cartridge music plays fast (tlindner)
+- 07353: [Interface] alphatro, fc100: hangs when save to cassette (Robbbert)
+- 07360: [Interface] (vtech1.cpp) vz200: Unable to load a cassette that was created by MAME (Robbbert)
+
+
+New working machines
+--------------------
+
+
+New working clones
+------------------
+
+
+Machines promoted to working
+----------------------------
+
+
+Clones promoted to working
+--------------------------
+
+
+New machines marked as NOT_WORKING
+----------------------------------
+
+
+New clones marked as NOT_WORKING
+--------------------------------
+
+
+New working software list additions
+-----------------------------------
+
+
+Software list items promoted to working
+---------------------------------------
+
+
+New NOT_WORKING software list additions
+---------------------------------------
+
+
+Translations added or modified
+------------------------------
+
+
+Source Changes
+--------------
+-Bally -35 Pinball Fix recent AS2888 sound board audio regression playing wrong tones Change default sound board test switch that
+ conflicted with in game service switch [Quench0]
+
+-Hp9845: added 98046 module emulation (#5115) [fulivi]
+ * z80sio: massive enhancement to Z80 SIO driven by HP98046 test sw
+ * hp9845: implemented the HP98046 serial I/O module
+
+-leapfrog_leappad_cart.xml: New NOT_WORKING software list additions [ClawGrip]
+ * -------------------------- Leap 1 - Reading - Disney/Pixar Finding Nemo (UK) [Team Europe] Leap Start - Pre Reading Storybook -
+    Disney's The Lion King (UK) [Team Europe] Leap 2 - Reading - Disney/Pixar Monsters, Inc. (UK) [Team Europe] Phonics Programme -
+    Lesson 3 - Short Vowels o and e - A Day at Moss Lake (UK) [Team Europe] The Amazing Spider-Man (UK) [Team Europe] Disney's
+    Bounce, Tigger, Bounce (UK) [Team Europe] Leap-Start - Pre Reading - Tutter's Tiny Trip (UK) [Team Europe]
+
+-z80netf: Fix error in keyboard configuration (was broken since 0.196) [AJR]
+
+-mc68340: Fix interrupt vectoring [AJR]
+
+-mc68340: correct MC68340 baud rate calculation [R. Belmont]
+
+-esqmr: improved RAM, ROM, and device mapping.  Programs run farther but don't boot yet. [R. Belmont]
+
+-aristmk6.cpp: added a new bios dump [Dam0, Heihachi_73]
+
+ * newport: Added Display Control Bus timeout. Prevents Presenter board from being erroneously detected. [Ryan Holtz]
+ * sgi_mc: Fixed VDMA TLB which caused corrupt bitmap transfers. [Ryan Holtz]
+
+-bagman.cpp:  Changed pickin to use an 8-way joystick as it should be per notes from original board owners.  Also, added confirmed
+ bonus life DIP and updated locations to match same notes. [Mark Spaeth, Tafoid]
+
+-New device: UPD7004 ADC [Dirk Best]
+
+-bbusters: Update gun handling, fixes MT07333 [Dirk Best]
+ * Use UPD7004 device
+ * Adjust gun limits to the factory defaults
+ * Remove no longer needed default eeproms
+ * Calibration in service mode now also works and doesn't cause the game to refuse to boot.
+
+-Fix subtle memory subsystem bug [O. Galibert]
+
+ * newport: Various fixes. [Ryan Holtz]
+   - Fixed COLORI shift when cross-initialized by COLORRED.
+   - Fixed RGB vs. CI fast-clear handling.
+   - Fixed incorrect octant calculation for lines.
+
+-SGI GIO rename to GIO64 (#5125) [tyfighter]
+
+-mc68340: Timer improvements [AJR]
+ * Fix prescaler calculation
+ * Handle various reset behaviors
+ * TOUT changes recorded in status register
+ * Better handling of COM flag and compare register being zero
+ * Reload not immediately after reaching zero but on next cycle
+
+ * hal2: Various changes. [Ryan Holtz]
+   - Added handling for different frequency rates.
+   - Moved DAC devices into HAL2 from HPC3.
+   - Added readback of DAC parameters.
+   - Fixed stereo DAC playback.
+
+ * newport: Various fixes. [Ryan Holtz]
+   - Fixed handling of COLORI register alternate access.
+   - Added suport for RAMDAC gamma LUT.
+
+ * newport: Fixed source buffer shift when blending is enabled. [Ryan Holtz]
+
+-Add libxi-dev to Travis Config [Kiall Mac Innes]
+
+-Revert "-Removed sbus and gio64 buses..." [AJR]
+ * This reverts commit 3207d504fed679163f0489e2b763eda8c4139b23.
+
+-cntsteer.cpp: fix sprite colors and magnify feature [Angelo Salese]
+
+-pk8020.cpp: Add printer port [AJR]
+
+-new NOT WORKING skeleton ------ Telex 277-D [Robbbert]
+
+-konmedal.cpp: added PROMs dumps for shuriboy [TeamEurope, rod_wod, The Dumping Union]
+
+-Change autofire config directory to homepath (#5129) [Jack Li]
+ * Revert "Used set_folder to avoid hardcoding plugin name in settings path"
+ * This reverts commit 76884986fd8630f81cfc838aa42f264fdcec2ea9.
+ * Changed autofire config directory to homepath
+ * Bumped autofire plugin version
+
+-New WORKING machines  (#5122) [ClawGrip]
+ * New WORKING machines
+   - -------------------------------------------------------- Pink Jelly [ClawGrip] VT03 Sound Test [ClawGrip]
+
+-New NOT_WORKING machines [mooglyguy]
+ * ----------- Indy (R4600, 100MHz) [Ryan Holtz]
+ * indy_indigo2: Renamed sets, converted to use BIOSes, added B4 stepping of Indy boot PROM. [Ryan Holtz]
+
+-hle_mouse: high-level emulation of PS/2 mouse [Patrick Mackinlay]
+
+-Update Apple II softlist cleanly cracked to June 1st, 2019 [Firehawke]
+ * Also includes some title updates for consistency in formatting.
+
+-konmedal: correct K52109 hookup and tile banking for shuriboy and fuusenpn [R. Belmont]
+
+-apple2: Added the //e version of the AE Vulcan IDE card [SPK, R. Belmont]
+
+-exedexes.cpp : Updates Use prio_* for sprite draw routine, Simplify handlers, gfxdecodes, Reduce runtime tag lookups, Unnecessary
+ lines, Fix namings, Spacings [cam900]
+
+-cpu/jaguar/*.cpp : Updates Add notes, Reduce defines, Simplify handlers, Use shorter / correct type values, Reduce unnecessary
+ lines, Remove register_postload jaguar.cpp : Fix metadata, Correct XTAL frequency [cam900]
+
+-cpu/jaguar/jaguar.cpp : Additional notes [cam900]
+
+-z80sio: fixed a few regressions in systems with z80sio/i8274 [fulivi]
+
+-konmedal: fixed vis region, colors, and priorities for shuriboy [R. Belmont]
+
+-Update Apple II softlists to June 2nd, 2019 [Firehawke]
+ * Add cleanly cracked:
+ * Professor Davensteev's Fantasy Land (Blue Level), Far Star, FasTrack Quizzer, Fat City, Fay's Word Rally, Feed The Frog, Felony
+    (Thunder Mountain release), Field of Fire, Fifty Mission Crush (Verion 1.1), Fifty Mission Crush (Verion 1.2), Fighter Command,
+    Finance Manager, Financial Cookbook, Financial Facts, Bingo Bugglebee Presents: Find the Rhyme, First Math Adventures -
+    Understanding Word Problems, First Start Writing Program, First Steps to Reading - Phonics One, First Steps to Reading - Phonics
+    Two, First Verbs, First Words, Five in a Row - Addition and Subtraction, Five in a Row - Division, FixIt, Flights Into Fiction,
+    Flip Out, The Flockland Island Crisis, Following Directions - One and Two Level Commands - Directional Terms, Following
+    Directions - One and Two Level Commands - Spatial Relations, Food Group Puzzles, Formula 1 Racer, FourWord and WordLift,
+    Fraction Action, Fraction Equivalence Partially Shaded Regions, Fraction Factory, Fraction Fever (Revision 0), Fractional Parts
+    of a Region, Fractions - A Review Course, Fractions - Addition and Subtraction (Version 1.6), Fractions - Multiplication and
+    Division (Version 2.1.6), Fractions Practice, Frenzy and Flip Flop, Friendly Filer, Frogs, Dogs, Kittens, and Kids 2 (Version
+    10.18.88), From ABC to XYZ, Fun with Directions, Function Pictures, Fundamental Spelling in Context Level 2, Fundamental
+    Spelling in Context Level 4, G.I. Joe, Galactic Adventures, Galaxy Gates, Galaxy Math - Decimals, Galaxy Math - Fractions,
+    Galaxy Math, Game Frame One, Game Frame Two, Gamma Force
+
+-1943.cpp : Updates Correct sprite priority handling routine, Reduce runtime tag lookups, Fix namings, Simplify handlers,
+ Gfxdecodes, Use shorter / correct type values [cam900]
+
+-decmxc06.cpp : Fix regression [cam900]
+
+-deco32.cpp: provide gun Y minmax values to Locked N Loaded, making it calibratable [Angelo Salese]
+
+-jedi.cpp : Updates Simplify handlers, Add gfxdecode for debug, Add palette_device for palette handling, Reduce runtime tag lookups,
+ Fix some drawing routines, Reduce unnecessary lines, Fix namings, Spacings, Use shorter / correct type values, Add notes [cam900]
+
+-fix vsllvm configuration [feos]
+ * dxsdk was missing from includes
+ * winmm was missing from libs
+ * narrowing warning was silenced for VS, but not from vsllvm, where it leads to an error in menu_video_options::handle()
+
+-ddenlovr.cpp : Correct CPU type [cam900]
+
+-New machines marked as NOT_WORKING [mooglyguy]
+ * ---------- Quantel DPB-7000 [Ryan Holtz, Mark Nias]
+
+ * ioc2: Switch to using LLE PS/2 keyboard/mouse controller. Fixes inability to type in numerous characters.
+    [Patrick Mackinlay, Ryan Holtz]
+
+-New WORKING clone [ClawGrip]
+ * ----------------------------- Super Invasion (Electromar, Spanish) [ARPA, Recreativas.org]
+
+-drawgfx.cpp : Updates Move additive blending function into drawgfx.h, Add priority related copybitmap functions, Fix spacings Add
+ priority related copybitmap and draw_scanline function is sprite like priority handling(prio_*) and tilemap like priority
+ handling(primask_*), These are helpful for priority related bitmap / scanline drawing routines. drawgfxm.cpp : Add variations of
+ priority related pixel draw functions, Fix spacings realbrk.cpp : Updates, Example usage for prio_copybitmap Simplify handlers, Use
+ priority bitmap for sprite priority, Fix spacings, Use shorter / correct type values [cam900]
+
+-sq80: boots and plays [R. Belmont, Jariseon, R. Buchty]
+
+ * dpb7000: Main screen turn on. [Ryan Holtz, Mark Nias]
+   - Hooked up CSR, control bus, and system control registers.
+   - Hooked up Auto-Start switch and both banks of config switches.
+   - Hooked up CRTC chargen, using the chargen ROM from bw12 until a proper dump of the DPB's chargen ROM is available.
+
+-A bit more stuff for the Apple II softlists. [Firehawke]
+ * On the advice of cuavas, replacing Racter and Rambo First Blood Part II images with newest known-good images.
+ * A bit of additional metadata added as usual.
+ * Renamed Juggles' Rainbow based on corrected information and added second set.
+ * Removed accidental Gumball duplicate.
+ * Add cleanly cracked:
+ * Journey to the Age of Dinosaurs - Europe and Asia Journey to the Age of Dinosaurs - North America Jumble Jet Jumbled Jungle
+    Jumblezzz Jungle Rescue - Blue Level Kamikaze Kampfgruppe (Version 1.1) Karate Champ Key Lingo Keyworks - First Keyboarding
+    Skills Kid Niki Kid-Leidoscope KidWriter (Version 1.0) Kinder Koncepts Kindercomp (Revision 0) King Cribbage King's Quest King's
+    Quest II King's Quest III Kittens, Kids, and a Frog - Building Comprehension I (1989 Version) Kittens, Kids, and a Frog (Version
+    01.31.87) Knights of the Desert (Version 1.1) Know Your Apple Know Your Apple IIe Knowledge Master - Building Trades Knowledge
+    Master - General Math Knowledge Master - Geometry Knowledge Master - Utilities Koala Grams Spelling I Koronis Rift Krell's
+    College Board SAT Preparation Series Krell's Logo (Revision 0) Kung Fu Master L.A. Crackdown La Triviata Lane Mastodon Language
+    Carnival 1 Lantern of D'Gamma Laser Bounce Lazy Jack Learn About Words In Reading 2 Learning to Read - Letters, Words, and
+    Sentences volume 1 Learning to Read - Letters, Words, and Sentences volume 2 Learning to Read - Letters, Words, and Sentences
+    volume 3 Learning To Tell Time Learning with Fuzzywomp Learning with Leeper Legendary Conflict Leisure Suit Larry in Land of the
+    Lounge Lizards Let's Eat Let's Explore BASIC Let's Go Fishing Let's Go There - Beginning Map and Geography Skills Let's Learn
+    About Geography - USA Let's Learn About Money Letter Man Letter Recognition Letter Recognition (Version 01.27.88) Letters For
+    You Library and Media Skills Library Magic Library Skills - Let's Learn about the Library Little People's Puzzles Little Riddles
+    Locksmith (Version 5.0 Revision C) Locksmith (Version 5.0 Revision F) Lode Runner
+
+-pce_tourvision.xml: New NOT_WORKING software list additions [ClawGrip]
+ * ----------------------- Racing Damashii  (TourVision PCE bootleg) [system11] Paranoia  (TourVision PCE bootleg) [system11]
+
+-tigeroad_spr.cpp : Updates Internalize gfxdecode, Fix spacings, Notes, Reduce unnecessary lines, Use shorter / correct type values
+ bionicc.cpp, tigeroad.cpp, supduck.cpp : Simplify gfxdecode, Reduce unnecessary lines, Fix spacing, Namings [cam900]
+
+-pcat101: working [Patrick Mackinlay]
+
+-eu3a14 - identify more bits [DavidHaywood]
+
+-Apple II softlist update for June 4th, 2019 [Firehawke]
+ * Add new WOZ originals:
+ * Sub Mission, Theatre Europe, Station 5, OGRE
+ * Add new Cleanly Cracked:
+ * Logic Levels, Logic Tools, Long Division, Lordlings of Yore, Lords of Conquest, Lucifer's Realm, Lucky 7 Spelling Games -
+    Elementary, Mad Libs Writer - Adjective-Adverb Writer, Mad Libs Writer - Verb Writer, Mad Venture, Magic Castle, Magic Slate 20
+    (Version 1.3), Magic Slate 20 (Version 1.4), Magic Slate 20/40 (Version 1.0), Magic Slate 20/40 (Version 1.02), Magic Slate
+    20/40 (Version 1.12), Magic Slate 20/40 (Version 1.22), Magic Slate 20/40 (Version 1.23), Magic Slate 40 (Version 1.3), Magic
+    Slate 40 (Version 1.4), Magic Slate 80 (Version 1.12), Magic Slate 80 (Version 1.22), Magic Slate 80 (Version 1.23), Magic Slate
+    80 (Version 1.4), Magic Slate II 20 (Version 1.0a), Magic Slate II 40 (Version 1.0a), Magic Slate II 80 (Version 1.0a), Magic
+    Spells (1981), Magic Spells (Version 2.1), Magical Myths, Make A Face
+
+-Update apple2_flop_clcracked.xml [Firehawke]
+ * Add cleanly cracked: Mask Parade, Master Match, Mastering Consonants, Mastering Vowels, MasterType, MasterType and Training
+    Ground (Version 2.1), MasterType's Figures + Formulas, Match It ,Matching Letters and Words, Math and Me, Math and Your Personal
+    Finances, Math Blaster Mystery, Math Blaster Mystery (Version 1.3), Math Blaster Plus, Math Class Level 5, Math Concepts I, Math
+    Football, Math For Everyday Living, Math in a Nutshell, Math Item Banks 1-13, Math Level 1 - I Can Add And Subtract, Math Level
+    3 - I Can Multiply and Divide, Math Level 4 , - Advanced Addition and Subtraction, Math Level 6 - Ratio, Proportion, and
+    Percent, Math Magic, Math Marvels, Math Masters, Math Sequences - Addition, Math Sequences - Addition (1984 Version), Math
+    Sequences - Decimals, Math Sequences - Division, Math Sequences - Equations, Math Sequences - Fractions, Math Sequences -
+    Integers, Math Sequences - Laws of Arithmetic, Math Sequences - Management Utilities, Math Sequences - Measurement Formulas,
+    Math Sequences - Multiplication, Math Sequences - Multiplication (1980 Version), Math Sequences - Number Readiness, Math
+    Sequences - Number Readiness (1980 Version), Math Sequences - Percents, Math Sequences - Pre- and Post Tests I, Math Sequences -
+    Pre- and Post Tests II, Math Sequences - Subtraction, Math Sequences - Worksheet Generator, Math Sequences - Worksheet Generator
+    II, Math Shop (1986-10-27 Version), Math Tutor - Addition, Math Tutor - Decimals, Math Tutor - Division, Math Tutor - Fractions
+    Part I, Math Tutor - Multiplication, Math Tutor: Subtraction
+
+-fuukifg.cpp : Updates (#5154) [cam900]
+ * fuukifg.cpp : Updates Use callback for colour, priority, tilebank behaviors, Internalize gfxdecodes, Use external spriteram,
+    Reduce unnecessary lines, Fix spacings, Use shorter / correct type values fuukifg2.cpp, fuukifg3.cpp : Updates Correct
+    spriteram, vreg types, Use tilemap buffer behavior into RAM bank (number of actually visible tilemap layer is 3), SImplify
+    handlers, Reduce unnecessary lines, Fix notes, Spacings, Use shorter / correct type values
+ * fuukifg2.cpp, fuukifg3.cpp : Fix spacing
+
+-fuukifg.cpp : Minor fixes [cam900]
+
+ * am2910: Added prelminary, largely-untested Am2910 Microprogram Controller device emulation. [Ryan Holtz]
+ * dpb7000: Initial pass at Disk Sequencer Card emulation. Needs debugging. [Ryan Holtz, Mark Nias]
+
+-excellent_spr.cpp : Updates Internalize gfxdecode, Use callback for priority behavior, Reduce unnecessary lines, Simplify handlers,
+ Fix spacings aquarium.cpp, gcpinbal.cpp : Updates Simplify handlers, gfxdecodes, Reduce unnecessary lines, Runtime tag lookups, Fix
+ namings, Use shorter / correct type values, Move virtuals under protected:, Rearrange devices under values in .h files gcpinbal.cpp
+ : Make tilemap dirty when tilebank is changed [cam900]
+
+-There's #500 of the cleanly cracked Apple II disks for July 2019 (nw [Firehawke]
+ * Now MAME can be the MECCa of MECC disks with this load of classic educational content.
+ * Also, made the last disk a special one, because everyone remembers and loves Oregon Trail.
+ * Add cleanly cracked:
+ * Mathematics Activities Courseware Level 4, Mathematics Activities Courseware Level 6, Mathematics Problem Solving Software Level
+    1, Mathematics Problem Solving Software Level 2, Mathematics Problem Solving Software Level 3, Mathematics Skills Software Level
+    2, Mathematics Today, Mathematics Word Problems Grade 3, Maths Invaders - Special Products and Algebraic Factors, Max Command,
+    Max Dublin's Treasure, Maxwell Manor, MECC-A114 Writing an Opinion Paper (Version 1.1), MECC-A116 Puzzles and Posters (Version
+    1.2), MECC-A126 Study Guide (Version 1.4), MECC-A132 MECC Writer (Version 1.1a), MECC-A136 MECC Graphing Primer (Version 1.1),
+    MECC-A140 MECC Dataquest - The Presidents (Version 1.2), MECC-A141 MECC Information Manager (Version 1.0), MECC-A141 MECC
+    Information Manager (Version 1.1), MECC-A149 Mastering Math Diagnostic System (Version 1.2), MECC-A153 Word Munchers (Version
+    1.1), MECC-A172 MECC Dataquest Composer (Version 1.1), MECC-A173 Dataquest Sampler (Version 1.0), MECC-A197 MECC Dataquest - The
+    World Community (Version 1.0), MECC-A197 MECC Dataquest - The World Community (Version 1.1), MECC-A202 Fraction Concepts, Inc.
+    (Version 1.1), MECC-A203 Fraction Practice Unlimited (Version 1.2), MECC-A211 Mystery Objects (Version 1.1), MECC-A227 Patterns
+    (Version 1.1), MECC-A232 Spelling Press (Version 1.1), MECC-A234 Spelling Puzzles and Tests (Version 1.0), MECC-A242 Teacher
+    Option Organizer (Version 1.1), MECC-A242 Teacher Option Organizer (Version 1.3), MECC-A243 MECC Dataquest - Latin America
+    (Version 1.0), MECC-A248 CommuniKeys (Version 1.0), MECC-A253 MECC Dataquest - Europe and Soviet Union (Version 1.0), MECC-A277
+    Time Navigator Around The World (Version 1.0), MECC-A313 History Makers (Version 1.0), MECC-A314 Dr. Livingstone, I Presume
+    (Version 1.0), MECC-A316 Exploring Chaos (Version 1.0), MECC-A702 Elementary Vol. 1 (Version 3.5), MECC-A703 Elementary Vol. 2
+    (Version 3.2), MECC-A704 Elementary Vol. 3 Science (Version 4.5), MECC-A704 Elementary vol. 3 (Version 4.7), MECC-A704
+    Elementary Vol. 3 (Version 4.8), MECC-A708 Science Vol. 1 (Version 2.2), MECC-A712 Music Theory Vol. 1 (Version 2.2), MECC-A714
+    Business vol. 1 - Utilities (Version 4.5), MECC-A721 Business vol. 3 (Version 1.5), MECC-A725 Elementary Vol. 6 (Version 1.3),
+    MECC-A726 Spelling Vol. 1 (Version 3.0), MECC-A738 Mathematics Vol. 3 (Version 1.2), MECC-A744 Mathematics vol. 4 (Version 1.3),
+    MECC-A746 English Vol. 1 (Version 1.2), MECC-A753 Nutrition vol. 2 (Version 1.2), MECC-A756 Food Facts (Version 1.0), MECC-A756
+    Food Facts (Version 1.2), MECC-A758 Computer Generated Mathematics Materials Problem Solving Vol. 2 (Version 1.0), MECC-A761
+    Health Immunization (Version 1.1), MECC-A774 Adventures with Fractions (Version 1.0), MECC-A779 The Friendly Computer (Version
+    1.0), MECC-A785 Writing A Character Sketch (Version 1.0), MECC-A787 Guide de l'Enseignant (Version 1.4), MECC-A788 Early
+    Addition (Version 1.0), MECC-A811 The Three R's of Microcomputing (Version 1.1), MECC-A817 Graphing (Version 1.2), MECC-A819
+    Number Systems (Version 1.1), MECC-A821 Probability (Version 1.0), MECC-A822 Nutrition and Food Groups (Version 1.2), MECC-A824
+    Classification (Version 1.1), MECC-H111A Spare Moments Solitaire, MECC-H111B Spare Moments with a Friend, Mech Brigade (Version
+    1.2), Medalist Series - States, Meet The Presidents, Memory Building Blocks, Memory Building Blocks (1989 Version), Memory
+    Castle (1983 Version), Memory Match (Version 01.24.86), Memory Minder, Meteor Mission, Meteor Multiplication, Meteor
+    Multiplication (Revision 2), Micro Addition, Micro Division, Micro Habitats, Micro League Baseball, Micro Multiplication,
+    Microbe (supports Mockingboard), Microbe (Revision 3), Micro-LADS 1 Plurals and Noun-Verb Agreement, Micro-LADS 2 Verb Forms,
+    Micro-LADS 3 Prepositions, Micro-LADS 4 Pronouns, Micro-LADS 5 Negatives, Micro-LADS 6 Deictic Expressions, Passive, and
+    WH-questions, Micro-LADS 7 Prepositions II, Microscopic Journey, MECC-A157 Oregon Trail (Version 1.1)
+
+-emu/video/generic.cpp : Add packed, raw case of generic gfx layouts, example usages [cam900]
+
+-Olympic Darts (K7): Added EEPROM dump. [jordigahan, ClawGrip, Roberto Fresca]
+
+-epic12.cpp : Updates Implement debug VRAM viewer, Reduce unnecessary lines, Simplify handlers, Fix spacings, Remove hardcoded tags,
+ Unnecessary pointers, Use shorter / correct type values [cam900]
+
+-decmxc06.cpp : Fix bandit regression, Fix notes, Remove outdated comments [cam900]
+
+-decmxc06.cpp : Fix disappearing [cam900]
+
+-Fix regressions in k573dio/k573fpga/mas3507d (#5133) [Windy Fairy]
+ * Fix memory address stuff (fixes graphics, random glitches, games not booting, etc)
+ * Handle playback flag
+ * Add volume control
+ * This doesn't do anything
+ * Fix transitioning between two MP3 files
+ * Revert change
+ * Fix the way playback time is reported which should fix looping
+ * Fix audio decoding
+ * Fix timing issue
+ * Small cleanup
+ * Store the original key1 in k573dio, not k573fpga
+ * Restore masks for RAM addresses to avoid overflows
+ * Rework how starting and stopping the MAS3507D works as well as reporting playback time
+
+-new NOT WORKING clones (Gals Panic - Modular System) (#5163) [David Haywood]
+ * new NOT WORKING clones
+   - -- Gals Panic (Modular System bootleg) [Juan Romero, Recreativas.org, ClawGrip, David Haywood]
+ * these things are *ugly* from a hardware perspective (massive 6 board stack just for Gals Panic with many, many code hacks to work
+    around hardware changes) so I felt it best to create a new driver with the background bits copy+pasted; the sprites + sound
+    system specific to these bootlegs will need adding.
+
+-Fix ppc64el issue #3157 [frediz]
+ * This is probably due to the fact that IBM 128bit long double format is not constant folded. I slighlty rewrote ""_kHz_XTAL(long
+    double clock) and ""_MHz_XTAL(long double clock) the way ""_kHz_XTAL(unsigned long long clock) and ""_MHz_XTAL(unsigned long
+    long clock) are writtent. which makes the compiler happy.
+
+-decmxc06.cpp : Minor fixes [cam900]
+
+-ds1386: Make initialization of RTC registers from system time actually work; adopt more useful default value for command register
+ [AJR]
+
+ * dpb7000: Added TV field timer. [Ryan Holtz]
+
+ * newport: Various fixes. [Ryan Holtz]
+   - Fixed line drawing to not cause sa hang in certain cases.
+   - Fixed color iterator reload behavior.
+   - Fixed color iterator clamping behavior.
+
+-Revert "epic12.cpp : Updates" [Olivier Galibert]
+ * This reverts commit 435494509540cfc19d42a108581486e64baff107.
+ * 1- Doesn't compile, u32 u32 line 221 of epic12.h can't work 2- the colour_t union is non endian-safe in the first place
+
+-Revert Revert "epic12.cpp : Updates" (#5168) [cam900]
+ * Revert Revert "epic12.cpp : Updates" Fix naming
+ * epic12.cpp : this union is not endian-safe, currently de-union'd
+ * epic12.cpp : Make this endian-safe
+ * Revert "this union is not endian-safe, currently de-union'd", Now endian-safe
+ * epic12pixel.hxx : Fix spacing
+
+-ptrain: Fix payout (MT 07351) [Dirk Best]
+
+-asuka.cpp : Updates Simplify handlers, gfxdecodes, Reduce unuseds, Fix namings, Spacings, Use shorter / correct type values
+ [cam900]
+
+-ninjaw.cpp : Updates Remove register_postload, Simplify handlers, Cleanup sprite priority behavior, Reduce unnecessary lines,
+ Simplify gfxdecodes, Split gfx layout related per each TC0100SCNs, Add notes, Fix namings, Spacings, Use shorter / correct type
+ values [cam900]
+
+-warriorb.cpp : Updates Correct clock (related to XTAL on actual PCB), Simplify handlers, gfxdecodes, Correct ROM loading, Add
+ notes, Reduce unnecessary lines, Fix namings [cam900]
+
+-othunder.cpp : Updates Simplify gfxdecodes, Reduce runtime tag lookups, Unnecessary lines, Use shorter / correct type values
+ [cam900]
+
+-taito_z.cpp : Updates Fix namings, Reduce MCFG_MACHINE_START, MCFG_MACHINE_RESET usage, Fix spacings [cam900]
+
+ * newport: Fixed per-pixel alpha. [Ryan Holtz]
+
+-Accurate byte-smearing write behavior for 32-bit members of the M68K family [AJR]
+
+-Machines promoted to working [mooglyguy]
+ * ----------- Indy (R4600, 100MHz) Indy (R4600, 133MHz)
+
+-decmxc06.cpp : Further fixes of multi-width sprite handling [cam900]
+
+-i8275: Improve and simplify handling of field attributes [AJR]
+
+-wgp.cpp : Updates Simplify handlers, gfxdecodes, Remove register_postload, Reduce duplicates, Unnecessary lines, Allow masked
+ priority behavior for drawscanline, Fix priority handling, Namings, Spacings, Use shorter / correct type values, Add notes [cam900]
+
+-xtrain/ptrain: Emulate Hopper/Ticket dispenser, better fix for MT07351 [Dirk Best]
+ * The key previously labeled 'Pay Out' was actually 'Key Out'. The pay out key has been properly mapped now.
+
+-tc0280grd.cpp : Internalize gfxdecode, Allow masked priority taito_f2.cpp : Updates Simplify handler, gfxdecodes, Allow masked
+ priority for ROZ layer, Fix namings, Correct finalb 6bpp gfx decode behavior into mix ROM data [cam900]
+
+-galastrm.cpp : Simplify gfxdecode, Fix naming [cam900]
+
+-tms5220: switch the log mask define comments to be above the defines [Mike Harris]
+
+-undrfire.cpp : Updates Simplify gfxdecodes, Correct 6bpp gfx decode behavior into mix ROM data tc0100scn.cpp : Add sync granularity
+ function with bg gfx [cam900]
+
+-Clones promoted to working [braintro]
+
+-2mindril.cpp : Fix metadata, Add notes [cam900]
+
+-taito_f3.cpp, 2mindril.cpp : Updates Convert VRAMs into shared_ptr, Fix namings, Spacings, Simplify gfxdecodes, Handlers, Split hi
+ 2bpp of gfx data to each rom, Correct 6bpp gfx decode behavior into mix ROM data, Reduce duplicates, Runtime tag lookups,
+ Unnecessary lines, Move structs into taito_f3.h, Fix postload taito_f3.h : Move taito_f3.cpp exclusive things under private:
+ [cam900]
+
+-mindset: Show a little something [O. Galibert]
+
+-Add CEC-E CEC-G CEC-M CEC-2000 [zzemu-cn]
+ * CEC-E CEC-G CEC-M CEC-2000 qq 145409056
+
+-ashnojoe.cpp : Updates Simplify handlers, gfxdecodes, Correct tilemap usage (actually visible tilemap is 6), Reduce duplicates, ROM
+ region usage, Runtime tag lookups, Fix naming, Spacings, [cam900]
+
+-Add Bally squawk & talk boards (#5175) [Mike]
+ * Bally pinball by35: Add sound LED to layouts.
+ * Bally pinball by35: whitespace/formatting cleanup.
+ * Bally pinball by35: Add filters to audio device output.
+ * The boards have them, and the chip like to output DC at idle. This can cause clipping in the mixer.
+ * 6821pia: For port A reads, only use the DDR for reading pins.
+ * Bally pinball by35: Move over cabinet switches.
+ * This makes more room for a sound board LED.
+ * Bally pinball audio: Add Squawk & Talk board.
+ * Bally pinball audio: Add new board, Squawk & Talk with the AY chip.
+ * TMS5220: Adjust delay time between /RS going low and /READY being set.
+ * The datasheet doesn't list this time exactly, but something close (time between /RS going low and the data being valid on the
+    bus). It's measured in usec, not clock cycles.
+ * Bally audio: minor cleanup
+ * Midway mcr: Use Bally Squawk & Talk sound board implementation
+ * Bally pinball audio: remove clock from as2888, as it's a discrete board.
+
+-gp9001.cpp : Updates Simplify handlers, gfxdecodes, Correct tilemap behavior (each tiles are grouped 4 8x8 tile), Use callback for
+ gfx bankswitching behavior, Use shorter / correct type values toaplan2.cpp : Fix spacing, Reduce unnecessary lines [cam900]
+
+-Apple II dsk 35 to 40 track [zzemu-cn]
+ * Change Apple II dsk format 35 track to 40 track
+
+-seta.cpp : Updates Simplify handlers, gfxdecodes, Reduce unnecessary lines, Fix spacings, Allow protection reading with side effect
+ disabled, Use shorter / correct type values [cam900]
+
+-gp9001.cpp : Revert tilemap_scan thing, Reduce unnecessary values, Add notes [cam900]
+
+-Revert unnecessary changes [cam900]
+
+-groundfx.cpp : Updates Simplify gfxdecodes, Fix spacing, Correct 6bpp gfx decode behavior into mix ROM data, Reduce unnecessary
+ lines [cam900]
+
+-rohga.cpp : add wizdfire mixing reference [cam900]
+
+-segas32.cpp : Add video references [cam900]
+
+ * newport: Various changes. [Ryan Holtz]
+   - Added support for endian swapping on host data port writes.
+   - Added double-buffer shift support for non-RGB/CI planes.
+   - Fixed Packed Color Fractions register handling.
+
+-ap2_dsk: only save 40 tracks if the disk originally had that many [R. Belmont]
+
+-topspeed.cpp : Updates Simplify handlers, gfxdecodes, Reduce runtime tag lookups, Unnecessary lines, Fix namings, Spacings, Use
+ shorter / correct type values [cam900]
+
+-darius.cpp : Updates Move volume initialize function into machine_start, Simplify handlers, gfxdecodes, Cleanup sprite priority
+ behavior, Fix namings, Spacings, Reduce duplicates, Unnecessary lines, Runtime tag lookups, Use shorter / correct type values
+ [cam900]
+
+-aquarium.cpp : Updates Correct 5bpp gfx decode behavior into ROM data mixing, Fix naming, Simplify gfxdecodes, Reduce unnecessary
+ lines [cam900]
+
+-New working clone [braintro]
+
+-aquarium.cpp : Add layout of hi 1bpp data of gfx ROMs [cam900]
+
+-mips: machines promoted to working [Patrick Mackinlay]
+
+-taito_f3.cpp, 2mindril.cpp : Updates Add gfx layouts for hi 2bpp datas of 6bpp gfxs [cam900]
+
+-pc090oj.cpp : Updates (#5196) [cam900]
+ * pc090oj.cpp : Updates Internalize gfxdecode, Use callback for color bank / priority behavior, Reduce defines, Unnecessary lines,
+    Simplify handlers, Use shorter / correct type values asuka.cpp, opwolf.cpp, rastan.cpp, rbisland.cpp, volfied.cpp : Simplify
+    gfxdecodes, Reduce trampolines, Duplicates, Fix namings
+ * rastan.cpp, volfied.cpp : Minor note fixes
+
+-tc0480scp.cpp : Updates (#5201) [cam900]
+ * tc0480scp.cpp : Updates Internalize gfxdecodes, Correct text ROM behavior of bootleg boards gunbustr.cpp, superchs.cpp,
+    slapshot.cpp : Simplify gfxdecodes, Fix namings slapshot.cpp : Correct 6bpp sprite gfx decode behavior into mix ROM data
+ * slapshot.cpp, taito_f2.cpp, groundfx.cpp, undrfire.cpp: Add gfx layout for hi 2bpp data of 6bpp gfx ROMs Used for all TC0620SCC
+    tile based games, slapshot / opwolf3 / finalb 6bpp sprite datas
+ * taito_f2.cpp : Fix finalb regression
+
+-mindset: Implement or fake the display and graphics copro test, the system switches to a tilemap mode for the followup tests
+ [O. Galibert]
+
+-mindset: Fake one more bit and the resolution changes again [O. Galibert]
+
+-pia6821: roll back port A read change. [Mike]
+
+-apple2, apple2e, apple2gs: Generic emulation of Game I/O connector. Joysticks are now slot devices. [AJR]
+ * mbc55x: Add Game I/O port
+
+-sms.cpp: Change NMI to be routed through VDP on SMS systems (#4871) [enikland2]
+ * sms.cpp: Change NMI to be routed through VDP on SMS systems
+ * Implement /NMI-IN as a line write handler rather than as an input callback
+ * Revert "Implement /NMI-IN as a line write handler rather than as an input callback"
+ * This reverts commit 35f67c50873203b13f506be32870ed9837a52ab2.
+ * Implement /NMI-IN as a line write handler rather than as an input callback
+
+-tc0480scp.cpp : Default gfxlayout [cam900]
+
+-tc0100scn.cpp : Updates Internalize gfx, Add color base for when color base is differs undrfire.cpp : Reduce unnecessary lines
+ [cam900]
+
+-metro.cpp : Fix screen vblank interrupt function when screen_vblank is noop [cam900]
+
+-igs017_igs031.cpp : Reduce usage of gfx_element [cam900]
+
+-mindset: Hackless graphics copro pass [O. Galibert]
+
+-megadriv: dumped MegaCD Japan BIOS rev 1.00C [tmee]
+
+-Vectrex reset into bank 1 for 64KiB carts [Ford Seidel]
+ * This fixes "Where Have All the Pixels Gone?" and "EigenVectrex," quite possibly others. No regressions found.
+
+ * newport: Fixed store shift for overlay planes, fixes cursor outlines in Barco ColorTone. [Ryan Holtz]
+
+-mindset: Start hooking up the 8042 somehow [O. Galibert]
+
+-applix: Various fixes and updates [AJR]
+ * Fix video addressing problem causing blanked lines in middle of characters
+ * Add colored border area
+ * Add SCC and RS-232 serial ports
+
+ * dpb7000: Various changes. [Ryan Holtz]
+   - Fixed FFDxxx range to pull a bus error. System now attempts disk boot.
+   - Fixed screen size and visible area.
+   - Fixed field in/out timers.
+   - Began adding FDC support.
+   - Added additional microcode logging.
+   - Assorted disc sequencer card condition code fixes.
+   - Modernized logging.
+
+-deco32.cpp : Simplify gfxdecodes [cam900]
+
+-boogwing.cpp : Simplify gfxdecode [cam900]
+
+-supbtime.cpp : Simplify gfxdecodes [cam900]
+
+-dietgo.cpp : Simplify gfxdecodes [cam900]
+
+-dblewing.cpp : Simplify gfxdecodes, Reduce unnecessary ROM region size [cam900]
+
+-mirage.cpp : Simplify gfxdecodes [cam900]
+
+-deco156.cpp : Simplify gfxdecodes [cam900]
+
+-argus: Add some info about the ROM checksum tests [Dirk Best]
+
+-toaplan2.cpp : Updates Simplify handlers, Fix namings, Spacings, Reduce duplicates, Unnecessary lines, Runtime tag lookups, Correct
+ output rate, Use optional_memory_bank for bgaregga/batrider OKI bankswitching because they aren't present NMK112, Use shorter /
+ correct type values [cam900]
+
+-Fix fatal error when attempting to set watchpoint covering unaligned portions of two adjacent native words [AJR]
+
+-chanbara.cpp: Added dipswitch locations to chanbara. [Corrado Tomaselli, The Dumping Union]
+
+-Better to document the GN680 I/O board (#5228) [Hydreigon]
+
+-cbuster.cpp : Updates Simplify handlers, gfxdecodes, Reduce unnecessary handlers, Unnecessary lines, Use palette_format for color
+ update, Use shorter / correct type values [cam900]
+
+-mindset: Add the keyboard but do not connect it yet [O. Galibert]
+
+-balsente.cpp: fix player 3 and 4 reversed joystick inputs [Angelo Salese]
+
+-Add device emulation for MM5307 Baud Rate Generator [AJR]
+
+-Correct ROM names, size + some info [f205v]
+ * Correct ROM type in games description (23C4000 -> 834200A) Correct a typo (Gold -> Golf) Correct ROM labels (mpxx -> mpr-xx)
+    Correct ROM size (0x100000 -> 0x080000) and related crc and sha1. Added comment.
+
+-MT 07353 alphatro, fc100: hangs when save to cassette [Robbbert]
+
+-Correct ROM names, size [f205v]
+ * Correct ROM labels (mpxx -> mpr-xx) Correct ROM size (0x100000 -> 0x080000) and related crc and sha1.
+
+-cd32.xml - Sort list by name and add new dumps (#5233) [Rebecca Wallander]
+ * Start sorting the list by name
+ * cd32.xml - Flesh out cd32 softlist
+ * Update cd32.xml
+ * copy-paste error
+
+-xavix - store the extra codebank byte in a private stack when making long calls etc. (fixes crash on calibration screen in
+ rad_hnt2) this seems feasible as it's an extension to the CPU, so keeping it in a private stack would maintain better compatibility
+ with 6502 code [DavidHaywood]
+
+-huc6230.cpp : Add docs [cam900]
+
+-huc6272.cpp : Add docs [cam900]
+
+-o2.cpp: Add notes about the O2 Keyboard MCU (Zilog "RT101+228A") [Sean Riddle]
+ * Some info discovered after decapping the Zilog MCU from the default Sgi Keyboard for the O2
+
+-dfruit.cpp: Added in missing dipswitches and dipswitch locations for Gemcrush [ShouTime, The Dumping Union]
+
+-Update toypop.cpp [kunikuni]
+
+-cninja.cpp : Simplify gfxdecodes (#5219) [cam900]
+ * cninja.cpp : Simplify gfxdecodes
+ * cninja.cpp : Fix notes
+ * cninja.cpp : Fix notes, Namings
+
+-pc98.xml: softlist updates, part 5 (D) (#5245) [r09]
+ * pc98.xml: softlist updates, part 5 (D)
+   - Added new software items from the Neo Kobe Collection:
+ * D.O. Doki Doki Disk Vol. 08 Daijuutai Dam Busters Dangerous Toys Dark Seraphim Datenshi Kyouko Part I Dead Force Delicious Lunch
+    Pack Dennou Garou Desert Dragoon - Sabaku no Ryuukihei Desire - Haitoku no Rasen Diadrum Director Monogatari Dires - Giger Loop
+    DiskX II Bishoujo Daizukan Diver's Doki Doki Pretty League Dai-1-wa - Pink Angels Kiki Ippatsu no Maki Doki Doki Pretty League
+    Dai-2-wa - Mou Hitotsu no Rival Doki Doki Pretty League Dai-3-wa - Minami no Umi no Kai no Maki Doki Doki Pretty League Dai-4-wa
+    - Nanase no Himitsu no Maki Doki Doki Pretty League Dai-5-wa - Saraba Pink Angels-tachi Doom II Doop Dora Dora Emotion -
+    Seihaiden DR² Night Janki Dragon Master Silk - Ryuu Shoukan Musume - Episode II Dragon Master Silk - Ryuu Shoukan Musume -
+    Episode II (Alt Disk 1) Dream Theater Dream Theater (Alt) Dual Soul Duel - Kawanakajima Scenario Duel Succession Dungeon Hack
+    (newer, 16/256 colors) Dungeon Hack (older, 256 colors, requires DOS 5.0)
+
+-mindset: Connect the keyboard (buggy), manage palette, resolution.  Add a pattern fill (buggy) [O. Galibert]
+ * Display test is deliberatly broken to see the message in a different graphics mode.
+
+-Defaulting to empty search path if null [npwoods]
+
+-Changing a few double constants to explicitly be float, appease MSVC [npwoods]
+
+-tk2000: Add printer interface [AJR]
+
+-mindset: Fix the 8042s, clock starts ticking [O. Galibert]
+
+-mindset: Fix the keyboard.  Reset is on F12 [O. Galibert]
+
+-segaxbd.cpp: Typo [MASH]
+
+-pce_tourvision.xml: Typo [MASH]
+
+ * tdc1008: Initial untested implementation of the TRW TDC1008 Multiplier-Accumulator. [Ryan Holtz]
+
+-Changed a number of comment declarations to read *.cpp instead of *.c [npwoods]
+
+ * tdc1008: Fixed latching of RND, TC, ACC, and SUB signals. [Ryan Holtz]
+ * tmc208k: Added device for TRW TMC208K/TMC28KU 8x8-bit Parallel Multiplier. [Ryan Holtz]
+
+-apple2e: Added preliminary software list for Chinese CEC machines [zzemu, R. Belmont, Vas Crabb, xinyingho]
+
+-qvt102: Major update [Dirk Best]
+ * Low level emulation of the keyboard (including beeper)
+ * Fixed some graphical issues
+ * Correct blink frequency and support full screen reverse
+ * Added support for the German and UK character sets
+ * Proper CTC hookup
+ * Aux RS232 port added
+ * Support configuration jumpers for RS232 control signals
+ * Move QVT-102A to its own driver
+ * Add save state support
+
+-Add support for myb3k FDC4712 [Claire Kugelmann]
+
+-revert tzx_cas changes from 0.202, they break things [DavidHaywood]
+
+-qvt6800: rename to qvt190, add gfxdecode [Dirk Best]
+
+ * dpb_combiner: Added a skeleton device for the DPB-7000 Combiner Card. [Ryan Holtz]
+
+-qvt190: basic text rendering [Dirk Best]
+
+-mindset: pattern fill (not word fill) and another graphics mode [O. Galibert]
+
+ * dpb_combiner: Hooked up clocked logic and screen device. [Ryan Holtz]
+
+-spectrum_cass.xml - start adding some sets [TZXVault]
+
+-vgmplay.xml:  Added 36 new entries + fixed some descriptions/setnames from previous entries. [Tafoid]
+
+ * dpb_brushproc: Added skeleton device for DPB-7000 Brush Processor Card. [Ryan Holtz]
+ * am25s55x: Initial device implementation for Am25S557 and 25S558 Combinatorial Multiplier chips. [Ryan Holtz]
+
+-qvt190: Add drawing characters to gfxdecode [Dirk Best]
+
+-qvt201: Add gfxdecode [Dirk Best]
+
+-myb3k_fdc.cpp: Use FD1791 for FDC4711 [Claire Kugelmann]
+ * This reverts to the existing behavior before d59048368d
+
+ * 74381: Added untested 74S381 ALU / Function Generator device. [Ryan Holtz]
+
+-m72.cpp: Add GAL at IC3 for lohtb [parramon, ClawGrip]
+
+-qvt103: add gfxdecode [Dirk Best]
+
+-toki_ms.cpp: Redumped "5_tk_514.ic25" ROM [parramon, ClawGrip]
+
+-misc NOT WORKING additions [Canil Babypet] (#5260) [David Haywood]
+ * new NOT WORKING clones
+   - -- Champion Poker (v101) [Canil Babypet] Champion Poker (v201F) [Canil Babypet] Champion Poker (v210KS) [Canil Babypet]
+      Champion Poker (v300US) [Canil Babypet]
+ * (well, they need verifying at least, there are probably missing protection handlers / wrong protection handlers)
+ * new machines marked NOT WORKING
+   - -- Treasure Bonus (American Alpha, Ver. 1.6) [Canil Babypet]
+ * new NOT WORKING machines
+   - -- Queen Bee Bingo [Canil Babypet]
+ * new machines marked as NOT WORKING
+   - - Treasure Mary [Canil Babypet]
+
+-tc009xlvc.cpp : Updates (#5240) [cam900]
+ * tc009xlvc.cpp : Updates Internalize on-chip functions (ROM / RAM bankswitching, GFX, IRQ vector and enables, Palette, Vregs), Use
+    address_map_bank_device for ram banks, Simplify handlers, Reduce unnecessary values, Lines, Pointers, Duplicates, Fix spacings,
+    Use shorter / correct type values, Add notes dfruit.cpp, lastbank.cpp : Reduce unnecessary address map lastbank.cpp : Correct
+    audiocpu ROM region size
+ * tc0091lvc.cpp : currently disabled offset check
+ * tc009xlvc.cpp : Use lw8 for bypass unmapped write
+ * tc009xlvc.cpp : Move notes
+ * dfruit.cpp, lastbank.cpp : Add docs for Internal maps
+ * tc009xlvc.cpp : Fix lines
+ * dfruit.cpp, lastbank.cpp : Fix notes
+ * lastbank.cpp : Fix copy-n-paste error
+ * tc009xlvc.cpp : Fix notes
+ * tc009xlvc.cpp : Use lr8 for bankswitched ROM reading
+ * tc009xlvc.cpp : Add notes
+ * tc009xlvc.cpp : Fix notes
+ * tc009xlvc.cpp : Fix notes
+ * tc009xlvc.cpp : Add notes
+ * tc009xlvc.cpp : Fix notes
+ * tc009xlvc.cpp : Reduce duplicate
+ * tc009xlvc.cpp : Externalize internal io maps
+ * dfruit.cpp, lastbank.cpp : Reduce unnecessary changes
+ * tc009xlvc.cpp : Move this, too
+ * dfruit.cpp, lastbank.cpp : Fix address map range
+ * tc009xlvc.cpp : Fix spacing
+
+-Pia6821 improvements (#5254) [Mike]
+ * 6821pia: fix method names in comments
+ * zwackery: Remove PIA port A z_mask setting.
+ * This would only be relevant if the PIA was read while in output mode. These are inputs, and only read in input mode, so z_mask is
+    not relevant.
+ * thomson: move pia pullup resistors from z_mask to read handler.
+ * 6821pia: remove unused set_port_a_z_mask calls.
+ * dgn_beta: move pia pullup resistors from z_mask to read handler.
+ * mpu3: Don't invert the VFD power on reset line.
+ * It doesn't go through an inverter. I believe this was done to work around a bug in the PIA port A implementation.
+ * pia6821: remove m_port_a_z_mask variable.
+ * 6821pia: For port A reads, only use the DDR for reading pins unless.
+ * Provide an override option when a device depends on slightly undefined behavior of an external device driving the pins and
+    changing the value read.
+ * One board seems to need this (coinmstr). I don't have the schematics, but it seems it uses this to check its meter operation.
+
+ * dpb_storeaddr: Added skeleton device for DPB-7000 Store Address Card. [Ryan Holtz]
+
+-x68000: Overhaul interrupt handling; add second expansion slot [AJR]
+
+-Preliminary disassembler and skeleton CPU device for Elan RISC II/RII series architecture [AJR]
+
+-unidasm: Correct address shifts for unsp and upd7725 [AJR]
+
+-a2vidtrm, a2vtc2: Merge devices and ROM sets [AJR]
+
+-VGA/SVGA display parameter correction [AJR]
+
+-new NOT WORKING machines (#5269) [David Haywood]
+ * -- Pro Stepper Tele Cardioline (Salter Fitness Stepper V.1.0, Checksum F208) [ClawGrip]
+ * technically it seems to be playable the same way the bike is (keep hititng button 1 to step, the other 2 change 'gear' to make it
+    more difficult)
+
+-new NOT WORKING machines (#5263) [David Haywood]
+ * new NOT WORKING machines
+   - -- Magic Bomb [Cristiano MDQ] Super Train (Ver. 1.9) [Cristiano MDQ] Treasure City (Ver. 208) [Cristiano MDQ] Treasure City
+      (Ver. 202) [Cristiano MDQ]
+ * note, previous credit of  "Canil Babypet" should be changed to "Cristiano MDQ"
+
+-microtan: Randomize video RAM at startup. [Nigel Barnes]
+ * Fixed setting stack pointer from snapshots.
+
+-start adding more spectrum cassettes [TZX Vault, SPA2] (#5266) [David Haywood]
+ * start adding more spectrum cassettes [TZX Vault, SPA2]
+ * I've included my 'working' block, as a commented out section, as I was asked to show my working with these.  Things will be moved
+    / sorted from the commented out block into the actual list as they're tested / identified etc.
+ * sort some, de dupe etc.
+
+-misc changes (move princ to new driver - needs F2MC-16L CPU core, promote salter/gaelco stuff, manufacturer note in redclash.cpp)
+ (#5271) [David Haywood]
+ * move princ out of prestige.cpp (it should have never been put there) and into a new driver fix graphic alignment on the salter
+    gym machines, also promote htem both to working (the hang I saw before on cycle doesn't seem to happen now) made a note in
+    redclash.cpp about possible sets needing rearrangement
+ * note, princ uses a F2MC-16L based CPU, I don't believe we have a core, but there are plenty of docs available should somebody
+    want to write a disassembler at least.
+ * reparent the RedClash sets, it appears to be a Kaneko game (Cat logo in the corner etc.)
+
+-qvt70: Add some meat to the bones [Dirk Best]
+
+-mindset: Hack the interrupts a little more [O. Galibert] i86: Delay interrupts for one instruction after sti [O. Galibert]
+
+-mindset: Slightly hacky word pattern will [O. Galibert]
+
+-sh2.cpp: first pass over SH7604 SoC refactoring [Angelo Salese]
+ * Fixed division unit overflow flag clearance;
+
+-ef9365.cpp: Fixed vertical characters and use assigned palette. [Nigel Barnes]
+
+-mega32x.cpp: refactor and convert read/write handlers to 16-bit space [Angelo Salese]
+
+-Adding a -version command line argument to get the current build version [npwoods]
+
+-Missed two drivers [Hydreigon223]
+
+-jb3000: Added softlist (#5275) [Joakim Larsson Edström]
+ * stepone: Fixed youtube link
+ * jb3000: Added softlist
+
+-koropens: pass POST [R. Belmont]
+
+-Add disassembler and skeleton device for DP8344 Biphase Communications Processor [AJR]
+
+-jb3000: Added softlist Just a 8" boot floppy for now [JoakimLarsson]
+
+-Adding a -version command line argument to get the current build version [npwoods]
+
+-misc changes (move princ to new driver - needs F2MC-16L CPU core, promote salter/gaelco stuff, manufacturer note in redclash.cpp)
+ [DavidHaywood]
+ * move princ out of prestige.cpp (it should have never been put there) and into a new driver
+ * fix graphic alignment on the salter gym machines, also promote htem both to working (the hang I saw before on cycle doesn't seem
+    to happen now)
+ * re-parented the Red Clash sets based on evidence suggesting it is a Kaneko game
+ * note, princ uses a F2MC-16L based CPU, I don't believe we have a core, but there are plenty of docs available should somebody
+    want to write a disassembler at least.
+
+-start adding more spectrum cassettes [TZX Vault, SPA2] I've included my 'working' block, as a commented out section in the XML, as
+ I was asked to show my working with these.  Things will be moved / sorted from the commented out block into the actual list as
+ they're tested / identified etc.  I'll try to move significant releases etc. first. [DavidHaywood]
+ * Note this is 10,000+ sets in the commented out section (and there are still parts of the collection that need adding and
+    assigning even preliminary names)
+
+-toki_ms.cpp: Redumped "5_tk_514.ic25" ROM [parramon, ClawGrip]
+
+-misc NOT WORKING additions [Canil Babypet]
+
+-m72.cpp: Add GAL at IC3 for lohtb [parramon, ClawGrip]
+
+-myb3k_fdc.cpp: Use FD1791 for FDC4711 As pointed out in #5256, the FDC4711 card uses an FD1791 chip as opposed to the MB8876A used
+ on the FDC4710 and FDC4712. [protosphere]
+
+-spectrum_cass.xml - start adding some sets [TZXVault]
+
+-myb3k: Add support for FDC4712 Adds support for FDC4712 8-inch floppy disk controller card for MyBrain 3000 (and clones).
+ [protosphere]
+ * As part of this work I've moved common functionality between the FDC471x cards into a base class `isa8_myb3k_fdc471x_device_base`
+    (as suggested in the file header). There's a few things I'm not completely happy with in regards to the implementation:
+ * FDC4710 only supports connecting up to 2 disk drives. I've implemented this restriction with an
+    `optional_device_array<floppy_connector, 4>` on the base class, with `isa8_myb3k_fdc4710_device::device_add_mconfig` only adding
+    two floppy connectors, but I'm not sure if this is the right approach.
+ * Motor control support is toggled via `has_motor_control`, which is set in each device subclass.
+ * There are probably other things as well - any direction as to what the correct approaches are would be much appreciated.
+ * MB8876 is used for the FDC in the base class, as this is the chip I've observed on real hardware.
+ * Implementation of the card's status register was based on experimentation with real hardware (JB-3000 model). I believe the
+    `FDC_STATUS_DOUBLE_SIDED` bit in the status register is specific to the FDC4712.
+ * I've marked the FDC4712 as supporting 4 drives, as per the Peripherals Summary. My disk drive unit (2 drives) only has one cable
+    running to the computer, however there is a cut-out in the case which would seem to allow you to daisy-chain a second disk drive
+    unit.
+
+-revert tzx_cas changes from 0.202, they break things @AmatCoder it appears the changes you made cause the various Speedlock loaders
+ to fail (this is the vast majority of the full-price commercial library for the system after a certain point, so this is a major
+ regression. [DavidHaywood]
+ * as an example / test case, the following sets from the software list NO LONGER function in 0.202 due to the changes made.   (used
+    with 'spectrum' machine)
+ * batmana - fast loader - yellow/blue batmanb - fast loader with timer, black/blue batmanf - fast loader - yellow/blue
+ * The following didn't change (mostly budget rereleases or alt tzx encodings that use different block types to represent the same
+    things)
+ * unknown loader/encoding (never worked due to flawed 0x19 - Generalized Data Block?) batmanc batmang
+ * flashy border loaders (works before and after) batman batmand batmanh
+ * misc fast loader (works before and after) batmane - fast loader - yellow/blue (works)
+
+-Pia6821 improvements This is mostly about cleaning up how port A's register is read when in output mode. Previously, pins in output
+ would always read their input value, but this is only true in a rare situation where a device was driving the pins. [hackbar]
+ * This is a followup to PR 5175, which got rolled back. It's been tested with all the boards that were broken in
+    https://github.com/mamedev/mame/pull/5175#issuecomment-500396359 .
+
+-Changed a number of comment declarations to read *.cpp instead of *.c These declarations were not updated when MAME was ported to
+ C++ [npwoods]
+
+-segaxbd.cpp and pce_tourvision.xml: Typo Fixed game descriptions [MASHinfo]
+
+-Changing a few double constants to explicitly be float, appease MSVC [npwoods]
+
+-Defaulting to empty search path if null [npwoods]
+
+-toypop.cpp: liblrabl: The sprite of the flower withered by an enemy like scissors was not correct. !Libble Rabble [kunikunijp]
+
+-pc98.xml: softlist updates, part 5 (D) [rzero9]
+ * Added new software items from the Neo Kobe Collection:
+ * D.O. Doki Doki Disk Vol. 08 Daijuutai Dam Busters Dangerous Toys Dark Seraphim Datenshi Kyouko Part I Dead Force Delicious Lunch
+    Pack Dennou Garou Desert Dragoon - Sabaku no Ryuukihei Desire - Haitoku no Rasen Diadrum Director Monogatari Dires - Giger Loop
+    DiskX II Bishoujo Daizukan Diver's Doki Doki Pretty League Dai-1-wa - Pink Angels Kiki Ippatsu no Maki Doki Doki Pretty League
+    Dai-2-wa - Mou Hitotsu no Rival Doki Doki Pretty League Dai-3-wa - Minami no Umi no Kai no Maki Doki Doki Pretty League Dai-4-wa
+    - Nanase no Himitsu no Maki Doki Doki Pretty League Dai-5-wa - Saraba Pink Angels-tachi Doom II Doop Dora Dora Emotion -
+    Seihaiden DR² Night Janki Dragon Master Silk - Ryuu Shoukan Musume - Episode II Dragon Master Silk - Ryuu Shoukan Musume -
+    Episode II (Alt Disk 1) Dream Theater Dream Theater (Alt) Dual Soul Duel - Kawanakajima Scenario Duel Succession Dungeon Hack
+    (newer, 16/256 colors) Dungeon Hack (older, 256 colors, requires DOS 5.0)
+
+-o2.cpp: Add notes about the O2 Keyboard MCU (Zilog "RT101+228A") [Sean Riddle]
+ * Some info discovered after decapping the Zilog MCU from the default Sgi Keyboard for the O2
+
+-huc6272.cpp : Add docs [cam900]
+
+-huc6230.cpp : Add docs [cam900]
+
+-tc009xlvc.cpp : Updates Internalize on-chip functions (ROM / RAM bankswitching, GFX, IRQ vector and enables, Palette, Vregs),
+ Convert arrays into required_shared_ptrs, Use address_map_bank_device for ram banks, Simplify handlers, Reduce unnecessary values,
+ Lines, Pointers, Duplicates, Fix spacings, Typo, Use shorter / correct type values, Add notes dfruit.cpp, lastbank.cpp : Reduce
+ unnecessary address map lastbank.cpp : Correct audiocpu ROM region size [cam900]
+
+-xavix - store the extra codebank byte in a private stack when making long calls etc. xavix - store the extra codebank byte in a
+ private stack when making long calls etc. (fixes crash on calibration screen in rad_hnt2) [DavidHaywood]
+ * this seems feasible as it's an extension to the CPU, so keeping it in a private stack would maintain better compatibility with
+    6502 code
+
+-Correct ROM names, size Correct ROM labels (mpxx -> mpr-xx) Correct ROM size (0x100000 -> 0x080000) and related crc and sha1.
+ [f205v]
+
+-Correct ROM names, size + some info Correct ROM type in games description (23C4000 -> 834200A) Correct a typo (Gold -> Golf)
+ Correct ROM labels (mpxx -> mpr-xx) Correct ROM size (0x100000 -> 0x080000) and related crc and sha1. Added comment. [f205v]
+
+-cd32.xml - Sort list by name and add new dumps [FakeShemp]
+
+-cbuster.cpp : Updates Simplify handlers, gfxdecodes, Reduce unnecessary handlers, Unnecessary lines, Use palette_format for color
+ update, Use shorter / correct type values [cam900]
+
+-Better to document the GN680 I/O board I missed a small detail from that I/O board. There are actually two variations of this
+ board. The one used in Operation: Thunder Hurricane uses a K056230 while the one in Teraburst uses a K056800. I guess this is how
+ the assumption of this board used for networking and sound came into place. Thunder Hurricane's main pcb gets it's gun/analog
+ values by networking with its I/O board while Teraburst has it's I/O board directly connected to its main pcb directly to the main
+ cpu. The usage of an additional K056800 for Teraburst will remain unknown for now. [Hydreigon223]
+ * I will admit this was difficult to notice at first.
+
+-toaplan2.cpp : Updates Simplify handlers, Fix namings, Spacings, Reduce duplicates, Unnecessary lines, Runtime tag lookups, Correct
+ output rate, Use optional_memory_bank for bgaregga/batrider OKI bankswitching because these aren't present NMK112, Use shorter /
+ correct type values [cam900]
+
+-deco156.cpp : Simplify gfxdecodes [cam900]
+
+-mirage.cpp : Simplify gfxdecodes [cam900]
+
+-dblewing.cpp : Simplify gfxdecodes, Reduce unnecessary ROM region size [cam900]
+
+-dietgo.cpp : Simplify gfxdecodes [cam900]
+
+-cninja.cpp : Simplify gfxdecodes [cam900]
+
+-supbtime.cpp : Simplify gfxdecodes [cam900]
+
+-boogwing.cpp : Simplify gfxdecode [cam900]
+
+-deco32.cpp : Simplify gfxdecodes [cam900]
+
+-Vectrex reset into bank 1 for 64KiB carts rom.cpp: change 64KiB cart bank reset value from 0 to 1. [fseidel]
+ * The real hardware starts up in bank 1, so this is more accurate behavior. The real fix is to emulate the pull-up resistor on PB6
+    when it's set to input mode, but it doesn't look like MAME supports that right now.
+ * This fixes 64KiB carts "Where Have All the Pixels Gone?" and "EigenVectrex," quite possibly others.
+ * No regressions found.
+
+-igs017_igs031.cpp : Reduce usage of gfx_element [cam900]
+
+-metro.cpp : Fix screen vblank interrupt function when screen_vblank is noop [cam900]
+
+-tc0100scn.cpp : Updates Internalize gfx, Add color base for when color base is differs, Split tc0620scc device related to different
+ gfx layout undrfire.cpp : Reduce unnecessary lines [cam900]
+
+-tc0480scp.cpp : Default gfxlayout [cam900]
+
+-pia6821: roll back port A read change. This commit broke things. [hackbar]
+
+-taito_f3.cpp, 2mindril.cpp : Updates Add gfx layouts for hi 2bpp datas of 6bpp gfxs [cam900]
+
+-aquarium.cpp : Updates Correct 5bpp gfx decode behavior into ROM data mixing, Fix naming, Simplify gfxdecodes, Reduce unnecessary
+ lines [cam900]
+
+-tc0480scp.cpp : Updates Internalize gfxdecodes, Correct text ROM behavior of bootleg boards gunbustr.cpp, superchs.cpp,
+ slapshot.cpp : Simplify gfxdecodes, Fix namings slapshot.cpp : Correct 6bpp sprite gfx decode behavior into mix ROM data [cam900]
+
+-darius.cpp : Updates Move volume initialize function into machine_start, Simplify handlers, gfxdecodes, Cleanup sprite priority
+ behavior, Fix namings, Spacings, Reduce duplicates, Unnecessary lines, Runtime tag lookups, Use shorter / correct type values
+ [cam900]
+
+-topspeed.cpp : Updates Simplify handlers, gfxdecodes, Reduce runtime tag lookups, Unnecessary lines, Fix namings, Spacings, Use
+ shorter / correct type values [cam900]
+
+-pc090oj.cpp : Updates Internalize gfxdecode, Use callback for color bank / priority behavior, Reduce defines, Unnecessary lines,
+ Simplify handlers, Use shorter / correct type values asuka.cpp, opwolf.cpp, rastan.cpp, rbisland.cpp, volfied.cpp : Simplify
+ gfxdecodes, Reduce trampolines, Duplicates, Fix namings [cam900]
+
+-segas32.cpp : Add video references [cam900]
+
+-rohga.cpp : Add video reference for wizdfire [cam900]
+
+-groundfx.cpp : Updates Simplify gfxdecodes, Fix spacing, Correct 6bpp gfx decode behavior into mix ROM data, Reduce unnecessary
+ lines [cam900]
+
+-seta.cpp : Updates Simplify handlers, gfxdecodes, Reduce unnecessary lines, Fix spacings, Allow protection reading with side effect
+ disabled, Use shorter / correct type values [cam900]
+
+-wgp.cpp : Updates Simplify handlers, gfxdecodes, Remove register_postload, Reduce duplicates, Unnecessary lines, Allow masked
+ priority behavior for drawscanline, Fix priority handling, Namings, Spacings, Use shorter / correct type values, Add notes [cam900]
+
+-gp9001.cpp : Updates Simplify handlers, gfxdecodes, Correct tilemap behavior (each tiles are grouped 4 8x8 tile), Use callback for
+ gfx bankswitching behavior, Use shorter / correct type values toaplan2.cpp : Fix spacing, Reduce unnecessary lines [cam900]
+
+-ashnojoe.cpp : Updates Simplify handlers, gfxdecodes, Correct tilemap usage (actually visible tilemap is 6), Reduce duplicates, ROM
+ region usage, Runtime tag lookups, Fix naming, Spacings, Use shorter / correct type values [cam900]
+
+-Add CEC-E CEC-G CEC-M CEC-2000 CEC-E CEC-G CEC-M CEC-2000 qq 145409056 [zzemu-cn]
+
+-taito_f3.cpp, 2mindril.cpp : Updates Convert VRAMs into shared_ptr, Fix namings, Spacings, Simplify gfxdecodes, Handlers, Split hi
+ 2bpp of gfx data to each rom, Correct 6bpp gfx decode behavior into mix ROM data, Reduce duplicates, Runtime tag lookups,
+ Unnecessary lines, Move structs into taito_f3.h, Fix postload taito_f3.h : Move taito_f3.cpp exclusive things under private:
+ [cam900]
+
+-2mindril.cpp : Fix metadata, Add notes !0000 Only dumped set of 2mindril is USA release. [cam900]
+
+-undrfire.cpp : Updates Simplify gfxdecodes, Correct 6bpp gfx decode behavior into mix ROM data, Fix naming tc0100scn.cpp : Add sync
+ granularity function with bg gfx [cam900]
+
+-galastrm.cpp : Simplify gfxdecode, Fix naming [cam900]
+
+-tc0280grd.cpp : Internalize gfxdecode, Allow masked priority taito_f2.cpp : Updates Simplify handler, gfxdecodes, Allow masked
+ priority for ROZ layer, Fix namings, Correct finalb 6bpp gfx decode behavior into mix ROM data [cam900]
+
+-decmxc06.cpp : Further fixes of multi-width sprite handling [cam900]
+
+-Add Bally squawk & talk boards There is a change to the 6821 PIA code. It changes the output register reads to ignore the bus. This
+ is a bit of a hack, but required for Bally games since they read from the output register during self test. Someone said this might
+ break Kid Niki, but it seemed to work for me. [hackbar]
+
+-taito_z.cpp : Updates Fix namings, Reduce MCFG_MACHINE_START, MCFG_MACHINE_RESET usage, Fix spacings [cam900]
+
+-othunder.cpp : Updates Simplify gfxdecodes, Reduce runtime tag lookups, Unnecessary lines, Use shorter / correct type values
+ [cam900]
+
+-warriorb.cpp : Updates Correct clock (related to XTAL on actual PCB), Simplify handlers, gfxdecodes, Correct ROM loading, Add
+ notes, Reduce unnecessary lines, Fix namings [cam900]
+
+-ninjaw.cpp : Updates Remove register_postload, Simplify handlers, Cleanup sprite priority behavior, Reduce unnecessary lines,
+ Simplify gfxdecodes, Split gfx layout related per each TC0100SCNs, Add notes, Fix namings, Spacings, Use shorter / correct type
+ values [cam900]
+
+-asuka.cpp : Updates Simplify handlers, gfxdecodes, Reduce unuseds, Fix namings, Spacings, Use shorter / correct type values
+ [cam900]
+
+-Revert Revert "epic12.cpp : Updates" Fix naming, Make clr_t endian-safe [cam900]
+
+-tms5220: switch the log mask define comments to be above the defines [hackbar]
+
+-decmxc06.cpp : Minor fixes [cam900]
+
+-Fix ppc64el issue #3157 This is probably due to the fact that IBM 128bit long double format is not constant folded. I slighlty
+ rewrote ""_kHz_XTAL(long double clock) and ""_MHz_XTAL(long double clock) the way ""_kHz_XTAL(unsigned long long clock) and
+ ""_MHz_XTAL(unsigned long long clock) are written. which makes the compiler happy. I initially sent this patch in Debian :
+ https://salsa.debian.org/games-team/mame/merge_requests/15/diffs which fixes the bug in Debian from my tests. Thanks, [frediz]
+ * F.
+
+-decmxc06.cpp : Fix bandit regression, Fix notes, Remove outdated comments [cam900]
+
+-epic12.cpp : Updates Implement debug VRAM viewer, Reduce unnecessary lines, Simplify handlers, Fix spacings, Remove hardcoded tags,
+ Unnecessary pointers, Use shorter / correct type values [cam900]
+
+-emu/video/generic.cpp : Add packed, raw case of generic gfx layouts, example usages [cam900]
+
+-There's #500 of the cleanly cracked Apple II disks for July 2019 (nw Now MAME can be the MECCa of MECC disks with this load of
+ classic educational content. [Firehawke]
+ * Also, made the last disk a special one, because everyone remembers and loves Oregon Trail.
+ * Add cleanly cracked:
+ * Mathematics Activities Courseware Level 4, Mathematics Activities Courseware Level 6, Mathematics Problem Solving Software Level
+    1, Mathematics Problem Solving Software Level 2, Mathematics Problem Solving Software Level 3, Mathematics Skills Software Level
+    2, Mathematics Today, Mathematics Word Problems Grade 3, Maths Invaders - Special Products and Algebraic Factors, Max Command,
+    Max Dublin's Treasure, Maxwell Manor, MECC-A114 Writing an Opinion Paper (Version 1.1), MECC-A116 Puzzles and Posters (Version
+    1.2), MECC-A126 Study Guide (Version 1.4), MECC-A132 MECC Writer (Version 1.1a), MECC-A136 MECC Graphing Primer (Version 1.1),
+    MECC-A140 MECC Dataquest - The Presidents (Version 1.2), MECC-A141 MECC Information Manager (Version 1.0), MECC-A141 MECC
+    Information Manager (Version 1.1), MECC-A149 Mastering Math Diagnostic System (Version 1.2), MECC-A153 Word Munchers (Version
+    1.1), MECC-A172 MECC Dataquest Composer (Version 1.1), MECC-A173 Dataquest Sampler (Version 1.0), MECC-A197 MECC Dataquest - The
+    World Community (Version 1.0), MECC-A197 MECC Dataquest - The World Community (Version 1.1), MECC-A202 Fraction Concepts, Inc.
+    (Version 1.1), MECC-A203 Fraction Practice Unlimited (Version 1.2), MECC-A211 Mystery Objects (Version 1.1), MECC-A227 Patterns
+    (Version 1.1), MECC-A232 Spelling Press (Version 1.1), MECC-A234 Spelling Puzzles and Tests (Version 1.0), MECC-A242 Teacher
+    Option Organizer (Version 1.1), MECC-A242 Teacher Option Organizer (Version 1.3), MECC-A243 MECC Dataquest - Latin America
+    (Version 1.0), MECC-A248 CommuniKeys (Version 1.0), MECC-A253 MECC Dataquest - Europe and Soviet Union (Version 1.0), MECC-A277
+    Time Navigator Around The World (Version 1.0), MECC-A313 History Makers (Version 1.0), MECC-A314 Dr. Livingstone, I Presume
+    (Version 1.0), MECC-A316 Exploring Chaos (Version 1.0), MECC-A702 Elementary Vol. 1 (Version 3.5), MECC-A703 Elementary Vol. 2
+    (Version 3.2), MECC-A704 Elementary Vol. 3 Science (Version 4.5), MECC-A704 Elementary vol. 3 (Version 4.7), MECC-A704
+    Elementary Vol. 3 (Version 4.8), MECC-A708 Science Vol. 1 (Version 2.2), MECC-A712 Music Theory Vol. 1 (Version 2.2), MECC-A714
+    Business vol. 1 - Utilities (Version 4.5), MECC-A721 Business vol. 3 (Version 1.5), MECC-A725 Elementary Vol. 6 (Version 1.3),
+    MECC-A726 Spelling Vol. 1 (Version 3.0), MECC-A738 Mathematics Vol. 3 (Version 1.2), MECC-A744 Mathematics vol. 4 (Version 1.3),
+    MECC-A746 English Vol. 1 (Version 1.2), MECC-A753 Nutrition vol. 2 (Version 1.2), MECC-A756 Food Facts (Version 1.0), MECC-A756
+    Food Facts (Version 1.2), MECC-A758 Computer Generated Mathematics Materials Problem Solving Vol. 2 (Version 1.0), MECC-A761
+    Health Immunization (Version 1.1), MECC-A774 Adventures with Fractions (Version 1.0), MECC-A779 The Friendly Computer (Version
+    1.0), MECC-A785 Writing A Character Sketch (Version 1.0), MECC-A787 Guide de l'Enseignant (Version 1.4), MECC-A788 Early
+    Addition (Version 1.0), MECC-A811 The Three R's of Microcomputing (Version 1.1), MECC-A817 Graphing (Version 1.2), MECC-A819
+    Number Systems (Version 1.1), MECC-A821 Probability (Version 1.0), MECC-A822 Nutrition and Food Groups (Version 1.2), MECC-A824
+    Classification (Version 1.1), MECC-H111A Spare Moments Solitaire, MECC-H111B Spare Moments with a Friend, Mech Brigade (Version
+    1.2), Medalist Series - States, Meet The Presidents, Memory Building Blocks, Memory Building Blocks (1989 Version), Memory
+    Castle (1983 Version), Memory Match (Version 01.24.86), Memory Minder, Meteor Mission, Meteor Multiplication, Meteor
+    Multiplication (Revision 2), Micro Addition, Micro Division, Micro Habitats, Micro League Baseball, Micro Multiplication,
+    Microbe (supports Mockingboard), Microbe (Revision 3), Micro-LADS 1 Plurals and Noun-Verb Agreement, Micro-LADS 2 Verb Forms,
+    Micro-LADS 3 Prepositions, Micro-LADS 4 Pronouns, Micro-LADS 5 Negatives, Micro-LADS 6 Deictic Expressions, Passive, and
+    WH-questions, Micro-LADS 7 Prepositions II, Microscopic Journey, MECC-A157 Oregon Trail (Version 1.1)
+
+-excellent_spr.cpp : Updates Internalize gfxdecode, Use callback for priority behavior, Reduce unnecessary lines, Simplify handlers,
+ Fix spacings aquarium.cpp, gcpinbal.cpp : Updates Simplify handlers, gfxdecodes, Reduce unnecessary lines, Runtime tag lookups, Fix
+ namings, Use shorter / correct type values, Move virtuals under protected:, Rearrange devices under values in .h files gcpinbal.cpp
+ : Make tilemap dirty when tilebank is changed [cam900]
+
+-fuukifg.cpp : Minor fixes [cam900]
+
+-fuukifg.cpp : Updates Use callback for colour, priority, tilebank behaviors, Internalize gfxdecodes, Use external spriteram, Reduce
+ unnecessary lines, Fix spacings, Use shorter / correct type values fuukifg2.cpp, fuukifg3.cpp : Updates Correct spriteram, vreg
+ types, Use tilemap buffer behavior into RAM bank (number of actually visible tilemap layer is 3), SImplify handlers, Reduce
+ unnecessary lines, Fix notes, Spacings, Use shorter / correct type values [cam900]
+
+-tigeroad_spr.cpp : Updates Internalize gfxdecode, Fix spacings, Notes, Reduce unnecessary lines, Use shorter / correct type values
+ bionicc.cpp, tigeroad.cpp, supduck.cpp : Simplify gfxdecode, Reduce unnecessary lines, Fix spacing, Namings [cam900]
+
+-pce_tourvision.xml: New NOT_WORKING software list additions [clawgrip]
+ * ----------------------- Racing Damashii  (TourVision PCE bootleg) [system11] Paranoia  (TourVision PCE bootleg) [system11]
+
+-drawgfx.cpp : Updates Move additive blending function into drawgfx.h, Add priority related copybitmap and draw_scanline functions,
+ Fix spacings Priority related copybitmap and draw_scanline  functions are sprite like priority handling(prio_) and tilemap like
+ priority handling (primask_), These are helpful for priority related bitmap / scanline drawing routines. drawgfxm.cpp: Add
+ variations of priority related pixel draw functions, Fix spacings realbrk.cpp: Updates, Example usage for prio_copybitmap Simplify
+ handlers, Use priority bitmap for sprite priority, Fix spacings, Use shorter / correct type values [cam900]
+
+-ddenlovr.cpp : Correct CPU type [cam900]
+
+-fix vsllvm configuration [vadosnaprimer]
+ * `dxsdk` was missing from includes
+ * `winmm` was missing from libs
+ * narrowing warning was silenced for VS, but not from vsllvm, where it leads to an error in `menu_video_options::handle()`
+
+-jedi.cpp : Updates Simplify handlers, Add gfxdecode for debug, Add palette_device for palette handling, Reduce runtime tag lookups,
+ Fix some drawing routines, Reduce unnecessary lines, Fix namings, Spacings, Use shorter / correct type values, Add notes [cam900]
+
+-decmxc06.cpp : Fix regression This PR is fixes https://github.com/mamedev/mame/commit/83723a8d4c8f0622c4ddf994ab3f767fba5b57cb 's
+ regression. [cam900]
+
+-1943.cpp : Updates Correct sprite priority handling routine, Reduce runtime tag lookups, Fix namings, Simplify handlers,
+ Gfxdecodes, Use shorter / correct type values [cam900]
+
+-Z80SIO: fixed a few regressions after PR #5115 Hi, [fulivi]
+ * this commit fixes a few regressions caused by my last changes to Z80SIO driver. In detail:
+ * + **altos5**, **isbc28612**, **isbc2861**, **c8002** now have the same exact image on screen as before at the end of 10 seconds
+    of emulation, + **c5000** has one more word ("tape") displayed, probably because some initial self-test is now a bit faster, +
+    **att4425** doesn't change after this fix, but I'm convinced that the current image is more correct (the one showing "keyboard
+    test failed", as the generic rs232 keyboard that is connected has no loopback function).
+ * This list of systems was provided by Tafoid as a comment to my last PR (#5115), it's probably not complete. I'll look into new
+    regressions as they are reported. Thanks.
+ * -F.Ulivi
+
+-cpu/jaguar/*.cpp : Updates Add notes, Reduce defines, Simplify handlers, Use shorter / correct type values, Reduce unnecessary
+ lines, Remove register_postload jaguar.cpp : Fix metadata, Correct XTAL frequency [cam900]
+
+-exedexes.cpp : Updates Use prio_* for sprite draw routine, Simplify handlers, gfxdecodes, Reduce runtime tag lookups, Unnecessary
+ lines, Fix namings, Spacings [cam900]
+
+-Fix regressions in k573dio/k573fpga/mas3507d [windyfairy]
+ * *Please don't merge until there has been a sufficient review done.**
+ * This fixes most of the regressions from https://github.com/mamedev/mame/commit/c910c1cf0ab357df250aff10002547e52e896f76.
+ * I will be leaving comments to explain why I made certain changes just to make sure we're on the same page and make it easier to
+    give advice for a better way to write something. It might be easier to review on a per-commit basis since the commits are pretty
+    self-contained.
+ * ~~The MP3 decoder still has heavy glitching problems but that's probably going to take the longest time to fix out of the
+    regressions.~~
+ * Update: All bugs that I had previously found, except one where you can briefly hear the previously played audio for less than a
+    second between MP3 transitions, have been fixed now with the latest commits. (2019/06/02)
+
+-Change autofire config directory to homepath According to feedback on #5093 and documentation that I missed, plugins are expected
+ to save data to homepath rather than pluginspath. [jackrjli]
+
+-sms.cpp: Change NMI to be routed through VDP on SMS systems [enikland2]
+
+
+New working machines
+--------------------
+ibm5170: The Final ChessCard (Installer v2.0/Program v1.9) [hap, voelkx]
+fm7_cass: The Stars [Elroy van Tamelen]
+ibm5170: The ChessMachine (v3.1, The King v2.20) [hap, fhub]
+=================== [Angelo Salese]
+Bikkuri Pro Wrestling [Angelo Salese]
+ibm5150: The ChessMachine (RISC engines) [hap, fhub]
+ibm5170: Mission (Traditional Chinese) [Justin Kerk]
+ibm5170: KLM's Screensaver [Justin Kerk, Misty De Méo]
+ibm5170: America Online 3.0 for Windows, McAfee Software Emergency Boot Diskette [Justin Kerk, Jason Scott]
+bbc_rom: BBC Teletext 2.38, BBC Teletext 2.50, ATS+ 1.00, ATS+ 2.00, DMON A1.03, HyperDriver 1.11, The Informant, Logotron LOGO
+  (Cymru), Open LOGO, QFS 1.01, Romit 1.00, Super-Forth 1.5, StarBASE 2.11, STL Clock & Desk 1.10, SupaStore 1.5, Techno-Font, Acorn
+  TFS 1.00, Acorn TFS 1.02, Acorn TFS 1.03, ViewSheet 1.0, Wapping Support 1.21, Wordwise Plus 2.04, WYSIWYG Plus 1.22
+  [Nigel Barnes]
+dragon_flop: Dunjunz [Nigel Barnes]
+z88_cart: Code Count, Z88 Data Organiser, EP-Copy, Event Control System, PC-Link II, Stop Watch, Toll Tracker v2.0 (Demo)
+  [Nigel Barnes]
+Game & Watch: Donkey Kong Jr. (panorama screen) [algestam]
+mtx_cass: Comic Bakery (MSX Conversion), Old Mac Farmer (MSX Conversion), Power Pac (Sord M5 Conversion), SASA (MSX Conversion),
+  Sloopy's Christmas, Spectron (Coleco Conversion), Telebunny (MSX Conversion) [MTXworld]
+=================== [Angelo Salese]
+Gemcrush
+  [ShouTime, anonymous donor from Italy, ANY, Scott Moor, Russell Howard, Evan Korzon, Henrique Areias Pontes, Sean Sutton, Evan
+  Korzon, Mr Goodwraith, Christopher Brownlee, Smitdogg, The Dumping Union, Angelo Salese]
+bbc_rom: PMS Genie Junior 1.1u [Derek Mathieson]
+bbc_rom: Advanced Disc Investigator 1.21 S/N:43318, BeebAid 1.05, BeebEd 1.04, CMS Link 2.00, General Utilities 3.22, Instat C00144,
+  Microbrush Injector 1.00, Printer Server 0.9A, Sciways 2.03, Style 1.3, Swift 2.2, TRXROM 2.00 [Nigel Barnes]
+Paracelsus no Maken [r09]
+Z's Triphony - Digital Craft [r09]
+Re-tested software entries with current MAME [r09]
+Relabeled disks with their actual names [r09]
+Added usage notes for software that needs DOS [r09]
+Removed user disks from games where they aren't included in the [r09]
+original box, and the user is expected to create them. [r09]
+Removed duplicate images where the only differences are in the saved [r09]
+game data [r09]
+Removed the "Debut" CD version floppy, since it's already included in [r09]
+pc98_cd.xml [r09]
+Replaced "D.O. Doki Doki Disk Vol. 02", "D.O. Kaizokuban" and "Dragon [r09]
+Princess - Ryuu no Densetsu" with working dumps. [r09]
+Reordered some disks so they are auto-mounted in a more logical way [r09]
+Some minor title / spelling fixes [r09]
+pc98_cd.xml: [r09]
+Added a new software item (Dragon Lore) [r09]
+Added Disk P to Doom II, since it's also included with the CD version [r09]
+Added notes for Duel Succession Plus Kit [r09]
+pc98.xml: fix a couple of mistakes [r09]
+pc98.xml: minor fix [r09]
+Game & Watch: Ball [algestam, hap, Mr. Do, Ryan Holtz, Sean Riddle]
+Aristocrat MK5 USA Set Chip v4.04.05 [Roberto Fresca, Gaby]
+Aristocrat MK5 USA Set Chip v4.03.07 [Roberto Fresca, Gaby]
+Aristocrat MK5 USA Set Chip v1.0 [Roberto Fresca, Gaby]
+mt65_snap: Adventure 1: The Sceptre of Hamloth, Astro Fighter, Berzerk, Defender, The Gobbler, Hangman, Hell's Bells, Lunar Lander,
+  Moon Cresta, Moon Rescue, Othello, Slot Machine, Space Invasion, Space Rocks [Geoff Macdonald]
+Game & Watch: Ball [algestam, hap, Mr. Do, Ryan Holtz, Sean Riddle]
+Paracelsus no Maken [rzero9]
+Z's Triphony - Digital Craft [rzero9]
+Re-tested software entries with current MAME [rzero9]
+Relabeled disks with their actual names [rzero9]
+Added usage notes for software that needs DOS [rzero9]
+Removed user disks from games where they aren't included in the original box, and the user is expected to create them. [rzero9]
+Removed duplicate images where the only differences are in the saved [rzero9]
+game data [rzero9]
+Removed the "Debut" CD version floppy, since it's already included in pc98_cd.xml [rzero9]
+Replaced "D.O. Doki Doki Disk Vol. 02", "D.O. Kaizokuban" and "Dragon Princess - Ryuu no Densetsu" with working dumps. [rzero9]
+Reordered some disks so they are auto-mounted in a more logical way [rzero9]
+Some minor title / spelling fixes [rzero9]
+pc98_cd.xml: [rzero9]
+Added a new software item (Dragon Lore) [rzero9]
+Added Disk P to Doom II, since it's also included with the CD version [rzero9]
+Added notes for Duel Succession Plus Kit [rzero9]
+Game & Watch: Donkey Kong Jr. (panorama screen) [algestam]
+VRT VT SDK 'Pink Jelly' (VT03 Demo) [ClawGrip]
+VRT VT SDK 'VT03 Sound Test' (Sound Generator FMDemo) [ClawGrip]
+
+
+New working clones
+------------------
+Thunder & Lightning (bootleg with Tetris sound, set 2) [Bliep]
+Puzz Loop 2 (Japan 010226 Phoenix Edition) (bootleg) [Anonymous]
+Huanle Liuhe Yi (Happy 6-in-1) (M68K ver. V100HK, ARM ver. V100HK) [GC8TECH]
+Photo Y2K / Chaoji Bi Yi Bi / Dajia Lai Zhao Cha / Real and Fake (ver. 103, Japanese Board) [GC8TECH]
+Super Invasion (Electromar, Spanish) [ARPA, Recreativas.org]
+
+
+Machines promoted to working
+----------------------------
+Game & Watch: Chef [Sean Riddle, Mr. Do]
+
+
+Clones promoted to working
+--------------------------
+RyuKyu (Rev A, Japan) (FD1094 317-5023A) [Recreativas.org, The Dumping Union]
+
+
+New machines marked as NOT_WORKING
+----------------------------------
+ibm5170: The ChessMachine (Installer V3.0) [hap]
+ibm5170: The ChessMachine (Installer V2.2) [hap]
+Master [Stefan Fettes]
+Pinball [ClawGrip]
+Boxing [ClawGrip]
+Fuusen Pentai [R. Belmont, Chris Penny, The Dumping Union]
+Goldart (Spain) [Morten Kirkegaard, Ryan Holtz, Clawgrip, David Haywood, Roberto Fresca, Peter Wilhelmsen]
+video hardware is bitmap based, but seems to have some control registers so palette etc. is set outside of the actual writes, might
+  also disagree with how the ds5002fp core does memory addressing slightly as some bits seem to be fetched from the wrong places.
+  ds5002fp dump we have is good enough to run the attract mode on PCB, only 2 suspicious bytes. [DavidHaywood]
+Systel System 100 [Al Kossow, Bitsavers]
+Rhythm Nation (v01.01.04) [R. Belmont, ClawGrip, ArcadeVintage, Recreativas.org, The Dumping Union]
+Olympic Darts (K7) [jordigahan, ClawGrip]
+ibm5170: WinBook XL Audio [Justin Kerk, Jason Scott]
+ibm5170: WinBook XL Boot Disk [Justin Kerk, Jason Scott]
+ChessSystem R30 [hap]
+Electronic Digital Thermostat [hap, Sean Riddle]
+bbc_rom: Barry-Box, CUBE BeebFlex, BeebScan, Eprom Programmer 1.03, Eprom Programmer 1.06, Eprom Programmer V2 2.01, Eprom
+  Programmer V2 2.02, Eprom Programmer V2 2.03, EURO-Beeb Terminal 1, EURO-Beeb Terminal 4.13, FIT Test Station, PMS Genie 1.02,
+  Hobbit OS 1.8, Prestel 1.0, Ramamp Video 2.40, Ramamp Video 2.50 [Nigel Barnes]
+Software list items promoted to working [Nigel Barnes]
+bbc_rom: AMX Design [Nigel Barnes]
+mtx_cass: Caves of Orb, Pac-Man (MSX Conversion), Zombie Near [MTXworld]
+Software list items promoted to working [Nigel Barnes]
+mtx_cass: 3D Tachyon Fighter, 3D Turbo, Agrovator, Alice in Wonderland, Arcazions, Astro-Pac, Astromilon, Backgammon, Blobbo,
+  Contract Bridge II, Cosmic Raiders, Demonstration Tape, Goldmine, Hawk Wars, Kilopede, Knuckles, Little Devils, Micro Canvas,
+  Mission Alphatron, Mission Omega, MTX Chess, MTX Draughts, Nemo, Obloids, Phaid, Qogo, Quazzia, Space Invasion, Star Command,
+  Super Minefield, Surface Scanner, Tapeworm, Target Zone, Toado, Vernon and the Vampires [Nigel Barnes]
+Taiko no Tatsujin 6 [Bill D, The Dumping Union, defor, twistedsymphony]
+KTM-3 [Bitsavers]
+Korokoro Pensuke [R. Belmont, Chris Penny, The Dumping Union]
+Telex 1192 [Bitsavers]
+Pro Stepper Tele Cardioline (Salter Fitness Stepper V.1.0, Checksum F208) [ClawGrip]
+technically it seems to be playable the same way the bike is (keep hitting button 1 to step, the other 2 change 'gear' to make it
+  more difficult) [DavidHaywood]
+Magic Bomb [Cristiano MDQ]
+Super Train (Ver. 1.9) [Cristiano MDQ]
+Treasure City (Ver. 208) [Cristiano MDQ]
+Treasure City (Ver. 202) [Cristiano MDQ]
+note, previous credit of  "Canil Babypet" should be changed to "Cristiano MDQ" [DavidHaywood]
+Treasure Bonus (American Alpha, Ver. 1.6) [Canil Babypet]
+Goldart (Spain) [Morten Kirkegaard, Ryan Holtz, Clawgrip, David Haywood, Roberto Fresca, Peter Wilhelmsen]
+video hardware is bitmap based, but seems to have some control registers so palette etc. is set outside of the actual writes, might
+  also disagree with how the ds5002fp core does memory addressing slightly as some bits seem to be fetched from the wrong places.
+  ds5002fp dump we have is good enough to run the attract mode on PCB, only 2 suspicious bytes. [DavidHaywood]
+VRT VT SDK 'Pinball' (C-Compiler Demo Program 2) [ClawGrip]
+VRT VT SDK 'Boxing' (Demo for VT03 Pic32) [ClawGrip]
+
+
+New clones marked as NOT_WORKING
+--------------------------------
+Mushiking The King Of Beetle (2K3 2ND Ver. 1.002-, World) [f205v]
+Big Karnak (Modular System) [Recreativas.org, ArcadeHacker, ClawGrip, David Haywood]
+as with other Modular System things, it's not really very close to original hw at all (and uses different boards in a different
+  configuration to other modular system setups) so new driver [DavidHaywood]
+Captain Zodiac (World) [Berty]
+Cyber Troopers Virtual-On Relay (Japan) [ShouTime, defor]
+Epson CM6127 [Colin McDougall]
+Toki (Modular System) [Juan Romero, Recreativas.org, ClawGrip]
+Corvette (PX3 Prototype) [PinMAME]
+Champion Poker (v101) [Canil Babypet]
+Champion Poker (v201F) [Canil Babypet]
+Champion Poker (v210KS) [Canil Babypet]
+Champion Poker (v300US) [Canil Babypet]
+Toki (Modular System) [Juan Romero, Recreativas.org, ClawGrip]
+Big Karnak (Modular System) [Recreativas.org, ArcadeHacker, ClawGrip, David Haywood]
+as with other Modular System things, it's not really very close to original hw at all (and uses different boards in a different
+  configuration to other modular system setups) so new driver [DavidHaywood]
+Gals Panic (Modular System bootleg) [Juan Romero, Recreativas.org, ClawGrip, David Haywood]
+these things are *ugly* from a hardware perspective (massive 6 board stack just for Gals Panic with many, many code hacks to work
+  around hardware changes) so I felt it best to create a new driver with the background bits copy+pasted; the sprites + sound system
+  specific to these bootlegs will need adding. [DavidHaywood]
+
+
+apple2_flop_clcracked (apple2_flop_clcracked.xml):
+  Renames
+    rambo -> rambop2 Rambo First Blood Part II (cleanly cracked)
+  Working
+    Bingo Bugglebee Presents: Find the Rhyme (cleanly cracked)
+    Early Games: Piece of Cake (cleanly cracked)
+    Early Games: Piece of Cake Math (cleanly cracked)
+    EasySearch - Sixty Countries Around The World (cleanly cracked)
+    Electric Bill (cleanly cracked)
+    Electric Chalkboard (cleanly cracked)
+    Elementary Math (cleanly cracked)
+    Elements of Music - Key-Signatures Drill (cleanly cracked)
+    Elite (cleanly cracked)
+    Empire II - Interstellar Sharks (Version 1.2) (cleanly cracked)
+    Enchanter (Revision 10 / 830810) (cleanly cracked)
+    Enchanter (Revision 16 / 831118) (cleanly cracked)
+    Encyclopedia Trivia (cleanly cracked)
+    End Punctuation (cleanly cracked)
+    Energy Conversions (cleanly cracked)
+    English Achievement I (cleanly cracked)
+    English Achievement II (cleanly cracked)
+    English Achievement III (cleanly cracked)
+    English Achievement IV (cleanly cracked)
+    English Achievement V (cleanly cracked)
+    English Challenge (cleanly cracked)
+    Epidemic (cleanly cracked)
+    Epoch (cleanly cracked)
+    Ernie's Quiz (cleanly cracked)
+    Escape from Arcturus (cleanly cracked)
+    Escape from Rungistan (cleanly cracked)
+    Essential Grammar (cleanly cracked)
+    Essential Punctuation (cleanly cracked)
+    Eureka - Following Directions Level B (cleanly cracked)
+    Expedition Amazon (cleanly cracked)
+    Explorations in Science (cleanly cracked)
+    Extra Extra (Milton Bradley) (cleanly cracked)
+    Extra Extra (cleanly cracked)
+    Facemaker Golden Edition (cleanly cracked)
+    Fact or Opinion (cleanly cracked)
+    Factors (cleanly cracked)
+    Fahrenheit 451 (Revision 2) (cleanly cracked)
+    Fahrenheit 451 (cleanly cracked)
+    Far Star (cleanly cracked)
+    FasTrack Quizzer (cleanly cracked)
+    Fat City (cleanly cracked)
+    Fay's Word Rally (cleanly cracked)
+    Feed The Frog (cleanly cracked)
+    Felony (Thunder Mountain release) (cleanly cracked)
+    Field of Fire (cleanly cracked)
+    Fifty Mission Crush (Verion 1.1) (cleanly cracked)
+    Fifty Mission Crush (Version 1.2) (cleanly cracked)
+    Fighter Command (cleanly cracked)
+    Finance Manager (cleanly cracked)
+    Financial Cookbook (cleanly cracked)
+    First Math Adventures - Understanding Word Problems (cleanly cracked)
+    First Start Writing Program (cleanly cracked)
+    First Steps to Reading - Phonics One (cleanly cracked)
+    First Steps to Reading - Phonics Two (cleanly cracked)
+    First Verbs (cleanly cracked)
+    First Words (cleanly cracked)
+    Five in a Row - Addition and Subtraction (cleanly cracked)
+    Five in a Row - Division (cleanly cracked)
+    FixIt (cleanly cracked)
+    Flights Into Fiction - Modern Stories (cleanly cracked)
+    Flip Out (cleanly cracked)
+    Following Directions - One and Two Level Commands - Directional Terms (cleanly cracked)
+    Following Directions - One and Two Level Commands - Spatial Relations (cleanly cracked)
+    Food Group Puzzles (cleanly cracked)
+    Formula 1 Racer (cleanly cracked)
+    FourWord and WordLift (cleanly cracked)
+    Fraction Action (cleanly cracked)
+    Fraction Equivalence Partially Shaded Regions (cleanly cracked)
+    Fraction Factory (cleanly cracked)
+    Fraction Fever (Revision 0) (cleanly cracked)
+    Fractional Parts of a Region (cleanly cracked)
+    Fractions - A Review Course (cleanly cracked)
+    Fractions - Addition and Subtraction (Version 1.6) (cleanly cracked)
+    Fractions - Multiplication and Division (Version 2.1.6) (cleanly cracked)
+    Fractions Practice (cleanly cracked)
+    Frenzy and Flip Flop (cleanly cracked)
+    Friendly Filer (cleanly cracked)
+    Frogs, Dogs, Kittens, and Kids 2 (Version 10.18.88) (cleanly cracked)
+    From ABC to XYZ (cleanly cracked)
+    Fun with Directions (cleanly cracked)
+    Function Pictures (cleanly cracked)
+    Fundamental Spelling in Context Level 2 (cleanly cracked)
+    Fundamental Spelling in Context Level 4 (cleanly cracked)
+    G.I. Joe (cleanly cracked)
+    GBA Championship Basketball (cleanly cracked)
+    GFL Championship Football (cleanly cracked)
+    Galactic Adventures (cleanly cracked)
+    Galaxy Gates (cleanly cracked)
+    Galaxy Math (cleanly cracked)
+    Galaxy Math - Decimals (cleanly cracked)
+    Galaxy Math - Fractions (cleanly cracked)
+    Game Frame One (cleanly cracked)
+    Game Frame Two (cleanly cracked)
+    Gamma Force (cleanly cracked)
+    Garfield Double Dares (cleanly cracked)
+    Garry Kitchen's GameMaker (cleanly cracked)
+    Gelfling Adventure (cleanly cracked)
+    Gemstone Warrior (cleanly cracked)
+    GeoWhiz (cleanly cracked)
+    Geography Adventure USA (cleanly cracked)
+    Geometric Figures - Angles and Right Angles (cleanly cracked)
+    Geometric Figures - Circles, Radius, Diameter (cleanly cracked)
+    Geometry - Simple Closed Curves (cleanly cracked)
+    Geometry Alive - Areas of Triangles and Quadrilaterials (cleanly cracked)
+    Geometry Alive - Circles (cleanly cracked)
+    Geometry Alive - Fundamentals of Geometry (cleanly cracked)
+    Geometry and Measurement volume 1 (cleanly cracked)
+    Geometry and Measurement volume 2 (cleanly cracked)
+    Geopolitique 1990 (cleanly cracked)
+    German Vocabulary Games (cleanly cracked)
+    Gertrude's Puzzles (Version 1.0) (cleanly cracked)
+    Gertrude's Puzzles (Version 1.2) (cleanly cracked)
+    Gertrude's Secrets (Version 1.0) (cleanly cracked)
+    Gertrude's Secrets (Version 1.3) (cleanly cracked)
+    Get to the Point (cleanly cracked)
+    Getting Ready to Read and Add (cleanly cracked)
+    Gettysburg - The Turning Point (cleanly cracked)
+    Gin Rummy (cleanly cracked)
+    Gnee or Not Gnee (cleanly cracked)
+    Go (Hayden) (cleanly cracked)
+    Go To The Head Of The Class (1989 Version) (cleanly cracked)
+    Go To The Head Of The Class (cleanly cracked)
+    Goldfinger (cleanly cracked)
+    Grammar Baseball (cleanly cracked)
+    Grammar Lab 1 - Basic Sentence Structure (cleanly cracked)
+    Grammar Lab 2 - Singular and Plural Nouns (cleanly cracked)
+    Grammar Mechanics Level 1 (cleanly cracked)
+    Grand Prix - Basic Facts Heat (cleanly cracked)
+    Grand Prix - Fractions Heat 1 (cleanly cracked)
+    Grand Prix - Place Value Heat (cleanly cracked)
+    Granny Applebee's Cookie Factory (cleanly cracked)
+    Graph Maker (cleanly cracked)
+    GraphMaster (cleanly cracked)
+    Graphics Converter (cleanly cracked)
+    Graphs and Mean, Median, and Mode (cleanly cracked)
+    Grasshopper Dissection (1990 rerelease) (cleanly cracked)
+    Great America - Presidents (cleanly cracked)
+    Guadalcanal Campaign (Version 1.0) (cleanly cracked)
+    Guadalcanal Campaign (Version 1.1) (cleanly cracked)
+    Guderian (cleanly cracked)
+    Guitar Wizard (cleanly cracked)
+    Gulp and Frenzy (cleanly cracked)
+    H.E.R.O. (cleanly cracked)
+    Hacker (cleanly cracked)
+    Hacker II (cleanly cracked)
+    Hands on BASIC Programming (cleanly cracked)
+    Handy Dandy (cleanly cracked)
+    Health Watch (cleanly cracked)
+    Heat Energy (cleanly cracked)
+    Heavy Barrel (cleanly cracked)
+    Hebrew Phrasebook (cleanly cracked)
+    Hi-Res Computer Golf (cleanly cracked)
+    High Rise (cleanly cracked)
+    High School Math Competency Series Part I (cleanly cracked)
+    High School Math Competency Series Part II (cleanly cracked)
+    High Seas (cleanly cracked)
+    High Stakes (cleanly cracked)
+    High Wire Logic (cleanly cracked)
+    Home Row (cleanly cracked)
+    Homeworker (Version 2.1) (cleanly cracked)
+    Homonyms (cleanly cracked)
+    Homonyms 2 (cleanly cracked)
+    Homonyms I (Milliken) (cleanly cracked)
+    Homonyms II and Confusing Pairs (Milliken) (cleanly cracked)
+    Horses (cleanly cracked)
+    How To Do Research (cleanly cracked)
+    How to Weigh An Elephant (cleanly cracked)
+    I Can Carry and Borrow (cleanly cracked)
+    I Can Count (cleanly cracked)
+    I, Damiano (cleanly cracked)
+    Ice Demons (cleanly cracked)
+    Identifying Affixes (cleanly cracked)
+    Identifying Compound Words (cleanly cracked)
+    Identifying Matching Letters (cleanly cracked)
+    Identifying Vowel Sounds (cleanly cracked)
+    Ikari Warriors (cleanly cracked)
+    Imperium Galactum (cleanly cracked)
+    Improper Fractions (cleanly cracked)
+    In Search of The Most Amazing Thing (cleanly cracked)
+    In Search of the Most Amazing Thing (Revision 2) (cleanly cracked)
+    Indiana Jones in Revenge of the Ancients (cleanly cracked)
+    Indians (cleanly cracked)
+    Infidel (Revision 22 / 830916) (cleanly cracked)
+    InforMaster (cleanly cracked)
+    Inside Outside Shapes (cleanly cracked)
+    Instant Zoo (cleanly cracked)
+    Interpreting Graphs (cleanly cracked)
+    Introduction to Counting (cleanly cracked)
+    Investigating Chemical Reactions (cleanly cracked)
+    Investigating Plant Growth (cleanly cracked)
+    Islands of Beta (cleanly cracked)
+    It's About Time (Micrograms) (cleanly cracked)
+    It's About Time (cleanly cracked)
+    Jawbreaker (cleanly cracked)
+    Journey to the Age of Dinosaurs - Europe and Asia (cleanly cracked)
+    Journey to the Age of Dinosaurs - North America (cleanly cracked)
+    Juggles' Rainbow (Early Version) (cleanly cracked)
+    Juggles' Rainbow (Version 1.4) (cleanly cracked)
+    Jumble Jet (cleanly cracked)
+    Jumbled Jungle (cleanly cracked)
+    Jumblezzz (cleanly cracked)
+    Jungle Rescue - Blue Level (cleanly cracked)
+    Kamikaze (cleanly cracked)
+    Kampfgruppe (Version 1.1) (cleanly cracked)
+    Karate Champ (cleanly cracked)
+    Key Lingo (cleanly cracked)
+    Keyworks - First Keyboarding Skills (cleanly cracked)
+    Kid Niki (cleanly cracked)
+    Kid-Leidoscope (cleanly cracked)
+    KidWriter (Version 1.0) (cleanly cracked)
+    Kinder Koncepts (cleanly cracked)
+    Kindercomp (Revision 0) (cleanly cracked)
+    King Cribbage (cleanly cracked)
+    King's Quest
+    King's Quest II (cleanly cracked)
+    King's Quest III (cleanly cracked)
+    Kittens, Kids, and a Frog (Version 01.31.87) (cleanly cracked)
+    Kittens, Kids, and a Frog - Building Comprehension I (1989 Version) (cleanly cracked)
+    Knights of the Desert (Version 1.1) (cleanly cracked)
+    Know Your Apple (cleanly cracked)
+    Know Your Apple IIe (cleanly cracked)
+    Knowledge Master - Building Trades (cleanly cracked)
+    Knowledge Master - General Math (cleanly cracked)
+    Knowledge Master - Geometry (cleanly cracked)
+    Knowledge Master - Utilities (cleanly cracked)
+    Koala Grams Spelling I (cleanly cracked)
+    Koronis Rift (cleanly cracked)
+    Krell's College Board SAT Preparation Series (cleanly cracked)
+    Krell's Logo (Revision 0) (4am crack)
+    Kung Fu Master (cleanly cracked)
+    L.A. Crackdown (cleanly cracked)
+    La Triviata (cleanly crack)
+    Lane Mastodon (cleanly cracked)
+    Language Carnival 1 (cleanly cracked)
+    Lantern of D'Gamma (cleanly cracked)
+    Laser Bounce (cleanly cracked)
+    Lazy Jack (cleanly cracked)
+    Learn About Words In Reading 2 (cleanly cracked)
+    Learning To Tell Time (cleanly cracked)
+    Learning to Read - Letters, Words, and Sentences volume 1 (cleanly cracked)
+    Learning to Read - Letters, Words, and Sentences volume 2 (cleanly cracked)
+    Learning to Read - Letters, Words, and Sentences volume 3 (cleanly cracked)
+    Learning with Fuzzywomp (cleanly cracked)
+    Learning with Leeper (cleanly cracked)
+    Legendary Conflict (cleanly cracked)
+    Leisure Suit Larry in Land of the Lounge Lizards (cleanly cracked)
+    Let's Eat (cleanly cracked)
+    Let's Explore BASIC (cleanly cracked)
+    Let's Go Fishing (cleanly cracked)
+    Let's Go There - Beginning Map and Geography Skills (cleanly cracked)
+    Let's Learn About Geography - USA (cleanly cracked)
+    Let's Learn About Money (cleanly cracked)
+    Letter Man (cleanly cracked)
+    Letter Recognition (Version 01.27.88) (cleanly cracked)
+    Letter Recognition (cleanly cracked)
+    Letters For You (cleanly cracked)
+    Library Magic (cleanly cracked)
+    Library Skills - Let's Learn about the Library (cleanly cracked)
+    Library and Media Skills (cleanly cracked)
+    Little Computer People (cleanly cracked)
+    Little People's Puzzles (cleanly cracked)
+    Little Riddles (cleanly cracked)
+    Lock 'n Chase (cleanly cracked)
+    Locksmith (Version 5.0 Revision C) (cleanly cracked)
+    Locksmith (Version 5.0 Revision F) (cleanly cracked)
+    Lode Runner (cleanly cracked)
+    Logic Levels (cleanly cracked)
+    Logic Tools (cleanly cracked)
+    Long Division (cleanly cracked)
+    Lordlings of Yore (cleanly cracked)
+    Lords of Conquest (cleanly cracked)
+    Lucifer's Realm (cleanly cracked)
+    Lucky 7 Spelling Games - Elementary (cleanly cracked)
+    M-ss-ng L-nks (cleanly cracked)
+    M-ss-ng L-nks - Classics Old and New (cleanly cracked)
+    M-ss-ng L-nks MicroEncyclopedia (1987 Revised Edition) (cleanly cracked)
+    M-ss-ng L-nks Young People's Literature (1983 Version) (cleanly cracked)
+    M-ss-ng L-nks Young People's Literature (cleanly cracked)
+    MECC-A114 Writing an Opinion Paper (Version 1.1) (cleanly cracked)
+    MECC-A116 Puzzles and Posters (Version 1.2) (cleanly cracked)
+    MECC-A126 Study Guide (Version 1.4) (cleanly cracked)
+    MECC-A132 MECC Writer (Version 1.1a) (cleanly cracked)
+    MECC-A136 MECC Graphing Primer (Version 1.1) (cleanly cracked)
+    MECC-A140 MECC Dataquest - The Presidents (Version 1.2) (cleanly cracked)
+    MECC-A141 MECC Information Manager (Version 1.0) (cleanly cracked)
+    MECC-A141 MECC Information Manager (Version 1.1) (cleanly cracked)
+    MECC-A149 Mastering Math Diagnostic System (Version 1.2) (cleanly cracked)
+    MECC-A153 Word Munchers (Version 1.1) (cleanly cracked)
+    MECC-A157 Oregon Trail (Version 1.1) (cleanly cracked)
+    MECC-A172 MECC Dataquest Composer (Version 1.1) (cleanly cracked)
+    MECC-A173 Dataquest Sampler (Version 1.0) (cleanly cracked)
+    MECC-A197 MECC Dataquest - The World Community (Version 1.0) (cleanly cracked)
+    MECC-A197 MECC Dataquest - The World Community (Version 1.1) (cleanly cracked)
+    MECC-A202 Fraction Concepts, Inc. (Version 1.1) (cleanly cracked)
+    MECC-A203 Fraction Practice Unlimited (Version 1.2) (cleanly cracked)
+    MECC-A211 Mystery Objects (Version 1.1) (cleanly cracked)
+    MECC-A227 Patterns (Version 1.1) (cleanly cracked)
+    MECC-A232 Spelling Press (Version 1.1) (cleanly cracked)
+    MECC-A234 Spelling Puzzles and Tests (Version 1.0) (cleanly cracked)
+    MECC-A242 Teacher Option Organizer (Version 1.1) (cleanly cracked)
+    MECC-A242 Teacher Option Organizer (Version 1.3) (cleanly cracked)
+    MECC-A243 MECC Dataquest - Latin America (Version 1.0) (cleanly cracked)
+    MECC-A248 CommuniKeys (Version 1.0) (cleanly cracked)
+    MECC-A253 MECC Dataquest - Europe and Soviet Union (Version 1.0) (cleanly cracked)
+    MECC-A277 Time Navigator Around The World (Version 1.0) (cleanly cracked)
+    MECC-A313 History Makers (Version 1.0) (cleanly cracked)
+    MECC-A314 Dr. Livingstone, I Presume (Version 1.0) (cleanly cracked)
+    MECC-A316 Exploring Chaos (Version 1.0) (cleanly cracked)
+    MECC-A702 Elementary Vol. 1 (Version 3.5) (cleanly cracked)
+    MECC-A703 Elementary Vol. 2 (Version 3.2) (cleanly cracked)
+    MECC-A704 Elementary Vol. 3 (Version 4.8) (cleanly cracked)
+    MECC-A704 Elementary Vol. 3 Science (Version 4.5) (cleanly cracked)
+    MECC-A704 Elementary vol. 3 (Version 4.7) (cleanly cracked)
+    MECC-A708 Science Vol. 1 (Version 2.2) (cleanly cracked)
+    MECC-A712 Music Theory Vol. 1 (Version 2.2) (cleanly cracked)
+    MECC-A714 Business vol. 1 - Utilities (Version 4.5) (cleanly cracked)
+    MECC-A721 Business vol. 3 (Version 1.5) (cleanly cracked)
+    MECC-A725 Elementary Vol. 6 (Version 1.3) (cleanly cracked)
+    MECC-A726 Spelling Vol. 1 (Version 3.0) (cleanly cracked)
+    MECC-A738 Mathematics Vol. 3 (Version 1.2) (cleanly cracked)
+    MECC-A744 Mathematics vol. 4 (Version 1.3) (cleanly cracked)
+    MECC-A746 English Vol. 1 (Version 1.2) (cleanly cracked)
+    MECC-A753 Nutrition vol. 2 (Version 1.2) (cleanly cracked)
+    MECC-A756 Food Facts (Version 1.0) (cleanly cracked)
+    MECC-A756 Food Facts (Version 1.2) (cleanly cracked)
+    MECC-A758 Computer Generated Mathematics Materials Problem Solving Vol. 2 (Version 1.0) (cleanly cracked)
+    MECC-A761 Health Immunization (Version 1.1) (cleanly cracked)
+    MECC-A774 Adventures with Fractions (Version 1.0) (cleanly cracked)
+    MECC-A779 The Friendly Computer (Version 1.0) (cleanly cracked)
+    MECC-A785 Writing A Character Sketch (Version 1.0) (cleanly cracked)
+    MECC-A787 Guide de l'Enseignant (Version 1.4) (cleanly cracked)
+    MECC-A788 Early Addition (Version 1.0) (cleanly cracked)
+    MECC-A811 The Three R's of Microcomputing (Version 1.1) (cleanly cracked)
+    MECC-A817 Graphing (Version 1.2) (cleanly cracked)
+    MECC-A819 Number Systems (Version 1.1) (cleanly cracked)
+    MECC-A821 Probability (Version 1.0) (cleanly cracked)
+    MECC-A822 Nutrition and Food Groups (Version 1.2) (cleanly cracked)
+    MECC-A824 Classification (Version 1.1) (cleanly cracked)
+    MECC-H111A Spare Moments Solitaire (cleanly cracked)
+    MECC-H111B Spare Moments with a Friend (cleanly cracked)
+    Mad Libs Writer - Adjective-Adverb Writer (cleanly cracked)
+    Mad Libs Writer - Verb Writer (cleanly cracked)
+    Mad Venture (cleanly cracked)
+    Magic Castle (cleanly cracked)
+    Magic Slate 20 (Version 1.3) (cleanly cracked)
+    Magic Slate 20 (Version 1.4) (cleanly cracked)
+    Magic Slate 20/40 (Version 1.0) (cleanly cracked)
+    Magic Slate 20/40 (Version 1.02) (cleanly cracked)
+    Magic Slate 20/40 (Version 1.12) (cleanly cracked)
+    Magic Slate 20/40 (Version 1.22) (cleanly cracked)
+    Magic Slate 20/40 (Version 1.23) (cleanly cracked)
+    Magic Slate 40 (Version 1.3) (cleanly cracked)
+    Magic Slate 40 (Version 1.4) (cleanly cracked)
+    Magic Slate 80 (Version 1.12) (cleanly cracked)
+    Magic Slate 80 (Version 1.22) (cleanly cracked)
+    Magic Slate 80 (Version 1.23) (cleanly cracked)
+    Magic Slate 80 (Version 1.4) (cleanly cracked)
+    Magic Slate II 20 (Version 1.0a) (cleanly cracked)
+    Magic Slate II 40 (Version 1.0a) (cleanly cracked)
+    Magic Slate II 80 (Version 1.0a) (cleanly cracked)
+    Magic Spells (1981) (cleanly cracked)
+    Magic Spells (Version 2.1) (cleanly cracked)
+    Magical Myths (cleanly cracked)
+    Make A Face (cleanly cracked)
+    Managing for Success - Personal Development (cleanly cracked)
+    Maniac Mansion (cleanly cracked)
+    Map Skills (cleanly cracked)
+    Maps and Globes - Latitude and Longitude (cleanly cracked)
+    Marauder (cleanly cracked)
+    Marble Madness (4am and san inc crack) side A
+    Marianas Turkey Shoot (cleanly cracked)
+    Mars Cars (cleanly cracked)
+    Marty's Family Reader
+    Mask Parade (cleanly cracked)
+    Master Match (cleanly cracked)
+    MasterType (cleanly cracked)
+    MasterType and Training Ground (Version 2.1) (cleanly cracked)
+    MasterType's Figures + Formulas (cleanly cracked)
+    Mastering Consonants (cleanly cracked)
+    Mastering Vowels (cleanly cracked)
+    Match It (cleanly cracked)
+    MatchMaker Demo Disk (cleanly cracked)
+    MatchMaker Dictionary (cleanly cracked)
+    Matching Letters and Words (cleanly cracked)
+    Math Blaster (cleanly cracked)
+    Math Blaster Mystery (Version 1.3) (cleanly cracked)
+    Math Blaster Mystery (cleanly cracked)
+    Math Blaster Plus (cleanly cracked)
+    Math Class Level 5 (cleanly cracked)
+    Math Concepts I (cleanly cracked)
+    Math Football (cleanly cracked)
+    Math For Everyday Living (cleanly cracked)
+    Math Item Banks 1-13 (cleanly cracked)
+    Math Leap Frog (cleanly cracked)
+    Math Level 1 - I Can Add And Subtract (cleanly cracked)
+    Math Level 3 - I Can Multiply and Divide (cleanly cracked)
+    Math Level 4 - Advanced Addition and Subtraction (cleanly cracked)
+    Math Level 6 - Ratio, Proportion, and Percent (cleanly cracked)
+    Math Magic (cleanly cracked)
+    Math Man (cleanly cracked)
+    Math Marvels (cleanly cracked)
+    Math Masters (cleanly cracked)
+    Math Maze (cleanly cracked)
+    Math Rabbit (Version 1.1) (cleanly cracked)
+    Math Rabbit (cleanly cracked)
+    Math Sequences - Addition (1984 Version) (cleanly cracked)
+    Math Sequences - Addition (cleanly cracked)
+    Math Sequences - Decimals (cleanly cracked)
+    Math Sequences - Division (cleanly cracked)
+    Math Sequences - Equations (cleanly cracked)
+    Math Sequences - Fractions (cleanly cracked)
+    Math Sequences - Integers (cleanly cracked)
+    Math Sequences - Laws of Arithmetic (cleanly cracked)
+    Math Sequences - Management Utilities (cleanly cracked)
+    Math Sequences - Measurement Formulas (cleanly cracked)
+    Math Sequences - Multiplication (1980 Version) (cleanly cracked)
+    Math Sequences - Multiplication (cleanly cracked)
+    Math Sequences - Number Readiness (1980 Version) (cleanly cracked)
+    Math Sequences - Number Readiness (cleanly cracked)
+    Math Sequences - Percents (cleanly cracked)
+    Math Sequences - Pre- and Post Tests I (cleanly cracked)
+    Math Sequences - Pre- and Post-Tests II (cleanly cracked)
+    Math Sequences - Subtraction (cleanly cracked)
+    Math Sequences - Worksheet Generator (cleanly cracked)
+    Math Sequences - Worksheet Generator II (cleanly cracked)
+    Math Shop (1986-10-27 Version) (cleanly cracked)
+    Math Shop (cleanly cracked)
+    Math Tutor - Addition (cleanly cracked)
+    Math Tutor - Decimals (cleanly cracked)
+    Math Tutor - Division (cleanly cracked)
+    Math Tutor - Fractions Part I (cleanly cracked)
+    Math Tutor - Multiplication (cleanly cracked)
+    Math Tutor: Subtraction
+    Math Word Problems Grade 2 (cleanly cracked)
+    Math and Me (cleanly cracked)
+    Math and Your Personal Finances (cleanly cracked)
+    Math in a Nutshell (cleanly cracked)
+    Mathematics Activities Courseware Level 4 (cleanly cracked)
+    Mathematics Activities Courseware Level 6 (cleanly cracked)
+    Mathematics Problem Solving Software Level 1 (cleanly cracked)
+    Mathematics Problem Solving Software Level 2 (cleanly cracked)
+    Mathematics Problem Solving Software Level 3 (cleanly cracked)
+    Mathematics Skills Software Level 2 (cleanly cracked)
+    Mathematics Today (cleanly cracked)
+    Mathematics Word Problems Grade 3 (cleanly cracked)
+    Maths Invaders - Special Products and Algebraic Factors (cleanly cracked)
+    Max Command (cleanly cracked)
+    Max Dublin's Treasure (cleanly cracked)
+    Maxwell Manor (cleanly cracked)
+    Mech Brigade (Version 1.2) (cleanly cracked)
+    Medalist Series - States (cleanly cracked)
+    Meet The Presidents (cleanly cracked)
+    Megabots (cleanly cracked)
+    Memory Building Blocks (1989 Version) (cleanly cracked)
+    Memory Building Blocks (cleanly cracked)
+    Memory Castle (1983 Version) (cleanly cracked)
+    Memory Match (Version 01.24.86) (cleanly cracked)
+    Memory Minder (cleanly cracked)
+    Meteor Mission (cleanly cracked)
+    Meteor Multiplication (Revision 2) (cleanly cracked)
+    Meteor Multiplication (cleanly cracked)
+    Micro Addition (cleanly cracked)
+    Micro Division (cleanly cracked)
+    Micro Habitats (cleanly cracked)
+    Micro League Baseball (cleanly cracked)
+    Micro Multiplication (cleanly cracked)
+    Micro-LADS 1 Plurals and Noun-Verb Agreement (cleanly cracked)
+    Micro-LADS 2 Verb Forms (cleanly cracked)
+    Micro-LADS 3 Prepositions (cleanly cracked)
+    Micro-LADS 4 Pronouns (cleanly cracked)
+    Micro-LADS 5 Negatives (cleanly cracked)
+    Micro-LADS 6 Deictic Expressions, Passive, and WH-questions (cleanly cracked)
+    Micro-LADS 7 Prepositions II (cleanly cracked)
+    Microbe (Revision 3) (cleanly cracked)
+    Microbe (supports Mockingboard) (cleanly cracked)
+    Microscopic Journey (cleanly cracked)
+    Microzine 1 (cleanly cracked)
+    Microzine 11 (cleanly cracked)
+    Microzine 12 (cleanly cracked)
+    Microzine 13 (cleanly cracked)
+    Microzine 14 (cleanly cracked)
+    Microzine 15 (cleanly cracked)
+    Microzine 16 (cleanly cracked)
+    Microzine 17 (cleanly cracked)
+    Microzine 18 (cleanly cracked)
+    Microzine 19 (cleanly cracked)
+    Microzine 2 (cleanly cracked)
+    Microzine 20 (cleanly cracked)
+    Microzine 21 (cleanly cracked)
+    Microzine 22 (cleanly cracked)
+    Microzine 23 (cleanly cracked)
+    Microzine 24 (cleanly cracked)
+    Microzine 25 (cleanly cracked)
+    Microzine 26 (cleanly cracked)
+    Microzine 27 (cleanly cracked)
+    Microzine 3 (cleanly cracked)
+    Microzine 4 (cleanly cracked)
+    Microzine 5 (cleanly cracked)
+    Microzine 6 (cleanly cracked)
+    Microzine 7 (cleanly cracked)
+    Microzine 8 (cleanly cracked)
+    Microzine 9 (cleanly cracked)
+    Might and Magic: Book One - Secret of the Inner Sanctum
+    Mind Over Matter (cleanly cracked)
+    Moptown Parade (Version 1.2) (cleanly cracked)
+    Multiplication and Division (cleanly cracked)
+    Mystery Master: Murder by the Dozen (cleanly cracked)
+    Number Bowling: Decimals and Fractions (cleanly cracked)
+    Numeration 1 - Under The Big Top (cleanly cracked)
+    Odd One Out (26-AUG-1990 Version) (cleanly cracked)
+    Odd One Out (cleanly cracked)
+    Pitfall II: Lost Caverns (cleanly cracked)
+    Pitstop II (cleanly cracked)
+    Planetfall (Release 20 / 830708) (cleanly cracked)
+    Planetfall (Release 26 / 831014) (cleanly cracked)
+    Plasmania (cleanly cracked)
+    Professor Davensteev's Fantasy Land (Blue Level) (cleanly cracked)
+    Quations (cleanly cracked)
+    Rabbits, Robots, and a Monkey 1 (cleanly cracked)
+    Race Car 'Rithmetic (cleanly cracked)
+    Rad Warrior (cleanly cracked)
+    Richard J. Dixson's Essential Idioms (cleanly cracked)
+    Spanish Grammar Review: Por vs. Para (cleanly cracked)
+    The Flockland Island Crisis (cleanly cracked)
+
+apple2_flop_misc (apple2_flop_misc.xml):
+  Working
+    Anti-M (version 1.4)
+    Anti-M (version 1.5)
+    AppleWorks (Version 1.2, USA)
+    AppleWorks (Version 1.3, USA)
+    AppleWorks (Version 2.0, USA)
+
+apple2_flop_orig (apple2_flop_orig.xml):
+  Working
+    AIRSIM 1
+    Alcazar: The Forgotten Fortress
+    Championship Baseball
+    Laf Pak
+    Mr. Cool
+    OGRE
+    Pensate
+    Pentapus
+    Pipe Dream
+    Renegade
+    Rumpelstiltskin
+    Ski Crazed (Version 28701)
+    Starcross (Revision 17 / 821021)
+    Station 5
+    Sub Mission
+    The Caverns of Freitag
+    The Queen of Phobos
+    The Wizard of Oz
+    Theatre Europe
+    Thief
+    Ultima I: The Beginning
+
+bbc_rom (bbc_rom.xml):
+  Working
+    ATS+ 1.00
+    ATS+ 2.00
+    Acorn TFS 1.00
+    Acorn TFS 1.02
+    Acorn TFS 1.03
+    Advanced Disc Investigator 1.21 S/N:43318
+    BBC Teletext 2.38
+    BBC Teletext 2.50
+    BeebAid 1.05
+    BeebEd 1.04
+    CMS Link 2.00
+    DMON A1.03
+    General Utilities 3.22
+    HyperDriver 1.11
+    Instat C00144
+    Logotron LOGO (Cymru)
+    Microbrush Injector 1.00
+    Open LOGO
+    PMS Genie Junior 1.1u
+    Printer Server 0.9A
+    QFS 1.01
+    Romit 1.00
+    STL Clock & Desk 1.10
+    Sciways 2.03
+    StarBASE 2.11
+    Style 1.3
+    SupaStore 1.5
+    Super-Forth 1.5
+    Swift 2.2
+    TRXROM 2.00
+    Techno-Font
+    The Informant
+    ViewSheet 1.0
+    WYSIWYG Plus 1.22
+    Wapping Support 1.21
+    Wordwise Plus 2.04
+  Non-working
+    Barry-Box
+    BeebScan
+    CUBE BeebFlex
+    EURO-Beeb Terminal 1
+    EURO-Beeb Terminal 4.13
+    Eprom Programmer 1.03
+    Eprom Programmer 1.06
+    Eprom Programmer V2 2.01
+    Eprom Programmer V2 2.02
+    Eprom Programmer V2 2.03
+    FIT Test Station
+    Hobbit OS 1.8
+    PMS Genie 1.01
+    Prestel 1.0
+    Ramamp Video 2.40
+    Ramamp Video 2.50
+  Promoted
+    AMX Design
+
+cd32 (cd32.xml):
+  Working
+    Battle Chess
+  Non-working
+    Beneath a Steel Sky
+    Roadkill (Alt)
+
+cecflop (cecflop.xml):
+  Working
+    Apple DOS 3.3 System Master
+    Chénglóng
+    Chāojí Hànzì Wénzhāng Biānjí
+    Diànnǎo Suànmìng
+    Diànzǐ Xiànlù Jìsuànjī Fǔzhù Shèjì
+    Fú'ěrmósī
+    Fēifǔ Shéntóng
+    Gēn Wǒ Xué 6502 Huìbiān
+    Gǔpiào Zīxún Xìtǒng
+    Jìsuànjī Zīxún Fúwù
+    Ruǎnjiàn Mùlù Biānyìn Gōngjù V2.2
+    Shēngwùzhōng Qūxiàn Jí Xìnggé Zīxún
+    Tōngyòng Shùjùkù Guǎnlǐ Xìtǒng
+    Xiǎoxué Yǔwén
+    Yīnyuè Hēibǎn
+    Zhōnghuá Jī Dǎyìn Hé
+    Zhōnghuájī Xìtǒngpán CEC-DOS
+
+dragon_flex (dragon_flex.xml):
+  Working
+    DynaFast v1.5.0
+
+dragon_flop (dragon_flop.xml):
+  Removed
+    DynaFast v1.5.0
+  Working
+    Dunjunz
+
+fm7_cass (fm7_cass.xml):
+  Working
+    The Stars
+
+ibm5150 (ibm5150.xml):
+  Working
+    The ChessMachine (RISC engines)
+    The ChessMachine (v2.1, Gideon v1.7)
+    The ChessMachine (v2.1, Gideon v2.1)
+    The ChessMachine (v2.3, Gideon v2.1)
+    The ChessMachine (v3.1, The King v2.20)
+    The Final ChessCard (v1.5)
+    The Final ChessCard (v1.9)
+
+ibm5170 (ibm5170.xml):
+  Removed
+    The Final ChessCard
+  Working
+    America Online 3.0 for Windows
+    KLM's Screensaver
+    McAfee Software Emergency Boot Diskette
+    Mission (Traditional Chinese)
+  Non-working
+    WinBook XL Audio
+    WinBook XL Boot Disk
+
+jb3000_flop (jb3000_flop.xml):
+  Working
+    MS-DOS v1.25
+
+leapfrog_leappad_cart (leapfrog_leappad_cart.xml):
+  Renames
+    princesstry -> princess Disney Princess - Princess Stories (UK)
+  Non-working
+    Disney's Bounce, Tigger, Bounce (UK)
+    Leap 1 - Reading - Disney/Pixar Finding Nemo (UK)
+    Leap 2 - Reading - Disney/Pixar Monsters, Inc. (UK)
+    Leap Start - Pre Reading Storybook - Disney's The Lion King (UK)
+    Leap-Start - Pre Reading - Tutter's Tiny Trip (UK)
+    Phonics Programme - Lesson 3 - Short Vowels o and e - A Day at Moss Lake (UK)
+    The Amazing Spider-Man (UK)
+
+mt65_snap (mt65_snap.xml):
+  Working
+    Adventure 1: The Sceptre of Hamloth
+    Astro Fighter
+    Berzerk
+    Defender
+    Games Pack 1: Hangman
+    Games Pack 1: Lunar Lander
+    Games Pack 1: Othello
+    Hell's Bells
+    Moon Cresta
+    Moon Rescue
+    Slot Machine
+    Space Invasion
+    Space Rocks
+    The Gobbler
+
+mtx_cass (mtx_cass.xml):
+  Removed
+    Micro Canavas
+    Space Invasion (Alt)
+  Working
+    Comic Bakery (MSX Conversion)
+    Micro Canvas
+    Old Mac Farmer (MSX Conversion)
+    Power Pac (Sord M5 Conversion)
+    SASA (MSX Conversion)
+    Sloopy's Christmas
+    Spectron (Coleco Conversion)
+    Telebunny (MSX Conversion)
+  Non-working
+    Caves of Orb
+    Pac-Man (MSX Conversion)
+    Zombie Near
+  Promoted
+    3D Tachyon Fighter
+    3D Turbo
+    Agrovator
+    Alice in Wonderland
+    Arcazions
+    Astro-Pac
+    Astromilon
+    Backgammon
+    Blobbo
+    Contract Bridge II
+    Contract Bridge II (Alt)
+    Cosmic Raiders
+    Demonstration Tape
+    Goldmine
+    Hawk Wars
+    Kilopede
+    Knuckles
+    Knuckles (Alt)
+    Little Devils
+    MTX Chess
+    MTX Draughts
+    Mission Alphatron
+    Mission Alphatron (Alt)
+    Mission Omega
+    Nemo
+    Obloids
+    Phaid
+    Phaid (Alt)
+    Qogo
+    Quazzia
+    Space Invasion (Coleco Conversion)
+    Star Command
+    Super Minefield
+    Surface Scanner
+    Tapeworm
+    Target Zone
+    Toado
+    Vernon and the Vampires
+
+pc98 (pc98.xml):
+  Renames
+    darakuni -> angie Daraku no Kuni no Angie - Kyoukai no Mesu Dorei-tachi
+    dkuniomk -> angieomk Daraku no Kuni no Angie - Kyoukai no Mesu Dorei-tachi SP Disk - Ayashii Omake Disk
+    devilc -> 3dgolfdc New 3D Golf Simulation - Devil's Course
+  Removed
+    Debut (PC-9821 CD ver.)
+    Derby Stallion Expert Kit
+    Dragon Slayer - The Legend of Heroes - Eiyuu Densetsu (Alt Format)
+    Dragon Slayer - The Legend of Heroes IV - Eiyuu Densetsu IV - Akai Shizuku
+    Dungeon Master (Alt Format)
+    Dungeon Master II - Skullkeep (Alt Save Disk)
+  Working
+    Bishoujo Daizukan
+    D.O. Doki Doki Disk Vol. 08
+    DR² Night Janki
+    Daijuutai
+    Dark Seraphim
+    Datenshi Kyouko Part I
+    Dead Force
+    Delicious Lunch Pack
+    Dennou Garou
+    Desire - Haitoku no Rasen
+    Diadrum
+    Dires - Giger Loop
+    DiskX II
+    Diver's
+    Doki Doki Pretty League Dai-1-wa - Pink Angels Kiki Ippatsu no Maki
+    Doki Doki Pretty League Dai-2-wa - Mou Hitotsu no Rival
+    Doki Doki Pretty League Dai-3-wa - Minami no Umi no Kai no Maki
+    Doki Doki Pretty League Dai-4-wa - Nanase no Himitsu no Maki
+    Doki Doki Pretty League Dai-5-wa - Saraba Pink Angels-tachi
+    Doom II
+    Doop
+    Dora Dora Emotion - Seihaiden
+    Dragon Master Silk - Ryuu Shoukan Musume - Episode II
+    Dragon Master Silk - Ryuu Shoukan Musume - Episode II (Alt Disk 1)
+    Dream Theater
+    Dream Theater (Alt)
+    Dual Soul
+    Duel - Kawanakajima Scenario
+    Duel Succession
+    Dungeon Hack (newer, 16/256 colors)
+    Dungeon Hack (older, 256 colors, requires DOS 5.0)
+    New 3D Golf Simulation Ver. 2.0
+    Paracelsus no Maken
+    The Legend of Heroes IV - Eiyuu Densetsu IV - Akai Shizuku
+    Z's Triphony - Digital Craft
+  Non-working
+    Dam Busters
+    Dangerous Toys
+    Desert Dragoon - Sabaku no Ryuukihei
+    Director Monogatari
+  Promoted
+    Cybernetic Hi-School / Dennou Gakuen III - Top wo Nerae!
+    D.P.S. - Dream Program System (Alt)
+    D.P.S. SG 2 - Dream Program System SG Set 2
+    DNA
+    DOR
+    DOR Part 2
+    DOR Part 3
+    Daikairei - Dainippon Teikoku Kaigun no Kiseki
+    Dalk
+    Daraku no Kuni no Angie - Kyoukai no Mesu Dorei-tachi
+    Deja Vu~2994.
+    Dengeki Nurse
+    Denza
+    Devil Chain 98
+    Diamond Players
+    Disc Station 98 #03
+    Disc Station 98 #11 (Alt Format)
+    Doki Doki Vacation - Kirameku Kisetsu no Naka de
+    Dori Dor Qizu 7 (Bad Sectors)
+    Dori Dor Qizu 8
+    Doujin Soft Shuusaku Game Collection Vol. 1 (5.25" Disks)
+    Dragon Knight 4
+    Dragon Princess - Ryuu no Densetsu
+    Dungeon Buster
+    Yume Utsutsu - Dreamy
+
+pc98_cd (pc98_cd.xml):
+  Working
+    Dragon Lore
+  Promoted
+    Duel Succession Plus Kit
+
+pce_tourvision (pce_tourvision.xml):
+  Working
+    Paranoia (TourVision PCE bootleg)
+    Racing Damashii (TourVision PCE bootleg)
+
+spectrum_cass (spectrum_cass.xml):
+  Renames
+    dizzyb -> dizzyc Dizzy - The Ultimate Cartoon Adventure (set 3, hacked?)
+  Working
+    3D Starfighter
+    750cc Grand Prix
+    A-Maze
+    ATV Simulator
+    Advanced Pinball Simulator
+    Advanced Pinball Simulator (EDOS)
+    Alpha-Beth
+    Alpha-Beth (demo)
+    Amaze (Bytesize)
+    Aqua Plane
+    Aquaplane (ZX Data)
+    Arcade Flight Simulator
+    Army Moves (English, set 2, Summit)
+    Army Moves (Spanish, set 1, Alternate Cover / Medium Case)
+    Army Moves (Spanish, set 2, Small Black Case)
+    Army Moves (Spanish, set 3, Small Orange Case)
+    Army Moves (set 1, Imagine)
+    Astro Blaster (English)
+    Astro Blaster (Spanish, Investronica)
+    Astro Blaster (Spanish, Microbyte)
+    BMX Freestyle
+    BMX Freestyle (EDOS)
+    BMX Simulator
+    BMX Simulator 2 - Dirt Biking
+    BMX Simulator 2 - Quarry Racing
+    Ballbreaker
+    Ballbreaker (DRO Soft, set 1)
+    Ballbreaker (DRO Soft, set 2)
+    Ballbreaker II
+    Battle Field
+    Battlecars (set 1)
+    Battlecars (set 2, Summit)
+    Battlecars (set 3)
+    Battlefield Germany
+    Bigfoot
+    Bigfoot (EDOS)
+    Bignose's American Adventure
+    Bignose's American Adventure (EDOS)
+    Biology 'O' Level
+    Biology 'O' Level (Paxman)
+    Biology - O'Level & CSE
+    Black Beard
+    Black Beard (Kixx)
+    Blade Warrior
+    Blade Warrior (EDOS)
+    Bombscare (Dollarsoft)
+    Bombscare (Jeffery Bond)
+    Brainache
+    Bubble Dizzy
+    CJ In The USA
+    CJ_s Elephant Antics
+    Captain Drexx
+    Captain Dynamo
+    Castle Master
+    Castle Master (The Hit Squad)
+    Castlemaze Adventure (set 1)
+    Castlemaze Adventure (set 2)
+    Championship Jet Ski Simulator - Easy
+    Championship Jet Ski Simulator - Hard
+    Chess Master - Computer Tape - Side A
+    Cobra's Arc (small case)
+    Cobra_s Arc (medium case)
+    Con-Quest
+    Conquest
+    Conquestador
+    Conquestador (Erbe)
+    D-Day (set 1)
+    D-Day (set 2)
+    D-Day (set 3, EDOS)
+    D-Day (set 4, Summit)
+    DJ Puff's Volcanic Erruption
+    De-Fusion
+    De-Fusion & Worms
+    Death Stalker
+    Dizzy - The Ultimate Cartoon Adventure (set 3)
+    Dizzy Down The Rapids (set 2)
+    Dizzy II - Treasure Island Dizzy (EDOS)
+    Dizzy IV - Magicland Dizzy (set 2)
+    Dizzy V - Spellbound Dizzy (set 2)
+    Dizzy VI - Prince Of The Yolkfolk (set 2)
+    Dizzy VII - Crystal Kingdom Dizzy (set 5)
+    Dizzy VII - Crystal Kingdom Dizzy (set 6, v1.1)
+    Dizzy VII - Crystal Kingdom Dizzy (set 7, v1.5)
+    Dr Doom_s Revenge! (The Amazing Spider-Man and Captain America in) (Proein) (Spanish)
+    Dr. Doom_s Revenge! (The Amazing Spider-Man and Captain America in)
+    Dragon Slayer (Martin Freemantle, 128k)
+    Dragon Slayer (Martin Freemantle, 48k, double sided)
+    Dragon Slayer (Martin Freemantle, 48k, single sided)
+    Dragon Slayer (Steven Pilgrim, set 1, Pocket Money Software)
+    Dragon Slayer (Steven Pilgrim, set 2)
+    F-16 Combat Pilot (set 2)
+    F-16 Combat Pilot (set 3, Action Sixteen, double sided)
+    F16 - Combat Pilot (set 1, System 4)
+    First Division Manager
+    Frankenstein Jnr
+    Fruit Machine Simulator
+    Fruit Machine Simulator 2
+    Game Over (Imagine) - Side 1
+    Game Over (Spanish, Black Small Cassette / Black Case)
+    Game Over (Spanish, Small Orange Case)
+    Game Over (Summit)
+    Gauntlet
+    Gauntlet (Kixx)
+    Gauntlet (Small Case, Erbe)
+    Ghost Hunt
+    Ghost Hunt (Kryptronic)
+    Ghost Hunters
+    Golden Axe
+    Golden Axe (Tronix)
+    Golden Axe - Side 1 (Erbe / MCM)
+    Grand Prix II
+    Grand Prix Simulator
+    Grell And Falla
+    Guardian Angel
+    Gulpman (Aackosoft)
+    Gulpman (Campbell Systems)
+    Gulpman (Micromega)
+    Gulpman (Profisoft)
+    Gun Boat (Alternative)
+    Gun Boat (System 4)
+    Gun Law (Aackosoft)
+    Gunboat (Dro Soft)
+    Hyper Sports (set 1)
+    Hyper Sports (set 2, The Hit Squad)
+    Hyper Sports (set 3)
+    Hyper Sports (set 4, Erbe)
+    International Rugby Simulator (Erbe)
+    International Rugby Simulator (set 1)
+    International Rugby Simulator (set 2)
+    Italian Supercar
+    Jet Bike Simulator
+    Jet Set Willy
+    Jet Set Willy (Pre Production)
+    Jet Set Willy (Spain, Ventamatic)
+    Jet Set Willy (bugfix, 2015)
+    Jet Set Willy (bugfix, PCG)
+    Jet Set Willy (cracked, set 1)
+    Jet Set Willy (cracked, set 2)
+    Jet Set Willy (cracked, set 3)
+    Jet Set Willy (cracked, set 4, OAV)
+    Jet Set Willy (cracked, set 5)
+    Jet Set Willy 2
+    Jet Set Willy 2 (128k version)
+    Jet Set Willy 2 (Ricochet)
+    KGB Super Spy
+    KGB Super Spy (Erbe)
+    Kamikaze (A & F Software)
+    Kamikaze (Codemasters)
+    Kamikaze (Eyrolles)
+    Kamikaze (JK Greye)
+    Kamikaze Collector
+    Kick Boxing (Firebird, set 1)
+    Kick Boxing (Firebird, set 2)
+    Kick Boxing (Firebird, set 3)
+    Life-Line
+    Lifeline
+    Little Puff In Dragon Land
+    Mad Balls (Erbe)
+    Madballs
+    Miami Chase
+    Micro Drivin'
+    Microprose Soccer (Erbe)
+    Microprose Soccer (Kixx)
+    Microprose Soccer (Release 1)
+    Microprose Soccer (Release 2 - 128k)
+    Microprose Soccer (Release 2 - 48k)
+    Mig-29 Soviet Fighter
+    Mig-29 Soviet Fighter (Erbe)
+    Mission Jupiter
+    Monte Carlo Casino
+    Moon Buggy (Visions Software)
+    Moonbuggy (Anirog)
+    Moto Cross Simulator
+    Mountain Bike Simulator
+    Murray Mouse Super Cop
+    Ninja Massacre
+    Nonamed (English)
+    Nonamed (Spanish, Medium Case)
+    Nonamed (Spanish, Small Orange Case)
+    North & South
+    North & South (Erbe)
+    North Star
+    North Star (Byte-Back)
+    North Star (Erbe)
+    Olli & Lissa 3 - The Candlelight Adventure
+    Operation Gunship
+    Operation Gunship (EDOS)
+    Operation Gunship (Erbe)
+    Panic Dizzy (set 3)
+    Paris To Dakar
+    Phantomas (English, Codemasters re-release)
+    Phantomas (Spanish)
+    Phantomas (Spanish, Small Orange Case)
+    Phantomas 2 (Spanish, Medium Case)
+    Phantomas 2 (Spanish, Small Black Case)
+    Phantomas 2 (Spanish, Small Orange Case)
+    Phantomas Tales #1 - Marsport
+    Pheenix (set 1, Alternative Software)
+    Pheenix (set 2)
+    Pheenix (set 3)
+    Pheenix (set 4)
+    Prehistoric Adventure
+    Prince Clumsy
+    Prince Clumsy (EDOS)
+    Pro Boxing Simulator
+    Pro Golf Simulator
+    Pro Power Boat Simulator
+    Pro Skateboard Simulator - Extended Mix
+    Pro Ski Simulator
+    Pro Snooker Simulator
+    Pro Tennis Simulator
+    Professional BMX Simulator
+    Professional Footballer (Code Masters Plus)
+    Pub Trivia
+    Race Against Time
+    Rally Cross
+    Rally Cross (System 4 - Serie Leyenda)
+    Rally Cross (Top Shots)
+    Rally Cross Simulator
+    Rally Simulator
+    Rally Simulator (EDOS)
+    Rock Star Ate My Hamster
+    Rock'n Roller
+    SAS Combat Simulator
+    Sergeant Seymour Robotcop
+    Seymour Goes To Hollywood
+    Short's Fuse
+    Sky High Stuntman
+    Slightly Magic
+    Snare (set 2)
+    Soccer Pinball
+    Spike In Transylvania
+    Star Firebirds
+    Star Runner
+    Steg The Slug
+    Street Gang Football
+    Stryker - In The Crypts Of Trogan
+    Stuntman Seymour
+    Super Bike Trans-Am
+    Super Dragon Slayer
+    Super G-Man
+    Super Hero
+    Super Robin Hood
+    Super Seymour Saves The Planet
+    Super Stunt Man
+    Super Tank Simulator
+    Supertrux
+    Supertrux {Portuguese}
+    Tarzan Goes Ape
+    Terra Cognita
+    The Amazing Adevntures of Robin Hood
+    The Bounty Hunter (Codemasters)
+    The Chessmaster 2000 (Dro Soft)
+    The Haunting
+    The Haunting (Northern Underground)
+    The Hit Squad
+    The Hit Squad (EDOS)
+    The Hit Squad (Erbe)
+    The Hunt For Red October - Based On The Book
+    The Hunt For Red October - Based On The Book (Unique)
+    The Hunt For Red October - Based On The Book (Zafiro)
+    The Hunt For Red October - Based On The Movie
+    The Open - Carnoustie (set 1)
+    The Open - Carnoustie (set 2)
+    The Trap Door (Polish, Krajowe Wydawnictwo Czasopism, set 1)
+    The Trap Door (Polish, Krajowe Wydawnictwo Czasopism, set 2)
+    The Trap Door (set 1, Alternative)
+    The Trap Door (set 2, EDOS)
+    The Trap Door (set 3)
+    The Trapdoor (set 4, System 4)
+    The Trapdoor (set 5, Zafiro)
+    The Trapdoor (set 6)
+    Tilt
+    Titanic (Yes Software)
+    Tornado ECR
+    Transformers
+    Transmuter
+    Turbo The Tortoise (set 1, Hi-Tec)
+    Twin Turbo V8
+    Twin Turbo V8 (EDOS)
+    Vampire
+    Wacky Darts
+    White Heat
+    Wild West Seymour
+    Wizard Willy
+    Wonder Boy (The Hit Squad)
+    Wrestling Superstars
+  Non-working
+    Army Moves (Spanish, set 1)
+    Astroblasters
+    CD Loader Software
+    F-16 - Fighting Falcon (EDOS)
+    Rock Star Ate My Hamster (EDOS)
+    Seymour - Take 1 (Minigame / Demo)
+    Supertrux (Encore)
+    Turbo The Tortoise (set 2, Codemasters)
+    Wonder Boy (set 1)
+    Wonder Boy (set 2)
+
+vgmplay (vgmplay.xml):
+  Renames
+    vigilante_tg16 -> vigilant_tg16 Vigilante (TG-16)
+  Working
+    Animorphs (Nintendo Game Boy Color)
+    Babel no Tou (Sharp X68000)
+    Big Karnak (Arcade)
+    Bionic Commando (ZX Spectrum 128)
+    Chopper I (SNK Triple Z80)
+    Cobra-Command (Arcade)
+    Die Hard (PC Engine)
+    Fighting Run (PC Engine)
+    Garfield no Isshuukan - A Week of Garfield (Family Computer)
+    Grobda (NEC PC-8801)
+    Herzog (Sharp X1 Turbo, OPM)
+    Herzog (Sharp X1 Turbo, PSG)
+    Kart Fighter (Dendy)
+    LEGO Stunt Rally (Nintendo Game Boy Color)
+    Last Mission (Arcade)
+    Looney Tunes Collector - Alert! (Nintendo Game Boy Color)
+    M&M's Minis Madness (Nintendo Game Boy Color)
+    Pictionary - The Game of Video Quick Draw (NES)
+    Plus Alpha (Mega System 1)
+    Pro Yakyuu Family Stadium - Home Run Contest (MSX2, OPLL)
+    Pro Yakyuu Family Stadium - Home Run Contest (MSX2, PSG)
+    Project S-11 (Nintendo Game Boy Color)
+    SimCity (NES)
+    Sky Shark (NES)
+    Soccer Brawl (SNK Neo Geo)
+    Space Harrier (Fujitsu FM77AV)
+    Space Harrier (NEC PC-8801)
+    Stadium Hero (Arcade)
+    Stuart Little - The Journey Home (Nintendo Game Boy Color)
+    Super Boy 3 (MSX)
+    Super Contra 7 (Dendy)
+    Super Mario Land 2 - 6 Golden Coins (Nintendo Game Boy)
+    Terra Cresta II - Mandler no Gyakushuu (PC Engine)
+    The Adventures of Tom Sawyer (NES)
+    Toy Pop (Sharp X1 Turbo)
+    WEC Le Mans 24 (Arcade)
+
+z88_cart (z88_cart.xml):
+  Working
+    Code Count
+    EP-Copy
+    Event Control System
+    PC-Link II
+    Stop Watch
+    Toll Tracker v2.0 (Demo)
+    Z88 Data Organiser
+
+Comparing 0.210 (mame0210) to 0.210 (mame0210-657-gd3af11c)
+
+Renames
+ip225015 -> indy_5015 Indy (R5000, 150MHz)
+ip224613 -> indy_4613 Indy (R4600, 133MHz)
+saltcrdi -> sltpcycl Pro Cycle Tele Cardioline (Salter Fitness Bike V.1.0, Checksum 02AB)
+ip244415 -> indigo2_4415 Indigo2 (R4400, 150MHz)
+
+New working machines
+--------------------
+China Education Computer 2000
+China Education Computer E
+China Education Computer G
+China Education Computer M
+Game & Watch: Ball
+Game & Watch: Donkey Kong Jr. (panorama screen)
+Gemcrush (Japan)
+Indy (R4600, 100MHz)
+Pro Stepper Tele Cardioline (Salter Fitness Stepper V.1.0, Checksum F208)
+VRT VT SDK 'Pink Jelly' (VT03 Demo)
+VRT VT SDK 'VT03 Sound Test' (Sound Generator FMDemo)
+
+New working clones
+------------------
+Corvette (PX3 Prototype)
+Huanle Liuhe Yi (Happy 6-in-1) (M68K ver. V100HK, ARM ver. V100HK)
+Photo Y2K / Chaoji Bi Yi Bi / Dajia Lai Zhao Cha / Real and Fake (ver. 103, Japanese Board)
+Puzz Loop 2 (Japan 010226 Phoenix Edition) (bootleg)
+QVT-102A
+Red Clash (Tehkan, set 1)
+Red Clash (Tehkan, set 2)
+Super Invasion (Electromar, Spanish)
+Thunder & Lightning (bootleg with Tetris sound, set 2)
+
+Machines promoted to working
+----------------------------
+Bikkuri Pro Wrestling (Japan 881221, Ver 1.05)
+Game & Watch: Chef
+Pro Cycle Tele Cardioline (Salter Fitness Bike V.1.0, Checksum 02AB)
+RC2030
+RS2030
+Superboard II Model 600 (Rev. B)
+
+Clones promoted to working
+--------------------------
+Challenger 1P Series 2
+Indy (R4600, 133MHz)
+RyuKyu (Japan) (FD1094 317-5023)
+UK101
+
+New machines marked as NOT_WORKING
+----------------------------------
+ChessSystem R30
+DPB-7000
+Electronic Digital Thermostat
+Fuusen Pentai
+Goldart (Spain)
+KTM-3
+Korokoro Pensuke
+Magic Bomb
+Master
+Mindset Video Production System
+Olympic Darts (K7)
+Queen Bee Bingo
+Rhythm Nation (v01.00.04)
+Super Train (Ver. 1.9)
+System 100
+Taiko no Tatsujin 6 (Japan, TK61 Ver.A)
+Telex 1192
+Telex 277-D Display Terminal (Model 2)
+Treasure Bonus (American Alpha, Ver. 1.6)
+Treasure City (Ver. 208)
+Treasure Mary
+VRT VT SDK 'Boxing' (Demo for VT03 Pic32)
+VRT VT SDK 'Pinball' (C-Compiler Demo Program 2)
+
+New clones marked as NOT_WORKING
+--------------------------------
+Big Karnak (Modular System)
+Captain Zodiac (Japan)
+Champion Poker (v101)
+Champion Poker (v201F)
+Champion Poker (v210KS)
+Champion Poker (v300US)
+Cyber Troopers Virtual-On Relay (Japan)
+Epson CM6032
+Epson CM6127
+Gals Panic (Modular System bootleg)
+Goldart (Portugal)
+Mushiking The King Of Beetle (2K3 2ND Ver. 1.002-, World)
+Toki (Modular System)
+Treasure City (Ver. 202)
+
