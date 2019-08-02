@@ -5,7 +5,7 @@
 MAMETesters Bugs Fixed
 ----------------------
 - 00349: [Graphics] (shaolins.cpp) kicker: Graphical artefacts after going through service mode tests. (Angelo Salese)
-- 02060: [Graphics] (aerofgt.cpp) spinlbrk, spinlbrku, spinlbrkj: Incorrect graphics priorities. (Ivan Vangelista)
+- 02060: [Graphics] (aerofgt.cpp) spinlbrk, spinlbrku, spinlbrkj: Incorrect graphics priorities. (Mamesick)
 - 04159: [DIP/Input] (segas24.cpp) sgmast, sgmastc, sgmastj: Swing power input doesn't work correctly. (Angelo Salese)
 - 05516: [Misc.] Systems using TZX cassette format: [debug] Allocated memory is not freed correctly. (AmatCoder)
 - 06231: [Interface] (poly88.cpp) poly88: Cassette is not working. (Robbbert)
@@ -3020,8 +3020,8 @@ Software list items promoted to working
 ---------------------------------------
 fmtowns_cd: The Legend of Kyrandia [redump.org, r09]
 spectrum_cass:
-  Batman (set 8, The Hit Squad), Seymour - Take 1 (Minigame / Demo), Turbo The Tortoise (set 2, Codemasters), Wonder Boy (set 1)
-  Wonder Boy (set 2) [David Haywood]
+  Batman (set 8, The Hit Squad), Seymour - Take 1 (Minigame / Demo), Turbo The Tortoise (set 2, Codemasters), Wonder Boy (set 1),
+  Wonder Boy (set 2) [AmatCoder, David Haywood]
 
 
 New NOT_WORKING software list additions
@@ -3057,6 +3057,12 @@ Turkish [Kadir Ekşi]
 
 Source Changes
 --------------
+-mc68hc11: Implemented more of the instructions, and cleaned up code. [68bit]
+
+-tilemap: Added note about misleading variable names. [68bit]
+
+-mc6846.cpp: Fixed timer modes. [68bit]
+
 -m68040: Stop CINV DATA instruction from causing F-line exception. [AJR]
 
 -wy100.cpp: Added keyboard, preliminary character display, and serial ports. [AJR]
@@ -3115,7 +3121,7 @@ Source Changes
 -pgm.cpp: Added notes, improved metadata, and cleaned up code. [cam900]
 
 -dooyong.cpp updates: [cam900]
- * Added tilemap attribute callback, implemented tilemap ROM limits, and added support for masked tilemap priority
+ * Added tilemap attribute callback, implemented tilemap ROM limits, and added support for masked tilemap priority.
  * Updated notes and metadata.
 
 -nmk16.cpp updates: [cam900]
@@ -3148,11 +3154,21 @@ Source Changes
 
 -1943.cpp: Replaced microcontroller simulation with emulation. [Dirk Best, Brian Troha, TeamEurope, The Dumping Union]
 
+-nes, sms: Fixed light gun regressions. [Enik Land]
+
+-315_5124: Adjusted horizontal screen positions based on new research. [Enik Land, Charles MacDonald]
+
+-k573dio: Fixed played sample count reporting. [Eric Vidal]
+
+-Added an ultra-low-latency mode for PortAudio sound output module. [Eric Vidal]
+
 -luaengine.cpp: Added accessors for snapshot target size, screen refresh interval, and snapshot bitmap. [feos]
 
 -Disable UI startup screens when using the dummy video output module. [feos]
 
 -MIDI: Fixed reception of several System Common messages. [Golden Child, R. Belmont]
+
+-Added a sensorboard device mainly meant for chesspiece simulation, and updated all chess drivers to use it. [hap, Sandro Ronco]
 
 -ti99: Added support for for RAM-only standard cartridges (Myarc Exbasic II), and fixed RS-232 card DIP switches. [Michael Zapf]
 
@@ -3208,7 +3224,7 @@ Source Changes
 
 -pockstat: Modernized logging and machine configuration, and cleaned up code. [Ryan Holtz]
 
--Removed 'MACHINE_CONFIG_START/MACHINE_CONFIG_END and almost all remaining MCFG macros. [Ryan Holtz]
+-Removed MACHINE_CONFIG_START/MACHINE_CONFIG_END and almost all remaining MCFG macros. [Ryan Holtz]
 
 -midtunit: Added debugger commands for logging DMA drawing bitmaps in PNG format and metadata in JSON format. [Ryan Holtz]
 
@@ -3224,17 +3240,29 @@ Source Changes
 
 -scc68070: Moved Quizard microcontroller simulation to cdi.cpp, and modernized logging. [Ryan Holtz]
 
+-tascr30: Added display, inputs and SmartBoard. [Sandro Ronco]
+
 -agat.cpp: Added basic Agat-9 emulation, including video, Apple-compatible mode, and low-level floppy drive emulation. [shattered]
 
 -De-unrolled pixel-drawing loops in various devices and drivers. [shattered]
 
 -Made layout format more flexible and deprecated artwork “layer” concept. [Vas Crabb]
 
+-nemesis.cpp: Improved Bubble System interrupt sources and timings, and expanded notes. [ArcadeHacker, Lord Nightmare]
+
 -toki_ms.cpp: Dumped missing PROM for tokims. [ArcadeHacker, Recreativas.org, ClawGrip]
+
+-naomi.cpp: Dumped "Sammy Atomiswave MPSYSTEM" four-cabinet splitter device. [Brian Hargrove]
 
 -mpu5.hxx: Added PIC microcontroller dump to m5gstriks (not properly hooked up). [Caps0ff, jordigahan, ClawGrip]
 
 -rbisland.cpp: Dumped the Rainbow Islands - Extra Version C-chip data EPROM. [Caps0ff, Kevin Eshbach]
+
+-Added dump and skeleton device for Philips CDD2000 CD-R. [Cyberia/2 Filebase]
+
+-spectrum_cass.xml: Documented some hacks that are actually engine re-implementations. [David Haywood]
+
+-sorcerer_cart.xml: Added developer for ssbasic. [exidyboy]
 
 -cd32.xml: Added additional information. [FakeShemp]
 
@@ -3242,7 +3270,17 @@ Source Changes
 
 -cps1.cpp: Re-dumped sf2rk. [hammy, Clawgrip]
 
+-cps1.cpp: Dumped full ROM set for sf2m6. [hammy, The Dumping Union]
+
+-zr107, gticlub, nwk-tr, hornet: Changed default DIP switch settings and changed input descriptions. [Hydreigon]
+
+-Added dump and skeleton device for Caravalle CD-R N820s. [I-Shou University File Server]
+
+-spectrum_cass.xml: Added proper metadata for MicroHobby stuff. [ICEknight]
+
 -bfm_ad5.cpp, bfm_sc5.cpp: Dumped PLDs from the Bellfruit Scorpion Five main PCB and ISS Adder 5 Video Card. [jordigahan, ClawGrip]
+
+-model2.cpp: Dumped correct sound ROMs for Sega Rally DX sets. [Mattia Negri]
 
 -system1.cpp: Re-dumped Choplifter microcontroller, allowing ROM patches to be removed. [Porchy]
 
@@ -3250,11 +3288,11 @@ Source Changes
 
 -wyvernf0.cpp: Dumped and hooked up 68705 microcontroller. [Sean Riddle, jordigahan, ClawGrip, David Haywood]
 
+-cps1.cpp: Dumped CDT 21 ROM for dinoa. [SHVB]
+
 -socrates.cpp: Verified that French system and cartridge ROMs match existing dumps. [TeamEurope]
 
 -konmedal.cpp: Dumped color PROMs for Fuusen Pentai. [TeamEurope, SpinalFeyd]
-
--Added a sensorboard device mainly meant for chesspiece simulation, updated all chess drivers to use it. [hap, Sandro Ronco]
 
 
 
@@ -3274,8 +3312,6 @@ Source Changes
  * Converted a few more options().zyx_color() to colors().zyx_color()
  * A few more misses from earlier
 
--tascr30: add display, inputs and SmartBoard. [Sandro Ronco]
-
 -Refactored UI font metrics (#5291) [npwoods]
  * Changed the various usages of UI_*COLOR to be calls to src/frontend/mame/ui/moptions.h
  * The various UI_*COLOR macros were implemented as calls to decode_ui_color, which cached the values for the various options in a
@@ -3290,64 +3326,13 @@ Source Changes
     implementation of ui_manager
  * Remove stray debugging cruft that found a way into the other PR
 
--zr107, gticlub, nwk-tr, hornet: Greatly improve inputs (among other things) (#5296) [Hydreigon]
- * Greatly improve inputs
- * Add an extra line at the end.
- * gticlub restore "PORT_PLAYER()"
- * hornet.cpp restore "PORT_PLAYER()"
-
--aerofgt.cpp: fixed recent regression [Mamesick]
-
--nes, sms: Fix light gun regression [Enik Land]
-
--sensorboard: changed my mind, put default delay back to 75ms [hap]
-
--cps1.cpp: corrected ROMs for sf2m6, which was incorrectly using standard ROMs but for 2 of the program ROMs.
- [Hammy, The Dumping Union]
-
 -Fixing MC6847 to be responsive to live changes of artifacting config [npwoods]
-
--naomi.cpp: dumped "Sammy Atomiswave MPSYSTEM" device [Brian Hargrove]
-
--model2.cpp: dumped correct sound ROMs for Sega Rally DX sets [Mattia Negri]
-
--cps1.cpp: Provided correct dump of CDT 21 ROM for the Cadillacs and Dinosaurs (Asia TW 930223) set. [SHVB]
-
--nes,sms: Change the way screen is set for light gun [Enik Land]
-
--playch10: Fix order and updates for both screens [Enik Land]
-
--more speccy sorting [see previous credits] (#5329) [David Haywood]
-
--k573dio: timing fixes [Eric Vidal]
- * k573dio now correctly reports the actual number of samples already played (instead of rounding up by one discrete mpeg frame in
-    advance and disregarding samples that have been copied to the stream but not yet actually played).
-
--Suggestion for very-low-latency mode on portaudio [Eric Vidal]
- * Needed to keep audio in sync when playing rhythm game machines such as konami system 573. This is because the lowest
-    audio_latency currently supported (audio_latency 1) introduces at least 10 ms of variable latency. I am unsure how to go about
-    this without breaking backward compatibility so I set it to work only when audio_latency is 0 (which was previously ignored by
-    mame itself and was treated equivalent to audio_latency 1). I am aware that setting audio_latency to 0 is not supported by many
-    mame frontends, but this change seems natural. Otherwise, would it be better to add a new mame.ini option, or to automatically
-    enable this low-latency mode when pa_latency is set lower than, say, 0.01 (10ms), which would break people's configurations if
-    they already rely on the old behavior?
-
--spectrum list updates [see previous credits] (#5335) [David Haywood]
- * document some hacks that are actually engine reimplementations
-
--Fix 72-scanline timer for bubble system hardware, which fixes the logo draw speed, respawn time, and other issues in the Bubble
- System version of Gradius. Fix the sound z80 speed, which was too fast on the pre-Salamander hardware, and fixed the sound cpu
- timer to run at the correct rate based on the Nemesis schematics. Add lots of hardware notes and TODOs based on tracing and pcb
- pictures. [ArcadeHacker, Lord Nightmare]
 
 -Making video_manager::effective_frameskip() public and exposing via LUA [npwoods]
 
 -Exposing sound_manager to LUA [npwoods]
 
 -Moving paste() from mame_ui_manager class to natural_keyboard class, exposing to LUA [npwoods]
-
--fix build (reverting prev fix) [MetalliC]
- * This reverts commit 97e6950208991629f309c66b8b6bc274ce3a69c4.
 
 -hiscore.dat: updates [Leezer]
 
@@ -3377,63 +3362,13 @@ Source Changes
 
 -Changed winwindow_has_focus() to return bool [npwoods]
 
--Spectrum list cleanup / reorgnaize [see previous credits] (#5347) [David Haywood]
- * proper metadata for MicroHobby stuff [ICEknigh7]
-
 -Refactored MAME's plugin system [npwoods]
-
--Add dump and skeleton device for Philips CDD2000 CD-R [Cyberia/2 Filebase]
- * Add dump and skeleton device for Caravalle CD-R N820s [I-Shou University File Server]
 
 -Added support for profiling LUA [npwoods]
 
--Name the author of SSBASIC ROMPac cartridge [Michael Borthwick]
-
--mc68hc11 - implement more of the instructions. [68bit]
- * Limited testing of these additions on 6800 code. The fdiv instruction appears the only one remaining now.
- * Cleaned up some of the existing definitions to make the patterns more consistent, and to make it easier to spot inconsistencies
-    and errors.
-
--tilemap - fix calculation of visible area height and width. [68bit]
-
--mc6846 - fix the timer modes. [68bit]
- * The bit definitions for the timer modes were backwards.
-
 -LUA boot.lua file now handles multiple paths (delimited by semicolons) on -pluginspath [npwoods]
 
--315_5124: Adjust horizontal screen positions [Enik Land]
-
--tilemap: revert changes to the tile scroll computations. (#5400) [68bit]
- * The original look good. A comment has been added to the source to clarify the meaning of the 'width' and 'height' variables.
-
--tilemap: revert changes to the tile scroll computations. This reverts https://github.com/mamedev/mame/pull/5393 The original looks
- good, sorry. A comment has been added to the source to clarify the meaning of the 'width' and 'height' variables, which might be
- better understood to the `2 * left + width + 1` and `2 * top + height + 1`. These were only used as inputs to the
- `effective_*scroll()` functions and their use can be followed there. [68bit]
-
--315_5124: Adjust horizontal screen positions When Charles MacDonald documented the horizontal display timing of the 315-5124 chip
- (SMS VDP) in his msvdp-20021112.txt document, he calculated the HCount values based on the active display start value, that he
- assumed to be 0x00. For example, the horizontal sync starts 279 pixels after the active screen start position, then its HCount
- value was documented as 0x8B. There's some documentation in MAME's 315_5124.cpp file that follows the same assumption. More
- recently, when he did some tests on a Japanese SMS (http://www.smspower.org/forums/viewtopic.php?p=92925), he discovered that
- horizontal sync starts at HCount 0xE9 instead 0x8B. This pull request changes the 315_5124.cpp documentation of the horizontal
- timings to new HCount values based on the discovered horizontal sync start value and make adjustments for the drawing times and
- light gun offsets to reflect these changes. [enikland2]
-
 -LUA boot.lua file now handles multiple paths (delimited by semicolons) on -pluginspath [npwoods]
-
--mc6846 - fix the timer modes. The bit definitions for the timer modes were backwards. The datasheet might have mislead here, it
- tables these bits low to high, left to right, which is not the usual convention. [68bit]
-
--tilemap - fix calculation of visible area height and width. There was no bug noticed there, but the calculation looks wrong, it
- looks like it intended to calculate the difference between the limits not to add them. [68bit]
-
--mc68hc11 - implement more of the instructions. Limited testing of these additions on 6800 code. The fdiv instruction appears the
- only one remaining now. [68bit]
- * Cleaned up some of the existing definitions to make the patterns more consistent, and to make it easier to spot inconsistencies
-    and errors.
-
--Name the author of SSBASIC ROMPac cartridge [exidyboy]
 
 -Added support for profiling LUA [npwoods]
 
@@ -3478,46 +3413,7 @@ Source Changes
 
 -Making video_manager::effective_frameskip() public and exposing via LUA [npwoods]
 
--Fix 72-scanline 220hz timer for bubble system hardware, which fixes the logo draw speed, respawn time, and other issues in the
- Bubble System version of Gradius. Fix the sound cpu z80 speed, which was too fast on the pre-Salamander hardware, and fixed the
- sound cpu timer to run at the correct rate based on the Nemesis schematics. Add lots of hardware notes and TODOs based on tracing
- and pcb pictures. [ArcadeHacker, Lord Nightmare]
-
--Suggestion for very-low-latency mode on portaudio [ericvids]
- * Needed to keep audio in sync when playing rhythm game machines such as konami system 573. This is because the lowest
-    audio_latency currently supported (audio_latency 1) introduces at least 10 ms of variable latency. I am unsure how to go about
-    this without breaking backward compatibility so I set it to work only when audio_latency is 0 (which was previously ignored by
-    mame itself and was treated equivalent to audio_latency 1). I am aware that setting audio_latency to 0 is not supported by many
-    mame frontends, but this change seems natural. Otherwise, would it be better to add a new mame.ini option, or to automatically
-    enable this low-latency mode when pa_latency is set lower than, say, 0.01 (10ms), which would break people's configurations if
-    they already rely on the old behavior?
-
--k573dio: timing fixes [ericvids]
- * k573dio now correctly reports the actual number of samples already played (instead of rounding up by one discrete mpeg frame in
-    advance and disregarding samples that have been copied to the stream but not yet actually played).
-
--playch10: Fix order and screen_update code for both screens Data of the PPU (that manages the game/bottom screen) is incorrectly
- being used by the screen_update code of the "top" (selection) screen, and the screen_update code of the "bottom" screen is using
- the data of the selection screen. The problem was not noticed for games using the standard controller because the screen order is
- inverted in the machine config. This patch fix the screen_update codes and the screen order, what is necessary to fix the light gun
- problem of MT 7331: https://mametesters.org/view.php?id=7331 [enikland2]
-
--nes,sms: Change the way screen is set for the light gun device Currently the light gun device is making an assumption about the
- screen used by the host system. This patch moves to the host system the responsibility to define the screen used by the light gun.
- [enikland2]
-
 -Fixing MC6847 to be responsive to live changes of artifacting config [npwoods]
-
--nes, sms: Fix light gun regression Split of pull request #4910, contains only the necessary changes to fix the light gun regression
- first mentioned in MT report https://mametesters.org/view.php?id=7331 [enikland2]
- * Note: the NES and derivative drivers required some additional changes when compared to SMS and derivative drivers because the
-    code for the NES stuff wasn't prepared for more than one screen update per frame (only for full frame updates) and the line
-    drawing routine for the NES PPU device is programmed to draw the last line that was surpassed by the beam, contrary to the
-    routine of the SMS VDP (despite similar scheduling) that draws the next line that will be surpassed by the beam.
-
--zr107, gticlub, nwk-tr, hornet: Greatly improve inputs (among other things) Changed and fixed a lot of (analog/dip) inputs to make
- them more responsive. Turns out Jet Wave previously had incorrect DIP settings that would disable the analog controls (MT7188).
- [Hydreigon223]
 
 -Refactored UI font metrics Removed UI_TARGET_FONT_[ROWS|HEIGHT] and UI_BOX_[LR|TD]_BORDER macros, which obscured calls to
  get_font_rows(), which kept this info in a static variable.  This info is now directly sitting off of mame_ui_manager. [npwoods]
