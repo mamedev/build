@@ -191,8 +191,6 @@ Source Changes
 
 -New skeleton driver: Juku E5101 [Dirk Best]
 
--Add r65c02 to unidasm [AJR]
-
 -Improvements to subsino.cpp [Roberto Fresca, TeamEurope] Added dumps of the missing samples ROMs. Added Victor 5 and Victor 21
  speech sounds through OKI 6295. Confirmed the bipolar PROM dump for Victor 5. Reparent the Victor 5 sets. [Roberto Fresca]
 
@@ -226,8 +224,6 @@ Source Changes
 -upd7810: Fix breakpoints; add notes [AJR]
 
 -harddisk: Support hard disk images in HDI format [Justin Kerk]
-
--am8052: Skeleton device implementation (inadvertently omitted from 6a3e79f9a73583db5a5922592c26a054f5aed05f, nw) [AJR]
 
 -Refactored info_xml_creator::output() [npwoods]
  * The two variations of output() no longer duplicate logic
@@ -278,8 +274,6 @@ Source Changes
 
 -Fix building using system rapidjson [Julian Sikorski]
 
--unidasm: Add address shift for scudsp [AJR]
-
 -add write support for Olivetti M20 floppy images [Christian Groessler]
  * m20_dsk.cpp: add write support floptool.cpp: add m20 format support
 
@@ -306,8 +300,6 @@ Source Changes
 -st_flop.xml: New addition [ICEknigh7]
  * Added the unreleased port of Highway Encounter by Vortex Software.
 
--unidasm: Correct address shift for hd61700 [AJR]
-
 -Typo in subsino.cpp (#5454) [MASH]
  * Victor 21 is now the parent set and G.E.A. is only a hack and now the clone. See http://robbie.mameworld.info/
 
@@ -328,9 +320,7 @@ Source Changes
 -Add still-frame PNG image device for use by digitizers/cameras/etc. [R. Belmont]
  * Other formats can be added, we already have libjpeg in 3rdparty/.
 
--Revert "nscsi_cd: make sgi cdrom identify as hard disk" [AJR]
- * This stops indy_4610 from failing its SCSI test.
- * This reverts commit 2e25d99be689cd1b5ce19ef5529d36c474fdcb62.
+-nscsi_cd: Revert 0.212 change to device identification. This stops indy_4610 from failing its SCSI test. [AJR]
 
 -wd33c9x - clarify hardware reset [tyfighter]
  * Hardware reset triggers a SCSI_STATUS_RESET interrupt when the MR signal is asserted, but this is also true when the device first
@@ -340,9 +330,10 @@ Source Changes
 
 -dec0.cpp: dumped PROMs for the dec0 motherboard [Guru]
 
--m65c02, r65c02: Correct memory access patterns for read-modify-write instructions [AJR]
- * The extra operand cycle in CMOS versions becomes a dummy read rather than a writeback, and page boundaries do not figure into
-    cycle timings for indexed modes.
+-m65c02, r65c02: CMOS-specific corrections [AJR]
+ * Correct memory access patterns for read-modify-write instructions. The extra operand cycle in CMOS versions becomes a dummy read
+    rather than a writeback, and page boundaries do not figure into cycle timings for indexed modes.
+ * Clear D flag on reset.
 
 -Correct audio CPU for The Deep [MASH]
  * The Deep uses a Rockwell R65C02 CPU for sound. See PCB (top right cpu)
@@ -378,11 +369,13 @@ Source Changes
 
 -Renamed and replaced Simpsons Bowling CD dump [emmanu888]
 
--cosmac: Add disassembler support for CDP1805 with extended instruction set [AJR]
+-cosmac: Updates [AJR, hap]
+ * Add very preliminary emulation for CDP1804/5/6
+ * Add disassembler support for CDP1805 with extended instruction set
+ * Attach following byte to disassembly of OUT instruction when P = X
+ * Use conventional decimal numbering for registers
 
 -toplevel makefile: fix 'cleansrc' target for Unix/Linux [Christian Groessler]
-
--cosmac: Use conventional decimal numbering for registers [AJR]
 
 -pce.cpp: add support for Tennokoe Bank extended Backup RAM [Angelo Salese]
 
@@ -454,9 +447,6 @@ Source Changes
  * Closes: #5478
 
 -mc68hc11: Add internal latches and direction registers for ports [AJR]
- * Split up hc11_regs_r/w into many separate handlers
- * Give each MC68HC11 model its own specific io_map
- * Remove now-unnecessary readback handlers from skeetsht.cpp and taitojc.cpp
 
 -apple2gs: made slow-side sync less aggressive, fixes SHOWALL 3200 [R. Belmont]
 
@@ -525,8 +515,6 @@ Source Changes
 
 -use ramdac device on policetr [David Haywood]
 
--cosmac: Attach following byte to disassembly of OUT instruction when P = X [AJR]
-
 -Exposing input device classes, input devices, and input device items to LUA [npwoods]
 
 -pasopia.cpp: Correct clocks and metadata [AJR]
@@ -565,7 +553,9 @@ Source Changes
 
 -Fix Solaris 2.11 (non-Oracle) [Rick V]
 
--unidasm: Add score7, unsp12 and unsp20 support [AJR]
+-unidasm: Additions and fixes [AJR]
+ * Support for r65c02, score7, unsp12 and unsp20 architectures
+ * Correct address shift for hd61700 and scudsp
 
 -SS-30 DC5: drive select inhibit; dynamic clock rates; motor timer updates. [68bit]
  * Bit 7 of the control register inhibits all drive select lines when high and this is now implemented. This was a long standing
