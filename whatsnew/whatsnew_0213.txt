@@ -132,7 +132,8 @@ vsmile_cart:
   Remy's Nieuwe Recepten (NL), Scooby-Doo! - A Night of Fright is no Delight (V.Smile Smartbook), Scooby-Doo! - Griezelen in het
   Pretpark (NL), The Batman - Rettung von Gotham City (Germany), Winnie de Poeh - De wonderwereld van Poeh (NL) [TeamEurope],
   Wall-E (Germany) [TeamEurope]
-
+spectrum_cass:
+  many titles [See credits in XML / previous release]
  
 Software list items promoted to working
 ---------------------------------------
@@ -165,7 +166,7 @@ Source Changes
 
 -add a 'post opcode fetch' to spectrum expansion bus so that interface 1 enable / disables work correctly mimics behavior found in
  other emulators, stops nonsense commands from triggering nonsense save operations with interface1 installed which was caused by the
- rom banking out too early. [DavidHaywood]
+ rom banking out too early. [David Haywood]
 
 -riscpc.cpp: fix bug with force irq, now rpc700 enters into prompt supervisor [Angelo Salese]
 
@@ -304,8 +305,6 @@ Source Changes
 
 -st_flop.xml: New addition [ICEknigh7]
  * Added the unreleased port of Highway Encounter by Vortex Software.
-
--Spectrum list work [see credits in XML] (#5444) [David Haywood]
 
 -unidasm: Correct address shift for hd61700 [AJR]
 
@@ -487,8 +486,7 @@ Source Changes
 -New working clone added [algestam]
  * --------- Space Bridge (Elektronika) [algestam, Ryan Holtz]
 
--add eeprom support to dreamlif, promote to working (#5489) [David Haywood]
- * add eeprom support to dreamlif, promote to working
+-vii.cpp: Added EEPROM support to dreamlif. [David Haywood]
 
 -SS-30 PIA IDE hard disk interface [68bit]
  * Split out the PIA IDE hard disk interface from the swtpc09 machine. This support appears to have been incomplete or to have bit
@@ -513,12 +511,7 @@ Source Changes
  * ...mment
  * seibu_crtc.cpp : Nuke and add notes for grainbow
 
--Atronic changes (new sets, CPU ident etc.) [Priit Laes] (#5493) [David Haywood]
- * Atronic changes (identify video CPU, fix rom loading etc.) based on information provided [Priit Laes]
- * new NOT WORKING
-   - -- Wild Thing (Atronic) [Priit Laes] I C Money (Atronic) [Priit Laes] Bonus Poker (Atronic) [Priit Laes]
-
--small fix for previous PR (wrong jed was converted to bin) [DavidHaywood]
+-Atronic improvements (new sets, Video CPU identification, fixed ROM loading,) [Priit Laes, David Haywood]
 
 -Decrypt KONAMI1 opcodes in the debugger [smf]
 
@@ -530,7 +523,7 @@ Source Changes
 
 -Pokerout.cpp: Added ASCII PCB layout and technical notes. [Roberto Fresca]
 
--use ramdac device on policetr [DavidHaywood]
+-use ramdac device on policetr [David Haywood]
 
 -cosmac: Attach following byte to disassembly of OUT instruction when P = X [AJR]
 
@@ -568,8 +561,7 @@ Source Changes
 
 -Pokerout.cpp: PCB layout and specs correction... [Roberto Fresca]
 
--some monon disassembly helpers [anonymous] (#5504) [David Haywood]
- * some monon disassembly helpers [anonymous]
+-some monon disassembly helpers [anonymous]
 
 -Fix Solaris 2.11 (non-Oracle) [Rick V]
 
@@ -646,7 +638,7 @@ Source Changes
 
 -Extracting input sequence cleaning logic into an seq_clean() function and exposing to LUA [npwoods]
 
--Spectrum list metadata cleanups [David Haywood] (#5512) [David Haywood]
+-Many Spectrum Software List metadata cleanups [David Haywood]
 
 -namcos2_roz: Fix typo in device name [AJR]
 
@@ -658,12 +650,7 @@ Source Changes
 
 -hd61830: Number of characters must be even 2-128. [Nigel Barnes]
 
--Spectrum Metadata cleanups (for merging prior to freeze) (#5524) [David Haywood]
- * metadata improvements
-
 -dacholer.cpp: Dumped color PROM for Dacholer. [caius, The Dumping Union]
-
--Spectrum list work (#5525) [David Haywood]
 
 -dec0.cpp: MUCu dumps [braintro]
  * dec0.cpp: Verified Bad Dudes MCU dump as correct. [TeamEurope, Brian Troha, The Dumping Union]
@@ -727,19 +714,6 @@ Source Changes
 
 -hh_sm510: Melody ROM fixes for gnw_mbaway melody This fixes changes the tone length for the game over tune and adds a stop bit so
  the end of level tune isn't played after a miss. [algestam]
-
--Spectrum betadisk stuff renamed the beta128 support from beta.cpp to beta128.cpp for now added basic devices for the older beta
- models, which seem to fall into 3 basic groups 1. Handmade version using V2 ROM and FD1771 controller 2. Production version using
- V3 ROM and FD1793 controller 3. 'Plus' version with more refined features, Magic Button and V4 ROM (closest to the beta128)
- [DavidHaywood]
- * there are a number of hardware clones of these for different systems, which are not compatible, and will eventually need adding
-    as their own devices.
- * note, these new devices are NOT working, as the disable mechanism for the ROM is not clear to me, and the remaining mappings not
-    confirmed.  It does not appear to rely on executing code from RAM to disable like the Beta128, despite some sites claiming so?
- * it might be possible, later, to reintegrate the beta128 as a further extension of the betaplus, but until the remaining details
-    of these original devices is worked out it's cleaner to keep them apart.
- * also added some notes about suspicious behavior with even the beta128 hookup that points at something potentially being wrong
-    (the emulation of the pentagon machines with integrated support don't suffer from the same issue)
 
 -asmjs: Fixed use of -s ERROR_ON_MISSING_LIBRARIES=0" as a link option. [68bit]
 
@@ -845,9 +819,7 @@ Source Changes
 
 -seibu_crtc.cpp: Added notes. [cam900]
 
--policetr.cpp: Use RAMDAC device. [DavidHaywood]
-
--vii.cpp: Added EEPROM support to dreamlif. [David Haywood]
+-policetr.cpp: Use RAMDAC device. [David Haywood]
 
 -Fixed compilation on Solaris 2.11. [despair86]
 
