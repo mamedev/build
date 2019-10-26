@@ -1,0 +1,1707 @@
+0.215
+-----
+
+
+MAMETesters Bugs Fixed
+----------------------
+- 07463: [DIP/Input] (mystwarr.cpp) metamrph and clones, viostorm and clones: Coins 3 and 4 are not defined. (Zach S.)
+- 07457: [DIP/Input] (m107.cpp) dsoccr94: Coin3 and Coin4 keys are wrong (MetalGod)
+- 07456: [Crash/Freeze] (segas16b.cpp) eswat: Segmentation fault (smf)
+- 07452: [Crash/Freeze] (eprom.cpp) eprom, eprom2: The control test will not load (AJR)
+- 07372: [Crash/Freeze] X11 Lightgun routine does not check for valid X11 display, resulting in crash (segmentation fault) (GeorgeMcMullen)
+- 07454: [Plugins] (dooyong.cpp) flytiger: Some peculiar properties of hi-score support in this game causes a strange behaviour of demo play. (crazyc)
+- 04531: [Sound] (segas32.cpp) f1en: Engine noise loops/resets (Tafoid)
+- 07442: [DIP/Input] (gaelco.cpp) biomtoy, biomtoya, biomtoyb, biomtoyc, bioplayc: "Lives" DIP Switch shows badly the amount of lives (girosintornillos)
+- 07444: [DIP/Input] (seta.cpp) blandia, blandiap: "Lives" DIP Switch shows badly the amount of lives of Test Mode (girosintornillos)
+- 07445: [DIP/Input] (model2.cpp) sgt24h, overrevb: Gas and brake pedals are mixed up. (VasiliyFamiliya)
+- 07026: [Gameplay] (model1.cpp) vr: vr gameplay calculations and physics issues (Olivier Galibert)
+- 07448: [Gameplay] (taito_z.cpp) sci, scia, scij, scin, sciu: Turbo is activated when toggle speed with Shifter (girosintornillos)
+- 07447: [Graphics] (cninja.cpp) cninja and clones: Wrong priority in level 4 fall (Osso)
+- 07025: [Graphics] (model1.cpp) vr: Virtual Racing graphic glitches (Olivier Galibert)
+- 07438: [Graphics] (m72.cpp) imgfightj, mrheli, nspiritj: Doesn't show "for use in Japan" messages on POST correctly (Angelo Salese)
+- 07465: [Crash/Freeze] (interpro.cpp) ip2000: Interpro 2000 Crash during startup: mouse (pmackinlay)
+- 07437: [Gameplay] (x68k.cpp) x68000 [nemesis]: Nemesis 90 Kai - background tiles appear in foreground (crazyc)
+
+
+New working machines
+--------------------
+
+
+New working clones
+------------------
+
+
+Machines promoted to working
+----------------------------
+
+
+Clones promoted to working
+--------------------------
+
+
+New machines marked as NOT_WORKING
+----------------------------------
+
+
+New clones marked as NOT_WORKING
+--------------------------------
+
+
+New working software list additions
+-----------------------------------
+
+
+Software list items promoted to working
+---------------------------------------
+
+
+New NOT_WORKING software list additions
+---------------------------------------
+
+
+Translations added or modified
+------------------------------
+
+
+Source Changes
+--------------
+-cfx9850 fixes (graph mode zoom menu and memory size) (#5674) [Ricardo Barreira]
+ * hcd62121: Added xor instruction with indirect addressing (needed for zoom menu in graph mode to work).
+ * cfx9850.cpp: Reduce RAM size to 32 KB (0000-7FFF) and add overlapping region 8000-FFFF. The code that detects memory size assumes
+    that FFFF aliases 7FFF.
+
+-super80 : fine-tuned compatibility of swlist. [Robbbert]
+
+-spartanxtec.cpp: Add some IC locations and PLD placeholders [jordigahan]
+
+ * avivideo.cpp: Added an image device to provide looping uncompressed AVI frames as input. [Ryan Holtz]
+ * vino.cpp: Adapted to support both avivideo_image_device and picture_image_device. [Ryan Holtz]
+
+-cps3.cpp: tilemap linescroll little fix [MetalliC]
+
+-Fixed a compilation bug under clang-cl (#5677) [npwoods]
+ * Fixed a compiltion bug under clang-cl
+ * Oddly, this problem does not seem to manifest under clang on gcc.godbolt.org.  I suspect that this might be related to the fact
+    that sizeof(std::size_t) != sizeof(long) on Windows.
+ * Couriersud feedback
+
+-tilemap.cpp: Improve contains assert, fixing tilemap viewer in debug build [AJR]
+
+-spbactn: Use raw parameters for screen [AJR]
+
+-chelnov: Add MCU dump and hook it up [Dirk Best]
+ * [Dirk Best, TeamEurope, Brian Troha]
+ * Dumped MCU is the world version. Other regions were created by patching the dump.
+ * Removed the MCU simulation for chelnov.
+
+-Add MIDI floppy softlist (#5668) [Rebecca Wallander]
+ * Add MIDI floppy softlist
+ * IMG raw sector dump  misses something in the data somewhere, so use IMD instead (which decodes fine)
+ * Missed file name
+ * Add midi softlist to a couple of IBM PCs
+
+-aftrshok: Document DIP switches after manual [AJR]
+
+-New NOT_WORKING software list additions (#5680) [ClawGrip]
+ * New NOT_WORKING software list additions
+   - -------------------------------------- Baby's First Words (USA) [ClawGrip, TeamEurope] Pooh Loves You! (USA) [ClawGrip,
+      TeamEurope] If I were... (USA) [ClawGrip, TeamEurope]
+
+-callback after sound update has generated new samples [feos]
+
+-alpha68k.cpp: support for opaque tiles for V board, fixes title screen clipping effect for Sky Adventure [Angelo Salese]
+ * Also removed hack for the priest priority in level 1 for Sky Adventure, being a game original bug.
+
+-ppcdrc.cpp: Fixed debug flag test causing fast RAM accesses to be erroneously emitted. Hopefully fixes unusual
+ breakpoint/watchpoint behaviour [Phil Bennett]
+
+-sh2.cpp/sh4.cpp: Don't emit fast RAM accesses when the debugger is enabled [Phil Bennett]
+
+-firetrap: Add MCU dump and hook it up [Dirk Best]
+ * [Dirk Best, TeamEurope, Brian Troha]
+ * The US version MCU has been created from the dumped japanese MCU by patching the init byte.
+ * Removed the MCU simulation.
+
+-rii: Many updates [AJR]
+ * Identify CPU type used by vreadere as ePG3231
+ * Add preliminary port I/O handlers and callbacks
+ * Add stub handlers and state variables for interrupt controller, timers, synthesizer, UART and SPI
+ * Fix TBRD addressing of external data memory
+ * Fix calculation of carry flag for normal additive operations
+ * Implement multi-byte carry/borrow for applicable registers
+ * Implement signed multiplication option
+ * Add internal stack buffer for saving PCH during calls/interrupts
+
+-[snes] Run HTOTAL double only if needed [AmatCoder]
+ * Also run HDMA when vpos=0
+ * Fix Vortex & Judge Dreed graphics
+
+-New clones marked as NOT_WORKING (#5682) [ClawGrip]
+ * New clones marked as NOT_WORKING
+   - ------------------------------- Vs. Super Mario Bros. (bootleg with Z80, set 3) [jordigahan, ClawGrip]
+
+-Make osd_printf_* use util/strformat semantics. [Vas Crabb]
+ * Any object with a stream out operator works with %s
+ * %d, %i, %o, %x, %X, etc. work out the size by magic
+ * No sign extending promotion to int for short/char
+ * No widening/narrowing conversions for characters/strings
+ * Same rules on all platforms, insulated from C runtime library
+ * No format warnings from compiler
+ * Assert in debug builds if number of arguments doesn't match format
+
+-vz200 : added a software list for snapshots. The software comes from years of collecting; original sources are unknown. [Robbbert]
+
+-i8251.cpp: modernized debug printouts [Joakim Larsson Edstrom]
+
+-m6801.cpp: more logging and reduced unneeded updates of Tx line [Joakim Larsson Edstrom]
+
+-mc6845.cpp: more logging and reduced (not eliminated) warning spam significantly at startup when register values doesn't make sense
+ [Joakim Larsson Edstrom]
+
+-pit8253.cpp: introduced logmacro.h based logging [Joakim Larsson Edstrom]
+
+-eispc.cpp: Split out of the Ericsson PC (epc) from pc.cpp and added a serial keyboard [Joakim Larsson Edstrom]
+
+-ega.cpp: converted to logmacro.h [Joakim Larsson Edstrom]
+
+-mda: Added Ericsson Monochrome HR Graphics Board 1070 (might be splitted out later) and introduced logmacro.h
+ [Joakim Larsson Edstrom]
+
+-wd_fdc: change Interrupt command logic based on WD1772 and VG93(1793 clone) decaps. INTRQ logic in general is - Reset conditions:
+ status register read, command register write. Setting conditions: command-specific (completion etc), command 0xDX is in command
+ register and one of I0-3 conditions met. Various WD FDC doc's statements 'command D0 is the only command which may clear interrupt
+ after D8' is not correct, any other than Dx command write to command register will do this aw well. [MetalliC]
+
+-rbmk.cpp: decapped at89c51 for rbspm [Team Caps0ff, EdHunter]
+
+-lucky37.cpp: decapped MCUs for lucky21, lucky21d, lucky37 [Team Caps0ff, TeamEurope]
+
+-sstingry: Replace protection simulation with MCU emulation [AJR]
+
+-Review comments fixed [Joakim Larsson Edstrom]
+
+-New machines marked as NOT_WORKING (#5688) [ClawGrip]
+ * New machines marked as NOT_WORKING
+   - --------------------------------- Kursaal Darts [jordigahan, ClawGrip]
+
+-ay8910.cpp : Device-fied sunsoft 5B sound hardware [cam900]
+ * it has Yamaha volume parameter, single sound output and internal divider.
+ * Developed by Yamaha
+
+-gsword.cpp: measured MCUs clocks for gsword [Guru]
+
+-karnov.cpp: Verified the Atomic Runner (Japan) i8751 dump. [TeamEurope, Brian Troha]
+
+-dec0.cpp: Decapped and dumped the i8751 MCU for Dragonninja (Japan revision 1) [TeamEurope, Brian Troha]
+
+-segas16b.cpp: Replace MCU simulation with actual dumped MCU code for Altered Beast (set 6) (8751 317-0076)
+ [TeamEurope, Brian Troha]
+
+-allow updating version.cpp when IGNORE_GIT=1 is passed [feos]
+ * without this tweak it would only create the file if it doesn't exist, and wouldn't update an existing one
+
+-minimaws: load ROMs and disks, and add a romident subcommand [Vas Crabb]
+
+-New working clones (#5690) [ClawGrip]
+ * New working clones
+   - ----------------- Beastorizer (USA, alt) [jordigahan, ClawGrip]
+
+-fmtowns_cd.xml: additions, better dumps, updated missing list (#5687) [r09]
+ * fmtowns_cd.xml: additions, better dumps, updated missing list
+   - Replaced entries with dumps from the redump.org database, with proper track indexes and offset correction:
+ * The 4th Unit 6 - Merry-Go-Round Air Warrior V1.1 Dragon Shock Final Blow Ms. Detective File #1 - Iwami Ginzan Satsujin Jiken
+    Rance III - Leazas Kanraku Sherlock Holmes - Consulting Detective Turbo Out Run The Visitor
+ * Added new working dumps from the redump.org database:
+ * Shanghai
+ * Added new NOT working dumps from the redump.org database (most of these are missing floppy disks):
+ * Air Warrior V1.2 Fujitsu Habitat V2.1L10 Hyper Media NHK Zoku Kiso Eigo: Dai-3-kan Nobunaga no Yabou: Sengoku Gun'yuuden Taito
+    Chase H.Q. (Demo)
+ * Added a parent-clone relationship between the Windows 3.1 revisions
+ * Updated the missing list with some recently confirmed software
+
+-New working machine added (#5692) [algestam]
+ * New working machine added
+   - --------- Game & Watch: Spitball Sparky [algestam, Mr Jiggles the Christmas Man]
+
+-changyu.cpp: decapped MCU for the changyu2 set [Caps0ff, TeamEurope]
+
+-Synced with GENie upstream revision e78d6c1 (#5631) [Julian Sikorski]
+ * Synced with GENie upstream revision e78d6c1
+ * Add Visual Studio 2019 support
+ * Fix hardcoded -m64
+ * Switch appveyor to Visual Studio 2019
+ * Fix genie being built as 32-bit
+ * MSVC build is known to be broken currently. Let it fail until all the known issues are fixed.
+ * Update the packages before building
+ * Build with 3 threads Appveyor VMs have only 2 cores and 8 GB RAM.
+ * Enable caching of pacman cache
+
+-goldstar.cpp: decrypted pkrmast and clone [ioannis bampoulas, Ivan Vangelista]
+
+-eispc_kb.cpp: experiment with removing direct calls to resume/suspend [Joakim Larsson Edstrom]
+
+-sed1330: Various improvements [AJR]
+ * Allow character drawing from external ROM
+ * Fix display on/off command
+ * Fix screen area definition
+
+-New working clone [braintro]
+
+-minimaws: add web interface for identifying ROM dumps [Vas Crabb]
+
+-alpha68k.cpp: converted to snk68 sprite chip [Angelo Salese]
+
+-tlcs90: Separate TMP90840 and TMP90844 disassemblers [AJR]
+
+-alpha68k.cpp, snk68.cpp: converted to a common palette device and decoded it with NeoGeo specs, causing more accurate colors
+ especially visible on dithered backgrounds [Angelo Salese]
+
+-Split generic Z180 device into several subtypes. HD647180X now has specific device emulation for the internal PROM, RAM and
+ parallel ports. [AJR]
+
+-galivan.cpp: redumped dangarj audio CPU ROMs [Layer]
+
+-eispc_kb: Simplification, removed port changed handler and internal state of keyboard [Joakim Larsson Edstrom]
+
+-apple3: Corrected number row key layout to fix pasting. [pahandav]
+ * The number row used to use the Apple 2 layout and so text didn't paste into MAME correctly.
+
+-nmk16spr.cpp : Device-fied NMK 16 bit sprite hardware (#5697) [cam900]
+ * nmk16spr.cpp : Device-fied NMK 16 bit sprite hardware (original source by nmk16.cpp
+ * Fix flipped case
+ * Allow pdrawgfx drawing
+ * Correct clock source (Pixel clock mostly)
+ * Add value for sprite limitation
+ * Add notes
+ * nmk16.cpp, powerins.cpp : Convert sprite draw routine into nmk16spr.cpp
+ * powerins.cpp : Verify clock related to on-board XTALs
+
+-vs2019 fixes, initial clang-cl support (#5698) [Julian Sikorski]
+ * Add initial clangcl support
+ * Fix uwp builds' vs version typos
+ * Add missing vs2019 toolchain.lua bits
+
+-removed not-needed offset=0 from some softlists [Robbbert]
+
+-Fix AVI framerate [feos]
+ * MAME was setting up AVI before devices have properly launched, so default 60fps was used, which resulted in skipped frames in the
+    video if machine's framerate is above 60 (btoads), and presumably duplicate frames for machines below 60fps (haven't tested).
+ * Now every frame that is generated is also present in the video.
+
+-Add internal clock divider for Z180 family and adjust CPU clocks in many drivers to compensate [AJR]
+
+-z180: Reduce logical address width to 16 bits [AJR]
+
+-New working software list additions [firehawke]
+ * ---------------------------------- apple2_flop_clcracked: The Haunted Palace (cleanly cracked), The World's Greatest Baseball
+    Game (Enhanced Version) (cleanly cracked) [4am, Firehawke] apple2_flop_orig: Carriers at War, Europe Ablaze, Halls of Montezuma,
+    Panzer Battles, Reach For The Stars (Version 1.0), Reach For The Stars (Version 2.0), Reach For The Stars (Version 3.0), Russia,
+    Decisive Battles of the Civil War: Volume One, Battlefront, Oil Rig, American Government (Micro Learningware), Muppet Learning
+    Keys: The Muppet Discovery Disk, Leisure Suit Larry in The Land of The Lounge Lizards, I, Damiano, Crime Stopper, Questprobe
+    featuring Spider-Man, Beach Landing, Vaults of Zurich, Decisive Battles of the American Civil War: Volume Two, Decisive Battles
+    of the American Civil War: Volume Three, MacArthur's War, Tapper, Space Kadet [4am, Firehawke]
+ * Software list items promoted to working
+ * --------------------------------------
+ * apple2_flop_orig: Drol [4am, Firehawke]
+
+-apple2gs: allow slot IRQs to be dispatched [R. Belmont, Peter Ferrie]
+
+ * cdi.cpp: Switched SERVO and SLAVE MCUs to use the correct device type with internal maps. [Ryan Holtz]
+
+-h8: Make debug PC adjustment and breakpoints actually work [AJR]
+
+-subsino2.cpp: Add save state support and clean up code a little [AJR]
+
+-tms34020: Implement SETCDP opcode [Priit Laes]
+
+-New working machine added (#5705) [algestam]
+ * --------- Game & Watch: Lion [algestam, Mr. Do, Sean Riddle]
+
+-nmk16.cpp : Fix actobatm regression [cam900]
+
+-model1: TGP interface fixes [O. Galibert]
+
+-Build system maintenance: [Vas Crabb]
+ * Re-write makedep.py for better performance and better parsing front-end
+ * Make srcclean deal with kinds of preprocessor abuse I never want to see in real life
+
+-alpha68k.cpp: simulated screen blanking for Gold Medalist starter pistol shot on dash events [Angelo Salese]
+
+-src/mame/drivers/megasys1.cpp: fix compilation error (#5708) [Christian Groessler]
+ * a forgotten semicolon
+
+-ninjaw.cpp, warriorb.cpp : Accurate psg output position (subwoofer only) (#5709) [cam900]
+ * ninjaw.cpp, warriorb.cpp : Accurate psg output position (subwoofer only)
+ * ninjaw.cpp, warriorb.cpp : Add notes, Fix output position
+
+ * snes: Differentiate between SuperFX 1 and SuperFX 2. Fixes game speed in Star Fox, Stunt Race FX, Vortex, and others.
+    [Ryan Holtz]
+
+-apple3: debugger-guard the $C800 switching [R. Belmont, Rob Justice]
+
+-new Chinese computer H-01B [zzemu-cn]
+
+-trs80dt1 : Added rs232 and LPT, marked as working. [Robbbert]
+
+-bigkarnk: Adjust YM3812 clock so pitch matches reference recording [AJR]
+
+-pes : modermised; fixed regressions caused by years of bitrot. [Robbbert]
+
+ * supracan: Switched to logmacro, added sprite-to-sprite masking. [Ryan Holtz]
+
+-gamate: fix power up RAM contents (#5711) [Christian Groessler]
+ * gamate: fix power up RAM contents
+ * According to reports in the cc65 project, it appears that the RAM contains 0xFFs at power up. See
+    https://github.com/cc65/cc65/issues/941. Adapt the driver to account for this.
+ * gamate.c: don't use magical number for memory size
+
+-fmtowns: bring machine configurations a bit closer to real hardware (#5719) [r09]
+ * fmtowns: bring machine configurations a bit closer to real hardware
+   - Separated the SCSI controller from the base machine configuration and turned it into an optional device, since the
+      first-generation models and the Marty don't have one.
+ * Changed the CPU of the FM Towns II SJ to a 66 MHz 486DX2 instead of a Pentium.
+ * Added comments describing the RAM expansion possibilities in each model, and modified the user-selectable options accordingly.
+ * Added a separate machine configuration for the FM Towns II MX, since it has a different CPU and more RAM options than the HR.
+ * Corrected memory maps for the 386SX-based models so the VRAM is accessible at 0xb00000 in packed format. Fixes several instances
+    of graphics being garbled on the UX and Marty.
+ * Configured the Marty with just one floppy drive and 2 MB of RAM.
+ * Added a couple of sanity checks to prevent MAME from crashing when selecting 1 MB of RAM or a single floppy drive. This makes it
+    possible to emulate something reasonably close to the functionality of an original FM Towns Model 1, though the real Model 1/2
+    ROMs still need to be dumped.
+
+-SDL: support RRGGBB00 format used by ARM Mali GPUs [R. Belmont]
+
+-tms34020: implement CLIP opcode (#5716) [Priit Laes]
+ * tms34020: Fix out of bounds read, when extra logging is enabled
+ * tms34020: Annotate unimplemented clip opcode
+ * tms34020: Implement CLIP instruction
+
+-kidniki: Fix a number of audio issues. [Couriersud]
+ * better document schematics, add J4
+ * Fix a number of resistor/capacitor values.
+ * Fix one barrier statement.
+ * Simplify code.
+
+-mos6581.cpp : Add save states sid.cpp : Reduce duplicates, Add postload function sidvoice.cpp : Fix type value when DIRECT_FIXPOINT
+ defined sidenvel.cpp, sidvoice.cpp, sid.cpp : Fix spacings [cam900]
+
+-stadhero: Make stage music selection and various other things more random [AJR]
+
+-playch10.cpp: Corrected BIOS PPU ROM loading. [brizzo]
+
+ * supracan: Added preliminary sprite/tilemap priority support. Fixes sangofgt intro, monopoly menus, possibly others. [Ryan Holtz]
+
+-MEK6800D1: early Motorola 6800 design evaluation board [68bit]
+ * The MIKBUG monitor is working. The terminal support for reading and 'punching' tapes is not yet implemented.
+
+-eispc.cpp: Fixed indention and added some TODO:s [Joakim Larsson Edstrom]
+
+-pit8253.cpp: Fixed some log messages [Joakim Larsson Edstrom]
+
+-hh_sm510: rescan gnw_mmouse display (#5724) [algestam]
+
+-acorn_vib: Make ACIA transmit/receive clocks selectable using MC14411 [AJR]
+
+-mkit09a : starts and runs, but mysteries remain. [Robbbert]
+
+-uchroma68: Motorola Micro Chroma 68, new machine [68bit]
+ * Motorola evaluation board for the MC6847 VDG and MC1372 RF modulator, running the TV-BUG 2k monitor.
+
+-m90.cpp: documentation and IC location update [Hammy]
+
+-karnov.cpp: Replaced handcrafted MCU with actual code from decapped/dumped i8751 for Chelnov - Atomic Runner (US)
+ [TeamEurope, Brian Troha, The Dumping Union]
+
+-dec8.cpp: Replace handcrafted MCU code with actual code from a decapped/dumped MCU for The Real Ghostbusters sets.
+ [TeamEurope, Brian Troha, The Dumping Union]
+
+-segas16b.cpp: Replace MCU simulations with real code from a decapped/dumped MCU for Dynamite Dux (set 1) (8751 317-0095)
+ [TeamEurope, Brian Troha, The Dumping Unionn]
+
+-segas16a.cpp: Replace MCU simulation code with real MCU code from decapped/dumped for the Quartet sets
+ [TeamEurope, Brian Troha, The Dumping Union]
+
+-wardner.cpp: Correct ROM labels for the Wardner set and add the PCB locations to all sets. [Brian Troha]
+
+-dec8.cpp: verified ghotsb MCU clock [Guru]
+
+-New working machine added (#5728) [algestam]
+ * --------- Game & Watch: Manhole (gold) [algestam, Mr. Do, Sean Riddle]
+
+-lwings.cpp: measured maincpu clock and vsync on an original sectionz PCB [Corrado Tomaselli] lwings.cpp: measured maincpu clock on
+ a bootleg sectionza PCB [Guru]
+
+-exedexes.cpp: measured maincpu clock, audiocpu clock and vsync [Corrado Tomaselli]
+
+-arse [Vas Crabb]
+
+-netlist: fix issues with 1x1 matrix. [Tafoid]
+ * fixes gamemachine.cpp, breakout.cpp
+
+-exedexes.cpp: verified sound chips clocks [Corrado Tomaselli]
+
+-cashcatnz.lay: fixed error [Heihachi_73]
+
+-dec8.cpp: verified all clocks for Ghostbusters [Guru]
+
+-WIP: sync bgfx, bx and bimg with latest upstream (#5723) [Julian Sikorski]
+ * Sync with bgfx upstream revision b91d0b6
+ * Sync with bx upstream revision d60912b
+ * Sync with bimg upstream revision bd81f60
+ * Add astc-codec decoder
+ * Rename VertexDecl to VertexLayout
+ * Rename UniformType enum Int1 to Sampler.
+ * Add NVN stub
+ * Fix unused-const-variable error on macOS
+ * Drop redundant explicit language parameters buildoptions_cpp are only applied to c++ files and buildoptions_objcpp are only
+    applied to objective c++ files. As such, hardcoding -x offers no benefit while preventing overrides (such as one needed by
+    3rdparty/bgfx/src/renderer_vk.cpp on macOS) from working.
+ * Re-introduce -x c++ in places where C code is compiled as C++ to prevent clang from throwing a warning
+ * Build bgfx as Objective-C++ on macOS It is needed due to included headers
+ * Enable Direct3D12 and Vulkan bgfx rendering backends
+ * Enable building of spirv shaders
+ * Properly escape /c in cmd call
+ * Comment out dx12 bgfx renderer
+ * Honor VERBOSE setting during shaders build
+ * Only invert hlsl shader XYZ_TO_sRGB matrix for opengl
+ * Add spirv shaders
+ * OpenGL ES needs transposed matrix too
+ * Metal needs transposed matrix as well
+
+-firetrap.cpp: Replaced handcrafted MCU code with actual MCU code from decapped/dump MCU for Fire Trap (US)
+ [TeamEurope, Brian Troha, The Dumping Union]
+
+-netlist: mame netlist reorganization. [Couriersud]
+ * moved netlists out of driver code into audio/ or machine/ as nl_xxx.cpp files.
+ * identified and documented extended validation
+ * updated arcade, mess and nl targets
+
+-New working clone [braintro]
+
+-pasopia : added cassette and sound. Patched around the broken keyboard problem. [Robbbert]
+
+-pasopia7 : added cassette and beeper sound, and added missing keys. Patched around the sound freeze issue. Most games work fairly
+ well. [Robbbert]
+
+ * supracan: Various changes and code cleanup. [Ryan Holtz]
+   - Removed sound CPU boot hack.
+   - Fixed sound CPU reset/halt behavior.
+   - Documented controller shift-register protocol and removed inaccurate direct port hookups.
+   - Removed P3/P4 ports which don't exist on real hardware.
+   - Added save state registration.
+
+ * bgfx: Do texture format conversion via a full-screen GPU pass. [Ryan Holtz]
+
+-New working software list additions [ArcadeShadow]
+ * ibm5170: Links - The Challenge of Golf (5.25"HD)
+
+-Make shaders fixes (#5730) [Julian Sikorski]
+ * Actually honor VERBOSE setting
+ * Current shaders build setup is not capable of parallel build
+
+-ymf278b.cpp : Allow scaling for FM DO2 output ymf262.cpp : Add notes [cam900]
+
+-triforce.cpp: redumped "Triforce DIMM Updater (3.17) (GDT-0011)", prev was bad dump [MajorPBX]
+
+-New Working clone added (#5739) [algestam]
+ * ------------ Game & Watch: Super Mario Bros. (crystal screen) [algestam, Mr Jiggles the Christmas Man]
+
+-Check that m_display is not null to prevent crash (#5725) [George McMullen]
+ * Check that m_display is not null to prevent crash
+ * https://mametesters.org/view.php?id=7372
+ * Probe method to check if X11 is actually being used
+ * As per: https://github.com/mamedev/mame/pull/5725#issuecomment-540004475 this will help MAME verify X11 has no inputs when X11 is
+    not actually being used (e.g. on RetroPie where SDL display is RPI).
+ * Fix issue where a lightgun with no name would return nullptr
+ * As suggested by https://github.com/mamedev/mame/pull/5725#issuecomment-539914514 , a bug in create_lightgun_device() returned
+    nullptr if the lightgun had no name. Now it will create the device with a name using the lightgun's device index
+ * Change older m_display change to assert
+ * This module can now be probed and  disabled correctly if X11 is not being used. Removed the if statements that would be called
+    every cycle (and fail silently) in favor of asserts, as MAME does not currently handle dynamic hardware configuration changes.
+ * Fixing semicolons in asserts that were ifs
+
+-Apple II update to October 14th, 2019 (#5742) [Firehawke]
+ * New working software list additions
+   - ----------------------------------
+ * apple2_flop_orig: Whole Numbers: Multiplication (cleanly cracked), Statistics (Version 3.3) (cleanly cracked), Fractions: Basic
+    Skills (cleanly cracked) [4am, Firehawke]
+ * apple2_flop_clcracked: Winter Games, Apple Stellar Invaders, Ulysses and the Golden Fleece [4am, Firehawke]
+ * New working software list additions
+   - ----------------------------------
+ * apple2_flop_orig: Simultaneous Linear Equations [4am, Firehawke]
+ * New working software list additions
+   - ----------------------------------
+ * apple2_flop_clcracked: Balancing Act (cleanly cracked), Fractions: Subtraction (cleanly cracked) [4am, Firehawke]
+ * New working software list additions
+   - ----------------------------------
+ * apple2_flop_orig: The Coveted Mirror, Alibi, Reversal, The Haunted Palace, Sherlock Holmes in Another Bow, Dogfight II, The Mask
+    of the Sun (Version 2.1), Pulsar ][ [4am, Firehawke]
+
+-Unbreak building shaders in cmd shell and add support for building them in MINGW bash shell (#5740) [Julian Sikorski]
+
+-m24.cpp: Added Olivetti M21 and hitherto unknown BIOS revision, at.cpp: motherboards and BIOS versions (#5706) [rfka01]
+ * m24.cpp: Added Olivetti M21 and hitherto unknown BIOS revision
+ * at.cpp: added motherboards and BIOS files sorted by chipset
+ * at.cpp: more motherboards and BIOS versions
+ * at.cpp: sorted by chipset, added more motherboards and BIOS versions
+
+-hitme.cpp: Rename m21 to mirco21 to resolve name collision [AJR]
+
+ * x c++ should not be applied to targets like msvc [Julian Sikorski]
+
+-fmtowns: add the Model 2 ROMs (#5732) [r09]
+ * fmtowns: add the Model 2 ROMs
+   - Dumped and added the ROMs from an first-generation FM Towns Model 2, and made it the parent set. For now we'll assume that the
+      Model 1 ROMs are the same, since the only differences between them are the amount of floppy drives and RAM.
+ * Removed the old "fmtowns" set, since its ROMs completely match the FM Towns II MX ones after splitting them.
+ * Renamed and added a few comments to the "fmtownsa" set so the description is a bit more accurate. It seems to be from a
+    third-generation model, probaby a CX.
+ * Added a comment with a list of all the known FM Towns models.
+
+-at.cpp: small BIOS name correction, RAM and cache information, motherboards and BIOS versions [rfka01]
+
+-Netlist: code maintenance and bug fixes. [Couriersud]
+ * optimized the core queue dispatching logic. Minor performance increase.
+ * fixed a number of bugs in parray. Now parray<double, 0> will be purely dynamic allocation with the number of elements passed in
+    the constructor.
+ * Added noexpr where appropriate.
+ * Simplified the queue
+ * Checked with gcc-7 (ubuntu), gcc-9, clang-10, macosx clang 10, mingw cross compile on linux.
+
+-Emulate ADC0804 and add device to various drivers [AJR]
+
+ * snes: The SNES only has 64kbytes of VRAM, not 128kbytes. Fixes graphics in Yoshi's Island, probably others. [Ryan Holtz, byuu]
+
+-ins8250: fix cleared pending THRE interrupt [68bit]
+ * The code notes that reading the iir register "will clear the int if this is the source of the int" and the code cleared a pending
+    THRE interrupt if it was *pending*. This causes a lost THRE interrupt for the SWTPC 8121 terminal firmware and this locks up the
+    TX side of the terminal. This occurred regularly when the ISR read this register upon a higher priority RX pending interrupt.
+    The documented operation has been reinterpreted as only clearly the THRE interrupt if THRE is the highest priority interrupt and
+    so is the pending interrupt *causing* the interrupt. This fixes that lost THRE interrupt for the SWTPC 8121 terminal.
+
+-SWTPC MP-S2: connect up the RS232 control lines [68bit]
+ * At least some of these are required for operation with terminals. For example the SWTPC 8212 terminal uses DTR to CTS for
+    hardware flow control, and that is needed even at 9600 baud.
+
+-New working software list additions [ArcadeShadow]
+ * ibm5051: Action Service (Smash16 release) (3.5"), International Karate, Italy '90 Soccer, Joe Blade (Smash16 release)
+
+-Netlist: pongf update and code maintenance. [Couriersud]
+ * After the recent string of updates pongf performance increased again. Also includes code maintenance and some fixes for the
+    aligned memory operations.
+
+-Plug and Play additions (#5737) [David Haywood]
+ * new WORKING machines
+   - ------ Disney Princesses (JAKKS Pacific TV Game, Game-Key Ready) [Sean Riddle, David Haywood, anonymous] Capcom 3-in-1 (1942,
+      Commando, Ghosts'n Goblins) (JAKKS Pacific TV Game, Game-Key Ready) (29 MAR 2005 B) [Sean Riddle, David Haywood, anonymous]
+
+-New skeleton driver: Termtek TK-635 [nextvolume, Dirk Best]
+
+-goldstar.cpp: decrypted super972 [Ivan Vangelista]
+
+-hh_sm510: fix gnw_manholeg alarm clock segment (#5750) [algestam]
+
+-glfgreat: Add analog controls and ADC; remove spurious fourth button [AJR]
+
+-tk635: Some initial work, displays something on screen now [Dirk Best]
+
+ * snes_ppu: Fixed background layer drawing based on higan ppu-fast. [byuu, Ryan Holtz]
+
+ * snes: Adjusted HBlank timing interval to the most common case. Fixes off-by-one parallax in Yoshi's Island. [byuu]
+
+-citybomb, hcrash: Add ADC0804 device (fixes "WRONG CONTROL IO" in citybomb service mode) [AJR]
+
+-IE15 terminal: rework the RS232 interfaces [68bit]
+ * The RS232 port has been moved out of the ie15 device. It is only needed in stand alone operation, and not when connected to the
+    rs232 bus, it was odd leaving it in there, odd to still have an rs232 port slot option when running stand alone.
+ * The IE15 UART implementation has been removed from the rs232 bus code and back into the ie15 device code. This leaves the rs232
+    bus code dealing with only serial data, and not the parallel data, and that should make it easier in future to have a common
+    interface to RS232 terminals.
+
+-Fix build for nonstandard compiler versions like '8.3-win32' [Melissa Goad]
+
+-p47b: Add ADPCM sample playback through extra Z80 [AJR]
+
+-Continuous integration improvements (#5703) [Julian Sikorski]
+ * Add workaround for imgtool and jedutil failing vs2019 debug builds with /ZI
+ * No longer allow msvc build to fail
+ * Enable tools build for travis to make it more useful
+ * Switch travis to Xcode 11 in order to fix nltool linking failure
+ * Prefer 64-bit compiler with VS 2019 too
+ * Setting PreferredToolArchitecture to x64 is not needed, genie puts it into the project files for vs2015 or later
+ * OPTIMIZE=1 build is faster that OPTIMIZE=0 for some reason. So fast in fact, that TOOLS=1 can be enabled without hitting the 60
+    minute timeout
+ * Switch MINGW build to VS 2017 image until appveyor figure out why builds on VS 2019 are almost twice as slow
+ * Run pacman twice to account for core system upgrades
+
+-Odroid n2 build fixes (#5751) [Julian Sikorski]
+ * Allow specifying NO_OPENGL manually
+ * Switch bgfx to OpenGL ES renderer if NO_X11 is specified
+ * Only link against EGL when NO_X11 is specified on linux, netbsd and openbsd
+ * Only switch bgfx to OpenGL ES on linux, netbsd and openbsd
+ * Indentation fix
+
+-RS232: move some initialization to a device_reset() function (#5748) [68bit]
+ * Calling the line handlers, such as m_cts_handler() from the device_start() function is problematic as some of these handlers may
+    wish to read ioports and that is not safe at this stage, so move these to a new device_reset() function.
+
+-mame/video/tmap038.cpp : Device-fied 038 Tilemap generator (#5704) [cam900]
+ * mame/video/tmap038.cpp : Device-fied 038 Tilemap generator Used on cave.cpp, mcatadv.cpp cave.cpp, mcatadv.cpp : Convert tilemap
+    draw routine into tmap038.cpp cave.cpp : Add notes, Fix spacing, Reduce duplicates mcatadv.cpp : Simplify handlers, Reduce
+    unnecessary line, Fix tilemap flicker with debug function enabled, Use shorter/correct type values
+ * tmap038.cpp : Add notes for manufacturer
+ * Date marking (ex: 9341EX702) seems like NEC style.
+ * mcatadv.cpp : Minor revert
+ * tmap038.h : Add notes, const'd getters
+
+-Netlist: code maintenance and improvements. [Couriersud]
+ * Added support for line markers to the preprocessor and parser.
+ * Added support for include processing to the preprocessor.
+ * Moved sources base type to plib to be used for preprocessor includes. This enables to include e.g. from rom memory regions.
+ * Renamed some defines
+
+-cps1.cpp, segas16b.cpp: Fix some unsafe bitmap usage in video update routines causing tilemap asserts in debug builds and
+ segmentation faults in some non-debug builds [AJR]
+
+-nmk16.cpp: Redumped the tiles ROM for Macross II (Korea) [Darksoft, Hammy]
+
+-New working clone [braintro]
+
+-seta.cpp: Switch jjsquawk to use three buttons [Michael Moffitt]
+ * J. J. Squawker's hardware reads three buttons, and button 3 is used in the sound test.
+
+-isa: Add Music Quest PC MIDI Card [AJR, VOGONS Vintage Driver Library]
+
+-luaengine: reduce memory usage during compilation [feos]
+ * Previous semantics were encouraged by sol2, and ThePhD admitted it was a bad idea for usertypes with lots of members. sol3 allows
+    to assign members outside a constructor for regular usertypes, but mame can't move to sol3 because it requires C++17. Turns out
+    sol2 also has a way to add members separately, and that is what I used. This helps immensely.
+ * This approach required a fix to warning C5046 copied from here
+    https://github.com/ThePhD/sol2/commit/57990845726e17fba11a39cfcb1fc0127a7ea638
+ * Tested current mame plugins, everything seems to work.
+ * PS: Due to come black magic, if I use simple_usertype::set() with "manager" as well, "machine" member dies (others are fine!), so
+    I had to leave it intact.
+
+-rd100: Add preliminary keyboard inputs [AJR]
+
+-sidepckt.cpp: Correct ROM labels and add PCB locations [Corrado Tomaselli, Brian Troha, The Dumping Union]
+
+-spdheat - add layout with shifters [David Haywood] (#5765) [David Haywood]
+ * actually fix gear mapping ingame (2nd bit just seems to cause problems)
+
+-Update ibm5150.xml [ArcadeShadow]
+ * Out Run (Kixx release), Starflight
+
+-New working software list additions [ArcadeShadow]
+ * Corridor 7: Alien Invasion
+
+-Fix some spelling mistakes [Zoë Blade]
+
+-Separate V50/V53 common peripherals and former device from V33 base; add V40 type for future use [AJR]
+
+-ref count in flight calls, fixes MT07456 [O. Galibert, smf]
+
+-Ref count in flight calls when a tap is installed, plus fix for less permissive compilers [O. Galibert, smf]
+
+-Fix spelling, tidy whitespace [Zoë Blade]
+
+-Fix spelling (#5770) [Zoë Blade]
+
+-rs232 null_modem: add DTR flow control [68bit]
+ * Some terminals use the DTR output for hardware flow control, so add that as another option.
+
+-m72.cpp: Replace MCU simulation / hack with proper MCU code for 2 M72 titles  [Caius, Jorge Silva, TeamEurope, The Dumping Union]
+ * decapped & dumped i8751 for Air Duel (Japan, M72 PCB version) [Caius, Jorge Silva, TeamEurope, The Dumping Union] decapped &
+    dumped i8751 for Dragon Breed (Japan, M72 PCB version) [Caius, Jorge Silva, TeamEurope, The Dumping Union]
+
+-m72.cpp: Fix sample-related communications on 8751-protected games [AJR]
+
+-ie15: resolve all rs232 handlers, even unused [68bit]
+
+ * fixed display of covers in UI. [Robbbert]
+
+-argus.cpp : Fix typo [cam900]
+
+-Names consistency in notes [f205v]
+ * Names consistency in notes
+
+-Tidy grammar [Zoë Blade]
+
+-New working software list additions (#5772) [Firehawke]
+ * New working software list additions
+   - ----------------------------------
+ * apple2_flop_orig: Gauntlet, Go (Hayden), Ghostbusters, Galactic Wars, Guderian [4am, Firehawke]
+
+-Hp9825: support for external ROM cartridges added (#5761) [fulivi]
+ * hp9825: optional ROM cartridges added (9825b only, ATM)
+ * hp9825: optional ROMs added to 9825t, added support for banked ROMs @5c00, separated RAM & ROM spaces in 9825t
+ * hp9885: added missing post-amble when writing sectors on disk
+
+-Revise comment (#5782) [Zoë Blade]
+ * Revise comment
+ * Streets of Rage was previously listed at http://www.system16.com/hardware.php?id=707 but was removed between April 2016 and June
+    2017 judging by The Internet Archive's Wayback Machine:
+ * https://web.archive.org/web/20160421233731/http://www.system16.com/hardware.php?id=707
+    https://web.archive.org/web/20170612023248/http://system16.com/hardware.php?id=707
+ * The site now suggests, more sensibly, that the original Streets of Rage was only on the Mega-Tech system, not Megaplay.
+ * Go ahead and delete comment
+ * The consensus is it isn't necessary.
+
+-Add Fujitsu FR disassembler and skeleton CPU device [AJR]
+
+-New skeleton device: PleXCombo PX-320A DVD/CD-RW Drive [Firmware HQ]
+
+-tv990: cursor fix [68bit]
+ * The addresses of the rows in the vram do not increase monotonically with the screen scan lines and the cursor address appears to
+    follow these addresses so the cursor row can not be computed from the address. Rather compute the cursor column from the
+    difference of the cursor address offset and the address off of the start of the row, and implicitly match the rows when
+    comparing the columns. This might not be perfect, but it is a big improvement and no issues have been spotted.
+
+-epc: Workarounds for issue #5776 - RAM sizes trigger segfault in BGFX. Also added comment about assert when DEBUG=1
+ [Joakim Larsson Edstrom]
+
+-Name consistency in notes [f205v]
+ * Name consistency in notes - improved Chihiro GD-ROM documentation
+
+-eispc.cpp: more state saves, polling of cassette interface and a general cleanup [Joakim Larsson Edstrom]
+
+-eispc.cpp: fixed some comments [Joakim Larsson Edstrom]
+
+-eispc_kb.cpp: Avoid scheduler asserts [Joakim Larsson Edstrom]
+
+-IDE devices are now on bus/ata, build fix. [68bit]
+
+-Apollo 7 Squale : Connect the EF9365 video controller irq output to the 6809 irq input. [Jean-François DEL NERO]
+
+-at.cpp: more motherboards and BIOS versions, Apricot boot and error messages (#5780) [rfka01]
+ * at.cpp: Apricot boot and error messages, some chipset info
+ * at.cpp: more motherboards and BIOS versions
+
+-Spelling (#5796) [Zoë Blade]
+ * Tidy up comments
+ * Fix typos
+ * Fix spelling
+ * Tidy
+ * Tidy
+
+ * screen: Added support for screens that vary horizontal width mid-frame, and hooked it up to the SNES driver. Fixes dkongcu intro
+    and others. [Ryan Holtz]
+
+-dmv: added HD interface. [Sandro Ronco]
+
+-markham.cpp: improved master irq firing and rowscroll in Strength & Skill, which was causing missing sprites in stage 2 and 3 at
+ least [Angelo Salese]
+
+-fmtowns_cd.xml: additions, better dumps (#5797) [r09]
+ * fmtowns_cd.xml: additions, better dumps
+   - Replaced entries with dumps from the redump.org database, with proper track indexes and offset correction:
+ * Indiana Jones and the Last Crusade Towns System Software v2.1 L51
+ * Added new working dumps from the redump.org database:
+ * CG Syndicate Vol. 1 - Lisa Northpoint CubicSketch V1.1 L10
+
+-new NOT WORKING machines (Plug & Play - Sunplus) (#5788) [David Haywood]
+ * new NOT WORKING machines
+   - ----
+ * TV Virtual Tennis  [David Haywood,  Morten Kirkegaard, Peter Wilhelmsen] Rockstar Guitar / Guitar Rock (PAL)  [David Haywood,
+    Morten Kirkegaard, Peter Wilhelmsen] Who Wants to Be a Millionaire (Play Vision, Plug and Play, UK)
+    [David Haywood,  Morten Kirkegaard, Peter Wilhelmsen]
+ * Millionaire needs P4 inputs sorting out Rockstar Guitar timings are all over the place (music not in sync at all) TV Virtual
+    Tennis is the spg110 type SunPlus and needs video fixes, as well as the motion controls.
+
+-eispc_kb: marked keyboard as imperfect as it generates Keyboard Error, press F1 message [Joakim Larsson Edstrom]
+
+-eispc_kb: marked keyboard as imperfect as it generates Keyboard Error, press F1 message [JoakimLarsson]
+
+-fmtowns_cd.xml: additions, better dumps [rzero9]
+ * Replaced entries with dumps from the redump.org database, with proper track indexes and offset correction:
+ * Indiana Jones and the Last Crusade Towns System Software v2.1 L51
+ * Added new working dumps from the redump.org database:
+ * CG Syndicate Vol. 1 - Lisa Northpoint CubicSketch V1.1 L10
+
+-Spelling Note that some cassette names, printed values, etc are affected, not just comments this time. [ZoeB]
+
+-IDE devices are now on bus/ata, build fix. The recent move of the IDE devices to the ata bus broke the build linking for the
+ swtpc09. This PR fixed that here. If this is not the appropriate fix then could someone please have a look at what is going wrong.
+ [68bit]
+
+-Avoiding asserts and cleanup of some comments I go for the controlled keyboard error rather than triggering asserts when DEBUG=1,
+ it is a not working machine still so not status change this time [JoakimLarsson]
+
+-Workaround for #5776 and some minor cleanups/features [JoakimLarsson]
+
+-Name consistency in notes Name consistency in notes - improved Chihiro GD-ROM documentation [f205v]
+
+-tv990: cursor fix The addresses of the rows in the vram do not increase monotonically with the screen scan lines and the cursor
+ address appears to follow these addresses so the cursor row can not be computed from the address. Rather compute the cursor column
+ from the difference of the cursor address offset and the address off of the start of the row, and implicitly match the rows when
+ comparing the columns. This might not be perfect, but it is a big improvement and no issues have been spotted. [68bit]
+
+-Tidy grammar [ZoeB]
+
+-Names consistency in notes - improved Cart 171-7978B documentation Names consistency in notes [f205v]
+
+-argus.cpp : Fix typo [cam900]
+
+-Revise comment Streets of Rage was previously listed at http://www.system16.com/hardware.php?id=707 but was removed between April
+ 2016 and June 2017 judging by The Internet Archive's Wayback Machine: [ZoeB]
+ * https://web.archive.org/web/20160421233731/http://www.system16.com/hardware.php?id=707
+    https://web.archive.org/web/20170612023248/http://system16.com/hardware.php?id=707
+ * The site now suggests, more sensibly, that the original Streets of Rage was only on the Mega-Tech system, not Megaplay.
+
+-ie15: resolve all rs232 handlers, even unused Addressing feedback suggestion, thanks. [68bit]
+
+-at.cpp: more motherboards and BIOS versions, Apricot boot and error messages [rfka01]
+
+-Apollo 7 Squale : Connect the EF9365 video controller irq output to the 6809 irq input. [jfdelnero]
+
+-rs232 null_modem: add DTR flow control Some terminals use the DTR output for hardware flow control, so add that as another option.
+ [68bit]
+ * E.g. This allows the SWTPC 8212 terminal, which has only DTR hardware flow control, to work with the null modem bit banger. It
+    might also be a useful option for terminals that can optionally use DTR flow control such as the QVT102 and others.
+
+-Fix spelling [ZoeB]
+
+-Fix spelling, tidy whitespace [ZoeB]
+
+-Fix some spelling mistakes [ZoeB]
+
+-spdheat - add layout with shifters [David Haywood]
+
+-Update ibm5150.xml Out Run (Kixx release), Starflight [ArcadeShadow]
+
+-Fix asmjs build Building asmjs fails after the BGFX update. [algestam]
+ * This PR isn't completely fixing the asmjs issue yet so consider it a work in progress. What has been done so far is a fix that
+    suppresses a warning in BIMG which allows the MAME build to complete but there still linking related issues which needs to be
+    resolved.
+ * The linking issues are looking like this:
+ * warning: undefined symbol: _ZN4bgfx2gl9GlContext11makeCurrentEPNS0_11SwapChainGLE warning: undefined symbol:
+    _ZN4bgfx2gl9GlContext15createSwapChainEPv warning: undefined symbol: _ZN4bgfx2gl9GlContext16destroySwapChainEPNS0_11SwapChainGLE
+    warning: undefined symbol: _ZN4bgfx2gl9GlContext4swapEPNS0_11SwapChainGLE warning: undefined symbol:
+    _ZN4bgfx2gl9GlContext6createEjj warning: undefined symbol: _ZN4bgfx2gl9GlContext6resizeEjjj warning: undefined symbol:
+    _ZN4bgfx2gl9GlContext7destroyEv warning: undefined symbol: _ZNK4bgfx2gl9GlContext7getCapsEv ....
+ * I believe a fix similar to what was done for Odroid (https://github.com/mamedev/mame/pull/5751) is required.
+
+-Hp9825: support for external ROM cartridges added Hi, [fulivi]
+ * with this set of commits I'm adding the support for external optional ROMs to HP9825B & T. I'm going to send soon the ROM images
+    to the "code" email. I also fixed a small bug in HP9885 floppy drive emulation.
+ * Thanks.
+ * -F.Ulivi
+
+-luaengine: reduce memory usage during compilation Previous semantics were encouraged by sol2, and ThePhD admitted it was a bad idea
+ for usertypes with lots of members. sol3 allows to assign members outside a constructor for regular usertypes, but mame can't move
+ to sol3 because it requires C++17. Turns out sol2 also has a way to add members separately, and that is what I used. This helps
+ immensely. [vadosnaprimer]
+ * This approach required a fix to warning C5046 copied from here
+    https://github.com/ThePhD/sol2/commit/57990845726e17fba11a39cfcb1fc0127a7ea638
+ * Tested current mame plugins, everything seems to work.
+ * Due to come black magic, if I use `simple_usertype::set()` with "manager" as well, "machine" member dies (others are fine!), so I
+    had to leave it intact.
+ * github isn't too good at displaying inline changes :/
+
+-seta.cpp: Switch jjsquawk to use three buttons J. J. Squawker's hardware contains three buttons, and button 3 is checked in the
+ sound test. [Mikejmoffitt]
+
+-Fix build for nonstandard compiler versions like '8.3-win32' Fixes cross-compiling for Windows from a Debian testing machine.
+ [MoochMcGee]
+
+-IE15 terminal: rework the RS232 interfaces The RS232 port has been moved out of the ie15 device. It is only needed in stand alone
+ operation, and not when connected to the rs232 bus, it was odd leaving it in there, odd to still have an rs232 port slot option
+ when running stand alone. [68bit]
+ * The IE15 UART implementation has been removed from the rs232 bus code and back into the ie15 device code. This leaves the rs232
+    bus code dealing with only serial data, and not the parallel data, and that should make it easier in future to have a common
+    interface to RS232 terminals.
+ * This is to illustrate some points raised in PR https://github.com/mamedev/mame/pull/5729 the SWTPC 8212 terminal proposal. This
+    IE15 terminal proposal uses the same interface function names, and interfaces to the ie15 device using only serial data as is
+    done for the swtpc8212 which has an implemented UART. If people agree that this is a move in the right direction then you might
+    please consider merge this. Not claiming that his pushes the IE15 implementation along, it is just a proposed source code
+    cleanup.
+
+-Odroid n2 build fixes These changes should allow mame to successfully build on Odroid N2:
+ https://forums.bannister.org/ubbthreads.php?ubb=showflat&Number=116204 https://forum.odroid.com/viewtopic.php?f=177&t=36521
+ [belegdol]
+
+-hh_sm510: fix gnw_manholeg alarm clock segment This fixes a problem with the alarm clock segments for manhole (gold). Thanks to
+ TheOldGamerGuy for finding and reporting the issue. [algestam]
+
+-RS232: move some initialization to a device_reset() function Calling the line handlers, such as m_cts_handler() from the
+ device_start() function is problematic as some of these handlers may wish to read ioports and that is not safe at this stage, so
+ move these to a new device_reset() function. [68bit]
+ * When adding a write line function for a serial line, to route the line based on config options, it fails to initialize claiming
+    that reading the ioport is not safe. It appears to have been due to the calls from the res232 device_start() function, and
+    moving them to a device_reset() function worked around that.
+
+-SWTPC MP-S2: connect up the RS232 control lines At least some of these are required for operation with terminals. For example the
+ SWTPC 8212 terminal uses DTR to CTS for hardware flow control, and that is needed even at 9600 baud. [68bit]
+
+-ins8250: fix cleared pending THRE interrupt The code notes that reading the iir register "will clear the int if this is the source
+ of the int" and the code cleared a pending THRE interrupt if it was *pending*. This causes a lost THRE interrupt for the SWTPC 8121
+ terminal firmware and this locks up the TX side of the terminal. This occurred regularly when the ISR read this register upon a
+ higher priority RX pending interrupt. The documented operation has been reinterpreted as only clearly the THRE interrupt if THRE is
+ the highest priority interrupt and so is the pending interrupt *causing* the interrupt. This fixes that lost THRE interrupt for the
+ SWTPC 8121 terminal. [68bit]
+
+-at.cpp: motherboards and BIOS versions, RAM and cache information, small ROM name ... correction [rfka01]
+
+ * x c++ should not be applied to targets like msvc This should fix the msvc build failures @MooglyGuy reported on irc. [belegdol]
+
+-Apple II update to October 14th, 2019 [Firehawke]
+
+-Unbreak building shaders in cmd shell and add support for building them in MINGW bash shell This should fix #5738 while at the same
+ time adding support for building shaders from MINGW64 bash shell [belegdol]
+
+-Plug and Play additions [DavidHaywood]
+
+-ymf278b.cpp : Allow scaling for FM DO2 output ymf262.cpp : Add notes [cam900]
+
+-fmtowns: add the Model 2 ROMs This change adds the ROM dumps from a first-generation FM Towns computer (a Model 2, but the Model 1
+ is essentially a different configuration of the same machine), replacing the old "fmtowns" parent set, which turned out to actually
+ be an FM Towns II MX. [rzero9]
+ * For now this is a software dump, made from DOS with the "rombeger" tool included with the Unz emulator. I hope to get physical
+    dumps of at least the two socketed chips in the near future, when I have the necessary tools, but judging from the MX example,
+    the software dumps should match the real ones.
+ * I also looked into the "fmtownsa" set, and found the ROM version and build date inside the system ROM, so I renamed it and
+    changed the descriptions a bit to be more accurate, and also added a list with every known model to the source comments.
+
+-Make shaders fixes Replacing make with $(MAKE) has uncovered the fact that current shaders build set-up is not compatible with
+ parrallel builds. Also, -s needs to be removed for VERBOSE=1 to have the desired effect. [belegdol]
+
+-uchroma68: Motorola Micro Chroma 68, new machine Motorola evaluation board for the MC6847 VDG and MC1372 RF modulator, running the
+ TV-BUG 2k monitor. The ROMs for this one are at https://68bit.org/uchroma68.zip [68bit]
+
+-Check that m_display is not null to prevent crash https://mametesters.org/view.php?id=7372 [GeorgeMcMullen]
+
+-hh_sm510: rescan gnw_mmouse display [algestam]
+
+-WIP: sync bgfx, bx and bimg with latest upstream Once completed, this WIP will sync the bgfx, bx and bimg with latest upstream. The
+ changes do not build yet but I am sharing what I have managed to get done so far. [belegdol]
+
+-mos6581.cpp : Add save states, Misc SID chip updates sid.cpp : Reduce duplicates, Add postload function sidvoice.cpp : Fix type
+ value when DIRECT_FIXPOINT defined sidenvel.cpp, sidvoice.cpp, sid.cpp : Fix spacings [cam900]
+
+-fmtowns: bring machine configurations a bit closer to real hardware This PR tries to better approximate what actual FM Towns
+ machines are like, in terms of devices/configurations. The details are in the commit text, but the most important changes are the
+ removal of the integrated SCSI controller on the first-gen models and the Marty (they don't have one in real life), and RAM options
+ that reflect the actual onboard/SIMM combinations for each model. It also includes a couple of bugfixes and sanity checks to
+ prevent emulator crashes I've found along the way. [rzero9]
+ * This is the first time I mess around with devices and machine configurations, so feel free to criticize or suggest improvements.
+ * Sources used:
+ * http://www.mahoroba.ne.jp/~kazstary_/usage/simmfaq.txt http://labo.main.jp/newage/towns/fmt_model.html
+    https://assemblergames.com/threads/fm-towns-marty-non-pcmcia-ram-expansion.65594/
+ * As an aside, I may be able to acquire a Model 2 computer in the next few weeks/months and dump the ROMs, which would allow us to
+    finally have actual emulation of the first-gen models from 1989, but I can't guarantee anything yet.
+
+-MEK6800D1: early Motorola 6800 design evaluation board The MIKBUG monitor is working. The terminal support for reading and
+ 'punching' tapes is not yet implemented, but perhaps would be better implemented in a TTY emulator. Perhaps this of some historical
+ interest. The ROM for this one is available at: https://68bit.org/mekd1.zip [68bit]
+
+-tms34020: implement CLIP opcode This pull request should is supposed to implement CLIP opcode for tms34020. [plaes]
+
+-gamate: fix power up RAM contents According to reports in the cc65 project, it appears that the RAM contains 0xFFs at power up. See
+ https://github.com/cc65/cc65/issues/941. Adapt the driver to account for this. [groessler]
+ * Caveat: I don't have real hardware to double check.
+
+-ninjaw.cpp, warriorb.cpp : Accurate psg output position (subwoofer only) [cam900]
+
+-src/mame/drivers/megasys1.cpp: fix compilation error a forgotten semicolon [groessler]
+
+-nmk16.cpp : Fix actobatm regression [cam900]
+
+-m24.cpp: Added Olivetti M21 and hitherto unknown BIOS revision, at.cpp: motherboards and BIOS versions ... sorted by chipset
+ [rfka01]
+
+-mame/video/tmap038.cpp : Device-fied 038 Tilemap generator Used on cave.cpp, mcatadv.cpp cave.cpp, mcatadv.cpp : Convert tilemap
+ draw routine into tmap038.cpp cave.cpp : Add notes, Fix spacing, Reduce duplicates mcatadv.cpp : Simplify handlers, Reduce
+ unnecessary line, Fix tilemap flicker with debug function enabled, Use shorter/correct type values [cam900]
+
+-Continuous integration improvements As the only remaining build failures only affect debug build of tools, tweak the configuration
+ so that the build can actually complete: [belegdol]
+ * disable tools build
+ * switch to release build while disabling optimization
+ * no longer allow msvc build to fail
+
+-Update Apple 2 softlists to October 2nd, 2019 [Firehawke]
+ * ---------------------------------- apple2_flop_clcracked: The Haunted Palace (cleanly cracked), The World's Greatest Baseball
+    Game (Enhanced Version) (cleanly cracked) [4am, Firehawke]
+ * apple2_flop_orig: Carriers at War, Europe Ablaze, Halls of Montezuma, Panzer Battles, Reach For The Stars (Version 1.0), Reach
+    For The Stars (Version 2.0), Reach For The Stars (Version 3.0), Russia, Decisive Battles of the Civil War: Volume One,
+    Battlefront, Oil Rig, American Government (Micro Learningware), Muppet Learning Keys: The Muppet Discovery Disk, Leisure Suit
+    Larry in The Land of The Lounge Lizards, I, Damiano, Crime Stopper, Questprobe featuring Spider-Man, Beach Landing, Vaults of
+    Zurich, Decisive Battles of the American Civil War: Volume Two, Decisive Battles of the American Civil War: Volume Three,
+    MacArthur's War, Tapper, Space Kadet [4am, Firehawke]
+ * Software list items promoted to working
+ * --------------------------------------
+ * apple2_flop_orig: Drol [4am, Firehawke]
+
+-apple3: Corrected number row key layout to fix pasting. The number row used to use the Apple 2 layout and so text didn't paste into
+ MAME correctly. Shifted number keys now paste correctly. [pahandav]
+
+-Fix AVI framerate MAME was setting up AVI before devices have properly launched, so default 60fps was used, which resulted in
+ skipped frames in the video if machine's framerate is above 60 (btoads), and presumably duplicate frames for machines below 60fps
+ (haven't tested). [vadosnaprimer]
+ * Now every frame that is generated is also present in the video.
+ * Test script (dump avi with framecount display):
+ * ```lua local function getscreen() for k,v in pairs(manager:machine().screens) do return v end end
+ * local screen = getscreen()
+ * local function framecount() str = "frame: " .. screen:frame_number() print(str) screen:draw_text(0, 0, str, 0xffffffff,
+    0xff000000) end
+ * emu.register_frame_done(framecount) ```
+
+-tms34020: Implement SETCDP opcode This pull request implements `SETCDP` opcode for tms34020. [plaes]
+ * Standalone testcase here: https://gist.github.com/plaes/dec4b76ffc4b720726f21031d8d399ac
+ * Changes in v3:
+ * Dropped log2 usage in favor of `32 - count_leading_zeros()`
+ * Dropped useless includes
+ * Fixed formatting for braces
+ * Use logical or instead of sum
+ * Changes in v2:
+ * Use functions from eminline.h (population_count_32 instead of __builtin_popcount and count_leading_zeros instead of
+    __builtin_ffs)
+ * Use `log2` from `<cmath>`
+ * Fix pointless `log2` calls in the double power of two case.
+
+-vs2019 fixes, initial clang-cl support This should resolve the worst of the issues listed in #5695. The alternative builds are
+ either not tested or do not work, but with the changes the project files are at least being created in the correct folders. The PR
+ also adds initial hooks needed to build using Visual Studio's own LLVM/Clang:
+ https://devblogs.microsoft.com/cppblog/clang-llvm-support-for-msbuild-projects/ Building using clang still needs some work  - as of
+ now it runs of memory building frontend.vcxproj but this should be hopefully relatively easy to fix for someone who knows what they
+ are doing. [belegdol]
+
+-nmk16spr.cpp : Device-fied NMK 16 bit sprite hardware Original source by nmk16.cpp, with Fix flipped case, Allow pdrawgfx drawing
+ nmk16.cpp, powerins.cpp : Convert sprite draw routine into nmk16spr.cpp nmk16.cpp : Fix manybloc flipped screen, Remove unused
+ powerins.cpp : Verify clock related to on-board XTALs, Add screen raw params [cam900]
+
+-Allow updating version.cpp when IGNORE_GIT=1 is passed Without this tweak it would only create the file if it doesn't exist, and
+ wouldn't update an existing one. [vadosnaprimer]
+
+-ay8910.cpp : Device-fied sunsoft 5B sound hardware [cam900]
+ * It has Yamaha SSG volume/envelope parameters, single sound output and internal divider.
+ * Manufactured by Yamaha
+
+-fmtowns_cd.xml: additions, better dumps, updated missing list [rzero9]
+ * Replaced entries with dumps from the redump.org database, with proper track indexes and offset correction:
+ * The 4th Unit 6 - Merry-Go-Round Air Warrior V1.1 Dragon Shock Final Blow Ms. Detective File #1 - Iwami Ginzan Satsujin Jiken
+    Rance III - Leazas Kanraku Sherlock Holmes - Consulting Detective Turbo Out Run The Visitor
+ * Added new working dumps from the redump.org database:
+ * Shanghai
+ * Added new NOT working dumps from the redump.org database (most of these are missing floppy disks):
+ * Air Warrior V1.2 Fujitsu Habitat V2.1L10 Hyper Media NHK Zoku Kiso Eigo: Dai-3-kan Nobunaga no Yabou: Sengoku Gun'yuuden Taito
+    Chase H.Q. (Demo)
+ * Added a parent-clone relationship between the Windows 3.1 revisions
+ * Updated the missing list with some recently confirmed software
+
+-Rebase and completion of split out of epc driver and addition of graphics card This replaces PR #5312 The EPC can now boot from
+ floppy and a new LLE serial keyboard is functional. Credits for the dump of the keyboard 6801 MCU goes to the people at Dalby
+ Datormuseum whom I collaborated with in a dumper project: [JoakimLarsson]
+ * https://sites.google.com/site/dalbydatormuseum/home https://github.com/MattisLind/6801reader
+
+-[snes] Run HTOTAL double only if needed Also run HDMA when vpos=0 [AmatCoder]
+ * Fix Vortex & Judge Dreed graphics
+
+-Lua callback after sound update has generated new samples [vadosnaprimer]
+-New samples are generated independently from the video system, vblank, frames, etc. Sound update uses its own timer and fires 50
+ times per second. So if we want to grab the sound buffer, we need to do it 50 times per second as well.
+ * This PR adds a callback that fires whenever audio has been updated and new samples have been generated. I tested it with this
+    script and got the same output as from `-wavwrite`:
+ * ```lua local function log(s, name) logfile = io.open(name, "ab") -- binary mode is required, otherwise junk gets appended along
+    the way logfile:write(s) logfile:close() end
+ * emu.register_sound_update(function() local samples = manager:machine():sound():samples() log(samples, "check.wav") end) ```
+
+-Synced with GENie upstream revision e78d6c1 Please do not merge this yet, I still need to test the changes. Once merged this will
+ resolve issue #5597. [belegdol]
+
+
+New working machines
+--------------------
+Super Dead Heat [Phil Bennett]
+Space Museum [r09]
+TownsSOUND V1.1 L20 [r09]
+Z's Triphony DigitalCraft Towns [r09]
+Added new NOT working dumps: [r09]
+Debian GNU/Linux 1.3.1 with Debian-JP Packages [akira_2020 / Tokugawa Corporate Forums]
+Debian GNU/Linux 2.0r2 with Hamm-JP [akira_2020 / Tokugawa Corporate Forums]
+TownsFullcolor V2.1 L10 [redump.org]
+Video Koubou V1.4 L10 [redump.org]
+Space Museum [rzero9]
+TownsSOUND V1.1 L20 [rzero9]
+Z's Triphony DigitalCraft Towns [rzero9]
+Added new NOT working dumps: [rzero9]
+Debian GNU/Linux 1.3.1 with Debian-JP Packages [akira_2020 / Tokugawa Corporate Forums]
+Debian GNU/Linux 2.0r2 with Hamm-JP [akira_2020 / Tokugawa Corporate Forums]
+TownsFullcolor V2.1 L10 [redump.org]
+Video Koubou V1.4 L10 [redump.org]
+apple2_flop_orig: Gauntlet, Go (Hayden), Ghostbusters, Galactic Wars, Guderian [4am, Firehawke]
+Corridor 7: Alien Invasion [ArcadeShadow]
+ibm5051: Action Service (Smash16 release) (3.5"), International Karate, Italy '90 Soccer, Joe Blade (Smash16 release) [ArcadeShadow]
+Disney Princesses (JAKKS Pacific TV Game, Game-Key Ready) [Sean Riddle, David Haywood, anonymous]
+Capcom 3-in-1 (1942, Commando, Ghosts'n Goblins) (JAKKS Pacific TV Game, Game-Key Ready) (29 MAR 2005 B)
+  [Sean Riddle, David Haywood, anonymous]
+ibm5170: Links - The Challenge of Golf (5.25"HD) [ArcadeShadow]
+Game & Watch: Manhole (gold) [algestam, Mr. Do, Sean Riddle]
+H-01B Chinese Computer [zzemu-cn]
+(TRS-80 Level II Basic) [zzemu-cn]
+cpu Z-80A 2MHz [zzemu-cn]
+video MC6845P [zzemu-cn]
+ram 32KB SRAM [zzemu-cn]
+Game & Watch: Lion [algestam, Mr. Do, Sean Riddle]
+Game & Watch: Spitball Sparky [algestam, Mr Jiggles the Christmas Man]
+
+
+New working clones
+------------------
+Hard Head (bootleg, set 3) [jordigahan, The Heckler, ClawGrip]
+Megatouch III Turnier Edition (9255-30-50 R0F, Bi-Lingual GER/ENG version) [Kevin Eshbach, Brian Troha, The Dumping Union]
+Bomberman (Version 6.6) [caius, The Dumping Union]
+P-47 - The Freedom Fighter (World, bootleg) [jordigahan, The Heckler, ClawGrip]
+Buggy Boy/Speed Buggy (cockpit, rev. B) [pacman70, Asayuki Kizuyomina]
+Dragon Breed (Japan, M72 PCB version) [Jorge Silva]
+Mephisto MM V (prototype) [CB-Emu]
+19XX: The War Against Destiny (Euro 960104) [redsupra, smf]
+Game & Watch: Super Mario Bros. (crystal screen) [algestam, Mr Jiggles the Christmas Man]
+Also renamed the SMB NWS version to gnw_smbn and made SMB CS (gnw_smb) parent. [algestam]
+Beastorizer (USA, set 2) [jordigahan, ClawGrip]
+
+
+Machines promoted to working
+----------------------------
+Fidelity Phantom Chess Challenger [Sandro Ronco]
+VPU-01 Speech box [Robbbert]
+NCR Decision Mate V [Sandro Ronco, rfka01]
+
+
+Clones promoted to working
+--------------------------
+Gold Medalist (set 2, Alpha68k III PCB) [Angelo Salese]
+Gold Medalist (bootleg, Alpha68k III PCB) [Angelo Salese]
+alpha68k.cpp: fixed Gold Medalist missing status bar and "player 1 start/hurry up" GFXs for player 1 [Angelo Salese]
+The Real Ghostbusters (US 3 Players, revision 2) [TeamEurope, Brian Troha, The Dumping Union]
+
+
+New machines marked as NOT_WORKING
+----------------------------------
+Vortex (Island Design) [unknown]
+Terrific Lake [PinMame]
+Top Sound (French) [PinMame]
+Rollamatic 5-Line Special (Barcrest) (MPU3) [Darran, The Dumping Union]
+El Dorado [Team Europe]
+Care Bears TV Games (JAKKS Pacific TV Game, Game-Key Ready) [Sean Riddle, David Haywood, anonymous]
+new NOT WORKING software list entries [David Haywood]
+ekara_japan_a.xml: [David Haywood]
+a3 : A-3 Pichi Pichi Pitch vol.3 (Japan) [David Haywood, Sean Riddle]
+evio.xml: [David Haywood]
+em2: eM2 - evio Selection 02 [David Haywood, Peter Wilhelmsen, ShouTime, Sean Riddle]
+em3: eM3 - Anime Mix 1 [David Haywood, Peter Wilhelmsen, ShouTime, Sean Riddle]
+em4: eM4 - I Love Classic 1 [David Haywood, Peter Wilhelmsen, ShouTime, Sean Riddle]
+em7: eM7 - Pure Kiss 1 [David Haywood, Peter Wilhelmsen, ShouTime, Sean Riddle]
+em8: eM8 - Hard Soul 1 [David Haywood, Peter Wilhelmsen, ShouTime, Sean Riddle]
+em9: eM9 - evio Selection 03 [David Haywood, Peter Wilhelmsen, ShouTime, Sean Riddle]
+em16: eM16 - Chisako Takashima Selection [David Haywood, Peter Wilhelmsen, ShouTime, Sean Riddle]
+em18: eM18 - unknown [David Haywood, Peter Wilhelmsen, ShouTime, Sean Riddle]
+additional cartridge info [AJR]
+Ping Pong / Table Tennis / Super Ping Pong (PP1100, ABL TV Game) [David Haywood,  Morten Shearman Kirkegaard, Peter Wilhelmsen]
+boots and runs, but no sound, seems to need an additional device at 410f emulating which may or may not be sound related, waits for
+  a long time for it to finish sending streams of data there.  if you wait long enough controls do actually work as it appears the
+  'motion' control here just simulates a button press.  As pointed out, this seems to be an updated version of Gameinis' Ping Pong
+  with improved gfx etc. [DavidHaywood]
+LMS46-V9 [Don Maslin Vintage Computer Archive, AJR]
+Teleray Model 10 [Bitsavers]
+TV Virtual Tennis  [David Haywood,  Morten Kirkegaard, Peter Wilhelmsen]
+Rockstar Guitar / Guitar Rock (PAL)  [David Haywood,  Morten Kirkegaard, Peter Wilhelmsen]
+Who Wants to Be a Millionaire (Play Vision, Plug and Play, UK)  [David Haywood,  Morten Kirkegaard, Peter Wilhelmsen]
+Millionaire needs P4 inputs sorting out [DavidHaywood]
+Rockstar Guitar timings are all over the place (music not in sync at all) [DavidHaywood]
+TV Virtual Tennis is the spg110 type SunPlus and needs video fixes, as well as the motion controls. [DavidHaywood]
+Ping Pong / Table Tennis / Super Ping Pong (PP1100, ABL TV Game) [David Haywood,  Morten Kirkegaard, Peter Wilhelmsen]
+boots and runs, but no sound, seems to need an additional device at 410f emulating which may or may not be sound related, waits for
+  a long time for it to finish sending streams of data there.  if you wait long enough controls do actually work as it appears the
+  'motion' control here just simulates a button press.  As pointed out, this seems to be an updated version of Gameinis' Ping Pong
+  with improved gfx etc. [DavidHaywood]
+Care Bears TV Games (JAKKS Pacific TV Game, Game-Key Ready) [Sean Riddle, David Haywood, anonymous]
+ekara_japan_a.xml: [DavidHaywood]
+a3 : A-3 Pichi Pichi Pitch vol.3 (Japan) [David Haywood, Sean Riddle]
+evio.xml: [DavidHaywood]
+em2: eM2 - evio Selection 02 [David Haywood, Peter Wilhelmsen, ShouTime, Sean Riddle]
+em3: eM3 - Anime Mix 1 [David Haywood, Peter Wilhelmsen, ShouTime, Sean Riddle]
+em4: eM4 - I Love Classic 1 [David Haywood, Peter Wilhelmsen, ShouTime, Sean Riddle]
+em7: eM7 - Pure Kiss 1 [David Haywood, Peter Wilhelmsen, ShouTime, Sean Riddle]
+em8: eM8 - Hard Soul 1 [David Haywood, Peter Wilhelmsen, ShouTime, Sean Riddle]
+em9: eM9 - evio Selection 03 [David Haywood, Peter Wilhelmsen, ShouTime, Sean Riddle]
+em16: eM16 - Chisako Takashima Selection [David Haywood, Peter Wilhelmsen, ShouTime, Sean Riddle]
+em18: eM18 - unknown [David Haywood, Peter Wilhelmsen, ShouTime, Sean Riddle]
+(note, you can listen to most of the Evio songs, just no inputs, em18 doesn't boot tho, needs an EEPROM hookup, likewise the a3
+  ekara needs an EEPROM hookup different to the existing ones) [DavidHaywood]
+Kursaal Darts [jordigahan, ClawGrip]
+
+
+New clones marked as NOT_WORKING
+--------------------------------
+Bank Robbery (Ver. 1.23) [Siftware]
+Derby Owners Club World Edition (Rev A) [Fluffy]
+The Flintstones (LX-3) [PinMAME]
+Vs. Super Mario Bros. (bootleg with Z80, set 3) [jordigahan, ClawGrip]
+
+
+apple2_flop_clcracked (apple2_flop_clcracked.xml):
+  Working
+    Balancing Act (cleanly cracked)
+    Fractions: Basic Skills (cleanly cracked)
+    Fractions: Subtraction (cleanly cracked)
+    Statistics (Version 3.3) (cleanly cracked)
+    The Haunted Palace (cleanly cracked)
+    The World's Greatest Baseball Game (Enhanced Version) (cleanly cracked)
+    Whole Numbers: Multiplication (cleanly cracked)
+
+apple2_flop_orig (apple2_flop_orig.xml):
+  Working
+    Alibi
+    American Government (Micro Learningware)
+    Apple Stellar Invaders
+    Battlefront
+    Beach Landing
+    Carriers at War
+    Crime Stopper
+    Decisive Battles of the American Civil War: Volume Three
+    Decisive Battles of the American Civil War: Volume Two
+    Decisive Battles of the Civil War: Volume One
+    Dogfight II
+    Europe Ablaze
+    Galactic Wars
+    Gauntlet
+    Ghostbusters
+    Go (Hayden)
+    Guderian
+    Halls of Montezuma
+    I, Damiano
+    Leisure Suit Larry in The Land of The Lounge Lizards
+    MacArthur's War
+    Muppet Learning Keys: The Muppet Discovery Disk
+    Oil Rig
+    Panzer Battles
+    Pulsar ][
+    Questprobe featuring Spider-Man
+    Reach For The Stars (Version 1.0)
+    Reach For The Stars (Version 2.0)
+    Reach For The Stars (Version 3.0)
+    Reversal
+    Russia
+    Sherlock Holmes in Another Bow
+    Simultaneous Linear Equations
+    Space Kadet
+    Tapper
+    The Coveted Mirror
+    The Haunted Palace
+    The Mask of the Sun (Version 2.1)
+    Ulysses and the Golden Fleece
+    Vaults of Zurich
+    Winter Games
+
+dmv (dmv.xml):
+  Promoted
+    MS-DOS v2.11 HD
+    MS-DOS v2.11 HD (Alt 2)
+    MS-DOS v2.11 HD (Alt 3)
+    MS-DOS v2.11 HD (Alt)
+    Z-Com v2.0 HD
+
+ekara_japan_a (ekara_japan_a.xml):
+  Non-working
+    A-3 Pichi Pichi Pitch vol.3 (Japan)
+
+evio (evio.xml):
+  Non-working
+    Anime Mix 1
+    Chisako Takashima Selection
+    Hard Soul 1
+    I Love Classic 1
+    Pure Kiss 1
+    evio Challenge!
+    evio Selection 02
+    evio Selection 03
+
+fmtowns_cd (fmtowns_cd.xml):
+  Renames
+    vkoubou -> vkoubou1310 Video Koubou V1.3 L10
+  Removed
+    Air Warrior
+  Working
+    CG Syndicate Vol. 1 - Lisa Northpoint
+    CubicSketch V1.1 L10
+    New Horizon CD Learning System II - English Course 1
+    Shanghai
+    Space Museum
+    TownsSOUND V1.1 L20
+    Z's Triphony DigitalCraft Towns
+  Non-working
+    Air Warrior V1.1
+    Air Warrior V1.2
+    Debian GNU/Linux 1.3.1 with Debian-JP Packages
+    Debian GNU/Linux 2.0r2 with Hamm-JP
+    Fujitsu Habitat V2.1L10
+    Hyper Media NHK Zoku Kiso Eigo - Dai-3-kan
+    Nobunaga no Yabou - Sengoku Gun'yuuden
+    Taito Chase H.Q. (Demo)
+    TownsFullcolor V2.1 L10
+    Video Koubou V1.4 L10
+
+hp9825b_rom (hp9825b_rom.xml):
+  Working
+    9885 ROM for 9825
+    9885/9895 ROM for 9825
+    Matrix ROM for 9825
+    SSS mass storage ROM
+
+ibm5150 (ibm5150.xml):
+  Working
+    Action Service (Smash16 release) (3.5")
+    International Karate
+    Italy '90 Soccer
+    Joe Blade (Smash16 release)
+    Out Run (Kixx release)
+    Starflight
+
+ibm5170 (ibm5170.xml):
+  Working
+    Corridor 7: Alien Invasion
+    Links - The Challenge of Golf (5.25"HD)
+
+leapfrog_ltleappad_cart (leapfrog_ltleappad_cart.xml):
+  Non-working
+    Baby's First Words (USA)
+    Disney Pooh Loves You! (USA)
+    If I were... (USA)
+
+megadriv (megadriv.xml):
+  Removed
+    Battle Mania Daiginjou (Jpn, Prototype, 19910528)
+
+midi_flop (midi_flop.xml):
+  Working
+    Dansbandshits nr 3 (Sweden)
+
+vz_snap (vz_snap.xml):
+  Working
+    Ace of Aces
+    Adventure
+    Airstrip
+    Arkaball v1
+    Arkaball v2
+    Arrgh
+    Assembly Language for Beginners
+    Asteroids
+    Attack of the Killer Tomatoes
+    Backgammon
+    Backgammon Instructions
+    Battleships v1
+    Battleships v2
+    Bezerk
+    Binary Tape Copier v1.0
+    Bomber
+    Breakproof File Copier
+    Bust Out
+    Camel
+    Card Andy
+    Casino Roulette v1
+    Casino Roulette v2
+    Catch
+    Challenger
+    Chasm Capers
+    Check Disk
+    Checkers
+    Chess
+    Circus
+    Compgammon
+    Computer Learjet
+    Concentration
+    Cos Res
+    Craps
+    Crash
+    Curses
+    Dawn Patrol
+    Decoy v1
+    Decoy v2
+    Defence Penetrator
+    Dig Out
+    Disassembler v2
+    Disassemmbler v1
+    Disk Copier
+    Disk Copy V2.0
+    Disk Editor-Assembler V6.0X
+    Disk Menu
+    Disk Ops 4
+    Disk Sector Editor v1
+    Disk Sector Editor v2
+    Dog Fight
+    Dracula's Castle
+    Editor-Assembler V.1.2
+    Editor-Assembler V.1.2B
+    Electric Tunnel
+    Electronic Blackjack
+    Extended DOS V1.3
+    Extended VZ Basic V2.5
+    Factory
+    Fastdisk V1.0
+    Fastdisk V1.1
+    Fastdisk V1.2
+    Fastdisk V1.2 demo
+    Filesearch 2.0
+    Filesearch V2.0
+    Formula One v1
+    Formula One v2
+    Formula Uno
+    Frog
+    Galactic Invasion
+    Galactic Raiders
+    Galactic Trade
+    Galaxon
+    Game Instructions
+    Ghost Blasters
+    Ghost Hunter (hacked)
+    Ghost Hunter instructions
+    Ghost Hunter v1
+    Ghost Hunter v2
+    Golf
+    Grand Prix
+    Grave Digger
+    Gunfight
+    Hamburger Sam
+    Hangman v1
+    Hangman v3
+    Hangman v4
+    Hex Maths
+    Hex Utilities
+    High Scores
+    Hoppy v1
+    Hoppy v2
+    Hunt the Wumpus
+    Instructions for Asteroid Dodge
+    Instructions for Invaders
+    Instructions for Ladder Challenge
+    Invaders v1
+    Invaders v2
+    Inventory
+    Kamikaze Invaders
+    Key Hunt
+    Knights and Dragons
+    Ladder Challenge
+    Laser
+    Laser Pong
+    Lunar Lander
+    Mad Max VI
+    Madhouse
+    Mars Patrol
+    Mastermind
+    Match Box
+    Match Box Instructions
+    Maths Armada
+    Maze Generator
+    Meat Pies
+    Melbourne Cup
+    Meteor
+    Missile Attack
+    Missile Command v1
+    Missile Command v2
+    Missing Number
+    Moon
+    Moon Lander
+    Moonlander
+    Moving Targets
+    Number Sequence
+    Number Slide
+    Othello
+    Othello Instructions
+    Painter v1
+    Painter v2
+    Painter v3
+    Panik
+    Panik Instructions
+    Penguin
+    Planet Patrol
+    Poker Machine
+    Punch v1
+    Punch v2
+    Pursuit
+    Rocket Command
+    Shootout
+    Space
+    Space Ram
+    Space Station Defender
+    Space Vice
+    Star Blaster
+    Submarine
+    Super Snake
+    Super Snake Trapper
+    Tennis v1
+    Tennis v2
+    The Dynasty Derby
+    The High Mountains
+    The Quest
+    The Return of Defense Command
+    The Ten Commandments
+    Tone Generator
+    Totaliser Derby
+    Tower
+    Triffids 2040 AD
+    Twisting Road
+    VZ 200-300 Diskette Monitor
+    VZ Panik
+    VZ cave
+    VZ-200 Cup
+    Vzetris
+    Worm
+    Write a Story
+
+Comparing 0.214 (mame0214) to 0.214 (mame0214-561-gcf3f4b2-dirty)
+
+Renames
+jak_disp -> jak_dpr Disney Princess (JAKKS Pacific TV Game, Game-Key Ready)
+gnw_smb -> gnw_smbn Game & Watch: Super Mario Bros. (new wide screen)
+19xx -> 19xxu 19XX: The War Against Destiny (USA 951207)
+m21 -> mirco21 21 (Mirco)
+
+New working machines
+--------------------
+Capcom 3-in-1 (1942, Commando, Ghosts'n Goblins) (JAKKS Pacific TV Game, Game-Key Ready) (29 MAR 2005 B)
+Disney Princesses (JAKKS Pacific TV Game, Game-Key Ready)
+Game & Watch: Lion
+Game & Watch: Manhole (gold)
+Game & Watch: Spitball Sparky
+H-01B
+MEK6800D1
+Micro Chroma 68
+Super Dead Heat
+
+New working clones
+------------------
+19XX: The War Against Destiny (Euro 960104)
+Beastorizer (USA, Jun 21 1997)
+Bomberman (Version 6.6)
+Buggy Boy/Speed Buggy (cockpit, rev. B)
+Dragon Breed (Japan, M72 PCB version)
+Game & Watch: Super Mario Bros. (crystal screen)
+Hard Head (bootleg, set 3)
+Megatouch III Turnier Edition (9255-30-50 R0F, Bi-Lingual GER/ENG version)
+Mephisto MM V (prototype)
+P-47 - The Freedom Fighter (World, bootleg)
+The Flintstones (LX-3)
+
+Machines promoted to working
+----------------------------
+Decision Mate V
+Phantom Chess Challenger
+TRS-80 DT-1
+VPU-01 Speech box
+
+New machines marked as NOT_WORKING
+----------------------------------
+Care Bears TV Games (JAKKS Pacific TV Game, Game-Key Ready)
+El Dorado
+Kursaal Darts
+LMS46-V9
+Ping Pong / Table Tennis / Super Ping Pong (PP1100, ABL TV Game)
+Rockstar Guitar / Guitar Rock (PAL)
+Rollamatic 5-Line Special (Barcrest) (MPU3)
+TK-635
+TV Virtual Tennis
+Teleray Model 10
+Terrific Lake
+Top Sound (French)
+Vortex (Island Design)
+Who Wants to Be a Millionaire (Play Vision, Plug and Play, UK)
+
+New clones marked as NOT_WORKING
+--------------------------------
+333SC
+386 motherboard using the UMC UM82C491F chipset
+386 motherboards using a OPTi 82C495SLC chipset
+386 motherboards using the ALi M1419 chipset
+386 motherboards using the CS8230 chipset
+386 motherboards using the MX83C305(A)(FC)/MX83C05(A)(FC) chipset
+386 motherboards using the OPTi 82C381 chipset
+386 motherboards using the OPTi 82C391 chipset
+386 motherboards using the SiS Rabbit chipset
+386 motherboards using the UMC UM82C481AF chipset
+386 motherboards using the UMC UM82C491F + UM82C493F chipset or BIOTEQ equivalents
+386SX REV 2.0A
+386W 367C REV 1.0
+386sx Ver. 2.0 motherboard SCsxAIO
+386sx motherboards using the ALi M1217 chipset
+386sx motherboards using the OPTi 82C283 chipset
+386sx motherboards using the OPTi 82C291 chipset
+386sx motherboards using the SCAMPSX chipset
+4386-VC-HD
+4386-VC-V
+486 WB 4407 REV 1.0
+486 motherboards using the ALi 1487/1489 chipset
+486 motherboards using the OPTi OPTi 82C392, 82C493 chipset
+486 motherboards using the SiS 85C471/85C407 chipset
+486 motherboards using the UMC UM8498F, UM8496F chipset
+486 motherboards using the UMC UM8886/UM8881 chipset
+486-CCV
+486-GIO-VT2
+486SLE M106 4SLE-Z1
+AB-PB4
+AB-PW4
+AL486V-D Rev:1.1
+Bank Robbery (Ver. 1.23)
+CH-386S-16/20/25G
+CH-491E
+Cougar
+Derby Owners Club World Edition (Rev A)
+ELT-286B-160B(E)
+ELT-386SX-160BE
+FM-Towns (unknown, V03 L01 00 91/07/09)
+FX-3000 REV1.0
+Forex 386 Cache
+GA-486VF
+GA-486VS
+GES 9051N-386C VER -0.01
+HOT-433
+Hawk
+Hippo COM
+Hippo DCA2
+Hippo VL+
+ISA-486SV2
+KP 386SX V2.21
+LEOPARD LX
+LS-486E Rev:C
+M21
+M216
+M396F
+M912
+M915i
+MB-1340UCQ-B
+MB-4D33/50NR
+MBC-18NB
+MS-4125
+MS-4138
+MS-4144
+Mark V Baby Screamer
+OPTi 386WB VER.1.0
+PCD204 (PCD200 series)
+PCK 486 DX
+PKM-0038S aka Gemlight GMB-486SG
+PM486PU-S7
+PPM-3333P
+PT-319A
+PT-430
+PT-432b aka SR-M401-A
+PX486P3
+Panther II
+QD-U386DX VER 1.0
+SM 486-50USC
+Sto486Wb aka AUVA Cam-33-P2
+TAM/25-P2 M31720P
+TD60C
+TD70A and TD70AN
+TD70N
+Tomato board 4DPS
+Tornado 2
+TurboExpress 486 VL
+UC4913 REV:1.1
+UC4915 A AIO
+UM486/UM486sx
+UM486V-AIO
+V4P895P3/SMT V5.0
+Via 4386 VIO / Highscreen universal board
+Vs. Super Mario Bros. (bootleg with Z80, set 3)
+unknown 286 AT clones (HT18/C chipset)
+
