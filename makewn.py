@@ -517,6 +517,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Write preliminary whatsnew.')
     parser.add_argument('-c', '--clone', metavar='<path>', type=str, help='local repository clone')
     parser.add_argument('-u', '--user', metavar='<username>', type=str, help='github username')
+    parser.add_argument('-t', '--token', metavar='<token>', type=str, help='github personal access token')
     parser.add_argument('-o', '--out', metavar='<file>', type=str, help='output file')
     parser.add_argument('-a', '--append', action='store_const', const=True, default=False, help='append to output file')
     parser.add_argument('-v', '--verbose', action='store_const', const=True, default=False, help='verbose output')
@@ -535,7 +536,10 @@ if __name__ == '__main__':
         stream = sys.stdout
 
     repo = git.Repo(args.clone if args.clone is not None else '.')
-    api = pygithub3.Github(user='mamedev', repo='mame', login=ghuser, password=getpass.getpass('github password: '))
+    if args.token is not None:
+        api = pygithub3.Github(user='mamedev', repo='mame', login=ghuser, token=args.token)
+    else:
+        api = pygithub3.Github(user='mamedev', repo='mame', login=ghuser, password=getpass.getpass('github password: '))
     tag = get_most_recent_tag(repo)
 
     placeholders = (
