@@ -539,12 +539,12 @@ if __name__ == '__main__':
     if args.token is not None:
         api = pygithub3.Github(user='mamedev', repo='mame', login=ghuser, token=args.token)
     else:
-        api = pygithub3.Github(user='mamedev', repo='mame', login=ghuser, password=getpass.getpass('github password: '))
+        api = pygithub3.Github(user='mamedev', repo='mame', login=ghuser, token=getpass.getpass('github personal access token: '))
     tag = get_most_recent_tag(repo)
 
     placeholders = (
             '0.%s' % (long(releasetag_pat.sub('\\1', tag.name)) + 1, ),
-            'MAMETesters Bugs Fixed',
+            'MAME Testers Bugs Fixed',
             'New working machines',                 'New working clones' ,
             'Machines promoted to working',         'Clones promoted to working',
             'New machines marked as NOT_WORKING',   'New clones marked as NOT_WORKING',

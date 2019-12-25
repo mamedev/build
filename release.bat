@@ -6,11 +6,8 @@ rm -rf build\release\src
 rm -f build\release\*.zip build\release\*.exe build\release\*.xml build\release\*.txt
 @echo Creating release directories ...
 @mkdir build\release\src 2> nul 
-@mkdir build\release\x32\Release\mame 2> nul 
 @mkdir build\release\x64\Release\mame 2> nul 
 copy ..\build\whatsnew\whatsnew_%1.txt build\release\. /Y > nul
-@echo Copy files MAME 32-bit Release build ...
-call :copyfiles build\mingw-gcc\bin\x32\Release build\release\x32\Release\mame mame mame%1b_32bit.exe %1
 @echo Copy files MAME 64-bit Release build ...
 call :copyfiles build\mingw-gcc\bin\x64\Release build\release\x64\Release\mame mame64 mame%1b_64bit.exe %1
 
@@ -21,15 +18,7 @@ pushd build\release\src
 
 @echo Creating 7zip source archive....
 7za a -mx=9 -y -r -t7z -sfx7z.sfx ..\mame%1s.exe * 
-@echo Creating raw source ZIP....
-7za a -mx=0 -y -r -tzip ..\mame.zip * 
 popd
-
-@echo Creating final source ZIP....
-pushd build\release
-7za a -mpass=4 -mfb=255 -y -tzip mame%1s.zip mame.zip 
-del mame.zip
-popd 
 
 @echo Creating XML system list....
 build\mingw-gcc\bin\x64\Release\mame64.exe -listxml > mame%1.xml
@@ -37,8 +26,8 @@ build\mingw-gcc\bin\x64\Release\mame64.exe -listxml > mame%1.xml
 
 @echo Calculating digests....
 pushd build\release
-sha1sum mame%1b_32bit.exe mame%1b_64bit.exe mame%1lx.zip mame%1s.exe mame%1s.zip whatsnew_%1.txt > SHA1SUMS
-sha256sum mame%1b_32bit.exe mame%1b_64bit.exe mame%1lx.zip mame%1s.exe mame%1s.zip whatsnew_%1.txt > SHA256SUMS
+sha1sum mame%1b_64bit.exe mame%1lx.zip mame%1s.exe whatsnew_%1.txt > SHA1SUMS
+sha256sum mame%1b_64bit.exe mame%1lx.zip mame%1s.exe whatsnew_%1.txt > SHA256SUMS
 popd
 
 @echo Finished creating release....
