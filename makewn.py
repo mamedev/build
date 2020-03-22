@@ -6,15 +6,100 @@
 import argparse
 import getpass
 import git
+import io
 import os.path
-import pygithub3
 import re
 import sys
 import xml.sax
 import xml.sax.handler
 
 
+if sys.version_info > (3, ):
+    long = int
+    unichr = chr
+
+
+try:
+    import dateutil.parser
+    import github3
+
+    class github_wrapper(object):
+        @staticmethod
+        def pull_request_username(pr):
+            return pr.user.login
+
+        def __init__(self, owner, repo, user, password=None, token=None, **kwargs):
+            super(github_wrapper, self).__init__(**kwargs)
+            if (token is None) and (password is None):
+                self.session = github3.GitHub(user)
+            elif token is None:
+                self.session = github3.GitHub(user, password)
+            elif password is None:
+                self.session = github3.GitHub(user, token=token)
+            else:
+                self.session = github3.GitHub(user, password, token=token)
+            self.repo = self.session.repository(owner, repo)
+
+        def first_matching_tagged_commit(self, pattern):
+            regex = re.compile(pattern)
+            for tag in self.repo.tags():
+                if regex.match(tag.name) is not None:
+                    tag.commit['sha']
+
+        def fresher_pull_requests(self, sha):
+            date = dateutil.parser.parse(timestr=self.repo.commit(sha).commit.committer['date'])
+            for pr in self.repo.pull_requests(state='closed'):
+                if (pr.merged_at is not None) and (pr.merged_at > date):
+                    yield pr
+
+
+except ImportError:
+    import pygithub3
+
+    class github_wrapper(object):
+        @staticmethod
+        def pull_request_username(pr):
+            return pr.user['login']
+
+        def __init__(self, owner, repo, user, password=None, token=None, **kwargs):
+            super(github_wrapper, self).__init__(**kwargs)
+            if (token is None) and (password is None):
+                self.api = pygithub3.Github(user=owner, repo=repo, login=user)
+            elif token is None:
+                self.api = pygithub3.Github(user=owner, repo=repo, login=user, password=password)
+            elif password is None:
+                self.api = pygithub3.Github(user=owner, repo=repo, login=user, token=token)
+            else:
+                self.api = pygithub3.Github(user=owner, repo=repo, login=user, password=password, token=token)
+
+        def first_matching_tagged_commit(self, pattern):
+            regex = re.compile(pattern)
+            for page in self.api.repos.list_tags():
+                for tag in page:
+                    if pat.match(tag.name) is not None:
+                        tag.commit.sha
+
+        def fresher_pull_requests(self, sha):
+            date = self.api.git_data.commits.get(sha).committer.date
+            for page in self.api.pull_requests.list(state='closed'):
+                for pr in page:
+                    if (pr.merged_at is not None) and (pr.merged_at > date):
+                        yield pr
+
+
 class softlist_comparator(object):
+    class OStreamWrapper(object):
+        def __init__(self, stream, **kwargs):
+            super(softlist_comparator.OStreamWrapper, self).__init__(**kwargs)
+            self.stream = stream
+
+        def __getattr__(self, attr):
+            return getattr(self if attr in self.__dict__ else self.stream, attr)
+
+        def close(self):
+            pass
+
+
     class ErrorHandler(object):
         def __init__(self, **kwargs):
             super(softlist_comparator.ErrorHandler, self).__init__(**kwargs)
@@ -210,7 +295,11 @@ class softlist_comparator(object):
                 else: old_nonworking[shortname] = description
                 old_descriptions[description] = shortname
             content_handler.handleSoftware = handle_old_software
-            parser.parse(baseline.data_stream)
+            baseline = baseline.data_stream
+            if not hasattr(baseline, 'close'):
+                baseline = self.OStreamWrapper(baseline)
+            parser.parse(baseline)
+            del baseline
 
         new_working = dict()
         new_nonworking = dict()
@@ -245,7 +334,11 @@ class softlist_comparator(object):
                 elif self.verbose:
                     sys.stderr.write('\n')
         content_handler.handleSoftware = handle_new_software
-        parser.parse(current.data_stream)
+        curdata = current.data_stream
+        if not hasattr(curdata, 'close'):
+            curdata = self.OStreamWrapper(curdata)
+        parser.parse(curdata)
+        del curdata
         listname = content_handler.listname
 
         for shortname in new_working:
@@ -258,33 +351,33 @@ class softlist_comparator(object):
             if shortname in old_working: del old_working[shortname]
             elif shortname in old_nonworking: del old_nonworking[shortname]
         removed = list()
-        for shortname, description in old_working.iteritems(): removed.append(description)
-        for shortname, description in old_nonworking.iteritems(): removed.append(description)
+        for shortname, description in old_working.items(): removed.append(description)
+        for shortname, description in old_nonworking.items(): removed.append(description)
         removed.sort()
 
         if renames or removed or added_working or added_nonworking or promoted:
-            self.output.write(('%s (%s):\n' % (listname, current.name)).encode('UTF-8'))
+            self.output.write(u'%s (%s):\n' % (listname, current.name))
             if renames:
-                self.output.write('  Renames\n'.encode('UTF-8'))
-                for old_name, info in renames.iteritems():
-                    self.output.write(('    %s -> %s %s\n' % (old_name, info[1], info[0])).encode('UTF-8'))
+                self.output.write(u'  Renames\n')
+                for old_name, info in renames.items():
+                    self.output.write(u'    %s -> %s %s\n' % (old_name, info[1], info[0]))
             if removed:
-                self.output.write('  Removed\n'.encode('UTF-8'))
+                self.output.write(u'  Removed\n')
                 for description in removed:
-                    self.output.write(('    %s\n' % (description, )).encode('UTF-8'))
+                    self.output.write(u'    %s\n' % (description, ))
             if added_working:
-                self.output.write('  Working\n'.encode('UTF-8'))
+                self.output.write(u'  Working\n')
                 for description in sorted(added_working):
-                    self.output.write(('    %s\n' % (description, )).encode('UTF-8'))
+                    self.output.write(u'    %s\n' % (description, ))
             if added_nonworking:
-                self.output.write('  Non-working\n'.encode('UTF-8'))
+                self.output.write(u'  Non-working\n')
                 for description in sorted(added_nonworking):
-                    self.output.write(('    %s\n' % (description, )).encode('UTF-8'))
+                    self.output.write(u'    %s\n' % (description, ))
             if promoted:
-                self.output.write('  Promoted\n'.encode('UTF-8'))
+                self.output.write(u'  Promoted\n')
                 for description in sorted(promoted):
-                    self.output.write(('    %s\n' % (description, )).encode('UTF-8'))
-            self.output.write('\n'.encode('UTF-8'))
+                    self.output.write(u'    %s\n' % (description, ))
+            self.output.write(u'\n')
 
 
 releasetag_pat = re.compile('^mame0([0-9]+)$')
@@ -338,7 +431,7 @@ def print_wrapped(stream, paragraph, level):
             else:
                 line = paragraph
                 paragraph = ''
-            stream.write(('%s%s\n' % (prefix, line)).encode('UTF-8'))
+            stream.write(u'%s%s\n' % (prefix, line))
             prefix = indent
 
 
@@ -438,7 +531,7 @@ def format_entry(stream, message, author, checkmachines):
         paragraph = ''
         first = False
     if not first:
-        stream.write('\n'.encode('UTF-8'))
+        stream.write(u'\n')
 
 
 def format_commit(stream, commit):
@@ -467,23 +560,8 @@ def get_most_recent_tag(repo):
     return result
 
 
-def get_latest_tagged_commit(api):
-    pat = re.compile('^mame0[0-9]+$')
-    for page in api.repos.list_tags():
-        for tag in page:
-            if pat.match(tag.name) is not None:
-                return api.git_data.commits.get(tag.commit.sha)
-
-
-def fresher_pull_requests(api, commit):
-    for page in api.pull_requests.list(state='closed'):
-        for pr in page:
-            if (pr.merged_at is not None) and (pr.merged_at > commit.committer.date):
-                yield pr
-
-
 def print_fresh_pull_requests(api, stream, commit):
-    for pr in fresher_pull_requests(api, commit):
+    for pr in api.fresher_pull_requests(commit):
         if pr.title and (pr.title[-1] == unichr(0x2026)) and pr.body and (pr.body[0] == unichr(0x2026)):
             message = pr.title[:-1] + pr.body[1:]
         elif pr.body:
@@ -491,18 +569,18 @@ def print_fresh_pull_requests(api, stream, commit):
         else:
             message = pr.title
         message = markdown_url_pat.sub('\\1', message)
-        format_entry(stream, message, pr.user['login'], True)
+        format_entry(stream, message, api.pull_request_username(pr), True)
 
 
 def print_section_heading(stream, heading):
-    stream.write(('%s\n%s\n' % (heading, '-' * len(heading))).encode('UTF-8'))
+    stream.write(u'%s\n%s\n' % (heading, '-' * len(heading)))
 
 
 def print_source_changes(stream, repo, api, tag):
     print_section_heading(stream, 'Source Changes')
     print_log(stream, repo, '%s..release0%ld' % (tag.name, (long(releasetag_pat.sub('\\1', tag.name)) + 1)))
-    print_fresh_pull_requests(api, stream, api.git_data.commits.get(tag.commit.hexsha))
-    stream.write('\n'.encode('UTF-8'))
+    print_fresh_pull_requests(api, stream, tag.commit.hexsha)
+    stream.write(u'\n')
 
 
 def print_new_machines(stream, title, machines):
@@ -510,7 +588,7 @@ def print_new_machines(stream, title, machines):
         print_section_heading(stream, title)
         for machine in machines:
             print_wrapped(stream, bullet_pat.sub('\\2', machine), -1)
-        stream.write('\n\n'.encode('UTF-8'))
+        stream.write(u'\n\n')
 
 
 def parse_args():
@@ -531,38 +609,38 @@ if __name__ == '__main__':
     else:
         ghuser = raw_input('github username: ')
     if args.out is not None:
-        stream = open(args.out, 'a' if args.append else 'w')
+        stream = io.open(args.out, 'a' if args.append else 'w', encoding='utf-8')
     else:
         stream = sys.stdout
 
     repo = git.Repo(args.clone if args.clone is not None else '.')
     if args.token is not None:
-        api = pygithub3.Github(user='mamedev', repo='mame', login=ghuser, token=args.token)
+        api = github_wrapper('mamedev', 'mame', ghuser, token=args.token)
     else:
-        api = pygithub3.Github(user='mamedev', repo='mame', login=ghuser, token=getpass.getpass('github personal access token: '))
+        api = github_wrapper('mamedev', 'mame', ghuser, token=getpass.getpass('github personal access token: '))
     tag = get_most_recent_tag(repo)
 
     placeholders = (
-            '0.%s' % (long(releasetag_pat.sub('\\1', tag.name)) + 1, ),
-            'MAME Testers Bugs Fixed',
-            'New working machines',                 'New working clones' ,
-            'Machines promoted to working',         'Clones promoted to working',
-            'New machines marked as NOT_WORKING',   'New clones marked as NOT_WORKING',
-            'New working software list additions',
-            'Software list items promoted to working',
-            'New NOT_WORKING software list additions',
-            'Translations added or modified')
+            u'0.%s' % (long(releasetag_pat.sub('\\1', tag.name)) + 1, ),
+            u'MAME Testers Bugs Fixed',
+            u'New working machines',                    u'New working clones' ,
+            u'Machines promoted to working',            u'Clones promoted to working',
+            u'New machines marked as NOT_WORKING',      u'New clones marked as NOT_WORKING',
+            u'New working software list additions',
+            u'Software list items promoted to working',
+            u'New NOT_WORKING software list additions',
+            u'Translations added or modified')
     for heading in placeholders:
         print_section_heading(stream, heading)
-        stream.write('\n\n'.encode('UTF-8'))
+        stream.write(u'\n\n')
 
     print_source_changes(stream, repo, api, tag)
-    print_new_machines(stream, 'New working machines', new_working_parents);
-    print_new_machines(stream, 'New working clones', new_working_clones);
-    print_new_machines(stream, 'Machines promoted to working', new_promoted_parents);
-    print_new_machines(stream, 'Clones promoted to working', new_promoted_clones);
-    print_new_machines(stream, 'New machines marked as NOT_WORKING', new_broken_parents);
-    print_new_machines(stream, 'New clones marked as NOT_WORKING', new_broken_clones);
+    print_new_machines(stream, u'New working machines', new_working_parents);
+    print_new_machines(stream, u'New working clones', new_working_clones);
+    print_new_machines(stream, u'Machines promoted to working', new_promoted_parents);
+    print_new_machines(stream, u'Clones promoted to working', new_promoted_clones);
+    print_new_machines(stream, u'New machines marked as NOT_WORKING', new_broken_parents);
+    print_new_machines(stream, u'New clones marked as NOT_WORKING', new_broken_clones);
 
     comp = softlist_comparator(stream, args.verbose)
     current = repo.commit('release0%ld' % (long(releasetag_pat.sub('\\1', tag.name)) + 1, )).tree['hash']
