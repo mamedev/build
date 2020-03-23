@@ -4,6 +4,7 @@
 ## copyright-holders:Vas Crabb
 
 import argparse
+import codecs
 import getpass
 import git
 import io
@@ -610,6 +611,8 @@ if __name__ == '__main__':
         ghuser = raw_input('github username: ')
     if args.out is not None:
         stream = io.open(args.out, 'a' if args.append else 'w', encoding='utf-8')
+    elif sys.stdout.encoding is None:
+        output = codecs.getwriter('utf-8')(sys.stdout)
     else:
         stream = sys.stdout
 

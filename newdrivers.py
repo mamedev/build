@@ -3,6 +3,7 @@
 ## license:BSD-3-Clause
 ## copyright-holders:Vas Crabb
 
+import codecs
 import sys
 import xml.sax
 import xml.sax.handler
@@ -193,13 +194,19 @@ class Categoriser(object):
         pass
 
 
+if sys.stdout.encoding is None:
+    output = codecs.getwriter('utf-8')(sys.stdout)
+else:
+    output = sys.stdout
+
+
 def printResult(title, descriptions):
     if descriptions:
-        sys.stdout.write(('%s\n' % (title)).encode('UTF-8'))
-        sys.stdout.write(('%s\n' % ('-' * len(title))).encode('UTF-8'))
+        output.write(u'%s\n' % (title, ))
+        output.write(u'%s\n' % (u'-' * len(title), ))
         for description in sorted(descriptions):
-             sys.stdout.write(('%s\n' % (description)).encode('UTF-8'))
-        sys.stdout.write('\n'.encode('UTF-8'))
+             output.write(u'%s\n' % (description, ))
+        output.write(u'\n')
 
 
 def getOldName(driver, description, working, nonworking, descriptions):
@@ -273,18 +280,17 @@ if __name__ == '__main__':
     if (error_handler.errors > 0) or (error_handler.warnings > 0):
         sys.exit(1)
 
-    sys.stdout.write(('Comparing %s to %s\n' % (oldbuild, newbuild)).encode('UTF-8'))
-    sys.stdout.write('\n'.encode('UTF-8'))
+    output.write(u'Comparing %s to %s\n\n' % (oldbuild, newbuild))
 
     if renames:
-        sys.stdout.write('Renames\n'.encode('UTF-8'))
-        for old_name, info in renames.iteritems():
-            sys.stdout.write(('%s -> %s %s\n' % (old_name, info[1], info[0])).encode('UTF-8'))
-    sys.stdout.write('\n'.encode('UTF-8'))
+        output.write(u'Renames\n')
+        for old_name, info in renames.items():
+            output.write(u'%s -> %s %s\n' % (old_name, info[1], info[0]))
+    output.write(u'\n')
 
-    printResult('New working machines', new_working_parents)
-    printResult('New working clones', new_working_clones)
-    printResult('Machines promoted to working', promoted_parents)
-    printResult('Clones promoted to working', promoted_clones)
-    printResult('New machines marked as NOT_WORKING', new_nonworking_parents)
-    printResult('New clones marked as NOT_WORKING', new_nonworking_clones)
+    printResult(u'New working machines', new_working_parents)
+    printResult(u'New working clones', new_working_clones)
+    printResult(u'Machines promoted to working', promoted_parents)
+    printResult(u'Clones promoted to working', promoted_clones)
+    printResult(u'New machines marked as NOT_WORKING', new_nonworking_parents)
+    printResult(u'New clones marked as NOT_WORKING', new_nonworking_clones)
