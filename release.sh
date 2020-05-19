@@ -12,7 +12,7 @@ copyfiles()
 
 	echo "Packing ${4}"
 	pushd "${2}"
-	7za a -mx=9 -y -r -t7z -sfx7z.sfx "../../../${4}" > /dev/null
+	7za a -mx=9 -y -r -t7z -sfx7z.sfx "../../../${4}"
 	popd
 }
 
@@ -41,12 +41,12 @@ rm -rf "build/release/src/.git"
 
 echo "Creating 7zip source archive ..."
 pushd "build/release/src"
-7za a -mx=9 -y -r -t7z -sfx7z.sfx "../mame${1}s.exe" * > /dev/null
+7za a -mx=9 -y -r -t7z -sfx7z.sfx "../mame${1}s.exe" *
 popd
 
 echo "Creating XML system list ..."
 "build/mingw-gcc/bin/x64/Release/mame64.exe" -listxml > "mame${1}.xml"
-7za a -mpass=4 -mfb=255 -y -tzip "build/release/mame${1}lx.zip" "mame${1}.xml" > /dev/null
+7za a -mpass=4 -mfb=255 -y -tzip "build/release/mame${1}lx.zip" "mame${1}.xml"
 
 echo "Calculating digests ..."
 pushd "build/release"
