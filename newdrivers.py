@@ -209,15 +209,6 @@ def printResult(title, descriptions):
         output.write(u'\n')
 
 
-def getOldName(driver, description, working, nonworking, descriptions):
-    if (driver in working) or (driver in nonworking):
-        return driver
-    elif description in descriptions:
-        return descriptions[description]
-    else:
-        return None
-
-
 if __name__ == '__main__':
     if len(sys.argv) < 3:
         print('Usage:')
@@ -234,12 +225,12 @@ if __name__ == '__main__':
     parser.setErrorHandler(error_handler)
     parser.setContentHandler(content_handler)
 
-    old_working = set()
-    old_nonworking = set()
+    old_working = dict()
+    old_nonworking = dict()
     old_descriptions = dict()
     def handleOldMachine(driver, description, is_clone, is_working):
-        if is_working: old_working.add(driver)
-        else: old_nonworking.add(driver)
+        if is_working: old_working[driver] = description
+        else: old_nonworking[driver] = description
         old_descriptions[description] = driver
     content_handler.handleMachine = handleOldMachine
     parser.parse(oldlist)
@@ -257,7 +248,9 @@ if __name__ == '__main__':
     def handleNewMachine(driver, description, is_clone, is_working):
         if is_working: new_working[driver] = description
         else: new_nonworking[driver] = description
-        old_name = getOldName(driver, description, old_working, old_nonworking, old_descriptions)
+        if (driver in old_working) or (driver in old_nonworking): old_name = driver
+        elif description in old_descriptions: old_name = old_descriptions[description]
+        else: old_name = None
         if (old_name is None) or (old_name in renames):
             if is_working:
                 if is_clone: new_working_clones.add(description)
@@ -280,13 +273,28 @@ if __name__ == '__main__':
     if (error_handler.errors > 0) or (error_handler.warnings > 0):
         sys.exit(1)
 
+    removed = list()
+    for driver in old_working:
+        if (driver not in new_working) and (driver not in new_nonworking) and (driver not in renames):
+            removed.append(old_working[driver])
+    for driver in old_nonworking:
+        if (driver not in new_working) and (driver not in new_nonworking) and (driver not in renames):
+            removed.append(old_nonworking[driver])
+    removed.sort()
+
     output.write(u'Comparing %s to %s\n\n' % (oldbuild, newbuild))
 
     if renames:
         output.write(u'Renames\n')
         for old_name, info in renames.items():
             output.write(u'%s -> %s %s\n' % (old_name, info[1], info[0]))
-    output.write(u'\n')
+        output.write(u'\n')
+
+    if removed:
+        output.write(u'Removed\n')
+        for description in removed:
+            output.write(u'%s\n' % (description, ))
+        output.write(u'\n')
 
     printResult(u'New working machines', new_working_parents)
     printResult(u'New working clones', new_working_clones)

@@ -21,16 +21,15 @@ if sys.version_info > (3, ):
 
 
 try:
-    import dateutil.parser
     import github3
 
-    class github_wrapper(object):
+    class GithubWrapper(object):
         @staticmethod
         def pull_request_username(pr):
             return pr.user.login
 
         def __init__(self, owner, repo, user, password=None, token=None, **kwargs):
-            super(github_wrapper, self).__init__(**kwargs)
+            super(GithubWrapper, self).__init__(**kwargs)
             if (token is None) and (password is None):
                 self.session = github3.GitHub(user)
             elif token is None:
@@ -47,23 +46,22 @@ try:
                 if regex.match(tag.name) is not None:
                     tag.commit['sha']
 
-        def fresher_pull_requests(self, sha):
-            date = dateutil.parser.parse(timestr=self.repo.commit(sha).commit.committer['date'])
-            for pr in self.repo.pull_requests(state='closed'):
-                if (pr.merged_at is not None) and (pr.merged_at > date):
+        def fresher_pull_requests(self, commits):
+            for pr in self.repo.pull_requests(state='closed', sort='created', direction='asc'):
+                if (pr.merged_at is not None) and (pr.merge_commit_sha in commits):
                     yield pr
 
 
 except ImportError:
     import pygithub3
 
-    class github_wrapper(object):
+    class GithubWrapper(object):
         @staticmethod
         def pull_request_username(pr):
             return pr.user['login']
 
         def __init__(self, owner, repo, user, password=None, token=None, **kwargs):
-            super(github_wrapper, self).__init__(**kwargs)
+            super(GithubWrapper, self).__init__(**kwargs)
             if (token is None) and (password is None):
                 self.api = pygithub3.Github(user=owner, repo=repo, login=user)
             elif token is None:
@@ -88,10 +86,10 @@ except ImportError:
                         yield pr
 
 
-class softlist_comparator(object):
+class SoftlistComparator(object):
     class OStreamWrapper(object):
         def __init__(self, stream, **kwargs):
-            super(softlist_comparator.OStreamWrapper, self).__init__(**kwargs)
+            super(SoftlistComparator.OStreamWrapper, self).__init__(**kwargs)
             self.stream = stream
 
         def __getattr__(self, attr):
@@ -103,7 +101,7 @@ class softlist_comparator(object):
 
     class ErrorHandler(object):
         def __init__(self, **kwargs):
-            super(softlist_comparator.ErrorHandler, self).__init__(**kwargs)
+            super(SoftlistComparator.ErrorHandler, self).__init__(**kwargs)
             self.errors = 0
             self.warnings = 0
 
@@ -121,7 +119,7 @@ class softlist_comparator(object):
 
     class Categoriser(object):
         def __init__(self, error_handler, **kwargs):
-            super(softlist_comparator.Categoriser, self).__init__(**kwargs)
+            super(SoftlistComparator.Categoriser, self).__init__(**kwargs)
 
             # handling the XML
             self.error_handler = error_handler
@@ -273,7 +271,7 @@ class softlist_comparator(object):
 
 
     def __init__(self, output, verbose=False, **kwargs):
-        super(softlist_comparator, self).__init__(**kwargs)
+        super(SoftlistComparator, self).__init__(**kwargs)
         self.output = output
         self.verbose = verbose
 
@@ -384,7 +382,7 @@ class softlist_comparator(object):
 releasetag_pat = re.compile('^mame0([0-9]+)$')
 nowhatsnew_pat = re.compile('.*([[(]n/?w[])].*|[\s,]n/?w$)')
 bullet_pat = re.compile('^([-*]\s*)?(.+)$')
-credit_pat = re.compile('^.+\s\[.+\]$')
+credit_pat = re.compile('^(.+)\s+\[(.+)\]$')
 markdown_url_pat = re.compile('\[([^]]+)\]\(([^)])+\)')
 newdrivers_pat = re.compile('^new|(game|machine|system|clone)s? promot')
 softlist_pat = re.compile('soft(ware)? ?list')
@@ -397,6 +395,29 @@ new_broken_parents = []
 new_working_clones = []
 new_promoted_clones = []
 new_broken_clones = []
+
+
+def wrap_paragraph(stream, paragraph, wrapcol, prefix, indent):
+    while paragraph:
+        if (len(prefix) + len(paragraph)) > wrapcol:
+            pos = paragraph.rfind(' ', 0, wrapcol + 1 - len(prefix))
+            if pos < 0:
+                pos = paragraph.find(' ', wrapcol + 1 - len(prefix))
+            if pos >= 0:
+                if paragraph[-1] == ']':
+                    opening = paragraph.rfind(' [')
+                    if (opening >= 0) and (opening < pos):
+                        pos = opening
+                line = paragraph[0:pos].rstrip()
+                paragraph = paragraph[pos:].strip()
+            else:
+                line = paragraph
+                paragraph = ''
+        else:
+            line = paragraph
+            paragraph = ''
+        stream.write(u'%s%s\n' % (prefix, line))
+        prefix = indent
 
 
 def print_wrapped(stream, paragraph, level):
@@ -414,26 +435,7 @@ def print_wrapped(stream, paragraph, level):
         prefix = '   - '
         indent = '      '
     if nowhatsnew_pat.match(paragraph) is None:
-        while paragraph:
-            if (len(prefix) + len(paragraph)) > wrapcol:
-                pos = paragraph.rfind(' ', 0, wrapcol + 1 - len(prefix))
-                if pos < 0:
-                    pos = paragraph.find(' ', wrapcol + 1 - len(prefix))
-                if pos >= 0:
-                    if paragraph[-1] == ']':
-                        opening = paragraph.rfind(' [')
-                        if (opening >= 0) and (opening < pos):
-                            pos = opening
-                    line = paragraph[0:pos].strip()
-                    paragraph = paragraph[pos:].strip()
-                else:
-                    line = paragraph
-                    paragraph = ''
-            else:
-                line = paragraph
-                paragraph = ''
-            stream.write(u'%s%s\n' % (prefix, line))
-            prefix = indent
+        wrap_paragraph(stream, paragraph, wrapcol, prefix, indent)
 
 
 def format_paragraph(stream, paragraph, level, author, first):
@@ -561,26 +563,30 @@ def get_most_recent_tag(repo):
     return result
 
 
-def print_fresh_pull_requests(api, stream, commit):
-    for pr in api.fresher_pull_requests(commit):
-        if pr.title and (pr.title[-1] == unichr(0x2026)) and pr.body and (pr.body[0] == unichr(0x2026)):
-            message = pr.title[:-1] + pr.body[1:]
-        elif pr.body:
-            message = '%s\n%s' % (pr.title, pr.body)
-        else:
-            message = pr.title
-        message = markdown_url_pat.sub('\\1', message)
-        format_entry(stream, message, api.pull_request_username(pr), True)
+def print_fresh_pull_requests(stream, repo, api, previous, current):
+    print_section_heading(stream, u'Merged pull requests')
+    commits = frozenset(repo.git.rev_list(current.name, '^' + previous.name).splitlines())
+    for pr in api.fresher_pull_requests(commits):
+        lines = markdown_url_pat.sub('\\1', pr.body).splitlines() if pr.body else ()
+        title = u'%d: %s' % (pr.number, pr.title)
+        if (title[-1] == unichr(0x2026)) and pr.body and lines and lines[0] and (lines[0][0] == unichr(0x2026)):
+            title = title[:-1] + lines[0][1:]
+            lines = lines[1:]
+        title += u' [%s]' % (api.pull_request_username(pr), )
+        wrap_paragraph(stream, title, 132, '', '  ')
+        for line in lines:
+            wrap_paragraph(stream, line, 132, '', '  ')
+        stream.write(u'\n')
+    stream.write(u'\n')
 
 
 def print_section_heading(stream, heading):
     stream.write(u'%s\n%s\n' % (heading, '-' * len(heading)))
 
 
-def print_source_changes(stream, repo, api, tag):
+def print_source_changes(stream, repo, previous, current):
     print_section_heading(stream, 'Source Changes')
-    print_log(stream, repo, '%s..release0%ld' % (tag.name, (long(releasetag_pat.sub('\\1', tag.name)) + 1)))
-    print_fresh_pull_requests(api, stream, tag.commit.hexsha)
+    print_log(stream, repo, '%s..%s' % (previous.name, current.name))
     stream.write(u'\n')
 
 
@@ -618,10 +624,11 @@ if __name__ == '__main__':
 
     repo = git.Repo(args.clone if args.clone is not None else '.')
     if args.token is not None:
-        api = github_wrapper('mamedev', 'mame', ghuser, token=args.token)
+        api = GithubWrapper('mamedev', 'mame', ghuser, token=args.token)
     else:
-        api = github_wrapper('mamedev', 'mame', ghuser, token=getpass.getpass('github personal access token: '))
+        api = GithubWrapper('mamedev', 'mame', ghuser, token=getpass.getpass('github personal access token: '))
     tag = get_most_recent_tag(repo)
+    branch = repo.branches['release0%ld' % (long(releasetag_pat.sub('\\1', tag.name)) + 1, )]
 
     placeholders = (
             u'0.%s' % (long(releasetag_pat.sub('\\1', tag.name)) + 1, ),
@@ -637,7 +644,8 @@ if __name__ == '__main__':
         print_section_heading(stream, heading)
         stream.write(u'\n\n')
 
-    print_source_changes(stream, repo, api, tag)
+    print_fresh_pull_requests(stream, repo, api, tag, branch)
+    print_source_changes(stream, repo, tag, branch)
     print_new_machines(stream, u'New working machines', new_working_parents);
     print_new_machines(stream, u'New working clones', new_working_clones);
     print_new_machines(stream, u'Machines promoted to working', new_promoted_parents);
@@ -645,8 +653,8 @@ if __name__ == '__main__':
     print_new_machines(stream, u'New machines marked as NOT_WORKING', new_broken_parents);
     print_new_machines(stream, u'New clones marked as NOT_WORKING', new_broken_clones);
 
-    comp = softlist_comparator(stream, args.verbose)
-    current = repo.commit('release0%ld' % (long(releasetag_pat.sub('\\1', tag.name)) + 1, )).tree['hash']
+    comp = SoftlistComparator(stream, args.verbose)
+    current = repo.commit(branch).tree['hash']
     previous = repo.commit(tag).tree['hash']
     for obj in current:
         if obj.type == 'blob':
