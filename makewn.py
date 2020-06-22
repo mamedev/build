@@ -379,6 +379,126 @@ class SoftlistComparator(object):
             self.output.write(u'\n')
 
 
+class LogScraper(object):
+    LEADINGSPACE = re.compile('^(\s*)(.*)$')
+    DIVIDERLINE = re.compile('^---+$')
+    CREDITED = re.compile('^.+\s\[.+\]$')
+
+    class Formatter(object):
+        def __init__(self, stream, listcallback, author, **kwargs):
+            super(LogScraper.Formatter, self).__init__(**kwargs)
+            self.stream = stream
+            self.listcallback = listcallback
+            self.author = author
+            self.paragraph = ''
+            self.first = True
+            self.level = 0
+            self.bullets = list()
+            self.listname = None
+            self.listitems = False
+
+        def flush_paragraph(self):
+            if self.paragraph:
+                if self.first and not LogScraper.CREDITED.match(self.paragraph):
+                    self.paragraph += ' ['
+                    self.paragraph += self.author
+                    self.paragraph += ']'
+                if self.stream is not None:
+                    print_wrapped(self.stream, self.paragraph, self.level)
+                self.paragraph = ''
+                self.first = False
+
+        def append_line(self, line):
+            if self.paragraph:
+                self.paragraph += ' '
+            self.paragraph += line
+
+        def get_bullet_increment(self, indent, bullet):
+            indent = len(indent)
+            if not self.bullets:
+                if not self.first:
+                    self.level += 1
+                self.bullets.append((bullet, indent))
+            elif bullet == self.bullets[-1][0]:
+                if indent < self.bullets[-1][1]:
+                    for i in range(len(self.bullets)):
+                        if (bullet == self.bullets[i][0]) and (indent <= self.bullets[i][1]):
+                            self.level -= len(self.bullets) - i - 1
+                            del self.bullets[(i + 1):]
+                            break
+            elif indent > self.bullets[-1][1]:
+                self.level += 1
+                self.bullets.append((bullet, indent))
+            else:
+                for i in range(len(self.bullets)):
+                    if (bullet == self.bullets[i][0]) and (indent <= self.bullets[i][1]):
+                        self.level -= len(self.bullets) - i - 1
+                        del self.bullets[(i + 1):]
+                        break
+                else:
+                    self.level += 1
+                    self.bullets.append((bullet, indent))
+
+        def process_line(self, line):
+            indent, line = LogScraper.LEADINGSPACE.match(line.rstrip().replace('\t', ' ')).groups()
+            if not line:
+                self.flush_paragraph()
+                if self.listname is not None and self.listitems:
+                    self.listname = None
+                    self.listitems = False
+                    if self.stream is not None:
+                        self.stream.write(u'\n')
+            elif LogScraper.DIVIDERLINE.match(line) and self.paragraph:
+                if self.stream is not None:
+                    if not self.first:
+                        self.stream.write(u'\n')
+                    wrap = wrap_paragraph(self.stream, self.paragraph, 132, '', '  ')
+                    self.stream.write('%s\n' % (u'-' * wrap, ))
+                self.listname = self.paragraph
+                self.paragraph = ''
+                self.first = True
+                self.level = 0
+                self.bullets = list()
+            elif self.listname is not None:
+                if not LogScraper.CREDITED.match(line):
+                    line = u'%s [%s]' % (line, self.author)
+                self.listcallback(self.listname, line)
+                if self.stream is not None:
+                    if not self.listitems:
+                        self.listitems = True
+                    wrap_paragraph(self.stream, line, 132, '', '  ')
+            elif (line[0] == '-') or (line[0] == '*'):
+                self.flush_paragraph()
+                bullet = line[0]
+                line = line[1:].lstrip()
+                self.get_bullet_increment(indent, bullet)
+                self.append_line(line)
+            else:
+                if not self.first and not self.paragraph and not self.bullets:
+                    self.level += 1
+                self.append_line(line)
+
+        def finalise(self):
+            self.flush_paragraph()
+            if self.stream is not None:
+                self.stream.write(u'\n')
+
+    def __init__(self, stream, listcallback, **kwargs):
+        super(LogScraper, self).__init__(**kwargs)
+        self.stream = stream
+        self.listcallback = listcallback
+
+    def process_commit(self, commit):
+        author = commit.author.name
+        if not author:
+            author = commit.author.email
+
+        fmt = self.Formatter(self.stream if len(commit.parents) == 1 else None, self.listcallback, author)
+        for line in commit.message.splitlines():
+            fmt.process_line(line)
+        fmt.finalise()
+
+
 releasetag_pat = re.compile('^mame0([0-9]+)$')
 nowhatsnew_pat = re.compile('.*([[(]n/?w[])].*|[\s,]n/?w$)')
 bullet_pat = re.compile('^([-*]\s*)?(.+)$')
@@ -387,7 +507,6 @@ markdown_url_pat = re.compile('\[([^]]+)\]\(([^)])+\)')
 newdrivers_pat = re.compile('^new|(game|machine|system|clone)s? promot')
 softlist_pat = re.compile('soft(ware)? ?list')
 notworking_pat = re.compile('not[_ ]working')
-longdash_pat = re.compile('^-{2,}$')
 
 new_working_parents = []
 new_promoted_parents = []
@@ -398,6 +517,7 @@ new_broken_clones = []
 
 
 def wrap_paragraph(stream, paragraph, wrapcol, prefix, indent):
+    maxlen = 0
     while paragraph:
         if (len(prefix) + len(paragraph)) > wrapcol:
             pos = paragraph.rfind(' ', 0, wrapcol + 1 - len(prefix))
@@ -416,8 +536,10 @@ def wrap_paragraph(stream, paragraph, wrapcol, prefix, indent):
         else:
             line = paragraph
             paragraph = ''
+        maxlen = max(len(prefix) + len(line), maxlen)
         stream.write(u'%s%s\n' % (prefix, line))
         prefix = indent
+    return maxlen
 
 
 def print_wrapped(stream, paragraph, level):
@@ -428,127 +550,11 @@ def print_wrapped(stream, paragraph, level):
     elif level == 0:
         prefix = '-'
         indent = ' '
-    elif level == 1:
-        prefix = ' * '
-        indent = '    '
     else:
-        prefix = '   - '
-        indent = '      '
-    if nowhatsnew_pat.match(paragraph) is None:
-        wrap_paragraph(stream, paragraph, wrapcol, prefix, indent)
-
-
-def format_paragraph(stream, paragraph, level, author, first):
-    if first and (credit_pat.match(paragraph) is None):
-        paragraph = '%s [%s]' % (paragraph, author)
-    print_wrapped(stream, paragraph, level)
-
-
-def append_line(paragraph, line):
-    if paragraph:
-        return '%s %s' % (paragraph, line)
-    else:
-        return line
-
-
-def check_new_machines(line):
-    line = line.lower()
-    if (newdrivers_pat.match(line) is not None) and (softlist_pat.match(line) is None):
-        clone = line.find('clone') >= 0
-        if line.find('promot') >= 0:
-            working = True
-            promoted = True
-        elif notworking_pat.search(line) is not None:
-            working = False
-            promoted = False
-        else:
-            working = True
-            promoted = False
-        if clone:
-            return new_promoted_clones if promoted else new_working_clones if working else new_broken_clones
-        else:
-            return new_promoted_parents if promoted else new_working_parents if working else new_broken_parents
-    else:
-        return None
-
-
-def format_entry(stream, message, author, checkmachines):
-    machines = None
-    first = True
-    paragraph = ''
-    level = 0
-    bullet = ''
-    for line in message.splitlines():
-        line = line.strip().replace('\t', ' ')
-        if not line:
-            if paragraph:
-                machines = None
-                if first and (nowhatsnew_pat.match(paragraph) is not None):
-                    return
-                format_paragraph(stream, paragraph, level, author, first)
-                paragraph = ''
-                first = False
-        elif machines is not None:
-            paragraph = ''
-            temp = check_new_machines(line)
-            if temp is not None:
-                machines = temp
-            elif longdash_pat.match(line) is None:
-                if credit_pat.match(line) is None:
-                    machines.append('%s [%s]' % (line, author))
-                else:
-                    machines.append(line)
-        elif (line[0] == '-') or (line[0] == '*'):
-            if paragraph:
-                if first and (nowhatsnew_pat.match(paragraph) is not None):
-                    return
-                format_paragraph(stream, paragraph, level, author, first)
-                paragraph = ''
-                first = False
-            if not bullet:
-                level = 1
-            elif bullet != line[0]:
-                level = 1 if level == 2 else 2
-            bullet = line[0]
-            line = bullet_pat.sub('\\2', line)
-            paragraph = append_line(paragraph, line)
-        else:
-            if checkmachines:
-                machines = check_new_machines(line)
-            if machines:
-                if paragraph:
-                    if nowhatsnew_pat.match(paragraph) is None:
-                        format_paragraph(stream, paragraph, level, author, first)
-                        first = False
-                    paragraph = ''
-                paragraph = append_line(paragraph, line)
-            else:
-                if not paragraph:
-                    level = 0 if first else 1
-                bullet = ''
-                paragraph = append_line(paragraph, line)
-    if paragraph:
-        if first and (nowhatsnew_pat.match(paragraph) is not None):
-            return
-        format_paragraph(stream, paragraph, level, author, first)
-        paragraph = ''
-        first = False
-    if not first:
-        stream.write(u'\n')
-
-
-def format_commit(stream, commit):
-    author = commit.author.name
-    if not author:
-        author = commit.author.email
-    format_entry(stream, commit.message, author, True)
-
-
-def print_log(stream, repo, revisions):
-    commits = repo.iter_commits(revisions, reverse=True)
-    for commit in commits:
-        if len(commit.parents) == 1:
-            format_commit(stream, commit)
+        indent = ' ' * ((level * 2) - 1)
+        prefix = indent + ('* ' if level % 2 else '- ')
+        indent += '   '
+    return wrap_paragraph(stream, paragraph, wrapcol, prefix, indent)
 
 
 def get_most_recent_tag(repo):
@@ -585,8 +591,28 @@ def print_section_heading(stream, heading):
 
 
 def print_source_changes(stream, repo, previous, current):
+    def categorise(heading, item):
+        heading = heading.lower()
+        if (newdrivers_pat.match(heading) is not None) and (softlist_pat.match(heading) is None):
+            clone = heading.find('clone') >= 0
+            if heading.find('promot') >= 0:
+                working = True
+                promoted = True
+            elif notworking_pat.search(heading) is not None:
+                working = False
+                promoted = False
+            else:
+                working = True
+                promoted = False
+            if clone:
+                (new_promoted_clones if promoted else new_working_clones if working else new_broken_clones).append(item)
+            else:
+                (new_promoted_parents if promoted else new_working_parents if working else new_broken_parents).append(item)
+
+    scraper = LogScraper(stream, categorise)
     print_section_heading(stream, 'Source Changes')
-    print_log(stream, repo, '%s..%s' % (previous.name, current.name))
+    for commit in repo.iter_commits('%s..%s' % (previous.name, current.name), reverse=True):
+        scraper.process_commit(commit)
     stream.write(u'\n')
 
 
@@ -618,7 +644,7 @@ if __name__ == '__main__':
     if args.out is not None:
         stream = io.open(args.out, 'a' if args.append else 'w', encoding='utf-8')
     elif sys.stdout.encoding is None:
-        output = codecs.getwriter('utf-8')(sys.stdout)
+        stream = codecs.getwriter('utf-8')(sys.stdout)
     else:
         stream = sys.stdout
 
