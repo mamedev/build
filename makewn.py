@@ -392,6 +392,7 @@ class LogScraper(object):
             self.author = author
             self.paragraph = ''
             self.first = True
+            self.blank = False
             self.level = 0
             self.bullets = list()
             self.listname = None
@@ -407,6 +408,7 @@ class LogScraper(object):
                     print_wrapped(self.stream, self.paragraph, self.level)
                 self.paragraph = ''
                 self.first = False
+                self.blank = False
 
         def append_line(self, line):
             if self.paragraph:
@@ -442,8 +444,9 @@ class LogScraper(object):
         def process_line(self, line):
             indent, line = LogScraper.LEADINGSPACE.match(line.rstrip().replace('\t', ' ')).groups()
             if not line:
-                self.flush_paragraph()
-                if self.listname is not None and self.listitems:
+                if self.listname is None:
+                    self.blank = True
+                elif self.listitems:
                     self.listname = None
                     self.listitems = False
                     if self.stream is not None:
@@ -457,6 +460,7 @@ class LogScraper(object):
                 self.listname = self.paragraph
                 self.paragraph = ''
                 self.first = True
+                self.blank = False
                 self.level = 0
                 self.bullets = list()
             elif self.listname is not None:
@@ -474,6 +478,9 @@ class LogScraper(object):
                 self.get_bullet_increment(indent, bullet)
                 self.append_line(line)
             else:
+                if self.blank:
+                    self.flush_paragraph()
+                    self.blank = False
                 if not self.first and not self.paragraph and not self.bullets:
                     self.level += 1
                 self.append_line(line)
