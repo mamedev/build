@@ -87,8 +87,8 @@ Fidelity Electronics Mini Sensory Chess Challenger (1981 version) [hap, Sean Rid
 Gals Panic (Taiwan, EXPRO-02 PCB) [jordigahan, ClawGrip]
 Golden Par Golf (Joystick, V1.0) [Brian Troha, The Dumping Union]
 Hegener + Glaser Mephisto Portorose 32 Bit (v1.03) [Berger]
-Hot Blocks - Tetrix II (set 2) [Victor Fernandez (City Game), ClawGrip]
-Hot Blocks - Tetrix II (set 3) [jordigahan, ClawGrip]
+Hot Blocks - Tetrix II (set 2) [jordigahan, mariorq, ClawGrip]
+Hot Blocks - Tetrix II (set 3) [Victor Fernandez (City Game), ClawGrip]
 Jackie Chan - The Kung-Fu Master (rev 4?) [coolmod, The Dumping Union]
 Karate Dou (Arfyc bootleg) [Retromaniacs, ArcadeHacker, Recreativas.org]
 Matra & Hachette Alice with MCX-128 [Tim Lindner]
@@ -119,7 +119,7 @@ Machines promoted to working
 ----------------------------
 Bingo Time [TeamEurope, Ivan Vangelista]
 Excalibur Electronics Ford Racing [David Haywood]
-GRiD Computers Compass 1101 [shattered]
+GRiD Computers Compass 1101 [usernameak]
 Kick and Run (World) [dink, David Haywood]
 Ritam Master Monty [hap]
 Ritam Monty Plays Scrabble [hap]
@@ -581,894 +581,221 @@ vsmilem_cart:
 
 Merged pull requests
 --------------------
-3190: Nuon softlist [incog]
-
-6543: seattle.cpp and vegas.cpp: Clean House (nw) [Hydreigon223]
-All unnecessary inputs are removed from all respective games without problems. I decided to remove "IMPERFECT_SOUND" from the NBA
-  Showtime games because those games used a standard Vegas SIO board.
-
-6592: Consolidated code for pasing enum strings in src/frontend/mame/luaengine.cpp [npwoods]
-
-6596: Move sprite delaying behavior into screen_vblank for some drivers [cam900]
-gaiden.cpp, tecmo16.cpp, suprnova.cpp: Move delayed sprite drawing function into screen_vblank
-suprnova.cpp: Use generic gfx layout, Fix CPU clock related to XTAL, Use device for screen
-
-6597: tms9914: added SR & PP FSMs, typo fixed [fulivi]
-Hi,
-I've just added two missing FSMs in TMS9914 emulation (serial request & parallel poll). I've also fixed a typo reported by shattered
-  (two bits swapped in a register).
-Thanks.
---F.Ulivi
-
-6598: Namco custom fix [hackbar]
-Fixes the bootlegs.
-
-6599: Heavily improved emulation of GRiD Compass 1101 [usernameak]
-Changes:
-- added known dump checksums of 1101 BIOS
-- high-level emulation of GPIB disk devices
-- partial implementation of DMA (currently ignores ACCRQ so devices must have zero latency in order for it to work)
-- serial is now properly memory-mapped
-- modem stub in order to make system properly ignore modem device
-- it now boots without any patches and debug scripts
-- merged #6597 (needed in order to make disk devices work)
-Still not implemented:
-- RTC/MACHINE_ID
-- modem
-- has problems with multiple disk devices working simultaneously (possibly BIOS bug because this BIOS had some problems with that on
-  real device)
-
-6600: compis.xml: Five new dumps [FakeShemp]
-Dumped by myself
-
-6601: sgi_mips: add software list [davide125]
-Add an initial software list for SGI MIPS-based systems and hook it up to the Indy and 4D drivers.
-
-6602: hp86: fixed a bug in key auto-repeat function [fulivi]
-I've just fixed a bug in HP86 emulation that prevented correct key auto-repeat with non-English keyboard layouts.
-Thanks.
---F.Ulivi
-
-6603: Added GAL20V8 support to the jedutil tool [keshbach]
-New pull request where ncurses has been removed from jedutil.
-
-6604: nscsi/cd: handle eject command for SGI drives [davide125]
-On `indy_4610` running IRIX 5.3, the `eject` command (or selecting the same operation in the UI, e.g. in the cdrom icon context
-  menu) causes an immediate abort due to
-```
-[:scsibus:6:cdrom] Unhandled command ? (1): c4
-```
-Adding a stub handler for the command allows the system to work properly. Moreover, it is now possible to switch CD media on a
-  running system without having to resort to messy workarounds: just switch the media MAME's file manager and run `eject` to make
-  IRIX reload it.
-
-6605: tms9914: simplify handling of CIDS state [fulivi]
-This PR is for a minor change to tms9914 driver. I simplified a bug fix by @usernameak.
---F.Ulivi
-
-6606: New NOT_WORKING software list additions [clawgrip]
----------------------------------------
-Desktop Special Edition 1.0 for Support Customers [ClawGrip, Rampa]
-Insignia SoftWindows 95 4.0 for IRIX 6.3 and 6.4 [ClawGrip, Rampa]
-European Languaje Module 1.3 [ClawGrip, Rampa]
-Freeware 2.0 - Unsupported Software compatible with IRIX 6.2 and later [ClawGrip, Rampa]
-O2 Demos 1.1.1 for IRIX 6.3 including R10000 [ClawGrip, Rampa]
-ONC3/NFS Version 2, for IRIX 6.2, 6.3 and 6.4 [ClawGrip, Rampa]
-O2 IRIX 6.3 Recommended/Required Patches August 1997 [ClawGrip, Rampa]
-Network File System 5.3 [ClawGrip, Rampa]
-IRIX 6.3 and 6.4 Recommended/Required Patches October 1997 [ClawGrip, Rampa]
-IRIX 6.3 Applications August_1997 [ClawGrip, Rampa]
-Patch SG0000466 [ClawGrip, Rampa]
-(nw) I also replaced the IRIX 5.3 image with a cleaner one (Plextor, without C2 errors)
-
-6607: sgi_mips: new software list additions [davide125]
-
-6608: Merge release0221 into master (nw) [cuavas]
-
-6609: Plug and Play work [DavidHaywood]
- new WORKING machine
-----
-Millennium M505 Arcade Neo Portable Spielkonsole (Family Sport 100-in-1) [TeamEurope]
-new NOT WORKING software list entries
-----
-tvgogo.xml : Baseball (US) [Sean Riddle, David Haywood]
-tvgogo.xml : What-A-Mole (US) [Sean Riddle, David Haywood]
-- added internal NAND dump to didj [Sean Riddle, Clawgrip]
-- now that unsp20 SoC has been identified as GPL16250, renamed and reorganized slightly (nw)
-
-6610: New NOT_WORKING software list additions [clawgrip]
----------------------------------------
-Hot Mix 18 - Explore Tools and Technologies for Silicon Graphics [ClawGrip, Rampa]
-SupportFolio 5/96 [ClawGrip, Rampa]
-(nw) Also (somehow) sorted the list, merged the two "Freeware May 2000" CDs on the same entry and unified the entries name scheme.
-
-6611: sgi_mips: new software list additions [davide125]
-
-6612: i960dasm fixes and additions [SailorSat]
-Based on issue https://github.com/mamedev/mame/issues/6559
-- Added 10 opcodes that are currently emulated but missing from the disassembler.
-- Operand order was changed to match the _i960® Processor Assembler User's Guide_ as well as _IDA pro_ and _onlinedisassembler.com_
-Some things I noticed but did not touch:
-- certain opcodes should have 2 operands instead of 3: `not`, `cvtir`, `cvtirl`
-the current opcode table does not allow that, though.
-- load and store operations with a 1-byte alignment are output differently.
-oda.com gives `r10,(g11)[g12]` while MAME gives `st      r10,(g11)[g12*1]`
-- branch-on-bit opcodes may be faulty in certain edge cases.
-for opcode `30290120` oda.com gives `bbc     r5,r4,...` while MAME gives `bbc     5,r4,...` - the difference being register r5
-  instead of constant 5.
-
-6615: sgi_mips: new software list additions [davide125]
-
-6616: n64.xml: Document a few more cart PCBs [FakeShemp]
-
-6617: sgi_mips: new software list additions [davide125]
-
-6619: indy_indigo2: fix include ordering [davide125]
-Move `softlist.h` include before `logmacro.h` per @cuavas comment on https://github.com/mamedev/mame/pull/6601
-
-6620: Fix CoCo cartridge loading for less than 16k carts. [tlindner]
-The previous code would get into an infinite loop if the user tried to load a ROM cartridge smaller than or equal to 16k. That's
-  because m_cart->get_cart_size() is 16384:
-len = min(16384, 16384-16384)
-len = 0
-
-6621: Changed default for Becker Port to be off [tlindner]
-The becker port is a communication facility originally developed for the CoCo3FPGA project. The I/O is right in the middle of
-  cartridge space (the FPGA doesn't have a cartridge port). And in MAME it conflicts with emulated devices attached to the cartridge
-  port. I think the better option is to default off.
-
-6622: Add missing discs to IRIX 6.5 [ClawGrip, Rampa] [clawgrip]
-* Merged CDs that came on the same bundle and add features with metadata on all entries (nw)
-* Replaced some images with cleaner ones (Plextor, without C2 errors) (nw)
-
-6623: sgi_mips: new software list additions [davide125]
-
-6624: Added a preliminary support for Arduino UNO booting by avr8 [h1romas4]
-* Add support for ATMega328 to boot the Arduino UNO.
-* Fixed the specification of the page size of the bootloader.
-* Fixes m_pc to be correctly initialized in boot sequence.
-Test driver demo:
-https://github.com/h1romas4/mame/tree/arduino
-Best regards.
-
-6625: indy_indigo2: add another ip24 prom [davide125]
-Add missing PROM image for IP24 found at https://tudl1910.home.xs4all.nl/Indy_emulation/ip24prom.070-9101-008.bin
-
-6626: vtvideo.cpp: Implement pixel stretching of characters. [hodefoting]
-This fills in 1px gaps in 80column wide mode, details which are lost
-unless the line-mode is double-wide. This reintroduces functionality
-lost in commit d0fa593c1ea1ad.
-
-6627: startouch.cpp: Add note (nw) [clawgrip]
-
-6628: compis.xml: Add 8 new software [FakeShemp]
-
-6629: cgenie_cass.xml: Some nits [schnitzeltony]
-@pullmoll sorry but I am a stalker :grin:
-
-6630: CoCo: Changed driver coco3dw1 to have a default on becker port. [tlindner]
-CoCo: Modified coco3dw1 to have becker port turned on by default.
-
-6632: CoCo: added Disto no-halt disk controller [tlindner]
-
-6633: Coco3: jostick button label fix [tlindner]
-coco3: fix joystick button labels
-
-6634: Remove colon as a path seperator in the core [tlindner]
-I don't believe MAME compiles on any platform where the colon is a path seperator.
-So removing this solves a problem when viewing file names in the UI File Manager.
-!Screen Shot 2020-05-03 at 2 17 40 PM
-
-6635: Fixes for jedutil and more regression tests [keshbach]
-- Added regression tests for the modes of the GAL16V8 device
-- Fixed output feedback mode of the GAL16V8 and GAL20V8 device when in simple mode
-
-6636: replace Vsmile Motion BIOS [DavidHaywood]
-replace vsmile motion BIOS with one from an actual vsmile motion rather than an incorrecctly byteswapped version of the regular
-  vsmile BIOS [Sean Riddle, TeamEurope]
-
-6637: i960dasm: rewrote disassembler [SailorSat]
-Based on documents:
-- 270567-001  80960KB Programmer's Reference Manual (March 1988)
-- 270710-003  i960 CA/CF Microprocessor User's Manual (March 1994)
-- 271081-001  80960MC Programmer's Reference Manual (July 1988)
-- 272483-001  i960 Jx Microprocessor User's Manual (September 1994)
-- 272484-002  i960 Hx Microprocessor Developer's Manual (September 1998)
-- 272736-002  i960 Rx I/O Microprocessor Developer's Manual (April 1997)
-- 273353-001  Intel 80303 I/O Processor Developer's Manual (May 2000)
-Why oh why are there so many different variant of the i960? :)
-The older variants (Mx, Kx, Jx) have several bits defined as zeros, which are used for various things in the newer variants (Cx, Hx,
-  Rx).
-I implemented some checks for all bits that are (still) defined as zeros in newer variants to filter out invalid opcodes.
-The disassembler is ignoring the "branch prediction"-flag `T` for now (Cx, Hx, Rx variant).
-Later on we should attach `.t`/`.f` to the mnemonics for variants that have branch-prediction.
-There is conflicting information on the `COBR M1` flag:
-- Mx, Kx, Jx, Rx references declare `M1 set` means "literal"
-- Hx reference declares `M1 set` means "special function"-register
-
-6638: c140.cpp: Update data bus behavior and support 12 bit PCM, Verified from assault(namcos2) schematics [cam900]
-Add/Update notes, Use shorter/correct type values, Fix address/data bus bits, Modernize save states, Fix spacing, Reduce unnecessary
-  lines, duplicates, Move little endian interface in c140.h, Move bankswitching and address/data decoding behavior in each drivers
-namcos2.cpp, namcos21*.cpp: Fix c140 ROM loading, mirrored maps
-namcos2.cpp: Implement c140 ROM address/data decoding logics
-vgmplay.cpp: Fix C140 compatibility
-
-6639: hooked up kicknrun MCU [dink] [DavidHaywood]
-- hooked up kicknrun MCU [dink]
-- split up kikikai class [David Haywood]
-note, I haven't tested his 6801 changes with anything else, but they're said to be based on study of the manual.  changes originally
-  posted at https://github.com/finalburnneo/FBNeo/commit/2b040632a758eecae5d4bf1f54cfcc6a8cd9caf2#commitcomment-38927617
-
-6642: Fix typos in PORT_CHAR definitions [palazzol]
-
-6643: Drivers (4) for Grant Searle's Simple machines (Z80, CP/M, 6502, and 6809) [palazzol]
-See http://searle.wales/ for details.  Drivers are gsz80, gscpm, gs6502, and gs6809.
-
-6645: Update hd6309.ops [tlindner]
-$1020 is an illegal opcode on the 6309. On the 6809 it is a rarely used form of LBRA. I tested on a real 6309 and $1020 vectors to
-  Illegal.
-
-6646: add init to convert twinbeeb bubble dump into something the driver can actually use (nw) [DavidHaywood]
-this is proof of the problem.. better would be to know why the dump was stripped in the first place...
-
-6647: raiden2.cpp: add U0342 PAL to ROM definitions [neSneSgB]
-jj4b02__ami18cv8-15.u0342.zip
-https://twitter.com/neSneSgB/status/1232115385303879680 Discussion starting here, I successfully dumped the missing U0342 from a
-  location test US Raiden 2, and confirmed that the dump worked on a final Raiden 2 PCB. I converted it to a binary using jedutil to
-  generate the CRC and SHA1.
-
-6648: Fix for UI Paste with the Default Serial Terminal [palazzol]
-Without this fix, 8 characters @^&()\:" cannot be pasted from the UI into serial terminal.
-MAME core natural keyboard is now upgraded to understand PORT_CONDITION()
-
-6649: New NOT_WORKING software list additions [clawgrip]
----------------------------------------
-IRIX 6.5.5 [ClawGrip, Rampa]
-IRIX 6.5.7 [ClawGrip, Rampa]
-IRIX 6.5.9 [ClawGrip, Rampa]
-SupportFolio 6/96 [ClawGrip, Rampa]
-Support Advantage 12/95 [ClawGrip, Rampa]
-Support Advantage 9/95 [ClawGrip, Rampa]
-(nw) Also added a partial dump (missing one needed CD) of IRIX 6.5.13
-
-6650: Add partial support for all IAC messages [RyogaMasaki]
-Currently, one IAC message is supported (0x93) by the i960KB cpu emu, but the manual defines several more. Any unsupported messages
-  call fatalerror and kill MAME. It seems that this hasn't been an issue for most games, but it does cause VF2, Fighting Vipers and
-  Sonic the Fighters to crash when using the debug menu, as outlined here:
-  http://sudden-desu.net/entry/debug-tools-in-virtua-fighter-2-fighting-vipers-and-sonic-the-fighters
-This patch adds cases for each of the IAC messages outlined in the 80960KB Programmer's Reference Manual (chapter 13). While there
-  isn't much actual code implementation, this will at least prevent MAME from fatal'ing.
-
-6651: 6309: removed wrong BRA [tlindner]
-nw: I removed the wrong BRA in the last patch. This one puts the correct BRA back on and removes the BRA that is illegal.
-
-6652: sgi_mips: new software list additions [davide125]
-
-6657: Revert "c140.cpp: Update data bus behavior and support 12 bit PCM, Verified from assault(namcos2) schematics" [rb6502]
-Reverts mamedev/mame#6638
-
-6658: sgi_mips.xml: Fix spacing (nw) [clawgrip]
-
-6659: Revert "Revert "c140.cpp updates [cam900, superctr]" ", Fix regression of gal3.cpp [cam900]
-
-6660: Debugger - add `-debuglog` option to log debug console output to file [Stevie-O]
-When this option is specified, all console output is echoed to a log
-file.
-Some caveats/limitations:
-- The file-open process was copied from -log, so it has the same limits
-  - Filename is hard-coded (debug.log)
-  - File is overwritten if it exists
-  - File is opened during emulation initialization
-    - Thus, the file is cleared if you invoke the "Hard Reset"
-      debugger command
-  - Probably some other details I don't know about
-- Logging works as such: When a string is appended to the scrollback
-  buffer, it is also written to the log file.
-  Some commands forcibly wrap their output (e.g. `help` to 80 columns.)
-  Because this wrapping is done inside the scrollback buffer, the text
-  written to the file is not wrapped.
-  This can be seen with `help execution`.
-
-6661: fix HFE disk write [kkaempf]
-this fixes https://mametesters.org/view.php?id=7526
-`src/lib/formats/hxchfe_dsk.cpp` reproducibly creates a SEGV when writing HFE files. This is caused by an endless loop in
-  `hfe_format::generate_hfe_bitstream_from_track`, writing beyond end-of-array at
-  https://github.com/mamedev/mame/blob/140ba5147df230751a87a62374eba8880f5d3dbe/src/lib/formats/hxchfe_dsk.cpp#L683
-The endless loop is caused by re-setting `cur_pos` at two occasions and re-setting the loop variable.
-This fix drops the reset of `cur_pos` resulting in a successful write of a mixed-density (track0 sd, others dd) HFE image.
-
-6662: sgi_mips.xml: Typo (nw) [clawgrip]
-(nw) Sorry, my fault
-
-6663: nes.xml, famicom_flop.xml, msx1_cart.xml: minor metadata fixes [quasiscroto]
-moejudo alt_title typo is fixed and also made to match box orthography, otherwise changes are self explanatory.
-
-6664: CoCo: Added Disto RAM cartridge [tlindner]
-Added the cart to the slot system of the CoCo and Dragon.
-
-6665: Dragon64: connected ACIA to RS232 system [tlindner]
-This allows the ACIA to talk to the outside world.
-
-6666: sgi_mips: new software list additions [davide125]
-Also add a missing CD for 6.5.13 and merge two freeware entries with their corresponding IRIX releases.
-
-6667: gp9001.cpp : Fix MT 07642 [cam900]
-
-6668: refactor seta2.cpp in preparation for adding zooming (nw) [DavidHaywood]
-
-6669: c352.cpp: Allow byte accessing, Modernize save states [cam900]
-Add notes, Use shorter/correct type/argument values
-
-6670: New working software list additions [clawgrip]
------------------------------------
-Mission Pilote (France) [DisizDream]
-New NOT_WORKING software list additions
----------------------------------------
-DreamWorks Monstres contre Aliens (France) [DisizDream]
-
-6671: New NOT_WORKING software list additions [clawgrip]
----------------------------------------
-Disney Manny et ses outils (France) [DisizDream]
-Disney La Princesse Et La Grenouille - Le grand rêve de Tiana (France) [DisizDream]
-Shrek 4 - Il était une fin (France) [DisizDream]
-
-6673: Add thunderh's I/O M68k stub [Hydreigon223]
-This is to access thunderh's 68k program easier for disassembly. There are no comms however between the main cpu and I/O cpu as that
-  requires proper k056230 emulation. Could this 68k program help a bit in k056230 emulation?
-
-6674: seta2.cpp - start looking at y zooming (nw) [DavidHaywood]
-
-6675: gal3.cpp, namcos21*.cpp: Fix c140 input clock source related to on-chip XTALs [cam900]
-8MHz XTAL isn't exists in these hardwares, so 21.39KHz is wrong.
-
-6676: New working software list additions [ArcadeShadow]
-ibm5170: Police Quest in Pursuit of the Death Angel (VGA release), Silverball 2 Plus
-
-6677: seta2.cpp - y zoom improvements (nw) [DavidHaywood]
-
-6678: New NOT_WORKING software list additions [clawgrip]
----------------------------------------
-Disney Meister Manny's Werkzeugkiste (Germany) [TeamEurope]
-
-6679: ibm5170 New working software list additions [ArcadeShadow]
-Speed Racer in the Challenge of Racer X, Subwar 2050 - The Underwater Combat Simulation
-
-6680: 056230 doc updates [Hydreigon223]
-Not much else to say besides adding an address map specific to racinfrc.
-
-6681: New machines marked as NOT_WORKING [clawgrip]
-TV Learning Station (VTech, Germany) [Sean Riddle, TeamEurope]
-
-6682: midxunit.cpp: correct description [cam900]
-
-6683: seta2.cpp - further work on zooming (nw) [DavidHaywood]
-
-6684: seta2.cpp - improve x enlarge cases (nw) [DavidHaywood]
-
-6685: sgi_mips: new software list additions [davide125]
-
-6686: New machines marked as NOT_WORKING [clawgrip]
-----------------------------------
-IQ Unlimited [Alexandre]
-
-6687: New working machine added [algestam]
-----------
-Game & Watch: Popeye (Panorama Screen) [algestam, Ryan Holtz]
-
-6688: sgi_mips: fix a few issues [davide125]
-Fix a few issues reported by @Tafoid 
-- drop `apps_6_5_aug_01` as it's already included in `irix_6_5_13`
-- use the correct hashes for `hotmix_11` and `hotmix_12`
-- drop `irix_5_3_d` as the media is a straight duplicate of `irix_5_3_a`, and a proper version hasn't surfaced yet
-
-6689: jaguar.cpp: Add info for debugging [cam900]
-Midsummer GPU code can be executed out of external RAM, Reference: Midsummer Technical Reference Manual
-
-6690: st_flop.xml: Add Street Fighter II: The World Warrior [FakeShemp]
-Made from Greaseweazle dumps by Mikerochip.
-
-6691: jaguar.cpp: refactored GPU/DSP CPU core to use i/o maps [Angelo Salese] [angelosa]
-* Fix Tom to Host CPU interrupt, fixes Atari Kart and Mutant Penguin booting;
-* Fix Host CPU auto-vector irq;
-* jag_blitter.cpp: add stub core;
-
-6692: namconb1.cpp: Fix MT 07369, Reduce duplicates [cam900]
-Move virtuals under protected:, Use shorter/correct type values, Fix spacings
-
-6696: netlist: Added devices CD4013, CD4069, CD4070 [palazzol]
-By request of couriersud.
-Untested, but seem fine. CD4013 is almost identical to 7474
-CD4069 and CD4070 are implemented with truthtable.
-Also fixed incorrect timing value with CD4001.
-
-6697: New working clones [clawgrip]
-------------------
-Hot Blocks - Tetrix II (set 2) [Victor Fernandez (City Game), ClawGrip]
-Hot Blocks - Tetrix II (set 3) [jordigahan, ClawGrip]
-
-6698: i8085.cpp: Remove leftover logerror() [palazzol]
-
-6699: identified 3 bad bits in csilver MCU dump, corrected them, hooked up MCU, removed simulation [dink] [DavidHaywood]
-(note, this causes loss of coinage sound, it doesn't generate the same interrupt on the MCU as the other games at least as there's
-  no code for that)
-
-6700: sgi_mips: new software list additions [davide125]
-Also update publisher for some entries.
-
-6702: compis.xml: add seven more dumps [FakeShemp]
-Dumped by myself.
-
-6703: pc2000.cpp: Move 'pc2000s' to use a SED1278-0B instead of an HD44780 (nw) [clawgrip]
-
-6705: IMGTOOL: Added Dragon DOS module [tlindner]
-Added Dragon DOS module for Imgtool.
-
-6706: redalert.cpp: various fixes [Tomasz Slanina, Angelo Salese] [angelosa]
-* Panther: add main-sound communication handshake bit, fix AY mapping, emits a few sounds now;
-* Panther: aim lever orientation (vertical instead of horizontal); 
-* Panther: document the various service modes this has, also most ROMs as bad because they fail ROM test;
-* Panther: fix background color;
-* DemonEye-X: preliminary extra video layer hookup, game is now somehow playable;
-* DemonEye-X: fix color hookup;
-* Input reduction and cleanups;
-
-6707: ibm5170: New working software list additions [ArcadeShadow]
-ibm5170: New working software list additions
-Roberta Williams' Laura Bow in "The Dagger of Amon Ra", Leisure Suit Larry 1: In the Land of the Lounge Lizards (VGA release),
-  Leisure Suit Larry 1: In the Land of the Lounge Lizards (EGA release)
-
-6708: ibm5150: New working software list addition [ArcadeShadow]
-ibm5150: Eye of Horus
-
-6709: CoCo: fix 0xFEXX memory when in ROM mode. [tlindner]
-This gets cartridges working again. (nw)
-
-6710: ibm5170: New working software list addition [ArcadeShadow]
-Formula One Grand Prix (Euro)
-
-6711: First completed pass of commandline parameters. (nw) [Firehawke]
-**PLEASE READ:**
-Here's a first pass at commandline parameter examples.
-I'm not expecting this to be to everyone's satisfaction, so it's probably best to let this sit until everyone has had a chance to go
-  through it. I'll fix what issues you find at that point.
-In particular, the GLSL stuff is expected to need more work.
-This also includes a first pass at VRR information in the FAQ. I plan to revisit this after the main commandline stuff is worked out
-  as I've found some useful information on Blur Busters in regards to VRR's quirks.
-
-6714:  QA a selection of Sharp X68000 SWs (nw)  [angelosa]
-Mostly stuff from a spreadsheet I had from a while. A few things here and there got improved in the meantime. 
-
-6716: pleiads: Fix log messages and only log error by default [palazzol]
-
-6717: Enable option to generate symbols in Release as well as Debug under Visual Studio.  (This is important because debugging Debug
-  builds is too slow) [palazzol]
-
-6719: New working clone [TwistedTom]
-Varth: Operation Thunderstorm (bootleg, set 2)  [gmx, The Dumping Union]
-
-6720: cpu/tms32031/*: Add/Correct notes for Internal peripherals and Chip family differences [cam900]
-Fix chip name (no NMOS variant exists) and some descriptions
-Fix Microcomputer mode when 320C30 internal ROM is empty
-reference: TMS320C3x User's Guide
-
-6721: mc6850: TDRE should read clear in reset, and set coming out of reset [68bit]
-Fixes a lockup running UniFlex on the SWTPC09.
-Tested on hardware, the TDRE flag reads as zero in the reset state and
-reads as set when taken out of reset, and even if data has been written
-to the data register while in the reset state.
-
-6722: seta2.cpp: Add notes for hardware configs, emulation issues in some game [cam900]
-Fix clock for P0-113A PCBs
-Fix source file name (.cpp instead .c)
-
-6723: pgm.cpp: Add some hardware notes [cam900]
-
-6725: some small GPL16250 tweaks / hacks so that tkmag220 and lazertag show more (nw) [DavidHaywood]
-tkmag220 will fairly quickly show a rom test screen where the check fails (not surprising, ROM is banked etc. and might need some
-  swapping applied) (nw)
-lazertag, after a long time unthrottled, will show a single screen of sprites, there are palettes uploaded for something else before
-  that, but like many of these it never seems to populate tile ram (nw)
-
-6726: ibm5170: New working software list addition [ArcadeShadow]
-ibm5170: Cruise for a Corpse
-
-6727: New working software list additions [clawgrip]
------------------------------------
-Bob le Bricoleur - Les P'tits chantiers de Bob (France) [DisizDream]
-Lil' Bratz Au Top de la Mode - Complices, Cools et Class' (France) [DisizDream]
-
-6729: New NOT_WORKING software list additions [clawgrip]
----------------------------------------
-Les découvertes de Mickey et ses amis (France) [DisizDream]
-L'arche de Noé - L'aventure des animaux (France) [DisizDream]
-
-6730: Here's the May collection of Apple II disks per usual. [Firehawke]
-
-6731: pdp11: qbus skeleton, pc11 [shattered]
-PR #6488 minus RX11 code.
-
-6732: rt1715w: use CAS decode PROM (nw) [shattered]
-
-6733: varthb2: mark gfx roms bad_dump [TwistedTom]
-#6719 
-
-6735: ibm5170: New working software list additions [ArcadeShadow]
-ibm5170: Alone in the Dark 2 (France), Sam & Max Hit the Road
-
-6736: ibm5150: New working software list addition [ArcadeShadow]
-The Amazing Spider-Man
-
-6737: some notes for getting tkmag220 (gpl16250) to show something (nw) [DavidHaywood]
-
-6738: rs232 null_modem: XON/XOFF flow control (nw) [shattered]
-
-6739: Add note about undumped game (nw) [clawgrip]
-
-6740: unsp20 - fix opcode decode priority, was causing an ASR operation to be decoded as a MUL [David Haywood] [DavidHaywood]
-
-6741: fix scroll offset, various sf2 bootleg sets [TwistedTom]
-sf2level, sf2m3, sf2m8, sf2ceds6, sf2cems6a, sf2cems6b, sf2cems6c, sf2re, sf2rules
-scroll1 was off by 4px
-
-6744: New clones marked as NOT_WORKING [clawgrip]
---------------------------------
-The Raid (alternate set) [jordigahan, ClawGrip]
-
-6745: identified tkmag220 as a bad dump, there's corrupt data in most banks and it fails test (nw) [DavidHaywood]
-
-6746: gaplus : Fixed displaying of starfield [sasuke-arcade]
-- Fixed scrolling speed and direction (Testers-00434)
-- Added top and bottom clipping (Testers-07663)
-- Modified to use sprite color instead of text color with refer to the PCB
-- Added blinking when the movement of the star changes
-Reference Video:
-https://www.youtube.com/watch?v=vrmZAUJYXnI
-https://www.youtube.com/watch?v=_1x5Oid3uPg
-
-6747: New clones marked as WORKING [tlindner]
-mcx128 MC-10 with MCX-128 expanion [tim lindner]
-alice128 Alice with MCX-28 expansion [tim lindner]
-
-6748: luaengine: rom_entry library [vadosnaprimer]
-
-6750: Add MM58174 real time clock and use it (nw) [shattered]
-
-6751: various GPL16250 tweaks (DMA, video rendering etc.) (nw) [DavidHaywood]
-
-6752: Gaplus : modify source code comments and change dipswitch defaults [sasuke-arcade]
-- Correcting comments that I forgot to change in my last pull request (#6746)
-- Changed bonus life default settings to Namco's factory settings (5k/15k/15k every)
-
-6754: grobda: Changed bonus life default settings to Namco's factory settings (10k only) [sasuke-arcade]
-
-6755: bloodbro_ms.cpp: Add missing PROMs to 'bloodbrom' [jordigahan, ClawGrip] [clawgrip]
-
-6756: asmjit: new 3rdparty library [pmackinlay]
-I propose adding this library to MAME.
-The intent is to use it to replace the x86 and amd64 code emitter logic in the current and potential future MAME drc backend(s). The
-  author of the library has plans (although no timeframe) to support ARM targets in the future, which would likely also be useful
-  for a backend targeting those architectures.
-In my opinion, it ticks the boxes in terms of zlib license, mostly tidy C++11 code, no external dependencies, active development,
-  good feature set, Windows/OSX/Linux and MSVC/Clang/GCC support, and a seemingly sensible API.
-I have made one change to the source code, uncommenting the definition of the ASMJIT_STATIC preprocessor variable in the
-  api-config.h header; defining it in the build script appeared to be a better option, but caused linker warnings that I couldn't
-  see how to resolve without polluting the rest of the build with the definition.
-I have tested compiling and running a driver which uses the library under MSVC and GCC without observing any problems.
-
-6758: BIOS versions, drivers and documentation in at, pc, genpc and europc.cpp [rfka01]
-
-6759: k037122.cpp: Update hardware information [cam900]
-hornet.cpp: Add screen raw parameters (verified in both voodoo and K037122 display timing parameters), Add notes
-
-6760: mw8080bw: 280zzzap netlist audio [colinhowell]
-This sounds and performs OK on reasonably modern hardware. It has more overhead than the Gun Fight netlist, but that's because the
-  sound circuits are much more complex. Performance on my 2014 MacBook Pro (2.5 GHz Core i7) is around 2 x when unthrottled.
-The sound seems to have more treble and less bass than what I hear in the few videos of real 280-ZZZAP machines I can find, and the
-  "skid" sound is less distinct than on those machines. This may be due to the effect of the arcade cabinet, the audio power
-  amplification, or perhaps different component values between the schematic I used and real PCBs. Verification against the latter
-  would be a good idea.
-This netlist, with some modifications for differences in components and circuits, should also be able to support Laguna Racer and
-  Super Speed Race.
-
-6763: rf5c68.cpp: Verify default register map, Add notes [cam900]
-reference: datasheet
-
-6764: new WORKING machines (Plug & Play) [DavidHaywood]
- new WORKING machines
-----
-Super Sonic Gold (Radica Plug & Play) (USA) [Sean Riddle, David Haywood, Kev (FBN), anonymous]
-Street Fighter II: Special Champion Edition [Ghouls'n Ghosts] (Radica, Arcade Legends) (USA)
-  [Sean Riddle, David Haywood, Kev (FBN), anonymous]
-new NOT WORKING machines
-----
-Speed Racer (Senario) [Sean Riddle, Kamaal Brown]
-My Arcade Go Gamer Portable (Family Sport 220-in-1) [Sean Riddle, Kev (FBN), anonymous]
-- rewrote a large chunk of the spg2xx renderer in preparation for allowing the newer games to use the same code, also fixed a number
-  of rendering glitches eg. with Shudu and Track Racing in dnv200fs and Assault on Watchtower in jak_just [David Haywood]
-
-6765: nes_apu.cpp: Correct noise algorithm [cam900]
-
-6766: armedf : Fixed the resolution difference from PCB. (Testers-07640) [sasuke-arcade]
-Fix of MAME Testers 07640
-Fixed that "Armed Formation" resolution was 16 pixels narrower than PCB. (320x224 -> 320x240)
-
-6767: two small SunPlus SPG2xx regression fixes for previous PR (nw) [DavidHaywood]
-
-6768: tubep : Added text and sprite drop shadow [sasuke-arcade]
-Text and sprite layers draw a drop shadow with 1 dot width to the left.
-See the gameplay video on the PCB. https://www.youtube.com/watch?v=xxONzbUOOsw
-!tubep
-
-6770: rt1715w: native keyboard and serial devices (nw) [shattered]
-
-6772: Bug fixes for hp9845c & remote488 [fulivi]
-Hi,
-the commits in this PR fixes a couple of bugs:
-+ An addressing error in the graphic memory of hp9845c (funny I didn't see it earlier)
-+ A signal corruption bug in IEEE488 remotizer
-Thanks.
---F.Ulivi
-
-6773: New NOT_WORKING software list additions [clawgrip]
----------------------------------------
-Dreamworks/Nickelodeon The Penguins of Madagascar - Mission Madness (USA) [TeamEurope, Sean Riddle]
-Disney Princess (USA) [TeamEurope, Sean Riddle]
-Thomas & Friends - Really Useful Engines (USA) [TeamEurope, Sean Riddle]
-Disney Fairies Explore Your Talents (USA) [TeamEurope, Sean Riddle]
-Disney Jake and the Neverland Pirates (USA) [TeamEurope, Sean Riddle]
-Nickelodeon Bob Esponja - Defendiendo la Fórmula Secreta (Spain) [Sean Riddle, ClawGrip]
-Disney La Casa de Mickey Mouse (Spain) [Sean Riddle, ClawGrip]
-(nw) Also fixed some game years and descriptions
-
-6774: Plug and Play work [DavidHaywood]
-new WORKING machines
------
-Genesis Collection Volume 2 (Radica, Arcade Legends) (USA) [Sean Riddle, David Haywood, Kev (FBN), anonymous]
-Vs Power Plus [Sean Riddle, Dave 'Foxhack' Silva]
-new NOT WORKING machines
------
-Lexibook Compact Cyber Arcade - Marvel Ultimate Spider-Man [Sean Riddle, Dave 'Foxhack' Silva]
-Zone 3D [Sean Riddle, David Haywood]
-new WORKING clones
------
-My Arcade Gamer V Portable Gaming System (DGUN-2573) (set 2) [Sean Riddle]
-(technically the new My Arcade Gamer set is another bad dump from a different unit, but the dumps are bad in ways which makes
-  repairing either impossible so for now it's a clone)
-- some work on trying to understand the SPG 'vertical compression' feature used by Senario Speed Racer [David Haywood]
-
-6775: Fixed Arcade build [MASHinfo]
-
-6776: hornet.cpp: Add notes for scope screen, Fix raw parameters [cam900]
-
-6777: msx1_cart: New working software list addition [wilbertpol]
-Ink [unknown]
-
-6778: pc.cpp: added Sergey Kiselev's and monotech's modern XTs [rfka01]
-
-6780: prepare SunPlus rendering code for sharing between SPG2xx and GPL16250 (nw) [DavidHaywood]
-
-6781: Debugger: add `condump` command to export console buffer to a log file [Stevie-O]
-This is another debugger enhancement -- it allows you to export the
-current contents of the debug console window to a file.
-The filename parsing is based on the `trace` command, and as such,
-supports both the "{game}" placeholder, and the ">>" prefix for
-appending instead of overwriting.
-
-6782: pc.cpp: more consistent ROM naming, versions 0.7e to 0.9 of the ROMs you find on the project page don't have versioned
-  filenames. [rfka01]
-
-6784: Correct Game Name Machine fredmem and clones [phweda]
-Correct game name : Fred Flintstone's Memory Match
-See: https://www.arcade-museum.com/game_detail.php?game_id=7848 and see Titles image for "fredmem" in MAME Extras from
-  ProgettoSnaps.
-
-6785: Tiki-100 improvement [Frodevan]
-Graphics emulation for Tiki-100 redone to be accurate down to the start of each scanline, and making palette-changes work correctly.
-  Also fixed a small inacuracy in the keyboard, where the column-select would reset after the wrong number of reads.
-
-6786: hp_ipc_kbd: implement autorepeat (nw) [shattered]
-
-6787: consola_emt.cpp: Small fixes (nw) [clawgrip]
-* N80C188XL25 is known to work at 25MHz (nw)
-* This specific ROMset is from 24/Mar/2003 (nw)
-
-6788: Support Colecovision Megacart. [ElectricMagic]
-Assume that a rom file that is more than 32K in size is a megacart
-and that it should be bankswitched using Megacart protocol.
-
-6792: taitowlf: update documentation (nw) [Hydreigon223]
-Some of these components were already mentioned later in the driver. "TODO" wasn't really correct because main board (and rom board
-  connected to main board) all communicate with the PC motherboard via PCI. Figuring out PCI comms between both boards as well as
-  reading the two program roms, u1 and u2, may prove tricky.
-
-6793: SunPlus refactoring checkpoint (nw) [DavidHaywood]
-
-6794: fmtowns_cd.xml: 8 new dumps, 5 replacements [rzero9]
-- New dumps from redump.org (working):
-Dracula Hakushaku - Bishoujo-tachi no Chi no Shitatari
-Hyper Planet
-Lemon Cocktail Collection
-Märchen Toshokan - Grimm Douwa - Bremen no Ongakutai
-Nihon no Rekishi - Ishin-hen - Kurofune Raikou
-Phobos
-Towns Chiri - Jigsaw World
-- New dumps from redump.org (not working):
-Lip 3 - Lipstick Adventure 3
-- Replaced entries with dumps from redump.org:
-Ballade for Maria
-Mobile Suit Gundam - Hyper Desert Operation
-Populous & The Promised Lands
-SimEarth - The Living Planet
-Tunnels & Trolls - Crusaders of Khazan
-
-6795: Change aspect ratio for Konami Twinkle to 16:9 [tertu-m]
-All games running on the Twinkle hardware shipped with anamorphic 16:9 widescreen monitors. In 4:3, most graphics appear squashed
-  horizontally. (beatmania IIDX continued to use anamorphic widescreen after switching to PC hardware with 9th style.)
-This also updates the Lamps layout to display the screen in 16:9 and changes the color of the 16-segment display to "LED red" to
-  match the 16-segment displays that were used on the machines.
-
-6796: spg renderer / gpl16250 - remove some palette bank hacks (nw) [DavidHaywood]
-
-6797: gpl16250 / sunplus rendering - improvements for jak_pf (double height tilemaps etc.) (nw) [DavidHaywood]
-
-6799: sid.cpp: Fix issue #6798 [cam900]
-
-6800: Plug and Play work (new working machine) [DavidHaywood]
- new WORKING machine
-----
-Millennium M521 Arcade Neo 2.0 (Family Sport 220-in-1) [TeamEurope, David Haywood]
-- reworked / tweaked some of the SPG rendering based on my own research (nw)
-
-6801: ibm5150.xml: add original dumps for Centipede and Ms. Pac-Man [rzero9]
-Both working, and dumped from my original disks. Also tagged the existing ones as cracked.
-
-6802: pgm.cpp: Switch Ketsui Arrange to 4 button input layout [trap15]
-Ketsui Arrange adds an option formation change button on button 4, this wasn't available with the ddp3 input setting.
-
-6803: Update Travis CI build environments [belegdol]
-Switch Ubuntu build from gcc-9 to gcc-10
-Switch macOS build from Xcode 11.0 (macOS 10.14.6) to Xcode 11.5 (macOS 10.15.4)
-
-6805: gameboy.xml, famicom_flop.xml, nes.xml: more metadata corrections [quasiscroto]
-gameboy.xml's pocket mahjong was listed as a clone of pokemon yellow which explains an earlier mistake where a jp version of pokemon
-  yellow was not listed as a clone. pocketmj is clearly a different game.
-
-6806: iqunlim.cpp: Redumped 'iqunlimgr' as its right size [TeamEurope] [clawgrip]
-
-6807: rf5c68.cpp: Implement some chip variant differences, Verify,Implement RF5C164 default register map [cam900]
-Reference: RF5C68 Datasheet, Mega CD hardware manual PCM sound source
-segas18.cpp, segas32.cpp: Add notes for sound chip
-megacd.cpp: Correct sound chip variation
-
-6808: New working clones [clawgrip]
-------------------
-Karate Dou (Arfyc bootleg) [Retromaniacs, ArcadeHacker, Recreativas.org]
-
-6809: ics2115.h: Add imperfect_features related to incorrect/unverified interrupt, interpolation, ramping [cam900]
-Interpolation issue is most noticeable in cave PGM hardware game musics
-
-6810: Typo that prevents linking, sorry (nw) [clawgrip]
-
-6811: unsp20 - fix asr (nw) [DavidHaywood]
-
-6812: Setting analog inputs don't work in LUA [tlindner]
-I have no idea if this is the best way to fix this. I just wanted to start a discussion.
-
-6813: pc98.xml: softlist updates, part 6 (E) [rzero9]
-- Added new software items from the Neo Kobe Collection (working):
-Eimmy to Yobanaide (Demo)
-Ekispert
-Ekudorado - Kagami no Naka no Oukoku
-Elm Knight - A Living Body Armor (Demo)
-Elthlead Senshi
-EO System 3.0 (v1.10 installer)
-EPSON Jiko Shindan Program
-EPSON MS-DOS 2.11 (Rev. E22)
-EPSON MS-DOS 2.11 (Rev. R15)
-EPSON Nihongo Disk BASIC v2.0
-Estate
-eXOn
-eXOn (Demo)
-Expert-98
-- Added new software items from the Neo Kobe Collection (not working):
-Eisei Meijin II
-Elysion (2DD version)
-EPSON Software Installation Program (v2.17)
-EPSON Software Installation Program (v2.23)
-EPSON Software Installation Program (v2.27)
-EPSON Software Installation Program (v3.02)
-- Re-tested software entries with current MAME
-- Relabeled disks with their actual names
-- Added usage notes for software that needs DOS
-- Removed duplicate images where the only differences are in the saved
-  game data
-- Reordered some disks so they are auto-mounted in a more logical way
-- Some minor title / spelling fixes
-
-6814: some spg2xx bits [DavidHaywood]
-- looked at Speed Racer I2CMEM, it saves (you can do a race of the global championship, and see the scores from the race table
-  stored in there once you select save) but loading fails.  Type is identified, maybe something unique about it? (nw)
-- looked at Ford Racing steering / pedal inputs, seems to be an issue with the sp2xx emulation, the adc ports are only read in test
-  mode, once you go in game there's no adc interrupt an no gas etc. inputs. (nw)
-
-6816: megadriv.xml: Added info on some games which require proper dumping [ICEknigh7]
-Just a couple of observations in the Earthworm Jim (USA) and Streets of Rage 3 (USA) entries, based on no-intro's site and my own
-  cartridges.
-Also added a couple of prototypes mentioned in a recent interview with Juan Santos from TecVia.
-
-6817: New clones marked as NOT_WORKING [clawgrip]
---------------------------------
-Super Six Plus II English Mark Darts (Spanish) [jordigahan, ClawGrip]
-
-6819: okiadpcm.cpp: Add looped sample support, Allow reading current output without decoding [cam900]
-Fix initial values, Fix descriptions
-qs1000.cpp: Add save state related to loop support (disabled currently)
-
-6820: arachnid.cpp: Add notes about dipswitches (nw) [clawgrip]
-
-6821: okiadpcm.cpp: Fix looping when supported [cam900]
-
-6822: Expose ioport_setting to luaengine [vadosnaprimer]
-Allows to see possible values and their descriptions for DIP switches, since those can't be deduced from raw numbers.
-**Setting value** is _table key_, **setting name** is _table value_, which may look like they're reversed, but it's not a mistake:
-  we're sending digital values, they're the primary subject here, and setting names are just hints for humans.
-
-6823: ibm5170.xml: add 4 new dumps [rzero9]
-All working and dumped by me from the original disks.
-Gravis UltraSound (GUS) Installation - V2.05
-Chuck Yeager's Air Combat (Gravis Ultrasound version)
-Dune (3.5")
-Frontier - Elite II
-
-6826: a few tweaks relating to recent SPG ADC work (nw) [DavidHaywood]
-
-6827: Add ImageDisk IMD save support [lfantoniosi]
-Allow to save IMD floppy image disk. Tested on Zorba and Kaypro II
-
-6828: microtch.cpp: Typo on the ROM label (nw) [clawgrip]
-
-6829: arachnid.cpp: Add notes about ROM versions (nw) [clawgrip]
-
-6830: new WORKING machine [DavidHaywood]
-new WORKING machine
------
-Zudu-go / 2udu-go [Sean Riddle, David Haywood, anonymous]
-- replaced both dgun2573 sets with good dumps of respective units (nw)
-
-6831: startouch.cpp: Add notes about hardware variants (nw) [clawgrip]
-
-6834: new working clones [DavidHaywood]
-new working clone
------
-DonPachi (Japan, Satsuei version) [PEG]
-
-6835: ics2115.cpp: Use device_memory_interface for fetch external samples [cam900]
-device_memory_interface for later DMA and DRAM interface support
-Allow u-law interpolation (some instrument sound samples in IGS PGM Motherboard sound ROM are u-law)
-Add notes, Reduce duplications
-
-6836: fix sf2rk gfx rom load and decode [TwistedTom]
-fixed gfx rom loading and decode (sf2rk_init), fixes corrupt sprite issues (text, zangief etc.)
-added note and rom patch regarding the dark screen issue, confirmed present on real pcb.
-patch disabled by default as correct behaviour is to have no palette fade effects and turn up contrast as with real pcb/monitor,
-  launching with -contrast 2.5 looks about right to me.
-
-6840: okim6295.cpp: Fix file name description [cam900]
-
-6842: move schick out of pengo driver + misc promotions [DavidHaywood]
-moved schick out of pengo driver (nw)
-machines promoted to WORKING
------
-Speed Racer (Senario) [Sean Riddle, Kamaal Brown]
-Ford Racing [Sean Riddle, David Haywood]
-
-6843: June 2020 Apple Softlist updates [Firehawke]
-Tons of MECC this month!
-
-6846: New working machine added [algestam]
-Micro Vs. System: Donkey Kong 3 [algestam, Ryan Holtz]
-Only a single cheat has been found (using port B), perhaps another aspect of the game is changed using port BA but I haven't found
-  out what.
+- 3190: Added a Nuon software list. [incog]
+- 6543: seattle.cpp, vegas.cpp: Removed unused inputs, and removed imperfect sound flag from NBA Showtime games. [Hydreigon223]
+- 6592: luaengine.cpp: Consolidated code for parsing enum strings representations. [npwoods]
+- 6596: Moved sprite delay implementation into screen vertical blanking callback for some drivers. [cam900]
+- 6597: machine/tms9914.cpp: Implemented service request and parallel poll state machines, and fixed a typo. [F.Ulivi]
+- 6598: galaga.cpp: Fixed sub CPU reset for Galaga bootlegs. [hackbar]
+- 6599: Heavily improved GRiD Compass 1101 emulation, allowing the system to boot without patches. [usernameak]
+- 6600: compis.xml: Added five new dumps. [FakeShemp]
+- 6601: sgi_mips.xml: Added a software list for SGI MIPS CDs, hooked up to the Indy and 4D drivers. [Davide Cavalca]
+- 6602: hp80.cpp: Fixed a bug that prevented correct keyboard auto-repeat for non-English HP86 keyboard layouts. [F.Ulivi]
+- 6603: jedutil: Added support for GAL20V8. [Kevin Eshbach]
+- 6604: nscsi/cd.cpp: Added a stub handler for the eject command used by IRIX. [Davide Cavalca]
+- 6605: machine/tms9914.cpp: Simplified handling of CIDS state. [F.Ulivi]
+- 6606: sgi_mips.xml: Eleven additions and one re-dump. [ClawGrip]
+- 6607: sgi_mips.xml: Fifteen additions. [Davide Cavalca]
+- 6608: Merged release0221 branch master. [Vas Crabb]
+- 6609: Plug and Play work. [David Haywood]
+- 6610: sgi_mips.xml: Added two entries, sorted the list, and improved naming. [ClawGrip]
+- 6611: sgi_mips: new software list additions [davide125]
+- 6612: cpu/i960: Added ten missing opcodes to disassembler, and changed operand order to match manual. [SailorSat]
+- 6615: sgi_mips.xml: Added 16 entries. [Davide Cavalca]
+- 6616: n64.xml: Documented a few more cartridge PCBs. [FakeShemp]
+- 6617: sgi_mips.xml: Added twenty entries. [Davide Cavalca]
+- 6619: indy_indigo2.cpp: Fixed #include ordering. [Davide Cavalca]
+- 6620: bus/coco: Fixed loading for CoCo cartridges that are smaller than 16KiB. [Tim Lindner]
+- 6621: coco12.cpp: Disabled Becker Port by default (it conflicts with cartridge devices). [Tim Lindner]
+- 6622: sgi_mips.xml: Added missing IRIX 6.5 discs, merged product set entries, added metadata, and replaced some dumps.
+  [ClawGrip, Rampa]
+- 6623: sgi_mips.xml: Added 57 entries. [Davide Cavalca]
+- 6624: cpu/avr8: Added preliminary support for ATMega328, allowing Arduino UNO to boot. [hiromasa]
+- 6625: indy_indigo2.cpp: Added IP24 boot PROM Version 5.3 Rev B7 as a BIOS option. [Davide Cavalca]
+- 6626: video/vtvideo.cpp: Implemented horizontal pixel stretching (fills one-pixel gaps in 80-column mode). [Øyvind Kolås]
+- 6627: startouch.cpp: Added a notewgrip]
+- 6628: compis.xml: Added eight new entries. [FakeShemp]
+- 6629: cgenie_cass.xml: Corrected some authors and publishers. [schnitzeltony]
+- 6630: coco3.cpp: Enabled Becker Port by default for coco3dw1. [Tim Lindner]
+- 6632: bus/coco: Added Disto no-halt caching disk controller. [Tim Lindner]
+- 6633: coco3.cpp: Fixed jostick button labels. [Tim Lindner]
+- 6634: diimage.cpp: Removed colon from path separator characters. [Tim Lindner]
+- 6635: jedutil: Fixed output feedback mode for GAL16V8 and GAL20V8 devices in simple mode, and added more regression tests.
+  [Kevin Eshbach]
+- 6636: vsmile.cpp: Replaced vsmilem BIOS with one from a real V.Smile Motion. [Sean Riddle, TeamEurope]
+- 6637: cpu/i960: Re-wrote disassembler using manuals for reference. [SailorSat]
+- 6638: sound/c140.cpp: Updated data bus behavior and added support for 12-bit PCM. [cam900, superctr]
+- 6639: kikikai.cpp: Hooked up kicknrun microcontroller, and split up driver state class. [David Haywood, dink]
+- 6642: machine/keyboard.cpp, machine/gridkeyb.cpp: Fixed typos in PORT_CHAR definitions. [Frank Palazzolo]
+- 6643: Added drivers for Grant Searle’s Simple machines (Z80, CP/M, 6502 and 6809). [Frank Palazzolo]
+- 6645: cpu/m6809: Made $10, $20 an illegal instruction on for the HD6309 family. [Tim Lindner]
+- 6646: nemesis.cpp: Convert twinbeeb program to the form that the driver expects. [David Haywood]
+- 6647: raiden2.cpp: Dumped U0342 PAL for Raiden II and clones. [neSneSgB]
+- 6648: natkeyboard.cpp: Added support for input port conditions. [Frank Palazzolo]
+- 6649: sgi_mips.xml: Added seven entries. [ClawGrip, Rampa]
+- 6650: cpu/i960: Don’t raise a fatal error on documented (but unimplemented) IAC messages. [RyogaMasaki]
+- 6651: cpu/m6809: Corrected illegal branch form for HD6309 family. [Tim Lindner]
+- 6652: sgi_mips.xml: Added 31 entries. [Davide Cavalca]
+- 6657: sound/c140.cpp: Revert #6638. [R. Belmont]
+- 6658: sgi_mips.xml: Fixed stray leading space in description. [ClawGrip]
+- 6659: sound/c140.cpp: Updated bus behaviour, added 12-bit PCM support, and cleaned up device interface (fixes issues with #6638).
+  [cam900, superctr]
+- 6660: Added -debuglog option to log debugger console output to a file. [Stephen Oberholtzer]
+- 6661: hxchfe_dsk.cpp: Fixed segmentation fault when writing to a mixed-density image file. [Klaus Kämpf]
+- 6662: sgi_mpis.xml: Fixed a spelling error in a disc label. [ClawGrip]
+- 6663: nes.xml, famicom_flop.xml, msx1_cart.xml: Minor metadata fixes. [quasiscroto]
+- 6664: bus/coco: Added Disto RAM cartridge. [Tim Lindner]
+- 6665: dragon.cpp: Connected an RS-232 port to the ACIA. [Tim Lindner]
+- 6666: sgi_mips.xml: Added three entries, added a missing CD for IRIX 6.5.13, and merged two entries with their packages.
+  [Davide Cavalca]
+- 6667: video/gp9001.cpp: Reduced cycles consumed per tile from 64 to 32 (fixes MT07642). [cam900]
+- 6668: seta2.cpp: Refactored sprite drawing in preparation for implementing zoom. [David Haywood]
+- 6669: Added support for byte accesses and cleaned up code. [cam900]
+- 6670: vsmile_cart.xml: Added two entries. [DisizDream, ClawGrip]
+- 6671: vsmile_cart.xml: Added three entries. [DisizDream, ClawGrip]
+- 6673: gticlub.cpp: Added 68000 CPU to thunderh so its program shows in the debugger (not connected to anything). [Hydreigon]
+- 6674: seta2.cpp: Started implementing vertical zoom. [David Haywood]
+- 6675: gal3.cpp, namcos21.cpp, namcos21_c67.cpp, namcos21_de.cpp: Derive C140 clock from a known source on the board. [cam900]
+- 6676: ibm5170.xml: Added two entries. [ArcadeShadow]
+- 6677: seta2.cpp: Improved vertical zoom behaviour. [David Haywood]
+- 6678: vsmilem_cart.xml: Added one entry. [TeamEurope, ClawGrip]
+- 6679: ibm5170.xml: Added two entries. [ArcadeShadow]
+- 6680: machine/k056230.cpp: Added notes. [Hydreigon]
+- 6681: spg2xx.cpp: Added TV Learning Station (VTech, Germany). [Sean Riddle, TeamEurope, ClawGrip]
+- 6682: midxunit.cpp: Updated comment. [cam900]
+- 6683: seta2.cpp: Started implementing horizontal zoom. [David Haywood]
+- 6684: seta2.cpp: Improved horizontal enlargement cases. [David Haywood]
+- 6685: sgi_mips.xml: Added ten entries, and added missing CDs to existing entries. [Davide Cavalca]
+- 6686: iqunlim.cpp: Added VTech IQ Unlimited. [Alexandre, ClawGrip]
+- 6687: hh_sm510.cpp: Added Game & Watch: Popeye (Panorama Screen). [algestam, Ryan Holtz]
+- 6688: sgi_mips.xml: Removed duplicates and corrected hashes. [Davide Cavalca]
+- 6689: cpu/jaguar: Updated condition for commented check for running GPU code from external RAM. [cam900]
+- 6690: st_flop.xml: Added one entry. [FakeShemp]
+- 6691: cpu/jaguar: Refactored GPU/DSP core to use I/O maps. [Angelo Salese]
+- 6692: Fixed MT07369 and cleaned up code. [cam900]
+- 6696: netlist: Added CD4013, DC4069 and CD4070 devices, and increased propagation delay for CD4001. [Frank Palazzolo]
+- 6697: hotblock.cpp: Added two new Hotblocks - Tetrix II sets. [ClawGrip]
+- 6698: cpu/i8085: Remove a leftover logerror() call. [Frank Palazzolo]
+- 6699: dec8.cpp: Corrected thee bad bits in csilver microcontroller dump, and replaced microcontroller simulation.
+  [dink, David Haywood]
+- 6700: sgi_mips.xml: Added nine entries. [Davide Cavalca]
+- 6702: compis.xml: Added seven more dumps. [FakeShemp]
+- 6703: pc2000.cpp: changed pc2000s LCD controller to SED1278-0B. [ClawGrip]
+- 6705: imgtool: Added Dragon DOS module. [Tim Lindner]
+- 6706: redalert.cpp: Improved panther sound and controls, and added preliminary extra video layer for demoneye.
+  [Tomasz Slanina, Angelo Salese]
+- 6707: ibm5170.xml: Added three entries. [ArcadeShadow]
+- 6708: ibm5150.xml: Added on entry. [ArcadeShadow]
+- 6709: video/gime.cpp: Fixed 0xFExx memory accesses when in ROM mode (fixes CoCo cartridges). [Tim Lindner]
+- 6710: ibm5170.xml: Added one entry. [ArcadeShadow]
+- 6711: docs: Cleaned up documentation and examples for command-line options. [Firehawke]
+- 6714: x68k_flop.xml: Re-tested Sharp X68000 software and updated notes. [Angelo Salese]
+- 6716: pleiads.cpp: Fixed log messages, and disabled messages that aren’t errors by default. [Frank Palazzolo]
+- 6717: Support SYMBOLS=1 make option to include debugger symbols in Visual Studio Release builds. [Frank Palazzolo]
+- 6719: cps1.cpp: Added Varth: Operation Thunderstorm (bootleg, set 2). [TwistedTom, gmx, The Dumping Union]
+- 6720: cpu/tms32031: Corrected device names/descriptions, and added notes on internal peripherals and differences between variants.
+  [cam900]
+- 6720: machine/6850acia.cpp: TDRE should read clear in reset, and set when coming out of reset. [68bit]
+- 6722: seta2.cpp: Added notes on hardware configurations and emulation issues, and fixed clocks for P0-113A PCBs. [cam900]
+- 6723: pgm.cpp: Added some hardware notes. [cam900]
+- 6725: Some small GPL16250 tweaks/hacks allowing tkmag220 and lazertag to show sprites with expected colours. [David Haywood]
+- 6726: ibm5170.xml: Added one entry. [ArcadeShadow]
+- 6727: vsmile_cart.xml: Added two entries. [DisizDream, ClawGrip]
+- 6729: vsmileb_cart.xml: Added two entries. [DisizDream, ClawGrip]
+- 6730: apple2_flop_orig.xml, apple2_flop_clcracked.xml: Add latest dumps for May. [4am, Firehawke]
+- 6731: bus/qbus: Added skeleton DEC Qbus and PC11 paper tape reader/punch. [shattered]
+- 6732: rt1715.cpp: Use CAS decode PROM for rt1715w memory accesses. [shattered]
+- 6733: cps1.cpp: Marked varthb2 graphics ROMs as bad dumps. [TwistedTom]
+- 6735: ibm5170.xml: Added two entries. [ArcadeShadow]
+- 6736: ibm5150.xml: Added one entry. [ArcadeShadow]
+- 6737: GPL16250: Added notes for getting tkmag220 to show something, and corrected some logging masks. [David Haywood]
+- 6738: bus/rs232: Implemented XON/XOFF flow control for null_modem device. [shattered]
+- 6379: picno.xml: Added note about undumped game. [ClawGrip]
+- 6740: cpu/unsp: Fixed an unsp20 opcode decode priority bug that caused an ASR instruction to decode as a MUL. [David Haywood]
+- 6741: cps1.cpp: Fixed 4-pixel scroll offset affecting many Street Fighter 2 bootlegs. [TwistedTom]
+- 6744: play_3.cpp: Added The Raid (alternate set). [jordigahan, ClawGrip]
+- 6745: GPL16250: Added I/O ports, and identified tkmag220 as a bad dump. [David Haywood]
+- 6746: gaplus.cpp: Fixed star field active area, scrolling speed/direction, and blinking on direction change (MT00434, MT07663).
+  [sasuke]
+- 6747: mc10.cpp: Added MCX-128 and Alice with MCX-128 machines. [Tim Lindner]
+- 6748: luaengine.cpp: Added rom_entry library. [feos]
+- 6750: machine/mm58174.cpp: Added MM58174 real-time clock device and used it in seven drivers. [shattered]
+- 6751: GPL16250: Adjusted DMA and drawing behaviour. [David Haywood]
+- 6752: gaplus.cpp: Changed default gaplus bonus life DIP switch setting to match manual, and updated comments. [sasuke]
+- 6753: mappy.cpp: Changed default grobda bonus life DIP switch setting to match manual. [sasuke]
+- 6755: bloodbro_ms.cpp: Dumped and added remaining PROMs for bloodbrom. [jordigahan, ClawGrip]
+- 6756: Added AsmJit machine code generation library to 3rdparty. [Patrick Mackinlay]
+- 6758: at.cpp, europc.cpp, genpc.cpp, pc.cpp: Added additional systems and BIOS options. [rfka01]
+- 6759: video/k037122.cpp: Updated notes; hornet.cpp: Added raw screen timing parameters and expanded notes. [cam900]
+- 6760: mw8080bw.cpp: Added netlist audio for 280zzzap. [Colin Howell]
+- 6763: sound/rf5c68.cpp: Verified default register map against datasheet. [cam900]
+- 6764: Re-wrote SPG2xx video code in preparation for supporting newer games, fixed some glitches, and added newly dumped TV games.
+  [David Haywood]
+- 6765: sound/nes_apu.cpp: Corrected noise generation algorithm. [cam900]
+- 6766: armedf.cpp: Corrected vertical blanking interval (addresses MT07640). [sasuke]
+- 6767: SPG2xx: Fixed two graphical regressions introduced in #6764. [David Haywood]
+- 6768: tubep.cpp: Implemented “shadow” effect (a black pixel is drawn when the blitter switches from drawing background to sprite).
+  [sasuke]
+- 6770: rt1715.cpp: Added native keyboard and serial ports to rt1715w. [shattered]
+- 6772: Fixed a graphics memory addressing error in the hp9845c driver and a signal corruption bug in the remote IEEE488 device.
+  [F.Ulivi]
+- 6773: mobigo_cart.xml: Added seven entries, and corrected some release years and descriptions. [TeamEurope, Sean Riddle, ClawGrip]
+- 6774: Started implementing SPG2xx vertical tile compression, and added newly dumped TV games. [David Haywood]
+- 6775: Added PIC17 CPU core to arcade subtarget. [MASH]
+- 6776: hornet.cpp: Added notes for scope screen and fixed screen timing parameters. [cam900]
+- 6777: msx1_cart.xml: Added one entry. [Wilbert Pol]
+- 6778: pc.cpp: Added Sergey Kiselev’s and Monotech’s modern XT machines. [rfka01]
+- 6780: Prepared SunPlus video rendering code for sharing between SPG2xx and GPL16250 SoCs. [David Haywood]
+- 6781: debugger: Added condump command to export the console buffer to a file. [Stephen Oberholtzer]
+- 6782: pc.cpp: Put version numbers in the labels for modern XT BIOS ROMs. [rfka01]
+- 6784: dcheese.cpp: Corrected titles for fredmem and clones. [phweda]
+- 6785: tiki100.cpp: Re-wrote graphics emulation to draw by rows, fixed palette changes, and fixed inaccurate keyboard emulation.
+  [Frode van der Meeren]
+- 6786: bus/hp_hil: Implemented keyboard auto-repeat. [shattered]
+- 6787: consola_emt.cpp: Corrected CPU clock speed and consoemt release year. [ClawGrip]
+- 6788: bus/coleco: Added support for ColecoVision Megacart. [Andrew Green]
+- 6792: taitowlf.cpp: Updated comments. [Hydreigon]
+- 6793: Initial work on sharing SunPlus video rendering code between SPG2xx and GPL16250 SoCs. [David Haywood]
+- 6794: fmtowns_cd.xml: Added eight entries, and replaced five entries with better dumps. [redump.org, r09]
+- 6795: twinkle.cpp: Changed all games on Konami Twinkle platform to use 16:9 physical screen aspect ratio. [tertu marybig]
+- 6796: Removed some palette bank hacks from SPG2xx/GPL16250 video rendering code. [David Haywood]
+- 6797: SPG2xx/GPL16250: Added support for double-height tilemaps and improved other functionality used by jak_pf. [David Haywood]
+- 6799: sound/sid.cpp: Fixed memory corruption bug (GitHub #6798). [cam900]
+- 6800: spg2xx_zone_32bit.cpp: Added Millennium M521 Arcade Neo 2.0 (Family Sport 220-in-1). [TeamEurope, David Haywood]
+- 6801: ibm5150.xml: Added original dumps for Centipede and Ms. Pac-Man. [r09]
+- 6802: pgm.cpp: Switched Ketsui Arrange to use a 4-button input layout. [Alex Marshall]
+- 6803: Updated Travis CI configuration to use GCC 10 on Ubuntu and Xcode 11.5 on macOS. [Belegdol]
+- 6805: gameboy.xml, famicom_flop.xml, nes.xml: Corrected some metadata and parent/clone relationships. [quasiscroto]
+- 6806: iqunlim.cpp: Re-dumped iqunlimgr ROM at the correct size. [TeamEurope, ClawGrip]
+- 6807: sound/rf5c68.cpp: Started implementing differences between RF5C68 and RF5C164. [cam900]
+- 6808: kchamp.cpp: Added Karate Dou (Arfyc bootleg). [Retromaniacs, ArcadeHacker, Recreativas.org, ClawGrip]
+- 6809: sound/ics2115.cpp: Flagged imperfect sound. [cam900]
+- 6810: Corrected system name in master list (fixes linking after #6808). [ClawGrip]
+- 6811: cpu/unsp: Fixed unsp20 ASR instruction. [David Haywood]
+- 6812: ioport.cpp: Added support for programmatically setting analog input values (e.g. from Lua scripts). [Tim Lindner]
+- 6813: pc98.xml: Added twenty entries from Neo Kobe Collection, re-tested software, corrected metadata, and added usage notes.
+  [r09]
+- 6814: Preliminary work on Speed Racer I²C memory and Ford Racing steering/pedal inputs. [David Haywood]
+- 6816: megadriv.xml: Added notes about games that should be re-dumped. [ICEknight]
+- 6817: arachnid.cpp: Added Super Six Plus II English Mark Darts (Spanish). [jordigahan, ClawGrip]
+- 6819: sound/okiadpcm.cpp: Began implementing looped sample support. [cam900]
+- 6820: arachnid.cpp: Added notes about DIP switches. [ClawGrip]
+- 6821: sound/okiadpcm.cpp: Fixed sample looping. [cam900]
+- 6822: luaengine.cpp: Exposed ioport_setting as a table. [feos]
+- 6823: ibm5170.cpp: Added four entries. [r09]
+- 6826: Added inputs to Ford Racing, and hooked up battery status to Zone TV games. [David Haywood]
+- 6827: formats/imd_dsk.cpp: Added support for saving ImageDisk IMD floppy images (tested with Zorba and Kaypro II). [lfantoniosi]
+- 6828: machine/microtch.cpp: Fixed typo in ROM label. [ClawGrip]
+- 6829: arachnid.cpp: Added notes about ROM versions. [ClawGrip]
+- 6830: nes_vt.cpp: Added Zudu-go / 2udu-go, and re-dumped dgun2573 and dgun2573a. [Sean Riddle, David Haywood, anonymous]
+- 6831: startouch.cpp: Added notes about hardware variants. [ClawGrip]
+- 6834: cave.cpp: Added DonPachi (Japan, Satsuei version) [PEG, David Haywood]
+- 6835: sound/ics2115.cpp: Implemented device_memory_interface for sample storage, and implemented µ-law expansion. [cam900]
+- 6836: cps1.cpp: Fixed sf2rk graphics ROM loading/decoding, and added a note about the dark screen issue. [TwistedTom]
+- 6840: sound/okim6295.cpp: Fixed an outdated header comment. [cam900]
+- 6842: Moved schick out of pengo.cpp to its own source file, and removed the not working flag from fordrace and senspeed.
+  [David Haywood]
+- 6846: hh_sm510.cpp: Added Micro Vs. System: Donkey Kong 3. [algestam, Ryan Holtz]
 
 
 Source Changes
