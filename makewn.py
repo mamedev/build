@@ -294,11 +294,13 @@ class SoftlistComparator(object):
                 else: old_nonworking[shortname] = description
                 old_descriptions[description] = shortname
             content_handler.handleSoftware = handle_old_software
+            filename = baseline.name
             baseline = baseline.data_stream
             if not hasattr(baseline, 'close'):
                 baseline = self.OStreamWrapper(baseline)
             parser.parse(baseline)
             del baseline
+            listname = content_handler.listname
 
         new_working = dict()
         new_nonworking = dict()
@@ -306,39 +308,41 @@ class SoftlistComparator(object):
         added_nonworking = set()
         promoted = set()
         renames = dict()
-        def handle_new_software(shortname, description, is_clone, is_working):
-            if self.verbose:
-                sys.stderr.write('item %s (%s) now %sworking' % (shortname, description, '' if is_working else 'not '))
-            if is_working: new_working[shortname] = description
-            else: new_nonworking[shortname] = description
-            if (shortname in old_working) or (shortname in old_nonworking): old_name = shortname
-            elif description in old_descriptions: old_name = old_descriptions[description]
-            else: old_name = None
-            if (old_name is None) or (old_name in renames):
+        if current is not None:
+            def handle_new_software(shortname, description, is_clone, is_working):
                 if self.verbose:
-                    sys.stderr.write(' (added)\n')
-                if is_working: added_working.add(description)
-                else: added_nonworking.add(description)
-            else:
-                if old_name != shortname:
+                    sys.stderr.write('item %s (%s) now %sworking' % (shortname, description, '' if is_working else 'not '))
+                if is_working: new_working[shortname] = description
+                else: new_nonworking[shortname] = description
+                if (shortname in old_working) or (shortname in old_nonworking): old_name = shortname
+                elif description in old_descriptions: old_name = old_descriptions[description]
+                else: old_name = None
+                if (old_name is None) or (old_name in renames):
                     if self.verbose:
-                        sys.stderr.write(' (was %s)\n' % (old_name, ))
-                    renames[old_name] = (description, shortname)
-                    if old_name in new_working: added_working.add(new_working[old_name])
-                    elif old_name in new_nonworking: added_nonworking.add(new_nonworking[old_name])
-                if is_working and (old_name not in old_working):
-                    if self.verbose:
-                        sys.stderr.write(' (promoted)\n')
-                    promoted.add(description)
-                elif self.verbose:
-                    sys.stderr.write('\n')
-        content_handler.handleSoftware = handle_new_software
-        curdata = current.data_stream
-        if not hasattr(curdata, 'close'):
-            curdata = self.OStreamWrapper(curdata)
-        parser.parse(curdata)
-        del curdata
-        listname = content_handler.listname
+                        sys.stderr.write(' (added)\n')
+                    if is_working: added_working.add(description)
+                    else: added_nonworking.add(description)
+                else:
+                    if old_name != shortname:
+                        if self.verbose:
+                            sys.stderr.write(' (was %s)\n' % (old_name, ))
+                        renames[old_name] = (description, shortname)
+                        if old_name in new_working: added_working.add(new_working[old_name])
+                        elif old_name in new_nonworking: added_nonworking.add(new_nonworking[old_name])
+                    if is_working and (old_name not in old_working):
+                        if self.verbose:
+                            sys.stderr.write(' (promoted)\n')
+                        promoted.add(description)
+                    elif self.verbose:
+                        sys.stderr.write('\n')
+            content_handler.handleSoftware = handle_new_software
+            filename = current.name
+            current = current.data_stream
+            if not hasattr(current, 'close'):
+                current = self.OStreamWrapper(current)
+            parser.parse(current)
+            del current
+            listname = content_handler.listname
 
         for shortname in new_working:
             if shortname in old_working: del old_working[shortname]
@@ -355,7 +359,7 @@ class SoftlistComparator(object):
         removed.sort()
 
         if renames or removed or added_working or added_nonworking or promoted:
-            self.output.write(u'%s (%s):\n' % (listname, current.name))
+            self.output.write(u'%s (%s):\n' % (listname, filename))
             if renames:
                 self.output.write(u'  Renames\n')
                 for old_name, info in renames.items():
@@ -400,11 +404,13 @@ class LogScraper(object):
 
         def flush_paragraph(self):
             if self.paragraph:
-                if self.first and not LogScraper.CREDITED.match(self.paragraph):
+                if (self.level == 0) and not LogScraper.CREDITED.match(self.paragraph):
                     self.paragraph += ' ['
                     self.paragraph += self.author
                     self.paragraph += ']'
                 if self.stream is not None:
+                    if not self.first and (self.level == 0):
+                        self.stream.write(u'\n')
                     print_wrapped(self.stream, self.paragraph, self.level)
                 self.paragraph = ''
                 self.first = False
@@ -482,7 +488,7 @@ class LogScraper(object):
                     self.flush_paragraph()
                     self.blank = False
                 if not self.first and not self.paragraph and not self.bullets:
-                    self.level += 1
+                    self.level = 1
                 self.append_line(line)
 
         def finalise(self):
@@ -493,7 +499,7 @@ class LogScraper(object):
     def __init__(self, stream, listcallback, **kwargs):
         super(LogScraper, self).__init__(**kwargs)
         self.stream = stream
-        self.listcallback = listcallback
+        self.listcallback = listcallback if listcallback is not None else lambda title, entry: None
 
     def process_commit(self, commit):
         author = commit.author.name
@@ -706,3 +712,16 @@ if __name__ == '__main__':
                         sys.stderr.write('error processing software list %s: %s\n' % (obj.name, err))
                 elif args.verbose:
                     sys.stderr.write('no changes since previous release\n')
+    for obj in previous:
+        if obj.type == 'blob':
+            basename, extension = os.path.splitext(obj.name)
+            if extension == '.xml':
+                try:
+                    current / obj.name
+                except KeyError:
+                    if args.verbose:
+                        sys.stderr.write('checking software list %s\n' % (obj.name, ))
+                    try:
+                        comp.compare(None, obj)
+                    except xml.sax.SAXException as err:
+                        sys.stderr.write('error processing software list %s: %s\n' % (obj.name, err))
