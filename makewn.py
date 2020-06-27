@@ -40,12 +40,6 @@ try:
                 self.session = github3.GitHub(user, password, token=token)
             self.repo = self.session.repository(owner, repo)
 
-        def first_matching_tagged_commit(self, pattern):
-            regex = re.compile(pattern)
-            for tag in self.repo.tags():
-                if regex.match(tag.name) is not None:
-                    tag.commit['sha']
-
         def fresher_pull_requests(self, commits):
             for pr in self.repo.pull_requests(state='closed', sort='created', direction='asc'):
                 if (pr.merged_at is not None) and (pr.merge_commit_sha in commits):
@@ -71,19 +65,147 @@ except ImportError:
             else:
                 self.api = pygithub3.Github(user=owner, repo=repo, login=user, password=password, token=token)
 
-        def first_matching_tagged_commit(self, pattern):
-            regex = re.compile(pattern)
-            for page in self.api.repos.list_tags():
-                for tag in page:
-                    if pat.match(tag.name) is not None:
-                        tag.commit.sha
-
         def fresher_pull_requests(self, sha):
             date = self.api.git_data.commits.get(sha).committer.date
             for page in self.api.pull_requests.list(state='closed'):
                 for pr in page:
                     if (pr.merged_at is not None) and (pr.merged_at > date):
                         yield pr
+
+
+class Options(object):
+    RELEASETAG = re.compile('^mame0([0-9]+)$')
+    VERSIONPART = re.compile('^[^0-9]+0([1-9][0-9]*)([^0-9]*)$')
+
+    def fail(self, message):
+        sys.stderr.write('%s: error: %s\n' % (os.path.basename(sys.argv[0]), message))
+        sys.exit(1)
+
+    def find_revision(self, spec, name, verbose):
+        try:
+            result = self.repository.references[spec]
+            if verbose:
+                sys.stderr.write('using %s %s\n' % (name, result.name))
+            return result
+        except IndexError:
+            suffix = re.compile('^[^/]+/' + re.escape(spec))
+            for ref in self.repository.references:
+                if suffix.match(ref.name):
+                    if verbose:
+                        sys.stderr.write('using %s %s\n' % (name, ref.name))
+                    return ref
+            try:
+                result = self.repository.commit(spec)
+            except:
+                self.fail('%s %s not found in repository' % (name, spec))
+            if verbose:
+                sys.stderr.write('using %s %s\n' % (name, result.name_rev))
+            return result
+
+    def __init__(self, **kwargs):
+        super(Options, self).__init__(**kwargs)
+
+        # parse command line
+        parser = argparse.ArgumentParser(description='Write preliminary whatsnew.')
+        parser.add_argument('-c', '--clone', metavar='<path>', type=str, default='.', help='local repository clone')
+        parser.add_argument('-r', '--release', metavar='<release>', type=str, help='previous release revision')
+        parser.add_argument('-b', '--branch', metavar='<candidate>', type=str, help='current release candidate revision')
+        parser.add_argument('-u', '--user', metavar='<username>', type=str, help='github username')
+        parser.add_argument('-t', '--token', metavar='<token>', type=str, help='github personal access token')
+        parser.add_argument('-o', '--out', metavar='<file>', type=str, help='output file')
+        parser.add_argument('-a', '--append', action='store_const', const=True, default=False, help='append to output file')
+        parser.add_argument('-v', '--verbose', action='store_const', const=True, default=False, help='verbose output')
+        parser.add_argument('commit', nargs='*', help='scrape specific commits')
+        arguments = parser.parse_args()
+
+        # copy simple arguments
+        self.verbose = arguments.verbose
+        self.commits = arguments.commit
+
+        # it makes no sense to specify baseline/candidate with specific commits
+        if ((arguments.release is not None) or (arguments.branch is not None)) and arguments.commit:
+            self.fail('arguments -r/--release and -b/--branch: not allowed with specific commits')
+
+        # open output file or wrap standard output with an encoder if necessary
+        if arguments.out is not None:
+            self.output = io.open(arguments.out, 'a' if arguments.append else 'w', encoding='utf-8')
+        elif sys.stdout.encoding is None:
+            self.output = codecs.getwriter('utf-8')(sys.stdout)
+        else:
+            self.output = sys.stdout
+
+        # open git repository
+        try:
+            self.repository = git.Repo(arguments.clone)
+            if arguments.verbose:
+                sys.stderr.write('using git repository %s\n' % (self.repository.working_dir, ))
+        except git.exc.InvalidGitRepositoryError as err:
+            if arguments.clone == err.args[0]:
+                self.fail('%s is not a valid git repository or working tree' % (arguments.clone, ))
+            else:
+                self.fail('%s (%s) is not a valid git repository or working tree' % (arguments.clone, err.args[0]))
+        except git.exc.NoSuchPathError as err:
+            if arguments.clone == err.args[0]:
+                self.fail('git repository %s not found' % (arguments.clone, ))
+            else:
+                self.fail('git repository %s (%s) not found' % (arguments.clone, err.args[0]))
+
+        # this stuff is not used when specific commits are requested
+        if not arguments.commit:
+            # find baseline release if specified
+            if arguments.release is not None:
+                self.release = self.find_revision(arguments.release, 'baseline release', arguments.verbose)
+
+            # find release candidate if specified
+            if arguments.branch is not None:
+                self.candidate = self.find_revision(arguments.branch, 'release candidate', arguments.verbose)
+
+            # find most recent release tag if baseline was not specified
+            if arguments.release is None:
+                best = 0
+                for tag in self.repository.tags:
+                    match = self.RELEASETAG.match(tag.name)
+                    if match is not None:
+                        num = long(match.group(1))
+                        if num > best:
+                            self.release = tag
+                            best = num
+                if best <= 0:
+                    self.fail('could not find a tagged release in repository')
+                if arguments.verbose:
+                    sys.stderr.write('found tagged release %s for baseline\n' % self.release.name)
+
+            # guess release candidate branch name if it wasn't specified
+            if arguments.branch is None:
+                version = self.VERSIONPART.match(self.release.name) if hasattr(self.release, 'name') else None
+                if not version:
+                    self.fail('could not guess release candidate branch name')
+                self.candidate = self.find_revision('release0%ld' % (long(version.group(1)) + 1, ), 'release candidate', arguments.verbose)
+
+            # come up with a title
+            version = self.VERSIONPART.match(self.candidate.name) if hasattr(self.candidate, 'name') else None
+            if version:
+                self.title = '0.%s%s' % version.group(1, 2)
+            else:
+                version = self.VERSIONPART.match(self.release.name) if hasattr(self.release, 'name') else None
+                if version:
+                    self.title = '0.%ld' % (long(version.group(1)) + 1, )
+                else:
+                    self.title = self.candidate.name if hasattr(self.candidate, 'name') else self.candidate.name_rev
+
+            # ensure the baseline and release candidate are commit objects
+            self.release = self.repository.commit(self.release)
+            self.candidate = self.repository.commit(self.candidate)
+
+            # prompt for GitHub credentials if necessary and open API
+            if arguments.user is not None:
+                ghuser = arguments.user
+            else:
+                ghuser = raw_input('github username: ')
+            if arguments.token is not None:
+                self.api = GithubWrapper('mamedev', 'mame', ghuser, token=arguments.token)
+            else:
+                self.api = GithubWrapper('mamedev', 'mame', ghuser, token=getpass.getpass('github personal access token: '))
 
 
 class SoftlistComparator(object):
@@ -512,7 +634,6 @@ class LogScraper(object):
         fmt.finalise()
 
 
-releasetag_pat = re.compile('^mame0([0-9]+)$')
 nowhatsnew_pat = re.compile('.*([[(]n/?w[])].*|[\s,]n/?w$)')
 bullet_pat = re.compile('^([-*]\s*)?(.+)$')
 credit_pat = re.compile('^(.+)\s+\[(.+)\]$')
@@ -570,21 +691,13 @@ def print_wrapped(stream, paragraph, level):
     return wrap_paragraph(stream, paragraph, wrapcol, prefix, indent)
 
 
-def get_most_recent_tag(repo):
-    result = None
-    best = 0
-    for tag in repo.tags:
-        match = releasetag_pat.match(tag.name)
-        if match is not None:
-            num = long(match.group(1))
-            if num > best:
-                result = tag
-    return result
+def print_section_heading(stream, heading):
+    stream.write(u'%s\n%s\n' % (heading, '-' * len(heading)))
 
 
 def print_fresh_pull_requests(stream, repo, api, previous, current):
     print_section_heading(stream, u'Merged pull requests')
-    commits = frozenset(repo.git.rev_list(current.name, '^' + previous.name).splitlines())
+    commits = frozenset(repo.git.rev_list(current.hexsha, '^' + previous.hexsha).splitlines())
     for pr in api.fresher_pull_requests(commits):
         lines = markdown_url_pat.sub('\\1', pr.body).splitlines() if pr.body else ()
         title = u'%d: %s' % (pr.number, pr.title)
@@ -597,10 +710,6 @@ def print_fresh_pull_requests(stream, repo, api, previous, current):
             wrap_paragraph(stream, line, 132, '', '  ')
         stream.write(u'\n')
     stream.write(u'\n')
-
-
-def print_section_heading(stream, heading):
-    stream.write(u'%s\n%s\n' % (heading, '-' * len(heading)))
 
 
 def print_source_changes(stream, repo, previous, current):
@@ -624,7 +733,7 @@ def print_source_changes(stream, repo, previous, current):
 
     scraper = LogScraper(stream, categorise)
     print_section_heading(stream, 'Source Changes')
-    for commit in repo.iter_commits('%s..%s' % (previous.name, current.name), reverse=True):
+    for commit in repo.iter_commits('%s..%s' % (previous.hexsha, current.hexsha), reverse=True):
         scraper.process_commit(commit)
     stream.write(u'\n')
 
@@ -637,40 +746,9 @@ def print_new_machines(stream, title, machines):
         stream.write(u'\n\n')
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description='Write preliminary whatsnew.')
-    parser.add_argument('-c', '--clone', metavar='<path>', type=str, help='local repository clone')
-    parser.add_argument('-u', '--user', metavar='<username>', type=str, help='github username')
-    parser.add_argument('-t', '--token', metavar='<token>', type=str, help='github personal access token')
-    parser.add_argument('-o', '--out', metavar='<file>', type=str, help='output file')
-    parser.add_argument('-a', '--append', action='store_const', const=True, default=False, help='append to output file')
-    parser.add_argument('-v', '--verbose', action='store_const', const=True, default=False, help='verbose output')
-    return parser.parse_args()
-
-
-if __name__ == '__main__':
-    args = parse_args()
-    if args.user is not None:
-        ghuser = args.user
-    else:
-        ghuser = raw_input('github username: ')
-    if args.out is not None:
-        stream = io.open(args.out, 'a' if args.append else 'w', encoding='utf-8')
-    elif sys.stdout.encoding is None:
-        stream = codecs.getwriter('utf-8')(sys.stdout)
-    else:
-        stream = sys.stdout
-
-    repo = git.Repo(args.clone if args.clone is not None else '.')
-    if args.token is not None:
-        api = GithubWrapper('mamedev', 'mame', ghuser, token=args.token)
-    else:
-        api = GithubWrapper('mamedev', 'mame', ghuser, token=getpass.getpass('github personal access token: '))
-    tag = get_most_recent_tag(repo)
-    branch = repo.branches['release0%ld' % (long(releasetag_pat.sub('\\1', tag.name)) + 1, )]
-
+def print_preliminary_whatsnew(stream, title, repository, api, release, candidate, verbose):
     placeholders = (
-            u'0.%s' % (long(releasetag_pat.sub('\\1', tag.name)) + 1, ),
+            u'%s' % (title, ),
             u'MAME Testers Bugs Fixed',
             u'New working machines',                    u'New working clones' ,
             u'Machines promoted to working',            u'Clones promoted to working',
@@ -683,8 +761,8 @@ if __name__ == '__main__':
         print_section_heading(stream, heading)
         stream.write(u'\n\n')
 
-    print_fresh_pull_requests(stream, repo, api, tag, branch)
-    print_source_changes(stream, repo, tag, branch)
+    print_fresh_pull_requests(stream, repository, api, release, candidate)
+    print_source_changes(stream, repository, release, candidate)
     print_new_machines(stream, u'New working machines', new_working_parents);
     print_new_machines(stream, u'New working clones', new_working_clones);
     print_new_machines(stream, u'Machines promoted to working', new_promoted_parents);
@@ -692,14 +770,14 @@ if __name__ == '__main__':
     print_new_machines(stream, u'New machines marked as NOT_WORKING', new_broken_parents);
     print_new_machines(stream, u'New clones marked as NOT_WORKING', new_broken_clones);
 
-    comp = SoftlistComparator(stream, args.verbose)
-    current = repo.commit(branch).tree['hash']
-    previous = repo.commit(tag).tree['hash']
+    comp = SoftlistComparator(stream, verbose)
+    current = candidate.tree['hash']
+    previous = release.tree['hash']
     for obj in current:
         if obj.type == 'blob':
             basename, extension = os.path.splitext(obj.name)
             if extension == '.xml':
-                if args.verbose:
+                if verbose:
                     sys.stderr.write('checking software list %s\n' % (obj.name, ))
                 try:
                     baseline = previous / obj.name
@@ -710,7 +788,7 @@ if __name__ == '__main__':
                         comp.compare(obj, baseline)
                     except xml.sax.SAXException as err:
                         sys.stderr.write('error processing software list %s: %s\n' % (obj.name, err))
-                elif args.verbose:
+                elif verbose:
                     sys.stderr.write('no changes since previous release\n')
     for obj in previous:
         if obj.type == 'blob':
@@ -719,9 +797,25 @@ if __name__ == '__main__':
                 try:
                     current / obj.name
                 except KeyError:
-                    if args.verbose:
+                    if verbose:
                         sys.stderr.write('checking software list %s\n' % (obj.name, ))
                     try:
                         comp.compare(None, obj)
                     except xml.sax.SAXException as err:
                         sys.stderr.write('error processing software list %s: %s\n' % (obj.name, err))
+
+
+if __name__ == '__main__':
+    opts = Options()
+    stream = opts.output
+
+    if not opts.commits:
+        print_preliminary_whatsnew(stream, opts.title, opts.repository, opts.api, opts.release, opts.candidate, opts.verbose)
+    else:
+        scraper = LogScraper(stream, None)
+        for spec in opts.commits:
+            if spec.find('..') >= 0:
+                for commit in opts.repository.iter_commits(spec, reverse=True):
+                    scraper.process_commit(commit)
+            else:
+                scraper.process_commit(opts.repository.commit(spec))
