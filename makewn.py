@@ -113,18 +113,24 @@ class Options(object):
         parser.add_argument('-u', '--user', metavar='<username>', type=str, help='github username')
         parser.add_argument('-t', '--token', metavar='<token>', type=str, help='github personal access token')
         parser.add_argument('-o', '--out', metavar='<file>', type=str, help='output file')
+        parser.add_argument('-w', '--wrap', metavar='<column>', type=long, default=132, help='wrap width')
         parser.add_argument('-a', '--append', action='store_const', const=True, default=False, help='append to output file')
         parser.add_argument('-v', '--verbose', action='store_const', const=True, default=False, help='verbose output')
         parser.add_argument('commit', nargs='*', help='scrape specific commits')
         arguments = parser.parse_args()
 
         # copy simple arguments
+        self.wrap = arguments.wrap
         self.verbose = arguments.verbose
         self.commits = arguments.commit
 
         # it makes no sense to specify baseline/candidate with specific commits
         if ((arguments.release is not None) or (arguments.branch is not None)) and arguments.commit:
             self.fail('arguments -r/--release and -b/--branch: not allowed with specific commits')
+
+        # make sure the wrap width isn't ridiculously narrow
+        if arguments.wrap < 40:
+            self.fail('argument -w/--wrap: must be no less than 40 columns')
 
         # open output file or wrap standard output with an encoder if necessary
         if arguments.out is not None:
@@ -511,9 +517,10 @@ class LogScraper(object):
     CREDITED = re.compile('^.+\s\[.+\]$')
 
     class Formatter(object):
-        def __init__(self, stream, listcallback, author, **kwargs):
+        def __init__(self, stream, wrapcol, listcallback, author, **kwargs):
             super(LogScraper.Formatter, self).__init__(**kwargs)
             self.stream = stream
+            self.wrapcol = wrapcol
             self.listcallback = listcallback
             self.author = author
             self.paragraph = ''
@@ -533,7 +540,7 @@ class LogScraper(object):
                 if self.stream is not None:
                     if not self.first and (self.level == 0):
                         self.stream.write(u'\n')
-                    print_wrapped(self.stream, self.paragraph, self.level)
+                    print_wrapped(self.stream, self.wrapcol, self.paragraph, self.level)
                 self.paragraph = ''
                 self.first = False
                 self.blank = False
@@ -583,7 +590,7 @@ class LogScraper(object):
                 if self.stream is not None:
                     if not self.first:
                         self.stream.write(u'\n')
-                    wrap = wrap_paragraph(self.stream, self.paragraph, 132, '', '  ')
+                    wrap = wrap_paragraph(self.stream, self.paragraph, self.wrapcol, '', '  ')
                     self.stream.write('%s\n' % (u'-' * wrap, ))
                 self.listname = self.paragraph
                 self.paragraph = ''
@@ -598,7 +605,7 @@ class LogScraper(object):
                 if self.stream is not None:
                     if not self.listitems:
                         self.listitems = True
-                    wrap_paragraph(self.stream, line, 132, '', '  ')
+                    wrap_paragraph(self.stream, line, self.wrapcol, '', '  ')
             elif (line[0] == '-') or (line[0] == '*'):
                 self.flush_paragraph()
                 bullet = line[0]
@@ -618,9 +625,10 @@ class LogScraper(object):
             if self.stream is not None:
                 self.stream.write(u'\n')
 
-    def __init__(self, stream, listcallback, **kwargs):
+    def __init__(self, stream, wrapcol, listcallback, **kwargs):
         super(LogScraper, self).__init__(**kwargs)
         self.stream = stream
+        self.wrapcol = wrapcol
         self.listcallback = listcallback if listcallback is not None else lambda title, entry: None
 
     def process_commit(self, commit):
@@ -628,7 +636,7 @@ class LogScraper(object):
         if not author:
             author = commit.author.email
 
-        fmt = self.Formatter(self.stream if len(commit.parents) == 1 else None, self.listcallback, author)
+        fmt = self.Formatter(self.stream if len(commit.parents) == 1 else None, self.wrapcol, self.listcallback, author)
         for line in commit.message.splitlines():
             fmt.process_line(line)
         fmt.finalise()
@@ -676,8 +684,7 @@ def wrap_paragraph(stream, paragraph, wrapcol, prefix, indent):
     return maxlen
 
 
-def print_wrapped(stream, paragraph, level):
-    wrapcol = 132
+def print_wrapped(stream, wrapcol, paragraph, level):
     if level == -1:
         prefix = ''
         indent = '  '
@@ -695,7 +702,7 @@ def print_section_heading(stream, heading):
     stream.write(u'%s\n%s\n' % (heading, '-' * len(heading)))
 
 
-def print_fresh_pull_requests(stream, repo, api, previous, current):
+def print_fresh_pull_requests(stream, wrapcol, repo, api, previous, current):
     print_section_heading(stream, u'Merged pull requests')
     commits = frozenset(repo.git.rev_list(current.hexsha, '^' + previous.hexsha).splitlines())
     for pr in api.fresher_pull_requests(commits):
@@ -705,14 +712,14 @@ def print_fresh_pull_requests(stream, repo, api, previous, current):
             title = title[:-1] + lines[0][1:]
             lines = lines[1:]
         title += u' [%s]' % (api.pull_request_username(pr), )
-        wrap_paragraph(stream, title, 132, '', '  ')
+        wrap_paragraph(stream, title, wrapcol, '', '  ')
         for line in lines:
-            wrap_paragraph(stream, line, 132, '', '  ')
+            wrap_paragraph(stream, line, wrapcol, '', '  ')
         stream.write(u'\n')
     stream.write(u'\n')
 
 
-def print_source_changes(stream, repo, previous, current):
+def print_source_changes(stream, wrapcol, repo, previous, current):
     def categorise(heading, item):
         heading = heading.lower()
         if (newdrivers_pat.match(heading) is not None) and (softlist_pat.match(heading) is None):
@@ -731,22 +738,22 @@ def print_source_changes(stream, repo, previous, current):
             else:
                 (new_promoted_parents if promoted else new_working_parents if working else new_broken_parents).append(item)
 
-    scraper = LogScraper(stream, categorise)
+    scraper = LogScraper(stream, wrapcol, categorise)
     print_section_heading(stream, 'Source Changes')
     for commit in repo.iter_commits('%s..%s' % (previous.hexsha, current.hexsha), reverse=True):
         scraper.process_commit(commit)
     stream.write(u'\n')
 
 
-def print_new_machines(stream, title, machines):
+def print_new_machines(stream, wrapcol, title, machines):
     if machines:
         print_section_heading(stream, title)
         for machine in machines:
-            print_wrapped(stream, bullet_pat.sub('\\2', machine), -1)
+            print_wrapped(stream, wrapcol, bullet_pat.sub('\\2', machine), -1)
         stream.write(u'\n\n')
 
 
-def print_preliminary_whatsnew(stream, title, repository, api, release, candidate, verbose):
+def print_preliminary_whatsnew(stream, wrapcol, title, repository, api, release, candidate, verbose):
     placeholders = (
             u'%s' % (title, ),
             u'MAME Testers Bugs Fixed',
@@ -761,14 +768,14 @@ def print_preliminary_whatsnew(stream, title, repository, api, release, candidat
         print_section_heading(stream, heading)
         stream.write(u'\n\n')
 
-    print_fresh_pull_requests(stream, repository, api, release, candidate)
-    print_source_changes(stream, repository, release, candidate)
-    print_new_machines(stream, u'New working machines', new_working_parents);
-    print_new_machines(stream, u'New working clones', new_working_clones);
-    print_new_machines(stream, u'Machines promoted to working', new_promoted_parents);
-    print_new_machines(stream, u'Clones promoted to working', new_promoted_clones);
-    print_new_machines(stream, u'New machines marked as NOT_WORKING', new_broken_parents);
-    print_new_machines(stream, u'New clones marked as NOT_WORKING', new_broken_clones);
+    print_fresh_pull_requests(stream, wrapcol, repository, api, release, candidate)
+    print_source_changes(stream, wrapcol, repository, release, candidate)
+    print_new_machines(stream, wrapcol, u'New working machines', new_working_parents);
+    print_new_machines(stream, wrapcol, u'New working clones', new_working_clones);
+    print_new_machines(stream, wrapcol, u'Machines promoted to working', new_promoted_parents);
+    print_new_machines(stream, wrapcol, u'Clones promoted to working', new_promoted_clones);
+    print_new_machines(stream, wrapcol, u'New machines marked as NOT_WORKING', new_broken_parents);
+    print_new_machines(stream, wrapcol, u'New clones marked as NOT_WORKING', new_broken_clones);
 
     comp = SoftlistComparator(stream, verbose)
     current = candidate.tree['hash']
@@ -810,9 +817,9 @@ if __name__ == '__main__':
     stream = opts.output
 
     if not opts.commits:
-        print_preliminary_whatsnew(stream, opts.title, opts.repository, opts.api, opts.release, opts.candidate, opts.verbose)
+        print_preliminary_whatsnew(stream, opts.wrap, opts.title, opts.repository, opts.api, opts.release, opts.candidate, opts.verbose)
     else:
-        scraper = LogScraper(stream, None)
+        scraper = LogScraper(stream, opts.wrap, None)
         for spec in opts.commits:
             if spec.find('..') >= 0:
                 for commit in opts.repository.iter_commits(spec, reverse=True):
