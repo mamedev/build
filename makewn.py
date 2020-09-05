@@ -616,8 +616,11 @@ class LogScraper(object):
                 if self.blank:
                     self.flush_paragraph()
                     self.blank = False
-                if not self.first and not self.paragraph and not self.bullets:
-                    self.level = 1
+                if not self.first and not self.paragraph:
+                    if not self.bullets:
+                        self.level = 1
+                    else:
+                        self.get_bullet_increment('', '')
                 self.append_line(line)
 
         def finalise(self):
