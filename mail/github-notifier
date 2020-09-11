@@ -2,7 +2,7 @@
 #
 # Needs http://jacquev6.github.io/PyGithub.
 
-import ConfigParser
+import configparser
 import optparse
 import time
 import os
@@ -22,7 +22,7 @@ Options = None
 
 def log(msg):
     assert Options
-    print >>Config.log, "%s - %s" % (time.asctime(), msg)
+    print("%s - %s" % (time.asctime(), msg), file=Config.log)
 
 def error(msg):
     log("Error: %s" % msg)
@@ -31,7 +31,7 @@ def error(msg):
 def getOption(section, key, default):
     try:
         return Config.get(section, key)
-    except (ConfigParser.NoSectionError, ConfigParser.NoOptionError):
+    except (configparser.NoSectionError, configparser.NoOptionError):
         return default
 
 DirectoryStack = []
@@ -48,13 +48,13 @@ def runCommand(args):
         args = " ".join(args)
 
     if Options.debug:
-        print >>sys.stderr, "> " + args
+        print("> " + args, file=sys.stderr)
 
     try:
         args = "GIT_ASKPASS=echo %s" % args
         child = subprocess.Popen(args, shell=True, stdin=None, stdout=None, stderr=None)
         (stdout, stderr) = child.communicate()
-    except OSError, e:
+    except OSError as e:
         error("cannot run command '%s': %s" % (args, e))
 
     if child.returncode != 0:
@@ -67,7 +67,7 @@ def gitClone(repo):
 
     try:
         os.makedirs(repo.path)
-    except IOError, e:
+    except IOError as e:
         error("cannot create %s: %s" % (repo.path, e))
 
     # We don't actually clone here to avoid storing the token in git's
@@ -117,7 +117,7 @@ def gitRepositories(rset, org = None):
     try:
         repos = [Repository(rset, org, repo.name) for repo in gh.get_user(org).get_repos()]
         repos += [Repository(rset, org, repo.name) for repo in gh.get_organization(org).get_repos()]
-    except github.GithubException, e:
+    except github.GithubException as e:
         error("GitHub exception: %s" % e._GithubException__data["message"])
 
     if not repos:
@@ -144,7 +144,7 @@ class Repository:
             return "https://github.com/%s/%s" % (self.org, self.name)
 
     def printDebug(self):
-        print >>sys.stderr, "  %s/%s (path: %s)" % (self.org, self.name, self.path)
+        print("  %s/%s (path: %s)" % (self.org, self.name, self.path), file=sys.stderr)
 
     def update(self):
         if not os.path.exists(self.path):
@@ -224,12 +224,12 @@ class RepositorySet:
             rset.update()
 
     def printDebug(self):
-        print >>sys.stderr, "Set:", self.name
-        print >>sys.stderr, "  User %s" % self.user
-        print >>sys.stderr, "  Token %s" % self.token
+        print("Set:", self.name, file=sys.stderr)
+        print("  User %s" % self.user, file=sys.stderr)
+        print("  Token %s" % self.token, file=sys.stderr)
 
         for (key, value) in self.notifier_options.items():
-            print >>sys.stderr, "  Notifier: %s=%s" % (key, value)
+            print("  Notifier: %s=%s" % (key, value), file=sys.stderr)
 
         for r in self.repositories:
             r.printDebug()
@@ -248,10 +248,10 @@ if len(args) > 1:
     optparser.error("wrong number of arguments")
 
 if not os.path.exists(Options.config):
-    print >>sys.stderr, "configuration file '%s' not found" % Options.config
+    print("configuration file '%s' not found" % Options.config, file=sys.stderr)
     sys.exit(1)
 
-Config = ConfigParser.ConfigParser()
+Config = configparser.ConfigParser()
 Config.read(Options.config)
 
 if Options.debug:

@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python2
 
 import os
 import sys
@@ -16,6 +16,10 @@ import subprocess
 ###############################################################################
 ##
 ## This is a MAME-specific version of the freely-available git-notifier.
+##
+## The original script is ugly.  Because of that, I've worked with what we've 
+## been given and not tried to fix much of it.  But seriously, temp files on 
+## disk to transfer a large string between functions.  Really?
 ##
 ###############################################################################
 
@@ -288,6 +292,7 @@ def getCurrent():
     return state
 
 
+# Global wtf :-P
 Tmps = []
 
 def makeTmp():
@@ -359,18 +364,10 @@ def sendMail(out, fname, subject, rev=None, attachFile=False):
         msg['Sender'] = replyto
         msg['From'] = sender
         msg['To'] = Config.mailinglist
-        
+        msg['Content-Type'] = 'text/plain; charset="utf-8"' 
         data = None
         with open (fname, "rb") as myfile:
             msg.attach(MIMEText(myfile.read()))
-        
-        if attachFile:
-            attachFilename = os.path.join(tempfile.gettempdir(), "git_diff.zip")
-            part = MIMEBase('application', "octet-stream")
-            part.set_payload(open(attachFilename, "rb").read())
-            Encoders.encode_base64(part)
-            part.add_header('Content-Disposition', 'attachment; filename="git_diff.zip"')
-            msg.attach(part)
         
         server = smtplib.SMTP('localhost')
         server.sendmail(sender, Config.mailinglist, msg.as_string())
@@ -496,7 +493,7 @@ def sendChangeMail(rev, subject, commitString, heads, show_cmd, diff_cmd, stat_c
         diff = git(diff_cmd, stdout_to=tmp)
         tmp.close()
 
-        #
+        # This is necessary because the original code is nuts
         with open(tname, 'r') as fin:
             cachedDiffText = fin.read()
 
@@ -504,23 +501,10 @@ def sendChangeMail(rev, subject, commitString, heads, show_cmd, diff_cmd, stat_c
         if diffSize > Config.maxdiffsize:
             attachFile = True
 
-            # Store just the stat in the temp file which must get picked up *somewhere* (((shudder)))
-            (tmp, tname) = makeTmp()
-            diff = git(stat_cmd, stdout_to=tmp)
-            tmp.close()
-            zipFilename = os.path.join(tempfile.gettempdir(), "git_diff.zip")
-            zf = zipfile.ZipFile(zipFilename, mode='w', compression=zipfile.ZIP_DEFLATED)
-            zf.writestr("diff.txt", cachedDiffText)
-            zf.close()
-
+    print >>out, "Branch: %s" % (heads)
+    print >>out, ""
     print >>out, "Log:"
     print >>out, commitString
-    print >>out, ""
-
-    print >>out, "Affected files:"
-    fileList = commitFiles(stat_cmd)
-    for filename in fileList:
-        print >>out, "* %s" % (filename)
     print >>out, ""
 
     if Config.link:
@@ -530,10 +514,17 @@ def sendChangeMail(rev, subject, commitString, heads, show_cmd, diff_cmd, stat_c
         print >>out, url
         print >>out, ""
 
-    print >>out, "Git Diff:"
-    if tname:
-        for line in open(tname):
-            print >>out, line,
+    print >>out, "Affected files:"
+    fileList = commitFiles(stat_cmd)
+    for filename in fileList:
+        print >>out, "* %s" % (filename)
+    print >>out, ""
+
+    if attachFile == False:
+        print >>out, "Git Diff:"
+        if tname:
+            for line in open(tname):
+                print >>out, line,
 
     print >>out, footer
 
