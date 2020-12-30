@@ -5,6 +5,7 @@
 MAME Testers Bugs Fixed
 -----------------------
 - 01807: [Graphics] (undrfire.cpp) cbombers: Some graphics missing in attract mode. (cam900)
+- 04905: [Flip Screen/Cocktail] (champbwl.cpp) champbwl: Video offset to left when flip screen enabled. (Ivan Vangelista)
 - 05701: [Documentation] (model2.cpp) daytona and clones: Descriptions are not entirely accurate. (ArtLine)
 - 07119: [Gameplay] (rampart.cpp) rampart, maybe rampartj and rampart2p: Late-game protection issues. (O. Galibert)
 - 07435: [Save/Restore] Vector: Vector Many games do not return stably from save state. (Vas Crabb)
@@ -343,827 +344,147 @@ Portuguese (Brazil) [Masc Guy]
 
 Merged pull requests
 --------------------
-7375: snes_ppu.cpp: Use device_palette_interface for Palette handling [cam900]
-Fix CGRAM size, Direct color behavior
-Reduce unnecessary values
-
-7379: [coco] added Speech Systems Stereo Composer cartridge [tlindner]
-I could not figure out how to rebase. :( Here is a clean path set.
-
-7391: add protection handling to Tranquillizer Gun so that the game plays correctly [David Haywood] [DavidHaywood]
-
-7393: [coco] Remove IRQ trampolines from coco driver family [tlindner]
-When adding a proper ACIA to the Dragon 64 driver it was requested to use an input merger to handle all the interrupt sources. This
-  required changes all the way down to the base driver.
-Also fix small typo when handling the parallel port on the Dragon 32.
-
-7396: Apple softlist update for end of October 2020 [Firehawke]
-
-7397: photoplysx.cpp: Add notes about the USB dongle and a partial dump of its non-volatile memory  [ClawGrip] [clawgrip]
-
-7398: ymf262: fix off-by-one error in OPL3_SLOT_CONNECT [moralrecordings]
-
-7400: pacman.cpp: Remove 'mspacmanbg3', it was a bad dump of 'pacmansp' [clawgrip]
-
-7401: Plug and Play work (lots of new sets from Sean etc.) [DavidHaywood]
-new WORKING machines
------
-The New York Times Sudoku [David Haywood, Sean Riddle, Kamaal Brown]
-Vs Maxx 25-in-1 (VT03 hardware) [David Haywood, Sean Riddle, Kamaal Brown]
-6-in-1 Sudoku Plug & Play [David Haywood, Sean Riddle]
-Plug 'N' Play 50-in-1 (DGUN-853) [David Haywood, Sean Riddle, Kamaal Brown]
-new WORKING clones
------
-Mega Drive Collection Volume 2 (Radica, Arcade Legends) (UK) [David Haywood, Sean Riddle]
-Super Sonic Gold (Radica Plug & Play) (UK) [David Haywood, Sean Riddle]
-new NOT WORKING machines
------
-Plug 'N' Play 25-in-1 (DGUN-806) [David Haywood, Sean Riddle, Kamaal Brown]
-IQuest (US) [David Haywood, Sean Riddle, Kamaal Brown]
-- Added MegaDrive side ROM to sarc110 sets, moved to skeleton 'hybrid' driver based on megadriv_rad.cpp and demoted to not working
-  for now as they're meant to boot from the MD side with the VT03 games as bonus items [Sean Riddle, Team Europe]
-- Moved reactmd to a skeleton 'hybrid' driver, demoted to not working, it's also meant to boot from the MD side with the SunPlus
-  games as bonus items. [David Haywood]
-
-7405: New clones marked as NOT_WORKING [clawgrip]
---------------------------------
-Diana Olakoa (v8.38) [Victor Fernandez (City Game), ClawGrip]
-
-7406: Init fixes [svenschnelle]
-Commit 5d32cad8cab4bb50ed6b1942f24d3e4a7257b66f ("Don't clear memory before constructing devices") uncovered a lot of missing member
-  variable initializations. This made hp9k_3xx sometimes hang during startup in the self test phase.
-
-7407: new driver: TecToy Pense Bem (2017) [felipesanches]
-Equivalent to VTech Smart Start from the 80s (which was based on a Z8 MCU that I was not yet able to dump).
-The TecToy Pense Bem (2017 release) emulated here is based on an Atmel ATMEGA168PB.
-This driver is working almost perfectly, except for the sound. The sound portion of this device is very simple, actually: just a
-  piezo buzzer controlled by a single bit being toggled by one of the AVR8 timers. The issue is that the specific timer mode in use
-  was not yet implemented in MAME. I implemented it in the naive straightforward way but the performance is very very bad and I hear
-  lots of noise. So I'd like to get some help on how to handle that.
-
-7409: New working software list additions (apple2_flop_orig.xml) [Firehawke]
-----------------------------------------------------------
-Mini-Pix #2 (Version 1986-11-01) [4am, Firehawke]
-Mini-Pix #3 (Version 1986-11-17) [4am, Firehawke]
-I.O. Silver [4am, Firehawke]
-
-7412: fmtowns_flop.xml: add the World of Xeen disk [rzero9]
-Just a quick change to add Might and Magic: World of Xeen to the FM Towns floppy softlist. For some reason I completely forgot about
-  this disk until now, even though it's been in the last release of the Neo Kobe Collection for about 4 years.
-
-7413: klax.cpp: get bootleg sets working [devinacker]
-This PR gets the Klax bootleg sets working, including sound.
-A few notes:
-* I'm not sure if the audio frequency is correct. I used the standard 384kHz oscillators for both MSM5205s with the f/64 prescaler,
-  but it's about two semitones lower than the non-bootleg sets.
-* "6.ic22" from klax5bl2 might be a bad dump? It's the same as the version from klax5bl but with random bytes missing (mostly in the
-  middle of ADPCM data, but also at the Z80 reset address)
-* klax5bl3 is still "not working" since the audio CPU uses encrypted opcodes, but it's otherwise identical to klax5bl2.
-
-7414: Plug and Play work - improve vt1682 ALU behavior, small steps towards vt369 including adding of soundcpu for denv150
-  [DavidHaywood]
-Plug and Play work - improve vt1682 ALU behavior, small steps towards vt369 including adding of soundcpu for denv150 [David Haywood]
-
-7415: fix crash on pensebem / avr8 timer1 [felipesanches]
-(followup to commit c9d3d973dd955bc985346f3ef3cad77246ed753c)
-
-7416: ibm5170 - New working software list additions [ArcadeShadow]
-Added: Rise of the Triad: Dark War, The Legacy: Realm of Terror (Euro), The Prophecy (USA), Xargon: Volume 1 - Beyond Reality,
-  Xargon: Volume 2 - The Secret Chamber, Xargon: Volume 3 - Xargon's Fury
-Redumped: Alien Legacy (Disk 1 has modified ROOT - now the game is playable)
-
-7421: cpu/tms7000: Fixed JPZ mnemonic and offsets for BTJO and BTJZ (inherent) in disassembly [tlindner]
-BTJO and BTJZ instructions, which use PC releative addressing would be off by one. Fix incorrect JPI mnemonic to be the correct JPZ.
-
-7422: support Redump extended bin/cue format for Dreamcast discs [nhand42]
-This adds support to chdman for Redump’s new .bin/.cue format for Dreamcast discs. The old .gdi format was flawed so Redump extended
-  the .bin/.cue format to support multiple images. Although chdman already supports .gdi this format has been deprecated and all
-  Redump Dreamcast dumps going forward will use the extended .bin/.cue format.
-A simple test was written to iterate over a Redump Dreamcast set (2020-09-12). For each set two .chd files were created, one from
-  .cue and one from an old .gdi, and the MD5 checksums of both output files (the .chd) compared. This does not prove the output is
-  correct, only that the .cue support is identical to existing .gdi support.
-So far 44 sets have been tested. The .chd output is identical no matter whether using .cue or .gdi for input. This included several
-  sets with multiple tracks in the high-density area.
-This resolves issue #6466.
-
-7423: cleanups to machine_start / machine_reset overides + some p&p bits [David Haywood] [DavidHaywood]
-- weclemans.cpp cleaned up MACHINE_START_OVERRIDE / MACHINE_RESET_OVERRIDE / VIDEO_START [David Haywood]
-- tsamurai.cpp cleaned up MACHINE_START_OVERRIDE / MACHINE_RESET_OVERRIDE / VIDEO_START  [David Haywood]
-- tubep.cpp cleaned up MACHINE_START_OVERRIDE / MACHINE_RESET_OVERRIDE / VIDEO_START  [David Haywood]
-- segac2.cpp cleaned up MACHINE_START_OVERRIDE / MACHINE_RESET_OVERRIDE / VIDEO_START  [David Haywood]
-new WORKING machines
-------
-Street Fighter II: Special Champion Edition (MSI Plug & Play) (Europe) [Team Europe]
-new WORKING software list entries
------
-ekara_pal.xml:
-uk_vol4 e-kara UK / Europe Volume 4 (UK-E004) [David Haywood. Team Europe]
-uk_vol5 e-kara UK / Europe Volume 5 (UK-E005) [David Haywood. Team Europe]
-
-7425: Fixed vt1682_alu.cpp out of bounds accesses + 2 Plug Play additions [DavidHaywood]
-- fixed out of bounds access in vt1682_alu.cpp [David Haywood]
-new WORKING machines
------
-Plug 'N' Play Rockstar Guitar / Guitar Rock (PAL) [Peter Wilhelmsen, David Haywood, Team Europe]
-new NOT WORKING clones
------
-Zippity (UK) [David Haywood, Team Europe]
-
-7429: Sinclair ZX Spectrum Multiface128 and diagnostic ROMs [rfka01]
-
-7430: new NOT WORKING machines  (Plug and Play) [DavidHaywood]
-new NOT WORKING machines
------
-Mini Arcade Console (Arcade 10-in-1) [Team Europe]
-Arcade Classics Mini Handheld Arcade (Supreme 150) [Team Europe]
-
-7431: centiped.cpp: support switching games in multipede [devinacker]
-This implements the address mirroring and configurable memory ranges used by the Multipede kit for switching games.
-I also shortened the watchdog timeout in `centiped_base` to be similar to some of the other Atari drivers, since the kit relies on
-  it to reset the system within a short period after switching games and raises an error if it doesn't.
-
-7432: hp3478a: layout: LCD annunciators, button labels [fenugrec]
--LCD has 12 text annunciators (1 segment each) which now work
--some buttons have an extra label printed above, for shift-functions
--generally improved the layout : parametrized some of the elements
-!annun
-actual unit :
-  https://4.bp.blogspot.com/-o1K3h8qAfiM/WjWkJsYsCvI/AAAAAAAAGyc/3obboNUwozMB-paG8SheovOdWA5afCI3wCLcBGAs/s1600/cropped%2B3478A.jpg
-
-7434: model2.cpp, model3.cpp: Daytona USA/Scud Race description update per MT5701 [FMecha]
-Carried over from MT5701.
-Need to document more which Model 2/3 games have changeable regions, might need to document Model 3 secret region change method in
-  games that have it? (Documented here, archived from here which requires login)
-
-7435: new NOT WORKING machines (InnoTV) [DavidHaywood]
-new NOT WORKING machines
-------
-InnoTV [Team Europe]
-new NOT WORKING software list entries
-------
-vtech_innotv_innotabmax_cart.xml:
-pawpatrl: Paw Patrol - Pups Save a UFO! (80-274103 UK) [Team Europe]
-dcgcr: DC Comics - Gotham City Robots (80-274803 UK) [Team Europe]
-finddory: Finding Dory (80-274903 UK) [Team Europe]
-liongrd: The Lion Guard (80-275203 UK) [Team Europe]
-new WORKING software list entries
------
-gameking.xml:
-mc_4v07a: 4 in 1 - TrojanLegend (Trojan) + HappyBall + Supermotor (Motor) + Lanneret (Hawk) (512KB cartridge) [Team Europe]
-mc_4v16a: 4 in 1 - Manhunt + Bobby + Tantivy + Racing Car (512KB cartridge) [Team Europe]
-
-7437: Add Psy-Phi to Lindbergh driver game list [HeroponRikiBestest]
-Added known Lindbergh game Psy-Phi to the Lindbergh driver game list.
-
-7439: c140.cpp: Reduce duplication in fetching sample [cam900]
-
-7440: Add "n2a03" (6502 CPU clone) to gdbstub for NES, and swapped 6502  PC/SP to SP/PC [LucienMP]
-Add "n2a03" (6502 CPU clone) to gdbstub for NES, and swapped 6502  PC/SP to SP/PC as this is how it will appear in gdb based
-  debuggers.
-
-7441: new Plug and Play (VT) sets [DavidHaywood]
-new NOT WORKING machines
------
-HKB-502 268-in-1 (set 1) [jacaba]
-My Arcade Caveman Ninja [Tim Schuerewegen]
-Retro FC 400-in-1 [Tim Schuerewegen]
-Mini Arcade Machine 240-in-1 (Red5) [ne7!]
-Mini Game Player 48-in-1 [Team Europe]
-new NOT WORKING clones
-------
-E-Game! 150-in-1 [gelotus]
-HKB-502 268-in-1 (set 2) [Tim Schuerewegen]
-Gaming Tech CT-885 [kludge]
-Cyber Arcade 200-in-1 [pascal_frigoriste]
-My Arcade Retro Machine 200-in-1 (DGUN-2577) [ne7!]
-240-in-1 Mini Arcade Machine (Thumbs Up) [emuboy85]
-
-7443: Add m6809 support for gdb remote debugger. [gdeldago]
-A small addition in order to add support for the Motorola 6809 processor in the gdbstub.
-Thanks
-Gus
-
-7444: DMA required by PR #7430 [DavidHaywood]
-This is the DMA part of the changes required by https://github.com/mamedev/mame/pull/7430 which I've split out in attempt to make
-  the process smoother.
-
-7445: Miscellaneous late 90s Jaleco HW fixes and cleanups [angelosa]
-ms32.cpp, bnstars.cpp, tetrisp2.cpp: wrote a Jaleco MS32 System Control Unit device [Angelo Salese, Alex Marshall]
-* Internalize both CRTC and irq generation, overall timings should be more accurate;
-Additionally removed a plethora of kludges, most notably:
-* ms32.cpp: Fix sprite transfer direction bit, removes an ugly per-game table;
-* ms32.cpp: Fix drawing honoring the wrong variable and causing a segmentation fault;
-* ms32.cpp: Correct palette size;
-* ms32sprite.cpp: Move optional features (YUV, zooming) at init time;
-* tetrisp2.cpp: Fix extra screens in stepstag/vjdash to run at 60 Hz instead of 30;
-* tetrisp2.cpp: Fix rightmost screen in stepstag/vjdash bitmap configuration (thanks to Osso for catching it)
-* bnstars.cpp: Fix machine configuration and proper split for sprite and gfxdecode devices;
-
-7446: centiped.cpp: add watchdog reset address to bootlegs [devinacker]
-This commit fixes an issue noticed in the replies to #7431 where some bootleg sets were missing watchdog writes because the watchdog
-  wasn't actually included in the memory map. I also added `nopr()` and `noprw()` to a few address ranges to get rid of several
-  error log messages (due to 6502 dummy reads, and vestigial code from the original ROMs trying to write to a nonexistent POKEY)
-
-7447: ibm5150 - Blockout bad dump [ArcadeShadow]
-blockout: Marked as bad dump (modified OEM ID and modified root)
-
-7448: kpython.cpp: Add dogstation Deluxe hdd dump [HeroponRikiBestest]
-Added dogstation Deluxe hard drive dump to the konami python driver.
-
-7449: agat: native keyboard, video and floppy improvements [shattered]
-
-7450: Plug and Play work (some working VT additions) + some non-working + 2 IQuest cartridges [DavidHaywood]
-new NOT WORKING software list entries
-------
-leapfrog_iquest_cart.xml:
-start40 IQuest 4.0 Starter Pack [David Haywood, Sean Riddle, Kamaal Brown]
-scig5 Science Grade 5 [David Haywood, Sean Riddle, Kamaal Brown]
-new WORKING machines
------
-Joystick 30 [David Haywood, Sean Riddle, Kamaal Brown]
-Joypad 65 [David Haywood, Sean Riddle, Kamaal Brown]
-new NOT WORKING machines
------
-Virtual TV Soccer [David Haywood, Sean Riddle]
-Cyber Arcade Pocket (JL1895) [Tim Schuerewegen]
-new NOT WORKING clones
------
-Seal 30-in-1 (VT based, Model FN098134) [David Haywood, Team Europe]
-- fixed incorrect hashes on egame150 from previous
-
-7452: mface.cpp: Multiface 3 clone ROM is bigger than the others.  [rfka01]
-This change works with MAME 0.226 official.
-
-7453: New clones marked as NOT_WORKING [clawgrip]
---------------------------------
-Olympic Darts K7 (v3.00) [jordigahan, ClawGrip]
-
-7454: new WORKING & NOT WORKING machines (Plug and Play) [DavidHaywood]
-new WORKING machines
--------
-Lexibook JG7410 100-in-1 [David Haywood, Team Europe]
-new NOT WORKING machines
------
-Mini Arcade Machine (Thumbs Up, 240IN1ARC) [David Haywood, Team Europe]
-
-7455: ibm5170 - New working software list additions [ArcadeShadow]
-Added: SimAnt (3.5", v1.08), SimAnt (3.5", v1.06), SimAnt (5.25", v1.08), SimAnt (5.25", v1.06), SimAnt (windows 3.x release)
-Redumped: [simant] old set has a modified OEM Id and a modified root
-
-7456: galastrm.cpp: Add notes for rotation [cam900]
-
-7457: slapshot.cpp: MC68000P12F supports 16 MHz natively [cam900]
-
-7458: Exposing the emu_options (and slot options) to LUA [npwoods]
-
-7459: goldstar.cpp: Corrected U79 PROM location [jbtx77gr]
-on u70 is a Logic IC HD74LS157P check the below photo --> https://i.ibb.co/qmRVN8z/Viber-2020-11-10-08-17-11.jpg  , The correct
-  location is u79.
-
-7460: undrfire.cpp: Fix priority in cbombers, Add notes [cam900]
-tc0360pri.cpp: Remove unnecessary define
-
-7461: Plug and Play improvements [DavidHaywood]
-- improve rendering, banking, inputs for beijuehh
-- identified register used for PRNG on GPL16250, needed for beijuehh
-new NOT WORKING machines
--------
-My Arcade Retro Micro Controller - 220 Built-In Video Games (DGUN-2869) [Zup, Team Europe]
-Lexibook Compact Cyber Arcade - PJ Masks [Zup, Team Europe]
-
-7463: ie15: update logging, use device_matrix_keyboard_interface [shattered]
-
-7464: wizard_cart.xml: Add notes, wizard.cpp: Fix year, add notes [clawgrip]
-
-7465: segac2.cpp: clarify bloxeed credit DIPs [devinacker]
-
-7466: New NOT_WORKING software list additions [clawgrip]
----------------------------------------
-picno.xml:
-  Picno de Kuku, Chibimaruko-chan no Tashizan Hikizan [Team Europe]
-
-7468: Dragon Alpha: fix typo in address map. Fix disk I/O. [tlindner]
-
-7469: AT&T Blit terminal (skeleton) [shattered]
-
-7470: New clones marked as NOT_WORKING [clawgrip]
---------------------------------
-Jurassic Park (3.05) [MLM, Victor Fernandez (City Game), ClawGrip]
-de_3.cpp: Fix some parent-clone relationships, sorted the sets and change some set names to follow a common pattern.
-
-7471: New working clones  [clawgrip]
-------------------
-Sauro (set 2) [Victor Fernandez (City Game), ClawGrip]
-
-7472: coco: add symphony 12 bus device [tlindner]
-A 12 voice (4 psg) music device from the 80s.
-
-7473: CoCo: fix hi-res joystick interface [tlindner]
-This increased the resolution to 640 pixels. And adjusted the timer value so you can now reach the right side of the screen in
-  Multi-View.
-
-7474: Fix drawscanline_core leftover loop, should be outside unrolled loop [rtissera]
-I think I catched a little typo/mistake in drawgfxt.ipp drawscanline_core.
-
-7477: identify 'seahuntr' as Black Touch II, move to correct driver [DavidHaywood]
-new WORKING machines
------
-Black Touch II (Korea) [Jorge Silva, Fernando Oliveira, David Haywood]
-
-7478: starshp1: Fix tilemap size, get rid of uninitialized chars on screen [palazzol]
-Fixed a bug where there was garbage on the screen from extra unitialized ram being drawn on the screen.  The ram region here is only
-  256 bytes - and it is drawn at the top of the screen only, by the hardware.  I was surprised that drawing a smaller tilemap
-  defaults to drawing to the entire screen, so I made a special cliprect.  Please let me know if I am missing something fundamental
-  about cliprects and tilemaps.
-
-7480: ibm5170 - New working software list additions [ArcadeShadow]
-Added: Inca, Wacky Wheels (v1.1), Wacky Wheels (v1.1 registered & upgraded patch)
-
-7481: ibm5150 - New working software list additions [ArcadeShadow]
-Added: Alien Syndrome, California Games 2, Double Dragon 3 - The Rosetta Stone (3.5"), Omega
-Redumped: [ppersia35b] Prince of Persia (3.5", v1.0) - prior version has a modified root
-
-7482: m68k: accept addressing mode 6 for FSAVE/FRESTORE [shattered]
-SysV Unix kernel on hcpu30 uses these modes:
-Fatal error: M68kFPU: FSAVE unhandled mode 6 reg 7 at f854
-
-7483: IQuest (8032 based SoC) speculative notes etc. [DavidHaywood]
-- Identified banking registers and likely screen buffer ram locations on leapfrog IQuest [David Haywood]
-
-7484: naomi.cpp: Explain mainboard jumper JP1 (Aica clock source) [hachirokumiku]
-Clock select pin explained
-
-7486: new NOT WORKING machines [DavidHaywood]
-new NOT WORKING machines
-------
-My Arcade Data East Classics Pixel Player (308-in-1) (DGUNL-3202) [Sean Riddle, Kamaal Brown, Ruairi]
-
-7488: segas32.cpp: Fix multipcm clock at post d6fbd53 [cam900]
-
-7489: VG5000µ printer more accurate support. [Mokona]
-To emit the character, it is first latched on port ($10) then a rising edge is produced on port ($11).
-
-7490: sauro.cpp: Switch 'Set 1' and 'Set 2' to make the newly dumped set the parent one [clawgrip]
-The newly dumped set has the "Test mode" bug which causes a crash when "Difficult" is selected via dip switches fixed, so it's
-  (probably) newer.
-
-7491: Move some rendering code to constexpr [rtissera]
-
-7492: New NOT_WORKING software list additions [clawgrip]
----------------------------------------
-picno.xml: Picno de Nihon Chizu [TeamEurope]
-* picno.xml: Fixed some metadata on existing entries and sorted the list by serial number
-
-7493: simulate protection for carnivalh / carnivalha sets [David Haywood] [DavidHaywood]
-(don't think these sets were ever properly playable)
-
-7495: n64.xml: Add notes about known Mario no Photopi SmartMedia cards [clawgrip]
-
-7496: coco_ssc.ccp: fix speech in Pegsaus and the Phantom Riders [tlindner]
-This game requires very specific status values after a reset. The speech chip was incorrectly being reset too soon in the process.
-  The logging system was modernized. The device busy delay timer was unneeded, so removed. Tested with BASIC commands from manual,
-  Pitfall 2, and PandPR.
-
-7497: toaplan1.cpp: Use pdrawgfx in draw single sprite [cam900]
-
-7498: New clones marked as NOT_WORKING [clawgrip]
---------------------------------
-Ator (set 1, 2 bumpers) [Sergio y Vicente de www.electrónicavys.es]
-
-7499: allow 8751 MCU to access tile ram as well as text RAM on the pre-system16 boards (Quartet / Quartet 2) [DavidHaywood]
-Needed for moving platforms in stage 15, see https://mametesters.org/view.php?id=7792
-again I think this is a case of 'has never worked in MAME' because the old protection sims didn't do this either
-
-7501: fmtowns_cd.xml: 20 new dumps, 35 replacements, add msdet2 floppy [rzero9]
-New working software list additions
------------------------------------
-Collector D - Bangai-hen - Gokurakudai Nishichiku Sales Daisakusen
-[redump.org]
-Eikan wa Kimi ni 2 - Koukou Yakyuu Zenkoku Taikai (HMC-144) [redump.org]
-Gokichi-kun Series - Igo Nyuumon Doujou [redump.org]
-Hiragana no Ehon [redump.org]
-Hirou [redump.org]
-Hyper Planet Shiki Vol. 1 [redump.org]
-Igo II (HMA-219) [redump.org]
-Joshikousei Shoujo Densetsu - Cosplay Special [redump.org]
-Mahjong Gensoukyoku II - Mahjong Fantasia [redump.org]
-Mahjong Gensoukyoku III - Mahjong Fantasia the 3rd Stage [redump.org]
-NHK Jissen Eikaiwa (HMC-120A) [redump.org]
-Soft de Hard na Monogatari [redump.org, wiggy2k]
-Soft de Hard na Monogatari 2 [redump.org, wiggy2k]
-Vampire High School [redump.org]
-New not working software list additions
----------------------------------------
-Cyber Motion V1.0 [redump.org, wiggy2k]
-Hyper Planet for Marty [redump.org]
-L'Empereur [redump.org]
-Lettuce Cooking - Tanoshiku Tsukureru Obentou [redump.org]
-Nemurenu Yoru no Chiisana Ohanashi [redump.org]
-Sensual Angels [redump.org]
-Replaced software list items
-----------------------------
-AIV - A Ressha de Ikou 4 [redump.org, wiggy2k]
-AmbivalenZ - Niritsu Haihan [redump.org]
-America Oudan Ultra Quiz [redump.org]
-Beast III [redump.org]
-Cybercity [redump.org]
-Digital Pinup Girls Vol. 1 - Sexy Shooting [redump.org]
-DOR Special Edition Sakigake [redump.org]
-Emerald Dragon [redump.org]
-Eye of the Beholder II - The Legend of Darkmoon [redump.org]
-Game Technopolis Super Collection 1 [redump.org]
-Gekirin - Ushinawareshi Houken [redump.org]
-Image Fight [redump.org]
-Jangou 4 [redump.org]
-Jankirou [redump.org]
-Joshikousei Shoujo Hatsunetsu [redump.org]
-Joshua [redump.org]
-Lemmings 2 - The Tribes [redump.org]
-Libble Rabble [redump.org]
-Many Colors [redump.org]
-Metal Eye [redump.org]
-Mirrors [redump.org]
-Murder Club DX [redump.org]
-My Eyes! [redump.org]
-Prince of Persia 2 - The Shadow and the Flame [redump.org]
-Rainbow Islands - The Story of Bubble Bobble 2 - Extra Version
-[redump.org]
-Regional Power II [redump.org]
-Sayaka + Miho [redump.org]
-The 4th Unit 4 - Zero [redump.org]
-The Atlas II [redump.org, wiggy2k]
-Tokio - Tokyo-to Dai-24-ku [redump.org]
-Toudou Ryuunosuke Tantei Nikki - Ougon no Rashinban - Shouyoumaru San
-Francisco Kouro Satsujin Jiken [redump.org]
-Ultima Trilogy I-II-III [redump.org]
-Volfied [redump.org]
-Wing Commander II - Vengeance of the Kilrathi - Special Operations 1 &
-Special Operations 2 [redump.org]
-Words Worth [redump.org]
-Software list items promoted to working
----------------------------------------
-Ms. Detective File #2 - Sugata-naki Irainin [wiggy2k]
-
-7502: Cleanups and corrections for CoCo cartridge slot configuration [npwoods]
-1. Consolidated CoCo cartridge slot device configuration, to remove duplicate code that was specific to slots on the Multi-Pak
-  interface.
-2. Marked "pak" and "banked_16k" as internal, as they are not standalone
-
-7503: sgi_mips: new software list additions [darkstar]
-This PR adds the following 4 discs to the softlist:
-- PDF Generator 1.2
-- Intranet Junction 1.0.2
-- Media Value Pack WebFORCE August 1998
-- Alias|Wavefront Composer 4.5
-The CHD files can be downloaded here
-The dumps were sourced from archive.org (not dumped by me).
-They come from the "O2 Software Library", a pack of CDs that came bundled with some O2 models and had time-limited eval licenses
-  included.
-!boxfront
-Here are scans of the discs:
-!discs1
-!discs2
-(A fifth disc with Cosmo Suite was also included, but that is already in the softlist)
-Since the licenses have expired long ago, I figured it would be safe to post them here as well
-!templicenses
-What would be the best way to preserve the license information? Should I add it (as comment block) to the softlist?
-
-7506: ibm5150 - New working software list additions [ArcadeShadow]
-Added: The Punisher
-
-7507: ibm5170 - New working software list additions [ArcadeShadow]
-Added: Legends of Valour, Leisure Suit Larry 5: Passionate Patti Does a Little Undercover Work (3.5"), Leisure Suit Larry 5:
-  Passionate Patti Does a Little Undercover Work (5.25"), Special Forces (5.25")
-Dump Status: [lionkingd] Disney's The Lion King (Playable Demo) -> Marked as bad dump (cause: Modified OEM ID)
-Removed: [monkey2] Monkey Island 2: LeChuck's Revenge (3.5") -> cause: the files in the floppy disk are exactly the same of the
-  [monkey2a] Monkey Island 2: LeChuck's Revenge (3.5", Alt). The CRC and SHA1 are different because the [monkey2] has modified root
-  in the floppies. Changed [monkey2a] to [monkey2]
-
-7508: Exposing image format information to LUA [npwoods]
-Vas mentioned that there is major refactoring going on in the LUA engine code, so I suspect that this PR cannot be committed yet,
-  but in any case I want it to get out for review.
-
-7509: Plug and Play bits (working and not working machines) [DavidHaywood]
-machines promoted to WORKING
-------
-My Arcade Retro Micro Controller - 220 Built-In Video Games (DGUN-2869) [Zup, Team Europe, Sean Riddle]
-new WORKING machines
-------
-Code Lyoko (25-in-1 handheld) [KaruzoHikari, Team Europe, David Haywood]
-My Arcade Pac-Man Pocket Player (DGUNL-3227) [Sean Riddle]
-new NOT WORKING machines
-------
-Palace Arcade [Sean Riddle, Kamaal Brown]
-new NOT WORKING Software List entries
-------
-vtech_innotab_cart.xml : Mickey Mouse Clubhouse (UK) [Team Europe]
-(an innotab2 driver entry was also added to hold the software list, but the ROM isn't dumped yet)
-
-7511: Fixed Portuguese_Brazil translation errors noted in issue 7510 [mascguy]
-
-7514: New machines marked as NOT_WORKING [clawgrip]
-----------------------------------
-unknown 960606-5 based machine [jordigahan, ClawGrip]
-
-7515: cosmic.cpp: Fixed bug in sound output handler and cleaned up sample playback code [greg-kennedy]
-Some cleanup to sample playback for cosmica - remove some redundant calls, and turn the questionable `[[fallthrough]]` into a
-  `break`
-
-7517: design.cpp: Add notes about coin selector [clawgrip]
-
-7519: new NOT WORKING machines [DavidHaywood]
-new NOT WORKING machines
------
-Turbo Extreme (US) [David Haywood, Sean Riddle]
-
-7520: HP2641A APL terminal from G.Scott [fulivi]
-Hi,
-I've just integrated hp2641a APL terminal from Gavin Scott into hp2640.cpp.
-I'm going to submit the ROM images to the code e-mail soon.
-Thanks.
---F.Ulivi
-
-7521: luaengine: cassette controls [cracyc]
-
-7523: de_3.cpp: New clones marked as NOT_WORKING, added CPU and display version on games descriptions, and fixed some games metadata
-  [clawgrip]
-
-7525: New machines marked as NOT_WORKING [clawgrip]
-----------------------------------
-Pro Evolution Soccer The Arcade (ver EAA) [Victor Fernandez (City Game), ClawGrip]
-
-7526: fmtowns_flop.xml: 7 new dumps [rzero9]
-Also added more information about all the Futoppara coverdisks, and some notes about images known to be dumped from originals.
-New working software list additions
------------------------------------
-Dinosaur [r09]
-Dragon Knight 4 Special Disk [r09]
-Futoppara FD Heisei 1-gou [r09]
-F-BASIC86HG Interpreter/Compiler V1.2 L31A [anonymous]
-F-BASIC86HG Interpreter V1.2 L31A [anonymous]
-Oh! Pai [akira_2020]
-New not working software list additions
----------------------------------------
-Jissen Igo Taikyoku - Gokichi-kun - Chuukyuu (Jou) [wiggy2k]
-
-7527: audio/seibu.cpp: Replace MSM5205 interface with device_sound_interface in seibu_adpcm [cam900]
-audio/seibu.h: Fix hardware notes
-cabal.cpp, deadang.cpp, shanghai.cpp: Fix ADPCM clock
-shanghai.cpp: Fix CPU clock (CXQ70116 can't support 16MHz), add notes
-
-7530: new NOT WORKING Software List entries (Turbo Extreme Grade 2) [DavidHaywood]
-new NOT WORKING Software List entries
-------
-leapfrog_turboextreme_cart.xml:
-grade2 - Grade 2 [Sean Riddle, David Haywood]
-
-7531: deco_zoomspr.cpp: Fix drawing behavior [cam900]
-"alpha" flag is actually flicker flag
-deco32.cpp: Add notes, device placeholder for dragngun
-
-7533: ibm5170 - New working software list additions [ArcadeShadow]
-Added: Dogfight: 80 Years of Dogfighting (Euro), DragonSphere, Dune (3.5"), Dune II - The Bulding Of A Dynasty (USA), EcoQuest: The
-  Search For Cetus, Monkey Island 2: LeChuck's Revenge (3.5", Germany), Star Trek - 25th Anniversary (3.5" DD, v1.0), Star Trek -
-  25th Anniversary (USA, 3.5" DD, v1.00) (include 'Out Of This World' demo)
-Renamed: [dune2] Dune II - The Battle for Arrakis -> [dune2] Dune II - The Battle for Arrakis (Euro)
-Renamed: [dune] Dune (3.5") -> [dunea] Dune (3.5", alt)
-
-7534: pacman.cpp: Fix Birdiy inputs [ieure]
-The inputs for Birdiy were copied from Pac-Man and were incorrect.
-- P1 attack button was incorrectly mapped to the service mode DIP.
-- P2 attack wasn't mapped at all.
-- "Stop Screen" DIP does nothing, so mark it as unused.
-- "Rack test" is some kind of test mode, not Pac-Man style level skip, label it as such.
-
-7537: Mame: Fix compilation error on older MacOS/Xcode releases, for file 'src/osd/modules/file/posixfile.cpp' [mascguy]
-Tracked by ticket:
-https://github.com/mamedev/mame/issues/7536
-
-7538: missbamby.cpp: Add notes about Cirsa PCB models [clawgrip]
-
-7539: neptunp2.cpp: Redumped 'unk960606' sound ROM [clawgrip]
-It was previously dumped half its size
-
-7540: fmtowns_cd.xml: 13 new dumps, 22 replacements, 2 missing floppies added [rzero9]
-New working software list additions
------------------------------------
-Bell's Avenue Vol. 3 [redump.org]
-F-BASIC386 v1.1 L21 [redump.org]
-FM Towns Free Soft Nyuumon Kit [redump.org]
-Hajimete no Ryokou Eikaiwa [redump.org]
-Heike Monogatari (Joukan) [redump.org]
-Idol Project (1995-06-16 15:06:42) [redump.org, wiggy2k]
-Igo Doujou Shodan - Kaigan! Kyuu kara Dan e no Chousen [redump.org]
-Maruanki Eitango - Chuugaku 2-nensei [redump.org]
-Maruanki Eitango - Chuugaku 3-nensei [redump.org]
-Nihon no Yachou (FM Towns Marty version) [redump.org]
-Special & Delicious! Original CD-ROM [redump.org]
-Terra Towns (HMA-110) [redump.org]
-Replaced software list items
-----------------------------
-Alice no Yakata CD II [redump.org]
-Alice no Yakata 3 [redump.org]
-Ayumi-chan Monogatari - Jisshaban [redump.org]
-Burai Joukan [redump.org]
-Can Can Bunny Extra [redump.org]
-Crystal Rinal - Ouma no Meikyuu [redump.org]
-Dennou Ehon - Kyouryuu no Sekai [redump.org]
-Doki Doki Disk CD-ban Dai-1-kan - Club D.O. Jimukyoku [redump.org]
-Enkaiou no Gyakushuu Ver. 2 - Return of Enkaio [redump.org]
-Idol Project (1995-06-16 17:22:18) [redump.org]
-Mega Lo Mania [redump.org]
-Mirage [redump.org]
-Might and Magic - Clouds of Xeen [redump.org]
-Moonlight-chan Rinshan [redump.org]
-Powermonger [redump.org]
-Schwarzschild [redump.org]
-SimCity 2000 [redump.org]
-Samurai Spirits [redump.org]
-Tenka Gomen [redump.org]
-The Manhole (HMB-181A) [redump.org]
-Touch My Heart [redump.org]
-Ultima VI - The False Prophet [redump.org]
-Wizardry - Bane of the Cosmic Forge [redump.org]
-Software list items promoted to working
----------------------------------------
-Alice no Yakata 3 [redump.org]
-L'Empereur [KailoKyra]
-True Heart [r09]
-
-7541: new NOT WORKING machines (Plug and Play) [DavidHaywood]
-new NOT WORKING machines
------
-Portable Game Player BBL-338 (Baobaolong, 48-in-1) [Team Europe, taizou]
-HengSheng 36-in-1 (Red pad) [Team Europe, taizou]
-HengSheng 36-in-1 (Black pad) [Team Europe, taizou]
-Fix It Felix Jr. (Mini Arcade) [Sean Riddle, Kamaal Brown]
-Where in the World is Carmen Sandiego? (Handheld) [foone]
-TV Dance Mat 4 Games in 1 (Mix Party 3 / Dance Mix 3) [Team Europe, David Haywood]
-Ultimate Pocket Console GM-235 [Team Europe, taizou]
-new NOT WORKING software list entries
------
-easy_karaoke_cart.xml:
-Golden Greats Vol.3 [Team Europe, David Haywood]
-Golden Greats Vol.4 [Team Europe, David Haywood]
-(an Easy Karaoke driver was added to hold the software list / details, but the system ROM is not yet dumped)
-
-7542: validation fix for previous PR [DavidHaywood]
-
-7543: added dump of system ROM to Easy Karaoke [Team Europe] [DavidHaywood]
-- added dump of system ROM to Easy Karaoke [Team Europe]
-new NOT WORKING machines
-------
-Easy Karaoke Groove Station [Team Europe, David Haywood]
-
-7545: move dancmix3 to nes_sh6578.cpp + added dgunl3201 set [DavidHaywood]
-- move dancmix3 to nes_sh6578.cpp [David Haywood]
-new NOT WORKING machines
-------
-My Arcade Data East Classics - Pixel Classic (308-in-1) (DGUNL-3201) [Team Europe]
-
-7546: t10mmc: Fix calculating relative value in T10MMC_CMD_READ_SUB_CHANNEL [987123879113]
-An incorrect value is returned as the relative CD address when the MSF bit is set since it subtracts the LBA track start position
-  from the MSF position here.
-This fixes note scrolling in Keyboardmania, Keyboardmania 2nd Mix, and Keyboardmania 3rd Mix and anything else that relies on the
-  relative MSF position.
-
-7549: firebeat: Change clock speed from 64 MHz to 66 MHz [987123879113]
-Originally the CPU was implemented as 66 MHz but was changed from 66 MHz to 64 MHz in a commit 8 years ago. At 64 MHz, the music
-  notes gradually get more and more off time as the song progress. Setting it back to 66 MHz fixes the timing issues.
-For reference, the datasheets for the PowerPC 403GCX that I could find list the CPU frequencies as 50 MHz, 66 MHz, and 80 MHz.
-http://www.icbase.com/pdf/IBM/IBM01670106.pdf
-[note] I am not familiar with this driver/hardware so I am not comfortable making the change myself, but the only other usage of the
-  PowerPC 403GCX that I could find also uses a suspicious clock speed.
-ref: https://github.com/mamedev/mame/blob/master/src/mame/drivers/konendev.cpp#L410
-
-7551: Adjust CoCo 3 PIA mirrors [tlindner]
-The PIA mirroring uses fewer addresses than the CoCo 1 & 2. This agrees with Tepolt (Table 7-1) and a oscilloscope testing.
-I also added some more granular logging in the cartridge interrupt system to help track this issue down.
-
-7552: drivers/dynax: (tenkai) clarify some unknown dip switches [CecilHarvey]
-This clarifies 3 dip switches which previously marked as unknown for tenkai.
-
-7553: megadriv.cpp: Add notes for LaserActive [cam900]
-
-7554: cps2.cpp: Changed 96061 in ddsoma's name to 960619 [QX4]
-
-7555: new WORKING / not WORKING Plug and Play [DavidHaywood]
-new WORKING machines
-------
-Cyber Console Center 200-in-1 (JL2050) [Team Europe, taizou]
-new NOT WORKING machines
--------
-Retro Arcade 16 Bits Classic Edition Mini TV Game Console - 145 Classic Games - TV Arcade Plug and Play (Mega Drive bootlegs)
-  [Team Europe, David Haywood]
-Digital Pocket Hand Held System 20-in-1 - Model 8213 (China) [Team Europe, taizou]
-
-7556: next: add nextc machine and tidy up [davide125]
-The original NeXT was called "NeXT Computer" and shipped with a 68030. It was later renamed to "NeXTcube" once the 68040 had been
-  introduced. Add a `nextc` machine for it, fix capitalization and fill in missing dates.
-
-7557: next_hdd: initial hdd software list for next [davide125]
-Add a software list with preinstalled disk images for NeXT. I've tested these with the `next` machine and tagged the non-working
-  ones as such. The images come from https://archive.org/details/NeXTOSIMAGES
-
-7558: redump of 'mastfury' set from partially populated PCB marked "Dragon Master 96" [YarPromat / Yuri] + fix driver and promote it
-  [DavidHaywood]
-- The PCB was apparently missing program ROMs maybe there's also meant to be a version called Dragon Master 96 that we're missing,
-  but there doesn't appear to be any way to switch the current set to display that anywhere.
-machines promoted to WORKING
--------
-Master's Fury [YarPromat / Yuri, David Haywood]
-
-7560: next: only NeXTcube systems used the MO drive [davide125]
-Refactor the driver to only include the MO drive for NeXTcube systems. NeXTstation systems didn't ship with the MO, and I don't see
-  any way they could have used it either. I've also added a couple of helper functions to try and minimize duplication.
-
-7561: next: add some more roms [davide125]
-Add ROM definitions from http://www.nextcomputers.org/NeXTfiles/Software/ROM_Files/ for:
-rev_0.8_v31.bin
-rev_1.0_v40.bin
-rev_1.1_v42.bin
-rev_2.0_v58.bin
-rev_3.1_v71.bin
-and add a missing labels for the existing matching ROMs:
-rev_3.0_v70.bin
-rev_3.2_v72.bin
-rev_3.3_v74.bin
-
-7562: new NOT WORKING machines (Leapfrog Turbo Twist units) [DavidHaywood]
-new NOT WORKING machines
-------
-Turbo Twist Math (US) [Sean Riddle, David Haywood]
-Turbo Twist Brain Quest (US) [Sean Riddle, David Haywood]
-new NOT WORKING software list entries
-------
-leapfrog_turbotwistbrainquest_cart.xml:
-grades5_6 - Grades 5 & 6 (500-00745) [Sean Riddle, David Haywood]
-
-7563: twinbskt.cpp: Fix manufacturer name [clawgrip]
-My bad, I submitted the dump with the wrong manufacturer name.
-
-7565: Add "Non-Integer Scaling" and "Keep Aspect" settings to UI video options [ajrhacker]
-Add "Non-Integer Scaling" and "Keep Aspect" settings to UI video options menu and remove SDL hotkeys for same
-
-7568: refactored LCDC code used by bbl handhelds into a device [David Haywood] [DavidHaywood]
-
-7569: updated previously unknown DIP switch of grdians [AugiteSoul]
-Figured out that this one DIP switch on Denijn Makai II/Guardians, when toggled on, makes the game give an extra life at 500,000
-  points, instead of 300,000 points when toggled off.
-
-7572: New working clones [clawgrip]
-------------------
-Wardner no Mori (Japan, bootleg) [jordigahan]
-
-7573: Time for the December Apple Software List push. [Firehawke]
-
-7574: bbl338 : manually put some code in RAM, I can't see where this is coming from (probably internal) [DavidHaywood]
-
-7575: ibm5150 - New working software list additions [ArcadeShadow]
-Added: [dicktrcs] Dick Tracy: The Crime-Solving Adventure
-Added: [ducktale] DuckTales: The Quest for Gold
-Added: [simcityclg] SimCity Classic Graphics (add-on for Classic version)
-Added: World Championship Soccer (5.25")
-Added: World Championship Soccer (3.5")
-Redumped: [simcitycl] - SimCity Classic (3.5", v2.00) -> The old set has a modified root and OEM ID
-Renamed: [paprboy2] Paperboy 2 -> [paperbo2] Paperboy 2 -> standardize name, like the others software lists (megadriv, snes,
-  amigaocs_flop)
-
-7576: ibm5170 - New working software list additions [ArcadeShadow]
-Added: [specfrce] Special Forces (3.5")
-Renamed: [specfrce] Special Forces (5.25") -> [specfrce525] Special Forces (5.25")
-
-7578: next_cdrom: initial cdrom software list for next [davide125]
-Add a software list for CD-ROM NeXT software
-
-7580: twinbskt.cpp: Add PCB ASCII layout, fix flags and add ROM placeholder for ISD2590P [clawgrip]
-
-7584: shuffle a few things around re: the BBL ST2302U based handhelds, give bbl338 its own map due to internal ROM etc.
-  [DavidHaywood]
-
-7587: mastfury - tweak some priorities, although still not 100% how they derive from the register (doesn't seem identical to cps1)
-  [David Haywood] [DavidHaywood]
-
-7589: coco/dragon: add midi cartridge [tlindner]
-Implement a midi device as a coco/dragon cartridge.
-
-7591: New machines marked as NOT_WORKING [clawgrip]
-----------------------------------
-unknown Recreativos Franco slot machine (model RF51W14-CG) [jordigahan, ClawGrip]
-
-7592: next: use logerror instead of printf [davide125]
-As this is debugging output, I think it should go the log instead of being printed unconditionally. The only entry that actually
-  matters here is the `ramdac_w` one, but I've updated the others too for consistency, even if they're just comments for now.
-
-7593: Updated RX-78 machine / software information [Dave 'Foxhack' Silva] [FoxhackDN]
-
-7595: ibm5150 - New working software list additions [ArcadeShadow]
-Added: [altdest] Altered Destiny (5.25")
-Added: [altdesta] Altered Destiny (5.25", older)
-Added: [altdest35] Altered Destiny (3.5")
-Added: [btlches2] Battle Chess II: Chinese Chess
-
-7597: Updated RX-78 hash/driver comments [FoxhackDN]
+- 7375: viedo/snes_ppu.cpp: Converted to device_palette_interface and fixed direct color mode behavior. [cam900]
+- 7379: bus/coco: Added Speech Systems Stereo Composer cartridge. [Tim Lindner]
+- 7391: vicdual.cpp: Added protection simulation to Tranquillizer Gun so that the game plays correctly. [David Haywood]
+- 7393: coco12.cpp, coco3.cpp, dragon.cpp: Removed IRQ trampolines. [Tim Lindner]
+- 7396: apple2_flop_clcracked.xml, apple2_flop_orig.xml: Updated Apple II software lists for October 2020. [4am, Firehawke]
+- 7397: photoplysx.cpp: Added notes about the USB dongle and a partial dump of its non-volatile memory.  [ClawGrip]
+- 7398: sound/ymf262.cpp: Fixed off-by-one error in OPL3_SLOT_CONNECT. [moralrecordings]
+- 7400: pacman.cpp: Removed “mspacmanbg3”, it was a bad dump of “pacmansp”. [ClawGrip]
+- 7401: Added six working TV games, and improved Mega Drive-derived TV game drivers. [David Haywood]
+- 7405: microdar.cpp: Added Diana Olakoa (v8.38). [Victor Fernandez (City Game), ClawGrip]
+- 7406: Fixed uninitialized variables in a number of devices used by the HP9000/300 series systems. [Sven Schnelle]
+- 7407: Added driver for the 2017 version of the TecToy Pense Bem. [Felipe Sanches]
+- 7409: apple2_flop_orig.xml: Added latest Apple II original floppy dumps. [4am, Firehawke]
+- 7412: fmtowns_flop.xml: Added Might and Magic: World of Xeen. [Neo Kobe Collection, r09]
+- 7313: klax.cpp: Got the Klax bootlegs working, including sound. [Devin Acker]
+- 7414: nes_vt369_vtunknown_soc.cpp: Improved VT1682 ALU behavior, and made some progress towards VT369. [David Haywood]
+- 7415: cpu/avr8: Fixed crash on using timer 1. [Felipe Sanches]
+- 7416: imb5170.xml: Added six entries, and re-dumped one entry. [ArcadeShadow]
+- 7421: cpu/tms7000: Fixed JPZ mnemonic and offsets for BTJO/BTJZ in disassembly. [Tim Lindner]
+- 7422: chdman: Added support for importing redump.org GD-ROM extended bin/cue format (GitHub #6466). [nhand42]
+- 7423: Added some TV games/software, and modernised code in segac2.cpp, tsamurai.cpp, tubep.cpp and weclemans.cpp. [David Haywood]
+- 7425: Added two TV games, and fixed VT1682 out-of-bounds accesses. [David Haywood]
+- 7429: spectrum.cpp: Added some diagnostic ROMs; bus/spectrum: Added additional Multiface ROMs. [rfka01]
+- 7430: unk6502_st2xxx.cpp: Added two TV games. [TeamEurope, David Haywood]
+- 7431: centiped.cpp: Added support for switching games in the Multipede kit sets. [Devin Acker]
+- 7432: hp3478a.cpp: Added LCD annunciators and button labels to layout. [fenugrec]
+- 7434: model2.cpp, model3.cpp: Improved descriptions of Daytona USA and Scud Race games (MT5701). [ArtLine]
+- 7435: Added skeleton driver and software list for VTech InnoTV, and two Game King cartridge dumps. [TeamEurope, David Haywood]
+- 7437: lindbergh.cpp: Added Psy-Phi to list of known games. [HeroponRikiBestest]
+- 7439: sound/c140.cpp: Tidied up sample fetching code. [cam900]
+- 7440: Added support for N2A03 CPU to GDB stub debugger, and swapped field order of 6502 PC/SP to SP/PC. [LucienMP]
+- 7441: Added eleven TV games based on V.R. Technology chips. [David Haywood]
+- 7443: Added Motorola 6809 CPU support to GDB stub debugger. [Gustavo del Dago]
+- 7444: cpu/m6502: Added preliminary ST2205U DMA support. [David Haywood]
+- 7445: ms32.cpp:, bnstars.cpp, tetrisp2.cpp: Made system control unit a device and fixed some bugs. [Angelo Salese, Alex Marshall]
+- 7446: centiped.cpp: Added watchdog reset address to bootlegs. [Devin Acker]
+- 7447: ibm5150.xml: Marked Blockout as a bad dump as it has modified OEM ID and root directory. [ArcadeShadow]
+- 7448: kpython.cpp: Added dump of dogstation Deluxe hard disk. [HeroponRikiBestest]
+- 7449: agat.cpp: Added native keyboard emulation, and improved video and floppy emulation. [shattered]
+- 7450: Added several TV games, and two LeapFrog IQuest cartridge dumps. [David Haywood]
+- 7452: bus/spectrum: Fixed ROM loading for double-size Multiface 3 clone ROM. [rfka01]
+- 7453: 4enlinea.cpp: Added Olympic Darts K7 (v3.00). [jordigahan, ClawGrip]
+- 7454: nes_vt369_vtunknown.cpp, spg2xx_zone.cpp: Added two TV games. [David Haywood, TeamEurope]
+- 7455: ibm5170.xml: Added five items, and re-dumped one item. [ArcadeShadow]
+- 7456: galastrm.cpp: Added link to video showing correct rotation effects. [cam900]
+- 7457: slapshot.cpp: Corrected notes about MC68000P12F clock frequency. [cam900]
+- 7458: frontend: Exposed emu_options to Lua scripts. [Nathan Woods]
+- 7459: goldstar.cpp: Corrected crazybon U79 PROM location. [Ioannis Bampoulas]
+- 7460: undrfire.cpp: Converted to use TC0360 device, fixing graphical priority issues (MT01807). [cam900]
+- 7461: Added two TV games, and fixed some issues affecting beijuehh. [David Haywood]
+- 7463: machine/ie15.cpp: Modernised logging, and converted keyboard to use device_matrix_keyboard_interface. [shattered]
+- 7464: wizard_cart.xml, wizard.cpp: Added notes and fixed year for iq7000. [ClawGrip]
+- 7465: segac2.cpp: Clarified Bloxeed credit DIP switch settings. [Devin Acker]
+- 7466: picno.xml: Added Picno de Kuku and Chibi Maruko-chan no Tashizan Hikizan. [TeamEurope, ClawGrip]
+- 7468: dragon.cpp: Fixed Dragon Alpha disk controller status read (fixes disk I/O). [Tim Lindner]
+- 7569: blit.cpp: Added skeleton driver for AT&T Blit terminal. [shattered]
+- 7470: de_3.cpp: Added another version of Jurassic Park, and cleaned up metadata. [MLM, Victor Fernandez (City Game), ClawGrip]
+- 7471: sauro.cpp: Added Sauro (set 2). [Victor Fernandez (City Game), ClawGrip]
+- 7472: bus/coco: Added Speech Systems Symphony Twelve cartridge. [Tim Lindner]
+- 7473: machine/coco.cpp: Improved behaviour of high-resolution joystick interface. [Tim Lindner]
+- 7474: emu/drawgfxt.ipp: Moved drawscanline_core leftover pixel handling out of unrolled loop. [Romain Tisserand]
+- 7477: Identified purported “Sea Hunter” game as Black Touch II, and moved it to the correct source file. [David Haywood]
+- 7478: starshp1.cpp: Fixed tilemap size. [Frank Palazzolo]
+- 7480: ibm5170.xml: Added three items. [ArcadeShadow]
+- 7481: ibm5150.xml: Added three items and re-dumped one item. [ArcadeShadow]
+- 7482: cpu/m68000: Added support for addressing mode 6 for FSAVE and FRESTORE instructions. [shattered]
+- 7483: leapfrog_iquest.cpp: Added preliminary banking and screen buffer implementation. [David Haywood]
+- 7484: naomi.cpp: DOcumented AICA clock source jumper JP1. [hachirokumiku]
+- 7486: nes_vt32.cpp: Added My Arcade Data East Classics Pixel Player (308-in-1). [Sean Riddle, Kamaal Brown, Ruairi, David Haywood]
+- 7488: segas32.cpp: Fixed YMW-258-F (MultiPCM) clock frequency. [cam900]
+- 7489: vg5k.cpp: Improved printer communication. [Sylvain Glaize]
+- 7490: sauro.cpp: Switched the order of Sauro sets making the newly-dumped parent, as it has bug fixes. [ClawGrip]
+- 7491: Made more use of constexpr qualifier in rendering code. [Romain Tisserand]
+- 7492: picno.xml: Added Picno de Nihon Chizu, fixed some metadata, and sorted items by serial number. [TeamEurope, ClawGrip]
+- 7493: vicdual.cpp: Added protection simulation for carnivalh and carnivalha. [David Haywood]
+- 7495: n64.xml: Added notes about known Mario no Photopi SmartMedia cards. [ClawGrip]
+- 7496: bus/coco: Fixed SSC TMS7000 busy flag and reset handling (fixes speech in Pegsaus and the Phantom Riders). [Tim Lindner]
+- 7497: toaplan1.cpp: Converted drawing code to use standard priority handling for sprites. [cam900]
+- 7498: peyper.cpp: Added Ator (set 1, 2 bumpers). [Sergio y Vicente de www.electronicavys.es, ClawGrip]
+- 7499: segas16a.cpp: Allow 8751 to access tile RAM on pre-System 16 boards (fixes Quartet stage 15). [David Haywood]
+- 7501: fmtowns_cd.xml: Added 20 items, replaced 35 items, and added floppy disk image for msdet2. [redump.org, wiggy2k, r09]
+- 7502: coco12.cpp, bus/coco: Cleaned up CoCo cartridge slot configuration code. [Nathan Woods]
+- 7503: sgi_mips.xml: Added four items. [archive.org, darkstar]
+- 7506: ibm5150.xml: Added The Punisher. [ArcadeShadow]
+- 7507: ibm5170.xml: Added four items and identified some bad dumps. [ArcadeShadow]
+- 7508: frontend: Exposed image format information to Lua scripts. [Nathan Woods]
+- 7509: Promoted a TV game to working, added three TV games, and added a skeleton list for the VTech InnoTAB 2. [David Haywood]
+- 7511: Fixed issues in Brazilian Portuguese translation noted in GitHub #7510. [Masc Guy]
+- 7514: neptunp2.cpp: Added unknown 960606-5 based machine. [jordigahan, ClawGrip]
+- 7515: cosmic.cpp: Fixed bug in sound output handler and cleaned up sample playback code. [Gerg Kennedy]
+- 7517: design.cpp: Add notes about coin selector. [ClawGrip]
+- 7519: leapfrog_iquest.cpp: Added Turbo Extreme (US). [David Haywood, Sean Riddle]
+- 7520: hp2640.cpp: Added HP2641A APL terminal. [Gavin Scott, F.Ulivi]
+- 7521: frontend: Exposed cassette image devices to Lua scripts. [Carl]
+- 7523: de_3.cpp: Added another Last Action Hero version, and improved metadata for all games. [ClawGrip]
+- 7525: kpython.cpp: Added Pro Evolution Soccer The Arcade (ver EAA). [Victor Fernandez (City Game), ClawGrip]
+- 7526: fmtowns_flop.xml: Added seven entries, and updated notes. [r09, wiggy2k, anonymous]
+- 7527: audio/seibu.cpp, cabal.cpp, deadang.cpp, shanghai.cpp: Fixed clock frequencies, cleaned up code, and added notes. [cam900]
+- 7530: leapfrog_turboextreme_cart.xml: Added Grade 2. [Sean Riddle, David Haywood]
+- 7531: video/deco_zoomspr.cpp: Replace sprite alpha blending with alternate frame flicker. [cam900]
+- 7533: ibm5170.xml: Added eight items. [ArcadeShadow]
+- 7534: pacman.cpp: Fixed inputs for Birdiy. [Ian Eure]
+- 7537: Fixed compilation on older macOS/Xcode releases (GitHub #7536). [Masc Guy]
+- 7538: missbamby.cpp: Added notes about Cirsa PCB models. [ClawGrip]
+- 7539: neptunp2.cpp: Re-dumped sound ROM for unk960606 (was previously dumped at half size). [ClawGrip]
+- 7540: fmtowns_cd.xml: Added 13 items, re-dumped 23 items and added two missing floppies. [redump.org, wiggy2k, KailoKyra, r09]
+- 7541: Added seven TV games, and skeleton for IVL Technologies Easy Karaoke Groove Station. [David Haywood]
+- 7542: machine/generalplus_gpl16250soc.cpp: Fixed device type validation. [David Haywood]
+- 7543: easy_karaoke.cpp: Added system ROM dump. [TeamEurope, David Haywood]
+- 7545: Added a TV game, and moved dancmix3 to nes_sh6578.cpp. [David Haywood, TeamEurope]
+- 7546: machine/t10mmc.cpp: Fixed relative frame number calculation for read subchannel command. [Windy Fairy]
+- 7549: firebeat.cpp: Corrected main CPU clock speed to 64 MHz. [Windy Fairy]
+- 7551: coco3.cpp: Corrected PIA register mirroring. [Tim Lindner]
+- 7552: dynax.cpp: Corrected descriptions for some tenkai DIP switches. [CecilHarvey]
+- 7553: megadriv.cpp: Added notes about LaserActive Mega Drive Pack. [cam900]
+- 7555: megadriv_rad.cpp, nes_vt09.cpp, st22xx_bbl338.cpp: Added three TV games. [David Haywood, TeamEurope, taizou]
+- 7556: next.cpp: Added 68040-based NeXTcube as a separate system. [Davide Cavalca]
+- 7557: next_hdd.xml: Added pre-installed NeXT hard disk images. [archive.org, Davide Cavalca]
+- 7558: drgnmst.cpp: Re-dumped Master's Fury from partially-populated Dragon Master 96 PCB. [YarPromat, David Haywood]
+- 7560: next.cpp: Removed magneto-optical drive from machines that lack it. [Davide Cavalca]
+- 7561: next.cpp: Added five additional ROM versions. [NeXTComputers.org, Davide Cavalca]
+- 7562: leapfrog_iquest.cpp: Added two Turbo Twist systems and accompanying software list. [Sean Riddle, David Haywood]
+- 7563: twinbskt.cpp: Fixed manufacturer name for Twin Basket. [ClawGrip]
+- 7565: Added aspect ratio control settings to video options menu in internal UI. [AJR]
+- 7568: st22xx_bbl338.cpp, unk6502_st2xxx.cpp: Moved LCD controller used by BaoBaoLong handhelds to a device. [David Haywood]
+- 7569: seta2.cpp: Added description for grdians bonus life DIP switch. [AugiteSoul]
+- 7572: wardner.cpp: Added Wardner no Mori (Japan, bootleg). [jordigahan, ClawGrip]
+- 7573: apple2_flop_clcracked.xml, apple2_flop_misc.xml, apple2_flop_orig.xml: Added latest dumps and cracks. [4am, Firehawke]
+- 7574: st22xx_bbl338.cpp: Manually put some code in RAM to allow software to progress. [David Haywood]
+- 7575: ibm5150.xml: Added five items and re-dumped one item. [ArcadeShadow]
+- 7576: ibm5170.xml: Added Special Forces (3.5"). [ArcadeShadow]
+- 7578: next_cdrom.xml: Added initial software list for NeXT CD-ROM software. [fsck.technology, Davide Cavalca]
+- 7580: twinbskt.cpp: Added ASCII PCB layout, fixed system flags, and added placeholder for undumped ISD2590P. [ClawGrip]
+- 7584: Renamed source files for BaoBaoLong ST2302U-based handhelds, and gave bbl338 its own memory map. [David Haywood]
+- 7587: drgnmst.cpp: Improved graphics priorities for mastfury. [David Haywood]
+- 7589: bus/coco: Added CoCo and Dragon MIDI cartridges. [Tim Lindner]
+- 7591: rf51w14cg.cpp: Added unknown Recreativos Franco slot machine (model RF51W14-CG). [jordigahan, ClawGrip]
+- 7592: next.cpp: Changed logging code to use machine error log. [Davide Cavalca]
+- 7593: rx78.xml: Updated list of known software in comments. [David Silva]
+- 7595: ibm5150.xml: Added four items. [ArcadeShadow]
+- 7597: rx78.cpp: Removed redundant list of software. [David Silva]
 
 
 Source Changes
