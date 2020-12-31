@@ -45,7 +45,7 @@ pushd "build/release/src"
 popd
 
 echo "Creating XML system list ..."
-"build/mingw-gcc/bin/x64/Release/mame64.exe" -listxml > "mame${1}.xml"
+"build/release/x64/Release/mame/mame64.exe" -listxml > "mame${1}.xml"
 7za a -mpass=4 -mfb=255 -y -tzip "build/release/mame${1}lx.zip" "mame${1}.xml"
 
 echo "Calculating digests ..."
