@@ -1,4 +1,4 @@
-0.229 2021-02-2x
+0.229 2021-02-24
 ----------------
 
 
@@ -215,7 +215,8 @@ Merged pull requests
 - 7703: gokidetor.cpp: Converted JEDEC files to MAME binary format and added anonymous namespace. [ClawGrip]
 - 7705: bogeyman.cpp, shootout.cpp: Corrected monitor orientation to 180° rotation. [Corrado Tomaselli, Angelo Salese]
 - 7706: missbamby.cpp: Added Golden Fruits. [jordigahan, ClawGrip]
-- 7708: Fixed compiler flags for ARM/AArch64 targets. [Belegdol] - 7709: docs: Changed “mame64” to “mame” in documentation. [Firehawke]
+- 7708: Fixed compiler flags for ARM/AArch64 targets. [Belegdol]
+- 7709: docs: Changed “mame64” to “mame” in documentation. [Firehawke]
 - 7710: jungleyo.cpp: Fixed video emulation. [Angelo Salese]
 - 7713: Updated “2020” to “2021” in various places. [Stiletto]
 - 7714: snesb51.cpp: Added BIOS version 12-07 for snes4sl. [Victor Fernandez (City Game), ClawGrip]
@@ -253,123 +254,30 @@ Merged pull requests
 - 7761: video/hng64.cpp: Only swap/clear 3D buffer when flag is set. [Happy]
 - 7762: ekara_japan_a.xml: Added two entries. [WingedPikPik, TeamEurope, David Haywood]
 - 7764: fmtowns_cd.xml: Added eleven entries, replaced nineteen entries with better dumps and added three missing floppies. [r09]
-
-7765: svga_s3.cpp: Add BIOS for S3 86C775/785 and ExpertColor M50-02 86C775 (both V.1.01.04) [jordigahan, ClawGrip] [clawgrip]
-
-7766: bgfx crt-geom and crt-geom-deluxe enhancements [cgwg]
-Contains three changes to these shaders:
-1. A "brightness boost" feature for the shadow mask that works by making the brightness ratio between bright and dark mask pixels
-  closer to 1 for the brighter parts of the image. I've been careful to ensure that the average of bright and dark mask pixels still
-  varies linearly, so that the tone curve is unaffected as long as the gamma of the output display is set correctly.
-2. Clamping to zero so that underscanning produces a black border.
-3. In crt-geom-deluxe, a "raster bloom" effect that makes the image grow slightly when the average brightness of the screen is high.
-  This mimics a common defect in CRTs and has been previously implemented in the shader called crt-guest-dr-venom. I find the effect
-  kind of nice when the image fades in from black.
-One detail I am uncertain about comes from the brightness boost feature: this required encoding some extra information in the alpha
-  channel of the shadow mask textures. I wrote a very simple Python script to do this and have included this script, but perhaps
-  this is inappropriate or it should be put in a different directory.
-Finally: the shaders have only been compiled for glsl; someone else will have to generate the full set of shader targets.
-
-7767: galaxian.cpp: Dumped and added PROM for 'olibug' and 'galkamika' [ClawGrip] [clawgrip]
-
-7768: new WORKING clones [DavidHaywood]
-new WORKING clones
---------
-Thomas & Friends - Learning Circus Express (Sharp Cookie) (NTSC, US) [Sean Riddle, David Haywood]
-
-7769: New machines marked as NOT_WORKING [clawgrip]
-----------------------------------
-Silverball (8.01) [jordigahan, ClawGrip]
-New clones marked as NOT_WORKING
---------------------------------
-Silverball (7.20) [Asure]
-Silverball (6.32) [Asure]
-Silverball Bulova (4.09, set 1) [Asure]
-Silverball Bulova (4.09, set 2) [Asure]
-
-7770: Clean genie scripts from missing/duplicate files [stengun]
-This fix was needed because genie generated cmake files will complain about files that does not exist. Digging into genie scripts
-  showed that building scripts also lacked some files, had duplicate ones or wrong named ones. All happened on header files,
-  probably that's the reason why the problem didn't show up.
-On some files also the scripts ended with having only cpp sources (ie. m5), having read their includes I realized that they _may_
-  not need it, but I ask for a complete review of this even if I compiled mame successfully and started those systems.
-
-7773: Update generalplus_gpl16250_mobigo.cpp [AlesanddroPB95]
-
-7781: raiden_ms.cpp: sound improvements [devinacker]
-This couple of commits fixes up main-to-sound-CPU communication and a few details of YM and ADPCM writes from the sound CPU so that
-  music and sound effect playback get triggered correctly.
-The FM audio still doesn't sound _great_, but it's at least functional.
-
-7787: Eliminate ARRAY_LENGTH template in favor of C++17's std::size [ajrhacker]
-* osdcomm.h: Move definition of EQUIVALENT_ARRAY to coretmpl.h
-* sharc.cpp, gt64xxx.cpp, ym2413.cpp, gb_lcd.cpp, snes_ppu.cpp: Use STRUCT_MEMBER for save state registration
-* gio/newport.cpp, megadrive/svp.cpp, nes_ctrl/bcbattle.cpp, arm7.cpp, tms9995.cpp, pckeybrd.cpp, sa1110.cpp, sa1111.cpp,
-  jangou_blitter.cpp, vic4567.cpp: Use std::fill(_n) instead of memset
-* emucore.h: Remove obsolete typedef
-Note: I'm opening this pull request to see how the CI builds deal with the changes, which affect OSD stuff which has caused some
-  unpleasant surprises with past refactorings. I don't have total confidence that all compilers support the standard equally well.
-
-7790: add m68000 to debuger gdbstub [nabetse00]
-Simple edit to debuggdbstub.cpp adding m68000 cpu support.
-Tested with prebuilt Windows Toolchain for m68k-elf from here.
-It Works with minor issues:
--  mame window cannot be moved util gdb connects and starts the emulation.
--  m68-elf-gdb complains about fpcontrol register not present (megadrive/genesis 68000 has no floating point capabilities)
--  Sometimes gdbstub stops to respond (maybe a problem from my test rom) nevertheless wathchdog option solves this.
-Command line used (mame compiled from source with standard build mame build tools for windows):
-```
-.\mame.exe megadriv -cart .\roms\helloworld.bin -window -resolution  640x480 -debugger gdbstub -debugger_port 6868 -debug -watchdog
-  10
-```
-Feel free to contact me for any changes.
-I hope i'll be merge since it's a nice addin for megadrive/genesis retro devs, and for m68000 users in general.
-
-7791: thoop2.cpp: Fix sprite vs sprite priority [cam900]
-Move virtual functions under protected: section
-
-7793: apple2gs: added floppy drive sounds (for new IWM implementation) [leesaudan2]
-**apple2gs** has just switched to the new IWM implementation.  This patch adds floppy drive sounds to it.
-
-7795: gamegear - Updated description [ArcadeShadow]
-Rename: [suprjedi] Super Return of the Jedi (Euro, USA) -> Super Star Wars: Return of the Jedi (Euro, USA)
-(information source: https://segaretro.org/Super_Star_Wars:_Return_of_the_Jedi)
-
-7796: ibm5150 - New working software list additions [ArcadeShadow]
-Added: [mmansion] Maniac Mansion
-Added: [tntkhazan] Tunnels & Trolls: Crusaders of Khazan
-Added: [valhalla] Valhalla - Ragnarok
-Added: [cyrus3dsw] Cyrus 3-D Chess (shareware, Titanium Seal release)
-Added: [vgaslot] VGA Slot Machine (Titanium Seal release)
-
-7797: ibm5170 - New working software list additions [ArcadeShadow]
-Added: [wolf3dsw] Wolfenstein 3-D (shareware, Titanium Seal release)
-Added: [mixupft] Mixed-Up Fairy Tales
-Updated Info: [epdeepsea] Epic Pinball: Deep Sea -> Marked as Bad Dump (Modified root and OEM ID)
-
-7798: new WORKING clones [DavidHaywood]
-new WORKING clones
-------
-Radar Scope (TRS02, rev. D) [anonymous, Gaming Alexandria]
-
-7799: gfamily.cpp: Redumped HDD [ICEknight] [clawgrip]
-We've used different tools to create the CHD from the Norton Ghost image, as the previous conversion had corruption issues.
-
-7801: New machines marked as NOT_WORKING [clawgrip]
-----------------------------------
-PlayCenter Champions Tournament (v9.3) [Recreativas.org]
-
-7802: cps2.cpp: updated credits [angea]
-
-7803: Apple softlist updates for February 2021 [Firehawke]
-
-7804: ksys573: Add ATA CS1 to memory map [987123879113]
-Previously unimplemented and barely used. Doesn't seem to have any real noticeable differences.
-
-7805: sk.cpp: Add notes for Sonic 3 & Knuckles save feature [cam900]
-
-7809: fmtowns_flop.xml: fix lordmon sha1 [rzero9]
-Just a quick fix for a copy-paste mistake I made with the last update. Thanks to @Tafoid for spotting this.
+- 7765: bus/isa/svga_s3.cpp: Added two additional BIOS variants. [jordigahan, ClawGrip]
+- 7766: bgfx: Added brightness boost, clamping to zero, and raster bloom effects to crt-geom and crt-geom-deluxe. [cgwg]
+- 7767: galaxian.cpp: Dumped PROM for olibug and galkamika. [ClawGrip]
+- 7768: spg2xx_jakks_sharp.cpp: Added Thomas & Friends - Learning Circus Express (Sharp Cookie) (NTSC, US).
+  [Sean Riddle, David Haywood]
+- 7769: silverball.cpp: Added five TAB Austria Silverball sets. [jordigahan, Asure, ClawGrip]
+- 7770: Fixed missing and duplicate source file references in build scripts. [Roberto Benfatto]
+- 7773: generalplus_gpl16250_mobigo.cpp: Corrected release years. [AlesanddroPB95]
+- 7781: raiden_ms.cpp: Fixed sound CPU communication and improved sound chip hook-up. [Devin Acker]
+- 7787: Replaced ARRAY_LENGTH with C++17 std::size and cleaned up some code. [AJR]
+- 7790: Added M68000 CPU support to gdbstub debugger. [nabetse]
+- 7791: thoop2.cpp: Fixed sprite-sprite priorities. [cam900]
+- 7793: apple2gs.cpp: Enabled floppy sounds when using new IWM implementation. [leesaudan2]
+- 7795: gamegear.xml: Changed description of suprjedi to match the box art and manual. [ArcadeShadow]
+- 7796: ibm5150.xml: Added five entries. [ArcadeShadow]
+- 7797: ibm5170.xml: Added two entries, and marked a modified disk as a bad dump. [ArcadeShadow]
+- 7798: dkong.cpp: Added Radar Scope (TRS02, rev. D). [anonymous, Gaming Alexandria, David Haywood]
+- 7799: gfamily.cpp: Re-dumped gmfamily hard disk. [ICEknight, ClawGrip]
+- 7801: playcenter.cpp: Added PlayCenter Champions Tournament (v9.3). [Recreativas.org, ClawGrip]
+- 7802: cps2.cpp: updated credits. [Ange Albertini]
+- 7803: apple2_flop_clcracked.xml, apple2_flop_orig.xml: Added latest original dumps and cracks. [4am, Firehawke]
+- 7804: ksys573.cpp: Added ATA CS1 to memory map. [Windy Fairy]
+- 7805: bus/megadrive/sk.cpp: Add notes for Sonic 3 & Knuckles save feature. [cam900]
+- 7809: fmtowns_flop.xml: Fixed SHA1 digest for lordmon. [r09]
 
 
 Source Changes
@@ -1477,13 +1385,6 @@ Mixed-Up Fairy Tales [The Good Old Days]
 
 -srcclean in preparation for branching release [Vas Crabb]
 
+-iez80.cpp: Don't capitalise things that aren't part of the title and aren't proper nouns, initialisms, etc. [Vas Crabb]
 
-Comparing 0.228 (mame0228) to 0.228 (unknown)
-
-Machines promoted to working
-----------------------------
-Untouchable (JPM) (IMPACT) (UN3B LO6)
-
-Clones promoted to working
---------------------------
-Untouchable (JPM) (IMPACT) (UN3BI LO6)
+-jpmimpctsw.cpp: Mark j6untch and j6untcha as not working again, promotion may have been premature. [Vas Crabb]
