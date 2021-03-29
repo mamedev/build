@@ -402,475 +402,70 @@ Portuguese (Brazil) [Chrystian Rafael Rubio de Melo]
 
 Merged pull requests
 --------------------
-7695: HP9845: added synchronous I/O for RS232 port and HP98046 module [fulivi]
-Hi,
-this PR reopens #7528 with one major enhancement: I updated the HP98046 module to use the new F4702 BRG device.
-Note that I had to change the `f4702_device::im_w` function to ensure that external clocks are propagated even when the F4702 device
-  is not executing. This change is needed for HP98046 because it has 2 cascaded BRGs.
-Thanks.
---F.Ulivi
-
-7718: namcos21*.cpp: Add save states, Fix video clock related to interlace [cam900]
-namcos21_de.cpp: Fix clock related to on-board OSC, Fix configuration flag (driveyes has 4 2Mbit PCM ROMs)
-namcos21.cpp: Remove unnecessary driver init, Add hardware notes
-
-7756: tc009xlvc.cpp: Include Z80 core (interrupt handler not yet ported) [cam900]
-Fix background drawing behavior (it fixes gemcrush ranking, select stage screen), Convert bankswitched VRAM handler into internal
-  memory space
-Fix variable name, Add notes
-
-7763: fdc37c665gt: Reimplementation with floppy and parallel support [987123879113]
-The old FDC37C665GT implementation was a bare bones implementation to get Twinkle games past the DVD init check at boot. This wasn't
-  sufficient for Firebeat beatmania III's floppy drives so I decided to reimplement the device from scratch using FDC37C93x with the
-  ISA-related code removed as a base since it was similar enough in regards to how the configuration register needs to be
-  implemented.
-This is not a full implementation. I left out the things that I can't test myself such as DMAs, IDE, and a bunch of configuration
-  register flags. Neither Firebeat or Twinkle use the parallel port so it's untested but it's a freebie from FDC37C93x. The
-  FDC37C666GT-specific differences also haven't been implemented but it may work for that too.
-Data sheet for reference: http://www.embeddedsys.com/subpages/resources/images/documents/37C666_datasheet.pdf
----
-I also threw in a fix for beatmania III in upd765. Currently the upd765 does not take normal vs deleted sector data into account in
-  the read commands. Page 41 of the FDC37C665GT data sheet linked above states that the CM register will be set when either 1) the
-  "read data" command encounters a deleted data address mark, or 2) the "read deleted data" command encounters a (normal) data
-  address mark. Pages 63-64 also show that the commands should be terminated if the SK (skip) bit is not set to 1.
-FDC37C665GT claims to be software and register compatible with the N80277AA, which is what I am using to interface with upd765. The
-  same information can be found on pages 33-34 of that chip's data sheet for reference:
-  https://www.cselettronica.com/datasheet/N82077.pdf
-beatmania III will crash when it does a "read deleted data" command since it reads more data onto the stack than it expects without
-  this functionality emulated.
-If the upd765 change would be better off in a different PR then let me know and I'll split them up. I don't have enough knowledge
-  about floppies to understand any deeper implications or issues that may be involved with this change, so I would appreciate it if
-  someone with experience with floppies could comment on this change if possible. @ajrhacker or @pmackinlay perhaps since they've
-  edited upd765 semi-recently?
-
-7789: hng64 : add priority z sort mode for sprites [Happy-yappH]
-
-7792: sgi_mips: new software list additions [davide125]
-- add IRIX 6.5.20, 6.5.24 and 6.5.25
-- add a clone of Hotmix 12
-- add missing CDs for various IRIX releases
-- misc metadata fixups
-
-7800: Rename nile.* to setapcm.* and some improvements, Add 16 voice configuration case (ST0032 internal sound) [cam900]
-
-7808: New BSD-licensed implementation of Yamaha OPN and OPM FM audio chips [aaronsgiles]
-New BSD-licensed implementation of Yamaha OPN and OPM FM audio chips, along with new device drivers for YM2203, YM2608, YM2610,
-  YM2610B, YM2612, YM3438, and YM2151 based upon these.
-Core implementation is in ymfm.cpp and special-cased for OPN/OPNA/OPM via register classes that provide implementation-specific
-  details and quirks. A new pair of ADPCM implementations are provided as well for the later chips, in ymadpcm.cpp.
-The xxxxintf.* files from before are gone, replaced with ymxxxx.* files providing the interface to MAME and high level timer
-  behavior. All consumers have been updated to include these new files.
-Mixing is done per-chip, and DAC limitations are now implemented where understood. This means, for example, that the YM2612 now
-  mixes down to 9-bit resolution and has a discontinuity at 0.
-This change affects a large number of drivers. Due to the implementation of new behavioral quirks and the more accurate DAC mixing,
-  sounds will not be 100% identical to the old implementations. Please provide real life non-emulated references for any incorrect
-  behaviors (unless they're completely obvious).
-
-7810: hng64 : improve projection matrix calculation also improving 3D clipping [Happy-yappH]
-
-7811: cdda: Return LBA position as currently playing LBA [987123879113]
-Older System 573 Dance Dance Revolution and Guitar Freaks/Drummania games used CDDA audio and relied on the CDDA position for timing
-  and animations. Buffering additional sectors forces the LBA position to also increase an equal amount causing the CDDA position to
-  not be what the game expects. In DDR's case, animations become really choppy. In GFDM's case, the game will just stop playing the
-  song and end the stage early.
-Fixes: https://mametesters.org/view.php?id=7856
-Not mentioned on mametesters: `drmn` and probably other early Guitar Freaks games were also bugged. Instead of playing the song, it
-  would start off playing the song, slow down immediately, and then after a second or two the song would end. This change also fixes
-  those issues.
-
-7815: apple2gs.xml: Add descriptions for sys504/sys601 [ksherlock]
-
-7816: new WORKING machines (Dora TV Explorer Phone plug+play) + some leapfrog softlists + ekara carts [DavidHaywood]
-new WORKING machines
--------
-Dora the Explorer - Dora TV Explorer Phone / Boots's Special Day [Sean Riddle, David Haywood, Kamaal Brown]
-Namco Classics Vol.1 (3-in-1) (MSI Plug & Play) [Sean Riddle]
-new NOT WORKING software list additions
----------
-leapfrog_zippity_cart.xml:
-The World of Cars - Driven to Learn (500-13589-B) (UK) [David Haywood, TeamEurope]
-Disney Princess - Magical Movement & Learning (500-13590-A) (UK) [David Haywood, TeamEurope]
-leapfrog_didj_cart.xml:
-Super Chicks (USA) [TeamEurope]
-new software list additions
----------
-ekara_japan_s.xml:
-Hello Kitty Special (Japan) (SC0001-KTY) [TeamEurope]
-ekara_japan_sp.xml:
-SP-05 Super Cartridge - SP-05 Super Cartridge - TV POP Junior with Chibi Marukochan &amp; Anpanman (Japan) [TeamEurope]
-ekara_japan_gk.xml:
-GK-2 - Disney Princess: Princess Debut (Japan) [TeamEurope]
-GK-3 - Disney Tinkerbell to Tinkle Star Uranai (Japan) [TeamEurope]
-
-7817: twinkle.cpp: Removed periodic source for IRQ2 [Ziemas]
-IRQ1 is used for timing certain SPU events such as fading in and out menu music, with the way this was set up before it never got
-  asserted because I guess you can't have multiple periodic IRQ's?
-This fixes the menu music and some sound effects not fading out properly.
-
-7818: redumped and reconverted CDs for Keyboardmania and Keyboardmania 2nd Mix + new clone [Jennifer Taylor] [DavidHaywood]
-- redumped and reconverted CDs for Keyboardmania and Keyboardmania 2nd Mix [Jennifer Taylor]
-new NOT WORKING clones
------
-Keyboardheaven (Korea) [Jennifer Taylor]
-
-7819: New machines marked as NOT_WORKING [clawgrip]
-----------------------------------
-Corsario (Cirsa slot machine) [jordigahan, ClawGrip]
-
-7821: new WORKING machine (Dora TV Adventure Globe) [DavidHaywood]
-new WORKING machine
-------
-Dora the Explorer - Dora TV Adventure Globe [Sean Riddle, David Haywood]
-- set some of the previous ekara additions to unsupported as they actually use the alt seeprom hookup that isn't currently
-  functional, and lock up in places as a result. [David Haywood]
-
-7822: t10mmc: Add CD media type check for special LBA 0 case [987123879113]
-The special case of setting m_lba to 150 when m_lba is 0 is only applicable to data and mixed mode media CDs. Since the current code
-  does not check media type, this causes incorrect playback for audio media type CDs when the first track is played if it's expected
-  to be at LBA 0.
-An example of this issue is the ParaParaParadise series (`ppp`, `ppp1mp`, `ppd`, `ppp11`). When you play the song "Speedway", which
-  is track 1 on the audio CD, the first 2 seconds of the song are skipped due to the LBA being changed from 0 to 150. The same issue
-  occurs with a redumped version of the disc (with proper subchannel data) so I don't believe the dump itself is not the cause of
-  the issue.
----
-ref: https://www.t10.org/ftp/t10/document.98/98-122r0.pdf (pg 15)
-For data and mixed mode media (those conforming to ISO/IEC 10149), logical block address ZERO shall be assigned to the block at MSF
-  address 00/02/00. For audio media (those conforming only to IEC 908), logical block address ZERO shall be assigned to the actual
-  starting address of track 1. This may be approximated by using the starting address of track 1 contained in the table of contents
-  (TOC) or by assigning logical block address ZERO to the block at MSF address 00/02/00.
-
-7824: new WORKING machines (TV Board Games 6-in-1) [DavidHaywood]
-new WORKING machines
--------
-TV Board Games 6-in-1: Silly 6 Pins, Candy Land, Hungry Hungry Hippos, Match 'em, Mixin' Pics, Checkers [Sean Riddle, David Haywood]
-TV Board Games 6-in-1: Simon, Battleship, Mouse Trap, Checkers, Link-a-Line, Roll Over [Sean Riddle, David Haywood]
-
-7825: New WORKING clones [rzero9]
-New WORKING clones
-------------------
-Mega Man: The Power Battle (CPS2, USA 950925, SAMPLE Version) [bdlou]
---
-CPS2 isn't exactly my area of expertise, but I was asked to add a newly-dumped USA revision (just one day older than the previously
-  oldest known one) of Mega Man: The Power Battle, and it seemed easy enough, since it shares everything except 2 program ROMs with
-  the other USA sets. The rest of the ROMs were also dumped and verified.
-Credit for the dump should go to **bdlou**, and special thanks to **atrac17** for facilitating the contact between us.
-Pictures of the board where this came from, also from bdlou:
-https://www.r-09.net/mame/mmancp2ur2_pics.zip
-
-7826: new WORKING clones [DavidHaywood]
-new WORKING clones
---------
-Raiders5 (Japan, set 2, bootleg?) [Paul Wood]
-
-7827: Firebeat Dongle Dumps and Documentation [DragonMinded]
-This PR does a few things, which is why it is split into 3 commits.
- - Documents additional findings from myself and _987123879113 about the m_cabinet_info register and what various bits mean for
-  various games.
- - Documents enhanced understanding of the dongles and how they are used in various game series.
- - Documents the Pop'n Music stack-up as it was missing in the general description.
- - Clean up out-of-date "dump needed" section as the few remaining pieces that are dumpable are marked as "NO_DUMP" in their various
-  ROM sections.
- - Adds dongle dumps from my personal collection for all dongles that I own which there was a needed dump. Unfortunately my Pop'n 5
-  dongle is bad so I can't fill that in, and my KBM 2ndMIX dongle is for an Asia release that we have not discovered data for.
-  Mickey Tunes was only ever released for e-Amusement (rental service before it was a network) so the adjustments necessary for it
-  to boot with a real dongle have been made.
- 
- I've booted every firebeat game and verified that the updated dongles and changed init code works for all known dumps. I'm sending
-  updated ROM zips to code@ as requested, and will be including fixed zip files for several games that were missing their ROMs in
-  the .229 update.
-
-7828: firebeat: Fix IN1 value, add new documentation about dipswitches [987123879113]
-Tracked down a bug when using debug dongles in pop'n music to the IN1 register. There's no spots for an extra set of dipswitches on
-  the main CPU from what I can tell. The functionality is only when debug dongles are in use so I think there may be something extra
-  on the I/O port but I don't really know.
-I couldn't find any usages outside of pop'n music for IN1. I documented the known usages as PORT_BITS in the popn section.
-Additionally, I added some information about main PCB dipswitches that has been newly discovered.
-
-7829: ksys573: Use ddr2ml disc as base for ddr2mc2 [987123879113]
-ddr2mc2 stopped booting with the inclusion of k573mcr memory card readers which happened in the MAME 0.228 release. ddr2mc seems
-  unaffected.
-ddr2mc2 changes functionality based on the presence of the memory card readers. If the memory card readers don't exist then it will
-  look for a CD with 73 tracks (which is 895jaa02, the CD from ddr2m), and if the memory card reader exists then it will look for a
-  CD with 83 tracks (which is 885jaa02, the CD from ddr2ml/ddr2mla).
-The change is most noticeable on the title screen which now has a large "Club Version 2" logo and a "Link Version" logo on the title
-  screen, as well as when you start a game you can see mentions of the IIDX substream linking capabilities in some places which
-  previously weren't available.
-Old: http://adb.arcadeitalia.net/dettaglio_mame.php?game_name=ddr2mc2
-New:
-!image
-
-7831: psikyo.cpp: Fix crash in samuraia and clones [cam900]
-
-7832: New clones marked as NOT_WORKING [clawgrip]
---------------------------------
-Scorpion (Dec 24, 1993) [jordigahan, ClawGrip]
-
-7833: twinkle.cpp: All Missing CD/HDD Data, 3 new working variants [DragonMinded]
-Updates twinkle.cpp with data from my personal collection:
- - Dongle dumps for 2nd style through 8th style. 4th and 5th were not marked "BAD_DUMP" but had serial "123456" which was clearly
-  handcrafted, so I replaced those with actual dumps as well. These have all been tested.
- - All missing HDD and CD images added. These have all been tested.
- - CD images marked "BAD_DUMP" updated with fresh dumps. These have all been tested.
- - With the inclusion of the rest of the data, all of Substream through 8th style can be promoted to "WORKING". I've removed the
-  "MACHINE_NOT_WORKING" designation on mixes that had them. I've tested all mixes to verify they boot to attract sequence.
- - Three new working variants (Substream Export/Asia version, 3rd Style B revision, 7th Style B revision) added and tested.
- 
- 1st style is still marked as not working since it does not pass the DVD check. Its a trivial patch to bypass, or MAME can emulate
-  RTS<->CTS connection and the check will pass as it does on real HW (Please see documentation for 1st style connections at
-  https://gamerepair.info/hardware/3_twinkle#iidx_1st_style_dvd_connection). I have not included dongle dumps for "863 A02", "983
-  A02", "983A A02" or "984 A02" dongles since they are password-protected and I haven't written the code to extract the data yet.
-  Hopefully that is coming in a future PR. A link to the data will be sent to code@ as soon as it finishes zipping and uploading.
-
-7834: Update strings.po [ChrystianRubio]
-Changes for a better Portuguese-Brazil.
-
-7835: firebeat: Add support for beatmania III FDD and spectrum analyzer [987123879113]
-firebeat: FDD support has been added. The FDD patches in `bm3_vblank` have been removed as a result.
-firebeat: Spectrum analyzer circuit added. The NJU7507 "band pass filter spectrum analyzer display chip" isn't emulated in MAME so
-  it's just an approximation for a very minor feature using the WDL FFT library which is already used within MAME. The spectrum
-  analyzer only adds some frills to the UI when the player selects the spectrum analyzer UI in-game and doesn't even act very well
-  on real hardware.
-rf5c400: Based on real hardware testing, it seems the RF5C400 is outputting 4 channels of audio. Previously when external effects
-  were toggled in beatmania III the audio would mute because the two effects channels weren't being used. I've documented the
-  reasoning why that happens and added routes for the 2 external effects channels. On real hardware these two extra effects channels
-  would be routed to a Zoom ST-224 PCB inside the cabinet.
-firebeat: Promote all games except pop'n music series to working with imperfect sound.
-
-7837: Add 'wpsize' variable to access the data size from a watchpoint [moralrecordings]
-This patch adds a variable to the watchpoint engine that exposes the size (in bytes) of the read or write. Among other things, this
-  makes it possible to use a watchpoint script to dump a log of every I/O operation.
-
-7838: new WORKING machines (TV Board Games Boggle, Connect 4) [DavidHaywood]
-new WORKING machines
-------
-TV Board Games 3-in-1: Boggle, Connect 4, Roll Over [Sean Riddle, David Haywood]
-TV Board Games 3-in-1: Silly 6 Pins, Hungry Hungry Hippos, Match 'em [Sean Riddle, David Haywood]
-TV Board Games 3-in-1: Simon, Battleship, Checkers [Sean Riddle, David Haywood]
-
-7840: fixed glitches on momoko high score table after memory system updates (was reading past end of region) [DavidHaywood]
-- fixed glitches on momoko high score table after memory system updates (was reading past end of region)
-- refactored a little, added TODO notes
-
-7841: fix #7806 [vadosnaprimer]
-Rewind wasn't working since https://github.com/mamedev/mame/commit/08ba9b0536178d83b89e2380e8323727055cec29
-Looks like a copy-paste error, not limited to debugger.
-
-7845: New machines marked as NOT_WORKING [clawgrip]
-----------------------------------
-Tierras Salvajes (100Hz display) [Arcade Planet, Recreativas.org]
-New clones marked as NOT_WORKING
---------------------------------
-Marbella Vice (100Hz display) [Arcade Planet, Recreativas.org]
-
-7846: k057714: Implement registers for precise screen timings [987123879113]
-With these changes, the two resolutions used by Firebeat will run at the following:
-- 512x384 @ 58.487507 Hz
-- 640x480 @ 59.940475 Hz
-Two specific testable timings that were broken before and working now with this PR:
-- pop'n music 4: the special ending animation would end before the BGM could finish playing. It ends at the same time as real
-  hardware now when compared to footage from real hardware.
-- Keyboardmania 3rd Mix: Pink Rose has lyrics that show up in the video. Toward the end of the song the lyrics "blooming like a
-  rose", "truth", "solitude", "unknown" show up in time with the vocals in the music video at the top corner. On MAME the lyrics
-  would display a few seconds before they should have. With the new changes the lyrics display at the right timings when compared to
-  footage of real hardware.
-Poor diagram that shows the clock chips and the whole graphics part of the main board in general: https://i.imgur.com/cI3THQz.png
-There are two clock chips off to the top left in the picture. It feels weird having them both be used and I'm not very confident
-  about that part but the timings match with real hardware from my testing. The 16.6666 MHz clock seems to be used for the
-  non-640x480 resolutions (pop'n music, Keyboardmania, ParaParaParadise) and the 25.175 MHz clock seems to be used for 640x480
-  (beatmania III).
-
-7847: fixed reel display in j6big50, added sound ROM used by other emulators to j6untch [DavidHaywood]
-
-7848: new NOT WORKING machines (Plug & Play) [DavidHaywood]
-new NOT WORKING machines
-------
-Pac-Man (mini arcade) [Sean Riddle]
-Ms. Pac-Man (mini arcade) [Sean Riddle]
-
-7849: midzeus.cpp - turn off hardcoded 'in video driver' debugging keys by default, it's a common source of confusion.
-  [DavidHaywood]
-
-7850: new WORKING machines (Teléfono interactivo de TV) [DavidHaywood]
-new WORKING machines
-------
-Teléfono interactivo de TV (Spain) [ClawGrip, Sean Riddle, David Haywood]
-
-7851: switch ixion sprite/tilemap priority, remove out of date m62 note, demoted 2 games that don't appear to have ever worked in a
-  satisfactory manner [DavidHaywood]
-
-7856: joystand.cpp: Convert cartridge accessing function into address_map_bank_device [cam900]
-Add hardware notes, Reduce duplicates
-Demote to MACHINE_NODEVICE_PRINTER because printer emulation is missing
-
-7857: new NOT WORKING machines [DavidHaywood]
-new NOT WORKING machines
-------
-Turbo Twist Spelling (US) [Sean Riddle, David Haywood]
-Turbo Twist Vocabulator (US) [Sean Riddle, David Haywood]
-
-7858: New NOT_WORKING software list additions [clawgrip]
----------------------------------
-sega_beena_cart.xml:
-  1-nichi 10-pun de E ga Jouzu ni Kakeru Beena, Anpanman no Waku Waku Game Oekaki, Beena Town e Youkoso, Disney Tanoshii o-Benkyou
-  Series: Mic de Kantan ABC, Disney Tanoshii Oekaki: o-Mise-ya-san o Tsukutchaou!, Cooking Beena: o-Ryouri Dekichatta!, Hello Kitty
-  no Hiragana Katakana o-Namae Kaitemiyou!, Kouchuu Ouja Mushiking: Mori no Tami no Densetsu: Minna de Tanken! Kouchuu no Mori,
-  Partner In TV! o-Uchi ni Wan-chan ga Yattekita, Point Gakushuu Tokei [TeamEurope]
-* Fixed copy-paste mistake on 'pokebw'
-
-7859: apple2gs: control panel support [ksherlock]
-The ADB GLU uC should recognize command-control-escape and command-control-delete and generate the appropriate ADB status byte and
-  ADB data IRQ. ADB response bytes were also failing to generate the ADB data IRQ (which is generally not important since the
-  toolbox disables IRQs and polls directly when data is expected).
-
-7860: new NOT WORKING machines (Turbo Twist) [DavidHaywood]
-new NOT WORKING machines
-------
-Turbo Twist Fact Blaster (US) [Sean Riddle, David Haywood]
-
-7861: spectrum_cass.xml: Update metadata for six entries [ArcadeShadow]
-Updated metadata for numerous entries.
-
-7864: fmtowns_flop.xml: split into three lists (original/cracked/misc), 7 new dumps, 1 replacement [rzero9]
-Keeping track of what comes from original disks through XML comments was getting a bit unwieldy, and Vas suggested to split the list
-  in the last PR, so now there are three: one for verified dumps from original disks, one for cracked versions and one for
-  everything else. Some of the images in fmtowns_flop_misc likely match the originals, but it's probably better to keep them there
-  until they can be verified.
-Also added the latest dumps from the FM Towns preservation community:
-New working software list additions (fmtowns_flop_orig.xml)
------------------------------------------------------------
-AIV - A Ressha de Ikou 4 - Map Construction + Power-Up Kit [wiggy2k]
-CD+Graphics Player V1.1L10 [cyo.the.vile]
-Legends of Valour - Gouyuu no Densetsu - Demonstration [wiggy2k]
-Nihongo MS-DOS V6.2 L10 (Kihon Kinou) [cyo.the.vile]
-Ponyon [cyo.the.vile]
-New not working software list additions (fmtowns_flop_orig.xml)
----------------------------------------------------------------
-Mah-Saiko-Jong [wiggy2k]
-Nihongo MS-DOS V5.0 L10 (Kihon Kinou) [cyo.the.vile]
-Replaced software list items (fmtowns_flop_orig.xml)
-----------------------------------------------------
-Brandish [cyo.the.vile]
-
-7866: tecmo16.cpp - improve IRQ ack mechanism + 1943.cpp - fix drawing past spriteram + galaxian.cpp - typo fix [DavidHaywood]
-tecmo16.cpp - improve IRQ ack mechanism (fixes riot from corrupting at the end of stage 1 and locking up on stage 2 while not
-  breaking fstarfrc either)
-1943.cpp - fix drawing past spriteram (was randomly causing bad sprite bottom left of screen)
-galaxian.cpp - fix typo on manufacturer of anteateruk in galaxian.cpp
-quasar.cpp - flip 'freeplay' settings, 'off' was not reducing credits after a game, while 'on' was
-
-7871: apple2gs: don't segfault when floppy drive disabled [ksherlock]
-eg, `mame apple2gs -fdc:3 ""`
-
-7872: bgfx crt-geom and crt-geom-deluxe enhancements [cgwg]
-Several changes to these shaders:
-1. The profile of the scanline had always been fixed: for brightness x, it was a Gaussian of width 0.3+0.1x³, in units of the
-  distance between scanlines. Now these three numbers (0.3,0.1,3) have been made adjustable via parameters called "spot size".
-2. To accommodate wider scanlines, crt-geom-deluxe will sample three scanlines rather than two.
-3. Several horizontal interpolation methods (box, linear, various cubics) can now be selected in addition to the default Lanczos.
-4. The long power-law tail of crt-geom-deluxe's phosphor persistence could take a very long time to get from pixel levels of 1 or 2
-  down to zero. Now I've made it smoothly transition from the power law to a linear decay that goes to zero after a chosen time
-  interval. (The default is five seconds.)
-5. For crt-geom-deluxe, I added an adjustable lowpass filter. It can be used to e.g. blur dithering patterns. It can be turned off
-  by setting the cutoff high enough that (cutoff-width/2) is larger than the horizontal resolution.
-These should provide much more control over how the shader looks.
-As usual, I am unable to generate the full set of shader targets, so someone else would have to do that.
-
-7873: firebeat: Use CHDs with proper subchannel data for Keyboardmania 1st/2nd [987123879113]
-This is related to the recent https://github.com/mamedev/mame/pull/7818.
-The CHDs included in that PR didn't include the subchannel data so I got the original data from Jennifer Taylor and rebuilt them
-  using bin/toc files extracted with cdrdao.
-This fixes 2 second audio offset issues in Keyboardmania 2nd Mix.
-There is still a 2 second audio offset issue in Keyboardmania 1st Mix/Keyboardheaven which I believe could possibly be due to an
-  incomplete implementation of mixed mode LBA offsets (see: https://github.com/mamedev/mame/pull/7822).
-All dumps are to be credited to Jennifer Taylor.
-
-7874: fmtowns_cd.xml: 13 new dumps, 12 replacements, 5 missing floppies added [rzero9]
-- Added the missing floppy image to OASYS/Win 2.0 (still not working due to lack of DD floppy support) [cyo.the.vile]
-- Replaced the psydet5 and psydetf1 floppy images with cleaner unmodified copies [cherokee]
-New working software list additions
------------------------------------
-Alice no Yakata 3 (1995-05-16) [redump.org]
-Battle [redump.org]
-Ehon Writer V1.1 L10 [redump.org]
-Half Moon ni Kawaru made - Ramiya Ryou no Nijiiro Tamatebako
-[redump.org, wiggy2k]
-Never Land [redump.org]
-Oto to E no Deru Eigo Jisho No. 2 - English in Dream [redump.org]
-Populous II - Trials of the Olympian Gods - Expert [redump.org]
-Running Girls - Hashiri Onna II + Rance 4.1 / 4.2 Hint Disk [redump.org]
-Soreike! Anpanman - Tanoshii Eigo Asobi [redump.org]
-Toshiyuki Yoshino - Lullaby of BirdLand [redump.org]
-True Heart (alt) [redump.org]
-Viper GTS [redump.org]
-New not working software list additions
----------------------------------------
-Scavenger 4 (HME-217B) [redump.org]
-Replaced software list items
-----------------------------
-Hanafuda de Pon! [redump.org]
-Indiana Jones and the Fate of Atlantis [redump.org]
-King's Quest V - Absence Makes the Heart Go Yonder [redump.org]
-Kyan Kyan Collection - Daifugouhen [redump.org]
-Kyuukyoku Tiger [redump.org]
-Legends of Valour - Gouyuu no Densetsu [redump.org]
-Life &amp; Death II - The Brain [redump.org]
-Menzoberranzan - Yami no Monshou [redump.org]
-Oshiete Noobow [redump.org]
-Princess Danger [redump.org]
-Scavenger 4 (HME-217A) [redump.org]
-Wrestle Angels Special [redump.org]
-Software list items promoted to working
----------------------------------------
-Nobunaga no Yabou - Sengoku Gun'yuuden [cherokee]
-Windows 3.1 L11 [cyo.the.vile]
-
-7875: Addressed Github issue #7843 (mute on unthrottle) [MooglyGuy]
-Intended commit/whatsnew message:
--ui: Added new option, -unthrottle_mute / -utm, to optionally mute audio output when running unthrottled. Addresses Github issue
-  #7843. [Ryan Holtz]
-
-7876: spectrum_cass.xml: Massive update metadata (year and publisher) [ArcadeShadow]
-
-7879: ibm5170 - New working software list additions [ArcadeShadow]
-### New working software list additions
-Museum Madness [The Good Old Days]
-Top Gun: Danger Zone [The Good Old Days]
-
-7881: coco: Set proper tri-state value for keyboard PIA port B [tlindner]
-This fixes Mame Testers bug #07701.
-
-7882: Add notes about Picmatic games [clawgrip]
-
-7883: -i2cmem: Added Xicor X24C01 support. [Ryan Holtz] [MooglyGuy]
-Note, not for inclusion in merge: It would be appreciated if someone could take the time to verify that Dodge Danpei, Evander
-  Holyfield's Boxing, Greatest Heavyweights of the Ring, and Sports Talk Baseball are fixed, and update the table in eeprom.cpp
-  accordingly. I cannot stand sports games, and the gameplay is opaque enough that it's not immediately obvious at what point a
-  given game can be saved.
-
-7885: -jcart: Fixed I2C read address for Codemasters games. [Ryan Holtz] [MooglyGuy]
-
-7886: -sk: Fixed saving in Sonic 3 & Knuckles. Made all MD cartridge types able to be locked on. [Ryan Holtz] [MooglyGuy]
-
-7887: apple2gs: configure scc channel speeds [ksherlock]
-The z8530 baud rate generator works a whole lot better when the speed is configured.
-IIgs tech note #30
-> The SCC's Receive/Transmit Clock (/RTxC) inputs for both ports are driven by a single crystal oscillator circuit. This is
-  accomplished by connecting a 3.6864 MHz crystal between the /RTxC and Synchronization (/SYNC) input of port A. Port B's /RTxC pin
-  is connected to port A's /SYNC pin to drive port B's clocks from port A's oscillator circuit. Because of this single circuit,
-  Write Register 11 (WR11) bit 7 must be set to 1 for SCC port A and must be set to 0 for SCC port B. The SCC itself is clocked at
-  3.58 MHz by the Apple IIgs' Color-Reference clock (CREF) at the SCC's PCLK clock input. The maximum asynchronous transmission rate
-  supported by the SCC is 57,600 bits per second (bps) in X16 clock mode (WR4=01xxxxxx).
-
-7889: Apple software list update for March 2021 [Firehawke]
-
-7893: New working clones [clawgrip]
-------------------
-Surf Planet (Version 3.0) [jordigahan]
-
-7894: Apple softlist correction [Firehawke]
-Major screw-up on my part. Sorry about that.
-
-7895: ssv.cpp - fix gdfs (Mobile Suit Gundam Final Shooting) sound ROM loading (has always been incorrect?) [DavidHaywood]
+- 7695: Added synchronous I/O for RS232 port and HP98046 module. [F.Ulivi]
+- 7718: Added save state support for Namco System 21 famliy. [cam900]
+- 7756: machine/tc009xlvc.cpp: Integrated Z80 CPU core in device, and fixed background drawing (visible in gemcrush). [cam900]
+- 7763: machine/fdc37c665gt.cpp: Reimplemented with added floppy and parallel port support. [Windy Fairy]
+- 7789: hng64.cpp: Implemented priority Z sort mode for sprites. [Happy]
+- 7792: hash/sgi_mips.xml: Added three entries, and missing discs for various entries. [nixzone.nl, pixelbart.net, Davide Cavalca]
+- 7800: sound/setapcm.cpp: Added preliminary 16-voice ST0032 internal sound support (used by jclub2). [cam900]
+- 7808: sound/ymfm.cpp: Added new BSD-licensed implementation of Yamaha OPN/OPM FM synthesis emulation. [Aaron Giles]
+- 7810: hng64.cpp: Improved projection matrix calculation and 3D clipping. [Happy]
+- 7811: sound/cdda.cpp: Return LBA position as currently playing LBA (fixes issues with Konami System 573 games). [Windy Fairy]
+- 7815: apple2gs.xml: Added descriptions for sys504 and sys601. [Kelvin Sherlock]
+- 7816: Added two TV games, and several LeapFrog and e-kara software list entries. [David Haywood]
+- 7817: twinkle.cpp: Removed periodic source for IRQ2. [Ziemas]
+- 7818: firebeat.cpp: Re-dumped CDs for two games, and added Keyboardheaven (Korea). [Jennifer, Taylor, David Haywood]
+- 7819: neptunp2.cpp: Added Corsario (Cirsa slot machine). [jordigahan, ClawGrip]
+- 7821: spg2xx.cpp: Added Dora the Explorer - Dora TV Adventure Globe. [Sean Riddle, David Haywood]
+- 7822: machine/t10mmc.cpp: Handle LBA zero correctly when first track is audio. [Windy Fairy]
+- 7824: elan_ep3a19a.cpp: Added two TV Board Games 6-in-1 games. [Sean Riddle, David Haywood]
+- 7825: cps2.cpp: Added Mega Man: The Power Battle (CPS2, USA 950925, SAMPLE Version). [bdlou, r09]
+- 7826: nova2001.cpp: Added Raiders5 (Japan, set 2, bootleg?). [Paul Wood, David Haywood]
+- 7827: Added dongle dumps, improved cabinet info register settings, and updated notes. [Jennifer Taylor]
+- 7828: firebeat.cpp: Improved IN1 values, and added notes on DIP switches. [Windy Fairy]
+- 7829: ksys573.cpp: Use ddr2ml disc as base for ddr2mc2. [Windy Fairy]
+- 7831: psikyo.cpp: Fixed crash in samuraia and clones accessing non-existent ROM region. [cam900]
+- 7832: merits.cpp: Added Scorpion (Dec 24, 1993). [jordigahan, ClawGrip]
+- 7833: twinkle.cpp: Added all missing CD and hard hick dumps, and added three beatmania IIDX variants. [Jennifer Taylor]
+- 7834: Improved Brazilian Portuguese translation. [Chrystian Rafael Rubio de Melo]
+- 7834: firebeat.cpp: Added support for beatmania III floppy disk drive and spectrum analyzer. [Windy Fairy]
+- 7837: debugger: Added “wpsize” variable for accessing the access size that triggered a watchpoint. [moralrecordings]
+- 7838: elan_ep3a19a.cpp: Added three TV Board Games 3-in-1 variants [Sean Riddle, David Haywood]
+- 7840: momoko.cpp: Fixed video code reading beyond the end of ROM region (caused glitches on high score table). [David Haywood]
+- 7841: Fixed rewind functionality (GitHub #7806). [feos]
+- 7845: alg.cpp: Added 100 Hz display versions of Tierras Salvajes and Marbella Vice. [Arcade Planet, Recreativas.org, ClawGrip]
+- 7846: video/k057714.cpp: Implemented raster timing registers (fixes timings on some Konami Firebeat games). [Windy Fairy]
+- 7847: jpmimpct.cpp, jpmimpctsw.cpp: Fixed reel display in j6big50, and added sound ROM for j6untch. [David Haywood]
+- 7848: generalplus_gpl16250_spi_direct.cpp: Added Pac-Man (mini arcade) and Ms. Pac-Man (mini arcade). [Sean Riddle, David Haywood]
+- 7849: midzeus.cpp: Disabled waveram drawing feature by default. [David Haywood]
+- 7850: spg2xx.cpp: Added Teléfono interactivo de TV (Spain). [ClawGrip, Sean Riddle, David Haywood]
+- 7851: zaxxon.cpp: Fixed tilemap/sprite priority for ixion; also demoted lastfght and raccoon to not working. [David Haywood]
+- 7856: joystand.cpp: Converted cartridge access function to address_map_bank_device and cleaned up code. [cam900]
+- 7857: leapfrog_iquest.cpp: Added Turbo Twist Spelling (US) and Turbo Twist Vocabulator (US). [Sean Riddle, David Haywood]
+- 7858: sega_beena_cart.xml: Added ten entries, and corrected pokebw scan sizes and checksums. [TeamEurope, ClawGrip]
+- 7859: apple2gs.cpp: Added checks for special key combinations to ADB GLU microcontroller simulation. [Kelvin Sherlock]
+- 7860: leapfrog_iquest.cpp: Added Turbo Twist Fact Blaster (US). [Sean Riddle, David Haywood]
+- 7861: spectrum_cass.xml: Updated metadata for six entries. [ArcadeShadow]
+- 7864: fmtowns_flop.xml: Split into separate lists for original, cracked and miscellaneous software, and added seven entries. [r09]
+- 7866: tecmo16.cpp: Improved interrupt acknowledge mechanism; 1943.cpp: Fixed drawing past the end of sprite RAM. [David Haywood]
+- 7871: apple2gs.cpp: Check for presence of floppy drives before deselecting them. [Kelvin Sherlock]
+- 7872: bgfx: Made crt-geom and crt-geom-deluxe scan lines adjustable, and added a low-pass filter for crt-geom-deluxe. [cgwg]
+- 7873: firebeat.cpp: Replaced Keyboardmania 1st Mix and 2nd Mix CD dumps with images including subchannel data. [Windy Fairy]
+- 7874: fmtowns_cd.xml: Added thirteen entries, replaced twelve entries with better dumps, and added five missing floppies. [r09]
+- 7857: Added UI option to mute audio when emulation is not throttled (GitHub #7843). [Ryan Holtz]
+- 7876: spectrum_cass.xml: Filled in year and publisher for many entries. [ArcadeShadow]
+- 7879: ibm5170.xml: Added Museum Madness and Top Gun: Danger Zone. [The Good Old Days, ArcadeShadow]
+- 7881: coco12.cpp: Set proper tri-state value for keyboard PIA port B (fixes MT07701). [Tim Lindner]
+- 7882: alg.cpp: Added notes about Picmatic games. [ClawGrip]
+- 7883: machine/i2cmem.cpp: Added Xicor X24C01 support (used for save data in some Mega Drive cartridges). [Ryan Holtz]
+- 7885: bus/megadrive/jcart.cpp: Fixed I²C read address for Codemasters games. [Ryan Holtz]
+- 7886: bus/megadrive/sk.cpp: Fixed saving in Sonic 3 & Knuckles, and allowed all cartridges to be locked on. [Ryan Holtz]
+- 7887: apple2gs.cpp: Configure SCC Baud rate generator input clocks. [Kelvin Sherlock]
+- 7889: apple2_flop_clcracked.xml: Added latest cracks, with lots of MECC software. [4am, Firehawke]
+- 7893: gaelco3d.cpp: Added Surf Planet (Version 3.0) [jordigahan, ClawGrip]
+- 7894: apple2_flop_clcracked.xml: Fixed CRC for mcwacs10. [Firehawke]
+- 7895: ssv.cpp: Fixed gdfs (Mobile Suit Gundam Final Shooting) sound ROM loading. [David Haywood]
 
 
 Source Changes
