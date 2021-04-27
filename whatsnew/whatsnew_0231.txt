@@ -330,237 +330,34 @@ Merged pull requests
 - 7848: spectrum_cass.xml: Added nine entries, replaced one entry with a better dump, and updated lots of metadata. [ArcadeShadow]
 - 7950: audio/nl_segas16b.cpp: Corrected two capacitor labels. [Enik Land]
 - 7951: Added Konami 007452 multiplier/divider (fixes rolling mines trajectories in Contra, MT05725). [furrtek]
-
-7952: qx10: Enable drive B motor when doing a write motor on register [brijohn]
-The second floppy drive was always reporting not ready due to its motor not being enabled on the write to io address 0x30
-
-7953: Add Franklin ACE 1000 as a clone of the Apple ][+ [christopherkobayashi]
-Hello,
-The Franklin ACE 1000 was a popular clone of the Apple ][+.  The differences were:
-* a more complicated color video generator,
-* built-in lowercase support (so different character generator ROM and a few other ROM changes),
-* slightly modified ROMs
-I own two ACE 1000s.  I've dumped the ROMs (attached) and added an "ace1000" target to the apple2 driver.
-Would it be possible to merge these changes into the main repository?
-Thanks,
--- Chris
-
-7955: qx10: Implement Sound/Speaker [brijohn]
-This patch adds the currently missing sound support for QX10 systems.
-
-7956: New NOT_WORKING software list additions [clawgrip]
-------------------------------
-leapfrog_ltleappad_cart.xml:
-  Tierbabys (Germany), Disney Puuh mag dich! (Germany), Was wäre, wenn ...? (Germany) [TeamEurope]
-
-7959: a800_flop.xml: add several verified .atr dumps from a8sp [quasiscroto]
-Adds six new software list items and verifies galahad. CRCs checked against those at a8preservation.com, which seems to be the
-  current standard bearer for Atari 8-bit dumping. <!-- Verified --> items have at least two known matching dumps according to their
-  database.
-
-7961: nb1412m2: Fixed Mighty Guy some sound issues [sasuke-arcade]
-Fixed various sound issues in Mighty Guy so that it sounds almost exactly like PCB.
-- Fixed BGM tempo was unstable.
-  - The frequency setting of DAC and timer clock are now linked.
-  - When changes the DAC clock, Sound driver set wait loop count ($C010) in the range of 2 to 4 in order to keep the tempo of BGM
-  even if changed clock. This was the cause of the slow BGM in previous versions.
-- Fixed DAC clock calculation.
-  - I changed this so that sound plays same as PCB.
-- Implemented a protect command 0x11 to stop the DAC.
-  - This is needed to stop DAC sound when the psycho gun is stopped.
-PCB video for reference: https://www.youtube.com/watch?v=ajOxKbYUxf0
-
-7964: laserbat.cpp: Quantise area effect 2/shell to 4-pixel intervals for catnmous. [cuavas]
-According to this page and this photo in particular, there’s a wire mod on at least some Cat'n'Mouse boards to pull up pins 8, 9, 10
-  and 11 on IC13I.  This would have the effect of quantising area effect 2/shell to 4-pixel intervals.
-How plausible does it seem that the boards would have all left the factory with this mod?  They *were* using a wire mod for sprite
-  banking.
-(The rest of the change is just tidying up the driver a little.)
-
-7966: Added recently-dumped daiohp2 set [MooglyGuy]
-New working machines
---------------------
-Daioh (prototype, earlier) [CoolMod, Caius, The Dumping Union]
-
-7968: CM-32P: support PCM cards, add U-110 card softlist [ValleyBell]
-This PR adds support for PCM ROM cards to the CM-32P driver.
-With the SN-U110-04 card inserted, the CM-32P driver finally passes the PCM ROM test. (number 3)
-A softlist for all currently dumped cards is included.
-The CM-32P uses the PCM cards initially made for the U-110. Thus I named the softlist `u110_card`.
-Known issues:
-- Inserting a PCM card currently restarts the (emulated) CM-32P machine.
-  On the actual device, you can just insert and eject the cards without a reboot. It works more like floppies.
-  However I couldn't get MAME to treat the PCM card slot similar to a floppy drive.
-- Selecting the PCM cards from the softlist doesn't seem to work properly.
-  MAME detects that the files are there, restarts, and then exits with e.g.  
-  `Fatal error: Device Generic Cartridge Slot load (-cartridge u110_card:sn-u110-04:card) failed: File not found`
-  Running `mame -verifysoftlist u110_card` reports that all romsets are good.
-
-7971: megadriv - Update info on 11 entries [ArcadeShadow]
-Super Kick Off : 1992 -> 1993 [https://segaretro.org/Super_Kick_Off]
-Fantastic Dizzy : 1991 -> 1993 [https://segaretro.org/Fantastic_Dizzy]
-Sensible Soccer - International Edition : 1993 -> 1994 [https://segaretro.org/Sensible_Soccer:_International_Edition]
-Double Clutch : 1992 -> 1993 [https://segaretro.org/Double_Clutch]
-Hook : 1992 -> 1993 [https://segaretro.org/Hook]
-Prince of Persia : 1993 -> 1994 [https://segaretro.org/Prince_Of_Persia]
-NBA All-Star Challenge : 1992 -> 1993 [https://segaretro.org/NBA_All-Star_Challenge]
-Stimpy's Invention : 1993 -> 1994 [https://segaretro.org/The_Ren_%26_Stimpy_Show_Presents_Stimpy%27s_Invention]
-The Lost Vikings : 1993 -> 1994 [https://segaretro.org/The_Lost_Vikings]
-The Chaos Engine (Euro) : 1992 -> 1994 [https://segaretro.org/The_Chaos_Engine]
-Update Description:
-Lotus II -> Lotus II: RECS [https://segaretro.org/Lotus_II:_RECS]
-
-7973: apple2gs: tweak the keypad = key [ksherlock]
-it was generating '?'
-
-7974: fmtowns_cd.xml: 29 new dumps, 13 replacements, 1 missing floppy added [rzero9]
-Special thanks to everyone who participated in the fundraiser to acquire and dump most of these (cyo.the.vile, F1ReB4LL, rockleevk,
-  Wiggy2k).
-- Added the missing floppy image to Taiken Shiyou! Marty Channel [wiggy2k]
-- Added the missing floppy image to Air Warrior V1.1 [al32gabby]
-- Replaced the Inindou and Star Cruiser II floppy images with cleaner unmodified copies [cyo.the.vile]
-- Added the bonus audio CD that was included with Bible Master [redump.org]
-New working software list additions
------------------------------------
-California X Party - Joshi Daisei Himitsu Club [redump.org, al32gabby]
-Castles II - Bretagne Touitsu Senki / Castles II - Siege & Conquest [redump.org]
-CD-ROM Bishoujo Senshi Collection - Yuu Disc Special [redump.org]
-Collector D [redump.org]
-Diamond Players [redump.org, al32gabby]
-if - Invitations from Fantastic Stories [redump.org]
-Jinmon Yuugi [redump.org]
-Kanade V1.1L20 [redump.org]
-Kamimura Kei no Sexy Resort - Momoiro Quiz [redump.org]
-Kamimura Kei no Sexy Telephone - Pink no Hanayome [redump.org]
-Kikou Shidan - Panzer Division II [redump.org, al32gabby]
-Meisou Toshi [redump.org]
-Moonlight Energy [redump.org]
-Nostalgia 1907 - In North Atlantic Sea [redump.org]
-Obaachan no Chiebukuro [redump.org]
-Palamedes [redump.org]
-Private Slave [redump.org, al32gabby]
-Psychic Detective Series Vol. 1 - Invitation (DCCS remake) [redump.org, cyo.the.vile]
-Reijou Monogatari [redump.org]
-Sexy in the Hawaii - Nice Gal Hawaii-hen [redump.org]
-Tania [redump.org]
-That's Toukou Part 1 [redump.org]
-Theme Park [redump.org]
-Tokyo Sexy Ave. - Tokyo Genshi Machi [redump.org, al32gabby]
-URM - M15 Wakusei ni Umarete [redump.org]
-Vanishing Point - Tenshi no Kieta Machi [redump.org]
-Yumeutsutsu - Dreamy [redump.org]
-New not working software list additions
----------------------------------------
-Band-kun [redump.org, al32gabby]
-The 4th Unit 7 - Wyatt (demo) [redump.org]
-Replaced software list items
-----------------------------
-Bell's Avenue Vol. 2 [redump.org]
-Hoshi no Suna Monogatari 2 [redump.org]
-Hoshi no Suna Monogatari 3 [redump.org]
-J. R. R. Tolkien's The Lord of the Rings, Vol. II - The Two Towers [redump.org]
-Märchen Toshokan - Grimm Douwa - Akazuki [redump.org]
-Marine Philt [redump.org]
-Musium Towns [redump.org]
-Puzznic [redump.org]
-Sakura no Mori [redump.org]
-Shinc [redump.org]
-Sid Meier's Railroad Tycoon [redump.org]
-Star Cruiser II - The Odysseus Project [redump.org, cyo.the.vile]
-Suikoden - Tenmei no Chikai [redump.org]
-Software list items promoted to working
----------------------------------------
-Air Warrior V1.1 [al32gabby]
-
-7979: cyclemb.cpp: Improve input, sound, display, flip screen, and dip switches [sasuke-arcade]
-- Support for correct input of Cycle Maaboh roller controller.
-  - Previous inputs did not correctly. This made it impossible to clear stage 3 and later, which requires roller inputs.
-- Fixed possibly incorrect handling of sound latch.
-  - Fixed issue where Cycle Maaboh would not play the stage music.
-  - Previously, Sound latch was overwritten by command for getting input.
-- Support I/O input for hiding screen.
-  - Screen switching at start of a stage is now correct.
-- Fixed position of tilemap in flip screen of Cycle Maaboh.
-- Added support for Sky Destroyer flipscreen.
-- Fixed dipswitches.
-  - Removed definition of unused bits for non-dipswitch inputs.
-  - Added some dipswitch definitions.
-- Implemented work RAM switching for sprites.
-  - Games on this board used to switch two sprite work RAM and doublebuffered it. This implementation fixes sprites frame rate was
-  being half.
-Concerns
-- Sky Destroyer flips screen when "Flip Screen" dipswitch bit is OFF (In this driver, dipswitch bit and flip On/Off are reversed).
-  This dip switch works only in Cocktail mode. Uplight mode ignores this and always flips the screen. In this case, should the
-  driver draw the screen inverted?
-
-7981: ibm5150.xml: 1 working software list addition [rzero9]
-New working software list additions
------------------------------------
-Control Panel [famiclone]
-
-7982: Typo on game name [clawgrip]
-
-7983: rfslots8085.cpp: The PCB only has 6 dipswitches [clawgrip]
-
-7984: upd7220 fixes [brijohn]
-This update contains the following two patches:
-1. Fix display issues with mixed mode (graphics/text)
-2. Add support for DMAW and DMAR commands
-The first patch will fix the display bugs in the second bitmap graphics test on the QX10 diagnostics disk. It also for the same
-  reason fixes the VALDOCS menu system on the QX10.
-The second patch adds DMA support to the upd7220. I tested this again using the QX10 diagnostics disk and both the DMA write and DMA
-  read test now behave as expected.
-
-7985: qx10: allocate enough vram for color mode [brijohn]
-Fixes the inevitable segfault that will occur if you configure the machine to use a color video board.
-
-7987: segas16a/sega16b tweaks [DavidHaywood]
-- change when video is updated (for fantzone)
-- bump quantum time for 16a cases with MCU (for quartet stage 18)
-the Fantasy Zone fix was suggested by PhilB back in 2012 here https://mametesters.org/view.php?id=1852 and after discussion in the
-  shoutbox it seemed the general consensus was to just go with it, rather than trying to complicate things with more complex code
-  using a timer to latch values, which could give the impression that it had been measured, despite not having any evidence for the
-  PCB timing.  I've applied it to segas16b too as the platforms are very similar, and if there's an issue with this to suggest
-  different timing it's more likely to show up with more test cases.
-the quantum boost is for quartet, I noticed after fixing the MCU hookup some months ago that certain stages on the protected sets
-  (very noticeable on stage 18) had glitchy background scroll every few seconds, it appears to fix that.
-
-7989: travrusa.cpp - hold vblank interrupt for the whole of the vblank period [DavidHaywood]
-travrusa.cpp - hold vblank interrupt for the whole of the vblank period allowing it to retrigger in some cases - improves shtrider
-  countdown sync at start of race.  mustache, another Seibu game requires the same logic in mustache.cpp, so it seems reasonable.
-  I've tested travrusa with these changes and didn't notice any new issues.
-
-7990: neptunp2.cpp: Add 'ccorsario' program ROM and improve hardware documentation [jordigahan, ClawGrip] [clawgrip]
-
-7991: a800_flop.xml: more floppy soft additions [quasiscroto]
-Add nine more titles from a8preservation.com's verified dumps (.atr format).
-Phobos works (error was in my botched testing), so remove unsupported flag.
-
-7992: stfight.cpp: Remove YM2203 frequency hack, and set prescaler at machine_start [sasuke-arcade]
-testers-03911:   stfight,  empcity: Music pitch is too low
-Empire City: 1931 implements a hack that 3x YM2203 clock frequency in order to solve the all sounds too low pitch. But FM (BGM) be
-  correct, but SSG (timer countdown, clear bonus count) is still low pitch.
-Frequency hack can't seem to get the correct pitch.
-This PR removes frequency hack and sets YM2203 clock prescaler at machine_start in order to get right pitch.
-This fix may be a hack-like approach, but I proposed the PR in this because this can remove hack that result in wrong pitch.
-
-7995: upd7220: fix copy paste bug in DMA handling [brijohn]
-Fixes copy paste bug in upd7220 DMA handling, also fixed up coding style to be consistent with the rest of the upd7220.cpp file.
-
-7996: tweaks to the funkyjet addition, also apply single pixel video offset to match hardware [DavidHaywood]
-tweaks to the funkyjet addition, also apply single pixel video offset to match hardware videos and correct bg / sprite alignment.
-I've also tagged the sample ROM in the other sets as BAD_DUMP pending verification, it definitely looks suspicious compared to the
-  one in the new set.
-I've marked the addition as a 'prototype?' rather than alternate demo, because there are many, many more changes than just the demo.
-
-7997: Apple softlist update for April 2021 [Firehawke]
-
-7998: Fix XML cheats which use multiple spaces. [Szunti]
-When turning on they gave message like: "index a nil value (global 'maincpuo')"
-I could't build master with my 4G ram and I don't know how to make the compilation lighter, so only tested with 0.230. But pretty
-  straightforward.
-
-8000: One more Apple software list update for this month's release [Firehawke]
+- 7952: qx10.cpp: Enable floppy drive B motor on motor register writes. [Brian Johnson]
+- 7953: apple2.cpp: Added Franklin ACE 1000 (Apple ][+ clone). [christopherkobayashi]
+- 7955: qx10.cpp: Added speaker output. [Brian Johnson]
+- 7956: leapfrog_ltleappad_cart.xml: Added three entries. [TeamEurope, ClawGrip]
+- 7959: a800_flop.xml: Added six entries. [A8SP, quasiscroto]
+- 7961: machine/nb1412m2.cpp: Improved DAC rate and timer calculation (fixes sound issues in Mighty Guy). [sasuke]
+- 7964: laserbat.cpp: Quantise area effect 2/shell to 4-pixel intervals for catnmous. [Vas Crabb]
+- 7966: seta.cpp: Added Daioh (prototype, earlier). [coolmod, caius, The Dumping Union, Ryan Holtz]
+- 7968: roland_cm32p.cpp: Added support for PCM cards, and added U-110 card software list. [ValleyBell]
+- 7971: megadriv.xml: Corrected metadata for eleven entries. [ArcadeShadow]
+- 7973: apple2gs.cpp: Fixed handling of keypad equals key. [Kelvin Sherlock]
+- 7974: fmtowns_cd.xml: Added 29 entries, replaced 13 entries with better dumps, and added one missing floppy image. [r09]
+- 7979: cyclemb.cpp: Improved emulation of inputs, sound and video, and corrected DIP switch labels. [sasuke]
+- 7981: ibm5150.xml: Added Control Panel. [famiclone, r09]
+- 7982: rfslots8085.cpp: Corrected spelling error in game name in comments. [ClawGrip]
+- 7983: rfslots8085.cpp: Removed two dummy inputs representing DIP switches, as only six are present. [ClawGrip]
+- 7984: video/upd7220.cpp: Fixed mixed text/graphics display issues, and implemented DMAW and DMAR commands. [Brian Johnson]
+- 7985: qx10.cpp: Allocate enough video RAM for color mode. [Brian Johnson]
+- 7987: segas16a.cpp, segas16b.cpp: Changed when video is updated, and reduced scheduler quantum for System 16A. [David Haywood]
+- 7989: travrusa.cpp: Assert vertical blanking interrupt for entire vertical blanking interval. [Davit Haywood]
+- 7990: neptunp2.cpp: Added program ROM for ccorsario, and expanded notes. [jordigahan, ClawGrip]
+- 7991: a800_flop.xml: Added additional entries. [A8SP, quasiscroto]
+- 7992: stfight.cpp: Corrected YM2203 clock frequency and added hack to set pre-scaler at machine start. [sasuke]
+- 7995: video/upd7220.cpp: Fixed copy/paste bug in DMA handling code, and made code formatting more consistent. [Brian Johnson]
+- 7996: funkyjet.cpp: Corrected sprite/background alignment, marked and marked suspect sample ROM as bad. [David Haywood]
+- 7997: apple2_flop_clcracked.xml, apple2_flop_clcracked.xml: Added latest cracks and original dumps. [4am, san, Firehawke]
+- 7998: plugins/cheat: Fixed handling of XML cheats that use multiple address spaces. [Szunti]
+- 8000: apple2_flop_orig.xml: Added four original dumps. [4am, Firehawke]
 
 
 Source Changes
