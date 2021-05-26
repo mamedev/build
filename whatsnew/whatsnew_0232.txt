@@ -22,9 +22,11 @@ MAME Testers Bugs Fixed
 
 New working machines
 --------------------
+Cal Omega - Game 18.4 (Pixels) [Roberto Fresca, Grull Osgo]
 Capital Radio Engineering Institute CREI 680 [Robbbert]
 CEI 51.07 (CEI 906-III Poker) [Roberto Fresca]
 Dokaben 2 (Japan) [ShouTime, Team Japump]
+Mrs. Dynamite [Marco Kerstens, Sam Grech, Frank Palazzolo]
 
 
 New working clones
@@ -43,7 +45,7 @@ Spinal Breakers (US, prototype) [hammy, chomponooch]
 Tech Romancer (Asia 980914) [Sugoi Helsinki]
 Time Killers (v1.20, alternate ROM board) [Brian Troha, The Dumping Union]
 Triumph-Adler TA 1700-PC [rfka01]
-U.N. Defense Force: Earth Joker (US / Japan, set 3) [Sergio G.]
+U.N. Defense Force: Earth Joker (US / Japan, set 3) [JammaFever, Nebula, Recreativos Piscis, Sergio Galiano]
 VEB Mikroelektronik "Karl Marx" Erfurt Lerncomputer LC 80 (set 2) [hap]
 Warp-1 (Japan) [Team Japump, Wayder]
 World Rally (Version 1.0, Checksum E586) [iq_132]
@@ -150,6 +152,7 @@ Canon Typestar 3 [Guru]
 Dangerous Bar [Museo del Recreativo (Amusement Museum)]
 Digital Equipment Corporation DECmate II (PC278) [AJR, Vince Slyngstad]
 Digital Equipment Corporation DECmate III (PC238) [AJR, Vince Slyngstad]
+Digital Equipment Corporation DECstation 2100 [Patrick Mackinlay]
 Kyber Calcolatori Kyber Minus [Nigel Barnes, Alessandro Liberalato]
 Multi-Action 7558 [Brian Troha]
 Panic Shot Rockman [SpinalFeyd]
@@ -164,6 +167,7 @@ New clones marked as NOT_WORKING
 --------------------------------
 Alloy EarthStation-I [rfka01]
 Amstrad plc Amstrad PC5086 [rfka01]
+Dance Dance Revolution Karaoke Mix (GQ921 VER. JBB) [anonymous, Windy Fairy]
 Diamond King (without Euro support) [jordigahan, ClawGrip]
 Frael King [rfka01]
 LeapFrog Leapster 2 [skaman]
@@ -289,7 +293,7 @@ mbee_quik:
   Starship Zok VII, Subatomic, Subterra, Survival, Swamp of Evil, Sword Quest, Sydney Approach, Tandy Invaders, Tank Battle, Target,
   Target (colour version), Temple of Azragor, Toady, Towers of Hanoi, Trains, Underworld of Kin, Valley, Viper, Volcano Hunter,
   Voodoo Castle, Waverton Castle, Wizards Castle, Worm Squirm, Worms, Yacht Race, Z80 Nim [Robbbert]
-megadriv: Sonic the Hedgehog (Prototype) [Hidden Palace]
+megadriv: Sonic the Hedgehog (Prototype) [Hidden Palace, Buckaroo]
 sagafox: Saga Fox CP/M [Alessandro Liberalato]
 sms:
   Heroes Against Demons [Ichigo]
@@ -336,7 +340,7 @@ vsmile_cart: Thomas & seine Freunde - Freunde Halten Zusammen (Germany, alt) [
 Software list items promoted to working
 ---------------------------------------
 bbc_flop_32016: BCPL, GCAL, PanOS Version 1.10 System Disks, PanOS Version 1.40 System Disks, Reduce [Nigel Barnes]
-pc98: Madou Monogatari 1, Madou Monogatari 2 [Angelo Salese]
+pc98: Madou Monogatari 1, Madou Monogatari 2 [Angelo Salese, sampson]
 vsmile_cart: V.Smile Clavier Tip Tap (France), V.Smile Schreibspaß (Germany), V.Smile Smart Keyboard (USA) [Ryan Holtz, PulkoMandy]
 
 
@@ -362,528 +366,81 @@ leapster:
 
 Merged pull requests
 --------------------
-7830: fmtowns: adjust PCM volume [rzero9]
-The volume of the PCM sound in the FM Towns driver has always been a bit too loud, but after the rewrite of the YM3438 core it has
-  become even more evident, with the PCM sounds completely overpowering the FM instruments in music that uses both at the same time.
-  The output of the RF5C68 was set to 3.00 gain, which is clearly too much, so this change sets it to 1.00, which sounds a lot
-  closer to real hardware.
-To demonstrate, here are recordings of the same track (from the game Deep) in:
-- current MAME (after the FM rewrite): https://www.r-09.net/mame/deep_old.flac
-- current MAME after this change: https://www.r-09.net/mame/deep_new.flac
-- real hardware (original FM Towns Model 2): https://www.r-09.net/mame/deep_real.flac
-The real thing seems to have some kind of lowpass filter that makes everything a lot "softer", but it should be enough to compare
-  the volume levels.
-
-7926: New machines marked as NOT_WORKING [clawgrip]
-----------------------------------
-Leapster L-MAX [Skaman]
-Leapster 2 [Skaman]
-Added two new BIOS versions to 'leapster' [Skaman]
-
-7931: vgmplay: Ensure all writes to Yamaha FM chips are spaced by 1 cycle.  [aaronsgiles]
-The old FM cores did not really require this spacing and didn't implement the busy flag, so many VGM captures have multiple writes
-  stacked in the same cycle. This won't work with the new cores, so this kludge helps ensure we don't end up with ugly playback on
-  existing files.
-
-7942: options: extended the snapname templates to allow for a timestamp %t option, so to allow for alternate ways to organize the
-  generated snaps. [etabeta78]
-
-7960: leapfrog_leappad.cpp: Load ROMs as BIOSes instead of declaring clones [clawgrip]
-
-7972: osx/sdl - caps lock [ksherlock]
-As of SDL2 2.0.14, SDL on OS X synthesizes the caps lock key event by posting a keydown event, then immediately posting a key up
-  event.  As there is no time for an intervening frame update between the two events, caps lock will never be seen by the emulator.
-Perhaps there's a better solution but one could use a frame callback to give the caps lock key enough time to be seen. (It can't be
-  the next frame because the sdl input callback will happen before the ioport frame callback)
-
-7975: pc.cpp: added systems NOT_WORKING [rfka01]
-Alloy EarthStation I, Frael King, Victor VPC II, MY-COM MPU-9088-VF, Triumph-Adler TA 1700-PC
-
-7976: New NOT_WORKING clones [clawgrip]
------------------------------
-Diamond King (without Euro support) [jordigahan, ClawGrip]
-* Added OkiM6376 ROM dump and hardware info.
-
-7980: New NOT_WORKING software list additions [clawgrip]
--------------------------------
-leapster.xml:
-  2nd Grade - Musical Menace (USA), Bratz World - The Jet Set (USA), Crayola - Art Adventure (USA), Disney Fairies (USA), Disney
-  Princess - Enchanted Learning (USA), Disney Princess - Worlds of Enchantment (USA, alt), Disney Tangled (USA), Disney·Pixar
-  Finding Nemo (USA, alt), Kindergarten (USA, alt), Letter Factory (USA), Math Baseball (USA), Mr. Pencil's Learn to Draw & Write
-  (USA, alt), nihao, kai-lan (USA), Nick Jr. Dora the Explorer - Animal Rescuer (USA), Nick Jr. Dora the Explorer - Wildlife Rescue
-  (USA), Nick Jr. Dora the Explorer - Wildlife Rescue (USA, alt), Nick Jr. The Backyardigans (USA), Nickelodeon The Penguins of
-  Madagascar - Race for the 1sr Place! (USA), Pet Pals (USA), Ratatouille (USA, alt), Scholastic - Animal Genius (USA), Scholastic -
-  Math Missions (USA), School House Rock! - America Rock (USA), School House Rock! - Grammar Rock (USA), Spongebob Squarepants -
-  Saves the Day (USA), The Batman - Multiply, Divide and Conquer (USA), The Incredibles (USA), The Princess and the Frog (USA),
-  Top-Secret Personal Beeswax - Share a journal with Junie B. (USA), Word Chasers - Arcade-Style Learning! (USA), Word Chasers -
-  Arcade-Style Learning! (USA, alt) [Skaman]
-
-7986: New NOT_WORKING machine [clawgrip]
------------------------
-Ajofrin City [jordigahan, ClawGrip]
-
-7993: megadriv.xml: add the Sonic 1 proto [0kmg]
-
-7994: Added working Raiden II clone [neSneSgB]
-The only difference for PRG1 compared to raiden2e is the region byte being US (01) instead of Korea (04). The rest of the ROMs on
-  the PCB match other sets.
-raiden2eub.zip
-
-8001: Add a couple error messages to emu.thread. [Szunti]
-Also changes exit(0) when the script of the thread returns non-string
-to an error message instead. exit stops the whole process not just the
-thread.
-
-8002: Save line history for the console and other minor fixes [Szunti]
-Changed a loadstring to load, since lua 5.3 loadstring is not
-available.
-Made sure the linenoise thread returns a string.
-After Ctrl+D stop reading lines.
-
-8003: fix gigandes sprite offsets (regressed around december) [DavidHaywood]
-
-8004: upd7220, qx10: Implement display zoom support [brijohn]
-This adds zoom support for the QX10 system.  Zooming on the upd7220 works by having the gpu rpeat each scanline the number of times
-  equal to the programmed zoom factor. This will zoom in the vertical direction, the horizontal diretion requires external hardware
-  on the machine in question to slow the fresh rate down which will create streched pixels allowing for soomin in the horizontal
-  direction. On the QX10 the zoom rate for this external circuitry is set via the io port 0x3a.
-This patch modifies the upd7220 so that it will multiple each Y count by the zoom factor and then updates the QX10 code to correctly
-  multiply the X direction based on the value sent to the 0x3a io port.
-
-8005: New WORKING software list addition [clawgrip]
-----------------------------
-vsmile_cart.xml:
-  Thomas & seine Freunde - Freunde Halten Zusammen (Germany, alt) [TeamEurope]
-
-8006: -dpb7000: Several tablet-related fixes. [Ryan Holtz] [MooglyGuy]
-
-8007: sms: SegaScope is write-only, but writes are mirrored in RAM, so read values from there [enikland2]
-
-8008: ccboot - fix gfx ROM load [DavidHaywood]
-
-8009: upd7220.cpp: make a bitmap partition of len==0 to be max size, fixes pc98 madoum1-2-3 [Angelo Salese, sampson] [angelosa]
-
-8010: docs: Update build requirements for Ubuntu [algestam]
-Add `libpulse-dev` as a build requirement for Ubuntu.
-
-8011: arbalest & metafox were both developed by Jordan I.S. for Seta, mark as such [DavidHaywood]
-arbalest & metafox were both develoepd by Jordan I.S. for Seta (which is one of the dipswitch options if you hide the taito/romstar
-  license text) so credit Jordan
-
-8017: pc9801.cpp: add implementation of the DAC_1BIT interface [angelosa]
-
-8020: fmtowns_flop_*.xml: 11 new dumps, verifications [rzero9]
-- Moved asuka120 from fmtowns_flop_misc.xml to fmtowns_flop_cracked.xml, since the original disks have been confirmed to be
-  protected
-- Moved kawaichi and ushinawa from fmtowns_flop_misc.xml to fmtowns_flop_orig.xml, since they have been verified to match the
-  originals
-- Removed the reiraa clone, since it only differs from the parent in the save data
-- Additions/corrections to the missing list
-New working software list additions (fmtowns_flop_orig.xml)
------------------------------------------------------------
-Golf Links 386 Pro Champion Course Vol. 1 - Mauna Kea Beach Golf Course [al32gabby]
-Golf Links 386 Pro Champion Course Vol. 2 - Firestone Country Club South Course [al32gabby]
-Golf Links 386 Pro Champion Course Vol. 3 - Banff Springs [al32gabby]
-Golf Links 386 Pro Champion Course Vol. 4 - Innisbrook Copperhead Course [al32gabby]
-Mahjong Elegance [cyo.the.vile]
-Super Daisenryaku [cyo.the.vile]
-Tenshi-tachi no Gogo VI - My Fair Teacher [cyo.the.vile]
-Words Worth Special Disk [cyo.the.vile]
-New not working software list additions (fmtowns_flop_orig.xml)
----------------------------------------------------------------
-Asuka 120% Burning Fest. [cyo.the.vile]
-New working software list additions (fmtowns_flop_misc.xml)
------------------------------------------------------------
-Nihongo MS-DOS V3.1 L36+ [anonymous]
-Nihongo MS-DOS V5.0 L22 A+2 [anonymous]
-
-8021: New working software list additions [0kmg]
-sms.xml:
-  Basket Ball Nightmare (prototype) [smspower]
-  Taito Chase H.Q. (prototype) [smspower]
-  Rastan (prototype) [smspower]
-  Zillion II - The Tri Formation (prototype) [smspower]
-gamegear.xml:
-  Tengen World Cup Soccer (prototype) [smspower]
-
-8022: m68kfpu.cpp: Implement FMOVEM mode 0b11 [NattyNarwhal]
-Since the two bits seem to have symmetry (top bit controls post/pre, bottom bit controls static/dynamic), it's odd this wasn't there
-  before.
-I'm not sure if copy and pasting the other case was fine, but it does seem to work. :shrug: 
-Should fix issues with Domain/OS and NeXTSTEP emulation. (The crash w/o this can be reproduced by trying to start VUE on a DN3500
-  running Domain/OS 10.4.)
-
-8023: RX-78 software information update [FoxhackDN]
-Added serial number and official romanization to a few applications. [Dave 'Foxhack' Silva]
-
-8025: rfslotsmcs48.cpp: Add "ajofrin" D8748 MCU dump [jordigahan, ClawGrip] [clawgrip]
-
-8026: Create console history file in homepath [Szunti]
-26defea154413796e7e38891a78c4834a8813358 tries to read homepath as an ui option. The first commit changes that, second commit adds
-  an util.lua file and functions to create multiple parent directories. I also changed the other lua files to use that.
-
-8027: gamegear.xml: new software list additions + fix MT 7965 [0kmg]
-New working software list additions
------------------------------------
-Argos no Juujiken (Tw, SMS mode) [smspower]
-Black Belt (Tw, SMS mode) [smspower]
-The Cyber Shinobi (Tw, SMS mode) [smspower]
-Doki Doki Penguin Land - Uchuu Daibouken (Tw, SMS mode) [smspower]
-Double Dragon (Tw, SMS mode) [smspower]
-Final Bubble Bobble (Tw, SMS mode) [smspower]
-Forgotten Worlds (Tw, SMS mode) [smspower]
-Great Basketball (Tw, SMS mode) [smspower]
-Hokuto no Ken (Tw, SMS mode) [smspower]
-Kung Fu Kid (Tw, SMS mode) [smspower]
-Lord of Sword (Tw, SMS mode) [smspower]
-Paperboy (Tw, SMS mode) [smspower]
-Prince of Persia (Tw, SMS mode) [smspower]
-Quartet (Tw, SMS mode) [smspower]
-R-Type (Tw, SMS mode) [smspower]
-Scramble Spirits (Tw, SMS mode) [smspower]
-Secret Command (Tw, SMS mode) [smspower]
-Seishun Scandal (Tw, SMS mode) [smspower]
-Shadow Dancer (Tw, SMS mode) [smspower]
-Shadow of the Beast (Tw, SMS mode) [smspower]
-Strider (Tw, SMS mode) [smspower]
-Submarine Attack (Tw, SMS mode) [smspower]
-Thunder Blade (Tw, SMS mode) [smspower]
-
-8031: Corrected filename for Galaga '88's PRG6 and PRG7 [neSneSgB]
-PRG6 and PRG7 EPROMs on this US Galaga '88 are marked as "G82", while the rest of the ROMs have "G81" as expected. Checksums are no
-  different.
-!add5e6dd-6e2c-40e3-b3b5-014952963665
-
-8033: asuka.cpp: Added new clone earthjkrb: "U.N. Defense Force: Earth Joker (US / Japan, set 3)" [sergiopolog]
-Added new clone earthjkrb to asuka.cpp
-Dump credits to: JammaFever, Nebula, Recreativos Piscis, Spain
-* Found in Taito PCB: K1100726A / J1100169B
-* It only differs from parent set in 2 program roms: `4.ic23` and `3.ic8`. They are very close to the earthjkra set ones and only
-  differs in 42 bytes in each rom.
-* Eprom labels are numbered in the same way as earthjkrp set, but 3 and 4 ones are swapped (Maybe a typo in earthjkrp ?)
-* Same ROMSTAR license and no region disclaimer when dipswitch is changed, like earthjkr and earthjkra sets.
-* It seems a newer version than earthjkra set, including additional changes to those added in earthjkra in comparison to earthjkr
-  set, as earthjkra and earthjkrb share the same changes from earthjkr.
-* Actual PCB picture: https://i.imgur.com/DYgniZc.jpg
-* Comparison between earthjkrb and earthjkra:
-  * `4.ic23` vs. `ejok_ic23`: https://i.imgur.com/NpBidEY.png
-  * `3.ic8`  vs. `ejok_ic8`: https://i.imgur.com/rnenDhW.png
-* Comparison between earthjkrb and earthjkr:
-  * `4.ic23` vs. `ej_3b.ic23`: https://i.imgur.com/Co8hmCe.png
-  * `3.ic8`  vs. `ej_3a.ic8`: https://i.imgur.com/EcnvW3Q.png
-
-8036: rmnimbus.cpp: Corrected false labelled romset date, add new romsets [qazmko1029]
-romset tested: https://drive.google.com/file/d/1PZA1CVGqsdNe6XtINky0nAz-Vvv5YjLY/view?usp=sharing
-Added romsets are from RM Nimbus common share below:
-https://drive.google.com/drive/folders/1-gRainyk4YOKC3FVIAX1ACEkaEx2h7tA
-Date info corrected with pictures from thenimbus.co.uk, also added some known unavailable sets info.
-
-8037: New NOT_WORKING machines [clawgrip]
---------------------------------
-Pin Ball [Eduardo Anay]
-
-8038: ibm5150 - New working software list additions [ArcadeShadow]
-### New working software list additions
-Elvira: Mistress of the Dark [The Good Old Days]
-Jones in the Fast Lane (EGA release) [The Good Old Days]
-Jones in the Fast Lane (VGA release) [The Good Old Days]
-King's Quest I: Quest for the Crown [The Good Old Days]
-Obitus [The Good Old Days]
-
-8039: ibm5170 - New working software list additions [ArcadeShadow]
-### New working software list additions
-Elvira II: Jaws of Cerberus (5.25" HD) [The Good Old Days]
-Elvira II: Jaws of Cerberus (Italy) [The Good Old Days]
-Joe & Mac: Caveman Ninja [The Good Old Days]
-WaxWorks [Old-Games]
-
-8040: pce.xml: replace bad dumps [0kmg]
-Be Ball, Gomola Speed, and Youkai are listed as known bad dumps with verified correct dumps in No-Intro. This fixes sprite glitches
-  in the dump of Gomola Speed that has been floating around for decades. The other two game dumps only differ in a few bytes.
-
-8041: pce_tourvision.xml: cleanup to match changes to pce.xml [0kmg]
-Be Ball and Gomola Speed do in fact match the only verified dumps in pce.xml. Old alternates in pce.xml appear to be a one-byte hack
-  (2 lives -> 5 lives) and a bad dump, respectively.
-
-8043: amstr_pc.cpp: reinstate anyonymous namestate marker [rfka01]
-
-8046: ymfm: Refactor new FM engine into a 3rdparty library [aaronsgiles]
-This commit pulls out the core FM chip implementation into a 3rd party library, separately maintained here.
-Changes in this PR include:
-* Moved ymfm core implementation to 3rdparty/ymfm
-* Split out each family (OPM/OPN/OPL/etc) into its own source file
-* Added preliminary OPQ and OPZ support, still WIP
-* Put all 3rdparty code into its own namespace ymfm
-* Fixed various bugs reported in #8042
-* Created interface class for communication between the 3rdparty engine and the emulator
-* Standardized MAME implementation of all Yamaha devices based on a template class
-* Created standard base class ym_generic that can be used when multiple YM chips are swapped in
-* Changed YM2203/2608/2610 to embed an AY8910 as a subdevice instead of deriving from ay8910_device
-* Also provided compile-time option to use a simplified built-in SSG rather than using MAME's at all (currently off)
-* Consolidated MAME header files from one-per-chip (ym2151.h, ym2203.h, etc) to one-per-family (ymopm.h, ymopn.h, etc)
-Prior to the bugfixes, the output of a sampling of all cores compared exactly with MAME 0.231 to within +/-1 on each 16-bit sample.
-  The bugfixes have introduced additional discrepancies when fast envelope rates are used, which is expected.
-
-8047: ksys573: Add incomplete support for Dance Dance Revolution Karaoke Mix [987123879113]
-The required karaoke I/O PCB is emulated just enough for it to be able to boot and inputs (except P2 side arrows) to work. Song data
-  is not stored on the disc and an additional separate DAM karaoke system, which is unemulated, is required to actually play this.
-Pic of PCB included for future reference. This is not my hardware so I don't have better pictures to provide. 
-!image
-
-8050: a800_flop.xml: more floppy soft additions [0kmg]
-New working software list additions
------------------------------------
-Atari Translator (USA) [a8sp]
-Forbidden Forest [a8sp]
-Saracen [a8sp]
-New not working software list additions
----------------------------------------
-Crosscheck [a8sp]
-Spitfire 40 [a8sp]
-
-8051: sms.xml: added recently published carts [0kmg]
-New working software list additions
------------------------------------
-Bara Buru [Kagesan]
-Bruce Lee [Kagesan]
-Flight of Pigarus (v1.11) [Kagesan]
-Flight of Pigarus (v1.10) [Kagesan]
-Flight of Pigarus (v1.00) [Kagesan]
-Heroes Against Demons [Ichigo]
-Voyage - A Sorceress' Vacation [Snags]
-
-8053: namcos1.cpp: Fixed abbreviated title, and added allow continue DIPSW of Beraboh Man [sasuke-arcade]
-- Added Beraboh Man allow continue setting (DIPSW4).
-- Fixed unofficially abbreviated titles
-  - Beraboh Man (ベラボーマン) -> Cho-Zetsurin-Jin Beraboh Man (超絶倫人ベラボーマン)
-    - Cho (超) = Super
-    - Zetsurin (絶倫) = Matchless
-    - Jin (人) = Human
-  - World Stadium (ワールドスタジアム) -> Pro Yakyuu World Stadium (プロ野球 ワールドスタジアム)
-    - Yakyuu (野球) = Baseball
-  - World Court (ワールドコート) -> Pro Tennis World Court (プロテニス ワールドコート)
-
-8055: cyclemb.cpp: Remove MACHINE_IMPERFECT_SOUND flags [sasuke-arcade]
-I think Cycle Maaboh sounds was corrected on pull request for #7979.
-And, Sky Destroyer does not seem to have any sound imperfections compared to PCB.
-So I want to remove MACHINE_IMPERFECT_SOUND flags from the driver.
-(If you think I should not remove the flag, please review it)
-
-8056: cyclemb.cpp: Remove MACHINE_NO_COCKTAIL flags [sasuke-arcade]
-Cocktail mode for Cycle Maabou and Sky Destroyer was fixed in pull request #7979, but I forgot to remove MACHINE_NO_COCKTAIL flags.
-Sorry, I forgot this in my previous pull request #8055 too.
-
-8058: fmtowns_cd.xml: 8 new dumps, 21 replacements, 1 missing floppy added [rzero9]
-- Added the missing floppy disk to Taikou Risshiden [cyo.the.vile]
-New working software list additions
------------------------------------
-Air Warrior V1.1 (1992-03-16) [redump.org, wiggy2k]
-Hajimete no Ryokou Eikaiwa (FM Towns Marty version) [redump.org]
-Healthy Life II [redump.org]
-NHK Jissen Eikaiwa (FM Towns Marty version) [redump.org]
-Sim Sports Diving - Soreyuke! Diving [redump.org]
-Towns System Software V2.1 L31 [redump.org]
-New not working software list additions
----------------------------------------
-Kero Kero Keroppi to Origami no Tabibito [redump.org]
-Towns VNet V1.1 L10 [redump.org]
-Replaced software list items
-----------------------------
-38-man Kilo no Kokuu [redump.org]
-Daikoukai Jidai [redump.org]
-Dengeki Nurse [redump.org]
-Dungeon Master II - Skullkeep [redump.org]
-FM Towns Super Technology Demo 1993 [redump.org]
-Goh II Towns Special [redump.org]
-Hoshi no Suna Monogatari [redump.org]
-Inindou - Datou Nobunaga [redump.org]
-Ishin no Arashi [redump.org]
-Ku²++ [redump.org]
-Lemmings [redump.org]
-Mad Stalker - FullMetalForce [redump.org]
-Mahjong Hou Tei Rao Yui [redump.org]
-Might and Magic - Darkside of Xeen [redump.org]
-Rocket Ranger [redump.org]
-Syndicate [redump.org]
-Taikou Risshiden [redump.org, cyo.the.vile]
-Ultima IV - Quest of the Avatar [redump.org]
-Ultima V - Warriors of Destiny [redump.org]
-Wing Commander - The Secret Missions & The Secret Missions 2 - Crusade [redump.org]
-Zan III - Ten'un Ware ni Ari [redump.org]
-
-8059: -bus/vsmile: Added Smart Keyboard in US, French, and German layouts. [Ryan Holtz, PulkoMandy] [MooglyGuy]
-Software list items promoted to working
----------------------------------------
-vsmile_cart:
-  V.Smile Smart Keyboard (USA), V.Smile Clavier Tip Tap (France), V.Smile Schreibspaß (Germany) [Ryan Holtz, PulkoMandy]
-
-8060: coco3: fix Arkanoid sound [tlindner]
-With regard to the GIME interrupt system:
-1. Decouple pulling of the F/IRQ line with setting the flag.
-2. Properly handle the timer interrupt when it is set to zero: repeated, immediate, interrupts.
-3. Extra Bonus: modernize the logging system.
-
-8063: new WORKING machines [DavidHaywood]
-new WORKING machines
--------
-Dokaben 2 (Japan) [ShouTime, Team  Japump]
-
-8064: missbamby.cpp: Add Golden Winner missing PROM [@LosTrastosDeXaX] [clawgrip]
-
-8067: ibm5150.xml: New working software list additions [ArcadeShadow]
-### New working software list additions
-Astérix: El Golpe del Menhir (Astérix y Operacion Menhir) (Spain, System 4 release) [archive.org]
-Astérix: Operation Getafix (UK) [The Good Old Days]
-Battle Chess (3.5", EGA version, Spain, Dro Soft release) [archive.org]
-Ishar: Legend of the Fortress [The Good Old Days]
-
-8068: ibm5170.xml: New working software list additions [ArcadeShadow]
-### New working software list additions
-Alone in the Dark (Spain, Top Games/Altaya release) [archive.org]
-Heart of China (Spain, MCM release) [archive.org]
-Indiana Jones and the Fate of Atlantis (3.5", Spain, Erbe release) [archive.org]
-Indiana Jones and the Last Crusade - The Graphic Adventure (3.5", EGA version, Spain, Maxi Juegos/Erbe release) [archive.org]
-Ishar 2: Messengers of Doom (Spain, Proein release) [The Good Old Days]
-Wolfenstein 3-D (shareware, CWI Information Services release) [archive.org]
-
-8070: -attach_window support for SDLMAME [npwoods]
-This adds support for -attach_window to SDLMAME/X11, which is needed by BletchMAME to properly embed the MAME window.
-
-8071: mrsdyna: New driver for Mrs. Dynamite [palazzol]
-I also added a lot of hardware notes for the Universal 8203 boardset.  
-I expect to add one more revision to document the rest of it.
-
-8072: joctronic.cpp: Add 'jpinball' redumped sound ROM [Eduardo Anay] [clawgrip]
-
-8074: force finallap to use 32x32 sprite size for title screen [DavidHaywood]
-this is an odd one, other system2 games clearly show that you can select between 16x16 and 32x32 mode with a bit in each sprite
-  definition in the spriteram.
-finallap needs 32x32 mode for the title screen, but fails to set the bit on any of the sprites. 
-I don't think finallap ever needs 16x16 sprites (although more testing is needed)
-finallap3 correctly sets it, and it is needed for cars ingame there
-
-8075: coco3: fix diecom light gun. [tlindner]
-1. fixes crash when chosing light gun joystick type.
-2. implements screen->set_raw so core can correctly configure timing
-3. adjust coordinates to better reflect position on screen.
-Note: Iron Forest shoots a little to the left, and Medieval Madness
-shoots a little to the right. I could not find a configuration that
-satisified both games.
-
-8076: gunpey.cpp: Add save states, Fix init, Add version info from startup screen, Minor cleanups [cam900]
-Reduce duplicates, Unnecessary variables and lines
-Fix naming, Spacing
-Use alpha_blend_r16 for blending functions
-Use shorter/correct type values
-Add notes
-
-8077: m72.cpp: Fix sound output balance [cam900]
-FM output volume is louder than DAC output volume in previous behavior, that's incorrect compared to real hardware.
-
-8078: coco3: fix video glitch in Skiing [tlindner]
-It is documented that the GIME monitors $FF22 to determine the proper legacy video mode. But it also monitors $FF23 to be sure $FF22
-  is the data register and not the data direction register. This fixes MAME testers: https://mametesters.org/view.php?id=7512
-
-8079: New Working Clones [UED-Wayder]
-Warp 1 (Japan) [Team Japump!!!, Wayder]
---------
-warp1
-Japan, Sun Electronics Version (New Working)
-warp1t
-Taito license Version  (Supported Ver. 0.231)
-ROM and source provided by Team Japump!!!, posted by Wayder on proxy.
-
-8080: c140.cpp: add inprogress sample status readback, fixes engine sound in suzuka 8 hours, final lap and four trax game series
-  [angelosa]
-
-8081: Compile fix for Linux [bmunger]
-This addresses an issue found during compilation on GCC 7.5 and GCC 8 on Linux:
-../../../../../src/lib/formats/fsmgr.h:179:7: error: ‘function’ in namespace ‘std’ does not name a template type
-  std::function<void (const fs_meta &)> m_validator;
-       ^~~~~~~~
-../../../../../src/lib/formats/fsmgr.h:179:2: note: ‘std::function’ is defined in header ‘<functional>’; did you forget to ‘#include
-  <functional>’?
-
-8085: coco3: rework PR#8078 [tlindner]
-Move the PIA monitor logic into video/gime.cpp to better match the real hardware.
-
-8086: New WORKING clones  [clawgrip]
-------------------------
-Basket Ball (8-way Joystick bootleg of Arch Rivals) [jordigahan]
-
-8087: Fix c6280 volume envelope shape [LeonardoDemartino]
-This fixes the envelopes having a weird tremolo like effect not present on the hardware.
-You can see what this PR fixes by looking at this examples:
-https://deflemask.com/c6280_comparison.png
-https://deflemask.com/c6280_before.wav
-https://deflemask.com/c6280_after.wav
-I used this .vgm to render the examples, feel free to double check:
-https://deflemask.com/c6280_example.vgm
-
-8088: floptool - format/filesystem errors were printing the wrong argument [ksherlock]
-
-8089: ksys573: Change name of DDR Karaoke Mix to be more detailed [987123879113]
-Changed name in driver from "Dance Dance Revolution Karaoke Mix" to "Dance Dance Revolution Karaoke Mix (GQ921 VER. JBB)" to match
-  gamelist file.
-
-8090: ymfm: Sync with latest, add complete YMF278B support [aaronsgiles]
-ymfm: Sync with latest
-* Implement YMF278B PCM engine
-* Consolidate external accesses into single interface functions
-* Fix SSG noise for period == 0
-* Fix several edge cases for OPN SSG-EG envelopes and phase
-
-8091: spectrum_cass.xml: 33 new dumps, 5 replacements [ArcadeShadow]
-### New working software list additions
-APB (Erbe) [spectrumcomputing.co.uk]
-Aspar - GP Master (set 2) [spectrumcomputing.co.uk]
-Beach-Head II (set 5, Erbe) [spectrumcomputing.co.uk]
-Beverly Hills Cop (IBSA) [spectrumcomputing.co.uk]
-Bruce Lee (set 10, Erbe) [spectrumcomputing.co.uk]
-Bruce Lee (set 11, Disprosoft) [spectrumcomputing.co.uk]
-Brum Brum (Master) [Planeta Sinclair]
-Bubble Bobble (Dro Soft) [spectrumcomputing.co.uk]
-Bubble Bobble (Musical 1) [spectrumcomputing.co.uk]
-E-Motion (Musical 1) [spectrumcomputing.co.uk]
-Edd the Duck! (bug fix) [spectrumcomputing.co.uk]
-Fred (Microbyte) [spectrumcomputing.co.uk]
-Grand Prix Circuit (Dro Soft) [spectrumcomputing.co.uk]
-Haunted House [spectrumcomputing.co.uk]
-Hero Quest (Dro Soft) [spectrumcomputing.co.uk]
-Kick Off (IBSA) [spectrumcomputing.co.uk]
-Match Day (IBSA) [spectrumcomputing.co.uk]
-Match Day 2 (IBSA) [spectrumcomputing.co.uk]
-Moonwalker (Erbe) [spectrumcomputing.co.uk]
-Objectif Élysée [Planeta Sinclair]
-Ordlek [Planeta Sinclair]
-Pang (Erbe) [spectrumcomputing.co.uk]
-Penetrator (Investronica) [spectrumcomputing.co.uk]
-Phonex [Planeta Sinclair]
-Pitfall [Planeta Sinclair]
-Platoon (128K) [spectrumcomputing.co.uk]
-Rainbow Islands (Erbe, small case) [spectrumcomputing.co.uk]
-Rainbow Islands (Musical 1) [spectrumcomputing.co.uk]
-Regreso al Futuro - Parte III (MCM) [spectrumcomputing.co.uk]
-Scacchi [spectrumcomputing.co.uk]
-Super Cars (Erbe) [spectrumcomputing.co.uk]
-Uridium (Erbe - small case) [spectrumcomputing.co.uk]
-Xadrez [Planeta Sinclair]
-### Replaced software list items
-Aspar - GP Master (set 1) [spectrumcomputing.co.uk]
-Brum Brum [Planeta Sinclair]
-Cannibals From Outer Space (System 4) [spectrumcomputing.co.uk]
-Fred [spectrumcomputing.co.uk]
-Match Day 2 (Erbe, alternate) [spectrumcomputing.co.uk]
-
-8092: tweak road position in Final Lap / 2 / 3, Suzuka 8 Hours / 2, Lucky & Wild to better match hardware videos (Four Trax is
-  uncertain) [DavidHaywood]
-
-8093: Added skeleton for Philips BO (Videosynthesizer Prototype) [MooglyGuy]
-New machines marked as NOT_WORKING
-----------------------------------
-Philips BO (Videosynthesizer Prototype) [Ryan Holtz, MrMii6, CD-i Fan]
-
-8095: Apple softlist update for May 2012 [Firehawke]
+- 7830: fmtowns.cpp: Adjusted PCM/CD-DA sound balance. [r09]
+- 7926: leapster.cpp: Added Leapster L-MAX and Leapster 2 clones, and added two Leapster BIOS versions. [skaman, ClawGrip]
+- 7931: vgmplay.cpp: Ensure writes to Yamaha FM chips are no faster than one per clock cycle. [Aaron Giles]
+- 7942: emu/video.cpp: Add support for %t format in snapshot names, replace with current date and time. [Fabio Priuli]
+- 7960: leapfrog_leappad.cpp: Changed regional variants for leappad and mfleappad from clones to BIOS options. [ClawGrip]
+- 7972: osd/sdl: Added hack to work around SDL 2.0.14 reporting Caps Lock being released instantaneously on macOS. [Kelvin Sherlock]
+- 7975: amstr_pc.cpp, pc.cpp: Added six additional clones. [rfka01]
+- 7976: diamondking.cpp: Added Diamond King (without Euro support), and added sound ROM for diamondking. [jordigahan, ClawGrip]
+- 7980: leapster.xml: Added thirty entries. [skaman, ClawGrip]
+- 7986: rfslotsmcs48.cpp: Added Ajofrin City. [jordigahan, ClawGrip]
+- 7993: megadriv.xml: Added Sonic the Hedgehog (Prototype). [Hidden Palace, Buckaroo, quasiscroto]
+- 7994: raiden2.cpp: Added Raiden II (easier, US set 3). [neSneSgB]
+- 8001: luaengine.cpp: Added additional error messages to emu.thread on unexpected return values. [Szunti]
+- 8002: plugins/console: Save line history between sessions. [Szunti]
+- 8003: taito_x.cpp: Fixed sprite offsets for gigandes. [David Haywood]
+- 8004: video/upd7220.cpp: Added support for vertical zoom; qx10.cpp: Implemented horizontal zoom. [Brian Johnson]
+- 8005: vsmile_cart.cml: Added Thomas & seine Freunde - Freunde Halten Zusammen (Germany, alt). [TeamEurope, ClawGrip]
+- 8006: dpb7000.cpp: Improved tablet emulation. [Ryan Holtz]
+- 8007: sms.cpp: Return RAM value when reading SegaScope port (SegaScope is write-only). [Enik Land]
+- 8008: cclimber.cpp: Fixed ccboot graphics ROM loading. [David Haywood]
+- 8009: video/upd7220.cpp: Treat zero bitmap partition length as maximum size (fixes Madou Monogatari). [Angelo Salese, sampson]
+- 8010: docs: Updated build requirements for Ubuntu Linux. [algestam]
+- 8011: seta.cpp: Added developer Jordan I.S. to manufacturer for Arbalester and Meta Fox. [David Haywood]
+- 8017: pc9801.cpp: Added support for 1-bit DAC. [Angelo Salese]
+- 8020: fmtowns_flop_cracked.xml, fmtowns_flop_misc.xml, fmtowns_flop_orig.xml: Added latest dumps, and reclassified entries. [r09]
+- 8021: sms.xml, gamegear.xml: Added several prototypes. [smspower, quasiscroto]
+- 8022: cpu/m68000: Implemented FMOVEM mode 3 (fixes issues with Domain/OS and NeXTSTEP). [Calvin Buckley]
+- 8023: rx78_cart.xml: Cleaned up list of known software. [David Silva]
+- 8025: rfslotsmcs48.cpp: Added D8748 microcontroller dump for ajofrin. [jordigahan, ClawGrip]
+- 8026: plugins/console: Store history file in plugin data home path. [Szunti]
+- 8027: gamegear.xml: Added 23 Taiwanese cartridges, and fixed MT07965. [smspower, quasiscroto]
+- 8031: namcos1.cpp: COrrected galaga88 program ROM labels. [neSneSgB]
+- 8033: asuka.cpp: Added U.N. Defense Force: Earth Joker clone. [JammaFever, Nebula, Recreativos Piscis, Sergio Galiano]
+- 8036: rmnimbus.cpp: Added three BIOS revisions, and corrected some ROM labels and dates. [qazmko1029]
+- 8037: joctronic.cpp: Added Pin Ball. [Eduardo Anay, ClawGrip]
+- 8038: ibm5150.xml: Added five entries. [The Good Old Days, ArcadeShadow]
+- 8039: ibm5170.xml: Added four entries. [The Good Old Days, OldGames.sk, ArcadeShadow]
+- 8040: pce.xml: Replaced bad dumps with verified correct dumps (fixes graphical glitches in Gomola Speed). [quasiscroto]
+- 8041: pce_tourvision.xml: Updated to match pce.xml. [quasiscroto]
+- 8043: amstr_pc.cpp: Restored comment on closing brace for anonymous namesapce. [rfka01]
+- 8046: Moved Yamaha FM synthesis emulation to a third-party library. [Aaron Giles]
+- 8047: ksys573.cpp: Added incomplete support for Dance Dance Revolution Karaoke Mix. [Windy Fairy]
+- 8050: a800_flop.xml: Added five entries. [A8SP, quasiscroto]
+- 8051: sms.xml: Added seven recently-published cartridges. [Kagesan, Ichigo, Snags, quasiscroto]
+- 8053: namcos1.cpp: Fixed abbreviated titles, and added allow continue DIP switch for Berabowman. [sasuke]
+- 8055: cyclemb.cpp: Removed imperfect sound flag from cyclemb and skydest. [sasuke]
+- 8056: cyclemb.cpp: Removed unsupported cocktail mode flag from cyclemb and skydest. [sasuke]
+- 8058: fmtowns_cd.xml: Added eight entries, replaced 21 entries with better dumps, and added one missing floppy image. [r09]
+- 8059: bus/vsmile: Added Smart Keyboard in US, French, and German layouts. [Ryan Holtz, PulkoMandy]
+- 8060: video/gime.cpp: Fixed timer and interrupt issues causing problems with CoCo 3 Arkanoid sound. [Tim Lindner]
+- 8063: mitchell.cpp: Added Dokaben 2. [ShouTime, Team Japump, David Haywood]
+- 8064: missbamby.cpp: Add missing PROM to Golden Winner. [@LosTrastosDeXaX, ClawGrip]
+- 8067: ibm5150.xml: Added four entries. [archive.org, The Good Old Days, ArcadeShadow]
+- 8068: ibm5170.xml: Added six entries [archive.org, The Good Old Days, ArcadeShadow]
+- 8070: osd/sdl: Added support for -attach_window on X11. [Nathan Woods]
+- 8071: ladybug.cpp: Added Mrs. Dynamite. [Marco Kerstens, Sam Grech, Frank Palazzolo]
+- 8072: joctronic.cpp: Re-dumped sound ROM for jpinball. [Eduardo Anay, ClawGrip]
+- 8074: namcos2.cpp: Force 32×32 pixel sprite size for finallap (fixes title screen). [David Haywood]
+- 8075: coco3.cpp: Fixed Diecom light gun. [Tom Lindner]
+- 8076: gunpey.cpp: Added save state support, cleaned up code, and expanded notes. [cam900]
+- 8077: m72.cpp: Fixed FM/DAC sound output balance. [cam900]
+- 8078: coco3.cpp: Fixed GIME selection fox $FF22 (MT05138, MT07512). [Tim Lindner]
+- 8079: dai3wksi.cpp: Added Warp 1 (Japan). [Team Japump, Wayder]
+- 8080: sound/c140.cpp: Implemented playback status register (fixes engine sounds in namcos2.cpp racing games). [Angelo Salese]
+- 8081: lib/formats: Fixed compilation when <functional> is not implicitly included. [Brandon Munger]
+- 8085: coco3.cpp, video/cime.cpp: Moved PIA write monitoring logic into GIME device. [Tim Lindner]
+- 8086: mcr68k.cpp: Added Basket Ball (8-way joystick bootleg of Arch Rivals). [jordigahan, ClawGrip]
+- 8087: sound/c6280.cpp: Fixed volume envelope shape (fixes spurious tremolo effect). [Leonardo Demartino]
+- 8088: floptool: Fixed incorrect arguments in error messages. [Kelvin Sherlock]
+- 8089: Improved description for Dance Dance Revolution Karaoke Mix. [Windy Fairy]
+- 8090: 3rdparty/ymfm: Implemented YMF278B PCM functionality, and fixed a number of edge cases. [Aaron Giles]
+- 8091: spectrum_cass.xml: Added 33 entries, and replaced five entries with better dumps. [ArcadeShadow]
+- 8092: namcos2.cpp, tceptor.cpp, video/namco_c45road.cpp: Adjusted road position to better match hardware videos. [David Haywood]
+- 8093: philipsbo.cpp: Added skeleton driver for Philips BO (Videosynthesizer Prototype). [Ryan Holtz, MrMii6, CD-i Fan]
+- 8095: apple2_flop_clcracked.xml, apple2_flop_orig.xml: Added latest original media dumps and clean cracks. [4am, Firehawke]
 
 
 Source Changes
@@ -2692,29 +2249,3 @@ Dragon Games (cleanly cracked) [4am, Firehawke]
 -swim: Fixed bugs linked to device selection [Olivier Galibert]
 
 -Clean up metadata [Vas Crabb]
-
-
-New working machines
---------------------
-Mrs. Dynamite [Frank Palazzolo]
-
-
-Machines promoted to working
-----------------------------
-Cal Omega - Game 18.4 (Pixels) [Roberto Fresca, Grull Osgo]
-
-
-Comparing 0.231 (mame0231) to 0.231 (unknown)
-
-New working machines
---------------------
-Cal Omega - Game 18.4 (Pixels)
-Mrs. Dynamite
-
-New machines marked as NOT_WORKING
-----------------------------------
-DECstation 2100
-
-New clones marked as NOT_WORKING
---------------------------------
-Dance Dance Revolution Karaoke Mix (GQ921 VER. JBB)
