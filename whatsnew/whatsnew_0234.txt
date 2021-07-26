@@ -1,10 +1,10 @@
-0.234 2021-07-2x
+0.234 2021-07-28
 ----------------
 
 
 MAME Testers Bugs Fixed
 -----------------------
-- 02356: [Graphics] (batman.cpp) batman: [possible] Blue line on the edge of some ending screens. (David Haywood)
+- 02356: [Graphics] (batman.cpp) batman: [possible] Blue line shows on the edge of some ending screens. (David Haywood)
 - 05261: [Graphics] (namcos2.cpp) burnforc: Part of the waterline is missing. (David Haywood)
 - 05358: [Graphics] (namcofl.cpp) finalapr and clones: Objects on the side of the track are not visible. (Ryan Holtz)
 - 05617: [Graphics] (zr107.cpp) midnrun, jetwave, waveshrk, windheat and clones: Display blacks out periodically. (Ville Linde)
@@ -321,7 +321,7 @@ Merged pull requests
 - 8245: vsmjtria.cpp: Fixed coin input polarity, improved communications, and added NVRAM clear switch. [Angelo Salese]
 - 8246: galaxian.cpp: Added Space Mission (Spanish bootleg of Scramble). [Arcade Planet, Victor Fernandez (City Game), ClawGrip]
 - 8247: bus/nes: Added support for Palthena no Kagami and Lucky Rabbit FDS conversions, and fixed fuunsfds backgrounds. [kmg]
-- 8248: snes.xml: Replaced bad dump of mk2u, and removed duplicate mk2u. [kmg]
+- 8248: snes.xml: Replaced bad dump of mk2u, and removed duplicate mk3p1. [kmg]
 - 8250: nes.xml: Hooked up batman4, fifa96 and pizzamar VRC4 pirate cartridges properly. [kmg]
 - 8251: lwriter.cpp: Hooked up DIP switches, and changed default setting to “Serial Batch Mode 9600 Baud”. [Jeff Muizelaar]
 - 8252: Removed device tag lookups from various devices in favour of configurable object finders. [Miodrag Milanović]
@@ -329,7 +329,7 @@ Merged pull requests
 - 8254: lwriter.cpp Swapped SCC addresses, so interrupts match I/O addresses. [Jeff Muizelaar]
 - 8255: emu/emumem*: Removed Endianness template parameter from handler_entry_read, handler_entry_write and related classes. [AJR]
 - 8256: lwriter.cpp: Added a minimal stub simulation of the print controller. [Jeff Muizelaar]
-- 8257: dgpix.cpp: Explicitly listed four known undumped games in comment [HeroponRikiBestest]
+- 8257: dgpix.cpp: Explicitly listed four known undumped games in comment. [HeroponRikiBestest]
 - 8258: lwriter.cpp: Stubbed out EEPROM with fixed values to get the machine to boot to the PostScript Executive. [Jeff Muizelaar]
 - 8259: cave.cpp: Fixed address map for Pac-Carnival, and promoted machine to working. [Devin Acker]
 - 8260: 32x.xml: Added Motherbase (Euro). [Xenon, kmg]
@@ -348,12 +348,12 @@ Merged pull requests
 - 8276: chexx.cpp: Corrected ROM checksums for olihockeya. [ClawGrip]
 - 8277: bus/nes: Added support for Kaiser KS7016B and KS7021A bootlegs, and fixed KS7016 bootlegs. [kmg]
 - 8278: machine/megacd.cpp: Fixed address calculation for main CPU access to PRGRAM. [Damian Rogers]
-- 8279: acrnsys.cpp: Changed BREAK key type to avoid initially disabling the keyboard device by default. [Steven Coomber]
+- 8279: acrnsys.cpp: Changed BREAK key input type to avoid initially disabling the keyboard device by default. [Steven Coomber]
 - 8281: Fixed support for 12-bit mapper numbers in NES 2.0 loader. [kmg]
 - 8282: c64_cass.xml: Added thirty items. [The Ultimate Tape Archive Team, Steven Coomber]
 - 8283: fmtowns_flop_*.xml: Added thirteen items, and replaced three items with better dumps. [cyo.the.vile, wiggy2k, r09]
 - 8284: gameboy.xml, gbcolor.xml: Fixed some parent/clone relationships, and improved some short names. [kmg]
-- 8286: cpu/spc700: Removed workaround for targets with 16-bit char types. [David Viens]
+- 8286: cpu/spc700: Removed obsolete workaround for targets with 16-bit char types. [David Viens]
 - 8286: Dumped sound sample ROMs for Olimpic Hockey (EM Bubble Hockey) games. [Museo del Recreativo, Recreativas.org, ClawGrip]
 - 8287: cpu/m68000: Implemented FATAN instruction using Bochs SoftFPU x87 FPATAN code. [Calvin Buckley]
 - 8288: vsmilem_cart.xml: Added eight items. [skaman, ClawGrip]
@@ -367,214 +367,35 @@ Merged pull requests
 - 8297: discoboy.cpp: Fixed discoboyp tile banking; konamigx.cpp: Added default EEPROM content for mtwinbee. [David Haywood]
 - 8298: Allow controller configuration files to configure specific fields and updated documentation. [Vas Crabb]
 - 8299: video/namco_c355spr.cpp: Fixed sprite attribute table index mask (fixes missing sprites in finalapr). [Ryan Holtz]
-- 8301: nes.xml: Added some Super Mario Bros. 2 and FDS conversion bootlegs. [famiac, krzysiobal, NewRisingSun, kmg]
+- 8301: nes.xml: Added some Super Mario Bros. 2 bootlegs and FDS conversion bootlegs. [famiac, krzysiobal, NewRisingSun, kmg]
 - 8302: video/namco_c355spr.cpp: Adjusted attribute table index mask to fix vshoot. [Ryan Holtz]
 - 8305: video/namco_c355spr.cpp: Added raster interrupt timing kludge, and fixed some sprite positions. [David Haywood, Ryan Holtz]
 - 8307: pc98.xml: Added OS/2 J2.11 [huoqianyu, flyingharuka, r09]
-
-8308: bus/nes: Improved emulation of a SMB3 bootleg. [0kmg]
-- Corrected IRQ behavior. Fixes almost all flickering on status bar divider line.
-- Corrected various minor details that don't affect emulation but are accurate to PCB.
-- PRG ROM is on two DIPs. Split image to reflect that.
-
-8310: samcoupe_flop.xml: New software list additions [ArcadeShadow]
-### New working software list additions
-Castle [World of SAM]
-Lemmings [World of SAM]
-Prince of Persia [World of SAM]
-Sophistry [World of SAM]
-
-8312: saturn.xml: Updated metadata (name; year) [ArcadeShadow]
-### Updated metadata (name; year; cloneof)
-All the changes are based on the information provided by _https://segaretro.org_
-
-8314: namco_c355spr.cpp: treat 'dy' as signed, seems a more logical solution to finalapr 'missing objects' and also fixes the flags
-  on course select screen [DavidHaywood]
-
-8315: lwriter.cpp: Reimplement the 0x600000-0x7fffff range to bitwise-OR on write. [jrmuizel]
-This appears to be the desired effect of the code using this range.
-It fixes the rasterization of the '5' glyph in the test page and avoids
-the "Fatal system error @ 0x2a8416" buffer overflow in glyph the cache
-when writting out the last byte of the bitmap because it ends up or'ing
-with zero instead of overwritting with zero.
-Fixes #8309
-
-8316: bus/nes: Added support for a Batman bootleg. [0kmg]
-New working software list additions (nes.xml)
------------------------------------
-Batman - The Video Game (pirate) [famiac]
-
-8317: upd7220: During a GCHRD command always start with pram[15] [brijohn]
-When rendering the pattern in pram[8]-pram[15] the gchrd command should always start with pram[15]. Currently it will start at
-  pram[8+n], where n is the height of your fill area. This works fine when the height is a multiple of 8, but otherwise the wrong
-  bytes of the pattern buffer are accessed.
-This fixes some display bugs on the QX-10 system when using mfbasic.com
-
-8318: tapperb eprom update [tacotown]
-Recently had a board sent to me with dates not found in MAME for tapper. After reading in the EPROMS, the data matched the tapperb
-  set.  Updated the code with the dates found on the EPROMs.
-Let me know if you'd like to have the EPROMs renamed to match the others. If so, I believe they should be:
-tapper_c.p.u._pg_0_1c_1-12-84.1c
-tapper_c.p.u._pg_1_2c_1-12-84.2c
-tapper_c.p.u._pg_2_3c_1-12-84.3c
-tapper_c.p.u._pg_3_4c_1-12-84.4c
-!tapperb
-
-8319: qx10: Fix color video mode to display proper colors [brijohn]
-This fixes the qx-10 emulation so it will display the proper colors when configured for color video
-
-8320: bus/nes: Added support for another Ai Senshi Nicol bootleg. [0kmg]
-- Also changed nazomfds to reflect lack of battery backed RAM. Game remains not working.
-New working software list additions
------------------------------------
-Ai Senshi Nicol (Asia, FDS conversion, alt) [anonymous]
-
-8332: bus/nes: Explicitly clear IRQs in almanfds (and clones). [0kmg]
-
-8334: bus/nes: Added support for a Moero TwinBee FDS conversion. [0kmg]
-New working software list additions (nes.xml)
------------------------------------
-Moero TwinBee - Cinnamon Hakase o Sukue! (FDS conversion) [famiac]
-
-8335: snes.xml: some recent prototype goodies [0kmg]
-New working software list additions
------------------------------------
-Addams Family Values (prototype) [snescentral, VGHF]
-Armored Police Metal Jack (USA, early prototype) [snescentral, VGHF]
-Congo's Caper (prototype) [snescentral, VGHF]
-Might and Magic II - Gates to Another World (USA, prototype) [snescentral, VGHF]
-Might and Magic II - Gates to Another World (USA, earlier prototype) [snescentral, VGHF]
-Operation Thunderbolt (prototype) [snescentral, VGHF]
-Rock n' Roll Racing (USA, prototype) [snescentral, VGHF]
-Street Racer (prototype) [snescentral, VGHF]
-Tom &amp; Jerry (USA, prototype, alt) [snescentral, VGHF]
-World Cup USA 94 (USA, prototype) [snescentral, VGHF]
-Mortal Kombat 3 (USA, final prototype) [togemet2]
-New NOT_WORKING software list additions
----------------------------------------
-Mortal Kombat II (USA, final prototype) [togemet2]
-
-8336: ibm5170: new software lists additions [davide125]
-New working software list additions
------------------------------------
-Caldera OpenDOS 7.01 (3.5" 1.44MB) [archive.org]
-Caldera OpenDOS 7.01 (3.5" 720KB) [archive.org]
-Caldera OpenDOS 7.01 (5.25" 1.2MB) [archive.org]
-Caldera OpenDOS Lite 7.01 (3.5" 1.44MB) [archive.org]
-Caldera OpenDOS Lite 7.01 (3.5" 720KB) [archive.org]
-Caldera OpenDOS Lite 7.01 (5.25" 1.2MB) [archive.org]
-DR DOS 6.0 [archive.org]
-DR DOS 7.03 [archive.org]
-DR DOS Lite 7.03 [archive.org]
-OS/2 Black Jack [archive.org]
-OS/2 Poker [archive.org]
-OS/2 Warp [archive.org]
-OS/2 Warp 3 FixPak XR_W040 [archive.org]
-OS/2 Warp Connect with Win-OS/2 [archive.org]
-OS/2 Warp with Win-OS/2 [archive.org]
-Windows NT 3.1 Workstation (3.10.511.1) [WinWorld]
-Windows NT 3.1 Workstation (3.10.511.1) [3.5" floppy] [WinWorld]
-Windows NT 3.51 Workstation (3.51.1057.1) [WinWorld]
-Windows NT 3.5 Workstation (3.50.807) [WinWorld]
-Windows NT 3.5 Workstation (3.50.807) [3.5" floppies] [WinWorld]
-
-8337: ibm5170_cdrom: new software list additions [davide125]
-New working software list additions
------------------------------------
-Caldera OpenDOS Machine Readable Source Kit (M.R.S) 7.01 [archive.org, Davide Cavalca]
-IBM AttachPak for OS/2 Warp Connect [archive.org]
-IBM DEMOpkg for OS2 - First Edition 99Q3 [archive.org]
-Lotus Notes Express v3.30 for OS2, Special Promotion Copy NFR [archive.org]
-Lotus SmartSuite for OS/2 Warp 4 [archive.org]
-OS/2 Warp [archive.org]
-OS/2 Warp Connect with Win-OS/2 [archive.org]
-OS/2 Warp Special CD - november 1995 [archive.org, Davide Cavalca]
-OS/2 Warp with Win-OS/2 [archive.org]
-PC DOS 7 [archive.org]
-Windows NT 3.1 Workstation (3.10.511.1) [WinWorld]
-Windows NT 3.51 Workstation (3.51.1057.1) [WinWorld]
-
-8338: ibm5170_hdd: new software lists additions [davide125]
-New working software list additions
------------------------------------
-Caldera OpenDOS 7.01 [Davide Cavalca]
-Caldera OpenDOS Lite 7.01 [Davide Cavalca]
-DR DOS 7.03 [Davide Cavalca]
-DR DOS Lite 7.03 [Davide Cavalca]
-OS/2 Warp Connect with Win-OS/2 [Davide Cavalca]
-OS/2 Warp with Win-OS/2 [Davide Cavalca]
-
-8339: next_hdd: promote nextstep_3_1 and nextstep_3_2 to working [davide125]
-Software list items promoted to working
----------------------------------------
-NeXTSTEP 3.1
-NeXTSTEP 3.2
-
-8341: Final batch of Apple disks for July 2021 [Firehawke]
-New working software list additions (apple2_flop_orig.xml)
-----------------------------------------------------------
-Stickybear Math 2 (1988 Re-release) (800K 3.5") [4am, Firehawke]
-Stickybear Opposites (1989 Re-release) (800K 3.5") [4am, Firehawke]
-Stickybear Town Builder (1988 Re-release) (800K 3.5") [4am, Firehawke]
-Stickybear Typing (1988 Re-release) (800K 3.5") [4am, Firehawke]
-Spelling Rules (1989 Re-release) (800K 3.5") [4am, Firehawke]
-Sentence Fun (1989 Re-release) (800K 3.5") [4am, Firehawke]
-Alge-Blaster Plus! (Version 1.0) (800K 3.5") [4am, Firehawke]
-Mickey's Crossword Puzzle Maker (800K 3.5") [4am, Firehawke]
-
-8342: ibm5170.xml: New working software list additions [ArcadeShadow]
-### New working software list additions
-F-15 Strike Eagle III (3.5") [The Good Old Days]
-F-15 Strike Eagle III (5.25") [The Good Old Days]
-FIFA International Soccer [The Good Old Days]
-Might and Magic: Clouds of Xeen [The Good Old Days]
-Might and Magic: Darkside of Xeen [The Good Old Days]
-Moonstone [Old-Games]
-Panzer General [The Good Old Days]
-Populous 2: Trials of the Olympian Gods (3.5") [The Good Old Days]
-Populous 2: Trials of the Olympian Gods (5.25") [The Good Old Days]
-Robocop 3 [The Good Old Days]
-
-8344: bus/nes: Added support for 4 multicarts. [0kmg]
-New working software list additions (nes.xml)
------------------------------------
-10 in 1 (CTC-09) [anonymous]
-11 in 1 (K-3046) [anonymous]
-16 in 1 (SA005-A) [anonymous]
-4 in 1 (TJ-03) [anonymous]
-
-8345: spectrum_cass: metadata update (publisher, year, cloneof) [ArcadeShadow]
-Metadata update (publisher, year, cloneof) based on the information of spectrumcomputing.co.uk and worldofspectrum.org
-
-8347: nes.xml: Hooked up some multicarts to existing emulation. [0kmg]
-Software list items promoted to working
----------------------------------------
-4 in 1 (Alt 2)
-4 in 1 (Alt 3)
-Reset Based 4 in 1
-
-8348: ibm5150: New working software list additions [ArcadeShadow]
-### New working software list additions
-Crime Wave (5.25", v1.1) [The Good Old Days]
-Crime Wave (5.25", v2.0) [The Good Old Days]
-
-8349: New Working clone added [algestam]
-----------
-Tronica: Spider [algestam]
-
-8353: bus/nes: Added support for Cartridge Story multicarts. [0kmg]
-- Renamed Elfland 200-in-1's device with bmc- prefixes to be consistent with related multicarts. Promoted to working since
-  everything is in working order.
-- Throw in Elfland singleton cart since it's been separately dumped.
-New working software list additions (nes.xml)
------------------------------------
-72 in 1 Cartridge Story [MLX]
-80 in 1 Cartridge Story (II) [Yahweasel]
-90 in 1 Cartridge Story (III) [MLX]
-Elfland [NewRisingSun]
-Software list items promoted to working (nes.xml)
----------------------------------------
-200 in 1 - Elfland
+- 8308: bus/nes: Improved emulation of Super Chaoji Sandai 3. [kmg]
+- 8310: samcoupe_flop.xml: Added four items. [World of SAM, ArcadeShadow]
+- 8312: saturn.xml: Improved metadata for several items. [ArcadeShadow]
+- 8314: namco_c355spr.cpp: Interpret Y displacement as sign/magnitude (fixes missing graphics in Final Lap R). [David Haywood]
+- 8315: lwriter.cpp: Made writes to 0x600000-0x7fffff perform bitwise OR with contents of RAM (GitHub #8309). [Jeff Muizelaar]
+- 8316: bus/nes: Added support for a Batman bootleg. [kmg]
+- 8317: video/upd7220.cpp: Fixed pattern buffer start offset for GCHRD command (used by mfbasic.com on QX-10). [Brian Johnson]
+- 8318: mcr.cpp: Added comments for dates seen on tabberb EPROM labels. [tacotown]
+- 8319: qx10.cpp: Fixed video RAM address calculation for color mode. [Brian Johnson]
+- 8320: bus/nes: Added support for an Ai Senshi Nicol FDS conversion bootleg. [kmg]
+- 8332: bus/nes: Explicitly release interrupt line for Kaiser KS7017 cartridges (almanfds and similar). [kmg]
+- 8334: bus/nes: Added support for a Moero TwinBee FDS conversion bootleg. [famiac, kmg]
+- 8335: snes.xml: Added twelve recently-dumped prototypes. [snescentral, VGHF, togemet2, kmg]
+- 8336: ibm5170.xml: Added several OpenDOS, DR DOS, OS/2, and Windows NT distributions. [archive.org, WinWorld, Davide Cavalca]
+- 8337: ibm5170_cdrom.xml: Added twelve items. [archive.org, WinWorld, Davide Cavalca]
+- 8338: ibm5170_hdd.xml: Added pre-installed OpenDOS, DR DOS and OS/2 Warp hard disk images. [Davide Cavalca]
+- 8339: next_hdd.xml: Promoted NeXTSTEP 3.1 and NeXTSTEP 3.2 to working as they now complete booting. [Davide Cavalca]
+- 8341: apple2_flop_orig.xml: Added latest original software dumps. [4am, Firehawke]
+- 8342: ibm5170.xml: Added ten items. [The Good Old Days, OldGames.sk, ArcadeShadow]
+- 8344: bus/nes: Added support for four pirate multi-game cartridges. [kmg]
+- 8345: spectrum_cass.xml: Cleaned up metadata for many entries. [spectrumcomputing.co.uk, worldofspectrum.org, ArcadeShadow]
+- 8347: nes.xml: Hooked up two pirate multi-game cartridges to existing emulation. [kmg]
+- 8348: ibm5150.xml: Added two versions of Crime Wave. [The Good Old Days, ArcadeShadow]
+- 8349: hh_sm510.cpp: Added Spider (Tronica) (Space Mission with different artwork). [algestam]
+- 8353: Added support for Cartridge Story multi-game cartridges. [MLX, Yahweasel, kmg]
 
 
 Source Changes
@@ -2005,126 +1826,3 @@ VS Mahjong Triangle [Angelo Salese, Vas Crabb]
 -srcclean for 0.234 branch [Vas Crabb]
 
 -debugimgui: fix mount and create image dialogs. [Barry Rodewald]
-
-
-New working machines
---------------------
-10 Computer Hits 2 (Beau-Jolly, alt) [C64 Ultimate Tape Archive V2.0]
-10 Computer Hits 3 (Beau-Jolly) [C64 Ultimate Tape Archive V2.0]
-10 Computer Hits 4 (Beau-Jolly) [C64 Ultimate Tape Archive V2.0]
-10th Frame (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-1942 (Elite Systems) [C64 Ultimate Tape Archive V2.0]
-1942 (Elite Systems, alt) [C64 Ultimate Tape Archive V2.0]
-1943: The Battle of Midway (Go!) [C64 Ultimate Tape Archive V2.0]
-3D Pool (Firebird) [C64 Ultimate Tape Archive V2.0]
-3D Pool (Kixx) [C64 Ultimate Tape Archive V2.0]
-4 Most Horror (Alternative Software) [C64 Ultimate Tape Archive V2.0]
-4 Soccer Simulators (Codemasters) [C64 Ultimate Tape Archive V2.0]
-4th & Inches (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-5th Gear (Prism Leisure) [C64 Ultimate Tape Archive V2.0]
-6 Computer Hits (Beau-Jolly) [C64 Ultimate Tape Archive V2.0]
-6 Computer Hits (Beau-Jolly, alt) [C64 Ultimate Tape Archive V2.0]
-6 Pak (Elite Systems) [C64 Ultimate Tape Archive V2.0]
-720 (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-A View to a Kill (Domark) [C64 Ultimate Tape Archive V2.0]
-ACE: The Air Combat Emulator (Cascade Games) [C64 Ultimate Tape Archive V2.0]
-AcroJet (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-Action Pack (Prism Leisure Corporation, alt) [C64 Ultimate Tape Archive V2.0]
-Addicted to Fun: Rainbow Collection (Ocean) [C64 Ultimate Tape Archive V2.0]
-Advanced Pinball Simulator (Codemasters) [C64 Ultimate Tape Archive V2.0]
-Adventures of Bond... Basildon Bond (Probe Software) [C64 Ultimate Tape Archive V2.0]
-Alleykat (Hewson Consultants, alt) [C64 Ultimate Tape Archive V2.0]
-Altered Beast (Activision) [C64 Ultimate Tape Archive V2.0]
-Alternative World Games (Gremlin Graphics) [C64 Ultimate Tape Archive V2.0]
-America's Cup Challenge (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-Anarchy (Rack It, alt) [C64 Ultimate Tape Archive V2.0]
-Annihilator (Rabbit Software) [C64 Ultimate Tape Archive V2.0]
-Anter-Planter (Romik Software) [C64 Ultimate Tape Archive V2.0]
-Arcade Force Four (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-Arcade Hits 2 in 1 (Elite Systems) [C64 Ultimate Tape Archive V2.0]
-Arkanoid (Imagine) [C64 Ultimate Tape Archive V2.0]
-Arkanoid: Revenge of Doh (Imagine) [C64 Ultimate Tape Archive V2.0]
-Armalyte (Thalamus) [C64 Ultimate Tape Archive V2.0]
-Armourdillo (Codemasters) [C64 Ultimate Tape Archive V2.0]
-Army Moves (Imagine) [C64 Ultimate Tape Archive V2.0]
-Athena (Imagine) [C64 Ultimate Tape Archive V2.0]
-Atomic Robo-Kid (Activision) [C64 Ultimate Tape Archive V2.0]
-Attack of the Mutant Camels (Llamasoft, alt) [C64 Ultimate Tape Archive V2.0]
-Auf Wiedersehen Monty (Gremlin Graphics) [C64 Ultimate Tape Archive V2.0]
-Avenger (Gremlin Graphics) [C64 Ultimate Tape Archive V2.0]
-
-
-New machines marked as NOT_WORKING
-----------------------------------
-Ace of Aces (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-APB (Domark, alt) [C64 Ultimate Tape Archive V2.0]
-Aquanaut (Interceptor Software) [C64 Ultimate Tape Archive V2.0]
-Asterix and the Magic Cauldron (Melbourne House) [C64 Ultimate Tape Archive V2.0]
-
-
-spectrum_cass (spectrum_cass.xml):
-  Renames
-    airwolfm -> airwolfb Airwolf (MCM)
-    actionfo_b -> actionf2 Action Force 2
-    emotions_a -> emotion_a E-Motion (Erbe - Serie 5 Estrellas) (set 1)
-    behindcl_h -> behindclb Behind Closed Doors
-    lightfor -> lightfor_b Light Force (Rack-It)
-    barbaria_g -> barbarinb Barbarian (Erbe)
-    airwolfe -> airwolfa Airwolf (Encore)
-    colossus_b -> colchess Colossus Chess 4 v4.0
-    colossus_c -> colchessc Colossus Chess 4 v4.2 (EDOS)
-    colossus_d -> colchessa Colossus Chess 4 v4.2
-    emotions -> emotion E-Motion
-    emotions_b -> emotion_b E-Motion (Erbe - Serie 5 Estrellas) (set 2)
-    barbaria -> barbarinc Barbarian (Kixx)
-    emotions_c -> emotion_c E-Motion (Musical 1)
-    airwolfz -> airwolfc Airwolf (Zafiro)
-    thelivin_b -> livinday The Living Daylights
-  Removed
-    A View To A Kill
-    A View To A Kill (Bug-Byte)
-    A View To A Kill - Bugfix
-    Barbarian
-    Barbarian (Melbourne House)
-    Barbarian (set 2)
-    Barbarian 2
-    Barbarian 2 (Kixx)
-    Behind Closed Doors - Customised Version
-    Behind Closed Doors 2 - The Sequel
-    Behind Closed Doors 2 - The Sequel (set 2)
-    Behind Closed Doors 3 - Revenge Of The Ants
-    Behind Closed Doors 3 - Revenge Of The Ants (set 2)
-    Behind Closed Doors 4 - Balrog's Day Out
-    Colossus Chess 4.0 (Zafiro)
-    Falcon Patrol 2 (set 2, Aackosoft)
-    Falcon Patrol 2 (set 3, Bug-Byte)
-    Light Force
-    The Adventures Of Eric Bean - The Lost Gnomes
-    The Adventures Of Sinbad
-    The Adventures Of St. Bernard
-    The Adventures Of St. Bernard (Mastertronic)
-    The Adventures Of Winnie-the-Pooh
-  Working
-    A View to a Kill
-    A View to a Kill (Bug-Byte)
-    A View to a Kill (bugfix)
-    Barbarian (Melbourne House)
-    Barbarian (Palace Software)
-    Barbarian (Palace Software, alt)
-    Barbarian II (Kixx)
-    Barbarian II: The Dungeon of Drax
-    Behind Closed Doors (customised version)
-    Behind Closed Doors 2: The Sequel
-    Behind Closed Doors 2: The Sequel (alt)
-    Behind Closed Doors 3: Revenge of the Ants
-    Behind Closed Doors 3: Revenge of the Ants (alt)
-    Behind Closed Doors 4: Balrog's Day Out
-    Colossus Chess 4 (Zafiro)
-    Falcon Patrol 2 (Bug-Byte)
-    Falcon Patrol 2 (alt)
-    Light Force
-    The Adventures of Eric Bean: The Lost Gnomes
-    The Adventures of Sinbad
-    The Adventures of St. Bernard
-    The Adventures of St. Bernard (Mastertronic)
-    The Adventures of Winnie-the-Pooh
