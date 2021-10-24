@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 ##
 ## license:BSD-3-Clause
 ## copyright-holders:Vas Crabb
@@ -7,6 +7,7 @@ import argparse
 import codecs
 import getpass
 import git
+import github3
 import io
 import os.path
 import re
@@ -15,62 +16,27 @@ import xml.sax
 import xml.sax.handler
 
 
-if sys.version_info > (3, ):
-    long = int
-    unichr = chr
+class GithubWrapper(object):
+    @staticmethod
+    def pull_request_username(pr):
+        return pr.user.login
 
+    def __init__(self, owner, repo, user, password=None, token=None, **kwargs):
+        super(GithubWrapper, self).__init__(**kwargs)
+        if (token is None) and (password is None):
+            self.session = github3.GitHub(user)
+        elif token is None:
+            self.session = github3.GitHub(user, password)
+        elif password is None:
+            self.session = github3.GitHub(user, token=token)
+        else:
+            self.session = github3.GitHub(user, password, token=token)
+        self.repo = self.session.repository(owner, repo)
 
-try:
-    import github3
-
-    class GithubWrapper(object):
-        @staticmethod
-        def pull_request_username(pr):
-            return pr.user.login
-
-        def __init__(self, owner, repo, user, password=None, token=None, **kwargs):
-            super(GithubWrapper, self).__init__(**kwargs)
-            if (token is None) and (password is None):
-                self.session = github3.GitHub(user)
-            elif token is None:
-                self.session = github3.GitHub(user, password)
-            elif password is None:
-                self.session = github3.GitHub(user, token=token)
-            else:
-                self.session = github3.GitHub(user, password, token=token)
-            self.repo = self.session.repository(owner, repo)
-
-        def fresher_pull_requests(self, commits):
-            for pr in self.repo.pull_requests(state='closed', sort='created', direction='asc'):
-                if (pr.merged_at is not None) and (pr.merge_commit_sha in commits):
-                    yield pr
-
-
-except ImportError:
-    import pygithub3
-
-    class GithubWrapper(object):
-        @staticmethod
-        def pull_request_username(pr):
-            return pr.user['login']
-
-        def __init__(self, owner, repo, user, password=None, token=None, **kwargs):
-            super(GithubWrapper, self).__init__(**kwargs)
-            if (token is None) and (password is None):
-                self.api = pygithub3.Github(user=owner, repo=repo, login=user)
-            elif token is None:
-                self.api = pygithub3.Github(user=owner, repo=repo, login=user, password=password)
-            elif password is None:
-                self.api = pygithub3.Github(user=owner, repo=repo, login=user, token=token)
-            else:
-                self.api = pygithub3.Github(user=owner, repo=repo, login=user, password=password, token=token)
-
-        def fresher_pull_requests(self, sha):
-            date = self.api.git_data.commits.get(sha).committer.date
-            for page in self.api.pull_requests.list(state='closed'):
-                for pr in page:
-                    if (pr.merged_at is not None) and (pr.merged_at > date):
-                        yield pr
+    def fresher_pull_requests(self, commits):
+        for pr in self.repo.pull_requests(state='closed', sort='created', direction='asc'):
+            if (pr.merged_at is not None) and (pr.merge_commit_sha in commits):
+                yield pr
 
 
 class Options(object):
@@ -113,7 +79,7 @@ class Options(object):
         parser.add_argument('-u', '--user', metavar='<username>', type=str, help='github username')
         parser.add_argument('-t', '--token', metavar='<token>', type=str, help='github personal access token')
         parser.add_argument('-o', '--out', metavar='<file>', type=str, help='output file')
-        parser.add_argument('-w', '--wrap', metavar='<column>', type=long, default=132, help='wrap width')
+        parser.add_argument('-w', '--wrap', metavar='<column>', type=int, default=132, help='wrap width')
         parser.add_argument('-a', '--append', action='store_const', const=True, default=False, help='append to output file')
         parser.add_argument('-v', '--verbose', action='store_const', const=True, default=False, help='verbose output')
         parser.add_argument('commit', nargs='*', help='scrape specific commits')
@@ -172,7 +138,7 @@ class Options(object):
                 for tag in self.repository.tags:
                     match = self.RELEASETAG.match(tag.name)
                     if match is not None:
-                        num = long(match.group(1))
+                        num = int(match.group(1))
                         if num > best:
                             self.release = tag
                             best = num
@@ -186,7 +152,7 @@ class Options(object):
                 version = self.VERSIONPART.match(self.release.name) if hasattr(self.release, 'name') else None
                 if not version:
                     self.fail('could not guess release candidate branch name')
-                self.candidate = self.find_revision('release0%ld' % (long(version.group(1)) + 1, ), 'release candidate', arguments.verbose)
+                self.candidate = self.find_revision('release0%ld' % (int(version.group(1)) + 1, ), 'release candidate', arguments.verbose)
 
             # come up with a title
             version = self.VERSIONPART.match(self.candidate.name) if hasattr(self.candidate, 'name') else None
@@ -195,7 +161,7 @@ class Options(object):
             else:
                 version = self.VERSIONPART.match(self.release.name) if hasattr(self.release, 'name') else None
                 if version:
-                    self.title = '0.%ld' % (long(version.group(1)) + 1, )
+                    self.title = '0.%ld' % (int(version.group(1)) + 1, )
                 else:
                     self.title = self.candidate.name if hasattr(self.candidate, 'name') else self.candidate.name_rev
 
@@ -292,7 +258,9 @@ class SoftlistComparator(object):
                     self.in_softlist = True
                     self.listname = attrs['name']
             elif not self.in_software:
-                if name != 'software':
+                if name == 'notes':
+                    self.ignored_depth = 1
+                elif name != 'software':
                     self.error_handler.fatalError(xml.sax.SAXParseException(
                             'Found unexpected element %s' % (name, ),
                             None,
@@ -711,7 +679,7 @@ def print_fresh_pull_requests(stream, wrapcol, repo, api, previous, current):
     for pr in api.fresher_pull_requests(commits):
         lines = markdown_url_pat.sub('\\1', pr.body).splitlines() if pr.body else ()
         title = u'%d: %s' % (pr.number, pr.title)
-        if (title[-1] == unichr(0x2026)) and pr.body and lines and lines[0] and (lines[0][0] == unichr(0x2026)):
+        if (title[-1] == chr(0x2026)) and pr.body and lines and lines[0] and (lines[0][0] == chr(0x2026)):
             title = title[:-1] + lines[0][1:]
             lines = lines[1:]
         title += u' [%s]' % (api.pull_request_username(pr), )
