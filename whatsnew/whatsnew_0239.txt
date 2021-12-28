@@ -1,4 +1,4 @@
-0.239 2021-12-xx
+0.239 2021-12-29
 ----------------
 
 
@@ -12,7 +12,7 @@ MAME Testers Bugs Fixed
 - 03754: [Sound] (thunderx.cpp) scontra, scontraj: Sound plays too slowly and channel volume balance is incorrect. (Aaron Giles)
 - 04825: [Sound] (vendetta.cpp) vendetta: Music tempo is slower in MAME than on a real PCB. (Aaron Giles)
 - 05919: [Graphics] (gaelco.cpp) thoop: Sprites are incorrectly drawn over foreground objects. (David Haywood)
-- 06393: [Gameplay] (vendetta.cpp) vendetta (all versions): Hit boxes for some grounded enemies are incorrectalese)
+- 06393: [Gameplay] (vendetta.cpp) vendetta (all versions): Hit boxes for some grounded enemies are incorrect. (Angelo Salese)
 - 06764: [Misc.] (deco32.cpp) captaven and clones: Sound is out of sync with video for end credits sequence. (Aaron Giles)
 - 07078: [Sound] (tmnt.cpp) tmnt, tmntua, tmntj: Music plays slower than it should. (Aaron Giles)
 - 07153: [DIP/Input] (asteroid.cpp) Apparently all systems: SlikStick configuration for asteroid isn’t applied. (Vas Crabb)
@@ -48,7 +48,7 @@ Tom Storey Z80 based, triple time zone clock [smf]
 
 New working clones
 ------------------
-Ataka asteroidov [algestam Milan Galcik]
+Ataka asteroidov [algestam, Milan Galcik]
 Chouji Meikyuu Legion (Japan ver 1.05, set 2) [system11]
 Fidelity Electronics Designer Mach III Master 2265 (set 2) [Berger]
 DoDonPachi Dai-Ou-Jou Black Label (Japan, 2002.10.07.Black Ver, newer) [Blomman, MetalliC, rtw]
@@ -302,421 +302,73 @@ Merged pull requests
 - 8937: hh_sm510.cpp: Added Elektronika Hockey. [algestam, Milan Galcik]
 - 8939: bus/nscsi/hd.cpp: Implemented MODE SELECT 6 (fixes GitHub #8922). [einstein95]
 - 8940: c64_cass.xml: Added sixteen items. [The Ultimate Tape Archive Team, Steven Coomber]
-
-8941: nes.xml: Remove cloneof from games that are independent ports. [0kmg]
-
-8942: dec0.cpp: Correct note about DEM-01 [Caps0ff] [clawgrip]
-It's a Fujitsu MB8421 Dual port SRAM.
-Since it's a supported device (src/devices/machine/mb8421.cpp), maybe it should be correctly hooked up on the driver.
-
-8943: bus/nes_ctrl: Updated Partytap controller. [0kmg]
-- Project Q now detects the controller and inputs work.
-
-8944: flower.cpp: Replace hardcoded tags to region pointers, Fix some sound/cocktail mode behaviors [cam900]
-Use tilemap_t for text layer
-Add hardware notes
-Add notes for unknown sound register writes
-Add sound io register value for debug purpose
-Fix initializing behavior
-Use shorter/correct type values, Fix spacings
-Reference:
-https://youtu.be/ycbJMG09UZ0
-https://youtu.be/NolazjlEiAY
-https://youtu.be/8JOPTCWu67g
-
-8945: dvk_kcgd: add serial ports, replace log macro, clean up. [shattered]
-
-8946: ibm5170.xml: New software list additions [ArcadeShadow]
-### New working software list additions
-Laser Squad (3.5", USA) [The Good Old Days]
-Laser Squad (5.25", Euro) [The Good Old Days]
-Night Shift [old-games.ru]
-Push-Over [The Good Old Days]
-Quest for Glory: Shadows of Darkness [The Good Old Days]
-Quest for Glory I: So You Want to Be a Hero [The Good Old Days]
-Quest for Glory III: Wages of War [The Good Old Days]
-### New non-working software list additions
-Quicky: The Computer Game (Euro) [old-games.ru]
-Tony & Friends in Kellogg's Land (Germany) [old-games.ru]
-### Redump
-Creepers [The Good Old Days]
-_(the replaced set had a modified OEM ID)_
-
-8947: bus/nes_ctrl: Revised Bandai Hyper Shot to only use exp port calls. [0kmg]
-- Also corrected Space Shadow mirroring. Now game properly blanks background every other frame.
-
-8949: bus/nes_ctrl: Disentangled Famicom joypad 2 from expansion port code. [0kmg]
-- Removed read_exp call from fcpad2. The FC expansion port is not tied to the relevant line at all.
-- Replaced with read_bit2 in the control port interface for the same purpose.
-- Separated JOYPAD inputs from MIC. The microphone shouldn't be mixed with button inputs' shift register.
-machine/nes.cpp: Also removed read_exp calls on FC control ports. Other than the microphone on fcpad2 nothing used these (nor should
-  they as the only line in common is $4017 bit 0, which in general is never used by the expansion port).
-
-8953: ms32.cpp: Documenting Shutokou Red Zone as undumped [FMecha]
-Footage of the game - attract
-Hardware info per Hydregion's comments here.
-
-8955: New NOT_WORKING machines [clawgrip]
----------------------------
-Master Crane (set 1) [Israel León (Retrolover), ClawGrip]
-New NOT_WORKING clones
----------------------------
-Master Crane (set 2) [Israel León (Retrolover), ClawGrip]
-
-8956: bus/nes_ctrl: Work on Famicom joypads + more separation of EXP port. [0kmg]
-- Enforced proper strobe behavior on joypads. Added helper function to controller interface for common pattern.
-- Added proper expansion port version of joypad.
-- Streamlined pachinko controller by making it an expansion joypad subclass. Moreover, ball launch lever now works correctly!
-- Added missing battery-backed WRAM to Pachio-kun 5, game runs now.
-- Simplified arcade stick a bit, now also a subclass of the expansion joypad.
-- Rewrote Hori Twin and 4 Players adapters. The latter's 4P mode protocol now works. In theory this supports six players
-  simultaneously, though all known games using it have duplicate controls for P1 and P2.
-machine/nes.cpp: Removed hack that shifted bit 0 reads to support controller port joypads on expansion port. There shouldn't be any
-  expansion port devices left that write to bit 0.
-
-8957: microdar.cpp: Improve documentation for 'cfarwest' [clawgrip]
-
-8958: Updated Greek Translation [BraiNKilleRGR]
-
-8959: sms.xml: Noted Galactic Protector region issue. [0kmg]
-
-8960: ctk551: implement sound, promote to working [devinacker]
-Casio GT913 now has working audio, as well as a couple of CPU-related fixes. It's currently flagged as imperfect, mostly because I
-  ended up having to fudge volume envelopes a bit until I (or someone else) can dump one of the models that features patch editing.
-CTK-551 is now marked as working, but with `MACHINE_IMPERFECT_GRAPHICS` since it still needs the graphical portion of the LCD.
-  @galibert already made a nice SVG of the display (thanks again!), it just needs to be hooked up to the LCD controller at some
-  point. The machine is otherwise usable as-is, though.
-
-8962: vsnes.cpp: Fixed Balloon Fight bonus life DIP settings (MT8147). [0kmg]
-
-8964: cinemat.cpp: Fixed inputs for Space Wars/Space Ship (MT8148). [0kmg]
-- Added missing playfield reset button.
-- Fixed missing 'fire' and 'hyper space' buttons for Space Ship.
-
-8965: gamegear.xml: Added a non-working prototype. [0kmg]
-New NOT_WORKING software list additions
----------------------------------------
-BreakThru! (prototype) [smspower, VGHF]
-
-8970: Correct The Italian Job description [sjy96525] [sjy525]
-
-8971: Fixed MT07191 [sjy96525] [sjy525]
-
-8975: New working clones [0kmg]
-------------------
-Super Real Mahjong VS (Rev A) [Forest of Illusion]
-
-8977: c64_cass.xml: Added 10 entries [scoomby]
-New working software list additions
----------------------------------------
-Jack the Nipper (Gremlin Graphics) [C64 Ultimate Tape Archive V2.0]
-Jack the Nipper II: In Coconut Capers (Gremlin Graphics) [C64 Ultimate Tape Archive V2.0]
-James Bond 007 in The Living Daylights - The Computer Game (Domark) [C64 Ultimate Tape Archive V2.0]
-Jinks (Go!) [C64 Ultimate Tape Archive V2.0]
-Jon Ritman's Match Day II (Ocean) [C64 Ultimate Tape Archive V2.0]
-Juice! (System 3) [C64 Ultimate Tape Archive V2.0]
-Jump Jet (Anirog) [C64 Ultimate Tape Archive V2.0]
-Jungle Quest (Solar Software) [C64 Ultimate Tape Archive V2.0]
-Jungle Quest (Solar Software, alt) [C64 Ultimate Tape Archive V2.0]
-New NOT_WORKING software list additions
----------------------------------------
-Judge Dredd (Melbourne House) [C64 Ultimate Tape Archive V2.0]
-
-8978: gba.xml: Added another unreleased game. [0kmg]
-New working software list additions
------------------------------------
-Perplexus Diodomin (prototype) [James Boulton, GTW]
-
-8980: Revert "ctk551: implement sound, promote to working" [rb6502]
-Reverts mamedev/mame#8960.  Doesn't build at all on Clang.
-
-8981: c64_cass.xml: Added 15 entries [scoomby]
-New working software list additions
----------------------------------------
-Kayleth (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-Kennedy Approach (Transatlantic Simulations) [C64 Ultimate Tape Archive V2.0]
-Kettle (Alligata, alt) [C64 Ultimate Tape Archive V2.0]
-Killed Until Dead (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-Kinetik (Firebird) [C64 Ultimate Tape Archive V2.0]
-Klax (Domark) [C64 Ultimate Tape Archive V2.0]
-Knight Rider (Ocean) [C64 Ultimate Tape Archive V2.0]
-Konami's Coin-Op Hits (Imagine) [C64 Ultimate Tape Archive V2.0]
-Kong (Anirog) [C64 Ultimate Tape Archive V2.0]
-Kong (Anirog, alt) [C64 Ultimate Tape Archive V2.0]
-Kong Strikes Back! (Ocean) [C64 Ultimate Tape Archive V2.0]
-Krakout (Gremlin Graphics) [C64 Ultimate Tape Archive V2.0]
-Kwik Snax (Codemasters) [C64 Ultimate Tape Archive V2.0]
-New NOT_WORKING software list additions
----------------------------------------
-Knuckle Busters (Melbourne House) [C64 Ultimate Tape Archive V2.0]
-Kwah! (Melbourne House) [C64 Ultimate Tape Archive V2.0]
-
-8982: Revert "Revert "ctk551: implement sound, promote to working"" [rb6502]
-Reverts mamedev/mame#8980
-
-8983: Revert "uknc: de-skeletonize" [rb6502]
-Reverts mamedev/mame#8866
-
-8984: pcipc.cpp: Fix names of chipsets [qeeg]
-440HX and 440TX don't exist. 430HX and 430TX are the actual chipsets being emulated here.
-
-8985: gt913: minor cleanup (re: #8960) [devinacker]
-
-8986: machine/nes.cpp: Accomodate games that don't initialize RAM. [0kmg]
-Software list items promoted to working (nes.xml)
----------------------------------------
-Minna no Taabou no Nakayoshi Daisakusen (Japan) [kmg]
-
-8987: c64_cass.xml: Added 14 entries [scoomby]
-New working software list additions
----------------------------------------
-Labyrinth: The Computer Game (Activision) [C64 Ultimate Tape Archive V2.0]
-Last Mission (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-The Last Ninja (Activision) [C64 Ultimate Tape Archive V2.0]
-Last Ninja 2: Back with a Vengeance (System 3) [C64 Ultimate Tape Archive V2.0]
-Last Ninja 3 (System 3) [C64 Ultimate Tape Archive V2.0]
-Law of the West (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-Leader Board (Erbe) [C64 Ultimate Tape Archive V2.0]
-Leader Board: Executive Edition (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-Legend of Kage (Imagine) [C64 Ultimate Tape Archive V2.0]
-Licence To Kill (Domark) [C64 Ultimate Tape Archive V2.0]
-Little Computer People (Activision) [C64 Ultimate Tape Archive V2.0]
-Live Ammo (Ocean) [C64 Ultimate Tape Archive V2.0]
-Mag Max (Imagine) [C64 Ultimate Tape Archive V2.0]
-New NOT_WORKING software list additions
----------------------------------------
-Lotus Esprit Turbo Challenge (Gremlin Graphics) [C64 Ultimate Tape Archive V2.0]
-Note that I have demoted the existing Lotus Esprit Turbo Challenge (GBH) entry to not working status as this too fails to load
-  correctly
-
-8988: ymfm: Correct for free-running timer B multipler [aaronsgiles]
-This is an experimental fix to see how it impacts the Konami games, whose music runs too slow. May impact MT08146, MT07078, MT03737.
-I'm holding off putting it into mainline ymfm until I get confirmation that this produces the right result in MAME. The music is
-  certainly a bit faster in contra at least, so it is having an effect.
-
-8989: TS-Configuration for ZX Evolution - initial [holub]
-Let get started...
-Many things are in plans but need to have this merged in order to adjust future work to the standards and have less massive
-  incremental PRs.
-
-8991: machine/vsnes.cpp: Replaced MMC3 implementation with Namco 108. [0kmg]
-
-8992: poisk1: add vsync and hsync [shattered]
-
-8995: nes.xml: Added an unreleased prototype. [0kmg]
-New working software list additions
------------------------------------
-Hero Quest (Germany, prototype) [anonymous]
-
-9001: ngpc.xml: Added 2 dumps. [0kmg]
-New working software list additions
------------------------------------
-Pachinko Hisshou Guide - Pocket Parlor (Jpn, prototype) [Forest of Illusion]
-Choujou Kessen Saikyou Fighters - SNK vs Capcom - Taikenban (Jpn) [Forest of Illusion]
-
-9003: n64.xml: Added a couple test/demo cartridges. [0kmg]
-New NOT_WORKING software list additions
----------------------------------------
-Controller Checker Ver.1.01 [BehindTheCode, Forest of Illusion]
-Unknown RGB Test Cartridge [BehindTheCode, Forest of Illusion]
-
-9006: Fix chdman threading on cpus with many cores [tellowkrinkle]
-- Defaults chdman to all threads on the system (previously used a maximum of 4 threads)
-- Fixes a race condition that made chdman's rapid task allocation not properly wake up all threads (a thread wouldn't mark itself as
-  active until it started running, so if two tasks were scheduled in quick succession, the first would notify a thread, and the
-  second would see that that thread wasn't active yet (since it was notified but not yet running) and notify the *same* thread
-  instead of a new one).
-Side note: `osd_event` feels very easy to misuse.  In particular, the way it prevents inclusion of other checks under its lock makes
-  me worry about anything that attempts to combine it with other flags to conditionally call `set()`.  In addition to the old wake
-  code, `osd_work_queue::doneevent` does this with `osd_work_queue::waiting`.  I would recommend considering using a
-  `std::unique_lock` like `std::condition_variable`, which makes it easy to extend the locking period to cover other flags, or maybe
-  drop `osd_event` entirely in favor of directly using `std::mutex` and `std::condition_variable`
-
-9007: ibm5170_cdrom.xml [FoxhackDN]
-New software list additions
----------------------------------------
-SkyNET [Dave 'Foxhack' Silva]
-Terminator 2: Judgment Day - Chess Wars / Grandmaster Chess [Dave 'Foxhack' Silva]
-The Terminator: 2029 - Deluxe CD Edition [Dave 'Foxhack' Silva]
-The Terminator: Future Shock [Dave 'Foxhack' Silva]
-The Terminator: Rampage [Dave 'Foxhack' Silva]
-
-9008: besta: convert to VME device. [shattered]
-
-9009: ibm6580_kbd: clean up and simplify [shattered]
-
-9010: fds: Fixed IRQ regression + IRQ timer improvements. Fixes MT8041. [0kmg]
-
-9011: audio/flower.cpp: Fix Volume LUT ROM accessing, Add notes [cam900]
-
-9012: bus/nes: Removed duplicate board and mapper assignment. [0kmg]
-
-9013: nes.xml: Added some more recent chiptune related fare. [0kmg]
-New working software list additions
------------------------------------
-8Bit Music Power [anonymous]
-8Bit Music Power Final [anonymous]
-Kira Kira Star Night DX [anonymous]
-Neo Heiankyo Alien [anonymous]
-
-9014: vsnes.cpp: Fixed swapped dipswitches for vsbball. [0kmg]
-
-9016: ibm5150.xml: 7 New working softwares + 3 redumps [ArcadeShadow]
-### New working software list additions
-The Dream Team: 3 on 3 Challenge [old-games.ru]
-Hero's Quest: So You Want to be a Hero [The Good Old Days]
-Last Ninja 2: Back with a Vengeance [The Good Old Days]
-Police Quest II - The Vengeance (3.5", v1.001.000) [The Good Old Days]
-Rick Dangerous (Kixx release) [The Good Old Days]
-Rocket Ranger (UK) [The Good Old Days]
-SimEarth: The Living Planet (Europe, 5.25", v1.0) [The Good Old Days]
-### Redumps:
-Blades of Steel [The Good Old Days]
-Police Quest II - The Vengeance (5.25", v1.002.011, Sierra's Value Pack) [The Good Old Days]
-Police Quest II - The Vengeance (3.5", v1.002.011, Sierra's Value Pack) [The Good Old Days]
-
-9017: hp9825: changes to keyboard & other minor fixes [fulivi]
-Hi,
-this PR upgrades hp9825 emulation to prepare it for the keyboard & display layout I'm going to release soon.
-Thanks.
---F.Ulivi
-
-9018: ibm5150/5170.xml: add some copy-protected images [rzero9]
-These images were collected from various people that uploaded their raw flux dumps to the Internet Archive, so I have credited them
-  individually.
-A couple of notes:
-- Italy '90 isn't copy-protected, strictly speaking, but it was distributed on a 80-track disk with only the first 40 formatted. The
-  MFM image matches the first 40 tracks of the old one byte-for-byte, so there are no functional changes, but it represents the
-  actual layout of the disk better.
-- The "not working" games have been tested on an actual DOS PC with the HxC floppy emulator and the same images, and they work, so
-  I'm fairly confident that the issues are related to the emulation.
-New working software list additions (ibm5150.xml)
--------------------------------------------------
-Boulder Dash (3.5") [flyers80]
-Buffalo Bill's Rodeo Games [flyers80]
-F-19 Stealth Fighter (Version 435.04, disk + manual protection) [flyers80]
-Grand Prix Circuit [DFXThomas]
-King's Quest II: Romancing the Throne (v2.2, 3.5") [Gypsy Dave]
-King's Quest III: To Heir Is Human (v2.00, 5.25") [Gypsy Dave]
-Might and Magic: Book One: Secret of the Inner Sanctum [Gypsy Dave]
-Pro Tennis Tour [flyers80]
-Rampage [flyers80]
-Tennis Cup II [flyers80]
-The Black Cauldron (v1.1m) [Gypsy Dave]
-The Last Ninja [flyers80]
-Toi Acid Game [flyers80]
-New working software list additions (ibm5170.xml)
--------------------------------------------------
-Archer Maclean's Pool [flyers80]
-Striker [flyers80]
-Wizkid: The Story of Wizball II [flyers80]
-WWF European Rampage Tour [flyers80]
-New not working software list additions (ibm5150.xml)
------------------------------------------------------
-Back to the Future Part III [flyers80]
-Lemmings [flyers80]
-Midwinter [flyers80]
-Paperboy [flyers80]
-Pit-Fighter [flyers80]
-Replaced software list items (ibm5150.xml)
-------------------------------------------
-Italy '90 Soccer [flyers80]
-
-9019: midiin_device: handle channel remapping at playback time instead of load time [devinacker]
-feed1e143cbf088065df49d55454f1b21ef090ca unintentionally introduced a problem where trying to load a MIDI file from the command line
-  would attempt to read the config port before the machine was running. This reworks it a bit to wait and modify the MIDI status
-  bytes during playback instead of when initially loading/parsing the file.
-I also fixed a parsing issue where the opening byte of sysex events was getting lost.
-
-9020: n64.xml: Added a prototype of an unreleased game. [0kmg]
-New working software list additions
------------------------------------
-X'treme Roller (prototype) [Baker64]
-
-9021: Apple softlist update for December 2021 [Firehawke]
-This set was delayed briefly when it was discovered a number of 3.5" 800K sets had incorrect compatibility information in the
-  header. The incorrect information does not affect MAME's ability to work with the images, but could potentially give inaccurate
-  information to users about whether these disks work with the Apple IIe+.
-As such, this PR corrects the disks that need correcting and adds the rest of this month's set.
-
-9022: bus/nes: Added support for multicart board JY012005. [0kmg]
-New working software list additions (nes.xml)
------------------------------------
-1998 Super HiK 8 in 1 (JY-021B) [MLX]
-
-9023: bus/nes_ctrl: Minor cleanup for Konami Hyper Shot controllers. [0kmg]
-
-9024: bus/nes_ctrl: Updated mahjong controller based on hardware info. [0kmg]
-- Fixed reversed Start and Select buttons.
-- Added more labels to the multi-use buttons.
-
-9025: more consistent naming for Franklin ACE computers [ksherlock]
-
-9027: bus/nes_ctrl: Added a SNES controller port adapter. [0kmg]
-A SNES joypad or mouse can now be connected via adapter to either NES controller port.
-
-9028: cyclemb.cpp: reverse joystick up and down inputs on skydest (MT08162) [scoomby]
-
-9029: nes.xml: Added Holy Diver rerelease. [0kmg]
-New working software list additions
------------------------------------
-Holy Diver Collector's Edition [anonymous]
-
-9030: fmtowns_flop_orig.xml: 7 new dumps, 2 replacements [rzero9]
-- Changed the romanization of 日コン連企画 to "Nichikonren Kikaku" as seen in the official website (http://www.nichikon.co.jp/)
-- Replaced the Futoppara FD Heisei disks 7 and 10 with unmodified images
-New working software list additions (fmtowns_flop_orig.xml)
------------------------------------------------------------
-FMR/Towns Kihon DOS Tools [cyo.the.vile]
-Hometown, U.S.A. [cyo.the.vile]
-Hon'yaku Helper Zurukamashi [cyo.the.vile]
-Hon'yaku Helper Zurukamashi - Jisho Disk Junior [cyo.the.vile]
-Sadistic Gamers Syndrome - Episode I [cyo.the.vile]
-Towns Drill - Shougaku Sansuu Series - Sansuu 1-nen (TownsGEAR V2.1 version) [cyo.the.vile]
-Yoku Wakaru Sansuu - Shougaku 2-nen [cyo.the.vile]
-Replaced software list items
-----------------------------
-Futoppara FD Heisei 7-gou [fuzzball]
-Futoppara FD Heisei 10-gou [fuzzball]
-
-9031: taito_b.cpp: DIP switch corrections for sbm & sbmj (MT08160) [scoomby]
-The DIP switches have been corrected and tested as advised on MT08160.
-Please let me know if anything needs to be changed or improved including DIP switch labelling.
-Thanks in advance.
-
-9032: seta.cpp: add pld info for madshark [sergiopolog]
-PCB image: https://i.imgur.com/T9DX0bP.jpg
-PLDs:
-* https://i.imgur.com/0cneaqg.jpg
-* https://i.imgur.com/JG45AwL.jpg
-
-9033: gb.cpp: Use memory views for bios disable and to remove some cartslot trampolines. [wilbertpol]
-
-9034: bus/nes_ctrl: Added support for Famicom Turbofile backup RAM. [0kmg]
-
-9035: gb.cpp: Improved MBC3 RTC handling. [wilbertpol]
-
-9038: Complete re-write of Philips CD-i CDIC handling; re-promoted to working [MooglyGuy]
--cdi: Significantly improved compatibility and re-promoted to working [Ryan Holtz, CD-i Fan]
-
-9039: expand buffer size from 15 to 16 for %t time in video_manager::open_next [goldnchild]
-One thing I just noticed:
-the %t time format code from video_manager::open_next
-it needs to be "char t_str[16];"  to accommodate the format string since it's 4+2+2+1+2+2+2+1 (terminating zero) for 16 chars.
-If it doesn't have enough room for the zero it will drop the last specifier:
-char t_str[15]; and a -snapname "%g/%t" will give filenames like: 
-20211225_0406.png
-char t_str[16]; and a -snapname "%g/%t" will give filenames like: 
-20211225_042939.png
-```
-      if (pos_time != -1)
-        {
-                char t_str[16];
-                const std::time_t cur_time = std::time(nullptr);
-                strftime(t_str, sizeof(t_str), "%Y%m%d_%H%M%S", std::localtime(&cur_time));
-                strreplace(snapstr, "%t", t_str);
-        }
-```
+- 8941: nes.xml: Removed parent/clone relationships for games that are independent ports. [kmg]
+- 8942: dec0.cpp: Updated comment about DEM-01 chip as it has been identified as a Fujitsu MB8421. [Caps0ff, ClawGrip]
+- 8943: bus/nes_ctrl: Improved emulation of the Yonezawa Partytap controller. [kmg]
+- 8933: flower.cpp: Improved cocktail mode behavior and sound, cleaned up code, and added notes. [cam900]
+- 8943: dvk_kcgd.cpp: Added serial ports, converted logging to use logmacro.h, and cleaned up code. [shattered]
+- 8946: ibm5170.xml: Added ten items and replaced one item with a better dump. [The Good Old Days, Old-Games.RU, ArcadeShadow]
+- 8947: bus/nes_ctrl: Reworked Bandai Hyper Shot to only use EXP port calls; nes.xml: Corrected Space Shadow mirroring. [kmg]
+- 8949: bus/nes_ctrl: Disentangled Famicom joypad 2 from EXP port code. [kmg]
+- 8953: ms32.cpp: Added Shutoku Red Zone to list of games on the hardware that have not been dumped. [ArtLine]
+- 8955: Added skeleton drivers for two Compumatic Master Crane sets. [Israel León (Retrolover), ClawGrip]
+- 8956: bus/nes_ctrl: Cleaned up Famicom joypad implementation and further untangled them from EXP port. [kmg]
+- 8957: microdar.cpp: Expanded notes for cfarwest. [ClawGrip]
+- 8958: Updated Greek translation. [BraiNKilleRGR]
+- 8959: sms.xml: Noted that Galactic Protector has control issues on consoles that don’t appear as Japan region to game. [kmg]
+- 8960: ctk551.cpp: Implemented GT913F sound, and promoted system to working. [Devin Acker]
+- 8962: vsnes.cpp: Fixed Balloon Fight bonus life DIP switch settings (MT08147). [kmg]
+- 8964: cinemat.cpp: Added missing inputs for Space Wars and Space Ship (MT08148). [kmg]
+- 8965: gamegear.xml: Added BreakThru! (prototype). [smspower, VGHF, kmg]
+- 8970: maygay1bsw.cpp: Corrected descriptions for The Italian Job sets (MT07191). [sjy96525]
+- 8971: maygayep.cpp: Corrected descriptions for The Italian Job sets (MT07191). [sjy96525]
+- 8975: aleck64.cpp: Added Super Real Mahjong VS (Rev A). [Forest of Illusion, kmg]
+- 8977: c64_cass.xml: Added ten items (nine working, one not working). [The Ultimate Tape Archive Team, Steven Coomber]
+- 8978: gba.xml: Added Perplexus Diodomin (prototype). [James Boulton, GTW, kmg]
+- 8980: Reverted “ctk551: implement sound, promote to working” (GitHub #8960) due to build failures. [R. Belmont]
+- 8981: c64_cass.xml: Added fifteen items (thirteen working, two not working). [The Ultimate Tape Archive Team, Steven Coomber]
+- 8982: Reverted “Revert “ctk551: implement sound, promote to working”” (GitHub #8980). [R. Belmont]
+- 8983: Reverted “uknc: de-skeletonize” (GitHub #8866) due to review issues not being addressed. [R. Belmont]
+- 8984: pcipc.cpp: Fixed names of chipsets in descriptions. [MoochMcGee]
+- 8985: Cleaned up GT913F code. [Devin Acker]
+- 8986: machine/nes.cpp: Accommodate games that depend on realistic power-on RAM state. [kmg]
+- 8987: c64_cass.xml: Added fourteen items (thirteen working, one not working). [The Ultimate Tape Archive Team, Steven Coomber]
+- 8988: 3rdparty/ymfm: Corrected divider state for free-running timer B on mode write (MT03737, MT07078, MT08146). [Aaron Giles]
+- 8989: tsconf.cpp: Added initial ZX Evolution TS-Configuration driver. [holub]
+- 8991: machine/vsnes.cpp: Replaced MMC3 implementation with Namco 108. [kmg]
+- 8992: poisk1.cpp: Added vertical and horizontal video sync signals. [shattered]
+- 8995: nes.xml: Added Hero Quest (Germany, prototype). [anonymous, kmg]
+- 9001: ngpc.xml: Added two new dumps. [Forest of Illusion, kmg]
+- 9003: n64.xml: Added two test/demo cartridges. [BehindTheCode, Forest of Illusion, kmg]
+- 9006: osd/osdsync.cpp: Fixed race condition affecting chdman threading machines with high parallelism. [tellowkrinkle]
+- 9007: ibm5170_cdrom.xml: Added five items. [David Silva]
+- 9008: bus/vme: Added Besta CP31 CPU board (replaces besta.cpp system driver). [shattered]
+- 9009: machine/ibm6580_kbd.cpp: Cleaned up and simplified code. [shattered]
+- 9010: bus/nes: Improved Famicom Disk System timer emulation; nes.cpp: Set correct clock for Famicom Disk System (MT08041). [kmg]
+- 9011: audio/flower.cpp: Fixed volume lookup table ROM addressing, and added notes. [cam900]
+- 9013: nes.xml: Added four recently released music cartridges. [anonymous, kmg]
+- 9014: vsnes.cpp: Fixed swapped DIP switches for vsbball. [kmg]
+- 9016: ibm5150.xml: Added seven items, and replaced three times with better dumps. [The Good Old Days, Old-Games.RU, ArcadeShadow]
+- 9017: hp9825.cpp: Added Shift Lock and reset keys, and tape LED. [F.Ulivi]
+- 9018: ibm5150.xml, 5170.xml: Added dumps of twenty-two copy-protected items, and replaced one item with a better dump. [r09]
+- 9019: imagedev/midiin.cpp: Handle channel remapping during playback rather than at loading. [Devin Acker]
+- 9020: n64.xml: Added X'treme Roller (prototype). [Baker64, kmg]
+- 9021: apple2_flop_clcracked.xml, apple2_flop_orig.xml: Added latest latest original dumps and cracks. [Firehawke]
+- 9022: bus/nes: Added support for JY012005 multi-game cartridges. [kmg]
+- 9023: bus/nes_ctrl: Cleaned up Konami Hyper Shot controller emulation code a little. [kmg]
+- 9024: bus/nes_ctrl: Updated mahjong controller based on hardware information, and corrected button labels. [0kmg]
+- 9025: apple2.cpp, apple2e.cpp: Made descriptions for Franklin ACE computers more consistent. [Kelvin Sherlock]
+- 9027: bus/nes_ctrl: Added a SNES controller port adapter device so a SNES joypad or mouse can be connected. [kmg]
+- 9028: cyclemb.cpp: Corrected joystick up and down inputs for skydest (MT08162). [Steven Coomber]
+- 9029: nes.xml: Added Holy Diver Collector's Edition. [anonymous, kmg]
+- 9030: fmtowns_flop_orig.xml: Added seven new dumps, and replaced two items with better dumps. [cyo.the.vile, fuzzball, r09]
+- 9031: taito_b.cpp: Improved DIP switch setting labels for sbm and sbmj (MT08160). [Steven Coomber]
+- 9032: seta.cpp: Added placeholders for undumped PLDs for madshark. [Sergio Galiano]
+- 9033: gb.cpp: Use memory views for BIOS disable and to remove some cartridge access trampolines. [Wilbert Pol]
+- 9034: bus/nes_ctrl: Added support for the Famicom Turbofile backup RAM device. [kmg]
+- 9035: gb.cpp: Improved MBC3 real-time clock emulation. [Wilbert Pol]
+- 9038: machine/cdicdic.cpp: Completely re-implemented Philips CD-i CDIC emulation, fixing many issues. [Ryan Holtz, CD-i Fan]
+- 9039: emu/video.cpp: Corrected size for date/time formatting buffer in video_manager::open_next. [Golden Child]
 
 
 Source Changes
@@ -2271,6 +1923,8 @@ Holy Diver Collector's Edition [anonymous]
 -Initialise a few variables in h files. [Robbbert]
 
 -srcclean, remove a vestigial thing, and a little cleanup [Vas Crabb]
+
+-Mega Drive is written with a space. [Vas Crabb]
 
 
 Comparing 0.238 (mame0238) to 0.238 (mame0238-400-gc25e62f25e3)
