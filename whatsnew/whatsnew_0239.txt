@@ -23,7 +23,7 @@ MAME Testers Bugs Fixed
 - 08041: [Crash/Freeze] (nes.cpp) fds [smb2]: Game freezes at title screen (it should be animated). (kmg)
 - 08135: [DIP/Input] (taito_f2.cpp) qzquest: DIP switches 2-3 and 2-4 control the countdown timer speed. (Steven Coomber)
 - 08138: [Media Support] (c64.cpp) gberet: Some tape software only works with no disk drives connected. (Steven Coomber)
-- 08139: [Core] emumem: Memory handlers are not being released properly, causing memory leaks. (O. Galibert)
+- 08139: [Core] emumem: Memory access handlers are not being released properly, causing memory leaks. (O. Galibert)
 - 08140: [Known Issues/To-Do's] (psion5.cpp) psion5mx: System fails to boot, only showing a blank screen. (Ryan Holtz)
 - 08145: [Crash/Freeze] (segas32.cpp) f1lap: Game won’t boot if settings are changed, and may not reset correctly. (Ivan Vangelista)
 - 08147: [Documentation] (vsnes.cpp) balonfgt: DIP switch settings for extra lives are labeled incorrectly. (kmg)
@@ -67,9 +67,10 @@ Morskaja ataka [algestam, Milan Galcik]
 NedoPC, TS-Labs ZX Evolution TS-Configuration [holub]
 Nochnye vorishki [algestam, Milan Galcik]
 Off Road Challenge (v1.00) [anonymous]
-The Outfoxies (Japan, OU1, alternate GFX ROMs) [Silvio Grazini]
+The Outfoxies (Japan, OU1, alternate GFX ROMs) [Silvio Grazini]
 Player's Edge Plus (PS0015) Super Joker Slots [Brian Troha, Kevin Nagle]
 Player's Edge Plus (PS0041) Jackpot Jungle Slots [Brian Troha, Kevin Nagle]
+Player's Edge Plus (PS0044) Red White & Blue Slots [Brian Troha, Kevin Nagle]
 Player's Edge Plus (PS0271) Spin Til You Win Slots [Brian Troha, Kevin Nagle]
 Player's Edge Plus (PS0275) 4th of July Slots (set 1) [Brian Troha, Kevin Nagle]
 Player's Edge Plus (PS0275) 4th of July Slots (set 2) [Brian Troha, Kevin Nagle]
@@ -101,7 +102,7 @@ Final Fight 3 (SNES bootleg) [hammy, iq_132]
 Human Designed Systems HDS200 [Bitsavers]
 JoMoX AiRBase 99 [DBWBP]
 Kawai Musical Instruments Manufacturing ACR-20 Digital Accompaniment Center [DBWBP]
-Long Hu Zhengba San He Yi (V100CN) [XingXing, little0]
+Long Hu Zhengba San He Yi (V100CN) [XingXing, little0]
 Master Crane (set 1) [Israel León (Retrolover), ClawGrip]
 Puyo Puyo! The Medal Edition [Darksoft, MetalliC, rtw]
 Sonic The Hedgehog 3 (bootleg of Mega Drive version) [Victor Fernandez (City Game)]
@@ -340,7 +341,7 @@ Merged pull requests
 - 8995: nes.xml: Added Hero Quest (Germany, prototype). [anonymous, kmg]
 - 9001: ngpc.xml: Added two new dumps. [Forest of Illusion, kmg]
 - 9003: n64.xml: Added two test/demo cartridges. [BehindTheCode, Forest of Illusion, kmg]
-- 9006: osd/osdsync.cpp: Fixed race condition affecting chdman threading machines with high parallelism. [tellowkrinkle]
+- 9006: osd/osdsync.cpp: Fixed race condition affecting chdman threading on machines with high parallelism. [tellowkrinkle]
 - 9007: ibm5170_cdrom.xml: Added five items. [David Silva]
 - 9008: bus/vme: Added Besta CP31 CPU board (replaces besta.cpp system driver). [shattered]
 - 9009: machine/ibm6580_kbd.cpp: Cleaned up and simplified code. [shattered]
@@ -351,7 +352,7 @@ Merged pull requests
 - 9016: ibm5150.xml: Added seven items, and replaced three times with better dumps. [The Good Old Days, Old-Games.RU, ArcadeShadow]
 - 9017: hp9825.cpp: Added Shift Lock and reset keys, and tape LED. [F.Ulivi]
 - 9018: ibm5150.xml, 5170.xml: Added dumps of twenty-two copy-protected items, and replaced one item with a better dump. [r09]
-- 9019: imagedev/midiin.cpp: Handle channel remapping during playback rather than at loading. [Devin Acker]
+- 9019: imagedev/midiin.cpp: Handle channel remapping during playback rather than on loading. [Devin Acker]
 - 9020: n64.xml: Added X'treme Roller (prototype). [Baker64, kmg]
 - 9021: apple2_flop_clcracked.xml, apple2_flop_orig.xml: Added latest latest original dumps and cracks. [Firehawke]
 - 9022: bus/nes: Added support for JY012005 multi-game cartridges. [kmg]
@@ -1925,10 +1926,3 @@ Holy Diver Collector's Edition [anonymous]
 -srcclean, remove a vestigial thing, and a little cleanup [Vas Crabb]
 
 -Mega Drive is written with a space. [Vas Crabb]
-
-
-Comparing 0.238 (mame0238) to 0.238 (mame0238-400-gc25e62f25e3)
-
-New working clones
-------------------
-Player's Edge Plus (PS0044) Red White & Blue Slots
