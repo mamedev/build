@@ -5,8 +5,8 @@
 MAME Testers Bugs Fixed
 -----------------------
 - 02646: [Graphics] (playch10.cpp) pc_tenis: When starting a game, the screen momentarily shows garbage. (kmg)
-- 06721: [Sound] (playch10.cpp) pc_drmro, pc_mtoid, pc_ttoon: Spurious looping sound effects. (kmg)
-- 06842: [DIP/Input] (nes.cpp) nes_zapper: Misleading input mapping display when -multimouse is not enabled. (Vas Crabb)
+- 06721: [Sound] (playch10.cpp) pc_drmro, pc_mtoid, pc_ttoon: Spurious looping sound effects play. (kmg)
+- 06842: [DIP/Input] (nes.cpp) nes_zapper: Misleading input mapping are displayed when -multimouse is not enabled. (Vas Crabb)
 - 08190: [Graphics] (snes.cpp) snes [wildguns and clones]: In-game graphics flicker heavily. (cam900)
 - 08195: [Documentation] (namcos2.cpp) bubbletr: Punctuation in title is incorrect. (MASH)
 - 08197: [Crash/Freeze] (wardner.cpp) wardner, wardnerj, pyros: Emulated system crashes after soft reset. (AJR)
@@ -80,7 +80,7 @@ Extra Draw [Jorge Silva]
 Fruit World (V111) [Jorge Silva]
 Jumanji (V502) [Jorge Silva]
 Magic Slot (normal 1.0C) [Jorge Silva]
-Minna de Kitaeru Zenno Training (Ver. 1.50) [Arcade Projects]
+Minna de Kitaeru Zenno Training (Ver. 1.50) [Arcade-Projects]
 Mysterian (prototype) [PinMAME]
 New Tiger [Jorge Silva]
 Plutus (V100) [Jorge Silva]
@@ -190,7 +190,7 @@ vgmplay:
   RoadBlasters (Atari System 1), SegaSonic Bros. (Sega System C-2), Star Cruiser (Sharp X68000), Teenage Mutant Ninja Turtles (NES),
   Teenage Mutant Ninja Turtles II - The Arcade Game (NES), Terminator 2 - Judgment Day (NES),
   Tiny Toon Adventures 2 - Trouble in Wackyland (NES), Youjuu Kikouhei WerDragon (NEC PC-8801, OPN),
-  Youjuu Kikouhei WerDragon (NEC PC-8801, OPNA)
+  Youjuu Kikouhei WerDragon (NEC PC-8801, OPNA) [vgmrips.net, Tafoid]
 vis:
   America's National Parks, American Heritage - Illustrated Encyclopedic Dictionary, Americans in Space,
   Learn to Play Guitar Volume 1, The Manhole - New and Enhanced!, Mercer Mayer's Just Grandma and Me, Mutanoid Word Challenge,
@@ -237,558 +237,93 @@ snes: Illusion of Gaia (prototype B) [Hidden Palace, Stephan Reese]
 
 Merged pull requests
 --------------------
-7913: zx spectrum: new slot devices, floating bus restore, big mface tidy-up [TwistedTom]
-2 new slot devices: spec-mate, micro-pokeer[sic]
-reinstate floating bus, slot device friendly this time
-(let devices have a callback, if by the last-in-chain slot device, iorq_r hasn't returned anything, return floating bus value
-  instead of just returning 0xff)
-add floating bus to applicable 128k machines (not +2A,+3 they don't have it)
-split up multiface devices into hardware revisions (some bios roms weren't working because h/w is different)
-added correct partial decoding of ports 
-fix issues with mface128, mface3 (missing logic)
-add mprint missing stuff, parallel port
-add mface3 pal
-change default key for "magic button" (backspace is mapped for 128K machines and in natural keyboard mode)
-don't clash with disk devices as it's possible to have 2 "magic button" devices chained eg. mface + beta, so use something else
-  (numpad-) for disk devices
-all models now work correctly with working disk interfaces: beta, opus, disciple/+d -> OK, kempston disk, +3 disk -> no write
-  support
-fix bug in specpls3 preventing paging lock being fully applied
-move HC91+ clone into spectrum.cpp (it's a clone of 48k, not 128k)
-add dual-bios cp/m roms (not working) and inf1 roms
-sort out +2A,+3 bios roms:
-redump english v4.0, v4.1 (the real chips are 2x 32KB not 4x 16KB)
-add bios options to +2A
-correct spanish v4.0 (is v4.1)
-add spanish v4.0
-make spanish dumps 2x 32KB not 4x 16KB to match real h/w
-
-9044: raiden.cpp: Use prio_* for single pass sprite draw routine, Minor cleanups, Add notes for country/game mode byte [cam900]
-Reduce unnecessary memory region size, Simplify gfxdecode layouts, Fix namings, Use shorter/correct type values
-
-9097: tsconf.cpp: Implemented more functionality [holub]
-* scanline / DMA / custom frame INTs
-* sprites rendering / DMA sfile update
-* better ZX mode compatibility
-* AY sound
-* various gfx improvements
-
-9098: ymf271.cpp: Fix timer A period, Add notes for timer [cam900]
-
-9120: bus/nes: Added support for multicart variant of JY830623C board. [0kmg]
-- Renamed MK2 board to JY830623C, the PCB label of at least one of the related bootlegs.
-- Removed deprecated hold_irq_line().
-New working software list additions (nes.xml)
------------------------------------
-1995 Super HiK 4 in 1 (JY-016) [krzysiobal, NewRisingSun]
-1995 Super HiK 4 in 1 (JY-017) [krzysiobal, NewRisingSun]
-
-9121: bus/nes: Skeletonized 3D Block device for future work. [0kmg]
-
-9124: bus/nes_ctrl: Added NES support for Virtual Boy controllers. [0kmg]
-- Generalized the read/write pattern for joypads a bit more and placed it in the base NES joypad class.
-- Using that, added Virtual Boy controller and simplified Pachinko controller some more.
-New working software list additions (nes.xml)
------------------------------------
-Candelabra - Estoscerro [SlyDogStudios]
-
-9137: x76f041/x76f100/zs01: Implement new operations and security features [987123879113]
-All of the commits are self-contained so can be reviewed individually. There is potential to leave Sys573 in an unplayable state if
-  the changes to x76f041 or zs01 are merged without the new hashes in ksys573 which is why I chose to throw this all into one PR.
-x76f041 (https://datasheetspdf.com/pdf-file/292311/Xicor/X76F041/1)
-- Implemented password retry counter
-- Implemented new commands (password configuration, password reset, mass erase, and mass program)
-- Implemented register-configured authorization checks
-x76f100 (https://datasheetspdf.com/pdf-file/292328/Xicor/X76F100/1)
-- Implemented password retry counter
-- Implemented password configuration
-zs01
-- Implemented password retry counter
-- Implemented new commands (password configuration, mass erase, unknown serial ID read)
-- Changed data size from 4096 bytes to 112 bytes
-ksys573
-- Recreated all of the security flash ROMs using the System 573 master calendar device. The master calendar device is a JVS device
-  that Konami created for the purpose of initializing security cassettes and RTC data.
-    - z76f041: Registers were set to have a retry of 0 but also has the retry counter enabled so these would reset themselves when
-  trying to do new game installations due to the way the game detects the inserted cartridge (tests game cart password and then
-  tests install cart password).
-    - zs01: The previous data layout wasn't a good reflection of the data (registers were treated as data so register data was
-  stored halfway through the data section for example) and was too large.
-    - x76f100: These were technically fine but since I was already regenerating everything else I did these too.
-k573mcal
-- Added the master calendar JVS device code. This could be its own PR but it was used to generate the Sys573 security cartridge data
-  so I included it for reproducibility.
-The following drivers are affected by these changes:
-- ksys573 (x76f041, x76f100, zs01): All chips recreated.
-- twinkle (x76f041): The current dumps included in MAME are proper (valid register configurations) and work as-is.
-- naomi (x76f100): x76f100 format didn't change and no register data to worry about so the existing ROMs should work as-is.
-
-9173: fm7_disk.xml/fm77av.xml: add 3 new dumps [rzero9]
-New working software list additions (fm77av.xml)
-------------------------------------------------
-The 4th Unit 2 [r09]
-New working software list additions (fm7_disk.xml)
---------------------------------------------------
-FM Logo 2.0 [sampson]
-Chikyuu Senshi Rayieza [r09]
-
-9196: ibm6580: floppy adapter LLE (WIP) [shattered]
-
-9197: ibm5170.xml: 16 entries added + 1 redumped [ArcadeShadow]
-### New working software list additions
---------------------------------------
-Armour-Geddon [The Good Old Days]
-Eye of the Beholder 3: Assault on Myth Drannor [The Good Old Days]
-Eye of the Beholder 3: Assault on Myth Drannor (Eye of Beholder Trilogy release) [The Good Old Days]
-Eye of the Beholder 3: Assault on Myth Drannor (Kixx release) [The Good Old Days]
-Eye of the Beholder 3: A l'assaut de Myth Drannor (France) [The Good Old Days]
-Eye of the Beholder 3: Sturm auf Myth Drannor (Germany) [The Good Old Days]
-Formula One Grand Prix (Euro, v1.05, alt) [ibmpc5150, archive.org]
-Might and Magic III: Isles of Terra (3.5"DD) [The Good Old Days]
-Might and Magic III: Isles of Terra (5.25"HD) [The Good Old Days]
-Operation Body Count [ibmpc5150, archive.org]
-Railroad Tycoon Deluxe [The Good Old Days]
-Star Wars: TIE Fighter (Spain) [Alvaro Polo, archive.org]
-Wing Commander II - Vengeance of the Kilrathi - Speech Accessory Pack (5.25") [The Good Old Days]
-World Circuit - The Grand Prix Race Simulation (USA, v1.04) [ibmpc5150, archive.org]
-### New NOT_WORKING software list additions
-----------------------------------------------
-Starlord [Dark-Star, archive.org]
-System Shock [The Good Old Days]
-### Software list item demoted to NOT_WORKING
-----------------------------------------------
-Lemmings
-### Redump:
-----------------------------------------------
-Formula One Grand Prix (Euro, v1.03) [ibmpc5150, archive.org]
-
-9198: jaguar.xml: Added an unreleased prototype. [0kmg]
-New NOT_WORKING software list additions
----------------------------------------
-Speedster II [Gaming Alexandria]
-
-9199: rockrage.cpp: Add DIP switch setting [negunma]
-According to contents of operator's manual (https://archive.org/details/arcademanual_RockNRage), some DIP switch settings need to be
-  corrected and added.
-
-9201: Remove http related header pollution [mmicko]
-make emu.h.gch file 20MB smaller and prevent full recompile on asio and http file handling changes
-
-9202: New software list for the Tandy/Memorex VIS [rzero9]
-This adds a new software list for the Tandy/Memorex VIS with 70 entries, which should be almost the entire library of the system. I
-  have tested them but not too extensively, so I may have missed some bugs.
-To allow the discs to auto-mount from the command line, this also adds a set_interface line to the Mitsumi ISA CD adapter used by
-  the VIS.
-
-9203: new NOT_WORKING machine: Casio LD-50 [devinacker]
-
-9204: Fix building with gcc-12 [belegdol]
-Fedora rawhide has updated gcc to version 12. Minimal changes are required to get mame to build.
-
-9206: snes.xml: Added 10 prototypes. [0kmg]
-New working software list additions
------------------------------------
-Prince of Persia (prototype) [Hidden Palace]
-Putty Squad (prototype) [Hidden Palace]
-Race Drivin' (prototype) [Hidden Palace, Steve Lin]
-Shadowrun (prototype) [Hidden Palace, Stephan Reese]
-Super Ghouls'n Ghosts (prototype) [Hidden Palace]
-The Ignition Factor (prototype) [Hidden Palace]
-The Peace Keepers (prototype) [Hidden Palace]
-Troddlers (prototype 19921023) [Hidden Palace, Steve Lin]
-Troddlers (prototype 19930203) [Hidden Palace]
-Utopia - The Creation of a Nation (prototype) [Hidden Palace]
-
-9207: bus/nes: Added support for BMC-CTC-12IN1 and BMC-891227 boards. [0kmg]
-New working software list additions (nes.xml)
------------------------------------
-12 in 1 Game Card [anonymous]
-Super 15 in 1 Game Card [anonymous]
-
-9208: blockade: Add version of CoMotion from patent [eientei] [einstein95]
-Change title to "CoMotion" as per flyers (nw)
-Said flyers:
-* flyer 1
-* flyer 2
-and the patent that was transcribed
-
-9209: minor code changes, formatting, comments [shattered]
-
-9210: bus/nes: Fixed 2A03PURITANS board not booting when <1024k. [0kmg]
-New working software list additions (nes.xml)
------------------------------------
-Famicompo Pico [rainwarrior]
-
-9211: snes.xml: Added 8 prototypes. [0kmg]
-New working software list additions
------------------------------------
-Asterix (prototype 19930311) [Hidden Palace]
-Magic Boy (prototype) [snescentral]
-Marvel Super Heroes - War of the Gems (Japan, prototype) [Hidden Palace, Steve Lin]
-MechWarrior (prototype) [Hidden Palace, Stephan Reese]
-NBA All-Star Challenge (prototype) [Hidden Palace]
-NBA Live 97 (prototype 19960920) [Hidden Palace]
-Prehistorik Man (prototype) [Hidden Palace]
-New NOT_WORKING software list additions
----------------------------------------
-Illusion of Gaia (prototype B) [Hidden Palace, Stephan Reese]
-
-9212: vis.xml: re-test software and promote to working [rzero9]
-Just a quick update for the VIS software list to get it up to date with the latest improvements. Many thanks to @cracyc for allowing
-  modern audiences to enjoy all this high quality software. :)
-Software list items promoted to working
----------------------------------------
-A Survey of Western Art - The Electronic Library of Art [crazyc]
-America's National Parks [crazyc]
-Americans in Space [crazyc]
-Learn to Play Guitar Volume 1 [crazyc]
-Mercer Mayer's Just Grandma and Me [crazyc]
-Mutanoid Word Challenge [crazyc]
-Peter and the Wolf - A Multimedia Storybook [crazyc]
-Rick Ribbit - Adventures in Early Learning [crazyc]
-Sail with Columbus [crazyc]
-Time Magazine Compact Almanac 1992 [crazyc]
-
-9214: nmk16.cpp: Add notes of Thunder Dragon 3 Bootleg hardware [cam900]
-reference: https://mametesters.org/file_download.php?file_id=4878&type=bug
-
-9215: bus/a2bus: Added Apple II 3.5" Disk Controller Card [ksherlock]
-Apple II 3.5" Disk Controller Card.
-n.b. - mame's 65c02 implementation has incorrect false reads when crossing page boundaries.  This needs to be fixed for the  uc code
-  to work correctly.
-The firmware modifies the apple iigs rombank statereg bit to check if it's a IIgs or a IIe.
-Writing to an 1.44MB MFM disk image frequently errors out due to transition too wide errors. 
-
-9216: inufuku.cpp: Add notes for undumped game [cam900]
-
-9217: bus/nes: Updated all Konami VRC boards. [0kmg]
-- Added missing WRAM enable bit (VRC4/6/7).
-- Simplified handling of pins that connect to variable address lines (VRC2/4/6/7). VRC7's pin 19 now is configured dynamically like
-  the others.
-- For each VRC chip, masked bank numbers to reflect actual ROM size supported by pinout.
-- Removed unreachable logging statements, other assorted cleanups and simplifications.
-
-9218: spectrum: move gfx to screen_device [holub]
-POC for modernization of screen_device usage.
-This implementation is done on self-contained Pentagon driver with intention to be moved to parent spectrum.
-Improvements:
-* gfx rendered directly on screen_device without intermediate bitmaps (m_border_bitmap, m_screen_bitmap)
-* INT raised on beginning of vblank instead of manually adjusted position
-* position of the gfx can be moved to arbitrary position (see: PENTAGON_SCREEN), not customly hardcoded at (0,0). That respects
-  vblank/hblank positions "before" real screen, not wrongly "after" previously.
-
-9220: playch10.cpp: Correct NT mirroring for various games (MT 02646). [0kmg]
-- Mark Excite Bike and Ninja Gaiden 2 as imperfect graphics.
-
-9221: machine/playch10.cpp: Mute/unmute according to SOUNDMASK (MT 06721). [0kmg]
-
-9222: Vegas - Fix Uart definition [trmazi]
-Fixes the use of uart_1 instead of uart_2 on the serial port ttys02
-
-9224: machine/playch10.cpp: Properly clear IRQs for MMC3 boards. [0kmg]
-- Removed WRAM from PinBot, there's none on its PCB.
-
-9226: machine/vsnes.cpp: Simplified nametable mirroring. [0kmg]
-
-9228: misc (mostly negative status) changes [DavidHaywood]
-cave.cpp : use u58 from parent set for 'donpachikr' - fixes corrupt graphics in ending
-kyugo.cpp : mark PROMs in 99lstwarb as bad, there's no way these PROMs can give the correct colours for the unique 1st stage in this
-  set.
-tsamurai.cpp : mark nunchaku PROMs as bad, there's no way these PROMs can give the colours seen in reference videos, if these *were*
-  on the PCB it must have been a bootleg conversion
-megaplay.cpp: : demote mp_bio to NOT WORKING, it frequently locks up on continue, usually the 2nd or so continue on the 2nd stage,
-  likely another manifestation of the mp_shnb3 timing comms issue.
-
-9229: cave.cpp: Add notes for version/date string in ROM, Fix version/date format string in metadata matches to in-game display
-  [cam900]
-"International" sets are means non-regional specific ("World") release, like other driver game/machines; except hotdogst (Ace
-  international - Distributor)
-
-9230: HP9825: added printer output on a screen and cassette status [fulivi]
-Hi,
-this PR adds printer output on a screen device. It also adds a cassette presence bit.
-These changes are needed for the layout I'm planning to publish soon.
-Thanks.
---F.Ulivi
-
-9231: Minitel 2 driver : Fix O and Q keys. [jfdelnero]
-Minitel 2 driver : Fix O and Q keys. 
-The 'Q' key was wrongly defined twice times making a conflict with the 'O' key.
-
-9232: Minitel 2 driver : 24C02 I2C EEPROM support. [jfdelnero]
-Minitel 2 driver : 24C02 I2C EEPROM support implemented. 
-Password and others internals settings are now saved in the nvram folder.
-Typo fixed in the "dev_ctrl_reg_w" method name.
-
-9233: vsnes.cpp: Set raw screen parameters. [0kmg]
-
-9234: spectrum_cass.xml: Metadata cleanup + 2 new additions + 1 redump [ArcadeShadow]
-### New working software list additions
-----
-Noah (PD Adventures) [Steven Brown, spectrumcomputing.co.uk]
-The Plagues of Egypt (PD Adventures) [Steven Brown, spectrumcomputing.co.uk]
-### Redump
----
-Mag Max [spectrumcomputing.co.uk]
-Metadata cleanup (year, publisher, parent/cloneof)
-
-9235: cdi.xml: metadata cleanup (parent/cloneof) [ArcadeShadow]
-Added the cloneof="aliengat" tag, to the [aliengatu] and [aliengatu1] sets
-
-9236: neomania.cpp: Add manufacturer and corrected year [clawgrip]
-
-9238: coco3: fix crash in some AGI games [tlindner]
-formats/jvc_disk: Change osd_printf_info() to LOG_FORMATS(). Changed code to verify image geometry against floppy drive geometry.
-formats/os9_dsk: Improved logging
-bus/coco/coco_fdc: Improved logging. Turned on disable_motor_control and force_read in wd1773. This fixed some new games that use
-  the AGI Engine
-
-9239: vsnes.cpp: Fix rightward screen shift from previous commit. [0kmg]
-
-9241: qx10: Add expansion bus [brijohn]
-This adds support for the QX-10 expansion bus.
-Supports both IO/MEM access as well as support for DMA lines and interrupts are included. Also removed the multifont ROM from the
-  main QX10 driver as this will be included in a series of followup patches, one of which adds emulation support for the multifont
-  card.
-
-9242: cv1k.cpp: Fix hardware notes, Add pinkswtssc notes [cam900]
-pinkswtssc has it's own homepage (http://suicideclub.gameordie.com/), it confirms hacker name.
-
-9244: lynx.xml: Lowercase in the description "prototype" word [ArcadeShadow]
-Lowercase in the description "prototype" word
-
-9245: ppu2c0x.cpp: A few background palette fixes. [0kmg]
-- Added function to unify grayscale and palette emphasis flags application. Flags now applied to background pixels (including
-  separate cases: 0 tile pixel, disabled background lines, and blanked 8-pixel left column).
-- Fixed special case where background is disabled and scanline color is set by PPU address latch pointing to palette RAM (used in
-  Micro Machines).
-- Plus a few minor simplifications and cleanups.
-
-9248: cv1k.cpp: add further notes for pinkswtssc [cam900]
-Fix year metadata - both copyright string at bottom of title and version string is changed year to 2017
-Fix manufacturer string - Four horsemen is authors of pinkswtssc hack, Bootlegger is still unknown
-Fix spacing
-
-9249: coco_cart.xml: fix hash of Canyon Climber [tlindner]
-Changed working software list
-<hr>
-changed hash of Canyon Climber.
-
-9250: 4enraya.cpp: Fix "tourpgum" PCB ASCII layout [clawgrip]
-
-9253: Fixed game titles for Golly! Ghost! 2 (MT08195) and Excitebike. [0kmg]
-
-9255: chdman.1: Fix Typo [dch42]
-
-9256: nes_apu.cpp: Added noise channel period table for PAL systems. [0kmg]
-- Fixed a value in the parallel NTSC table for the largest period (lowest freq).
-- Fixed a value in the counter length table (for all channels but DMC).
-
-9257: Drop unnecessary executable permissions [belegdol]
-
-9258: nes_apu.cpp: Implement non linear mixer output, some misc fixes and improvements [cam900]
-Fix Pulse channel duty behavior
-Fix triangle output behavior
-Fix noise output behavior
-Fix DMC output and clamp behavior
-- now DMC output is affects triangle and noise volume.
-Reference:
-https://wiki.nesdev.org/w/index.php?title=APU
-https://wiki.nesdev.org/w/index.php?title=APU_Pulse
-https://wiki.nesdev.org/w/index.php?title=APU_Triangle
-https://wiki.nesdev.org/w/index.php?title=APU_Noise
-https://wiki.nesdev.org/w/index.php?title=APU_DMC
-https://wiki.nesdev.org/w/index.php?title=APU_Mixer
-
-9259: gei.cpp: correct DIP switches for gtsers12a and gtsers14a (MT08198) [scoomby]
-DIP switch assignments for alternative sets gtsers12a and gtsers14a should be the same as the original sets gtsers12 and gtsers14.
-
-9261: nes_slot.cpp: Unified CHR banking into a common function. [0kmg]
-- Removed PPU_MIRROR_NONE as an option for nametable mirroring.
-- Shrunk over-allocated 4-screen NT RAM to correct 4K size.
-- Sundry minor clean ups.
-
-9262: minor code changes; move 'krokha' to arcade section [shattered]
-
-9265: vsnes.cpp: Various fixes and cleanups. [0kmg]
-- Fixed size and mirroring of RAM. Correctly share shared RAM only. Shared RAM is also now properly NVRAM (Wrecking Crew saves high
-  scores, etc).
-- Removed spurious "extra RAM" installed in a couple spots.
-- Added coin read/write address mirroring.
-- Renamed "mapper 68" to Sunsoft-3, the chip on Platoon's board. Fixed its write masking.
-- Implemented proper strobe behavior for joystick read/writes.
-- Removed now unnecessary lightgun-specific read function and unused variables.
-
-9266: spectrum_cass.xml: 5 New Software Additions + 3 Redumps + clean metadata [ArcadeShadow]
-New working software list additions
------------------------------------
-Cosmic Invaders [Steven Brown, Planeta Sinclair]
-Dollars in the Dust (PD Adventures) [Steven Brown, Planeta Sinclair]
-G.I. Hero (MCM) [spectrumcomputing.co.uk]
-Gremlins - The Adventure (Erbe) [spectrumcomputing.co.uk]
-Gremlins 2: La Nueva Generacion [worldofspectrum.org]
-Redump
-------
-Giants (compilation) [spectrumcomputing.co.uk]
-Grand Prix Simulator 2 [spectrumcomputing.co.uk]
-Space Raiders - Invasores Galácticos (Portuguese) [Planeta Sinclair]
-
-9272: bus/nes: Added support for NES-EVENT2 board. [0kmg]
-New working software list additions (nes.xml)
------------------------------------
-Nintendo Campus Challenge 1991 (bootleg) [anonymous]
-
-9273: c64_cass.xml: Added 22 items (21 working, one not working) [scoomby]
-New working software list additions
----------------------------------------
-Pack of Aces (Prism Leisure) [C64 Ultimate Tape Archive V2.0]
-Pac-Land (Quicksilva) [C64 Ultimate Tape Archive V2.0]
-Pandora (Firebird) [C64 Ultimate Tape Archive V2.0]
-Panic (Datamaxx) [C64 Ultimate Tape Archive V2.0]
-Paperboy (Elite Systems) [C64 Ultimate Tape Archive V2.0]
-Pastfinder (Activision) [C64 Ultimate Tape Archive V2.0]
-Peter Beardsley's International Football (Grandslam) [C64 Ultimate Tape Archive V2.0]
-Ping Pong (Imagine) [C64 Ultimate Tape Archive V2.0]
-Pitfall II: Lost Caverns (Activision) [C64 Ultimate Tape Archive V2.0]
-Pitstop II (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-Pitstop II (Rushware) [C64 Ultimate Tape Archive V2.0]
-Plumb Crazy! (Terminal Software) [C64 Ultimate Tape Archive V2.0]
-Pole Position (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-Poltergeist (Codemasters) [C64 Ultimate Tape Archive V2.0]
-Popeye (Macmillan Software) [C64 Ultimate Tape Archive V2.0]
-Power Drift (Activision) [C64 Ultimate Tape Archive V2.0]
-The President is Missing (Microprose Software) [C64 Ultimate Tape Archive V2.0]
-Prince Clumsy (Codemasters) [C64 Ultimate Tape Archive V2.0]
-Prohibition (Zafiro Software Division) [C64 Ultimate Tape Archive V2.0]
-Psycho Soldier (Imagine) [C64 Ultimate Tape Archive V2.0]
-Pub Games (Alligata) [C64 Ultimate Tape Archive V2.0]
-New NOT_WORKING software list additions
----------------------------------------
-PHM Pegasus (Electronic Arts) [C64 Ultimate Tape Archive V2.0]
-
-9275: devices/*: Removed extra semicolons after function bodies in headers. [0kmg]
-
-9277: Removed extra semicolons after function bodies in remaining headers. [0kmg]
-
-9282: naomi.cpp: spawn - Correction on illustrator surname. [mikehyrus]
-Todd McFarlane without the space between the Mc and Farlane.  Just a typo fix.
-
-9284: nes.cpp, playch10.cpp, vsnes.cpp: Made zapper less bad. [0kmg]
-- Limited light detection to scanlines recently drawn by CRT.
-- Lowered light detection threshold to better reflect how real zapper behaves; color doesn't need to be white.
-- Bugs fixed:
-  * not detecting hits on certain white objects
-  * misdetecting hits on objects far away from the pointer
-  * not being able to track where zapper is pointed in demo/test software
-
-9288: bus/nes: Added support for an 82 in 1 cartridge. [0kmg]
-New working software list additions (nes.xml)
------------------------------------
-82 in 1 [flaviocaste]
-
-9289: vga: made video RAM size configurable at machine configuration [Osso13]
-As discussed in https://github.com/mamedev/mame/commit/2b2e918981ac2ae03388475bae0ad1ee95d323d8
-
-9290: ctk551: correct release year, add mask ROM label [devinacker]
-Changed the year to 2000 based on the product page on CasioPart (which seems to have only gone online sometime within the last few
-  months). The original 1999 date was taken from the (nearly identical) CTK-541 service manual.
-
-9291: swim1/swim2 - initialize m_floppy and m_timer [ksherlock]
-I encountered some odd crashes testing the a2superdrive slot options (eg, `mame apple2ee -sl7 superdrive -sl7:superdrive:fdc:0 35sd`
-  ). Poking further, swim1 had an invalid `m_floppy` since it is never initialized.  swim2 would also have the same issue.  There's
-  also a timer in swim1 that isn't initialized.
-
-9292: nes, playch10.cpp, vsnes.cpp: Made zapper sensor fuzzier. [0kmg]
-- Removes the pixel-perfect sensor by averaging pixel brightness over circular area around gun position.
-- Treat RGB values equally and don't use lib/util/palette.h's weighted brightness function.
-
-9293: create 68010 bus error stack frame / fix for 68010 RTE stack frame unwinding [agentbooth]
-I have been working on the AT&T UNIX PC driver (68010) and ran into an issue with page fault handling. I tracked this back to the
-  RTE instruction for 68010 wherein the SP can potentially be changed mid-unwind of the bus error exception stack frame (format =
-  8), when transitioning from supervisor mode back to user mode (A7 being set to USP).
-I also added 68010 format 8 stack frame setup in the bus error handling code.  This code is presently inaccessible to 68010, due to
-  the `pmmu_enabled` conditional. But that is a separate topic being discussed in issue #9170
-
-9294: Address some Lua scripting pitfalls [cuavas]
-This addresses several pitfalls in the Lua scripting interface:
-* Addressed pure virtual function call crash on end of emulation session if you haven’t explicitly removed all address space taps.
-* Addressed memory corruption on end of emulation session if you haven’t explicitly removed all address space change notifiers.
-* Symbol tables won’t be garbage-collected out from under you while you have parsed expressions or other symbol tables that depend
-  on them.
-* Removed the copy constructor for parsed expressions as the underlying C++ copy constructor appears to be broken.
-* Fixed breakpoint/watchpoint objects being inappropriately copied into the tables returned by `bplist()` and `wplist()`, which
-  allows the `enabled` property to be modifiable for breakpoint and watchpoint objects in Lua.
-* Fixed some errors in the Lua API reference documentation.
-Drivers and devices that use taps have been updated for the API changes.  Also fixed drivers and devices causing a new memory
-  pass-through handler to be allocated on each soft reset, and fixed multiple instances of taps being installed in the event the
-  machine is reset before the tap is removed.
-Also adds classes for managing broadcast subscriptions, and adapts address spaces to use this for change notifications.  They’re
-  currently built to minimise dynamic allocations, avoid the need for any virtual member functions, and keep the subscription
-  objects light-weight.  If the trade-offs are deemed inappropriate, the implementation can be changed without breaking source
-  compatibility.
-
-9295: nes.xml: Added original Family BASIC cartridge. [0kmg]
-New working software list additions
------------------------------------
-Family BASIC (Japan, V1.0) [No-Intro]
-Playbox BASIC (Japan, V1.0) [PALCOLOR]
-Software list items promoted to working
------------------------------------
-Playbox BASIC (Japan, V0.0)
-
-9296: c64_cass.xml: Added three working items [scoomby]
-New working software list additions
----------------------------------------
-Quartet (Activision) [C64 Ultimate Tape Archive V2.0]
-QUATTRO Coin-Ops (Codemasters) [C64 Ultimate Tape Archive V2.0]
-Quedex (Thalamus) [C64 Ultimate Tape Archive V2.0]
-
-9298: famicom_cass.xml: Added 7 Micom BASIC Magazine games. [0kmg]
-New working software list additions
------------------------------------
-Flies [ozidual, Gaming Alexandria]
-Dark [ozidual, Gaming Alexandria]
-Pen Pen [ozidual, Gaming Alexandria]
-Fisraduth - Castle of Tyramis [ozidual, Gaming Alexandria]
-The Spirit of Satan [ozidual, Gaming Alexandria]
-Metal Arms [ozidual, Gaming Alexandria]
-Ryuuhyoukan no Sangeki [ozidual, Gaming Alexandria]
-
-9299: famibox.cpp: Various improvements and a new working clone. [0kmg]
-- Added NES controller slots.
-- Added r/w of zapper enable bit through appropriate ports. Controllers and zapper now pass the internal self-test.
-- Shrunk nametable RAM down to correct 2K (mirroring still not correctly implemented).
-- Re-labelled DIP and key settings based on operator's manual and function.
-New working clones
-------------------
-FamicomStation [Patnukem]
-
-9300: snes.cpp: partial revert DMA cycle function [cam900]
-this commit fixes some regression after this commit.
-
-9301: new WORKING machine (The Tower) [DavidHaywood]
-new WORKING machine
------
-The Tower (DECO Cassette) (Europe?) [Darksoft, Senil Data Systems]
-
-9304: scnxx562: minor changes to interrupt handling [shattered]
-
-9305: Fixed arcade build. [0kmg]
-
-9306: Fixed arcade build, really. [0kmg]
-
-9308: hh_sm510: rescan display for rkosmosa [algestam]
-Rescan of the display for "Razvedchiki kosmosa" (`rkosmosa`) by Milan Galcik
-
-9310: nes_apu.cpp: Improvements for triangle channel. [0kmg]
-- Don't set output level to zero, it is always determined by sequencer, which cannot be reset. This eliminates most of the popping,
-  hopefully.
-- Raised artificial frequency cutoff to about 18KHz instead of 11KHz.
-- Added linear counter reload flag.
-
-9315: Bug fix for when viewing the logic equations of the GAL16V8 device with jedutil [keshbach]
-Fixed the viewing of a GAL16V8 device when in simple mode and pins 15 or 16 have no product terms to not display misleading error
-  messages and also included a new regression test for this scenario.
+- 7913: spectrum.cpp: Restored floating bus read functionality; bus/spectrum: Added two devices and fixed many issues. [TwistedTom]
+- 9044: raiden.cpp: Changed to use single-pass priority sprite drawing, cleaned up code, and added notes. [cam900]
+- 9097: tsconf.cpp: Improved video, sound and interrupt emulation, improved timings, and cleaned up code. [holub]
+- 9098: sound/ymf271.cpp: Fixed timer A period calculation and updated notes on timers. [cam900]
+- 9120: bus/nes: Added support for multi-game variant of the JY830623C board. [kmg]
+- 9121: bus/nes: Skeletonized the 3D Block device for future work. [kmg]
+- 9124: bus/nes_ctrl: Added support for using Virtual Boy controllers with the NES family, and cleaned up code. [kmg]
+- 9137: machine/x76f041.cpp, machine/x76f100.cpp, machine/zs01.cpp: Implemented more operations and security features. [Windy Fairy]
+- 9173: fm7_disk.xml, fm77av.xml: Added three new working items. [r09, sampson]
+- 9196: ibm6580.cpp: Started implementing low-level emulation of the floppy adapter. [shattered]
+- 9197: ibm5170.xml: Added sixteen items, replaced one item with a better dump, and updated metadata. [ArcadeShadow]
+- 9198: jaguar.xml: Added unreleased Speedster II prototype. [Gaming Alexandria, kmg]
+- 9199: rockrage.cpp: Corrected labels for cabinet type and sound mode DIP switches. [negunma]
+- 9201: Eliminated the need to include HTTP server and ASIO headers via emu.h. [Miodrag Milanović]
+- 9202: vis.xml: Added a software list for Tandy/Memorex VIS CDs with seventy items. [redump.org, r09]
+- 9203: ld50.cpp: Added preliminary driver for Casio LD-50 percussion synthesiser. [Devin Acker]
+- 9204: netlist/plib: Added missing standard library header to pstream.h. [Belegdol]
+- 9206: snes.xml: Added ten prototypes. [Hidden Palace, Steve Lin, Stephan Reese, kmg]
+- 9207: bus/nes: Added support for multi-game cartridges using BMC-CTC-12IN1 and BMC-891227 boards. [kmg]
+- 9208: blockade.cpp: Added version of CoMotion described in patent. [einstein95]
+- 9209: Cleaned up code, comments and formatting in various drivers and devices. [shattered]
+- 9210: bus/nes: Fixed 2A03PURITANS board not booting with ROMs smaller than 1,024 KiB. [kmg]
+- 9211: snes.xml: Added eight prototypes. [Hidden Palace, Steve Lin, snescentral, Stephan Reese, kmg]
+- 9212: vis.xml: Re-tested software after latest improvements and promoted appropriate items to working. [r09]
+- 9214: nmk16.cpp: Added notes and changed main guessed CPU clock frequency for Thunder Dragon 3 bootleg hardware. [cam900]
+- 9215: bus/a2bus: Added Apple II 3.5" Disk Controller Card. [Kelvin Sherlock]
+- 9216: inufuku.cpp: Noted undumped game in header comment. [cam900]
+- 9217: bus/nes: Improved emulation of all Konami VRC boards. [kmg]
+- 9218: pentagon.cpp: Draw to screen device bitmap directly. [holub]
+- 9220: playch10.cpp: Corrected nametable RAM mirroring for various games (MT02646). [kmg]
+- 9221: machine/playch10.cpp: Mute audio output according to SOUNDMASK (fixes MT06721). [kmg]
+- 9222: vegas.cpp: Corrected DUART output connections for second serial port. [Trenton Zimmer]
+- 9224: machine/playch10.cpp: Properly acknowledge interrupts for MMC3-based cartridges, and removed WRAM from PinBot. [kmg]
+- 9226: machine/vsnes.cpp: Simplified nametable RAM mirroring. [kmg]
+- 9228: cave.cpp: Use U58 ROM from parent (fixes graphics); kyugo.cpp, tsamurai.cpp: Marked some ROMs as bad dumps. [David Haywood]
+- 9229: cave.cpp: Changed metadata to match in-game display, and added notes on where dates/versions are stored in ROM. [cam900]
+- 9230: hp9825.cpp: Added a screen showing printer output, and added a cassette present output. [F.Ulivi]
+- 9231: minitel_2_rpic.cpp: Fixed O key (it was previously defined as a duplicate of the O key). [Jean-François DEL NERO]
+- 9232: minitel_2_rpic.cpp: Hooked up 24C02 I²C EEPROM. [Jean-François DEL NERO]
+- 9233: vsnes.cpp: Set raw screen timing parameters. [kmg]
+- 9234: spectrum_cass.xml: Added two working items, replaced one item with a better dump, and cleaned up metadata. [ArcadeShadow]
+- 9235: cdi.xml: Fixed parent/clone relationships. [ArcadeShadow]
+- 9236: neomania.cpp: Added manufacturer and corrected year. [ClawGrip]
+- 9238: bus/coco/coco_fdc.cpp: Turned on WD1773 disable motor control and force read options (fixes some AGI games). [Tim Lindner]
+- 9239: vsnes.cpp: Changed screen parameters to fix rightward shift. [kmg]
+- 9241: qx10.cpp, bus/qx10: Added support for Epson QX-10 option card expansions. [Brian Johnson]
+- 9242: cv1k.cpp: Updated notes. [cam900]
+- 9244: lynx.xml: Cleaned up metadata (don’t use title case for disambiguation text). [ArcadeShadow]
+- 9245: video/ppu2c0x.cpp: Fixed background palette issues. [kmg]
+- 9248: cv1k.cpp: Added more notes on pinkswtssc hack. [cam900]
+- 9249: coco_cart.xml: Fixed digests for Canyon Climber. [Tim Lindner]
+- 9250: 4enraya.cpp: Corrected ASCII PCB layout for tourpgum. [ClawGrip]
+- 9253: famibox.cpp, namcos2.cpp, playch10.cpp, vsnes.cpp: Fixed game titles for Excitebike and Golly! Ghost! 2 (MT08195). [kmg]
+- 9255: docs: Fixed a typo in the chdman man page. [dch42]
+- 9256: sound/nes_apu.cpp: Added noise channel period table for PAL systems, and fixed some values for NTSC systems. [kmg]
+- 9257: Dropped unnecessary execute permissions from various files. [Belegdol]
+- 9258: sound/nes_apu.cpp: Improved mixing, clamping, duty cycles, and interaction between channels. [cam900]
+- 9259: gei.cpp: Corrected DIP switch settings for gtsers12a and gtsers14a (MT08198). [Steven Coomber]
+- 9261: bus/nes: Unified character memory banking code, and cleaned up nametable RAM handling. [kmg]
+- 9262: Moved krokha to arcade subtarget, and cleaned up various drivers a little. [shattered]
+- 9265: vsnes.cpp: Fixed RAM size and mirroring, improved I/O ports, and cleaned up code. [kmg]
+- 9266: spectrum_cass.xml: Added five items, replaced three items with better dumps, and cleaned up metadata. [ArcadeShadow]
+- 9272: bus/nes: Added support for NES-EVENT2 bootleg reproduction cartridges. [kmg]
+- 9273: c64_cass.xml: Added twenty-one working items and one non-working item. [The Ultimate Tape Archive Team, Steve Coomber]
+- 9275: Removed extraneous semicolons after function bodies in many device headers. [kmg]
+- 9277: Removed extraneous semicolons after function bodies in all MAME headers. [kmg]
+- 9282: naomi.cpp: Corrected spelling of illustrator’s surname for spawn. [Michael Sanborn]
+- 9284: nes.cpp, playch10.cpp, vsnes.cpp: Improved zapper lightgun emulation. [kmg]
+- 9288: bus/nes: Added support for an 82 in 1 multi-game cartridge. [kmg]
+- 9289: video/pc_vga.cpp: Made video RAM size configurable at machine configuration time. [Ivan Vangelista]
+- 9290: ctk551.cpp: Correct release years in metadata and comments, and added mask ROM label. [Devin Acker]
+- 9291: machine/swim1.cpp, machine/swim2.cpp: Initialize m_floppy and m_timer members. [Kelvin Sherlock]
+- 9292: bus/nes_ctrl, machine/playch10.cpp, machine/vsnes.cpp: Made zapper lightgun sensor fuzzier. [kmg]
+- 9293: cpu/m68000: Added support for 68010 type 1000 exception stack frame. [J Booth]
+- 9294: Addressed some Lua scripting pitfalls, and added a broadcast notification helper class. [Vas Crabb]
+- 9295: nes.xml: Added original Family BASIC cartridge. [No-Intro, PALCOLOR, kmg]
+- 9296: c64_cass.xml: Added three working items. [Steven Coomber]
+- 9298: famicom_cass.xml: Added seven items for games published in Micom BASIC Magazine. [ozidual, Gaming Alexandria, kmg]
+- 9299: famibox.cpp: Added FamicomStation variant, added controller ports, corrected nametable RAM size, and improved inputs. [kmg]
+- 9300: snes.cpp: Removed some DMA memory cycle penalties (partially reverts #8673, addresses MT08190). [cam900]
+- 9301: decocass.cpp: Added European version of The Tower. [Darksoft, Senil Data Systems, David Haywood]
+- 9304: machine/scnxx562.cpp: Cleaned up interrupt generation code. [shattered]
+- 9305: Attempted to fix arcade subtarget. [kmg]
+- 9306: Attempted to properly fix arcade subtarget. [kmg]
+- 9308: hh_sm510.cpp: Re-scanned display for Razvedchiki kosmosa (rkosmosa). [Milan Galcik, algestam]
+- 9310: sound/nes_apu.cpp: Improved triangle channel emulation, reducing audible popping. [kmg]
+- 9315: jedutil: Fix bug in GAL16V8 equation display. [Kevin Eshbach]
 
 
 Source Changes
