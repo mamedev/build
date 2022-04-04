@@ -710,7 +710,7 @@ def print_source_changes(stream, wrapcol, repo, previous, current):
                 (new_promoted_parents if promoted else new_working_parents if working else new_broken_parents).append(item)
 
     scraper = LogScraper(stream, wrapcol, categorise)
-    print_section_heading(stream, 'Source Changes')
+    print_section_heading(stream, 'Source changes')
     for commit in repo.iter_commits('%s..%s' % (previous.hexsha, current.hexsha), reverse=True):
         scraper.process_commit(commit)
     stream.write(u'\n')
@@ -727,7 +727,7 @@ def print_new_machines(stream, wrapcol, title, machines):
 def print_preliminary_whatsnew(stream, wrapcol, title, repository, api, release, candidate, verbose):
     placeholders = (
             u'%s' % (title, ),
-            u'MAME Testers Bugs Fixed',
+            u'MAME Testers bugs fixed',
             u'New working machines',                    u'New working clones' ,
             u'Machines promoted to working',            u'Clones promoted to working',
             u'New machines marked as NOT_WORKING',      u'New clones marked as NOT_WORKING',
