@@ -1,4 +1,4 @@
-0.243 2022-04-xx
+0.243 2022-04-29
 ----------------
 
 
@@ -201,14 +201,14 @@ Ukrainian [Stanley Kid]
 Merged pull requests
 --------------------
 - 9100: Added Ukrainian UI translation. [Stanley Kid, Vas Crabb]
-- 9105: audio/cage.cpp: Add partial support for multi-channel output. [cam900]
+- 9105: audio/cage.cpp: Added partial support for multi-channel sound output. [cam900]
 - 9114: bus/rs232/xvd701.cpp, twinkle.cpp: Implemented commands required for Konami Twinkle DVD player. [Windy Fairy]
 - 9149: 8080bw.cpp, mw8080bw.cpp: Added some configuration inputs, and improved metadata. [einstein95]
-- 9377: frontend: Added an option to not show media status to the UI manager. [Nathan Woods]
+- 9377: frontend: Added an option to not show media device status to the UI manager. [Nathan Woods]
 - 9383: rastersp.cpp: Added support for the Football Crazy game. [Paul-Arnold]
 - 9405: formats/fs_coco_rsdos.cpp: Added support for formatting disks. [Nathan Woods]
 - 9423: alpha68k_n.cpp: Corrected comments and clocks for kyros. [negunma]
-- 9434: formats/fs_coco_os9.cpp: Adding support for formatting standard geometry disks. [Nathan Woods]
+- 9434: formats/fs_coco_os9.cpp: Added support for formatting standard geometry disks. [Nathan Woods]
 - 9462: gticlub.cpp: Added subtitle to game descriptions. [Michael Sanborn]
 - 9469: raiden_ms.cpp: Updated comments. [ClawGrip]
 - 9475: timetrv.cpp: Corrected artwork aspect ratio. [Ryan Holtz]
@@ -224,7 +224,7 @@ Merged pull requests
 - 9487: photoply.cpp: Added five Photo Play games from Netherlands and Belgium. [Asure, ClawGrip]
 - 9488: bus/nes, bus/nes_ctrl: Cleaned up code, mostly relating to bit field manipulation. [kmg]
 - 9489: apple2_flop_clcracked.xml, apple2_flop_orig.xml: Added latest dumps and cracks. [4am, Firehawke]
-- 9490: nes.xml: Replaced/removed some under-dumped ROMs as appropriate. [kmg]
+- 9490: nes.xml: Replaced/removed some truncated ROM dumps as appropriate. [kmg]
 - 9492: m92.cpp: Only use banked palette on systems with ROM banking (MT03289). [David Haywood]
 - 9493: vendetta.cpp: Added brute-forced equivalent PLDs images for Vendetta and clones. [Buenrip, Recreativas.org, ClawGrip]
 - 9494: fmtowns_flop_orig.xml, pc98.xml, pc98_cd.xml: Fixed disks that had been incorrectly converted to HxC MFM format. [r09]
@@ -268,262 +268,57 @@ Merged pull requests
 - 9541: fm8_cass.xml: Moved FM-8 cassettes that were previously in fm7_cass.xml to their own software list. [r09]
 - 9542: imagedev/floppy.cpp: Consolidated filesystem info containers. [Nathan Woods]
 - 9544: neogeo.xml: Corrected release years for moshougi and flipshot. [CanoeHope]
-
-9545: Get Kurzweil K2000 skeleton driver to boot. [psobot]
-(Apologies if the format or content of this PR deviates from MAME standards - this is my first pull request to the project and I
-  tried to keep things roughly similar to what I've seen in existing MAME code.)
-This PR gets the MAME driver for the Kurzweil K2000 to complete its boot sequence and land on the main UI:
-<img width="1544" alt="image"
-  src="https://user-images.githubusercontent.com/213293/161653186-4fb3000a-a4d5-4450-871e-b7cd3ade149d.png">
-I/O is still not working (no MIDI input), audio output is still not working, etc. Many comments have been left in the code to
-  describe some of the reverse-engineering work undertaken to get things working so far. But it boots!
-(cc @d235j, @Lord-Nightmare)
-
-9546: Fixed some issues involving fs::meta_description construction [npwoods]
-With the recent change to use std::variant more closely, I noticed a problem where meta_descriptions of type meta_type::String got
-  defaults of type 't'.  This was because the templated ctor for meta_description would convert 'const char *' to 'bool'.  This
-  change adds another overload to catch 'const char *', along with asserts to catch problems.
-In the process I corrected a few meta_description ctors
-It is possible that this change does not go far enough.  Perhaps the meta_type argument should be removed, and we should instead
-  create distinct ctor types (rather than relying on templates) and specify the precise meta_type in the overload.  Or even go
-  further and remove m_type from meta_description, and instead create an overload that calculates meta_type based on calling
-  std::visit on the variant
-
-9547: nes.xml: Set correct board type for Qiwang Chinese Chess games. [0kmg]
-
-9548: cosmos_playc8f.cpp: Add "SY-MUSIC01" PCB ASCII layout [clawgrip]
-
-9549: MT08203 fix [angelosa]
-Proposed fix for MT08203
-imagetek_i4100.cpp: add external pin callbacks, disallow internal irq acks for 5 to 7 lines;
-metro.cpp: tie irq line 5 to a vblank source with external pin 0 as irq enable, fixes MT08203;
-
-9550: bus/nes: Simplified Sunsoft-4 boards. [0kmg]
-
-9552: bus/nes: Added support for KL-06 and 831128C boards. [0kmg]
-- Made VRC4 base class extendable for CHR banking, as was done to PRG banking.
-New working software list additions (nes.xml)
------------------------------------
-1993 New 860 in 1 Over-Valued Golden Version Games [Consolethinks]
-1995 New Series Super 2 in 1 (Asia) [anonymous]
-
-9553: Added a 'type()' accessor to fs::meta_value [npwoods]
-Let's try to hide the nastiness of std::visit() as much as humanly possible
-
-9554: k573dio/k573fpga: Improve counters and status flags [987123879113]
-MAS3507D previously used a callback to receive data when it needed to fill the buffers which worked for the previous implementation
-  but wasn't accurate to what the MAS3507D actually does, which is trigger the demand pin and wait for the other end to send data
-  via the input clock and input data pins. I rewrote that code to more accurately reflect the real MAS3507D which allowed me to
-  implement the FPGA side more accurately to what the real code was doing based on my research with the state flags and
-  timers/counters.
-Datasheet ref: http://www.mas-player.de/mp3/download/mas3507d.pdf
-This PR also closes https://github.com/mamedev/mame/issues/8619. Further research showed that DDR Solo Bass Mix times songs entirely
-  differently than any other digital I/O game. I had previously identified that the register used for mpeg_key_1_w is also read at
-  times so I added in a mpeg_key_1_r, but upon further research on real hardware this turned out to be the MP3 frame counter which
-  is incremented when the MAS3507D decodes a frame and triggers the MPEG-FRAME-SYNC pin (PI4). DDR Solo Bass Mix syncs its internal
-  game timer to the first 1 second worth of frame syncs and then uses the regular timer counter to increment the game's internal
-  timer after that. Additionally, the timer itself has been confirmed on real hardware to be an always running timer, in comparison
-  to the normal FPGA code which starts, stops, and resets the timer at specific events.
-Audio timing using the internal MAME video recorder looks to be near spot on with these changes. Externally using probably the best
-  case scenario for audio (PortAudio + WASAPI) the timing is improved but there is still a slight amount of latency when actually
-  playing. If the FPGA's counter is offset by ~28ms to compensate for latency then it improves the timing to be close enough to the
-  real arcade machine to be a non-issue based on testing from a few players.
-
-9556: pgm2: update comments [mistydemeo]
-This makes a couple of minor updates to the comments on the main PGM2 driver source file.
-The comment about the two Japanese games indicates they were only released as a single-board PCB, but the one photo I've found of
-  Ochaken no Puzzle shows a cart in a standard PGM2:
-  https://www.dentsubo.net/~nosuke/diary/diary.html?y=2015&m=1&d=17&n=0&x=5&a=2&mode=comment
-I've also added the Japanese spelling for Jigsaw World Arena, based on this AM-NET blog post from when it was location tested:
-  https://blog.am-net.jp/?p=376
-
-9557: nes.xml: Removed underdumped Super 8 in 1. [0kmg]
-
-9559: Fix MT07568: hyprdriv (seattle) randomly freezes. [tedgreen99]
-gt64xxx: Change interrupt handler to not send new interrupts if an interrupt has already been asserted and improve dma timing.
-seattle: Add some harddrive dma delay to make harddrive performance more realistic.
-
-9560: Fix MT07823: nbagold (vegas) watchdog reset when select other game menu from service menu [tedgreen99]
-mips3: Add new DRC option to add extra validation to hash jumps
-vegas: Use new MIPS DRC option
-atlantis: Use new MIPS DRC option
-
-9561: nes.xml: Removed duplicate dump/entry linzexua. [0kmg]
-
-9562: fruitpc.cpp: split gogostrk into own driver (paokaipc.cpp), remove legacy PCI header defined. [angelosa]
-
-9564: ksys573.cpp - Let’s kick some typo. [mikehyrus]
-Remove unneeded undumped asterisk for Kick & Kick.
-
-9565: Update simplified Chinese translation for autofire button name format [kongmao45678]
-#: plugins/autofire/autofire_menu.lua:93；msgstr "%s [%d Hz]" is changed to msgstr "%s [%g Hz]"
-
-9566: neogeo.xml: Fix matrim AES serial [CanoeHope]
-
-9568: cinemat.cpp: Starhawk typo fix [FoxhackDN]
-Title has no space in the middle in the marquee, art, flyers, or operator's manual.
-
-9569: bus/nes: Added support for Chinese translations of Genghis Khan, Square's Tom Sawyer, and Tenchi wo Kurau II. [0kmg]
-Software list items promoted to working (nes.xml)
----------------------------------------
-Dàtáng Fēngyún VI Dài (China)
-Chéngjísīhán (China)
-Fēngsè Huànxiǎng (China)
-Tāngmǔ Lìxiǎn Jì (China)
-Tenchi wo Kurau II - Shokatsu Koumei Den (China)
-Tenchi wo Kurau II - Shokatsu Koumei Den (China, alt)
-Tūnshí Tiāndì II (China)
-Tūnshí Tiāndì II (China, alt)
-Tūnshí Tiāndì II (China, alt 2)
-Tūnshí Tiāndì III (China)
-
-9571: nes.xml: Removed bad dump mc_s8kfa. [0kmg]
-
-9573: galaxold.cpp: DIP switches are not labelled for trvchlng (MT08285) [scoomby]
-
-9574: wink.cpp: Identified more inputs for wink, winka (MT08284) [scoomby]
-
-9575: bus/nes: Fixed emulation for Chinese Fire Emblem translations. [0kmg]
-Software list items promoted to working (nes.xml)
----------------------------------------
-Shènghuǒ Huīzhāng - Suǒfēiyà Fùsū (China)
-Shènghuǒ Huīzhāng - Suǒfēiyà Fùsū (China, alt)
-Shènghuǒ Huīzhāng - Suǒfēiyà Fùsū (China, fixed?)
-Shènghuǒ Huīzhāng Wàizhuàn (China)
-Shènghuǒ Huīzhāng II Dài (China)
-Shènghuǒ Huīzhāng II Dài (China, alt)
-Zhēntián Shí Yǒngshì (China)
-
-9576: bus/nes: Minor simplification to TQROM + update support status. [0kmg]
-
-9577: r2dtank.cpp: update Bonus Life DIP switch label (MT08250) [scoomby]
-I have tested and confirmed jkburks finding with this DIP switch.  I am still working on the missing "Number of Shots" DIP switch
-  separately.
-
-9579: bus/nes: Minor cleanups for some MMC3 boards. [0kmg]
-- Fixed TXSROM's repeated setting of nametable pages.
-- NES-QJ, PAL-ZZ boards can only change outer banking bits when RAM enabled.
-
-9580: Fixed string constructor for fs::meta_value [npwoods]
-In absence of a constructor that explicitly took 'const char *', passing a const char * would be interpretted as a bool
-
-9582: ibm5170.xml: 8 added + 1 redumped [ArcadeShadow]
-New working software list additions
------------------------------------
-Pyrotechnica [The Good Old Days]
-Red Baron (EGA version) [ibmpc5150, archive.org]
-Red Baron (VGA version) [ibmpc5150, archive.org]
-Red Baron - Mission Builder [ibmpc5150, archive.org]
-Return of the Phantom [The Good Old Days]
-SimCity Classic (Windows 3.x release) (3.5") [ibmpc5150, archive.org]
-SimCity Classic (Windows 3.x release) (5.25") [ibmpc5150, archive.org]
-SimLife (Windows 3.x release) [The Good Old Days]
-Redump
-------
-SimLife (set 2, older) [The Good Old Days] (disk 1 and 2 have a modified OEM ID)
-Moved (from ibm5150.xml to ibm5170.xml)
--------
-dlair -> dlair525
-dlair35 -> dlaira
-dlaira -> dlair525a
-_(minimal requirement is an IBM AT (286 processor))_
-
-9583: pcecd.xml: Metadata correction [ArcadeShadow]
-Changed descriptive text in descriptions to lowercase
-
-9584: vboy.xml: Metadata corrections [ArcadeShadow]
-Changed descriptive text in descriptions to lowercase.
-
-9585: famicom_flop.xml: Metadata corrections [ArcadeShadow]
-Changed descriptive text in descriptions to lowercase.
-
-9586: bus/nes: Improved support for BMC-64IN1NR boards. [0kmg]
-New working software list additions (nes.xml)
------------------------------------
-76 in 1 Y2K [superretrogamer2741]
-Super HiK 42 in 1 (K-42001) [Consolethinks]
-
-9587: nes.xml: Added a new dump; fixed tysonpoh bad dump. [0kmg]
-New working software list additions
------------------------------------
-Mike Tyson's Intergalactic Power Punch (USA, prototype) [HiddenPalace]
-
-9588: Cleanups for the CoCo RS-DOS fs module [npwoods]
-- Moved internal logic out of header file and into anonymous classes
-- Commenting
-
-9589: Cleanups for the CoCo OS-9 fs module [npwoods]
-- Moved internal logic out of header file and into anonymous classes
-
-9591: nes.xml: Added some Chinese RPGs and a virtual pet game. [0kmg]
-New working software list additions
------------------------------------
-Chǒngwù Bǎobǎo (China) [famiac, NewRisingSun]
-Dì Shì Tiān (China) [Consolethinks]
-Jiànxiá Qíngyuán (China, Final Fantasy pirate) [famiac, NewRisingSun]
-Qítiān Dàshèng (China) [famiac, NewRisingSun]
-Wúmíng Chuánshuō (China) [Consolethinks]
-
-9593: nes: Various minor cleanups. [0kmg]
-
-9594: bus/nes: Work on Tengen boards. [0kmg]
-- Removed Tengen 800008 implementation (Tetris) as it's identical to a Sachen board.
-- 800032: IRQ tweaks. Improves some bad scanlines. Fixed PRG banking per hardware findings (no games use this).
-- Fixed 800037's repeated setting of nametable pages, as was done for TXSROM.
-New NOT_WORKING software list additions (nes.xml)
----------------------------------------
-Skull & Crossbones (Korea) [MLX]
-
-9596: bus/nes: Updated Irem boards. [0kmg]
-- Fixed various minutiae with banking modes, bus conflicts, masks based on pin counts.
-- Made H3001 a subclass of G101. It's mostly functionally the same with an added IRQ.
-
-9598: nes.xml: Removed a duplicate dump. [0kmg]
-
-9599: a800_flop.xml: Added one new entry. [0kmg]
-New working software list additions
------------------------------------
-Pondering About Max's [A8SP]
-
-9600: restore border size [holub]
-restore bottom 56 pix border
-
-9601: model3.cpp & whitestar.cpp - Make Sega Lost World title strings consistent. [mikehyrus]
-Make Sega's Lost World title strings consistent.
-
-9603: nes.xml: Support status updates + note some issues/causes. [0kmg]
-
-9604: z80scc: add support for WR15_ZEROCOUNT interrupts. [ksherlock]
-> If this bit is set to "1," an External/Status interrupt is generated whenever the counter in the baud rate generator reaches "0."
-  This bit is set to "0" by a channel or hardware reset.
-Fixes MT 8239, Apple IIgs: Diversi-Tune 1.1 crashes/hangs emulation on song start of playback
-https://mametesters.org/view.php?id=8239
-It overlaps somewhat with the unused and incomplete Z80SCC_USE_LOCAL_BRG code so I tried to leave that unchanged.
-
-9607: nes/bus: Minor cleanups for Taito boards. [0kmg]
-- Fixed address masks for TC0190FMC and X1-005, reflecting hardware pin connections.
-- Fixed off-by-one in TC0190FMC+PAL IRQ due to using two's complement instead of one's complement.
-
-9608: slapfght_ms.cpp: Fix typo on ROMs labels [clawgrip]
-
-9610: gaelco.cpp: Verify clocks [clawgrip]
-!27475f5e-26e1-4f5f-9531-7d122653f099
-!2a1cfef9-2390-4af8-8b91-b51c7b3dc3dd jgp
-
-9611: bus/nes: Corrected NOCASH_NOCHR homebrew board emulation. [0kmg]
-
-9613: nes.xml: Set correct board type for several more Chinese RPGs. [0kmg]
-New working software list additions
------------------------------------
-Tiějiǎ Tújí (China) [ZDog]
-Xīnghé Zhànduì (China) [ZDog]
-Software list items promoted to working
----------------------------------------
-Zhànshén Shìjiè (China) [kmg]
-Jiànxiá Qíngyuán (China) [kmg]
-Shénmó Dàlù (China) [kmg]
-Kǒudài Guàishòu - Fěicuì Bǎn (China) [kmg]
-Yǒngzhě Hēi'àn Shìjiè - Hùndùn De Shìjiè (China) [kmg]
+- 9545: krz2000.cpp: Got K2000 skeleton driver to boot and show its UI. [Peter Sobot]
+- 9546: formats/fsmeta.cp: Made metadata value interface less error-prone. [Nathan Woods]
+- 9547: nes.xml: Set correct board type for Qiwang Chinese Chess games. [kmg]
+- 9548: cosmos_playc8f.cpp: Added ASCII layout diagram for SY-MUSIC01 PCB. [ClawGrip]
+- 9549: video/imagetek_i4100.cpp, metro.cpp: Hooked up I4100 control outputs and improved interrupts (MT08203). [Angelo Salese]
+- 9550: bus/nes: Simplified Sunsoft-4 board implementation. [kmg]
+- 9552: bus/nes: Added support for KL-06 and 831128C boards. [kmg]
+- 9553: formats/fsmeta.cpp: Added an accessor exposing the contained type as an enumerated value. [Nathan Woods]
+- 9554: machine/k573dio.cpp, machine/k573fpga.cpp: Improved counters and status flags (addresses GitHub #8619). [Windy Fairy]
+- 9556: pgm2.cpp: Imrpoved some comments relating to Japanese games. [Misty De Méo]
+- 9557: nes.xml: Removed a truncated Super 8 in 1 cartridge dump. [kmg]
+- 9559: machine/gt64xxx.cpp: Improved interrupt logic and DMA timing (fixes MT07568). [Ted Green]
+- 9560: cpu/mips3: Added a recompiler option to perform additional validation on hash jumps (fixes MT07823). [Ted Green]
+- 9561: nes.xml: Removed duplicate entry linzexua. [kmg]
+- 9562: fruitpc.cpp, paokaipc.cpp: Moved gogostrk to a separate driver driver. [Angelo Salese]
+- 9564: ksys573.cpp: Updated file header comment. [Michael Sanborn]
+- 9565: Updated simplified Chinese translation for auto-fire button name format. [kongmao45678]
+- 9566: neogeo.xml: Fixed editing error in matrim AES serial. [CanoeHope]
+- 9568: cinemat.cpp: Corrected title for Starhawk. [David Silva]
+- 9569: bus/nes: Added support for Chinese translations of Genghis Khan, Square’s Tom Sawyer, and Tenchi wo Kurau II. [kmg]
+- 9571: nes.xml: Removed bad dump mc_s8kfa. [kmg]
+- 9573: galaxold.cpp: Identified four DIP switches for trvchlng (MT08285). [Steven Coomber]
+- 9574: wink.cpp: Identified four DIP switches for wink and winka (MT08284). [Steven Coomber]
+- 9575: bus/nes: Fixed emulation for Chinese Fire Emblem translations. [kmg]
+- 9576: bus/nes: Simplified TQROM emulation; nes.xml: updated support status for a few games. [kmg]
+- 9577: r2dtank.cpp: Corrected bonus life DIP switch setting labels (MT08250). [Steven Coomber]
+- 9579: bus/nes: Cleaned up implementation for some MMC3 boards. [kmg]
+- 9580: formats/fsmeta.cpp: Fixed construction from C strings. [Nathan Woods]
+- 9582: ibm5170.xml: Added eight items, and replaced one item with a clean dump. [ArcadeShadow]
+- 9583: pcecd.xml: Cleaned up metadata. [ArcadeShadow]
+- 9584: vboy.xml: Cleaned up metadata. [ArcadeShadow]
+- 9585: famicom_flop.xml: Cleaned up metadata. [ArcadeShadow]
+- 9586: bus/nes: Improved support for cartridges using BMC-64IN1NR boards. [kmg]
+- 9587: nes.xml: Added a new dump, and fixed the bad dump of tysonpoh. [kmg]
+- 9588: formats/fs_coco_rsdos.cpp: Encapsulated implementation better. [Nathan Woods]
+- 9589: formats/fs_coco_os9.cpp: Encapsulated implementation better. [Nathan Woods]
+- 9591: nes.xml: Added some Chinese role-play games and a virtual pet game. [kmg]
+- 9593: bus/nes, nes.xml: Cleaned up code and software metadata. [kmg]
+- 9594: bus/nes: Improved emulation of Tengen boards, and removed a redundant cartridge type. [kmg]
+- 9596: bus/nes: Cleaned up Irem board implementations. [kmg]
+- 9598: nes.xml: Removed a duplicate Missile Tank dump. [kmg]
+- 9599: a800_flop.xml: Added Pondering About Max's. [A8SP, kmg]
+- 9600: spec128.cpp, spectrum.cpp: Corrected screen border size. [holub]
+- 9601: model3.cpp, whitestar.cpp: Make punctuation in Jurassic Park game titles consistent. [Michael Sanborn]
+- 9603: nes.xml: Updated support status, added notes, and corrected metadata for a number of items. [kmg]
+- 9604: machine/z80scc.cpp: Added support for zero count interrupts (fixes MT08239). [Kelvin Sherlock]
+- 9607: nes/bus: Cleaned up Taito board emulation code. [kmg]
+- 9608: slapfght_ms.cpp: Corrected ROM labels. [ClawGrip]
+- 9610: gaelco.cpp: Verify clocks for Big Karnak. [ClawGrip]
+- 9611: bus/nes: Corrected NOCASH_NOCHR homebrew board emulation. [kmg]
+- 9613: nes.xml: Set correct board types for several more Chinese role-play games. [kmg]
 
 
 Source changes
