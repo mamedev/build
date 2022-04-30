@@ -551,9 +551,6 @@ class LogScraper(object):
                     self.blank = True
                 elif self.listitems:
                     self.listname = None
-                    self.listitems = False
-                    if self.stream is not None:
-                        self.stream.write(u'\n')
             elif LogScraper.DIVIDERLINE.match(line) and self.paragraph:
                 if self.stream is not None:
                     if not self.first:
@@ -576,6 +573,11 @@ class LogScraper(object):
                     wrap_paragraph(self.stream, line, self.wrapcol, '', '  ')
             elif (line[0] == '-') or (line[0] == '*'):
                 self.flush_paragraph()
+                self.blank = False
+                if self.listitems:
+                    if self.stream is not None:
+                        self.stream.write(u'\n')
+                    self.listitems = False
                 bullet = line[0]
                 line = line[1:].lstrip()
                 self.get_bullet_increment(indent, bullet)
@@ -584,6 +586,10 @@ class LogScraper(object):
                 if self.blank:
                     self.flush_paragraph()
                     self.blank = False
+                if self.listitems:
+                    if self.stream is not None:
+                        self.stream.write(u'\n')
+                    self.listitems = False
                 if not self.first and not self.paragraph:
                     if not self.bullets:
                         self.level = 1
