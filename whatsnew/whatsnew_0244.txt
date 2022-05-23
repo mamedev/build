@@ -1,4 +1,4 @@
-0.244 2022-05-2x
+0.244 2022-05-25
 ----------------
 
 
@@ -161,732 +161,121 @@ pc98_cd:
 
 Merged pull requests
 --------------------
-9311: 8080bw.cpp: added colors emulation to vortex [Mike Coates] [Osso13]
-I was sent this code. The colors seem strange to me, but the blurry, low resolution pics seem to confirm them. Opening a PR since
-  I'm not confident enough to commit directly without comments / verification.
-!SS101161
-!vortex4
-!vortex5
-
-9449: Z80 M-cycles + spec48 io contention [holub]
-z80: machine-cycles during instruction execution
-spec48: read/writes contention based on z80 changes
-Current implementation doesn't adjust to ideal state possibly because of incorrect timings in z80 which need further investigation.
-Some tests state (first - before, second - after):
-!tacts_before
-!tacts_after
-... and fuse
-!tacts_fuse
-!ulatest3_before
-!ulatest3_after
-!fpga48_before
-!fpga48_aftter
-!fusetest_after
-!fusetest_after
-!timings48v1_before
-!timings48v1_after
-some tests without baseline:
-!shock_after
-!ula48
-!aqua
-
-9605: osd/modules/input: Detect joystick reconnection with SDL [cuavas]
-This is the most obvious approach to detecting game controllers being reconnected with SDL.  The trouble is, it behaves badly on
-  Windows SDL builds.
-The GUIDs are not unique on Windows – they just contain the bus type, vendor ID and product ID padded out with zeroes.  This means
-  that on Windows, it can’t distinguish between similar controllers being added.  For example if you have more than one of the same
-  kind of controller attached to a hub, and you disconnect and reconnect the hub, the joysticks may come back with different
-  assignments.  This is possibly worse than just not detecting reconnected controllers.  SDL 2.0.14 includes a
-  `SDL_JoystickGetSerial` function, but I don’t want to bump the required SDL version up that high right now.
-It does seem to work acceptably on Linux with udev.
-I don’t see a simple way to detect SDL’s joystick driver to just avoid trying to handle reconnection on Windows (I could be missing
-  something, though).  Perhaps it’s best to just go ahead with it anyway – most people on Windows don’t use `OSD=sdl` at this point,
-  and we can still tell people not to count on controllers working if they’re reconnected.  It would be good to get some feedback
-  from Mac users on what it does there, though.
-This also changes the display names for joystick items with SDL:
-* Numbers buttons, axes and hats from 1 rather than 0 – it’s more natural and matches the labels on plain HID gamepads
-* Gets rid of the SDL device name from absolute and relative axes – this seems to be a vestigial thing from when baseline MAME
-  didn’t always include logical device names for joystick controls
-* Displays X/Y for relative axes rather than just numbering the Y axes one higher than corresponding X axes
-
-9614: upd7759.cpp: Add support for mode switching. [wilbertpol]
-
-9615: Add logic to the CoCo RS-DOS FS module to catch cycles in file granule (block) lists [npwoods]
-
-9616: Changed floppy_image_device::identify() to take std::string_view instead of std::string [npwoods]
-
-9617: nes.xml: Fixed a few more mirroring issues. Demoted strikwlf. [0kmg]
-
-9618: bus/nes: Minor fixes and simplifications for several bootlegs. [0kmg]
-
-9621: The last April 2022 Apple II push [Firehawke]
-New working software list additions (apple2_flop_orig.xml)
-----------------------------------------------------------
-Drugs: Their Effects on You [Matthew Eric D'Asaro, Firehawke]
-New working software list additions (apple2_flop_clcracked.xml)
----------------------------------------------------------------
-Drugs: Their Effects on You (cleanly cracked) [4am, Matthew Eric D'Asaro, Firehawke]
-
-9622: spectrum_cass.xml: Added one game and a couple of demos [ICEknigh7]
-Just noticed that the only way to play the Spectrum version of Inspector Gadget was through its Russian bootleg arcade game
-  "Brodjaga", so I added its only official release (was cancelled in the UK but released in Spain).
-Also added a couple of demos that I found laying around in a very old backup, and which aren't already included in any cover tapes:
--LSD Megademo
--The Ren and Stimpy Slideshow (a slideshow with a few, crappily scanned, black and white pics but with a nice presentation)
-
-9623: a2600.xml: Fix publishers; mark generalr/westward clones of custer [einstein95]
-"Mystique" was a product line, actual publisher was "American Multiple Industries"
-
-9624: 8080bw.cpp: Re-remove cocktail inputs from spaceat2/sinvzen [einstein95]
-This resolves one of the issues @cuavas brought up in #9149 
-
-9625: osborne1.cpp: revert floppy device back to SSDD [theoldsport]
-Partially reverts an old commit from @Robbbert (https://github.com/mamedev/mame/commit/247939853301565efd348cad12b04fc957707bc2)
-  where the floppy device was (mistakenly?) set to FLOPPY_525_QD (quad density) from FLOPPY_525_SSDD (single-sided double-density).
-As far as I am aware, the Osborne1 only supported SSSD and SSDD disks. Revert appears to resolve known Osborne1 issues 5792 (thanks
-  to @Osso13 for pointing this out) and 8100 @cuavas.
-
-9626: Refinement to MIPS3 EXTRA_INSTR_CHECK change; reduces perf loss on unaffected machines [MooglyGuy]
--mips3drc: Moved unchanging conditionals outside for loop in generate_checksum_block. [Ryan Holtz]
-
-9628: bus/nes: Updated Jaleco boards. [0kmg]
-- JF-13: fixed simultaneous samples playing at boot of Moero Pro Yakyuu.
-- JF-16, discrete 74x161: set hardware-valid one-screen mirroring mode at reset.
-- JF-17/19: Streamlined by putting common details in base class. Fixed latches which switch banks on low to high transition. Demoted
-  moejudo since it's not playable.
-- SS88006 boards: Also streamlined everything into common base class. Parameterized common code patterns. Added WRAM enable bits.
-- nes.xml: Corrected ROM sizes of undumped uPD775xC chips.
-
-9629: Addressed performance loss from recent z80scc changes [MooglyGuy]
--z80scc: Removed unused Z80SCC_USE_LOCAL_BRG and simplified WR15_ZEROCOUNT usage to reduce the likelihood of needless timer
-  activation. [Ryan Holtz]
--mips3drc: Additional micro-optimizations to generate_checksum_block. [Ryan Holtz]
-
-9630: Only ACK correct I2C device-id [Paul-Arnold]
-i2cmem devices incorrectly ACK all device-ids, not just their own.
-Devices based on i2cmem.cpp also do the same.
-If they're not selected they also leave the data line low whereas it should be high.
-Please note that this fix will probably break any driver which has multiple I2C slave devices on the same bus and combines their
-  data lines by OR'ing them together. They should be AND'ed.
-
-9632: JPM SRU fruit machine improvements [SomeRandomGuyIdk]
-Many improvements to the JPM SRU fruit machine driver to bring it out of skeleton state. Four games are now playable, 
-albeit with very barebones layouts. There are some games from the skeleton which I haven't looked at yet that I'll 
-deal with later. I've also found ROMs for a few more games, those are to be added soon.
-Changes:
-- Many changes to the JPM SRU driver, 4 games now playable
-- SRU audio circuit netlist, not yet perfect
-- Very simple layouts for the games with proper symbols on the reels, also changed jpmsru.lay
-- Added JPM SRU reels to steppers.cpp
-- Created machine/genfruit.cpp, a common class with mechanical sound samples for fruit machines (same idea as genpin.cpp)
-
-9633: xavix2: Fix scaling of background in ltv_naru [qeeg]
-Any further fixes to the title screen will require better CRTC emulation.
-This fix was found by realizing that the background, which was the only part that required scaling to match hardware, was the only
-  sprite in the list with w and h in the command set to 0x20 instead of 0x10. Guessing that this was some sort of scaling factor
-  turned out to be fruitful.
-After the change: 
-!screen
-
-9637: spectrum48: fix floating int [holub]
-Fixed "floating" int. Now border in demos stays steady and not shaking.
-!shock_after
-!ula48
-!tacts_after
-
-9640: spec128.cpp, specpls3.cpp: Added initial bus contention emulation for Spectrum 128+ models [holub]
-Makes ula128 test work for spectrum 128, +2 models
-+2A, +3 uses same pattern as models above but possibly this test not expected to work on there models - nice to have confirmation
-  from owners of physical devices.
-!ula128_pls2
-compare to master:
-!ula128_pls2_before
-
-9641: bus/nes: Various minor cleanups. [0kmg]
-- MMC1: Made mirroring bits overridable for derivative boards. Also removed code for rumored MMC1C variant.
-- Moved various boards' hardwired mirroring from pcb_reset() to the software list.
-- Removed redundant banking of VRAM for non-banking boards and redundant variable setting at PCB reset.
-
-9642: vigilant.cpp :: fixed sound in bowmen by allowing it to see the area of ROM with music data [David Haywood] [DavidHaywood]
-
-9643: nes.xml: Changed tysonipp to use per-chip ROM dumps [0kmg]
-
-9645: z80: remove undesired state var in cpu implementation [holub]
-Removes undesired state variable (m_irq_at) in z80 implementation per @happppp and @angelosa request in #9637
-
-9646: neogeo.xml: Fix garouha serial [CanoeHope]
-
-9647: bus/nes: Updates for Camerica/Codemasters boards. [0kmg]
-- BF9096: Added alternate paging required by certain dumps. Fixes menu items that didn't load or were crisscrossed.
-- Golden Five: Corrected reset/game lock behavior according to reverse engineered hardware info.
-
-9648: Added FIXME comments to badly behaved I2C target devices [Paul-Arnold]
-I2C slaves should only ACK their own device-id and NAK all others.
-SDA output should only change state while clock is low.
-Idle state of SDA must be high.
-
-9649: tim011 floppy [mmicko]
-upd765: if waiting for additional command bytes, treat a data reg read as a open bus write (tested on real hardware) and always
-  trigger the drq line even if in nodma mode
-z180: add callbacks for tend and decrement bcr1 when dma channel 1 is active
-tim011: hooked up FDC properly
-tim011: added video display implementation
-tim011:  custom IMG floppy format support
-
-9652: 4enlinea.cpp: Fix game name for 'unkdarts' [clawgrip]
-!IMG_5105
-
-9653: ksys573: Fix fightmn/pnchmn layout's alpha channel [987123879113]
-
-9654: neogeo.xml: Fix kof2002 AES serial [CanoeHope]
-
-9655: nes.xml: Various cleanups. [0kmg]
-- Explicitly set mirroring for hardwired boards (mostly NROM, CNROM, UNROM). Graphics glitches fixed in sets: conquer, dancekar,
-  goldktvp, machridrp, mc_8lm, phantom, rockmanr, seadream.
-- Trimmed smaruo's overdumped graphics ROM.
-
-9658: nes.xml: Removed four bad dumps. [0kmg]
-- ntf2tc1 and modaosyma were overdumps with doubled PRG ROM of their parent sets.
-- dreamfgtasd was a multicart extract with extra CHR data from three other games.
-- Half of musicboxa's CHR was an overdump that matched half its PRG dump.
-
-9662: Fix SUBTARGET=nl build. [couriersud]
-
-9666: famibox.xml: Updated comment about unverified dumps. [0kmg]
-
-9668: system1.cpp: Added lives and demo sounds DSWs for shtngmst, demo sounds DSW for ufosensi (MT08303). [0kmg]
-
-9670: spec128: contention final [holub]
-ZX Spectrum Memory/IO contention finalized for 128/+2 models
-refactored memory access gives ~60% performance improvement
-!shock_128
-
-9671: Delete DDR Kids from ksys573.cpp [simzy39]
-Delete 'Dance Dance Revolution Kids' and the undumped status, as it is dumped and in the Konami GSAN1 hardware driver.
-
-9675: Fix asmjit compile error due to warning [couriersud]
-
-9676: Prefer x11 SDL videodriver [belegdol]
-This works around #5693 in cases where SDL2 defaults to wayland (like Fedora since SDL2-2.0.22-2).
-
-9677: megadriv.xml: Added an Awesome Possum prototype. [0kmg]
-New working software list additions
------------------------------------
-Awesome Possum Kicks Dr. Machino's Butt! (USA, prototype, 19930712) [DrBizz]
-
-9679: nes.xml: Added eleven dumps. Removed some baddump flags. [0kmg]
-New working software list additions
------------------------------------
-Baby Boomer (Korea) [MLX]
-Exploding Fist (USA) [anonymous]
-Get'em Gary [anonymous]
-More Glider [anonymous]
-Multidude [RetroSouls]
-Nomolos - Storming the Catsle (v1.00) [anonymous]
-Quest Forge - By Order of Kings [anonymous]
-Super Painter [RetroSouls]
-Tújí (Taiwan) [kazblox]
-Uninvited (USA, prototype) [Forest of Illusion, Clarkzer0]
-Wùkōng Dòujù (China) [anonymous]
-
-9680: gba.xml: Added one dump. [0kmg]
-New working software list additions
------------------------------------
-World Reborn (USA) [NoIntro]
-
-9681: gbcolor.xml: Added one dump. [0kmg]
-New working software list additions
------------------------------------
-Tyrannosaurus Tex (USA) [NoIntro]
-
-9682: Fix fallout from i2C changes [Paul-Arnold]
-Fix games broken by I2C changes.
-Add comment to driver requiring additional I2C device.
-
-9683: neogeo.xml: Fixed wh2h serial [Abadede]
-
-9684: Netlist lint, first version of a FAQ and small code changes [couriersud]
-- Added a first version of a FAQ
-- Use better error messages in pfunction.
-- Add static where appropriate in nld_solver.
-
-9686: bus/nes: Updated code and dump for mc_mario. [0kmg]
-- Switched mc_mario to use BMC-GOLD-7IN1 board and removed emulation for variant BMC-MARIOPARTY-7IN1. Replaced its CHR ROM with bank
-  swapped dump.
-- BMC-GOLD-7IN1: Fixed MAME crashing when carts with no WRAM are loaded.
-
-9687: vegas.cpp: Fix reversed DIP switch names for sf2049te, sf2049se [neSneSgB]
-The disk-based test was booting to the EPROM-based test and vice versa. For both games, the DIP switch meanings in the EPROM-based
-  test and in the disk-based test are not the same; they contradict each other.
-
-9688: Update megadriv software list to add optional region protection information [csvowles]
-Some Mega Drive/Genesis ROMs are region protected, when the game starts in a console from an incorrect region then they either
-  display a message (explaining the Cartridge is designed for a different region), or they fail to boot or hang (which is the case
-  for many Konami games, which hang showing the KONAMI white splash screen), or they can run to some extent but not enough to be
-  playable.
-This enhancement to the megadriv software list documents the region protection cases using the optional "compatibility" value for
-  338 ROMs.
-The valid options are:
-`NTSC-U` for North America/Brazil - `<sharedfeat name="compatibility" value="NTSC-U"/>`
-`NTSC-J` for Japan/S Korea/Asia - `<sharedfeat name="compatibility" value="NTSC-J"/>`
-`PAL` for Europe (including France SECAM variant, and Australia) - `<sharedfeat name="compatibility" value="PAL"/>`
-ROMs can be valid in multiple regions, for example:
-`<sharedfeat name="compatibility" value="NTSC-U,NTSC-J"/>`
-or
-`<sharedfeat name="compatibility" value="PAL,NTSC-U"/>`
-Many ROMs work in all the regions, and if there is no `sharedfeat name="compatibility"` value set for that ROM in the softwarelist
-  then it is valid for all three console regions.
-A comment against the value categorises which of the following the region restriction is:
-* `Region Locked`  - a message is displayed explaining that the game has purposely been prevented from running on this region of
-  console (the message is not always correct, sometimes more or less regions are actually available)
-* `Region Incompatible` - game does not boot on incorrect region, it may be intentionally region locked but no message is displayed
-  before it hangs
-* `Region Issues` - runs to some extent on a console from an incorrect region, but the game is too broken to be playable
-This change on its own will just document the Sega Mega Drive region coding situation.
-A code change to Mame could actually prevent a rom that will not run on a particular console region from being listed as available
-  to the machine, such as https://github.com/mamedev/mame/pull/9620.
-
-9692: ibm5150.xml: PC Booter corrections [Allofich]
-The ibm5150.xml list divides games into a "Booter Games" section and a "DOS-based games" section.
-The following games are in the "Booter Games" section but are not PC Booter games (they give a "non-system disk" error if you try to
-  run them that way. They can be run through DOS). This PR moves them to the "DOS-based games" and removes the PC Booter usage line
-  from those that have it.
-**Hacker
-Sex Vixens from Space
-World Championship Soccer (both 5.25" and 3.5")
-Ancient Land of Ys**
-The following games are PC Booter games but are missing the PC Booter usage line, so this PR adds it for them.
-**Adventures in Math
-Amnesia
-Boulder Dash (booter version)
-BurgerTime
-Earthly Delights
-Executive Suite
-Inca**
-
-9694: acia6850: initialize receive section [mmicko]
-Leaving this uninitialized, caused WIP driver to randomly respond to serial terminal when driver is started.
-
-9699: cps2.cpp: Added TOURNAMENT board communication simulation. [cuavas]
-Thanks to Darksoft for tracing the board, and @originalgrego for producing a proof of concept implementation.
-To use this, enable communication in the Machine Configuration menu for four instances of `ssf2tb` or a clone, and then daisy-chain
-  them using the various `comm_*` options.  The `comm_remotehost` option for the head of the daisy chain must be empty.  For
-  example, to run them all on one machine:
-* mame ssf2tb -comm_localhost 0.0.0.0 -comm_localport 1234 -comm_remotehost ""
-* mame ssf2tb -comm_localhost 0.0.0.0 -comm_localport 1235 -comm_remotehost 127.0.0.1 -comm_remoteport 1234
-* mame ssf2tb -comm_localhost 0.0.0.0 -comm_localport 1236 -comm_remotehost 127.0.0.1 -comm_remoteport 1235
-* mame ssf2tb -comm_localhost "" -comm_remotehost 127.0.0.1 -comm_remoteport 1236
-The TOURNAMENT board apparently can generate interrupts, but the game doesn’t seem to mind if it doesn’t – it still polls the USART.
-  This is all simulated at a very high level due to the way MAME only synchronises with the wall clock once per frame – on a typical
-  PC, the main thread is sleeping over 90% of the time when running a CPS2 game.  Trying to do it more realistically would require
-  major changes to MAME’s event loop.
-The games will lose sync pretty quickly if they aren’t running at the same speed (e.g. if you try to fast-forward one of them).
-  I’ve had it lose sync once with normal play, but it seems to work fairly well most of the time.
-
-9701: megadriv.xml: Added missing SRAM to nbaliv98 (MT07564). [0kmg]
-
-9705: gameboy.xml: Added four homebrew entries. [0kmg]
-New working software list additions
------------------------------------
-Dangan GB [snorpung, nordloef]
-Death Planet [Mackerel Interactive]
-Into the Blue [Jonas Fischbach]
-Retroid [Jonas Fischbach]
-
-9706: netlist: more c++, less macros [couriersud]
-- Reduce the use of macros by converting defines into c++ constants.
-- more minor code clean up.
-
-9707: machine/netlist.cpp: Use templates to compile with NETLIST_CREATE_CSV=1 [couriersud]
-
-9708: netlist: standalone makefile and prototype modifications [couriersud]
-- update netlist makefile to more recent compilers
-- prototypes for NETLISTs in macros are now created create_devinc.py
-- apply ctidy recommendations
-
-9709: Various software list kana metadata cleanups. [0kmg]
-- Replaced halfwidth characters (including middle dot) with fullwidth ones.
-- Fixed a few alt titles.
-
-9710: Notes/typos + note changes for DDR Karaoke [simzy39]
--The bottom of the driver says '"Dance Dance Revolution Karaoke Mix (GQ921 VER. JBB)"'
-which is hard to deduce as being 'DAM-DDR Dance Dance Revolution for DAM' at the top of the driver.
-As such, I've changed it to: "Dance Dance Revolution Karaoke MIX (DAM-DDR)" and "Dance Dance Revolution Karaoke MIX 2nd (DAM-DDR)"
-  based on what I've found on the internet. This name appears to be accurate, at least for the system. The game disc itself doesn't
-  contain the name DAM.
-A few sources:
-https://remywiki.com/AC_DDR_Karaoke
-https://bcaweb.bai.ne.jp/miyooo/ddrd.html
--: In the list, there is a 'P' next to these names, denoting 'plain System573', but according to my first source:
-DDR KAraoke "...uses a modified System 573, equipped with four video input/output and a DAM karaoke device."
-As such I've changed the P to 'K' and have changed Kick and Kick's letter, which was a K, to AA since it's a similar board to the A.
-A: uses ext. analog I/O board GX700-PWB(F)
-AA: uses alt. ext. analog I/O board GX700-PWB(K)
-K: uses karaoke I/O board GX921-PWB(B)
--'DDR max' and 'DDR max 2' to 'DDRMAX' and 'DDRMAX2'
-
-9711: zx spectrum drivers - restore irq length == 32 / border timings [holub]
-zx spectrum drivers - restore irq length 32
-more precise timings for screen and border updates
-simplify current frame shift calculation which improves performance
-minor: some states init/save
-
-9714: homedata.cpp - Add subtitle to reikaids [mikehyrus]
-Just a note of adding the subtitle to Reikai Doushi.
-
-9715: pc98_cd.xml: 19 new dumps, 18 replacements [rzero9]
-New working software list additions
------------------------------------
-Brandish 2 Renewal [redump.org]
-Canaan - Yakusoku no Chi [redump.org]
-Doom II for Windows 95 [redump.org]
-Ningen Konchuu - Nozoki [redump.org]
-Shin'ou Densetsu Crystania DX [redump.org]
-Uki Uki Island [redump.org]
-X Girl [redump.org, cyo.the.vile]
-New not working software list additions
----------------------------------------
-Ayumi-chan Monogatari [redump.org]
-Collector D [redump.org, cyo.the.vile]
-Etemible - Tenjou Mukyuu [redump.org, Coolmod]
-Ginga Eiyuu Densetsu IV [redump.org]
-Master of Magic [redump.org]
-NEC Demonstration CD-ROM - Evolution and Dinosaurs [redump.org]
-Prince of Persia 2 - The Shadow & The Flame [redump.org]
-Sorcer Kingdom [redump.org]
-Strike Commander [redump.org]
-Teitoku no Ketsudan III [redump.org]
-Ultima VIII - Pagan [redump.org]
-Yumemizaka [redump.org]
-Replaced software list items
-----------------------------
-Akumu - Aoi Kajitsu no Sanka [redump.org]
-Appare-den - Fukuryuu no Shou [redump.org, Coolmod]
-Ayumi-chan Monogatari Jissha-ban [redump.org]
-Brandish Campaign-ban [redump.org]
-Brandish 2 - The Planet Buster - Campaign-ban [redump.org]
-Brandish 3 - Spirit of Balcan - Campaign-ban [redump.org]
-Buzz Aldrin's Race into Space - Uchuu e no Chousen [redump.org]
-CRW 2 [redump.org]
-Dawn Patrol - Yoake no Pilot [redump.org]
-Guardian Recall - Shugojuu Shoukan [redump.org, cyo.the.vile]
-Mahou Shoujo Pretty Samy - Kouhen [redump.org]
-Manji PSYyuuki [redump.org, r09]
-Magical Squadron [redump.org]
-RAM 1 - New Evolution Organize [redump.org]
-Ribbon [redump.org]
-Ryouki no Ori (1996-09-23) [redump.org]
-Sangokushi V [redump.org]
-Zai Metajo [redump.org]
-
-9716: RC2014 [mmicko]
-New working machines
---------------------
-RC2014 Classic [Miodrag Milanovic]
-RC2014 Pro [Miodrag Milanovic]
-RC2014 Classic II [Miodrag Milanovic]
-RC2014 Zed [Miodrag Milanovic]
-RC2014 Zed Pro [Miodrag Milanovic]
-
-9718: r4000.cpp: Add TimerIntDis mux to IPEX5 [briceonk]
-This change implements boot-mode setting bit 19, TimIntDis/TimerIntDis, which configures if the R4x00 will use IPEX5 as an external
-  interrupt, or as an internal timer using the compare register as the threshold (which is the default). The Sony NEWS NWS-5000X has
-  multiple external timers, including a free-running clock and a hardware clock that drives IPEX2. So, Sony disabled the internal
-  timer using TimerIntDis and repurposed IPEX5 for other things.
-Boot-Mode Setting Description:
-!Screenshot from 2022-04-30 21-05-17
-Block diagram:
-!Screenshot from 2022-04-30 21-06-33
-Test booting `jazz.cpp` to the WinNT installer, showing that the internal timer is still functional in the default config:
-!Screenshot from 2022-04-30 21-53-46
-This is another change pulled in from #8854 since that PR is way too big. Apologies for taking so much time to restart the process
-  of breaking it up into smaller, easier to review portions. The first part of the year is the build and competition season for the
-  robotics team I mentor, so I had essentially no free time....
-
-9719: megadriv.xml: Trimmed pcottonp dump by half. [0kmg]
-
-9721: ata_hle: Fix save state for 8-bit mode [mmicko]
-
-9722: Fix line endings for rf51w14cg.cpp [couriersud]
-The file has CRLF endings in mame/master. This commit changes to LF. No other changes.
-
-9723: spectrum_cass.xml: 9 new entries + metadata cleaning [ArcadeShadow]
-New working software list additions
------------------------------------
-Bomb Jack (Z Cobra) [worldofspectrum.org]
-Bomb Jack II (MCM) [worldofspectrum.org]
-Bomb Jack II (Zafi Chip) [worldofspectrum.org]
-Chess Nuts [Steven Brown, Planeta Sinclair]
-Coin-It [Steven Brown, Planeta Sinclair]
-Exolon (bug fix) [spectrumcomputing.co.uk]
-Exolon (Erbe) [spectrumcomputing.co.uk]
-Horacio Esquiador [spectrumcomputing.co.uk]
-Smash TV (Erbe) [spectrumcomputing.co.uk]
-
-9725: midwayic.cpp: Use logmacro for debug [tedgreen99]
-Update midwayic to logmacro for logerror messages.
-
-9726: diexec: resynchronize to the implicit clock domain on clock frequency change [galibert]
-I don't think it's disruptive, but I'm not sure.  At least it fixes floppy writes on apple3, which lost its phase with the diskiii
-  due to the clock changes.
-
-9727: Add time command to MAME debugger.  Returns current machine time. [tedgreen99]
-
-9728: Additions and changes to Spectrum-related softlists [ICEknigh7]
-**specpls3**
-Spectrum disk version of Comando Tracer has been verified to be the standalone release, so its entry was changed.
-Added list of known undumped games and other observations.
-**spectrum_cass**
-Added two demos and a good dump.
--Shock Megademo (Known dump on the internet was in TAP, so I created this TZX from the "SHOCKSAVER" program in the covertape for
-  Sinclair User 85)
--The Lyra II (Full version, as opposed to the one split across several covertapes)
--Diseñador de Juegos (Microbyte): Replaced bad dump with verified one
-**timex_cass**
-Added a list of the known covertapes of "Byte Power, 1st Class Magazine" as well as the only known dump.
--Byte Power (February 1988)
-**timex_cass and spectrum_cass**
-Detected some games published by TMX Portugal but which were actually made for the Spectrum, so I moved them to the latter's
-  softlist.
--Assalto A Embaixada (was already in both)
--Interface RS232 (now duplicated in both softlists, since the cover mentions both systems)
--Perigos Na Selva (replaces bad dump already in Spectrum softlist)
--Programa de Apresentação
--Space Raiders - Invasores Galácticos (replaces bad dump already in Spectrum softlist)
-
-9730: atari400.cpp: Add 2-port version of a5200; fix ANTIC memory size [einstein95]
-New working clones:
-Atari 5200 (2-port) (1983, Atari)
-
-9731: netlist: Fix standalone nltool building with nvcc. [couriersud]
-nvcc 11.3 (latest cuda tools) has an issue with some auto x(some
-variable) declariations. This commit fixes the compile errors.
-
-9734: a2600.xml: Remove "Atari VCS Point-of-Purchase ROM" (nw) [einstein95]
-This has its own driver in a2600.cpp
-
-9735: Add debugger time command to docs [tedgreen99]
-
-9737: c64_cass.xml: Added 10 items (8 working, 2 not working) [scoomby]
-New working software list additions
----------------------------------------
-Salamander (Imagine) [C64 Ultimate Tape Archive V2.0]
-Sanxion (Thalamus) [C64 Ultimate Tape Archive V2.0]
-Savage (Firebird) [C64 Ultimate Tape Archive V2.0]
-Scorpion (Prism Leisure) [C64 Ultimate Tape Archive V2.0]
-The Secret Diary of Adrian Mole (Mosaic Publishing) [C64 Ultimate Tape Archive V2.0]
-Sentinel (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-The Sentinel (Firebird) [C64 Ultimate Tape Archive V2.0]
-Shadow Skimmer (The Edge) [C64 Ultimate Tape Archive V2.0]
-New NOT_WORKING software list additions
----------------------------------------
-Scooby-Doo (Elite Systems) [C64 Ultimate Tape Archive V2.0]
-Shadows of Mordor (Melbourne House) [C64 Ultimate Tape Archive V2.0]
-
-9740: Vigilante correct video timings [jotego]
-Following on the closed PR. This has been compiled and works correctly. The timings match the original PCB now.
-
-9741: Deletes in-line credits, to keep with MAME general style. Advised by hap [jotego]
-Minor cosmetic thing.
-
-9742: dinetwork: Add mtu paramter and remove unnecessary floating point calculations [tedgreen99]
-
-9744: Add udp multicast support [tedgreen99]
-Example bitbanger usage: -bitb udp.234.99.99.99:15122
-
-9745: [powervr2.cpp] Naomi Rendering Fixes [DragonMinded]
-This fixes a few miscellaneous rendering bugs with Naomi1/2 that I noticed while trying to debug my doom port in MAME. 
-1. Hooks up non-textured sprite rendering. Not sure why this was excluded (aside from UV stuff not applicable?) since all code
-  worked just fine on hooking up. Without this fix, the boxes behind the next/previous instructions at the bottom of this test code
-  do not appear. With this fix, they appear matching hardware. Also, with fix 2 below they properly render translucently (I don't
-  have any photos of this but I did test on actual HW, demul and MAME and saw them all working identically).
-!boxes
-3. Fixes the "enable alpha" bit to enable alpha on base/offset color, with the alpha set to full when unset, and hooked up "disable
-  texture alpha" to disabling texture alpha instead of "enable alpha". This fixes hardware-assisted font rendering in all of my test
-  code and appears to match demul and actual HW. Note that I think this fix will probably fix a lot of the black pixels instead of
-  alpha issues seen on various Naomi games, but I didn't test. I only compared test binaries that I've previously verified on demul
-  and actual HW.
-Before the fix:
-!before
-After the fix:
-!after
-I still don't know why MAME won't properly render my doom port, but the behavior points at incorrect handling of interrupts and I
-  will try to fix that and submit another PR.
-
-9747: Fix address mask for SST 39SF040 [mmicko]
-This fix running a tool to update flash as on original hardware in my WIP driver.
-Before this was failing since it was entering part of code where address is masked but mask was zero
-!0000
-
-9748: slapfght.cpp: Hooked up flip screen output to MCU for alcon and slapfigh [cuavas]
-This makes the flip screen DIP switch and cocktail mode work for alcon and slapfigh.  It already worked for slapfigha which uses the
-  same latch output as the other games for this purpose.  Screen flipping still doesn’t work in the bootlegs, but that could well be
-  a real limitation as they lack the MCU (the bootleggers may have been too lazy to hook screen flipping up a different way).
-The graphics still have offsets, but at least the offsets look the same between normal and flipped mode now.
-
-9749: Revert "Add udp multicast support" [cuavas]
-Reverts mamedev/mame#9744
-
-9752: netlist: Resolve #8590 and fix #r73625467 (#9751), add tests [couriersud]
-- Fixes compile with apple clang 10
-- fix standalone vs 2019 build
-- PMF now working properly in VS due to addition of static stub.
-- Align syntax in ppmf to MAME delegate.h
-  There is one use case in netlist using the protected object function.
-  Once this has been removed, netlist can optionally be compiled with
-  MAME delegate code.
-- Add tests/test_ppmf*.cpp testing examples given in #8590
-
-9754: [gbcolor.xml] Added Green Beret prototypes for Game Boy Color [ICEknigh7]
-Added all three prototypes from Kak's attempt to officially remake Green Beret (unrelated to Naps Team's):
-- Green Beret (prototype 1) [Kak, retroLEL]
-- Green Beret (prototype 2) [Kak, retroLEL]
-- Green Beret (prototype 3) [Kak, retroLEL]
-
-9756: bus/vcs_ctrl: Fixed swapped paddle buttons (#9755). [0kmg]
-
-9758: dc.xml: Metadata cleaning [ArcadeShadow]
-Renaming Prototype, Alt, Rev, Demo words to lowercase
-
-9759: RC2014 [mmicko]
-New working clones
-------------------
-RC2014 Mini with CP/M Upgrade [Miodrag Milanovic]
-
-9763: snes.xml: Added seven dumps. [0kmg]
-New working software list additions
------------------------------------
-Corn Buster [NoIntro]
-Dorke & Ymp [NoIntro]
-Iron Commando [NoIntro]
-Legend (Piko reissue) [NoIntro]
-Mr. Bloopy Saves the World [NoIntro]
-Super Noah's Ark 3D (Piko reissue) [NoIntro]
-Super Thor Quest [NoIntro]
-
-9764: Software lists: Standardized titles of Mashin Eiyuuden Wataru games. [0kmg]
-
-9766: nemesis.cpp: Fixed coin inputs in salamand and clones (MT08315). [0kmg]
-
-9767: fix version detection in str_to_version for versions formatted as (n).(n)-suffix [sairuk]
-This fixes version detection in  `str_to_version` where the version include a type suffix like `-posix`. Windows cross-compilation
-  is currently broken on linux. The currently `x86_64-w64-mingw32-gcc -dumpversion` returns `10-win32` on Ubuntu 22.04. Since this
-  version doesn't contain a `.` char it fails the `string.gmatch` in `str_to_version` resulting in a `0` return. We then fall into
-  into
-the version check block at `genie.lua` ln:1063
-https://github.com/mamedev/mame/blob/afb0469e485d19671cfbff48969daea030918917/scripts/genie.lua#L42
-https://github.com/mamedev/mame/blob/afb0469e485d19671cfbff48969daea030918917/scripts/genie.lua#L1063
-falling into this block results in `os.exit(-1)` that presents to the user as:
- `make: *** [makefile:1105: build/projects/windows/mame/gmake-mingw64-gcc/Makefile] Error 255`
-This change also makes version numbers reported consistent with those where a `-suffix` is not present
-```
-version:  10-posix   old:  0       new:  100000
-version:  10-win32   old:  0       new:  100000
-version:  9.3-posix  old:  90000   new:  90300
-version:  9.3-win32  old:  90000   new:  90300
-version:  11         old:  110000  new:  110000
-version:  10         old:  100000  new:  100000
-version:  9.3.0      old:  90300   new:  90300
-version:  9.3        old:  90300   new:  90300
-version:  11.2       old:  110200  new:  110200
-version:  11.2.0     old:  110200  new:  110200
-version:  6.0        old:  60000   new:  60000
-version:  6          old:  60000   new:  60000
-version:  7.3.4      old:  70304   new:  70304
-version:  8.7        old:  80700   new:  80700
-```
-e.g where `9.3-win32` used to report `90000` it now reports `90300` which is consistent with what is reports for `9.3` and `9.3.0`
-
-9768: rc2014 code review fixes [mmicko]
-Addresses all the issues mentioned in https://github.com/mamedev/mame/pull/9759
-
-9769: Fix interface to upd7759 sounds in brkball [Paul-Arnold]
-Interface to slave upd7759 was using start and reset inputs when should've been using mode and reset.
-This used to work but recent PR #9614 meant it stopped working.
-Change to mode and reset inputs confirmed on schematics.
-
-9770: Properly set BIOS under slot [mmicko]
-`value()` is using `m_specified` flag internally. Without fix setting bios trough the UI caused selected slot name to be lost. 
-
-9771: cdi.xml: Added one new entry [FoxhackDN]
-New working software list additions
------------------------------------
-The Photo CD Book Companion CD-ROM [Dave 'Foxhack' Silva]
-
-9772: upd7759: Fixes to switching between slave and stand alone mode. (nw) [wilbertpol]
-
-9773: netlist: Fixes to address PR #9752 and issue #8590 / EMSCRIPTEN [couriersud]
-- change comments in ppmf.h
-- add support for function desciptors (IA64)
-- sizeof(size_t) may be different on build targets
-  make plib::hash use uint64 to ensure consistent static solver
-  hashes across platforms.
-
-9775: badlands_ms.cpp: Add missing PROMs [clawgrip]
-
-9776: Remove vestigial rc2014mini ROM definition from gsz80.cpp [cpswan]
-The rc2014mini ROM block got left behind during @mmicko creation of a much more comprehensive RC2014 driver with rc2014.cpp and
-  associated devices.
-
-9779: spdheat.cpp: Demote to MACHINE_IMPERFECT_SOUND [einstein95]
-Driver says about sound filters and multiple speakers, both of which aren't emulated.
-
-9781: portmidi: fix windows midi callback signatures [devinacker]
-(see #9200)
-
-9783: ui/viewgfx.cpp: Added ability to restrict tiles to integer scale factors [cuavas]
-When viewing decoded graphics tiles, hold Shift while pressing 0/-/= (or whatever you remap them to) to restrict scaling to integer
-  factors.
-Also encapsulated things a bit more and made the UI manager hold onto the storage rather than keeping it in file statics.
-
-9785: megadriv.xml: Added eight dumps. [0kmg]
-New working software list additions
------------------------------------
-Canon - The Legend of the New Gods [NoIntro]
-Clan of Heroes - Generals of the Yang Family [NoIntro]
-Custodian [NoIntro]
-Duke Nukem 3D (Piko reissue) [NoIntro]
-Mega Noah's Ark 3D [NoIntro]
-Switchblade [NoIntro]
-Water Margin - A Tale of Clouds and Wind [NoIntro]
-Wisdom Tree Collection [NoIntro]
-
-9786: fmtowns_cd.xml: 7 new dumps [rzero9]
-New working software list additions
------------------------------------
-'94-nen Nice Gal - Natsu no Soukessan [redump.org]
-Ii Tabi Ii Aji Goannai - Furusato Kodzutsumi & Kanpo no Yado - Heisei Gannendo-ban [redump.org]
-Pocky 1-2 + Ponyon [redump.org]
-Psychic Detective Series Vol. 4 - Orgel (Demo) [redump.org]
-Psychic Detective Series Final - Solitude Gekan (Demo) [redump.org]
-The Playroom [redump.org]
-Zak McKracken and The Alien Mindbenders (HMB-218) [redump.org]
-
-9792: gamegear.xml: Made brkthru playable. [0kmg]
-Software list items promoted to working
----------------------------------------
-BreakThru! (prototype)
-
-9793: nec.cpp: Add support for EXT reg,imm4 and INS reg,imm4 [wilbertpol]
-
-9794: netlist: More c++, less macros, added support for cspell [couriersud]
-- More c++, less macros
-  - Significantly reduced the use of unused_var and replaced it with
-    [[maybe_unused]]
-  - use enum class in ppmf.h
-- Changes to testing code in ptest.h
-  - Catch exceptions in more places
-  - The verbosity of the output can now be controlled.
-  - Display of test stats totals
-- added support for cspell
-- fixed various typos
-- fixed SUBTARGET=nl build
-- fixed more file permissions
-- added srcclean & fix_permissions target to netlist makefile
-
-9796: Removed superfluous semicolons from various source files. [0kmg]
-
-9798: Corrected various Wonder Boy title descriptions (MT08321). [0kmg]
+- 9311: 8080bw.cpp: Added color emulation for vortex. [Mike Coates, Ivan Vangelista]
+- 9449: cpu/z80: Improved timing of M cycles; spectrum.cpp: Improved emulation of bus contention. [holub]
+- 9605: osd/modules/input: Detect joystick reconnection with SDL. [Vas Crabb]
+- 9614: sound/upd7759.cpp: Added support for switching between standalone and slave mode dynamically. [Wilbert Pol]
+- 9615: formats/fs_coco_rsdos.cpp: Added logic to detect cycles in file granule (block) lists. [Nathan Woods]
+- 9616: imagedev/floppy.cpp: Changed identify to take std::string_view rather than std::string. [Nathan Woods]
+- 9617: nes.xml: Fixed a few more mirroring issues, and demoted strikwlf to unsupported. [kmg]
+- 9618: bus/nes: Improved code for emulating several bootlegs. [kmg]
+- 9621: apple2_flop_orig.xml, apple2_flop_clcracked.xml: Added a painstakingly recovered disk. [Matthew Eric D'Asaro, Firehawke]
+- 9622: spectrum_cass.xml: Added one game and a couple of demos. [ICEknight]
+- 9623: a2600.xml: Fixed publisher name and parent/clone relationships for Mystique games. [einstein95]
+- 9624: 8080bw.cpp: Removed cocktail inputs from spaceat2 and sinvzen. [einstein95]
+- 9625: osborne1.cpp: Changed floppy drives to single-sided double density (fixes MT08100). [theoldsport]
+- 9626: cpu/mips: Mitigated performance impact of optional additional instruction checks. [Ryan Holtz]
+- 9628: bus/nes: Improved emulation of Jaleco cartridges. [kmg]
+- 9629: machine/z80scc.cpp: Reduced performance impact of emulating zero count interrupt. [Ryan Holtz]
+- 9630: machine/i2cmem.cpp: Only acknowledge correct device ID. [Paul-Arnold]
+- 9632: jpmsru.cpp: Improved emulation of JPM SRU fruit machines, making four games playable. [SomeRandomGuyIdk]
+- 9633: xavix2.cpp: Implemented tile scaling. [MoochMcGee]
+- 9637: spectrum48.cpp: Fix “floating” interrupt. [holub]
+- 9640: spec128.cpp, specpls3.cpp: Added initial bus contention emulation for Spectrum 128+ models. [holub]
+- 9641: bus/nes: Cleaned up code. [kmg]
+- 9642: vigilant.cpp: Fixed sound ROM mapping for bowmen, allowing music to play correctly. [David Haywood]
+- 9643: nes.xml: Changed tysonipp to use per-chip ROM dumps. [kmg]
+- 9645: cpu/z80.cpp: Removed leaky abstraction from CPU. [holub]
+- 9646: neogeo.xml: Fixed copy/paste error in garouha serial number. [CanoeHope]
+- 9647: bus/nes: Improved emulation of Camerica/Codemasters cartridge boards. [kmg]
+- 9648: Added FIXME comments to badly behaved I²C target devices. [Paul-Arnold]
+- 9649: tim011.cpp: Hooked up floppy drives properly and added floppy disk image format. [Miodrag Milanović]
+- 9652: 4enlinea.cpp: Fixed game name for “unkdarts”. [ClawGrip]
+- 9653: ksys573.cpp: Fixed alpha channel values in fightmn/pnchmn layout. [Windy Fairy]
+- 9654: neogeo.xml: Fixed copy/paste error in kof2002 AES serial number. [CanoeHope]
+- 9655: nes.xml: Explicitly set mirroring for more boards, and trimmed over-dumped ROMs. [kmg]
+- 9658: nes.xml: Removed four bad dumps. [kmg]
+- 9662: Fixed nl sub-target build. [Couriersud]
+- 9666: famibox.xml: Updated comment about unverified dumps. [kmg]
+- 9668: system1.cpp: Added lives and demo sounds DIP switches for shtngmst, and demo sounds DIP switch for ufosensi (MT08303). [kmg]
+- 9670: spec128.cpp: Completed bus contention emulation for Spectrum 128 and +2 models, and improved emulation performance. [holub]
+- 9671: ksys573.cpp: Removed comment about Dance Dance Revolution Kids, as it’s on a different platform. [simzy]
+- 9675: 3rdparty/asmjit: Suppressed warnings with old versions of GCC. [Couriersud]
+- 9676: osd/sdl: Prefer X11 video driver on Linux. [Belegdol]
+- 9677: megadriv.xml: Added an Awesome Possum prototype. [DrBizz, kmg]
+- 9679: nes.xml: Added eleven items, and removed some bad dump flags. [kmg]
+- 9680: gba.xml: Added World Reborn (USA). [No-Intro, kmg]
+- 9681: gbcolor.xml: Added Tyrannosaurus Tex (USA). [No-Intro, kmg]
+- 9682: Fixed fallout from I²C changes. [Paul-Arnold]
+- 9683: neogeo.xml: Fixed serial number for wh2h. [Abadede]
+- 9684: netlist: Added an FAQ and cleaned up code. [Couriersud]
+- 9686: bus/nes: Updated code and ROM dump for mc_mario. [kmg]
+- 9687: vegas.cpp: Fixed reversed test mode DIP switch setting labels for sf2049te and sf2049se. [neSneSgB]
+- 9688: megadriv.xml: Added compatibility information for region-locked items. [Chris Vowles]
+- 9692: ibm5150.xml: Correctly marked some items as PC booter disks or DOS software. [Allofich]
+- 9694: machine/6850aica.cpp: Initialize receiver state on construction. [Miodrag Milanović]
+- 9699: cps2.cpp: Added TOURNAMENT board communication simulation. [Vas Crabb, Darksoft, Gregory Lewandowski]
+- 9701: megadriv.xml: Added missing SRAM to nbaliv98 (fixes MT07564). [kmg]
+- 9705: gameboy.xml: Added four homebrew cartridges. [kmg]
+- 9706: netlist: Replaced more macros with C++ constructs, and cleaned up code. [Couriersud]
+- 9707: machine/netlist.cpp: Use templates to enable or disable CSV logging, reducing the chance of code rot. [Couriersud]
+- 9708: netlist: Updated standalone makefile for more recent compilers, and cleaned up code. [Couriersud]
+- 9709: Improved Japanese titles in various software lists. [kmg]
+- 9710: ksys573.cpp: Improved game titles in comments and system descriptions. [simzy]
+- 9711: ZX Spectrum drivers: Improved timing for screen and border updates, and simplified calculations. [holub]
+- 9714: homedata.cpp: Added subtitle to description for reikaids. [Michael Sanborn]
+- 9715: pc98_cd.xml: Added twenty items, and replaced 18 items with better dumps. [redump.corg, cyo.the.vile, coolmod, r09]
+- 9716: Added a working RC2014 card system. [Miodrag Milanović]
+- 9718: cpu/mips: Added TimerIntDis multiplexer to IPEX5 for R4000. [Brice Onken]
+- 9719: megadriv.xml: Trimmed pcottonp dump by half. [kmg]
+- 9721: bus/ata/ata_hle.cpp: Fixed save state support for 8-bit mode. [Miodrag Milanović]
+- 9722: rf51w14cg.cpp: Fixed checked-in CRLF line endings. [Couriersud]
+- 9723: spectrum_cass.xml: Added nine items and cleaned up metadata. [ArcadeShadow]
+- 9725: midwayic.cpp: Use logmacro for debug logging. [Ted Green]
+- 9726: emu/diexec.cpp: Optionally resynchronize to the implicit clock domain on input clock frequency changes. [O. Galibert]
+- 9727: Added a time command to the debugger for displaying the current elapsed session time. [Ted Green]
+- 9728: specpls3_flop.xml, spectrum_cass.xml, timex_cass.xml: Reorganised items and added a few items. [ICEknight]
+- 9730: atari400.cpp: Add 2-port version of a5200, and fixed ANTIC memory size. [einstein95]
+- 9731: netlist: Fix standalone nltool build with NVCC. [Couriersud]
+- 9734: a2600.xml: Removed “Atari VCS Point-of-Purchase ROM” as it’s treated as a separate system. [einstein95]
+- 9735: Added documentation for debugger time command. [Ted Green]
+- 9737: c64_cass.xml: Added eight working items and two non-working items. [The Ultimate Tape Archive Team, Steven Coomber]
+- 9740: vigilant.cpp: Corrected video timings. [jotego]
+- 9741: vigilant.cpp: Changed comments to better match MAME style. [jotego]
+- 9742: emu/dinetwork.cpp: Add MTU parameter, and removed unnecessary floating point calculations. [Ted Green]
+- 9744: Add UDP multicast support to bitbanger device. [Ted Green]
+- 9745: video/powervr2.cpp: Hooked up non-textured sprites, and fixed enable alpha bit. [Jennifer Taylor]
+- 9747: machine/intelfsh.cpp: Fixed address mask for SST 39SF040. [Miodrag Milanović]
+- 9748: slapfght.cpp: Hooked up flip screen output to MCU for alcon and slapfigh. [Vas Crabb]
+- 9749: Reverted bitbanger UDP multicast support (GitHub #9744). [Vas Crabb]
+- 9752: netlist: Improved platform support for PPMF and added unit tests (partially addresses GitHub #8590). [Couriersud]
+- 9754: gbcolor.xml: Added Green Beret prototypes for developed by Kak. [ICEknight]
+- 9756: bus/vcs_ctrl: Fixed swapped paddle buttons (GitHub #9755). [kmg]
+- 9758: dc.xml: Cleaned up metadata. [ArcadeShadow]
+- 9759: Added additional RC2014 cards, and added system with CP/M upgrade. [Miodrag Milanović]
+- 9763: snes.xml: Added seven items. [No-Into, kmg]
+- 9764: Standardized titles of Mashin Eiyuuden Wataru games in all software lists. [kmg]
+- 9766: nemesis.cpp: Changed coin inputs to use impulses in salamand and clones (MT08315). [kmg]
+- 9767: Improved parsing of dotted version numbers in build scripts. [sairuk]
+- 9768: Improved reset behaviour of RC2014 cards and fixed some implementation issues. [Miodrag Milanović]
+- 9769: bfcobra.cpp: Fixed µPD7759 connections for brkball (confirmed with schematics). [Paul-Arnold]
+- 9770: emu/emuopts.cpp: Fixed slot card selection being lost when card BIOS setting is changed. [Miodrag Milanović]
+- 9771: cdi.xml: Added The Photo CD Book Companion CD-ROM. [David Silva]
+- 9772: sound/upd7759.cpp: Fixed issues with switching between standalone and slave mode. [Wilbert Pol]
+- 9773: netlist: Improved PPMF platform support and code generation; made plib::hash use fixed result size. [Couriersud]
+- 9775: badlands_ms.cpp: Added missing PROMs. [ClawGrip]
+- 9776: gsz80.cpp: Removed vestigial rc2014mini ROM definition. [Chris Swan]
+- 9779: spdheat.cpp: Marked as having imperfect sound emulation due to missing filters and multi-channel output. [einstein95]
+- 9781: 3rdparty/portmidi: Fixed Windows MIDI callback signatures (addresses GitHub #9200). [Devin Acker]
+- 9783: ui/viewgfx.cpp: Added ability to restrict tiles to integer scale factors. [Vas Crabb]
+- 9785: megadriv.xml: Added eight items. [No-Intro, kmg]
+- 9786: fmtowns_cd.xml: Added seven new working items. [redump.org, r09]
+- 9792: gamegear.xml: Added a ROM patch to make brkthru playable. [kmg]
+- 9793: cpu/nec: Added support for EXT reg,imm4 and INS reg,imm4 instructions. [Wilbert Pol]
+- 9794: netlist: Replaced more macros/helpers with C++ constructs, and added support for the cspell spelling checker. [Couriersud]
+- 9796: Removed superfluous semicolons from various source files. [kmg]
+- 9798: Corrected various Wonder Boy game title descriptions (MT08321). [kmg]
+- 9812: bgfx: Honour texture wrap flag (fixes reel display for some fruit machines). [Vas Crabb]
 
 
 Source changes
