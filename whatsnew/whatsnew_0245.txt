@@ -1,12 +1,12 @@
-0.245 2022-0x-xx
+0.245 2022-06-30
 ----------------
 
 
 MAME Testers bugs fixed
 -----------------------
-- 08237: [Crash/Freeze] (cclimber.cpp) rpatrolb, rpatrol, rpatroln, silvland: Resetting game crashes with RAM error. (Robbbert)
+- 08237: [Crash/Freeze] (cclimber.cpp) rpatrolb, rpatrol, rpatroln, silvland: Soft reset causes game to show RAM error. (Robbbert)
 - 08265: [Graphics] (spectrum.cpp) spectrum and clones [aquaplan and clones]: Horizon line broken by the screen border. (holub)
-- 08273: [Flip Screen/Cocktail] (thepit.cpp) All games in thepit.cpp: Cocktail mode/screen flipping is broken. (AJR)
+- 08273: [Flip Screen/Cocktail] (thepit.cpp) All games in thepit.cpp: Cocktail mode/screen flipping causes graphical errors. (AJR)
 - 08317: [Graphics] (ibmpc.cpp) pcega [arknoid2 and clones]: Screen flickers and doesn’t refresh properly. (Carl)
 - 08333: [Sound] (simpsons.cpp) simpsons: All audio drops out during attract mode. (smf)
 - 08340: [Graphics] Graphics viewer renders blurry tiles when using BGFX video module. (Vas Crabb)
@@ -84,7 +84,7 @@ Super Treasure Island (Italy, v1.6) [Ivan Vangelista]
 New machines marked as NOT_WORKING
 ----------------------------------
 Belly Bomber [Museo del Recreativo]
-Blicks [Darksoft, TeamEurope, R Belmont]
+Blicks [Darksoft, TeamEurope, R. Belmont]
 Cash Nudger? (SRU) (5p Stake, £2 Jackpot) [SomeRandomGuyIdk]
 Centurion (0152314, US) [Dam0, Heihachi_73]
 Covidarts [Vicente y Sergio de electronicaVyS]
@@ -106,7 +106,7 @@ Shuttle MS11 PC [Angelo Salese, archive.org]
 Space Liner [Ioannis Bampoulas]
 Super 2p Shuffle (Mdm) (SRU) (2p Stake, £1 Jackpot) [SomeRandomGuyIdk]
 Tektronix 4319 Graphics Workstation [Bitsavers]
-Tinker Bell [Darksoft, TeamEurope, R Belmont]
+Tinker Bell [Darksoft, TeamEurope, R. Belmont]
 Tom's Adventures [Museo del Recreativo]
 unknown Zilec game on Blue Print hardware [Andy Walker (of AW Electronics), Dr. Alan Meades, hammy, Porchy]
 Video Technology PreComputer Unlimited (USA/Canada) [Val Polyakh]
@@ -386,7 +386,7 @@ Ukrainian [Stanley Kid]
 
 Merged pull requests
 --------------------
-- 9407: cdi.xml: Updated hashes for TOSEC discs. [danifunker]
+- 9407: cdi.xml: Updated digests for TOSEC discs to latest CHD format. [danifunker]
 - 9634: microdar.cpp: Added Covidarts and Minidart skeletons. [Vicente y Sergio de electronicaVyS, jordigahan, ClawGrip]
 - 9635: Started emulating the SiS 630 PC chipsets using the new PCI framework. [Angelo Salese]
 - 9664: gts3a.cpp: Dumped an additional version of Wipeout. [Victor Fernandez (City Game), ClawGrip]
@@ -398,12 +398,12 @@ Merged pull requests
 - 9761: saturn.xml: Cleaned up metadata. [ArcadeShadow]
 - 9762: cpu/z180: Added initial implementation of onboard asynchronous serial controller. [Miodrag Milanović]
 - 9778: sound/k054539.cpp: Fix DPCM table and added cubic interpolation. [SaxxonPike]
-- 9788: Removed device_timer, device_timer_id, et al in favor of direct callback members. [Ryan Holtz]
+- 9788: emu/schedule.cpp: Removed device_timer, device_timer_id, et al in favor of direct callback members. [Ryan Holtz]
 - 9790: specpls3_flop.xml: Added two working items. [Fede Jeréz, ICEknight]
 - 9791: snes.xml: Added six prototypes. [Zoda-Y13, Squiddy, Forest of Illusion, TCRF, kmg]
 - 9797: clcd.cpp: Use 1 MHz for system clock. [Mike Naberezny]
 - 9803: nyny.cpp: Corrected Waga Seishun no Arcadia release year. [David Silva]
-- 9805: netlist: Address comments from pull request #9794, and partially fixed GitHub issue #9801. [Couriersud]
+- 9805: netlist: Address comments from pull request #9794, and partially fixed GitHub issue #9801. [Couriersud]
 - 9806: hh_sm510.cpp: Added Elektronika Circus. [algestam, Milan Galcik]
 - 9807: pce_tourvision.xml: Added Galaga '88 to list of undumped games. [ClawGrip]
 - 9811: bus/iee488/hp9122c.cpp: Added floppy image formats, allowing HP 9000/300 series machines to use their software list. [r09]
@@ -411,11 +411,11 @@ Merged pull requests
 - 9815: segae.cpp: Added original arcade version of Megumi Rescue. [Jeff Willard Jr, David Haywood]
 - 9816: viper.cpp: Cleaned up metadata and notes. [Michael Sanborn]
 - 9819: marblmd2.cpp: Added driver for location test version of Marble Madness II. [David Haywood]
-- 9826: volfied.cpp: Changed joysticks from 8-way to 4-way, matching the manual (addresses GitHub #9824). [Johan Smolinski]
-- 9827: marblmd2.cpp: Removed divide-by-two on clock, running the CPU at 14Mhz like Batman, and hooked up EEPROM. [David Haywood]
+- 9826: volfied.cpp: Changed joysticks from 8-way to 4-way, matching the manual (addresses GitHub #9824). [Johan Smolinski]
+- 9827: marblmd2.cpp: Removed divide-by-two on clock, running the CPU at 14 MHz like Batman, and hooked up EEPROM. [David Haywood]
 - 9828: bwidow.cpp, video/avgdvg.cpp: Added support for Space Duel’s cocktail mode. [Ian Eure]
 - 9830: jpmsru.cpp: Sorted out remaining games, add added eight new ones. [SomeRandomGuyIdk]
-- 9832: c64_cass.xml: Added ten items (eight working, two not working) [The Ultimate Tape Archive Team, Steven Coomber]
+- 9832: c64_cass.xml: Added ten items (eight working, two not working). [The Ultimate Tape Archive Team, Steven Coomber]
 - 9833: cdi.xml: Added Link - The Faces of Evil (USA). [redump.org, ajshell1]
 - 9834: netlist: Changed palloc to use C++17 alignment-aware operator new. [Couriersud]
 - 9837: spectrum_cass.xml: Added missing MicroHobby tapes. [Manuel Gomez Amate, SPA2, ICEknight]
@@ -430,7 +430,7 @@ Merged pull requests
 - 9854: a2600.xml: Cleaned up metadata. [ArcadeShadow]
 - 9855: jaguar.xml: Cleaned up metadata. [ArcadeShadow]
 - 9856: dangbar.cpp: Added Belly Bomber. [Museo del Recreativo, ClawGrip]
-- 9858: Exclude Shuttle MS11 from arcade builds. [MASH]
+- 9858: Exclude Shuttle MS11 PC from arcade builds. [MASH]
 - 9861: lynx.xml: Added Robotron: 2084 (prototype). [swlovinist, kmg]
 - 9862: frenzyxprss.cpp: Added skeleton driver for Frenzy Express. [Museo del Recreativo, ClawGrip]
 - 9863: m62.cpp: Added clone Kung-Fu Senjyo (bootleg, Spanish). [Asociación Retroclub, ClawGrip]
@@ -440,7 +440,7 @@ Merged pull requests
 - 9867: spectrum_cass.xml: Added 25 new items, and corrected a few descriptions and parent/clone relationships. [ICEknight]
 - 9870: pluto5.cpp: Added Jungle Treasures. [Museo del Recreativo, ClawGrip]
 - 9871: namcos12.cpp: Added notes about games requiring a CD-ROM drive. [ClawGrip]
-- 9872: y2.cpp: Fixed spurious parent/clone relationship [cam900]
+- 9872: y2.cpp: Fixed spurious parent/clone relationship. [cam900]
 - 9873: starfire.cpp: Swapped fireone player inputs, and simplified paddle read code. [kmg]
 - 9874: jp.cpp: Added an alternate version of Aqualand. [Segio y Vicente de electronicaVyS, ClawGrip]
 - 9875: cosmos_playc8f.cpp: Added ASCII diagram for main PCB layout. [ClawGrip]
@@ -449,325 +449,75 @@ Merged pull requests
 - 9879: at.cpp: Added pccm205 v2.23 BIOS option. [TwistedTom]
 - 9880: specpls3.cpp: Enabled floppy drive sound. [holub]
 - 9881: tomsadvs.cpp: Added skeleton driver for Tom's Adventures and Ice Cold Beer (ICE). [Museo del Recreativo, ClawGrip]
-- 9882: c64_cass.xml: Added twelve items (eleven working, one not working). [The Ultimate Tape Archive Team, Steven Coomber]
-- 9883: gokidetor.cpp: Renamed Gokidetor to La Cucaracha based on ROM contents. [einstein95]
+- 9882: c64_cass.xml: Added twelve items (eleven working, one not working). [The Ultimate Tape Archive Team, Steven Coomber]
+- 9883: gokidetor.cpp: Renamed Gokidetor to La Cucaracha based on ROM contents. [einstein95]
 - 9884: 8080bw.cpp, mw8080bw.cpp: Updated inputs for Taito games, and cleaned up code. [Vas Crabb]
-- 9886: spectrum_cass.xml: Added 44 items, and replaced three items with beter dumps. [ICEknight]
+- 9886: spectrum_cass.xml: Added 44 items, and replaced three items with better dumps. [ICEknight]
 - 9887: machine/dmv_keyb.cpp: Corrected typo in DIP switch label. [rfka01]
-- 9888: osd/sdl: Throw a fatal error if BGFX video and Wayland video driver are detected in combination (GitHub $9852). [Belegdol]
+- 9888: osd/sdl: Throw a fatal error if BGFX video and Wayland video driver are detected in combination (GitHub #9852). [Belegdol]
 - 9889: c64_cass.xml: Added fourteen working items. [The Ultimate Tape Archive Team, Steven Coomber]
 - 9890: igs017.cpp, igs022.cpp: Improved protection and decryption, and moved protection data to external files. [Luca Elia]
 - 9891: ibm5170.xml: Added eighteen working items. [ArcadeShadow]
 - 9893: Refactored Barcrest MPU4 emulation code. [David Haywood]
 - 9894: cpu/dsp56156, plygonet.cpp: Fixed some instructions and cleaned up code to meet current standards. [Ryan Holtz]
-- 9897: netlist: Fixed bugs and replaced more macros with C++ functionality. [Couriersud]
+- 9897: netlist: Fixed bugs and replaced more macros with C++ constructs. [Couriersud]
 - 9899: bus/rc2014/edge.cpp: Fix typos in comments. [Chris Swan]
 - 9901: ksys573: Use dsem2 BIOS for mamboagg like real hardware does. [Windy Fairy]
-- 9903: spectrum_cass.xml: Added 56 type-in programs from MicroHobby [Ignacio Prini, ICEknight]
+- 9903: spectrum_cass.xml: Added 56 type-in programs from MicroHobby. [Ignacio Prini, ICEknight]
 - 9904: pluto5.cpp: Added notes about the Pluto 5 hardware. [ClawGrip]
 - 9905: tsconf.cpp: Fixed graphics offsets. [holub]
 - 9907: jp.cpp: Dumped and added a new set of ‘Halley Comet’. [Sergio y Vicente de electronicaVyS, ClawGrip]
 - 9910: machine/dp83932c.cpp: Implemented big Endian mode and transmission packet appending. [Brice Onken]
 - 9911: geniusiq.cpp: Added PreComputer Unlimited (USA/Canada). [Val Polyakh, clawgrip]
-- 9912: Added segafruit.cpp to source filter for arcade builds [MASH]
+- 9912: Added segafruit.cpp to source filter for arcade builds. [MASH]
 - 9913: formats/fsmgr.cpp: Changed the constructor of fs::dir_entry to take name as rvalue reference. [Nathan Woods]
 - 9915: ui, docs: Added menus to fill a couple of gaps in functionality, and improved consistency in terminology. [Vas Crabb]
-
-9918: sound.cpp: Fix missed samples due to state save (#9917) [couriersud]
-The PR address #9917. A save state may occur between time slices.
-Sound devices through sound.cpp are updated during a timer call every
-20ms. When the state is saved, these devices are not updated to the
-current machine time. Consequently after a state load the devices
-have a "time lag" since in postload buffer end time is forced to
-machine time.
-This change will save the last buffer end time so that all outstanding
-samples are processed.
-This is a core change. I tested it on some drivers. This needs a very
-thorough review and I post the PR primarily to document a possible
-solution.
-
-9919: jpmsru.cpp: Added new sets, fixed audio [SomeRandomGuyIdk]
-- Added 3 new sets
-- Fixed audio by setting a precise value for the tone pot, also removed unnecessary amplifier section resistor
-- Added impulses to coin inputs to stop j_ewnd giving credits every frame
-- Turned the audio level down a bit
-
-9920: y2.cpp: higurashi small title consistency. [mikehyrus]
-Just decided to space out the ni and jong apart since that was a typo to be reckoned with.
-
-9921: punchout.cpp: Correctly labeled service button and coin 2 inputs. [0kmg]
-
-9923: r4000.cpp: Partially implement secondary cache tag manipulation [briceonk]
-Partially implements the secondary cache piece of the CACHE instruction. Only tag manipulation is supported (so this is just a
-  half-step towards a full secondary cache subsystem for this driver), but the benefit is that software that uses the tag to
-  determine how much secondary cache is present will be able to do so (even though the driver will still treat every memory access
-  as a secondary cache hit).
-This is useful for emulating devices like the Sony NWS-5000X. The NEWS-OS 4.2.1aRD kernel (which only supports the NWS-5000 series
-  and thus doesn't have to deal with computers that don't have a secondary cache) uses the scache size early in kernel
-  initialization (seems to use it when figuring out the VM page size or something like that). So, this partial implementation is
-  enough to satisfy it since it can now correctly enumerate the secondary cache size.
-@pmackinlay (or anyone else who uses this driver), if this conflicts with what you had in mind for this driver re: cache
-  implementation, let me know. I can refactor or change this however you'd like :)
-
-9924: megadriv.xml: Metadata cleaning [ArcadeShadow]
-Lowercase on some description's word, like: Alt, Cracked, Incomplete Dump, Hacked, Pirate, Prototype, Unprotected, etc...
-
-9925: psx.xml: Metadata cleaning [ArcadeShadow]
-Lowercase on description's words like: Prototype, Demo, Tech Demo, etc...
-
-9926: m79amb.cpp: Improved input lookup table generation; added DIP locations. [0kmg]
-The generated LUTs for the guns are unchanged. This just does it a bit better by not scanning `lut_cross` repeatedly.
-
-9927: Dumped and added a new set of 'Super Star' [clawgrip]
-supstarf.cpp: Dumped and added a new set of 'Super Star', make it the parent since it's a complete dump.
-New NOT_WORKING machine
-----------------------------------
-Super Star (Recreativos Franco, set 1) [jordigahan]
-
-9928: Changinging osd_subst_env() to take an std::string_view and return an std::string [npwoods]
-It looks like #9859 is not going to be merged anytime soon, so with this PR we do part of the process - updating `osd_subst_env()`
-  for the C++17 era
-
-9932: mpu4: move some crystal specifics into crystal state, remove some unneccessary parts of the bootleg chr emulation
-  [DavidHaywood]
-
-9933: igs17.cpp: Fixed tarzan demo sounds DIP switch [Dunard]
-Off won't be playing the demo sounds. On will play the demo sounds. Got it fix for the dev.
-  https://www.youtube.com/watch?v=jol7ZrrprkM Same as the Super Tarzan now. Off for the no demo sounds. On for the demo sounds.
-
-9935: mpu4: further moving of class specifics into classes, sorting of sets, reel configs for booting [DavidHaywood]
-- moved manufacturer / system specifics into subclasses (eg. some bwb configs) [David Haywood]
-- identified correct reel setups for many sets, allowing them to boot further [David Haywood]
-- added some default input configurations for games needing stake keys and percent keys so that they boot by default [David Haywood]
-- moved some sets around based on the machine type [David Haywood]
-- adjusted AY hookup to keep 'Four More' happy [AJR]
-
-9938: machine.h: The bookkeeping assert was checking the wrong entity [ElectricMagic]
-
-9943: Added implementation for thunderl protection [sergiopolog]
-Added implementation of Thunder & Lightning (thunderl) protection. This could be useful in case other sets of the game shows up and
-  uses the protection with other values than the current one hardcoded in the driver.
-The protection is implemented using a registered PALCE16V8H labeled TL-9:
-https://i.imgur.com/VqqnQOs.jpg
-Main CPU performs several writtings to the address space mapped to the PAL to save a value into registers.
-Eventually, CPU reads back that value and performs some checkings. If the value is not the proper one, a soft reset is done.
-Address during writting operation is mapped in the following way:
-   A2  -> I2
-   A3  -> I3
-   A6  -> I4
-   A8  -> I5
-   A11 -> I6
-   A13 -> I7
-   A15 -> I8
-   A16 -> I9
-Data sent by the CPU during these writting operations is not used to calculate the protection register value, only some address
-  lines are used to compute the value, as shown above.
-Every write operation done to the PAL discards the previous stored value in the registers and stores a new computed value, following
-  the logic equations programmed in the PAL.
-   (I1 = CLK : pulses when accessing to writting handler and acts as clock for internal latches in PAL)
-   (I11 = /OE : asserted when accessing to reading handler. Sub-address used for reading here is no used to compute the result
-  value)
-Also, added the dump for the actual PAL recreated by the above analysis, and the address range for the protection writting handler
-  is updated. It goes up to CPU A16 address line : 0x400000, 0x41ffff (even if never used in the current game code)
-
-9945: spectrum: fix partial updates at the end of frame [holub]
-Workaround for partial update issue at the end of frame.
-https://mametesters.org/view.php?id=8264
-https://mametesters.org/view.php?id=8265
-https://github.com/mamedev/mame/pull/9670#issuecomment-1118576555
-https://github.com/mamedev/mame/pull/9750
-
-9947: netlist: fix bug, prepare for future changes and improve readability [couriersud]
-- fix a bug where a net processing error may trigger a nullptr access
-- applied some clang-tidy recommendations
-- add no_return to plib::terminate
-- properly encapsulate dynamic_cast usage
-- more review of noexcept
-- added a clang-format file. Over time, all source files will be
-  processed with clang-format
-- Used clang-format on a number of files
-- Rewrote 74174
-- all device constructors now use a struct to pass data on
-  to base classes. Neither netlist state nor the name are intended
-  to be used in a constructor. After the base class was
-  constructed, they can be accessed by state() and name().
-- The device construction macros can now be removed. Changes to
-  the core will not need to be reflected in constructors.
-- Change truth table macros so that going forward NETLIST_END and
-  TRUTH_TABLE_END can be replaced by a closing curly brace. netlists can
-  than use curly braces enclosed blocks.
-
-9950: nes.xml: Added an unreleased prototype. [0kmg]
-New working software list additions
------------------------------------
-The FairyLand Story (Japan, prototype) [Forest of Illusion, Gaming Alexandria, Hard4Games, FenrisRetro]
-
-9951: gameboy.xml: Added 25 prototypes. [0kmg]
-New working software list additions
------------------------------------
-Alfred Chicken (prototype) [VGHF, Hidden Palace]
-Jimmy Connors Tennis (prototype) [VGHF, Hidden Palace]
-Klustar (prototype) [VGHF, Hidden Palace]
-Lethal Weapon (prototype) [VGHF, Hidden Palace]
-Loopz (prototype) [VGHF, Hidden Palace]
-Metal Masters (prototype) [VGHF, Hidden Palace]
-Mickey's Ultimate Challenge (prototype, 19931112) [VGHF, Hidden Palace]
-Mighty Morphin Power Rangers (prototype) [VGHF, Hidden Palace]
-Mind-Bender (Brain-Bender prototype, 19910304) [VGHF, Hidden Palace]
-Monster Max (prototype, 19930401) [VGHF, Hidden Palace]
-Ninja Taro (USA, prototype, earlier?) [VGHF, Hidden Palace]
-Otto's Ottifanten - Baby Bruno's Nightmare (prototype) [VGHF, Hidden Palace]
-Pinball - Revenge of the 'Gator (prototype) [VGHF, Hidden Palace]
-Race Drivin' (prototype) [VGHF, Hidden Palace]
-Spider-Man 3 - Invasion of the Spider-Slayers (prototype, 19930411) [VGHF, Hidden Palace]
-Star Trek - The Next Generation (prototype) [VGHF, Hidden Palace]
-Teenage Mutant Ninja Turtles 2 (Japan, prototype, 19910520) [VGHF, Hidden Palace]
-Teenage Mutant Ninja Turtles II - Back from the Sewers (USA, prototype) [VGHF, Hidden Palace]
-Tesserae (prototype) [VGHF, Hidden Palace]
-Tiny Toon Adventures - Babs' Big Break (prototype, 19910906) [VGHF, Hidden Palace]
-Tiny Toon Adventures - Babs' Big Break (Japan, prototype, 19910716) [VGHF, Hidden Palace]
-Tom and Jerry - Frantic Antics (prototype) [VGHF, Hidden Palace]
-Ultra Golf (prototype, 19911120) [VGHF, Hidden Palace]
-World Beach Volley - 1992 GB Cup (prototype) [VGHF, Hidden Palace]
-New NOT_WORKING software list additions
----------------------------------------
-The Lawnmower Man (prototype) [VGHF, Hidden Palace]
-
-9953: pacman.cpp: Remove diplocations from edge connectors/split-pads in pacman, add dip locations to mspacman, remove duplicated
-  inputs from mspacpls and mspachmp, add publisher to titanpac [einstein95]
-Interestingly, it appears that NSM was a licensed distributor of Pac-Man in West Germany at the time according to a notice from
-  Namco in Game Machine
-
-9954: ibm5170.xml: 6 new software additions [ArcadeShadow]
-New working software list additions
------------------------------------
-Battle Chess (Windows 3.x release) [minimojoman, archive.org]
-King's Quest VI: Heir Today, Gone Tomorrow (3.5") [The Good Old Days]
-King's Quest VI: Heir Today, Gone Tomorrow (3.5", Germany) [The Good Old Days]
-King's Quest VI: Heir Today, Gone Tomorrow (5.25") [The Good Old Days]
-Litil Divil [The Good Old Days]
-Roberta Williams' Laura Bow in "The Dagger of Amon Ra (Germany) [The Good Old Days]
-
-9955: a2600_cass.xml: Metadata cleaning [ArcadeShadow]
-Lowercase on description's words like: Alt, Preview, Prototype
-
-9956: sms.xml: Metadata cleaning [ArcadeShadow]
-Lowercase on description's words like: Demo, Pirate, Easy Version, Hard Version
-
-9957: ibm5170.xml: Fixed a couple more part name typos. [0kmg]
-
-9961: [spectrum_cass.xml] Added some "author" info tags [ICEknigh7]
-
-9962: gameboy.xml: Added 21 more prototypes. [0kmg]
-New working software list additions
------------------------------------
-Astérix (earlier prototype) [VGHF, Hidden Palace]
-Astérix (early prototype) [VGHF, Hidden Palace]
-Asteroids (prototype) [VGHF, Hidden Palace]
-Barbie - Game Girl (prototype) [VGHF, Hidden Palace]
-Battle Ships (Spain, prototype) [VGHF, Hidden Palace]
-Blaster Master Boy (USA, prototype) [VGHF, Hidden Palace]
-Bomb Jack (earlier prototype) [VGHF, Hidden Palace]
-Bomb Jack (later prototype) [VGHF, Hidden Palace]
-Bonk's Adventure (USA, prototype) [VGHF, Hidden Palace]
-Bubble Ghost (prototype) [VGHF, Hidden Palace]
-Catrap (prototype) [Forest of Illusion, Swanhubstream]
-Cosmo Tank (USA, prototype) [VGHF, Hidden Palace]
-Dropzone (prototype, alt) [VGHF, Hidden Palace]
-Gauntlet II (prototype) [Forest of Illusion, Rezrospect]
-Ghostbusters II (prototype) [VGHF, Hidden Palace]
-Kung-Fu Master (prototype) [Forest of Illusion, FNeogeo]
-Mysterium (prototype) [Forest of Illusion, Rezrospect]
-Obélix (Europe, French / German, prototype) [Forest of Illusion]
-Prince of Persia (prototype) [Forest of Illusion, FNeogeo]
-The Blues Brothers (prototype) [Forest of Illusion, FNeogeo]
-Triumph (prototype) [Gaming Alexandria]
-
-9963: Corrected a few common typos in various source files. [0kmg]
-
-9964: Apple softlist update for June 2022. [Firehawke]
-This includes some metadata/title changes as well as some new materials. I'll do the merge on Friday, giving me a bit more time for
-  any last minute changes/additions.
-
-9965: fix Sega Pico PCM playback (MT#08332) [ValleyBell]
-- fix uPD775x type
-- enforce "slave" mode (required for manual data stream)
-- hook up "PCM FIFO empty" interrupt
-
-9966: missile.cpp: Add correct factory default dips, remove duplicate inputs from suprmatk [einstein95]
-Checked the manuals for the upright (TM-147, 2nd and 3rd printings), cabaret (TM-158, 1st printing) and sit-down (TM-162, 1st
-  printing) versions, all identical.
-**$** marks the factory-recommended default settings
-!image
-Also an article in Cash Box mentions how it shipped as a 50¢ game
-!image
-
-9967: gameboy.xml: Added some missing Super Game Boy enhanced tags. [0kmg]
-
-9971: jp.cpp: Add notes and fix manufacturer name for 'Lortium' and 'Pimbal (Pinball 3000)' [clawgrip]
-
-9972: midzeus.cpp: Fix year for "The Grid" (both sets) [clawgrip]
-
-9973: new WORKING machine (Play TV Jr. Construction) [DavidHaywood]
-new WORKING machine
-------------------
-Play TV Jr. Construction [Sean Riddle, David Haywood, Peter Wilhelmsen, Kamaal Brown]
-
-9975: Updated Greek Translation [BraiNKilleRGR]
-
-9978: ui/selgame.cpp: Avoid assert in std::vector when no items in menu [jflatt]
-At times std::vector<menu_item> m_items found in src/frontend/mame/ui/menu.h is empty, even after displaying a full list, triggering
-  this assertion:
-/usr/lib/gcc/x86_64-pc-linux-gnu/11.3.0/include/g++-v11/bits/stl_vector.h:1045: std::vector<_Tp, _Alloc>::reference std::vector<_Tp,
-  _Alloc>::operator[](std::vector<_Tp, _Alloc>::size_type) [with _Tp = ui::menu_item; _Alloc = std::allocator<ui::menu_item>;
-  std::vector<_Tp, _Alloc>::reference = ui::menu_item&; std::vector<_Tp, _Alloc>::size_type = long unsigned int]: Assertion '__n <
-  this->size()' failed.
-
-9979: gameboy.xml: Added nine more prototypes. [0kmg]
-New working software list additions
------------------------------------
-The Chessmaster (Japan, prototype) [DillyDylan, Gaming Alexandria]
-Out of Gas (prototype) [Forest of Illusion]
-Pang (prototype) [Forest of Illusion]
-Populous (prototype) [Forest of Illusion]
-Prince of Persia (Euro, prototype) [DillyDylan, Hidden Palace]
-Riddick Bowe Boxing (USA, prototype) [Rezrospect, Forest of Illusion]
-Taz-Mania (Europe, prototype) [Forest of Illusion]
-Wordtris (V6 prototype) [Forest of Illusion]
-Zoop (prototype) [Rezrospect, Forest of Illusion]
-
-9980: Added PLD files for TH Strikes Back (thoop2) [sergiopolog]
-**Credits and files provided by "OperNet Sistemas"**
-Added original pld files for `thoop2` (all sets) from manufacturer (Gaelco).
-A number is usually written by pen or pencil in the actual PALs in the boards, denoting their manufacturer reference.
-They are 5 PALs located in the following positions:
-* Position B16: `PAL16R8` marked with "1"
-* Position B123 `PAL20L8` marked with "2"
-* Position E2: `PAL16R4` marked with "3"
-* Position H15: `PAL20L8` marked with "4"
-* Position H21: `PALCE16V8` marked with "5"  (this one is also found as: ST `16AS25HB1`, equivalent to `PALCE16V8`)
-Picture of actual PCB:
-https://i.imgur.com/4P5Fu2U.jpg
-
-9981: Considerable DSP56156 + plygonet.cpp fixes [MooglyGuy]
-Still some minor graphical bugs remaining. DSP56156 core desperately needs a pass to bring it in line with core standards, but
-  that's not happening today.
-
-9982: mpu4bwb.cpp - set identification / defaults for booting [DavidHaywood]
-this identifies the settings various sets in mpu4bwb.cpp expect, and configures them better by default.
-these don't boot fully without the changes from JW (and one other change) but I've tried to be careful not to stop on any toes while
-  documenting these (I've only touched mpu4bwb.cpp, which he hasn't touched)
-
-9983: cps1.cpp: Added notes for hidden Final Fight test modes and Button 3 [David Silva] [FoxhackDN]
-
-9984: plygonet.cpp - change sound hookup so that polynetw can boot (and fixed some gfxdecode errors for the roz layer)
-  [DavidHaywood]
-
-9987: plygonet: Polygonet Warriors goes in-game, plus some screen-size fixes [MooglyGuy]
--plygonet: More PSAC2 fixes, some K056230 fixes [Ryan Holtz, Phil Bennett, Hydreigon]
-
-9993: More plygonet fixes [MooglyGuy]
-Apologies for the PR spam, having to PR against the release branch is super awkward.
+- 9918: emu/sound.cpp: Fixed missed samples after loading a save state (addresses GitHub #9917). [Couriersud]
+- 9919: jpmsru.cpp: Added three new games, and fixed audio output. [SomeRandomGuyIdk]
+- 9920: y2.cpp: Adjusted spacing in description for higurashi. [Michael Sanborn]
+- 9921: punchout.cpp: Correctly labeled service button and second coin inputs. [kmg]
+- 9923: cpu/mips/r4000.cpp: Partially implemented secondary cache tag manipulation. [Brice Onken]
+- 9924: megadriv.xml: Cleaned up metadata. [ArcadeShadow]
+- 9925: psx.xml: Cleaned up metadata. [ArcadeShadow]
+- 9926: m79amb.cpp: Improved input lookup table generation, and added DIP switch locations. [kmg]
+- 9927: supstarf.cpp: Dumped and added a new set of Super Star. [jordigahan, ClawGrip]
+- 9928: osd/modules/file: Changed osd_subst_env to take a std::string_view parameter and return a std::string. [Nathan Woods]
+- 9932: mpu4.cpp: Moved some crystal-specific code into derived state class, and removed some unnecessary code. [David Haywood]
+- 9933: igs17.cpp: Fixed tarzan demo sounds DIP switch setting labels. [Dullaron]
+- 9935: mpu4.cpp: Sorted out more sets, fixed reel configurations, set default input settings, and clean up code. [David Haywood]
+- 9938: emu/machine.h: Fixed assert in bookkeeping manager accessor. [Andrew Green]
+- 9943: seta.cpp: Added implementation for thunderl protection, and added recreated PAL image. [Sergio Galiano]
+- 9945: spectrum.cpp: Fixed partial screen updates at the end of frame (works around MT08264 and MT08265). [holub]
+- 9947: netlist: Fixed a net processing bug, and cleaned up code. [Couriersud]
+- 9950: nes.xml: Added prototype of The FairyLand Story. [Forest of Illusion, Gaming Alexandria, Hard4Games, FenrisRetro, kmg]
+- 9951: gameboy.xml: Added 25 prototypes (24 working, one not working). [kmg]
+- 9953: pacman.cpp: Cleaned up input port definitions and DIP switch locations. [einstein95]
+- 9954: ibm5170.xml: Added six working items. [minimojoman, archive.org, The Good Old Days, ArcadeShadow]
+- 9955: a2600_cass.xml: Cleaned up metadata. [ArcadeShadow]
+- 9956: sms.xml: Cleaned up metadata. [ArcadeShadow]
+- 9957: ibm5170.xml: Fixed a couple of typos in software part names. [kmg]
+- 9961: spectrum_cass.xml: Added author information in info elements for a few items. [ICEknight]
+- 9962: gameboy.xml: Added 21 more prototypes. [kmg]
+- 9963: Corrected a few common typos in various source files. [kmg]
+- 9964: apple2_flop_clcracked.xml, apple2_flop_orig.xml: Added latest dumps and cracks, and fixed some metadata. [Firehawke]
+- 9965: sound/315-5641.cpp: Changed base to µPD7759, forced slave mode; segapico.cpp: Connected sound interrupt (MT08332).
+  [ValleyBell]
+- 9966: missile.cpp: Set factory default DIP switch settings, and cleaned up input port definitions. [einstein95]
+- 9967: gameboy.xml: Added some missing Super Game Boy enhanced tags. [kmg]
+- 9971: jp.cpp: Added notes, and fixed manufacturer name for ‘Lortium’ and ‘Pimbal (Pinball 3000)’ [ClawGrip]
+- 9972: midzeus.cpp: Fixed year for “The Grid” (both sets). [ClawGrip]
+- 9973: xavix.cpp: Added Play TV Jr. Construction. [Sean Riddle, David Haywood, Peter Wilhelmsen, Kamaal Brown]
+- 9975: Updated Greek translation. [BraiNKilleRGR]
+- 9978: ui/selgame.cpp: Avoid assert in std::vector when no items in menu. [jflatt]
+- 9979: gameboy.xml: Added nine more working prototypes. [DillyDylan, Rezrospect, Forest of Illusion, Hidden Palace, kmg]
+- 9980: thoop2.cpp: Added PLD files for TH Strikes Back. [OperNet Sistemas, Sergio Galiano]
+- 9981: cpu/dsp56156: Fixed too many instructions to list; plygonet.cpp: Implemented span drawing. [Ryan Holtz]
+- 9982: mpu4bwb.cpp: Identified more sets and set up defaults to allow more games to boot. [David Haywood]
+- 9983: cps1.cpp: Added notes about hidden Final Fight test modes and button 3. [David Silva]
+- 9984: plygonet.cpp: Fixed sound interrupt so polynetw boots, and fixed some graphics decoding issues. [David Haywood]
+- 9987: machine/k056230.cpp, plygonet.cpp: Fixed K056230, PSAC2 and screen size issues. [Ryan Holtz, Phil Bennett, Hydreigon]
+- 9993: plygonet.cpp: Improved ROZ layer, and increased maximum scheduling quantum time. [David Haywood, Ryan Holtz]
+- 10000: spec128.cpp: Fixed crash in clones that don’t inherit memory layout; elwro800.cpp: Fixed crash on screen update. [holub]
 
 
 Source changes
@@ -2961,3 +2711,9 @@ Each Way Shuffle (bootleg?) (SRU) (10p Stake, £3 Jackpot) [SomeRandomGuyIdk]
  * elwro800.cpp: Fixed crash on screen updates.
 
 -vgmplay.xml: Lowercase on a Japanese particle in a description. [Vas Crabb]
+
+-Bump version to 0.245 [Vas Crabb]
+
+-Fixes to Greek Translation [BraiNKilleRGR]
+ * Some minor fixes and missed the auto translated "Driver -> System" since in Greek changed the gender and so the article as well.
+    (Driver=Male, System=Neutral ). Check the other translations as well in case something similar happened.
