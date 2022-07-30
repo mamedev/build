@@ -203,572 +203,91 @@ Portuguese (Brazil) [Felipe]
 
 Merged pull requests
 --------------------
-8653: bgfx crt-geom and crt-geom-deluxe improvements [cgwg]
-In addition to some reduction of duplicate code, there are two improvements:
-1. In crt-geom-deluxe, the Gaussian blur used for the halation uses more taps, allowing a wider blur.
-2. The sRGB gamma ramp has been added as an option and made the default. This should reduce the long trails of phosphor persistence
-  reported by some users.
-As usual, I can't generate the full set of shader targets, so someone with Windows would have to do that.
-
-9651: sgi_mips: add some more missing discs from archive.org [darkstar]
-Recently some more missing discs from IRIX 6.5.4 and 6.5.5 have surfaced on archive.org, as well as some hardware patch discs and
-  multiple versions of the SGI O2 out-of-box-experience.
-I only added the new discs (which makes integrating them into the CHD set straightforward), although I propose one additional
-  renaming step:
-* rename the existing `o2_oobe` softlist entry to `o2_oobe_2_1` as that is the actual version (can be checked by searching the
-  uncompressed CHD for the strin `OutOfBox Experience`), to be in-line with the other entries
-* rename the (new) `o2_oobe_96` softlist entry to `o2_oobe` (as that one does not have any verison identifier)
-
-9782: Added ATA CompactFlash device [mmicko]
-
-9821: snes.xml: Added bootleg Dragon Ball Z Final Bout dumps. [0kmg]
-New working software list additions
------------------------------------
-Dragon Ball Z - Final Bout (pirate, hacked) [d4s]
-New NOT_WORKING software list additions
----------------------------------------
-Dragon Ball Z - Final Bout (pirate) [VGHF]
-
-9922: Created a CBM DOS file system driver and added it to the 1541 implementation [npwoods]
-For now, the driver only supports reading
-
-9952: machine/z80scc.cpp: Implement /W//REQ on receive and /DTR//REQ on transmit [briceonk]
-This change adds support for using /W//REQ as the RX DMA pin, as well as the /DTR//REQ pin as the TX DMA pin. This allows software
-  that uses both directions simultaneously to function (like Sony NEWS-OS 4.2.1aRD's `esccf` driver on the NWS-5000 series, which
-  uses these pins in conjunction with one of its CXD8442Q WSC-FIFO chips for async serial communication) .
-Note - the ESCC user manual mentions that the /W//REQ and /DTR//REQ pins don't depend on the transmitter enable status, but that is
-  not how the driver was originally coded, so I didn't touch that part, but with this code, /DTR//REQ will not consider the
-  transmitter enable flag to match the spec:
-!image
-!image
-
-9994: apple2gs_flop_orig.xml: Added 3 Games [A-Noid33]
-* New working software list additions (apple2gs_flop_orig.xml)
---------------------------------------------------------------
-Dragon's Lair [Antoine Vignau, A-Noid]
-Dragon's Lair: Escape from Singe's Castle [Antoine Vignau, A-Noid]
-Dragon's Lair II: Time Warp [Antoine Vignau, A-Noid]
-
-9995: a7800.xml: Added four prototypes. [0kmg]
-New working software list additions
------------------------------------
-Food Fight (NTSC, prototype) [gambler172, Eckhard Stolberg]
-Xevious (NTSC, prototype) [gambler172, Eckhard Stolberg]
-New NOT_WORKING software list additions
----------------------------------------
-7800 Pro System Diagnostic Test (prototype) [gambler172, Eckhard Stolberg]
-Pole Position II (prototype) [gambler172, Eckhard Stolberg]
-
-9996: Remove cross dependency [mmicko]
-
-9999: mpu4.cpp - set more likely extender boards for a number of mpu4 sets, based on how they're used [DavidHaywood]
-- allows more games to light all their lamps
-- fixed(?) large extender hookup so that all lamps light, eg. m4andybt
-- gave m4andybt better inputs (is mostly playable now, but some 7segs in the display still aren't hooked up)
-- move some sets to mpu4mod2 and mpu4mod4yam based on sound chip use
-
-10001: jpmsru.cpp: Added Lucky Casino DAC [SomeRandomGuyIdk]
-
-10002: mpu4: Refactoring and functionality additions [james-wallace-ghub]
-Added the ability to override the lamp current checks (will fix Lamp Drive errors)
-Connect4 no longer requires a lamping hack
-
-10003: Fixed CoCo RS-DOS FS module in response to recent FS changes [npwoods]
-
-10004: chore: Set permissions for GitHub actions [neilnaveen]
- Restrict the GitHub token permissions only to the required ones; this way, even if the attackers will succeed in compromising your
-  workflow, they won’t be able to do much.
-- Included permissions for the action. https://github.com/ossf/scorecard/blob/main/docs/checks.md#token-permissions
-https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#permissions
-https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
-Keeping your GitHub Actions and workflows secure Part 1: Preventing pwn requests
-Signed-off-by: neilnaveen <42328488+neilnaveen@users.noreply.github.com>
-
-10006: Plug and Play bits (mostly dead-end work) [DavidHaywood]
-new Software List entries
------
-nes_vt_cart.xml:
-Color Screen Game World - 10 Types of Crazy Games / Wonders 163-in-1 [TeamEurope]
-new WORKING machine
-----
-unknown VT02 based 25-in-1 handheld [jordigahan, ClawGrip, Sean Riddle]
-new NOT WORKING machines
-------
-TV Pump Active [ClawGrip, Sean Riddle]
-unknown VTxx based GameBoy style handheld (2019 PCB)   [jordigahan, ClawGrip, Sean Riddle]
-unknown VTxx based GameBoy style handheld (2020 PCB)   [jordigahan, ClawGrip, Sean Riddle]
-NubSup Mini Game Fan [taizou, TeamEurope]
-Q5 500 in 1 Handheld [taizou, TeamEurope]
-MeGaTrix (Spain) [jordigahan, ClawGrip, Sean Riddle]
-
-10007: Fixed CoCo OS-9 FS module in response to recent FS changes [npwoods]
-
-10009: nes.xml: Replaced modified drfrankn dump with correct dump. [0kmg]
-
-10013: gtrak10: working racetrack, car graphics, added test controls and coin/start switches. [goldnchild]
-The fixfreq vsync doesn't work quite right if I specify 902 for GTRAK10_HTOTAL.  If I change the vsync_filter_timeconst formula, it
-  will sync and you can get a full display.
-
-10014: seta/seta.cpp: Added alternate version of Thunder & Lightning [sergiopolog]
-New WORKING clone
--------------------------------
-Thunder & Lightning (set 2) [Sergio Galiano, Recreativos Piscis]
-
-10015: current mpu4 work + sorting (including progress to make m4andybt display correctly with existing layout) [DavidHaywood]
- - fixes led extender strobes, allows output to be inverted
-
-10016: nld_dm9314.cpp: add RS mode to netlist 9314 [goldnchild]
-In working on the gtrak10, the score will count up to 8 and won't go up to 10, I believe because the 9314 doesn't have RS mode
-  enabled.  With this fix, the score works and the zeroes propagate upwards from QA to QB to QC to QD since the output bits are
-  hooked up to the next stage Data in (Q0 -> D1, Q1-> D2, Q2->D3)
-S Bar is high, Data goes low -> supposed to clear the bit
-
-10018: subsino2.cpp: Identified several inputs for queenbee (MT08365) [scoomby]
-Note that I have been unable to verify the inputs on the queenbee clones as only the program ROMs are available presently.
-
-10019: barata.cpp: Restore proper company name [einstein95]
-Appears to have been caused by the cleanup in e6f78d5ed281850d9e8b391c049b8bf696e140bf
-
-10020: genie: Explicitly set LinkSupportCircularDependencies for NetBSD [0-wiz-0]
-Fixes #10011 following a suggestion by @cuavas.
-
-10021: at.cpp: Fix typo in asi100b0 company name [FoxhackDN]
-
-10022: Fixed gtrak10 video. [couriersud]
-Please ensure that gtrak10.cfg is deleted - may override defaults.
-
-10026: nes.xml: Added nine prototypes. [0kmg]
-New working software list additions
------------------------------------
-Déjà Vu (USA, prototype, 19900428) [Forest of Illusion]
-Déjà Vu (USA, prototype, 19900508) [Forest of Illusion]
-Déjà Vu (USA, prototype, 19900515) [Forest of Illusion]
-Déjà Vu (USA, prototype, 19900703) [Forest of Illusion]
-Heavy Shreddin' (USA, prototype) [johnsodu]
-Shadowgate (Japan, prototype) [Forest of Illusion]
-Uninvited (USA, prototype, 19900704) [Forest of Illusion]
-Uninvited (USA, prototype, 19900823) [Forest of Illusion]
-Uninvited (USA, prototype, 19900910) [Forest of Illusion]
-
-10028: Add support for building with Clang on OpenBSD. [fcambus]
-
-10029: Clean up #includes in src/osd [ajrhacker]
-I'm making a pull request for this to see if CI turns up any problems with other OSes before merging.
-
-10030: gameboy.xml: Added 14 prototypes. [0kmg]
-New working software list additions
------------------------------------
-Aladdin (Europe, sample) [thevideogameproject]
-Dennis (Europe, prototype) [ashthedragon]
-Disney's Darkwing Duck (prototype) [FNeogeo, Forest of Illusion]
-Dr. Franken (Europe, prototype) [Aetius For Real]
-Eddie's Puzzle Time (prototype) [Jason McGann]
-Felix the Cat (prototype) [DillyDylan, drx]
-Hook (USA, prototype) [FNeogeo, Forest of Illusion]
-Joe & Mac - Caveman Ninja (Europe, prototype) [ashthedragon]
-Lemmings (prototype) [speedyink]
-Mega Man III (USA, sample) [Skaarg, Rockman Corner]
-Mortal Kombat (prototype) [ashthedragon]
-R-Type II (prototype) [The Retro Future]
-Tintin in Tibet (Europe, En / Es / It / Sv, prototype) [Aetius For Real]
-New NOT_WORKING software list additions
----------------------------------------
-Death Track (prototype) [speedyink]
-
-10031: gaelco2.cpp: Fix "Touch and Go" game name [clawgrip]
-
-10032: netlist: gtrak10 performance and other improvements and fixes [couriersud]
-- added support parameter FORCE_TRISTATE_LOGIC on mk28000
-- add system device SYS_PULSE to generate pulse based on input changes
-  parameters are delay, pulse width, input polarity and output polarity
-- add USE_SPEED_HACKS define to gtrak10 to enable the use of the above
-  Brings gtrak10 from 18% to 120%.
-- Improved interlaced video support in fixfreq.cpp
-  Added two interlace modes: progressive and interlaced which can
-  be selected in machine configuration.
-- more clang format work
-- rename link to connection
-- introduced typed aliases. This information may be used later to
-  rewrite netlists.
-- added a three terminal base device
-  This will allow the analog code to be more easily comparable to
-  literature about MNA (Modal node analysis).
-  BJT code is now a lot better readable.
-- fix doxygen consistency
-- added an example for a cmos inverter based on NMOS/PMOS fets.
-- TRUTHTABLE_START was renamed to TRUTH_TABLE
-- truth tables are now enclosed in braces
-- netlists are now enclosed in braces
-- TRUTHTABLE_END() and NETLIST_END() removed from files
-- Fixed static solver script
-- Add file path to includes in nltool
-
-10038: mt735.cpp: Flesh out comments, fix manufacturer and year [einstein95]
-
-10039: mpu4: set YM XTAL to match PCB, fix some Dutch reel / input setups so that sets boot, move a couple of sets [DavidHaywood]
-mpu4 work
- - set YM XTAL to match PCB
- - fix some Dutch reel / input setups so that sets boot
- - move a couple of sets
- - disable coinlock logic for now, the code is clearly not suitable for all cases, probably needs to be per machine
-
-10040: a2600.cpp: Default to having a right joystick connected. [0kmg]
-
-10041: netlist: Fix regression [couriersud]
-Code was parsing src/lib/netlist/macros instead of using compiled
-version.
-
-10042: neogeo.xml: Fix eightman serial [Abadede]
-Fixed mismatch between serial given in description and info. 024 is lresort serial.
-
-10045: model2.cpp: Dumped sound program ROM from Manx TT Twin Rev. A, added it as a new set [clawgrip]
-New NOT_WORKING clones
-----------------------------------
-Manx TT Superbike - Twin (Revision A) [Tailsnic Retroworks]
-
-10048: Fix PCI device initialization [mmicko]
-This makes sure that PCI map_extra in device initialization is executed after complete reset of device is performed 
-
-10049: c64_cass.xml: Added 10 items (8 working, 2 not working) [scoomby]
-New working software list additions
----------------------------------------
-Tag-Team Wrestling Plus Karate Champ (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-Tai-Pan (Ocean) [C64 Ultimate Tape Archive V2.0]
-Tank (Ocean) [C64 Ultimate Tape Archive V2.0]
-Tapper (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-Teenage Mutant Hero Turtles (Image Works) [C64 Ultimate Tape Archive V2.0]
-Terra Cresta (Imagine) [C64 Ultimate Tape Archive V2.0]
-Test Drive (Electronic Arts) [C64 Ultimate Tape Archive V2.0]
-Tetris (Mirrorsoft) [C64 Ultimate Tape Archive V2.0]
-New NOT_WORKING software list additions
----------------------------------------
-Tarzan (Martech) [C64 Ultimate Tape Archive V2.0]
-Techno Cop (Gremlin Graphics) [C64 Ultimate Tape Archive V2.0]
-
-10050: gameboy.xml: Added five prototypes. [0kmg]
-- Corrected deathtrk mistakenly being marked as not supported.
-New working software list additions
------------------------------------
-Casper (prototype) [Clarkzer0, Forest of Illusion]
-Outburst (Japan, prototype) [Martin Refseth, Forest of Illusion]
-Primal Rage (prototype) [JakeS909, drx]
-Splitz (prototype) [DillyDylan, drx]
-Super Off Road (prototype) [DillyDylan, drx]
-
-10052: Update ymfm library to latest version (a78b567) [aaronsgiles]
-Update ymfm library to latest version (a78b567): [Aaron Giles, hyano]
- - Fix incorrect operator volumes in some cases for OPL (MT8108)
- - Fix PCM playback to cut off previous notes when new waveforms are selected (see dragnblz)
- - Fix reversed OPM noise frequency
- - Fix bug preventing CSM key ons from being noticed
- - Fix bug where SSG EG envelope could be left in inverted state
- - Fix SSG envelope handling when tone and noise are off
- - Increase strength of DAC discontinuity in YM2612
- - Improve latching logic for fnums in OPN
- - Increase envelope suppression threshold so some effects don't get prematurely muted
- - Improve ADPCM-B behavior at stop/limit addresses (more thorough rewrite here coming later)
-
-10053: spectrum-v.cpp: avoid screen update before video initialized - MT8370 [holub]
-https://mametesters.org/view.php?id=8370
-
-10055: n64.xml: Converted ROM sizes to hexadecimal. [0kmg]
-- Marked Dragon Sword prototypes as bad dumps and noted incorrect sizes.
-
-10056: stuntcyc: fixed up rom addressing so that cycle displays properly [goldnchild]
-There's some gross hacks that can be done to make the cycle make it down to the jump and to change the number of buses:
-#ifdef STUNT_CYCLE_BUS_COUNT_HACK
-	CLOCK(BUSES_COUNT_UP, 0.20)  // FIXME: HACK to increase the number of buses on 5 sec period clock
-	NET_C(BUSES_COUNT_UP.VCC, VCC)
-	NET_C(BUSES_COUNT_UP.GND, GND)
-	TTL_74192(B8, GROUND, GROUND, GROUND, P, GROUND, START_Q, BUSES_COUNT_UP, P)  // FIXME: HACK to test buses
-#else
-	TTL_74192(B8, GROUND, GROUND, GROUND, P, GROUND, START_Q, A8_2.Q, P)
-#endif
-#ifdef STUNT_CYCLE_HORIZ_COUNT_HACK
-	TTL_7486_XOR(B2_2, DIRECTION_Q, C2_2.Q)  // FIXME HACK: this should be a 7400 NAND, horizontal counting isn't quite working
-  properly.  Leftward movement isn't working.
-	// without this hack, the bike never will make it down to the ramp level
-	// with this hack, the bike will move through the second level very quickly
-#else
-	TTL_7400_NAND(B2_2, DIRECTION_Q, C2_2.Q)  // correct chip is a NAND
-#endif
-
-10057: a2600.xml: Set default controllers for games that don't use joysticks. [0kmg]
-- Corrected some bad parent/clone relationships.
-
-10058: Miscellaneous software list cleanups. [0kmg]
-- Removed mention of MESS.
-- Corrected case (and more) in various Japanese titles.
-
-10059: ibm5150.xml: 10 new software additions [ArcadeShadow]
-New working software list additions
------------------------------------
-Advanced Dungeons & Dragons - DragonStrike (v1.0) [ibmpc5150, archive.org]
-Advanced Dungeons & Dragons - DragonStrike (v1.1) [ibmpc5150, archive.org]
-Advanced Dungeons & Dragons - DragonStrike (v1.2) [ibmpc5150, archive.org]
-Home Alone 2: Lost in New York [ibmpc5150, archive.org]
-Pac-Man (Thunder Mountain release) [ibmpc5150, archive.org]
-Secret Agent (shareware, $5 Computer Store - Wiz Technology release) [SmartCoda, archive.org]
-Temple of Death [ibmpc5150, archive.org]
-New NOT_WORKING software list additions
------------------------------------
-King's Quest (DOS release) [Gypsy Dave, archive.org]
-Redump software list
------------------------------------
-Home Alone - A Family Game Without the Family [ibmpc5150, archive.org]
-Over the Net! [ibmpc5150, archive.org]
-
-10060: megadriv.xml: Added two prototypes. [0kmg]
-New working software list additions
------------------------------------
-Road Riot 4WD (prototype, 19930719) [DrBizz]
-New NOT_WORKING software list additions
----------------------------------------
-Steel Talons (USA, prototype, 199206xx) [DrBizz]
-
-10061: snes.xml: Added nine dumps. [0kmg]
-New working software list additions
------------------------------------
-Doraemon 2 - Nobita no Toys Land Daibouken (Japan, prototype) [atomic]
-Gourmet Warriors [NoIntro]
-Jelly Boy (prototype) [Hard4Games, snescentral]
-Jelly Boy (earlier prototype) [Mark Flitman, snescentral, VGHF]
-Jimmy Connors Pro Tennis Tour (Germany, prototype) [snescentral]
-Pinkie [NoIntro]
-Superman Unfinished Version (demo) [Nostalgia Alley, snescentral, VGHF]
-Tinhead [NoIntro]
-New NOT_WORKING software list additions
----------------------------------------
-Total Carnage (USA, prototype 19930610) [snescentral]
-
-10065: Dumped and added "New Canasta" PC-based pinball as a new skeleton driver [clawgrip]
-"New Canasta" is a classical electromechanical pinball, but using a PC with an external I/O PCB as electronics (it is not a video
-  pinball).
-New NOT_WORKING machine
-------------------------------------
-New Canasta [Vicente y Sergio de ElectronicaVyS, ClawGrip]
-
-10066: Updated brazilian portuguese translation [Felipefpl]
-Updated with the latest new strings translated plus changes to the fuzzy entries.
-
-10067: midzeus.cpp: Dumped and added The Grid V1.01 [clawgrip]
-New NOT_WORKING clone
-------------------------------
-The Grid (version 1.01) [Museo del Recreativo]
-
-10068: exorterm - move to motorola [68bit]
-This is a Motorola product.
-Just a suggestion, in case people think this appropriate.
-Here is a reference showing that this was a Motorola product:
-http://www.bitsavers.org/components/motorola/6800/EXORterm_155/M68SXD155D2_EXORterm_155_Display_Console_Users_Guide_Sep1981.pdf
-
-10069: intv.xml: Added two Tutor Vision dumps. [0kmg]
-New NOT_WORKING software list additions
----------------------------------------
-Map Mazes (unreleased) [Chuck Gill]
-Shapes in Space (unreleased) [Chuck Gill]
-
-10070: nes.cpp: Oops, hide cartridge list from disk-only fds. [0kmg]
-
-10072: nlm_tt74xx_lib.cpp: fix TTL_74157_GATE [goldnchild]
-Was trying a circuit with TTL_74157_DIP and it gave 
-error../../../../../src/lib/netlist/devices/nlid_truthtable.cpp:587: output count not matching
-terminate called without an active exception
-
-10074: vectrex: Pass the new value with the timer param, so it ends up in the y integrator. [ElectricMagic]
-In commits ca79d71af4b and then 1efbdbf8055, `mame/machine/vectrex.cpp` and `mame/video/vectrex.cpp` changed how the value from via
-  PORTA reaches the mux output with the requisite 8.5us delay.
-An unwanted result is that the value _currently_ on PORTA at the time the delay expires is what ends up in the destination, rather
-  than the value that had been in place when the delay started. The effect is that in some circumstances the Y integrator operates
-  with the current X value, to produce output in the game Thrust like this, whereas it should look like this.
-
-10075: bishi.cpp: Corrected a few titles (MT08362). [0kmg]
-
-10076: nes.xml: Metadata cleaning [ArcadeShadow]
-Lower case on some words' descriptions (like Demo, Sample, Prototype, Alt, Hacked, Debug, Pirate).
-Replaced some countries' abbreviation to the full name.
-
-10077: atari/a2600.cpp: Console switches are not DIP switches. [0kmg]
-
-10078: nes.xml: Removed duplicate entry, blockset. [0kmg]
-
-10081: cinemat.cpp: Update controls for spaceshp, convert to C-style comments [einstein95]
-Based on control panel pics from:
-- https://twitter.com/kt2soundlab/status/1547083104447123456 (JP spaceshp panel)
-- https://twitter.com/kt2soundlab/status/1547121518244573186 (EN spaceshp panel)
-- https://i.imgur.com/MbKG2u1h.jpg (FR spaceshp panel)
-- https://i.imgur.com/xoZ0OD1h.jpg (spacewar panel)
-
-10082: bagman.cpp: Change fake cabinet dip to conf [einstein95]
-
-10085: Clear up std::vector asserts triggered when menu items is empty [jflatt]
-
-10086: Fairlight CMI IIx audio improvements [MooglyGuy]
-- Nearly complete rewrite of CMI-01A "Channel Card" emulation [Ryan Holtz]
-- Fixed a number of bugs in the 6840 PTM emulation [Ryan Holtz]
-
-10087: new Software List entries (6x eKara / Popira / Popira 2 carts) [Team Europe] [DavidHaywood]
-new Software List entries
-----------------------
-ekara_japan_m:mc0005  Kids Song Mini Volume 1 (Japan) (MC0005-KSM) [Team Europe]
-ekara_japan_m:mc0007  Artist Mini Volume 5 (SMAP, KinKi Kids) (Japan) (MC0007-ATM) [Team Europe]
-ekara_japan_s:sc0015  Detective Conan Volume 2 (Japan) (SC0015-DCS) [Team Europe]
-ekara_japan_s:sc0007  Detective Conan Volume 1 (Japan) (SC0007-DCS) [Team Europe]
-ekara_japan_g:gc0018  TV Pop Volume 7 (Japan) (GC0018-TPJ) [Team Europe]
-ekara_japan_g:gc0011  TV Pop Volume 4 (Japan) (GC0011-TPJ) [Team Europe]
-
-10089: newcanasta.cpp: Update comment [clawgrip]
-
-10091: uzebox.xml: Metadata Cleaning [ArcadeShadow]
-Lower case on "Alt" word in the set description
-
-10094: atari/a2600.cpp: Remove device lookups. [wilbertpol]
-a2600.xml: Fix description for challenge and add usage note.
-
-10096: netlist: include file work [couriersud]
-- move code to more appropriate locations
-- apply clang-format to modified files
-- fixed some cspell errors
-
-10098: Cleaned up some software list kana issues. [0kmg]
-- Replaced incorrect dakuten/double prime quote pairing with proper CJK double quotes.
-- Replaced full-width combining dakuten/handakuten with non-combining equivalents.
-
-10101: Added info on the Avengers protection chip [simzy39]
-Added info about the undumped Avengers protection chip.
-
-10102: c64_cass.xml: Added 10 items (9 working, 1 not working) [scoomby]
-New working software list additions
----------------------------------------
-They Sold a Million (The Hit Squad) [C64 Ultimate Tape Archive V2.0]
-They Sold a Million 3 (The Hit Squad) [C64 Ultimate Tape Archive V2.0]
-Thing Bounces Back (Gremlin Graphics) [C64 Ultimate Tape Archive V2.0]
-Thing on a Spring (Gremlin Graphics) [C64 Ultimate Tape Archive V2.0]
-Thrill Time Gold 1 (Elite Systems) [C64 Ultimate Tape Archive V2.0]
-Thunder Blade (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-Thundercats (Elite Systems) [C64 Ultimate Tape Archive V2.0]
-Tiger Mission (Status Software) [C64 Ultimate Tape Archive V2.0]
-Tilt (Codemasters) [C64 Ultimate Tape Archive V2.0]
-New NOT_WORKING software list additions
----------------------------------------
-They Stole a Million (39 Steps) [C64 Ultimate Tape Archive V2.0]
-
-10103: Fixed breakage from recent 6840PTM changes. [MooglyGuy]
--duet16: Added external PTM clock. [Ryan Holtz]
--6840ptm: Fixed one-shot behavior and timer enabling when switching to internal clock. [Ryan Holtz]
-
-10104: Fixing fs::cbmdos_image::enumerate_f() to properly look for single density (instead of double) [npwoods]
-This problem was identified because the file system didn't properly show up when the 'c64' driver was run, and this seems to be the
-  correct fix.  The part of this that confuses me is that if this defect was preventing the CBMDOS fs from showing up under c64, why
-  don't the CoCo file systems have the same problem?  Both fs_coco_rsdos.cpp and fs_coco_os9.cpp specify (seemingly incorrectly)
-  SSDD.
-
-10105: famibox.xml: Added a missing dump; replaced 1943's bad dump. [0kmg]
-New working software list additions
------------------------------------
-Punch-Out!! [Lina, Forest of Illusion]
-
-10108: c64_cass.xml: Added 10 items (9 working, 1 not working) [scoomby]
-New working software list additions
----------------------------------------
-Time Tunnel (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-Tintin on the Moon (Infogrames) [C64 Ultimate Tape Archive V2.0]
-Token of Ghall (Interceptor Software) [C64 Ultimate Tape Archive V2.0]
-Tom & Jerry (Magic Bytes) [C64 Ultimate Tape Archive V2.0]
-Tom (Kingsoft) [C64 Ultimate Tape Archive V2.0]
-Top Gun (Ocean) [C64 Ultimate Tape Archive V2.0]
-The Train: Escape to Normandy (Electronic Arts) [C64 Ultimate Tape Archive V2.0]
-The Transformers: Battle to Save the Earth (Activision) [C64 Ultimate Tape Archive V2.0]
-Transylvanian Tower (Richard Shepherd Software) [C64 Ultimate Tape Archive V2.0]
-New NOT_WORKING software list additions
----------------------------------------
-Trailblazer (Gremlin Graphics) [C64 Ultimate Tape Archive V2.0]
-
-10110: gaelco3d.cpp: Dumped and added Football Power v1.1 [clawgrip]
-New WORKING clone
----------------------------------
-Football Power (Version 1.1) [Victor Fernandez (City Game), Arcade Planet]
-
-10111: 6840PTM: Fix regressions, counter duration, and single-shot/dual-8-bit behavior [MooglyGuy]
--6840ptm: Fixed counter duration and fixed output behavior in single-shot and dual-8-bit modes. [Ryan Holtz]
-
-10112: Removed an unnecessary std::string ctor (nw) [npwoods]
-
-10114: ibm5170.xml: 3 new software additions [ArcadeShadow]
-New working software list additions
------------------------------------
-Alone in the Dark 2 - Secret Doors (USA) [dosnostalgic, archive.org]
-Genesia (v1.41) [The Good Old Days]
-Genesia (v1.4) [MarkHnsn, archive.org]
-
-10115: mc6847: revise font [tlindner]
-I recently did a detailed study of the font inside the various 6847s. http://tlindner.macmess.org/?p=913
-And there is now a decode form the decap: https://exileinparadise.com/tandy_color_computer:vdg_rom_font
-This PR fixes all the issues I've found.
-
-10116: coco3: fine tune ccm3 hires adaptor [tlindner]
-Adjust CoCo Max 3 hi res adaptor coefficients to better match values from actual hardware. See http://tlindner.macmess.org/?p=885
-
-10117: July 2022 update for Apple software lists. [Firehawke]
-New working software list additions (apple2_flop_orig.xml)
-----------------------------------------------------------
-Lauren of the 25th Century [4am, Firehawke]
-New working software list additions (apple2_flop_clcracked.xml)
----------------------------------------------------------------
-Key Lingo (Revision 2) (cleanly cracked) [4am, Firehawke]
-Number Explorer (cleanly cracked) [4am, Firehawke]
-PFS File (Version B.01) (cleanly cracked) [4am, Firehawke]
-PFS File (Version C.00) (cleanly cracked) [4am, Firehawke]
-PFS Graph (Version 1983-01-12) (cleanly cracked) [4am, Firehawke]
-PFS Graph (Version 1984-01-31) (cleanly cracked) [4am, Firehawke]
-Spanish for Mastery (cleanly cracked) [4am, san inc, Firehawke]
-The Chambers of Vocab (Revision 2) (cleanly cracked) [4am, Firehawke]
-Take 1 (Version 06401) (cleanly cracked) [4am, Firehawke]
-Sur les traces du Deirdron (cleanly cracked) [4am, Firehawke]
-Pixit (Version 01331) (cleanly cracked) [4am, Firehawke]
-Portrait Robot (cleanly cracked) [4am, Firehawke]
-PFS Write (Version 1986-01-01) (cleanly cracked) [4am, Firehawke]
-Blazing Paddles (Revision 0) (cleanly cracked) [4am, Firehawke]
-PFS Graph (Version 1984-03-14) (cleanly cracked) [4am, Firehawke]
-PFS Write (Version 1984-09-27) (cleanly cracked) [4am, Firehawke]
-PFS Report (Version B:00 1981-01-03) (cleanly cracked) [4am, Firehawke]
-Rainy Day Games (Version 13501) (cleanly cracked) [4am, Firehawke]
-Ski Crazed (Version 28701) (cleanly cracked) [4am, Firehawke]
-Video Vegas (Version 12511) (cleanly cracked) [4am, Firehawke]
-Trickster Coyote (Version 1984) (cleanly cracked) [4am, Firehawke]
-Blazing Paddles (Version 04421) (cleanly cracked) [4am, Firehawke]
-PFS Report (Version 1982-01-14) (cleanly cracked) [4am, Firehawke]
-Prince (Version 15531) (cleanly cracked) [4am, Firehawke]
-PFS Write (Version 1984-11-01) (cleanly cracked) [4am, Firehawke]
-German Vocabulary for Shopping Use (cleanly cracked) [4am, Firehawke]
-Profession Détective: Qui a volé Lily (cleanly cracked) [4am, Firehawke]
-The Factory (Version 1984) (cleanly cracked) [4am, Firehawke]
-Prince (Version 15521) (cleanly cracked) [4am, Firehawke]
-Fractions en Folie (cleanly cracked) [4am, Firehawke]
-PFS Etat (Version 1984-11-26) (cleanly cracked) [4am, Firehawke]
-Magicalc (Version 2.0-1984) (cleanly cracked) [4am, Firehawke]
-Disk Optimizer II (Version 1.1) (cleanly cracked) [4am, Firehawke]
-CHASM Checking Account Systems Manager (cleanly cracked) [4am, Firehawke]
-Learning about Geography, Maps, and Globes (cleanly cracked) [4am, Firehawke]
-Science Volume 1: The Environment (cleanly cracked) [4am, Firehawke]
-Master Diagnostics II and II Plus (cleanly cracked) [4am, Firehawke]
-PFS Fichier (Version 1984-11-26) (cleanly cracked) [4am, Firehawke]
-PFS Report (Version 1985-09-10) (cleanly cracked) [4am, Firehawke]
-Pacific 231 (cleanly cracked) [4am, Firehawke]
-Sherwood Forest (cleanly cracked) [4am, Firehawke]
-Mathematics Courseware Problem Solving Level 5 (cleanly cracked) [4am, Firehawke]
-Star Warrior (Revision 2) (cleanly cracked) [4am, san inc, Firehawke]
-Counting Parade (Revision 0) (cleanly cracked) [4am, Firehawke]
-Living Chess Library: Paul Whitehead Teaches Chess (cleanly cracked) [4am, Firehawke]
-Living Chess Library: King's Indian Defense (cleanly cracked) [4am, Firehawke]
-Living Chess Library: 50 Classic Games (cleanly cracked) [4am, Firehawke]
-Cotton's First Files (cleanly cracked) [4am, Firehawke]
-New working software list additions (apple2gs_flop_orig.xml)
-------------------------------------------------------------
-Tomahawk [4am, Firehawke]
-New working software list additions (apple2_flop_misc.xml)
-----------------------------------------------------------
-Lauren of the 25th Century [4am, Firehawke]
+- 8653: bgfx: Improved Gaussian blur, halation and default gamma for crt-geom and crt-geom-deluxe shaders. [cgwg]
+- 9651: sgi_mips.xml: Added some more missing discs. [archive.org, darkstar]
+- 9782: bus/ata: Added and ATA CompactFlash device. [Miodrag Milanović]
+- 9821: snes.xml: Added bootleg Dragon Ball Z Final Bout dumps. [d4s, VGHF, kmg]
+- 9922: lib/formats: Added a read-only CBM DOS file system driver and hooked it up to the Commodore 1541 device. [Nathan Woods]
+- 9952: machine/z80scc.cpp: Added support for full duplex DMA, used by Sony NEWS-OS. [Brice Onken]
+- 9994: apple2gs_flop_orig.xml: Added Dragon’s Lair games. [Antoine Vignau, A-Noid]
+- 9995: a7800.xml: Added four prototypes (two working, two not working). [gambler172, Eckhard Stolberg, kmg]
+- 9996: Prevent source files in src/devices from inadvertently including headers from src/mame. [Miodrag Milanović]
+- 9999: barcrest/mpu4*.cpp: Assigned more appropriate lamp extender boards for several games based on behaviour. [David Haywood]
+- 10001: jpm/jpmsru.cpp: Added DAC sound for Lucky Casino. [SomeRandomGuyIdk]
+- 10002: barcrest/mpu4*.cpp: Added ability to override lamp current checks and removed obsolete hack from Connect 4. [James Wallace]
+- 10003: formats/fs_coco_rsdos.cpp: Updated for recent file system API changes. [Nathan Woods]
+- 10004: Set minimum required permissions on GitHub Actions workflows. [neilnaveen]
+- 10006: Added seven games based on V.R. Technology chips and a skeleton MeGaTrix DVD/game system driver. [David Haywood]
+- 10007: formats/fs_coco_os9.cpp: Updated for recent file system API changes. [Nathan Woods]
+- 10009: nes.xml: Replaced modified drfrankn dump with correct dump. [kmg]
+- 10013: atari/atarittl.cpp: Got most graphics and controls working for gtrak10. [Golden Child]
+- 10014: seta/seta.cpp: Added an alternate version of Thunder & Lightning. [Sergio Galiano, Recreativos Piscis]
+- 10015: barcrest/mpu4*.cpp: Sorted more sets and improved I/O. [David Haywood]
+- 10016: netlist: Implemented DM9314 RS mode. [Golden Child]
+- 10018: subsino/subsino2.cpp: Identified several inputs for queenbee (MT08365). [Steven Coomber]
+- 10019: matic/barata.cpp: Restored proper company name. [einstein95]
+- 10020: Explicitly set LinkSupportCircularDependencies for NetBSD (GitHub #10011). [Thomas Klausner]
+- 10021: pc/at.cpp: Fixed a typo in asi100b0 company name. [David Silva]
+- 10022: atari/atarittl.cpp: Fixed gtrak10 video. [Couriersud]
+- 10026: nes.xml: Added nine working prototypes. [Forest of Illusion, johnsodu, kmg]
+- 10028: Added support for building with clang on OpenBSD. [Frederic Cambus]
+- 10029: Cleaned up #includes in src/osd. [AJR]
+- 10030: gameboy.xml: Added fourteen working prototypes. [kmg]
+- 10031: gaelco/gaelco2.cpp: Fixed “Touch and Go” game name. [ClawGrip]
+- 10032: netlist: Various enhancements, including speed hacks for gtrak10. [Couriersud]
+- 10038: skeleton/mt735.cpp: Fleshed out comments, and fixed manufacturer and year. [einstein95]
+- 10039: barcrest/mpu4.cpp: Corrected YM2413 clock frequency, fixed I/O for some Dutch games, and sorted more games. [David Haywood]
+- 10040: atari/a2600.cpp: Default to having a right joystick connected. [kmg]
+- 10041: netlist: Fixed regression causing device macros to be read from source. [Couriersud]
+- 10042: neogeo.xml: Fixed eightman serial. [Abadede]
+- 10045: sega/model2.cpp: Dumped sound program ROM from Manx TT Twin Rev. A, added it as a clone. [Tailsnic Retroworks, ClawGrip]
+- 10048: machine/pci.cpp: Ensure PCI map_extra is called after device reset is complete. [Miodrag Milanović]
+- 10049: c64_cass.xml: Added ten items (eight working, two not working). [The Ultimate Tape Archive Team, Steven Coomber]
+- 10050: gameboy.xml: Added five working prototypes. [kmg]
+- 10052: 3rdparty/ymfm: Updated Yamaha FM synthesis library to latest version (fixes MT08108 and MT08231). [Aaron Giles, hyano]
+- 10053: sinclair/spectrum_v.cpp: Avoid screen update before video is initialized (fixes MT08370). [holub]
+- 10055: n64.xml: Converted ROM sizes to hexadecimal, and marked Dragon Sword prototypes as bad dumps. [kmg]
+- 10056: atari/atarittl.cpp: Fixed stuntcyc ROM addressing so motorcycle displays correctly. [Golden Child]
+- 10057: a2600.xml: Set default controllers for games that don’t use joysticks, and corrected some parent/clone relationships. [kmg]
+- 10058: Corrected various Japanese titles and removed mention of MESS in software lists. [kmg]
+- 10059: ibm5150.xml: Added eight items (seven working, one not working), and replaced two items with better dumps. [ArcadeShadow]
+- 10060: megadriv.xml: Added Road Riot 4WD and Steel Talons prototypes. [DrBizz, kmg]
+- 10061: snes.xml: Added nine items (eight working, one not working). [kmg]
+- 10065: pinball/newcanasta.cpp: Added skeleton for “New Canasta” PC-based pinball. [Vicente y Sergio de ElectronicaVyS, ClawGrip]
+- 10066: Updated Brazilian Portuguese translation. [Felipe]
+- 10067: midway/midzeus.cpp: Dumped and added The Grid V1.01. [Museo del Recreativo, ClawGrip]
+- 10068: Moved EXORterm driver source file to Motorola folder. [68bit]
+- 10069: intv.xml: Added two unreleased Tutor Vision cartridge dumps (not working). [Chuck Gill, kmg]
+- 10070: nintendo/nes.cpp: Don’t use cartridge software list for disk-only FDS. [kmg]
+- 10072: netlist: Corrected 74157 gate output count. [Golden Child]
+- 10074: miltonbradley/vectrex.cpp: Corrected propagation of VIA port A output to multiplexer output. [Andrew Green]
+- 10075: konami/bishi.cpp: Corrected a few game titles (MT08362). [kmg]
+- 10076: nes.xml: Use lowercase for descriptive text in descriptions, and use unabbreviated country names. [ArcadeShadow]
+- 10077: atari/a2600.cpp: Made console switches machine configuration switches rather than DIP switches. [kmg]
+- 10078: nes.xml: Removed duplicate entry blockset. [kmg]
+- 10081: cinematronics/cinemat.cpp: Improved controls for spaceshp, and reformatted comments. [einstein95]
+- 10082: valadon/bagman.cpp: Changed fake cabinet type DIP switch to machine configuration setting. [einstein95]
+- 10085: ui/selgame.cpp, ui/selsoft.cpp: Fixed out-of-bounds std::vector accesses triggered when menu items is empty. [jflatt]
+- 10086: machine/6840ptm.cpp, fairlight/cmi01a.cpp: Improved Fairlight CMI IIx audio emulation. [Ryan Holtz]
+- 10087: ekara_japan_g.xml, ekara_japan_m.xml, ekara_japan_s.xml: Dumped six e-kara cartridges. [TeamEurope, David Haywood]
+- 10089: pinball/newcanasta.cpp: Changed comment about CPU socket. [ClawGrip]
+- 10091: uzebox.xml: Use lowercase for descriptive text in descriptions. [ArcadeShadow]
+- 10094: bus/vcs, atari/a2600.cpp: Allow cartridges to install themselves, fixing leaky abstraction. [Wilbert Pol]
+- 10096: netlist: Reorganised code and fixed some spelling errors. [Couriersud]
+- 10098: Cleaned up Japanese kana issues in software lists. [kmg]
+- 10101: capcom/lwings.cpp: Added comment about undumped microcontroller on Avengers boards. [simzy]
+- 10102: c64_cass.xml: Added ten items (nine working, one not working). [The Ultimate Tape Archive Team, Steven Coomber]
+- 10103: matsushita/duet16.cpp: Added external PTM clock; machine/6840ptm.cpp: Fixed issues from GitHub #10086. [Ryan Holtz]
+- 10104: formats/fs_cbmdos.cpp: Changed enumerate function to correctly look for single-density format. [Nathan Woods]
+- 10105: famibox.xml: Added missing Punch-Out!! dump, and replaced bad dump for 1943. [Lina, Forest of Illusion, kmg]
+- 10108: c64_cass.xml: Added ten items (nine working, one not working). [The Ultimate Tape Archive Team, Steven Coomber]
+- 10110: gaelco3d.cpp: Dumped and added Football Power v1.1. [Victor Fernandez (City Game), Arcade Planet, ClawGrip]
+- 10111: machine/6840ptm.cpp: Fixed regressions, counter duration, and single-shot/dual-8-bit behavior. [Ryan Holtz]
+- 10112: util/zippath.cpp: Removed a now-unnecessary cast to std::string. [Nathan Woods]
+- 10114: ibm5170.xml: Added three working items. [ArcadeShadow]
+- 10115: video/mc6847.cpp, trs/gime.cpp: Revised font data based on die images and observations. [Tim Lindner]
+- 10116: trs/coco.cpp: Fine-tuned CoCo Max III high-resolution joystick adaptor calculations. [Tim Lindner]
+- 10117: apple2_flop_*.xml, apple2gs_flop_orig.xml: Added latest dumps and cracks. [4am, san inc., Firehawke]
 
 
 Source changes
