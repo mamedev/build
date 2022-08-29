@@ -9,9 +9,9 @@ import xml.sax
 import xml.sax.handler
 
 
-class ErrorHandler(object):
+class ErrorHandler():
     def __init__(self, **kwargs):
-        super(ErrorHandler, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.errors = 0
         self.warnings = 0
 
@@ -27,9 +27,9 @@ class ErrorHandler(object):
         sys.stderr.write('warning: %s\n' % (exception))
 
 
-class Categoriser(object):
+class Categoriser():
     def __init__(self, error_handler, **kwargs):
-        super(Categoriser, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         # handling the XML
         self.error_handler = error_handler
@@ -202,11 +202,11 @@ else:
 
 def printResult(title, descriptions):
     if descriptions:
-        output.write(u'%s\n' % (title, ))
-        output.write(u'%s\n' % (u'-' * len(title), ))
+        output.write('%s\n' % (title, ))
+        output.write('%s\n' % ('-' * len(title), ))
         for description in sorted(descriptions):
-             output.write(u'%s\n' % (description, ))
-        output.write(u'\n')
+             output.write('%s\n' % (description, ))
+        output.write('\n')
 
 
 if __name__ == '__main__':
@@ -282,23 +282,23 @@ if __name__ == '__main__':
             removed.append(old_nonworking[driver])
     removed.sort()
 
-    output.write(u'Comparing %s to %s\n\n' % (oldbuild, newbuild))
+    output.write('Comparing %s to %s\n\n' % (oldbuild, newbuild))
 
     if renames:
-        output.write(u'Renames\n')
+        output.write('Renames\n')
         for old_name, info in renames.items():
-            output.write(u'%s -> %s %s\n' % (old_name, info[1], info[0]))
-        output.write(u'\n')
+            output.write('%s -> %s %s\n' % (old_name, info[1], info[0]))
+        output.write('\n')
 
     if removed:
-        output.write(u'Removed\n')
+        output.write('Removed\n')
         for description in removed:
-            output.write(u'%s\n' % (description, ))
-        output.write(u'\n')
+            output.write('%s\n' % (description, ))
+        output.write('\n')
 
-    printResult(u'New working machines', new_working_parents)
-    printResult(u'New working clones', new_working_clones)
-    printResult(u'Machines promoted to working', promoted_parents)
-    printResult(u'Clones promoted to working', promoted_clones)
-    printResult(u'New machines marked as NOT_WORKING', new_nonworking_parents)
-    printResult(u'New clones marked as NOT_WORKING', new_nonworking_clones)
+    printResult('New working machines', new_working_parents)
+    printResult('New working clones', new_working_clones)
+    printResult('Machines promoted to working', promoted_parents)
+    printResult('Clones promoted to working', promoted_clones)
+    printResult('New machines marked as NOT_WORKING', new_nonworking_parents)
+    printResult('New clones marked as NOT_WORKING', new_nonworking_clones)

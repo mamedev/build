@@ -509,28 +509,28 @@ class SoftlistComparator:
         removed.sort()
 
         if renames or removed or added_working or added_nonworking or promoted:
-            self.output.write(u'%s (%s):\n' % (listname, filename))
+            self.output.write('%s (%s):\n' % (listname, filename))
             if renames:
-                self.output.write(u'  Renames\n')
+                self.output.write('  Renames\n')
                 for old_name, info in renames.items():
-                    self.output.write(u'    %s -> %s %s\n' % (old_name, info[1], info[0]))
+                    self.output.write('    %s -> %s %s\n' % (old_name, info[1], info[0]))
             if removed:
-                self.output.write(u'  Removed\n')
+                self.output.write('  Removed\n')
                 for description in removed:
-                    self.output.write(u'    %s\n' % (description, ))
+                    self.output.write('    %s\n' % (description, ))
             if added_working:
-                self.output.write(u'  Working\n')
+                self.output.write('  Working\n')
                 for description in sorted(added_working):
-                    self.output.write(u'    %s\n' % (description, ))
+                    self.output.write('    %s\n' % (description, ))
             if added_nonworking:
-                self.output.write(u'  Non-working\n')
+                self.output.write('  Non-working\n')
                 for description in sorted(added_nonworking):
-                    self.output.write(u'    %s\n' % (description, ))
+                    self.output.write('    %s\n' % (description, ))
             if promoted:
-                self.output.write(u'  Promoted\n')
+                self.output.write('  Promoted\n')
                 for description in sorted(promoted):
-                    self.output.write(u'    %s\n' % (description, ))
-            self.output.write(u'\n')
+                    self.output.write('    %s\n' % (description, ))
+            self.output.write('\n')
 
 
 class LogScraper:
@@ -561,7 +561,7 @@ class LogScraper:
                     self.paragraph += ']'
                 if self.stream is not None:
                     if not self.first and (self.level == 0):
-                        self.stream.write(u'\n')
+                        self.stream.write('\n')
                     print_wrapped(self.stream, self.wrapcol, self.paragraph, self.level)
                 self.paragraph = ''
                 self.first = False
@@ -608,9 +608,9 @@ class LogScraper:
             elif LogScraper.DIVIDERLINE.match(line) and self.paragraph:
                 if self.stream is not None:
                     if not self.first:
-                        self.stream.write(u'\n')
+                        self.stream.write('\n')
                     wrap = wrap_paragraph(self.stream, self.paragraph, self.wrapcol, '', '  ')
-                    self.stream.write('%s\n' % (u'-' * wrap, ))
+                    self.stream.write('%s\n' % ('-' * wrap, ))
                 self.listname = self.paragraph
                 self.paragraph = ''
                 self.first = True
@@ -619,7 +619,7 @@ class LogScraper:
                 self.bullets = list()
             elif self.listname is not None:
                 if not LogScraper.CREDITED.match(line):
-                    line = u'%s [%s]' % (line, self.author)
+                    line = '%s [%s]' % (line, self.author)
                 self.listcallback(self.listname, line)
                 if self.stream is not None:
                     if not self.listitems:
@@ -630,7 +630,7 @@ class LogScraper:
                 self.blank = False
                 if self.listitems:
                     if self.stream is not None:
-                        self.stream.write(u'\n')
+                        self.stream.write('\n')
                     self.listitems = False
                 bullet = line[0]
                 line = line[1:].lstrip()
@@ -642,7 +642,7 @@ class LogScraper:
                     self.blank = False
                 if self.listitems:
                     if self.stream is not None:
-                        self.stream.write(u'\n')
+                        self.stream.write('\n')
                     self.listitems = False
                 if not self.first and not self.paragraph:
                     if not self.bullets:
@@ -654,7 +654,7 @@ class LogScraper:
         def finalise(self):
             self.flush_paragraph()
             if self.stream is not None:
-                self.stream.write(u'\n')
+                self.stream.write('\n')
 
     def __init__(self, stream, wrapcol, listcallback, **kwargs):
         super().__init__(**kwargs)
@@ -710,7 +710,7 @@ def wrap_paragraph(stream, paragraph, wrapcol, prefix, indent):
             line = paragraph
             paragraph = ''
         maxlen = max(len(prefix) + len(line), maxlen)
-        stream.write(u'%s%s\n' % (prefix, line))
+        stream.write('%s%s\n' % (prefix, line))
         prefix = indent
     return maxlen
 
@@ -730,24 +730,24 @@ def print_wrapped(stream, wrapcol, paragraph, level):
 
 
 def print_section_heading(stream, heading):
-    stream.write(u'%s\n%s\n' % (heading, '-' * len(heading)))
+    stream.write('%s\n%s\n' % (heading, '-' * len(heading)))
 
 
 def print_fresh_pull_requests(stream, wrapcol, repo, api, previous, current):
-    print_section_heading(stream, u'Merged pull requests')
+    print_section_heading(stream, 'Merged pull requests')
     commits = frozenset(repo.git.rev_list(current.hexsha, '^' + previous.hexsha).splitlines())
     for pr in api.fresher_pull_requests(commits):
         lines = markdown_url_pat.sub('\\1', pr.body).splitlines() if pr.body else ()
-        title = u'%d: %s' % (pr.number, pr.title)
+        title = '%d: %s' % (pr.number, pr.title)
         if (title[-1] == chr(0x2026)) and pr.body and lines and lines[0] and (lines[0][0] == chr(0x2026)):
             title = title[:-1] + lines[0][1:]
             lines = lines[1:]
-        title += u' [%s]' % (api.pull_request_username(pr), )
+        title += ' [%s]' % (api.pull_request_username(pr), )
         wrap_paragraph(stream, title, wrapcol, '', '  ')
         for line in lines:
             wrap_paragraph(stream, line, wrapcol, '', '  ')
-        stream.write(u'\n')
-    stream.write(u'\n')
+        stream.write('\n')
+    stream.write('\n')
 
 
 def print_source_changes(stream, wrapcol, repo, previous, current):
@@ -773,7 +773,7 @@ def print_source_changes(stream, wrapcol, repo, previous, current):
     print_section_heading(stream, 'Source changes')
     for commit in repo.iter_commits('%s..%s' % (previous.hexsha, current.hexsha), reverse=True):
         scraper.process_commit(commit)
-    stream.write(u'\n')
+    stream.write('\n')
 
 
 def print_new_machines(stream, wrapcol, title, machines):
@@ -781,32 +781,32 @@ def print_new_machines(stream, wrapcol, title, machines):
         print_section_heading(stream, title)
         for machine in machines:
             print_wrapped(stream, wrapcol, bullet_pat.sub('\\2', machine), -1)
-        stream.write(u'\n\n')
+        stream.write('\n\n')
 
 
 def print_preliminary_whatsnew(stream, wrapcol, title, repository, api, release, candidate, verbose):
     placeholders = (
-            u'%s' % (title, ),
-            u'MAME Testers bugs fixed',
-            u'New working machines',                    u'New working clones' ,
-            u'Machines promoted to working',            u'Clones promoted to working',
-            u'New machines marked as NOT_WORKING',      u'New clones marked as NOT_WORKING',
-            u'New working software list additions',
-            u'Software list items promoted to working',
-            u'New NOT_WORKING software list additions',
-            u'Translations added or modified')
+            '%s' % (title, ),
+            'MAME Testers bugs fixed',
+            'New working machines',                     'New working clones' ,
+            'Machines promoted to working',             'Clones promoted to working',
+            'New machines marked as NOT_WORKING',       'New clones marked as NOT_WORKING',
+            'New working software list additions',
+            'Software list items promoted to working',
+            'New NOT_WORKING software list additions',
+            'Translations added or modified')
     for heading in placeholders:
         print_section_heading(stream, heading)
-        stream.write(u'\n\n')
+        stream.write('\n\n')
 
     print_fresh_pull_requests(stream, wrapcol, repository, api, release, candidate)
     print_source_changes(stream, wrapcol, repository, release, candidate)
-    print_new_machines(stream, wrapcol, u'New working machines', new_working_parents);
-    print_new_machines(stream, wrapcol, u'New working clones', new_working_clones);
-    print_new_machines(stream, wrapcol, u'Machines promoted to working', new_promoted_parents);
-    print_new_machines(stream, wrapcol, u'Clones promoted to working', new_promoted_clones);
-    print_new_machines(stream, wrapcol, u'New machines marked as NOT_WORKING', new_broken_parents);
-    print_new_machines(stream, wrapcol, u'New clones marked as NOT_WORKING', new_broken_clones);
+    print_new_machines(stream, wrapcol, 'New working machines', new_working_parents);
+    print_new_machines(stream, wrapcol, 'New working clones', new_working_clones);
+    print_new_machines(stream, wrapcol, 'Machines promoted to working', new_promoted_parents);
+    print_new_machines(stream, wrapcol, 'Clones promoted to working', new_promoted_clones);
+    print_new_machines(stream, wrapcol, 'New machines marked as NOT_WORKING', new_broken_parents);
+    print_new_machines(stream, wrapcol, 'New clones marked as NOT_WORKING', new_broken_clones);
 
     comp = SoftlistComparator(stream, verbose)
     current = candidate.tree['hash']
