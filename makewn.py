@@ -7,7 +7,6 @@ import argparse
 import codecs
 import getpass
 import git
-import github3
 import io
 import os.path
 import re
@@ -16,30 +15,85 @@ import xml.sax
 import xml.sax.handler
 
 
-class GithubWrapper(object):
-    @staticmethod
-    def pull_request_username(pr):
-        return pr.user.login
+try:
+    import github
+except ImportError:
+    try:
+        import github3
+    except ImportError:
+        import pygithub3
 
-    def __init__(self, owner, repo, user, password=None, token=None, **kwargs):
-        super(GithubWrapper, self).__init__(**kwargs)
-        if (token is None) and (password is None):
-            self.session = github3.GitHub(user)
-        elif token is None:
-            self.session = github3.GitHub(user, password)
-        elif password is None:
-            self.session = github3.GitHub(user, token=token)
-        else:
-            self.session = github3.GitHub(user, password, token=token)
-        self.repo = self.session.repository(owner, repo)
+if 'github' in locals():
+    class GithubWrapper:
+        @staticmethod
+        def pull_request_username(pr):
+            return pr.user.login
 
-    def fresher_pull_requests(self, commits):
-        for pr in self.repo.pull_requests(state='closed', sort='created', direction='asc'):
-            if (pr.merged_at is not None) and (pr.merge_commit_sha in commits):
-                yield pr
+        def __init__(self, owner, repo, user, password=None, token=None, **kwargs):
+            super().__init__(**kwargs)
+            if token is not None:
+                self.session = github.Github(token)
+            elif password is not None:
+                self.session = github.Github(user, password)
+            else:
+                self.session = github.Github(user)
+            self.repo = self.session.get_repo(owner + '/' + repo)
+
+        def fresher_pull_requests(self, commits):
+            for pr in self.repo.get_pulls(state='closed', sort='created', direction='asc'):
+                if (pr.merged_at is not None) and (pr.merge_commit_sha in commits):
+                    yield pr
 
 
-class Options(object):
+elif 'github3' in locals():
+    class GithubWrapper:
+        @staticmethod
+        def pull_request_username(pr):
+            return pr.user.login
+
+        def __init__(self, owner, repo, user, password=None, token=None, **kwargs):
+            super().__init__(**kwargs)
+            if (token is None) and (password is None):
+                self.session = github3.GitHub(user)
+            elif token is None:
+                self.session = github3.GitHub(user, password)
+            elif password is None:
+                self.session = github3.GitHub(user, token=token)
+            else:
+                self.session = github3.GitHub(user, password, token=token)
+            self.repo = self.session.repository(owner, repo)
+
+        def fresher_pull_requests(self, commits):
+            for pr in self.repo.pull_requests(state='closed', sort='created', direction='asc'):
+                if (pr.merged_at is not None) and (pr.merge_commit_sha in commits):
+                    yield pr
+
+elif 'pygithub3' in locals():
+    class GithubWrapper:
+        @staticmethod
+        def pull_request_username(pr):
+            return pr.user['login']
+
+        def __init__(self, owner, repo, user, password=None, token=None, **kwargs):
+            super().__init__(**kwargs)
+            if (token is None) and (password is None):
+                self.api = pygithub3.Github(user=owner, repo=repo, login=user)
+            elif token is None:
+                self.api = pygithub3.Github(user=owner, repo=repo, login=user, password=password)
+            elif password is None:
+                self.api = pygithub3.Github(user=owner, repo=repo, login=user, token=token)
+            else:
+                self.api = pygithub3.Github(user=owner, repo=repo, login=user, password=password, token=token)
+
+        def fresher_pull_requests(self, sha):
+            date = self.api.git_data.commits.get(sha).committer.date
+            for page in self.api.pull_requests.list(state='closed'):
+                for pr in page:
+                    if (pr.merged_at is not None) and (pr.merged_at > date):
+                        yield pr
+
+
+class Options:
     RELEASETAG = re.compile('^mame0([0-9]+)$')
     VERSIONPART = re.compile('^[^0-9]+0([1-9][0-9]*)([^0-9]*)$')
 
@@ -69,7 +123,7 @@ class Options(object):
             return result
 
     def __init__(self, **kwargs):
-        super(Options, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         # parse command line
         parser = argparse.ArgumentParser(description='Write preliminary whatsnew.')
@@ -180,10 +234,10 @@ class Options(object):
                 self.api = GithubWrapper('mamedev', 'mame', ghuser, token=getpass.getpass('github personal access token: '))
 
 
-class SoftlistComparator(object):
-    class OStreamWrapper(object):
+class SoftlistComparator:
+    class OStreamWrapper:
         def __init__(self, stream, **kwargs):
-            super(SoftlistComparator.OStreamWrapper, self).__init__(**kwargs)
+            super().__init__(**kwargs)
             self.stream = stream
 
         def __getattr__(self, attr):
@@ -193,9 +247,9 @@ class SoftlistComparator(object):
             pass
 
 
-    class ErrorHandler(object):
+    class ErrorHandler:
         def __init__(self, **kwargs):
-            super(SoftlistComparator.ErrorHandler, self).__init__(**kwargs)
+            super().__init__(**kwargs)
             self.errors = 0
             self.warnings = 0
 
@@ -211,9 +265,9 @@ class SoftlistComparator(object):
             sys.stderr.write('warning: %s\n' % (exception, ))
 
 
-    class Categoriser(object):
+    class Categoriser:
         def __init__(self, error_handler, **kwargs):
-            super(SoftlistComparator.Categoriser, self).__init__(**kwargs)
+            super().__init__(**kwargs)
 
             # handling the XML
             self.error_handler = error_handler
@@ -367,7 +421,7 @@ class SoftlistComparator(object):
 
 
     def __init__(self, output, verbose=False, **kwargs):
-        super(SoftlistComparator, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.output = output
         self.verbose = verbose
 
@@ -479,14 +533,14 @@ class SoftlistComparator(object):
             self.output.write(u'\n')
 
 
-class LogScraper(object):
+class LogScraper:
     LEADINGSPACE = re.compile('^(\s*)(.*)$')
     DIVIDERLINE = re.compile('^---+$')
     CREDITED = re.compile('^.+\s\[.+\]$')
 
-    class Formatter(object):
+    class Formatter:
         def __init__(self, stream, wrapcol, listcallback, author, **kwargs):
-            super(LogScraper.Formatter, self).__init__(**kwargs)
+            super().__init__(**kwargs)
             self.stream = stream
             self.wrapcol = wrapcol
             self.listcallback = listcallback
@@ -603,7 +657,7 @@ class LogScraper(object):
                 self.stream.write(u'\n')
 
     def __init__(self, stream, wrapcol, listcallback, **kwargs):
-        super(LogScraper, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.stream = stream
         self.wrapcol = wrapcol
         self.listcallback = listcallback if listcallback is not None else lambda title, entry: None
