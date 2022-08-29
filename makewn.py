@@ -7,7 +7,6 @@ import argparse
 import codecs
 import getpass
 import git
-import io
 import os.path
 import re
 import sys
@@ -22,6 +21,7 @@ except ImportError:
         import github3
     except ImportError:
         import pygithub3
+
 
 if 'github' in locals():
     class GithubWrapper:
@@ -43,7 +43,6 @@ if 'github' in locals():
             for pr in self.repo.get_pulls(state='closed', sort='created', direction='asc'):
                 if (pr.merged_at is not None) and (pr.merge_commit_sha in commits):
                     yield pr
-
 
 elif 'github3' in locals():
     class GithubWrapper:
@@ -154,7 +153,7 @@ class Options:
 
         # open output file or wrap standard output with an encoder if necessary
         if arguments.out is not None:
-            self.output = io.open(arguments.out, 'a' if arguments.append else 'w', encoding='utf-8')
+            self.output = open(arguments.out, 'a' if arguments.append else 'w', encoding='utf-8')
         elif sys.stdout.encoding is None:
             self.output = codecs.getwriter('utf-8')(sys.stdout)
         else:
