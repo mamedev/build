@@ -13,13 +13,14 @@ MAME Testers bugs fixed
 
 New working machines
 --------------------
+BMX Stunts [Ivan Vangelista, hap, chaneman, Andrew Welburn]
 Casio Celviano AP-10 [Devin Acker]
 Casio CTK-601 [Devin Acker, Gabriel Miceli]
 Casio GZ-70SP [Devin Acker]
 The Dracula (Tsukuda) [hap, Sean Riddle, Parotaku, eggs]
 Nippon Mail Service Micom Mahjong [hap, David Haywood, Sly DC]
 Texas Instruments Language Teacher [hap, Sean Riddle]
-Tsukuda Game Pachinko [hap, Sean Riddle, Parotaku, eggs]
+Tsukuda Game Pachinko [hap, Sean Riddle, Rik, eggs]
 
 
 New working clones
@@ -28,7 +29,6 @@ B.Rap Boys Special (World, older) [nnap]
 Battle Garegga (Japan, bootleg) (Sat Feb 3 1996) [nnap]
 Battle Garegga (Korea / Greece) (Wed Feb 7 1996) [juking]
 Big Kong (Crazy Kong bootleg on Galaxian hardware) [chaneman]
-BMX Stunts [Ivan Vangelista, hap, chaneman, Andrew Welburn]
 Dancing Eyes (World, DC2/VER.B) [rtw, Brian Troha, Bill D., The Dumping Union]
 Games V21.1C [Brian Troha, The Dumping Union]
 Guitar Freaks (GQ886 VER. AAA) [Taro]
@@ -49,7 +49,7 @@ Machines promoted to working
 Apple Computer Macintosh LC II [R. Belmont]
 Dino Dino (Ver. A1.1, 01/13/2005) [O. Galibert, Luca Elia, Ivan Vangelista, Guru]
 Lucky 7 (Impera) V04/91a [Paul-Arnold]
-M&D Monon Color [Peter Wilhelmson, David Haywood]
+M&D Monon Color [Peter Wilhelmsen, David Haywood]
 Magic Bomb (Ver. L3.5S) [Luca Elia, Ivan Vangelista, Angelo Salese, Phil Bennet, Cristiano-MDQ]
 Magic Card (v1.10 14.09.94) [Paul-Arnold]
 Puzzle Me! [Paul-Arnold]
@@ -209,7 +209,7 @@ ibm5170:
   PC Format (Issue 35 - August 1994) [StefanNL, archive.org]
 lanteach: German For Travel [hap, Sean Riddle]
 megadriv: Primal Rage (prototype) [Rezrospect, Forest of Illusion]
-monon_color: Nǎolì liánlián kàn, Yǎsī tǎ dà màoxiǎn, Àoshù shíyàn shì [Peter Wilhelmson]
+monon_color: Nǎolì liánlián kàn, Yǎsī tǎ dà màoxiǎn, Àoshù shíyàn shì [Peter Wilhelmsen]
 nes:
   Controller Test Program (Japan) [Forest of Illusion]
   NARC (USA, CES sample, prototype) [Hard4Games, Dustin Echoes, Forest of Illusion]
@@ -261,14 +261,14 @@ monon_color:
   Kǎijiǎ yǒngshì dàluàn dòu, Luòkè wángguó-bīng zhī lán, Luòkè wángguó-dà màoxiǎn, Luòkè wángguó-hēi zhī yán,
   Luòkè wángguó-mófǎ zhèn, Luójí pīn yī pīn, Lóngzhū-wǔdào dàhuì, Shén pò-shīluò de yíjī, Sài ěr hào-néngyuán dà zuòzhàn,
   Sài ěr hào: Zhànshén dòu hún, Xǐyángyáng yǔ huītàiláng-juézhàn miē xīng, Yīngxióng liánméng-zhōngjí gédòu
-  [Peter Wilhelmson, David Haywood]
+  [Peter Wilhelmsen, David Haywood]
 vboy: Hyper Fighting (pirate) [Planet Virtual Boy]
 snes: DSP1 Tech Demo (USA, prototype) [kmg]
 
 
 New NOT_WORKING software list additions
 ---------------------------------------
-c2color_cart: Dì 1 dàn: Dài Lóngwáng Fēngyìn, Dì 2 dàn: Zhī Yìwáng De Shì Liàn [Peter Wilhelmson]
+c2color_cart: Dì 1 dàn: Dài Lóngwáng Fēngyìn, Dì 2 dàn: Zhī Yìwáng De Shì Liàn [Peter Wilhelmsen]
 c64_cass:
   V, W.A.R, Wallie goes to Rhymeland, The Way of the Exploding Fist (Melbourne House), Wimbledon '64, Yie Ar Kung Fu II
   [The Ultimate Tape Archive Team]
@@ -283,7 +283,7 @@ kpython2:
   Dance Dance Revolution SuperNOVA 2 Install Disk (UAA) [Ninevolt]
   DrumMania V3 (JAA/AAA), GuitarFreaks V3 (JAA/AAA) [SakamotoNeko]
   Dancing Stage SuperNOVA Install Disk (EAA) [Shiz]
-monon_color: Luòkè wángguó-wángzhě huīzhāng [Peter Wilhelmson]
+monon_color: Luòkè wángguó-wángzhě huīzhāng [Peter Wilhelmsen]
 snes:
   The King of Fighters '98 (pirate), Marvel Super Heroes Vs. Street Fighter (pirate) [ALMCLE]
   WeaponLord (USA, prototype) [DrBizz]
@@ -334,293 +334,52 @@ this PR is for a couple of changes to imds2 driver.
 Thanks.
 --F.Ulivi
 
-9970: magicard driver: add required devices. nvram config files, Implement new devices [Paul-Arnold]
-This PR adds the required devices to the magicard driver.
-SCC66470 and DS1207 are newly supported and only tested magicard.
-The Dallas DS1207 and DS2401 devices haven't been dumped so fake/dummy dumps have been created.
-A number of games fail on power up if the battery backed NVR isn't initialised. This can be initialised in the game but  it's not
-  always obvious how so I've included default nvram files to fix this. If this isn't allowed please let me know and I'll remove.
-Five of the games appear to be functional. The others require more work and/or protection devices dumping.
-I can email the modified game zip files with the added files when required.
-
-10043: playmark.cpp: Dumped and added sound PIC for "Hard Times" [Caps0ff, Tailsnic Retroworks] [clawgrip]
-Removed the MACHINE_NO_SOUND flag on both "Hard Times" sets, as they sound right now
-
-10044: psikyo.cpp: Dumped and added (not hooked up yet) the security PIC for "Tengai" [Caps0ff, Museo Arcade Vintage, ClawGrip]
-  [clawgrip]
-Added on both "Tengai" sets by now, although it was dumped from a World PCB.
-
-10062: swtpc09: restore to working status, and add comments to help [68bit]
-Retested all of these and they are still working. Did not have a UniFLEX DMAF2
-disk to test that one combination, but it should be close to working.
-Added comments to help people make a start with these.
-
-10073: falgas_m89.cpp: Dumped and added "Rally Montecarlo" for Falgas M89 hw [clawgrip]
-The game is a modified version of Konami Hyper Rally for MSX.
-Extends the Falgas M89 hardware for kiddie rides with an external video board.
-New NOT_WORKING machine
---------------------------------
-Rally Montecarlo [Museo del Recreativo]
-
-10079: also use mpu4_characteriser_pal for mpu3.cpp [DavidHaywood]
-- also use mpu4_characteriser_pal for mpu3.cpp 
-- mpu3 characterizer PALs seem to be the same as MPU4, some of the sequences even match.
-- removed some duplicate mpu3 sets that were likely just misidentified
-
-10083: Barcrest MPU1 driver [SomeRandomGuyIdk]
-- Added driver for Barcrest MPU1 fruit machines, 6 games playable with preliminary layouts
-- More samples in fruitsamples.cpp + added sample ID table to allow using one sample on multiple channels
-- 1 new SRU set, identified another
-
-10093: cdi.xml: Metadata cleaning [ArcadeShadow]
-Lower case on "Alt" and "Demo" words in the set description.
-Replaced the countries' abbreviation by the full name
-
-10120: c64_cass.xml: Added 10 working items [scoomby]
-New working software list additions
----------------------------------------
-Trantor: The Last Storm Trooper (Go!) [C64 Ultimate Tape Archive V2.0]
-Trap (Alligata) [C64 Ultimate Tape Archive V2.0]
-TRAZ: Transformable Arcade Zone (Cascade Games) [C64 Ultimate Tape Archive V2.0]
-Trio (Elite Systems) [C64 Ultimate Tape Archive V2.0]
-Turbo Out Run (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-Turrican (Rainbow Arts) [C64 Ultimate Tape Archive V2.0]
-Turrican II: The Final Fight (Rainbow Arts) [C64 Ultimate Tape Archive V2.0]
-Typhoon (Imagine) [C64 Ultimate Tape Archive V2.0]
-Uchi Mata (Martech) [C64 Ultimate Tape Archive V2.0]
-The Untouchables (Ocean) [C64 Ultimate Tape Archive V2.0]
-
-10122: CMI2X: Standards change + MIDI port 1 hookup [MooglyGuy]
-- Switched to shorter type names.
-- Tightened up spacing in function declarations and definitions.
-- Removed some now-unnecessary trampoline functions.
-- Hooked up Rx and Tx clocks for MIDI port 1; MIDI in/out now works.
-
-10123: mo5_cart: Metadata cleaning [ArcadeShadow]
-Lower case on "Alt" word in the set description.
-
-10124: mo5_cass: Metadata cleaning [ArcadeShadow]
-Lower case on "Alt", "Single Tape", "Cracked", "Format" words in the set description.
-Removed empty lines.
-
-10125: mo5_flop: Metadata cleaning [ArcadeShadow]
-Lower case on "Alt", "Hacked", "Format" words in the set description.
-Removed empty lines.
-
-10126: a2600.xml: Added 20 prototypes. [0kmg]
-New working software list additions
------------------------------------
-Astro Chase (prototype) [Tempest]
-Centipede (prototype) [Dutchman2000]
-Defender (prototype 198111xx) [Rom Hunter]
-Elf Adventure (prototype 19830502) [Tempest]
-Elf Adventure (prototype 19830422) [Tempest]
-Frankenstein's Monster (prototype) [swlovinist]
-Gorf (prototype) [Rom Hunter]
-Joust (prototype 19830705) [Rom Hunter]
-Kangaroo (prototype 19830119) [Tempest]
-Missile Command (prototype) [Rom Hunter]
-Monkey Music (prototype 19820818) [Tempest]
-Mr. Do!'s Castle (later prototype) [Tempest]
-Mr. Do!'s Castle (prototype 19840312) [Tempest]
-Popeye (prototype) [Tempest]
-Raiders of the Lost Ark (prototype 19820614) [Rom Hunter]
-Solar Fox (prototype) [Dutchman2000]
-Solaris (prototype) [Tempest]
-Venture (prototype) [Rom Hunter]
-Wizard of Wor (prototype) [Dutchman2000]
-Xevious (prototype 19840118) [Tempest]
-
-10127: nes.xml: Demoted some Enix games. Cleaned up some titles and alt_titles. [0kmg]
-
-10128: nes.xml: More cleanups. [0kmg]
-
-10129: bbc_rom.xml: Fixed a ROM size error. [0kmg]
-
-10130: gameboy.xml: Converted data sizes to hexadecimal. [0kmg]
-- Noted probable underdump of Lunar Chase prototype.
-There's one comment line added and three extraneous offsets removed, but otherwise this is all mechanical search and replace.
-  Everything but the commented ROM falls into a handful of power-of-two buckets.
-
-10131: Monon / AX208 - load internal AX208 ROM in device [Peter Wilhelmson, David Haywood] [DavidHaywood]
-
-10132: lynx.xml: Trimmed 64-byte header from Yastuna homebrews. [0kmg]
-Software list items promoted to working
----------------------------------------
-Yastuna Vol.1 - The Alchemy of Cubes [kmg]
-Yastuna Vol.2 - The Space Incident [kmg]
-
-10133: casloopy.xml: Fixed a ROM size and kanji reading. [0kmg]
-x1_flop.xml: Fixed a kanji reading.
-
-10134: gamecom.xml: Replaced three underdumped ROMs. [0kmg]
-These are identical to the existing dumps but with initial 256K padding. Sourced from NoIntro.
-
-10135: mastboy.cpp: Dumped and added a newer Italian set [clawgrip]
-Added comments and reformatted existing single-line ones.
-Added placeholders for PLDs.
-The Italian sets are not hacks. Gaelco licensed the game to Playmark for the Italian market, so changed the manufacturer accordingly
-  on the Italian sets.
-Finally, the Rev A on the piggyback PCB refers to the game revision, not the PCB revision, so, changed the games names removing the
-  "PCB" reference (although all sets are Rev A, even if the game expects a different MCU program version).
-New NOT_WORKING clones
-------------------------------------
-Master Boy (Italian, rev A, set 3) [Recreativas.org]
-
-10136: dmac3.cpp, cxd8442q.cpp: Implement DMAC3 and WSC-FIFOQ DMA controllers [briceonk]
-More split-out commits from the NWS-5000X driver to make it easier to review. This commit implements the SCSI (CXD8403Q DMAC3) and
-  low-speed I/O (CXD8442Q WSC-FIFOQ) DMA controllers used by the NWS-5000 series.
-See https://github.com/briceonk/news-os/blob/master/nws5000x-board-pictures.md for pictures.
-There is no public documentation about these chips (that I could find, anyways), so the functionality is based on what the monitor
-  ROM and NEWS-OS 4.2.1aRD/FCS#2 do with them.
-The DMAC3 is a fairly standard DMA controller with two channels, one per SPIFI SCSI controller. It has the ability to use physical
-  addresses as well as APbus virtual addresses. APbus virtual addresses use the central APbus TLB/map RAM on the platform to map
-  virtual addresses loaded into the `address` register to their physical equivalent. There are some bits related to error handling
-  I'm not sure how to emulate yet, but thankfully those aren't needed for normal operation.
-The WSC-FIFOQ does have some "normal" DMA capabilities, but it exposes its data as a FIFO (presumably where the name comes from :D).
-  It has a register that will read/write data byte by byte for the CPU. The NWS-5000X has two of these chips and uses them for
-  serial port communication, floppy disk I/O, and sound. Like DMAC3, some things are unemulated. Additionally, I'm pretty sure the
-  FIFOQ hardware has some sort of buffer threshold before it interrupts the CPU in terms of data received. Looking at the register
-  transactions, it didn't immediately jump out at me what it would be (if it is configurable), but that can probably be improved in
-  the future.
-
-10137: spifi3.cpp: Implement HP 1TV3-0302 SPIFI3 SCSI controller [briceonk]
-Another split from #8854 with the HP SPIFI3 emulator. Like most of the custom Sony silicon that the NWS-5000X uses, the SPIFI3
-  doesn't have much in the way of public documentation. So, this only implements what NEWS-OS uses (although it could be updated to
-  support NetBSD as well, it partially works with NetBSD already but has some LUN issues that NEWS-OS doesn't). Major thanks to
-  Olivier Galibert and Patrick; having the bones of the SCSI state machine from the NCR and CXD SCSI controllers to reference made
-  this way easier than it would have been otherwise :) Can't say I'd be itching to RE another SCSI controller without a datasheet,
-  though...
-
-10138: arsystems.cpp: Mark dumps of protected PLDs as NO_DUMP, as they contain no info [clawgrip]
-
-10140: cloned the mcs51 core as axc51, stripped it back, will allow monon work to continue without making a mess of the original
-  mcs51 core. [DavidHaywood]
-as @ajrhacker didn't really want the axc51 modifications in the base mcs51 core I've pulled them out and put them in their own
-  stripped back version if it.
-note, this is kinda ugly before, in part owing to the mcs51 core being ugly (I haven't cleaned up any of that code) but if prevents
-  progress from being blocked entirely on the monon work, it seems more sensible to do this now rather than later.
-
-10143: snes.xml: Added five prototypes. [0kmg]
-New working software list additions
------------------------------------
-Boxing Legends of the Ring (USA, prototype) [Forest of Illusion]
-Hammer Lock Wrestling (USA, prototype) [Forest of Illusion]
-Porky Pig's Haunted Holiday (USA, prototype 19950807) [iniche, Forest of Illusion]
-Super Punch-Out!! (Euro, prototype) [Zoda-Y13, Forest of Illusion]
-We're Back! - A Dinosaur's Story (USA, prototype) [Forest of Illusion]
-
-10144: Added notes of Nuon console models [simzy39]
--noted more Nuon models: Samsung DVD-N705, Oritron DVD900, Motorola Blackbird, RCA (Thomson multimedia) DRC480N
-
-10145: snes.xml: Added five prototypes. [0kmg]
-New working software list additions
------------------------------------
-International Superstar Soccer Deluxe (Euro, prototype) [Forest of Illusion]
-Jigsaw Party (Japan, prototype) [Forest of Illusion]
-Joe & Mac 2 - Lost in the Tropics (USA, prototype, alt) [Forest of Illusion]
-Jurassic Park (USA, prototype) [Forest of Illusion]
-Unirally (Euro, prototype) [Zoda-Y13, Forest of Illusion]
-
-10146: gbcolor.xml: Added four Taiwanese dumps. [0kmg]
-New working software list additions
------------------------------------
-Chāorén Tègōngduì (Taiwan) [taizou]
-Fēngkuáng Āgěi Ⅲ - Chāojí Zhàdànrén (Taiwan) [taizou]
-Wángzú Tiāntáng (Taiwan) [taizou]
-Xiándàn Chāorén - Ultraman (Taiwan) [taizou]
-
-10147: snes.xml: Metadata Cleaning [ArcadeShadow]
-- Lower case on "Cracked", "Bad Dump", "Sample" words in the set description.
-- Replaced the countries' abbreviations by their full name
-
-10149: atm.cpp: ATM Turbo 2 working [holub]
-ATM Turbo 2 now mostly working
-* Add banking
-* Add video modes
-* Add palette
-* COVOX
-txt:
-!image
-!image
-320x200:
-!image
-
-10150: ngp.xml: Replaced ptennis bad dump. [psykopat] [0kmg]
-
-10152: vboy.xml: Added a homebrew pirate release. [0kmg]
-- Added alt_title and developer info tags.
-- Data sizes changed to hexadecimal.
-- Various cleanups.
-New NOT_WORKING software list additions
----------------------------------------
-Hyper Fighting (pirate) [Planet Virtual Boy]
-
-10153: toaplan/toaplan2.cpp: Add subtitle for Japanese FixEight sets. [mikehyrus]
-Started a fresh PR with this one, so I chose to include the subtitle for the Japanese sets.
-
-10154: c64_cass.xml: Added 13 items (9 working, 4 not working) [scoomby]
-New working software list additions
----------------------------------------
-Vigilante (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-The Vindicator! (Imagine) [C64 Ultimate Tape Archive V2.0]
-Wanderer 3D (Elite Systems) [C64 Ultimate Tape Archive V2.0]
-Water Polo (Gremlin Graphics) [C64 Ultimate Tape Archive V2.0]
-The Way of the Exploding Fist (Micropool) [C64 Ultimate Tape Archive V2.0]
-West Bank (Gremlin Graphics) [C64 Ultimate Tape Archive V2.0]
-Western Games (Magic Bytes) [C64 Ultimate Tape Archive V2.0]
-Wheelin' Wallie (Interceptor Software) [C64 Ultimate Tape Archive V2.0]
-Germany 1985: When Superpowers Collide (Transatlantic Simulations) [C64 Ultimate Tape Archive V2.0]
-New NOT_WORKING software list additions
----------------------------------------
-V (Ocean) [C64 Ultimate Tape Archive V2.0]
-W.A.R (Martech) [C64 Ultimate Tape Archive V2.0]
-Wallie goes to Rhymeland (Interceptor Software) [C64 Ultimate Tape Archive V2.0]
-The Way of the Exploding Fist (Melbourne House) [C64 Ultimate Tape Archive V2.0]
-
-10155: spectrum_cass.xml: 6 new software additions [ArcadeShadow]
-New working software list additions
------------------------------------
-Astérix y el Caldero Magico (Erbe) [spectrumcomputing.co.uk]
-Break Thru (Erbe, medium case) [spectrumcomputing.co.uk]
-Ganeymede [Steven Brown, Planeta Sinclair]
-Ghost Rider [spectrumcomputing.co.uk]
-Street Hawk (1986) (set 4, IBSA) [spectrumcomputing.co.uk]
-Wonderworm [spectrumcomputing.co.uk]
-Cleaning metadata (year, publisher, cloneof/parent relationships)
-
-10156: bus/snes: Consistent checksum and address logging when loading carts. [0kmg]
-
-10157: nes.xml: Added a prototype. [0kmg]
-New working software list additions
------------------------------------
-Fighting Simulator - World Champ (USA, prototype) [rjtiger]
-
-10158: Greatly improve Monon Color emulation [DavidHaywood]
-- added emulation of required/used AXC51 / AX208 extended operations
-- added preliminary emulation of required/used AXC51 / AX208 features
-- added support for many Monon specific features, such as the video controller
-- most games are playable, those not requiring a card/badge scanner to function at all are promoted
-- no music, as it's contained in a game specific MCU under a glob on each cart
-
-10160: to7_cass.xml: Metadata Cleaning [ArcadeShadow]
-- Lower case on "Alt", "Split", "Tape", "Password Required", "Source Code", "Unknown", "No Loader Screen" words in the set
-  description.
-- Replaced the "Ger" abbreviation by the "Germany" country name.
-
-10161: to7_cart.xml: Metadata Cleaning [ArcadeShadow]
-- Lower case on "Alt" word in the set description.
-- Replaced the "Ger" abbreviation by the "Germany" country name.
-
-10162: to7_qd.xml: Metadata Cleaning [ArcadeShadow]
-Lower case on "Alt" and "Bad" words in the set description.
-
-10164: New working software list additions (apple2gs_flop_orig.xml) [A-Noid33]
-New working software list additions (apple2gs_flop_orig.xml)
-------------------------------------------------------------
-Space Ace (Brutal Deluxe) [Antoine Vignau, A-Noid]
-
-10165: bus/pce_ctrl: Added pachinko controller support. [0kmg]
+- 9970: misc/magicard.cpp, cpu/pic16c5x, machine/scc66470.cpp: Improved emulation, promoting five games to working. [Paul-Arnold]
+- 10043: playmark/playmark.cpp: Dumped sound microcontroller for Hard Times. [Caps0ff, Tailsnic Retroworks, ClawGrip]
+- 10044: psikyo/psikyo.cpp: Dumped PIC microcontroller for “Tengai” World version. [Caps0ff, Museo Arcade Vintage, ClawGrip]
+- 10062: swtpc/swtpc09.cpp: Marked machines as working and added comments with usage notes. [68bit]
+- 10073: falgas/falgas_m89.cpp: Dumped and added skeleton driver for “Rally Montecarlo”. [Museo del Recreativo, ClawGrip]
+- 10079: barcrest/mpu3.cpp: Use MPU4 characteriser device for MPU3 as well, and removed duplicated games. [David Haywood]
+- 10083: barcrest/mpu1.cpp: Added driver for Barcrest MPU1 fruit machines, with six games playable. [SomeRandomGuyIdk]
+- 10093: cdi.xml: Use lowercase for descriptive text and unabbreviated country names in descriptions. [ArcadeShadow]
+- 10120: c64_cass.xml: Added ten working items. [The Ultimate Tape Archive Team, Steven Coomber]
+- 10122: fairlight/cmi.cpp: Hooked up MIDI port 1, and cleaned up code. [Ryan Holtz]
+- 10123: mo5_cart.xml: Use lowercase for descriptive text in descriptions. [ArcadeShadow]
+- 10124: mo5_cass.xml: Use lowercase for descriptive text in descriptions. [ArcadeShadow]
+- 10125: mo5_flop.xml: Use lowercase for descriptive text in descriptions. [ArcadeShadow]
+- 10126: a2600.xml: Added twenty working  prototypes. [Tempest, Rom Hunter Dutchman2000, swlovinist, kmg]
+- 10127: nes.xml: Demoted some Enix games to unsupported, and corrected titles of various games. [kmg]
+- 10128: nes.xml: Use unabbreviated country names, lowercase descriptive text and uppercase initialisms in descriptions. [kmg]
+- 10129: bbc_rom.xml: Fixed ROM region size for epsonfx. [kmg]
+- 10130: gameboy.xml: Converted data sizes to hexadecimal, and noted probably under-dumps of lunchasep. [kmg]
+- 10131: cpu/mcs51: Added internal ROM for AX208. [Peter Wilhelmsen, David Haywood]
+- 10132: lynx.xml: Removed 64-byte header from Yastuna homebrew games, making them playable. [kmg]
+- 10133: casloopy.xml: Fixed a ROM size and a kanji reading; x1_flop.xml: Fixed a kanji reading. [kmg]
+- 10134: gamecom.xml: Replaced three under-dumped ROMs. [No-Intro, kmg]
+- 10135: mastboy.cpp: Dumped and added a newer Italian set, and corrected metadata. [Recreativas.org, ClawGrip]
+- 10136: sony/dmac3.cpp, sony/cxd8442q.cpp: Implemented DMAC3 and WSC-FIFOQ DMA controllers. [Brice Onken]
+- 10137: machine/spifi3.cpp: Implemented HP 1TV3-0302 SPIFI3 SCSI controller. [Brice Onken]
+- 10138: amiga/arsystems.cpp: Removed invalid dumps of protected PLDs. [ClawGrip]
+- 10140: cpu/axc51: Spearated AX208 from Intel MCS-51 family. [David Haywood]
+- 10143: snes.xml: Added five working prototypes. [Forest of Illusion, iniche, Zoda-Y13, kmg]
+- 10144: Listed more Nuon DVD players in comments. [simzy]
+- 10145: snes.xml: Added five prototypes. [Forest of Illusion, Zoda-Y13, kmg]
+- 10146: gbcolor.xml: Added four Taiwanese games. [taizou, kmg]
+- 10147: snes.xml: Use lowercase for descriptive text and unabbreviated country names in descriptions. [ArcadeShadow]
+- 10149: sinclair/atm.cpp: Improved banking, video and COVOX emulation, promoting ATM Turbo 2 to working. [holub]
+- 10150: ngp.xml: Replaced bad dump of ptennis. [psykopat, 0kmg]
+- 10152: vboy.xml: Added a homebrew pirate release, and cleaned up metadata. [Planet Virtual Boy, kmg]
+- 10153: toaplan/toaplan2.cpp: Add subtitles for Japanese FixEight sets. [Michael Sanborn]
+- 10154: c64_cass.xml: Added thirteen items (nine working, four not working). [Steven Coomber]
+- 10155: spectrum_cass.xml: Added six working items, and cleaned up metadata. [ArcadeShadow]
+- 10156: bus/snes: Made checksum and address formatting consistent in log messages when loading cartridges. [kmg]
+- 10157: nes.xml: Added a prototype version of Fighting Simulator - World Champ. [rjtiger, kmg]
+- 10158: misc/monon_color.cpp, cpu/axc51, monon_color.xml: Improved Monon Color emulation, and added a cartridge. [David Haywood]
+- 10160: to7_cass.xml: Use lowercase for descriptive text and unabbreviated country names in descriptions. [ArcadeShadow]
+- 10161: to7_cart.xml: Use lowercase for descriptive text and unabbreviated country names in descriptions. [ArcadeShadow]
+- 10162: to7_qd.xml: Use lowercase for descriptive text in descriptions. [ArcadeShadow]
+- 10164: apple2gs_flop_orig.xml: Added Space Ace (Brutal Deluxe). [Antoine Vignau, A-Noid33]
+- 10165: bus/pce_ctrl: Added support for Coconuts Japan pachinko controller. [kmg]
 
 10166: mappy.cpp: Rename Freeze to "Freeze / Rack Test" in superpac; reformat comments [einstein95]
 I've left the comments alone between lines 710-753 due to being part of `#define` blocks
