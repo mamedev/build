@@ -262,7 +262,6 @@ monon_color:
   Luòkè wángguó-mófǎ zhèn, Luójí pīn yī pīn, Lóngzhū-wǔdào dàhuì, Shén pò-shīluò de yíjī, Sài ěr hào-néngyuán dà zuòzhàn,
   Sài ěr hào: Zhànshén dòu hún, Xǐyángyáng yǔ huītàiláng-juézhàn miē xīng, Yīngxióng liánméng-zhōngjí gédòu
   [Peter Wilhelmsen, David Haywood]
-vboy: Hyper Fighting (pirate) [Planet Virtual Boy]
 snes: DSP1 Tech Demo (USA, prototype) [kmg]
 
 
@@ -275,6 +274,10 @@ c64_cass:
 fmtowns_cd:
   Tenshi-tachi no Gogo - Tenkousei [redump.org]
   Nihongo Microsoft Windows V3.0 with Multimedia Extensions V1.0 L10 [redump.org, tenyuhuang]
+gbcolor.xml:
+  The Adventures of Tintin - Prisoners of the Sun (Europe, prototype),
+  Bob et Bobette - Les Dompteurs du Temps ~ Suske en Wiske - De Tijdtemmers (Europe, early prototype), Worms Armageddon (prototype)
+  [VGHF, Hidden Palace]
 ibm5170: PC Gamer (UK) (Vol. 01 № 02 - January 1994) [MarkHnsn, archive.org]
 kpython2:
   Dance Dance Revolution SuperNOVA 2 Install Disk (JAA/AAA), DrumMania V2 (JAA/AAA), DrumMania V2 Version 1.01 (JAA/AAA),
@@ -287,53 +290,16 @@ monon_color: Luòkè wángguó-wángzhě huīzhāng [Peter Wilhelmsen]
 snes:
   The King of Fighters '98 (pirate), Marvel Super Heroes Vs. Street Fighter (pirate) [ALMCLE]
   WeaponLord (USA, prototype) [DrBizz]
-  The Adventures of Tintin - Prisoners of the Sun (Europe, prototype),
-  Bob et Bobette - Les Dompteurs du Temps ~ Suske en Wiske - De Tijdtemmers (Europe, early prototype), Worms Armageddon (prototype)
-  [VGHF, Hidden Palace]
+vboy: Hyper Fighting (pirate) [Planet Virtual Boy]
 
 
 Merged pull requests
 --------------------
 - 8854: sony/news_r4k.cpp: Added driver for Sony NEWS NWS-5000X workstation. [Brice Onken]
-
-9119: Initial FAT file system support for Floptool [npwoods]
-Current Limitations:
-- Read only
-- Only supports partitioned hard drives
-	- Always accesses first supported partition
-	- Floptool needs a way for partioning schemes to be indepenent of the file systems contained therein
-- No FAT32 support
-- No Long Filenames Support
-
-9353: Added shadow config bits to k051960 [furrtek]
-Added shadow configuration bits which were discovered from silicon. Fixes the shadows in Devastators.
-Added descriptions for the other previously undocumented register bits, even if they shouldn't affect any game.
-
-9850: spectrum.cpp: Fixed floating bus read [holub]
-!float48
-!ula_float48
-
-9929: ctk551.cpp: New working machines [devinacker]
----------------------------------------
-Casio Celviano AP-10 [Devin Acker]
-Casio CTK-601 [Devin Acker, Gabriel Miceli]
-Casio GZ-70SP [Devin Acker]
-These are three more GT913-based MIDI devices. Aside from the ROM definitions etc., this PR also:
-* gives the GT913 a more complete CPU implementation and improved sound emulation. This includes replacing the
-  `required_memory_bank` with a new address space, not just because it needs to be able to contain read/write handlers, but also
-  because the bank-switchable memory is accessible not just through the regular program space but also through a special mode of
-  indirect addressing (see `gt913_device::read8ib`, `write8ib`, etc.)
-* Fixes the H8/300 `subx.b` instruction with regard to how it affects the Z flag. This was verified against docs from Renesas and is
-  necessary for both of these machines to run because of how they perform 16-bit comparisons.
-
-9949: Intel MDS-II: correct dump for PIO & regression fixes [fulivi]
-Hi,
-this PR is for a couple of changes to imds2 driver.
-- The correct dump for PIO controller has been added
-- A regression introduced by 4287970 has been fixed. The iSBC202 floppy controller broke because of this regression.
-Thanks.
---F.Ulivi
-
+- 9119: formats/fs_fat.cpp: Added preliminary read-only FAT file system implementation. [Nathan Woods]
+- 9353: konami/k051960.cpp: Implemented shadow configuration bits (fixes shadows in Devastators). [Furrtek]
+- 9929: casio/ctk551.cpp, cpu/h8: Added Casio Celviano AP-10, CTK-601 and GZ-70SP. [Devin Acker, Gabriel Miceli]
+- 9949: intel/imds2.cpp: Corrected PIO controller ROM, and fixed iSBC202 floppy controller emulation. [F.Ulivi]
 - 9970: misc/magicard.cpp, cpu/pic16c5x, machine/scc66470.cpp: Improved emulation, promoting five games to working. [Paul-Arnold]
 - 10043: playmark/playmark.cpp: Dumped sound microcontroller for Hard Times. [Caps0ff, Tailsnic Retroworks, ClawGrip]
 - 10044: psikyo/psikyo.cpp: Dumped PIC microcontroller for “Tengai” World version. [Caps0ff, Museo Arcade Vintage, ClawGrip]
@@ -366,7 +332,7 @@ Thanks.
 - 10145: snes.xml: Added five prototypes. [Forest of Illusion, Zoda-Y13, kmg]
 - 10146: gbcolor.xml: Added four Taiwanese games. [taizou, kmg]
 - 10147: snes.xml: Use lowercase for descriptive text and unabbreviated country names in descriptions. [ArcadeShadow]
-- 10149: sinclair/atm.cpp: Improved banking, video and COVOX emulation, promoting ATM Turbo 2 to working. [holub]
+- 10149: sinclair/atm.cpp: Improved banking, video and COVOX emulation, promoting ATM-Turbo 2 to working. [holub]
 - 10150: ngp.xml: Replaced bad dump of ptennis. [psykopat, 0kmg]
 - 10152: vboy.xml: Added a homebrew pirate release, and cleaned up metadata. [Planet Virtual Boy, kmg]
 - 10153: toaplan/toaplan2.cpp: Add subtitles for Japanese FixEight sets. [Michael Sanborn]
@@ -380,684 +346,97 @@ Thanks.
 - 10162: to7_qd.xml: Use lowercase for descriptive text in descriptions. [ArcadeShadow]
 - 10164: apple2gs_flop_orig.xml: Added Space Ace (Brutal Deluxe). [Antoine Vignau, A-Noid33]
 - 10165: bus/pce_ctrl: Added support for Coconuts Japan pachinko controller. [kmg]
-
-10166: mappy.cpp: Rename Freeze to "Freeze / Rack Test" in superpac; reformat comments [einstein95]
-I've left the comments alone between lines 710-753 due to being part of `#define` blocks
-
-10170: Changed gdbstub to no longer expect a CPU named ':maincpu' [npwoods]
-The logic was changed to find the first CPU, without any particular expectation about naming.  This should address issue #10141
-
-10171: sinclair/spec128.cpp: Adjusted border rendering (MT08264)  [holub]
-
-10172: rescue, minefld: make bullets 2x2 pixels instead of a single pixel [goldnchild]
-Makes the bullets 2x2 instead of a single pixel so you can see your shots as well as incoming shots.  This makes the games much
-  easier to play.
-Don't know if it's accurate, but it seems to work (able to get up to level 4).
-some additional discussion at:
-https://forums.bannister.org/ubbthreads.php?ubb=showflat&Number=121174#Post121174
-
-10173: snes.xml: Fixed some parent/clone relationships. [0kmg]
-
-10174: bus/vcs: Use memory banks [wilbertpol]
-
-10175: megadriv.xml: Added a prototype. [0kmg]
-New working software list additions
------------------------------------
-Primal Rage (prototype) [Rezrospect, Forest of Illusion]
-
-10178: Adding CP/68 Disk format for SWTPC 6800 [n6il]
-CP/68 is an operating system for the SWTPC 6800 computer which was
-published in a book as well as available commercially from the author.
-Because the operating system source code was published in the book the
-code was OCRed thus reviving the operating system.  This code change
-adds the CP/68 disk format which was adjusted by Mike Douglas of
-deramp.com to work on real hardware.  The same disk images he published
-work with this code change unaltered.
-
-10179: docs: Fix emscripten compile instructions [algestam]
-Update emscripten compile instructions to reflect recent source rearrangement
-
-10180: a2600.cpp: Merge tvboy.cpp and a2600.h into a2600.cpp [wilbertpol]
-
-10181: machine/8530scc.cpp: Implement SCC baud rate calculation [grantek]
-- Also fix baud counter registers
-Reference: http://www.zilog.com/docs/serial/ps0117.pdf
-The X68000 uses the Clock Mode feature of the SCC, which multiplies the baud period by 16. Combined with a bug that read the baud
-  counter from the wrong registers, this meant the emulator had two baud rate expiry callbacks running at some MHz.
-The x68k driver doesn't implement RS232 and doesn't yet use the SCC IRQs for mouse updates, so this doesn't yet affect the driver
-  directly, but it does improve performance.
-
-10182: snes.xml: Added eight dumps (four pirate dumps, four cracked versions). [0kmg]
-New working software list additions
------------------------------------
-Hercules (pirate) [Revenant]
-Hercules (pirate, hacked) [Revenant]
-The King of Fighters '98 (pirate, hacked) [Revenant]
-Marvel Super Heroes Vs. Street Fighter (pirate, hacked) [Revenant]
-Squirrel [Revenant]
-Squirrel (pirate, hacked) [Revenant]
-New NOT_WORKING software list additions
----------------------------------------
-The King of Fighters '98 (pirate) [ALMCLE]
-Marvel Super Heroes Vs. Street Fighter (pirate) [ALMCLE]
-
-10187: atari/a2600.cpp: Added TV Boy dump. [0kmg]
-- Removed some nonexistent inputs from all the TV Boy clones.
-New working clones
-------------------
-TV Boy (PAL) [Thomas Jentzsch, kmg]
-
-10188: fmtowns_cd.xml: 24 new dumps, 3 replacements [rzero9]
-- Added the bundled Sample Data Disk to kidpixjr [cyo.the.vile]
-- Replaced the habitat1110 floppy image with a good dump [cyo.the.vile]
-- Some minor metadata corrections
-New working software list additions
------------------------------------
-DAPS for Windows [redump.org]
-DynEd Demo Disc [redump.org]
-FM Towns II Demonstration CD-ROM '94 Spring [redump.org]
-FM Towns II Demonstration CD-ROM '94 Summer [redump.org]
-Gakuen Bomber [redump.org]
-Hyper Planet (demo) [redump.org]
-LiveAnimation V1.1 L10 [redump.org]
-Manami - Ai to Koukan no Hibi [redump.org, cyo.the.vile]
-Maruanki Eitango - Chuugaku 1-nensei [redump.org]
-Mirumiru Sagasu Konchuu Series Vol. 1 - Chiisana Ensouka [redump.org]
-Mirumiru Sagasu Konchuu Series Vol. 2 - Mori no Ninkimono - Jueki ni Atsumaru Mushi-tachi [redump.org]
-Muscle Bomber - The Body Explosion (demo) [redump.org]
-NHK Zoku Kiso Eigo - Dai-1-kan [redump.org, wiggy2k]
-Nihon no Rekishi - Ishin-hen - Kurofune Raikou (alt) [redump.org]
-Nihon no Rekishi - Sengoku-hen - Oda Nobunaga (HMB-124B) [redump.org]
-Nihon no Tenki [redump.org]
-Secre Volume 3 - Fumie Hosokawa [redump.org]
-SimFarm (demo) [redump.org]
-Towns Hyper Chiiku Ehon - Nihon Mukashibanashi II - Omusubi Kororin / Usagi to Kame [redump.org]
-Towns Hyper Chiiku Ehon - Nihon Mukashibanashi Vol. 4 - Tsuru no Ongaeshi / Kachi Kachi Yama [redump.org]
-Towns Magazine for School Vol. 3 [redump.org]
-Towns Magazine for School Vol. 5 [redump.org]
-New not working software list additions
----------------------------------------
-Nihongo Microsoft Windows V3.0 with Multimedia Extensions V1.0 L10 [redump.org, tenyuhuang]
-Tenshi-tachi no Gogo - Tenkousei [redump.org]
-Replaced software list items
-----------------------------
-Chuumon no Ooi Ryouriten [redump.org]
-Scavenger 4 (demo) [redump.org]
-Scholar Movie Magazine Soukan-gou [redump.org]
-
-10189: gamate.xml: Metadata cleaning [ArcadeShadow]
-Lowercase on the "Alt" abbreviation (on sets descriptions)
-
-10190: megaduck.xml: Metadata cleaning [ArcadeShadow]
-Lowercase on the "Alt" abbreviation (on set description)
-
-10191: vectrex.xml: Metadata cleaning [ArcadeShadow]
-Lowercase on the "Alt", "Final", "Sample" abbreviations (on sets descriptions)
-
-10192: atm.cpp: exteded ROM support [holub]
-
-10193: msx.cpp: Merge msx_m.cpp and msx.h into msx.cpp and minor cleanups. [wilbertpol]
-
-10194: pentagon.cpp: cleanup + mt8390 [holub]
-
-10195: nintendo/vsnes.cpp: Various cleanups. [0kmg]
-- Merged vsnes_m.cpp and vsnes.h into vsnes.cpp.
-- Split into base class and three separate classes for UniSystem, DualSystem, and SMB bootleg machines.
-- Merged DualSystem's main/sub VROM banking functions.
-
-10196: tsconf.cpp: start software list [holub]
-\+ minor cleanup
-
-10197: jpm/jpmsru.cpp: Added Lite a Line, cleaned up the driver [SomeRandomGuyIdk]
-- Added support for Lite a Line, a Dutch game together with a very basic handmade layout
-- Some cleanups to the driver
-- Added a postload callback to fix j_ewnc not updating reels after loading a save state
-- Order of display digit outputs has changed to reflect the actual order in the memory map
-
-10198: pentagon.cpp: cleanup driver detection [holub]
-per #10194 review
-
-10199: sinclair/spectrum.cpp: Play cassette output through speaker (MT08342) [holub]
-
-10200: nintendo/nes.cpp: Added an RGB Famicom clone. [0kmg]
-New working clones
-------------------
-My Computer Terebi C1 [kmg]
-The 2C0x palette is the standard one found in PlayChoice-10 and VS. The builtin ROM was in the software list, but the PRG was an
-  overdump (repeated data). I verified the size at least is correct by looking at the PCB.
-
-10201: pacman.cpp: Added Miss Packman Plus. [mdeslaur]
-This adds support for the Miss Packman Plus roms that have the alternate mazes.
-
-10202: Various software lists: Cleaned up more extraneous spaces. [0kmg]
-Note there's a weird Unicode code point after the word "Turbo" in the second changed line in a800.xml. It has been removed but
-  doesn't show up on GitHub's diff. Same issue in this file popped up in #8112.
-
-10205: nintendo/vsnes.cpp: A few minor changes. [0kmg]
-- Added watchdog timer (currently only active on DualSystem games).
-- Set perfect quantum for vsmahjng, just like all the other DualSystem games.
-- Switched vssoccera from bnglngby's init, which installs a fake IRQ hack, to standard init.
-- Switched suprmriobl to empty_init and gave it more consistent function naming.
-
-10206: sinclair/atm.cpp: Use more descriptive BIOS names [holub]
-
-10207: midw8080/m79amb.cpp: Invert PROM data using region flags [0kmg]
-
-10208: nintendo/playch10.cpp: Replaced pc_gntlt PRG and CHR dumps. [0kmg]
-- Removed MACHINE_IMPERFECT_GRAPHICS flag from pc_gntlt. [kmg]
-- Added MACHINE_IMPERFECT_GRAPHICS flag for pc_cshwk. [Dullaron]
-Dumps are identical to the NES version. The PC-10 Gauntlet board is seen with mask roms with identical labels, so this should be
-  correct—Nintendo is fastidious about labeling revisions. The old dump has garbled graphics/text at the bottom of the title screen
-  and possibly other issues. It turns out this was not an emulation bug.
-
-10213: Dumped and added "Project Justice / Moero! Justice Gakuen (Rev B)" [clawgrip]
-New NOT_WORKING clones
-----------------------------------
-Project Justice / Moero! Justice Gakuen (Rev B) [Tailsnic Retroworks]
-
-10214: nintendo/playch10.cpp: Merged playch10 source files. [0kmg]
-- Added finders for joystick and gun inputs.
-- Fixed some bad masks (sprite DMA write and Pin-Bot).
-- Made color PROM loading more concise.
-- Removed pc_1942 imperfect graphics flag. It looks as bad as it should.
-- Various other minor cleanups.
-
-10215: snes.xml: Promoted dsp1demo to working. [0kmg]
-Software list items promoted to working
----------------------------------------
-DSP1 Tech Demo (USA, prototype)
-An identical binary has been dumped from a different prototype board, so this isn't corrupt.
-
-10217: atm.cpp: add CMOS [holub]
-* atm.cpp: add CMOS
-* glukrs.cpp: refactoring
-
-10218: cxd8452aq.cpp: Add WSC-SONIC3 DMA controller support [briceonk]
-This is the last device needed for #8854 :) The driver implements the WSC-SONIC3, the DMA controller used with a National Semi SONIC
-  ethernet controller for networking on the Sony NEWS NWS-5000 series. It uses the same APbus address translation mechanism as
-  DMAC3.
-
-10219: bus/nes: Updated emulation of TXC 01-22000-400 PCBs. [0kmg]
-
-10221: imagedev/midiin.cpp: send All Notes Off CC when unloading a MIDI file [devinacker]
-Just so stopping a MIDI file input mid-playback doesn't leave notes hanging on the receiving device. Not sure if this should be tied
-  to another config option or something just so it doesn't risk doing anything weird to non-GM devices, though.
-
-10223: ibm5170.xml: 22 new software additions [ArcadeShadow]
-New working software list additions
------------------------------------
-Classics Arcade [ibmpc5150, archive.org]
-GrandMaster Chess [The Good Old Days]
-GrandMaster Chess Deluxe [The Good Old Days]
-Nomad [MarkHnsn, archive.org]
-PC Format (Issue 24 - September 1993) [MarkHnsn, archive.org]
-PC Format (Issue 26 - November 1993) [MarkHnsn, archive.org]
-PC Format (Issue 35 - August 1994) [StefanNL, archive.org]
-PC Format (Issue 48 - September 1995) [MarkHnsn, archive.org]
-PC Gamer (UK) (Vol. 01 Nº 01 - December 1993) [MarkHnsn, archive.org]
-PC Gamer (UK) (Vol. 01 Nº 03 - February 1994) [MarkHnsn, archive.org]
-PC Gamer (UK) (Vol. 01 Nº 04 - March 1994) [MarkHnsn, archive.org]
-PC Gamer (UK) (Vol. 01 Nº 05 - April 1994) [MarkHnsn, archive.org]
-PC Gamer (UK) (Vol. 01 Nº 07 - June 1994) [MarkHnsn, archive.org]
-PC Gamer (UK) (Vol. 02 Nº 10 - September 1995) [SmartCoda, archive.org]
-PC Gamer (USA) (Vol. 01 Nº 01 - May-June 1994) [OUTATIME Studios, archive.org]
-PC Gamer (USA) (Vol. 01 Nº 03 - August 1994) [OUTATIME Studios, archive.org]
-PC Gamer (USA) (Vol. 01 Nº 04 - September 1994) [OUTATIME Studios, archive.org]
-PC Gamer (USA) (Vol. 01 Nº 06 - November 1994) [OUTATIME Studios, archive.org]
-PC Gamer (USA) (Vol. 02 Nº 03 - March 1995) [MarkHnsn, archive.org]
-PC Review (Issue 07 - May 1992) [archive.org]
-PC Review (Issue 25 - November 1993) [MarkHnsn, archive.org]
-New NOT working software list additions
------------------------------------
-PC Gamer (UK) (Vol. 01 Nº 02 - January 1994) [MarkHnsn, archive.org]
-
-10224: konami/ksys573.cpp: Added Dance Dance Revolution Karaoke Mix 2 [987123879113]
-----------------------------------
-Dance Dance Revolution Karaoke Mix 2 (GQ947 VER. JAA) [Taro]
-
-10225: sega/model3.cpp: Add US Title to most Scud Race sets. [mikehyrus]
-The US Title (Sega Super GT) is known to exist on most (but not all) sets via service mode when you change region settings.
-
-10226: sinclair/atm.cpp: Fixed I/O addressing, and disabled RAM writes when ROM is active [holub]
-/removed/
-
-10228: nintendo/vsnes.cpp: Fixed some DIP switch issues. [0kmg]
-- Removed nonexistent P3 and P4 controls from starlstr.
-- Corrected credits per game mode DIP switch for vstennis.
-- Removed redundant inputs for vsbballj, which are identical to vsbball.
-
-10231: cdrom: Pass phys flag to read_partial_sector in read_subcode [987123879113]
-This fixes the data roundtrip problem mentioned in https://github.com/mamedev/mame/issues/10230. This does not address the TOC
-  returning `CD_ROM` instead of `CD_ROM_XA` that is mentioned in the same issue.
-As a test I used a toc/bin I had on hand and went from bin/toc -> chd -> bin/toc and verified the SHA-1 of the two BINs matched.
-  Additionally, I tried some redump PS1 bin/cue files I had on hand and verified that the SHA-1 resulting of the BIN after doing
-  bin/cue -> chd -> bin/cue matches the file I had on hand and also what was listed on the redump website. (see:
-  https://github.com/mamedev/mame/issues/10230#issuecomment-1215996922)
-Additionally, the `phys` parameter of `read_partial_sector` has a default value of `false` which made this bug go unnoticed for a
-  long time. All usages of `read_partial_sector` except this one instance already pass a value in for `phys` so I removed the
-  default value from the function so this problem can't happening again. Also updated the inline docs for the function since it was
-  missing the `phys` parameter.
-
-10232: konami/ksys573.cpp: Add Guitar Freaks (EAA/UAA/JAA/AAA) [987123879113]
-Just a small note because the naming is now inconsistent with the other namings but for a reason: based on the existing naming
-  scheme in the ksys573 driver, the European build should've been named `gtrfrksa` (EAD is `gtrfrks`, EAC is `gtrfrksc`, so EAA
-  should be `gtrfrksa`) but `gtrfrksa` is already in use by the AAD version so I made what should've been `gtrfrksa` into
-  `gtrfrksea` for this commit.
-The security ROM is the same one shared between the xAD and xAC builds.
-
-10233: chdman: Fix TOC session type detection for extractcd [987123879113]
-Fixes issue mentioned in https://github.com/mamedev/mame/issues/10230 where `CD_ROM_XA` is expected but `CD_ROM` is written.
-  Additionally, I implemented the `CD_DA` session type based on the information found in cdrdao.
-The logic used follows cdrdao's cue2toc code
-  (https://github.com/cdrdao/cdrdao/blob/3787686d6f49687ce1b553236482078761e511de/trackdb/Cue2Toc.cc#L605-L642) and matches what's
-  written in the man file (https://github.com/cdrdao/cdrdao/blob/3787686d6f49687ce1b553236482078761e511de/dao/cdrdao.man#L458-L466).
-Test TOCs can be found on the cdrdao repo: https://github.com/cdrdao/cdrdao/tree/master/testtocs
-I tested the following:
-- `CD_ROM` is written when there is mode1 tracks but no mode2
-- `CD_ROM_XA` is written when there is a mode2 track (converted a PS1 bin/cue -> chd -> bin/toc to verify this)
-- `CD_DA` is written when there is only audio tracks (converted an audio only bin/cue -> chd -> bin/toc to verify this)
-
-10234: formats/flex_dsk.cpp: Add FLEX 1.0 (MiniFLEX) Disk Format [n6il]
-The FLEX 1.0 (MiniFLEX) Operating System for the SWTPC MF-68 Disk System
-was released in 1978 and replaced the prior FDOS Operating System.  The
-MiniFLEX Disk Format is notably different from later versions of FLEX.
-MiniFLEX uses 18 sectors of 128-bytes per track. Later versions of FLEX
-used 256-byte sectors.  Disk images from both deramp.com and
-https://github.com/rsanchovilla/SimH_cpanel work with this change.
-
-10235: astrcorp.cpp protection and layouts update [LucaElia]
-astrcorp.cpp protection and layouts update: [Luca Elia]
-* Emulated the "CPU Code" protection in newer games (astoneag, dinodino, hacher, magibombd, winbingo, winbingoa, zoo).
-* Expanded ROM patches to work around imperfect data in the first 0x400 bytes (ROM overlay?), getting all games to boot.
-* Implemented 16x32 sprites in astoneag.
-* Created layouts and factory defaults EEPROMs for all sets.
-* showhand: Fixed regression that caused the new opponent face to be invisible while entering the screen.
-Machines promoted to working
-----------------------------
-Magic Bomb (Ver. L3.5S) [Luca Elia, Ivan Vangelista, Angelo Salese, Phil Bennett, Cristiano MDQ]
-Dino Dino (Ver. A1.1, 01/13/2005) [Olivier Galibert, Luca Elia, Ivan Vangelista, Guru]
-Stone Age (Astro, Ver. EN.03.A, 2005/02/21) [Olivier Galibert, Luca Elia, ANY, The Dumping Union]
-Win Win Bingo (Ver. GM.03.3, Feb 23 2006) [Olivier Galibert, Luca Elia, Ivan Vangelista, f205v, Filippo Tarderia]
-Zoo (Ver. ZO.02.D, Aug 27 2004) [Olivier Galibert, Luca Elia, Ivan Vangelista, Brian Troha, The Dumping Union]
-Clones promoted to working
---------------------------
-Magic Bomb (Ver. A3.1) [Luca Elia, Ivan Vangelista, Angelo Salese, Phil Bennett, Cristiano MDQ]
-Hacher (hack of Win Win Bingo EN.01.6) [Olivier Galibert, Luca Elia, Ivan Vangelista, ANY, The Dumping Union]
-
-10236: channelf.xml: Metadata cleaning [ArcadeShadow]
-- Lowercase on descriptive text on words like "Prototype", "Alt", "Final", "Older"
-- Replaced countries abbreviations by their full name
-
-10237: a7800.xml: Metadata cleaning [ArcadeShadow]
-- Lowercase on descriptive text like "Prototype", "alternate", "Hack", "Older", "Demo"
-- Uppercase on descriptive text "Pokey"
-
-10238: nintendo/vsnes.cpp: More cleanups of INPUT_PORTS. [0kmg]
-- Used macros for the common repeated definitions of joystick, coins, etc.
-- Player buttons are "B" and "A", like the real panels. Start buttons renamed to "Select 1 (Blue)", "Select 2 (Green)", etc.
-- bnglngby, iceclimb, jajamaru, nvs_machridera, supxevs, tkoboxng: Removed as many modifications from the base VS. machine IO ports
-  as possible.
-- Adjusted coin PORT_IMPULSE closer to hardware. All games now work with this and use the generic inputs.
-
-10239: intellect02.xml: Rename software list description [ArcadeShadow]
-Lowercase on the software list description (Cartridges)
-
-10240: intv.xml: Metadata cleaning [ArcadeShadow]
-Lowercase on descriptive text on words like "Prototype", "Alt", "Unreleased", "Unfinished", "Fixed", "Download Version", "Hacked"
-
-10241: New NOT_WORKING machine [devinacker]
------------------------
-VTech Phusion [Devin Acker]
-
-10242: DS1207: Fix initialisation of start time [Paul-Arnold]
-rtc_clock_updated() wrongly declared and initialised a local variable m_startup_time when it should've been initialising the global
-  m_startup_time.
-Thanks to smf for spotting this.
-
-10244: nintendo/playch10.cpp: Minor bug fix and MMC1 cleanup. [0kmg]
-nintendo/nes.cpp: Mark famitvc1 as not working.
-nes.xml: Mark shinsend as not supported.
-
-10245: nes.xml: Added two dumps. [0kmg]
-New working software list additions
------------------------------------
-NARC (USA, CES sample, prototype) [Hard4Games, Dustin Echoes, Forest of Illusion]
-Controller Test Program (Japan) [Forest of Illusion]
-
-10246: monon_color.cpp : rejig music CPU protection handling and update notes + new Monon Software List additions / c2color.cpp :
-  dump C2 internal ROM + Software Lists [DavidHaywood]
-monon_color.cpp : music MCU commands axxx really are reading a range from the internal ROM for a direct comparison, not sniffing the
-  SPI bus.  Add some debugging code to run that if wanted for now, even if it's incomplete (defaults to suspending the CPU)
-  [David Haywood]
-c2color.cpp : added dumps of SPI ROMs from machine + notes [Peter Wilhelmsen]
-new WORKING software list additions
--------------
-monon_color.xml:
-ielts: Yǎsī tǎ dà màoxiǎn / 雅思塔大冒险 / IELTS Adventure [Peter Wilhelmsen]
-ultbrain: Nǎolì liánlián kàn / 脑力连连看 / Ultimate Brain Power [Peter Wilhelmsen]
-labmath: Àoshù shíyàn shì / 奥数实验室 / Laboratory Mathematica Olympiad [Peter Wilhelmsen]
-new NOT WORKING software list additions
------------
-c2color_cart.xml:
-agree: Dì 1 dàn: Dài Lóngwáng Fēngyìn [Peter Wilhelmsen]
-kingwing: Dì 2 dàn: Zhī Yìwáng De Shì Liàn [Peter Wilhelmsen]
-
-10247: ibm5170.xml: 7 new software additions + 1 Redump [ArcadeShadow]
-New working software list additions
------------------------------------
-PC Magazine (All Star - December 1992) [arranarchipelago, archive.org]
-PC Plus (Issue 69 - June 1992) [arranarchipelago, archive.org]
-PC Today (Vol. 06 № 08 - December 1992) [arranarchipelago, archive.org]
-Personal Computer World (1994-04 - April 1994) [SmartCoda, archive.org]
-Space Quest IV: Roger Wilco and the Time Rippers (Germany) [The Good Old Days]
-Tetris Trio [The Good Old Days]
-The Lost Files of Sherlock Holmes [The Good Old Days]
-Redump
------------------------------------
-Disney's Aladdin [Abandon Socios]
-
-10248: lynx.xml: Metadata cleaning [ArcadeShadow]
-Lowercase on the descriptive "Demo" word
-
-10249: fmtowns_flop_orig.xml: 4 new dumps, 2 replacements [rzero9]
-- Redumped Irium from the original disks, and removed the current entry in fmtowns_flop_misc.xml which was created from loose files
-  [cyo.the.vile]
-- Redumped disk A of Youjuu Club Custom from an unmodified disk with no saves [cyo.the.vile]
-New working software list additions
------------------------------------
-:LOOP - Izanai no Kaikiten [cyo.the.vile]
-Disk Megastore Volume 1 [cyo.the.vile]
-Power DoLLS S-Premium Disk [cyo.the.vile]
-You-Jong Part I [cyo.the.vile]
-
-10250: c64_cass.xml: Added 16 items (15 working, 1 not working) [scoomby]
-New working software list additions
----------------------------------------
-Willow Pattern (Firebird) [C64 Ultimate Tape Archive V2.0]
-Winter Camp (Thalamus) [C64 Ultimate Tape Archive V2.0]
-Winter Games (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-Winter Olympiad 88 (Tynesoft) [C64 Ultimate Tape Archive V2.0]
-Wiz (Melbourne House) [C64 Ultimate Tape Archive V2.0]
-Wizardry (The Edge) [C64 Ultimate Tape Archive V2.0]
-Wizball (Ocean) [C64 Ultimate Tape Archive V2.0]
-Wonder Boy (Activision) [C64 Ultimate Tape Archive V2.0]
-World Championship Soccer (Elite Systems) [C64 Ultimate Tape Archive V2.0]
-World Class Leader Board: The Ultimate Golf Challenge (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-World Cup Carnival (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-World Games (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-World Series Baseball (Imagine) [C64 Ultimate Tape Archive V2.0]
-The Worm in Paradise (Level 9 Computing) [C64 Ultimate Tape Archive V2.0]
-X-15 Alpha Mission (Activision) [C64 Ultimate Tape Archive V2.0]
-New NOT_WORKING software list additions
----------------------------------------
-Wimbledon '64 (Merlin Software) [C64 Ultimate Tape Archive V2.0]
-
-10251: Fixed some compiler errors [napobear]
-Declare as unused some return variables
-
-10252: kpython2: Add new skeleton driver [987123879113]
-kpython and kpython2 share nothing in common besides the fact that they're PS2-based so I split kpython2 into its own driver. 
-The HDD images were made by installing the game data onto a fresh HDD. All HDDs have been tested to make sure they boot properly and
-  the ROM check in the operator menu returns OK (small exception: Thrill Drive 3 doesn't have a ROM check function but does have a
-  data check during boot). However, because these are not HDD dumps straight from a real machine, I have marked them as `BAD_DUMP`
-  so they can be replaced in the future if someone has the means to make proper dumps from a real machine. Likewise, the dongle
-  files are generated using custom tools so they're marked as `BAD_DUMP` in case someone can replace them with real dongles dumps,
-  but the dongle payload is understood and has been verified working against a real hardware. The `ps2_nvram` and `ps2_hdd_id` files
-  *do* come from a real Python 2 machine but will need to be replaced if an HDD dump is replaced.
-The BIOS dumped from a real Python 2 hash matches the `ps2-0190j-20030822.bin` "SCPH-50000 (Version 5.0 08/22/03 J)" BIOS already
-  included in the `sony/ps2sony.cpp` driver so that file has been copied as-is. The dump is credited to Guru in the comments of
-  `sony/ps2sony.cpp`, so credits to Guru for the BIOS.
-Input bits have been roughly documented based on my research in emulating the Python 2 USB I/O board.
-Hardware internals picture (PS2 + P2IO subboard): https://gamerepair.info/images/88_konami_python_2_io_board
-Hardware internals picture (PS2 + P2IO subboard + MC-S PCB): https://forum.arcadeotaku.com/viewtopic.php?p=54202#p54202
-New machines marked NOT_WORKING
--------------------------------
-Dance Dance Revolution SuperNOVA (FDH:A:A:A:2006071300) [Taro, windyfairy, Shiz]
-Dance Dance Revolution SuperNOVA (FDH:J:A:A:2006090600) [Taro, windyfairy, Shiz]
-Dance Dance Revolution SuperNOVA (FDH:U:A:A:2006072400) [Taro, windyfairy, Shiz]
-Dance Dance Revolution SuperNOVA 2 (GDJ:A:A:A:2007071100) [Taro, windyfairy, Shiz]
-Dance Dance Revolution SuperNOVA 2 (GDJ:A:A:A:2007100800) [Taro, windyfairy, Shiz]
-Dance Dance Revolution SuperNOVA 2 (GDJ:J:A:A:2007071100) [Taro, windyfairy, Shiz]
-Dance Dance Revolution SuperNOVA 2 (GDJ:J:A:A:2007100800) [Taro, windyfairy, Shiz]
-Dance Dance Revolution SuperNOVA 2 (GDJ:U:A:A:2007100800) [Taro, windyfairy, Shiz]
-Dancing Stage SuperNOVA (FDH:E:A:A:2006032200) [Shiz, windyfairy]
-Dancing Stage SuperNOVA (FDH:E:A:A:2006072500) [Shiz, windyfairy]
-DrumMania V (E02:A:A:A:2005050200) [Taro, windyfairy, Shiz]
-DrumMania V (E02:J:A:A:2005050200) [Taro, windyfairy, Shiz]
-DrumMania V2 (F02:A:A:A:2005101600) [Taro, windyfairy, Shiz]
-DrumMania V2 (F02:A:A:A:2005112800) [Taro, windyfairy, Shiz]
-DrumMania V2 (F02:A:A:A:2006011201) [Taro, windyfairy, Shiz]
-DrumMania V2 (F02:J:A:A:2005101600) [Taro, windyfairy, Shiz]
-DrumMania V2 (F02:J:A:A:2005112800) [Taro, windyfairy, Shiz]
-DrumMania V2 (F02:J:A:A:2006011201) [Taro, windyfairy, Shiz]
-DrumMania V3 (F32:A:A:A:2006072600) [Taro, windyfairy, Shiz]
-DrumMania V3 (F32:A:A:A:2006101800) [Taro, windyfairy, Shiz]
-DrumMania V3 (F32:J:A:A:2006072600) [Taro, windyfairy, Shiz]
-DrumMania V3 (F32:J:A:A:2006101800) [Taro, windyfairy, Shiz]
-Guitar Freaks V (E03:A:A:A:2005050200) [Taro, windyfairy, Shiz]
-Guitar Freaks V (E03:J:A:A:2005050200) [Taro, windyfairy, Shiz]
-Guitar Freaks V2 (F03:A:A:A:2005101600) [Taro, windyfairy, Shiz]
-Guitar Freaks V2 (F03:A:A:A:2005112800) [Taro, windyfairy, Shiz]
-Guitar Freaks V2 (F03:A:A:A:2006011201) [Taro, windyfairy, Shiz]
-Guitar Freaks V2 (F03:J:A:A:2005101600) [Taro, windyfairy, Shiz]
-Guitar Freaks V2 (F03:J:A:A:2005112800) [Taro, windyfairy, Shiz]
-Guitar Freaks V2 (F03:J:A:A:2006011201) [Taro, windyfairy, Shiz]
-Guitar Freaks V3 (F33:A:A:A:2006072600) [Taro, windyfairy, Shiz]
-Guitar Freaks V3 (F33:A:A:A:2006101800) [Taro, windyfairy, Shiz]
-Guitar Freaks V3 (F33:J:A:A:2006072600) [Taro, windyfairy, Shiz]
-Guitar Freaks V3 (F33:J:A:A:2006101800) [Taro, windyfairy, Shiz]
-Thrill Drive 3 (D44:J:A:A:20050316) [Taro, windyfairy, Shiz]
-Toy's March (E00:J:A:A:2005011602) [Taro, windyfairy, Shiz]
-Toy's March 2 (F00:J:A:A:2005110400) [Taro, windyfairy, Shiz]
-New software list additions
--------------------------------
-Dance Dance Revolution SuperNOVA 2 Install Disk (JAA/AAA) [Taro]
-Dance Dance Revolution SuperNOVA 2 Install Disk (UAA) [Ninevolt]
-Dance Dance Revolution SuperNOVA Install Disk (UAA) [HybridStorm]
-Dancing Stage SuperNOVA Install Disk (EAA) [Shiz]
-DrumMania V2 (JAA/AAA) [Taro]
-DrumMania V2 Version 1.01 (JAA/AAA) [Taro]
-DrumMania V3 (JAA/AAA) [SakamotoNeko]
-GuitarFreaks V2 (JAA/AAA) [Taro]
-GuitarFreaks V2 Version 1.01 (JAA/AAA) [Taro]
-GuitarFreaks V3 (JAA/AAA) [SakamotoNeko]
-
-10255: c64_cass.xml: Added 10 items (9 working, 1 not working) [scoomby]
-New working software list additions
----------------------------------------
-Xevious (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-Yabba Dabba Doo! (Quicksilva) [C64 Ultimate Tape Archive V2.0]
-Yie Ar Kung-Fu (Imagine) [C64 Ultimate Tape Archive V2.0]
-Zaga Mission (Anirog) [C64 Ultimate Tape Archive V2.0]
-Zamzara (Prism Leisure) [C64 Ultimate Tape Archive V2.0]
-Zaxxon (U.S. Gold) [C64 Ultimate Tape Archive V2.0]
-Zodiac (Anirog) [C64 Ultimate Tape Archive V2.0]
-Zoids: The Battle Begins (Martech) [C64 Ultimate Tape Archive V2.0]
-Zzap! Sizzlers II (Gremlin Graphics) [C64 Ultimate Tape Archive V2.0]
-New NOT_WORKING software list additions
----------------------------------------
-Yie Ar Kung Fu II (Imagine) [C64 Ultimate Tape Archive V2.0]
-
-10256: snes.xml: Added two recent prototype dumps. [0kmg]
-New working software list additions
------------------------------------
-Kid Klown in Crazy Chase (Euro, prototype)</description> [Zoda-Y13, Forest of Illusion]
-New NOT_WORKING software list additions
----------------------------------------
-WeaponLord (USA, prototype) [DrBizz]
-
-10260: photoply.cpp: Add notes about security dongles [clawgrip]
-
-10261: nintendo/spacefb.cpp: Merged into single source file + minor cleanups. [0kmg]
-
-10262: Improve accuracy of pokey emulation. [ElectricMagic]
-The implementation changes come from the A7800 project.
-Here's a sample from the homebrew Atari 7800 game "E.X.O.", whose soundtrack relies on accurate Pokey behavior. Listen especially
-  from 14 seconds onwards.
-MAME 246.
-MAME with changes.
-@schnitzeltony
-@msaarna
-
-10263: Correct the English translations of Monon Color games [Qiangong2]
-A QoL fix rather than anything else
-4+ years ago, when I originally translated them, 赛尔号 didn't have an English name. That has changed since then. I overlooked Roco
-  Kingdom as well, so that has been fixed.
-The capitalization issues were also bugging me, so I fixed those.
-I didn't touch the software names as I was unsure if changes would be needed or not.
-
-10264: New working machines - Micom Mahjong [hap, David Haywood, Sly DC] [DavidHaywood]
-New working machines
---------------------
-Micom Mahjong [hap, David Haywood, Sly DC]
-
-10265: Corrected Magic Card game names [Paul-Arnold]
-TeamEurope pointed out that some of the Magic Card game names were incorrect, these have now been fixed.
-Now the names are correct some of the romset names are obviously wrong.
-Could someone give me guidance on what the romset names should be please as I'm really not sure.
-For the Magic Card games there is the following (grouped together for easier reading)
-magicard	"Magic Card (v2.01)"
-magicarda	"Magic Card (v1.5 17.12.93, set 1)"
-magicardb	"Magic Card (v1.5 17.12.93, set 2)"
-magicarde	"Magic Card Export 94 (v2.11a, set 1)"
-magicardea	"Magic Card Export 94 (v2.11a, set 2)"
-magicardf	"Magic Card Export 94 (V2.11a, set 3)"
-magicardeb	"Magic Card Export 94 (v2.09a)"
-magicardec	"Magic Card III Jackpot (V4.01 6/98)"
-magicardj	"Magic Card III Jackpot (V4.01 7/98)"
-unkte06	"Magic Card (v1.10 14.09.94)"
-magicardw	"Magic Card (v1.2 200/93, set 1)"
-unkpkr_w	"Magic Card (v1.2 200/93, set 2)"
-unkpkr_w and unkte06 are obviously wrong but what to name to ?
-Should romsets such as magiarde/ea/f all be related now ? which possibly makes magicardec wrong ? Not sure about magicardeb either.
-Possibly magicarda/b should be better related ?
-Guidance very much needed on this please
-
-10266: raiden.cpp: Document the configuration bytes, convert comments to cpp-style [einstein95]
-Also documented the values of 0x1fffd and 0x1fffe in the sets which didn't have them. I'm unsure whether to actually document them,
-  as the value after decryption changes for some sets.
-
-10267: namcos86.cpp: Wonder Momo should be 8-way joystick (MT08404) [scoomby]
-
-10269: Super Pinball Action protoype - add emulation of 2nd screen [DavidHaywood]
-Clones promoted to working
-----------------------------
-Super Pinball Action (US, prototype, dual screen) [David Haywood]
-
-10270: Cleaned up some ROM macro indentation and spacing. [0kmg]
-
-10271: casio/ctk551.cpp: adjust ctk601 bg color [devinacker]
-Just changes the background color to `#ffffff` to match other LCD artwork files.
-
-10272: technos/renegade.cpp: More sprite RAM to fix flickering regression. [0kmg]
-This is a stopgap solution until #10163 is resolved.
-
-10273: Add FDOS disk format for the SWTPC 6800 [n6il]
-The FDOS Operating System was released by SWTPC in 1977 along with the
-MF-68 Mini Disk System and was superceeded by FLEX a few months later.
-This change adds support to boot FDOS on the SWTPC 6800 machine in MAME
-using a specific disk image (FDOSMPS.DSK) from deramp.com (Mike Douglas)
-and can also read/write the other available disk images.
-
-10274: Added support for building on OpenBSD/arm64. [fcambus]
-
-10275: ksys573: Add 811jaa02 audio CD for drmna [987123879113]
-This isn't exactly a new clone but just a new dump for an existing game so I wasn't sure how to write the commit message for the
-  readme. Please credit this dump to Taro.
-This PR is for the proper audio CD for the Japanese-only release of Drummania + also cleared up some confusion about the b02 disc.
-  The b02 disc is the all-region version. The JAD disc is a real upgrade disc and not a bootleg.
-From a brief comparison, it appears that the big difference between the audio CD for a02 and b02 is there is an extra track at the
-  end of b02 that has the practice track in English. The track ordering seem to be otherwise the same.
-!image
-!image
-
-10276: kpython2: Add Dance 86.4 Funky Radio Station [987123879113]
-This completes the Python 2 library as far as having at least one version of every game on the platform. The only thing left is any
-  unknown/undumped regional variants (English version of Thrill Drive 3?) and undumped datecodes/updates (GFDM V initial release,
-  and any other online updates).
-New machine marked NOT_WORKING
-------------------------------
-DANCE 86.4 FUNKY RADIO STATION (E01:J:A:A:2005040400) [Taro]
-
-10277: kpython2: Fix dongle data for dance864 [987123879113]
-The dongle tool I use writes the 8 byte serial before the 32 byte payload but the format I'm trying to keep consistent with in MAME
-  (Viper's existing dongle dumps of the same chip type) have the 32 byte payload before the 8 byte serial. The contents of each
-  section is still the same, just shuffled around now. The previous Python 2 dongle files were reordered already to follow the Viper
-  driver ordering but I forgot to reorder these when submitting the previous PR. Sorry.
-
-10278: vboy.xml: Use official artwork spelling for "Insmouse". [0kmg]
-
-10279: gbcolor.xml: Added 18 prototypes (15 working, 3 not working). [0kmg]
-New working software list additions
------------------------------------
-Antz (Europe, prototype) [VGHF, Hidden Palace]
-Beach'n Ball (Europe, prototype, 20001121) [VGHF, Hidden Palace]
-Bob et Bobette - Les Dompteurs du Temps ~ Suske en Wiske - De Tijdtemmers (Europe, late prototype) [VGHF, Hidden Palace]
-Die Maus (Europe, prototype) [VGHF, Hidden Palace]
-Die Maus - Verrückte Olympiade (Germany, prototype) [VGHF, Hidden Palace]
-Driver (Europe, prototype) [VGHF, Hidden Palace]
-Klustar (Europe, prototype, 19981001) [VGHF, Hidden Palace]
-Klustar (Japan, prototype, 19981001) [VGHF, Hidden Palace]
-Looney Tunes Collector - Martian Alert! (Europe, prototype) [VGHF, Hidden Palace]
-Lucky Luke - Desperado Train (Europe, prototype) [VGHF, Hidden Palace]
-Moomin no Daibouken (Japan, prototype) [VGHF, Hidden Palace]
-Snoopy Tennis (Europe, prototype) [VGHF, Hidden Palace]
-Tootuff (prototype) [VGHF, Hidden Palace]
-UEFA 2000 (prototype) [VGHF, Hidden Palace]
-WDL - Thundertanx (prototype) [VGHF, Hidden Palace]
-New NOT_WORKING software list additions
----------------------------------------
-The Adventures of Tintin - Prisoners of the Sun (Europe, prototype) [VGHF, Hidden Palace]
-Bob et Bobette - Les Dompteurs du Temps ~ Suske en Wiske - De Tijdtemmers (Europe, early prototype) [VGHF, Hidden Palace]
-Worms Armageddon (prototype) [VGHF, Hidden Palace]
-Also demoted to not working: tintinpr, anpan5to, dkong5.
-
-10280: New Apple II disks for August 2022 [Firehawke]
-New working software list additions (apple2_flop_orig.xml)
-----------------------------------------------------------
-Microzine 1 [4am, Firehawke]
-Microzine 2 [4am, Firehawke]
-Microzine 3 [4am, Firehawke]
-Microzine 4 [4am, Firehawke]
-Microzine 5 [4am, Firehawke]
-Microzine 6 [4am, Firehawke]
-Microzine 7 [4am, Firehawke]
-Microzine 8 [4am, Firehawke]
-Microzine 9 [4am, Firehawke]
-Microzine 10 [4am, Firehawke]
-Microzine 11 [4am, Firehawke]
-Microzine 12 [4am, Firehawke]
-Microzine 13 [4am, Firehawke]
-Microzine 14 [4am, Firehawke]
-Microzine 15 [4am, Firehawke]
-Microzine 16 [4am, Firehawke]
-Microzine 17 [4am, Firehawke]
-Microzine 18 [4am, Firehawke]
-Microzine 19 [4am, Firehawke]
-Microzine 20 [4am, Firehawke]
-Microzine 21 [4am, Firehawke]
-Microzine 22 [4am, Firehawke]
-Microzine 23 [4am, Firehawke]
-Microzine 24 [4am, Firehawke]
-Microzine 25 [4am, Firehawke]
-Microzine 26 [4am, Firehawke]
-Microzine 27 [4am, Firehawke]
-Microzine 28 [4am, Firehawke]
-Microzine 29 [4am, Firehawke]
-Microzine 30 [4am, Firehawke]
-New working software list additions (apple2_flop_clcracked.xml)
----------------------------------------------------------------
-Fraction-oids (1988 Version) (cleanly cracked) [4am, Firehawke]
-Stickybear Numbers (Revision 3) (cleanly cracked) [4am, san inc, Firehawke]
-
-10283: adam_cart.xml: Metadata cleaning [ArcadeShadow]
-Lowercase on some descriptive words like "Alt" and "Prototype"
-
-10284: adam_cass.xml: Metadata cleaning [ArcadeShadow]
-Lowercase on some descriptive words like "Alt", "Prototype", "Demo"
-
-10285: adam_flop.xml: Metadata cleaning [ArcadeShadow]
-Lowercase on some descriptive words like "Alt", "Prototype", "Demo", "Hacked", "Patched", "Disk", "Unknown"
+- 10166: namco/mappy.cpp: Corrected some DIP switch setting labels, and reformatted comments. [einstein95]
+- 10170: debugger/debuggdbstub.cpp: Attach to first CPU device found in system rather than expecting fixed tag. [Nathan Woods]
+- 10171: sinclair/spec128.cpp: Adjusted border rendering (MT08264).  [holub]
+- 10172: galaxian/galaxold_v.cpp: Render shots as 2×2 squares for rescue and minefld. [Golden Child]
+- 10173: snes.xml: Fixed some parent/clone relationships. [kmg]
+- 10174: bus/vcs: Avoid trampolines in cartridge accesses. [Wilbert Pol]
+- 10175: megadriv.xml: Added a prototype of Primal Rage. [Rezrospect, Forest of Illusion, kmg]
+- 10178: formats/cp68_dsk.cpp: Added CP/68 disk format for SWTPC 6800. [Michael R. Furman]
+- 10179: docs: Updated instructions for compiling with Emscripten. [algestam]
+- 10180: atari/a2600.cpp: Combined TV Boy and Atari 2600 drivers, and merged driver source files. [Wilbert Pol]
+- 10181: machine/8530scc.cpp: Fixed Baud rate calculation and Baud counter registers (improves X68000 performance). [grantek]
+- 10182: snes.xml: Added eight items (four pirate cartridges, and four cracked versions). [Devin Acker, ALMCLE, kmg]
+- 10187: atari/a2600.cpp: Added PAL version of TV Boy, and removed nonexistent inputs from TV Boy consoles. [Thomas Jentzsch, kmg]
+- 10188: fmtowns_cd.xml: Added twenty-four items, and replaced three items with better dumps. [r09]
+- 10189: gamate.xml: Use lowercase for descriptive text in descriptions. [ArcadeShadow]
+- 10190: megaduck.xml: Use lowercase for descriptive text in descriptions. [ArcadeShadow]
+- 10191: vectrex.xml: Use lowercase for descriptive text in descriptions. [ArcadeShadow]
+- 10192: sinclair/atm.cpp: Added support for ATM-Turbo 2 with 128K ROM. [holub]
+- 10193: msx/msx.cpp: Merge msx_m.cpp and msx.h into msx.cpp and cleaned up code a little. [Wilbert Pol]
+- 10194: sinclair/pentagon.cpp: Fixed freeze on main menu (MT08390), and cleaned up code. [holub]
+- 10195: nintendo/vsnes.cpp: Combined ddriver source files, split up driver state class, and cleaned up code. [kmg]
+- 10196: sinclair/tsconf.cpp, tsconf_betadisc_flop.xml: Added a TS-Configuration software list and cleaned up code. [holub]
+- 10197: jpm/jpmsru.cpp: Added Lite a Line, and cleaned up code. [SomeRandomGuyIdk]
+- 10198: sinclair/pentagon.cpp: Cleaned up implementation of differences between 128K and 1024K variants. [holub]
+- 10199: sinclair/spectrum.cpp: Play cassette output through speaker (MT08342). [holub]
+- 10200: nintendo/nes.cpp: Added Sharp My Computer Terebi C1 (an RGB Famicom clone). [kmg]
+- 10201: pacman/pacman.cpp: Added Miss Packman Plus. [Marc Deslauriers]
+- 10202: Cleaned up extraneous spaces in various software lists. [kmg]
+- 10205: nintendo/vsnes.cpp: Enabled watchdog timer for DualSystem games,a nd cleaned up code. [kmg]
+- 10206: sinclair/atm.cpp: Use more descriptive BIOS names. [holub]
+- 10207: midw8080/m79amb.cpp: Invert PROM data using ROM region flags. [kmg]
+- 10208: nintendo/playch10.cpp: Replaced pc_gntlt ROM dumps, and removed imperfect graphics flags from pc_gntlt and pc_cshwk. [kmg]
+- 10213: sega/naomi.cpp: Dumped and added “Project Justice / Moero! Justice Gakuen (Rev B)”. [Tailsnic Retroworks, ClawGrip]
+- 10214: nintendo/playch10.cpp: Combined source files, removed imperfect graphics flag from pc_1942, and cleaned up code. [kmg]
+- 10215: snes.xml: Promoted dsp1demo to working. [kmg]
+- 10217: sinclair/atm.cpp, sinclair/glukrs.cpp: Added real-time clock/non-volatile RAM to ATM-Turbo. [holub]
+- 10218: sony/cxd8452aq.cpp: Added WSC-SONIC3 DMA controller device. [Brice Onken]
+- 10219: bus/nes: Improved emulation of TXC 01-22000-400 PCBs. [kmg]
+- 10221: imagedev/midiin.cpp: Send All Notes Off CC when unloading a MIDI file. [Devin Acker]
+- 10223: ibm5170.xml: Added 22 items (21 working, one not working). [ArcadeShadow]
+- 10224: konami/ksys573.cpp: Added Dance Dance Revolution Karaoke Mix 2 [Taro, Windy Fairy]
+- 10225: sega/model3.cpp: Add US title to descriptions for most Scud Race sets. [Michael Sanborn]
+- 10226: sinclair/atm.cpp: Fixed I/O addressing, and disabled RAM writes when ROM is active. [holub]
+- 10228: nintendo/vsnes.cpp: Removed non-existent inputs and fixed some DIP switch labels. [kmg]
+- 10231: util/cdrom.cpp: Pass physical flag to read_partial_sector in read_subcode (fixes extracting CHD CD-ROMs). [Windy Fairy]
+- 10232: konami/ksys573.cpp: Added Guitar Freaks (EAA/UAA/JAA/AAA). [Taro, Windy Fairy]
+- 10233: chdman.cpp: Fixed TOC session type detection when extracting CD-ROM images. [Windy Fairy]
+- 10234: formats/flex_dsk.cpp: Added FLEX 1.0 (MiniFLEX) disk formate for the SWTPC MF-68 Disk System. [Michael R. Furman]
+- 10235: misc/astrcorp.cpp: Improved protection emulation and built-in layouts, promoting seven games to working. [LucaElia]
+- 10236: channelf.xml: Use lowercase for descriptive text and unabbreviated country names in descriptions. [ArcadeShadow]
+- 10237: a7800.xml: Use lowercase for descriptive text and uppercase for proper nouns in descriptions. [ArcadeShadow]
+- 10238: nintendo/vsnes.cpp: Improved input port definitions. [kmg]
+- 10239: intellect02.xml: Don’t use title case in software list description. [ArcadeShadow]
+- 10240: intv.xml: Use lowercase for descriptive text in descriptions. [ArcadeShadow]
+- 10241: vtech/phusion.cpp: Added skeleton driver for VTech Phusion. [Devin Acker]
+- 10242: machine/ds1207.cpp: Fixed initialisation of start time. [Paul-Arnold]
+- 10244: nintendo/playch10.cpp, nintendo/nes.cpp, nes.xml: Marked systems and software as unsupported as appropriate. [kmg]
+- 10245: nes.xml: Added two items. [Hard4Games, Dustin Echoes, Forest of Illusion, kmg]
+- 10246: misc/gmonon_color.cpp: Adjusted protection simulation; skeleton/c2color.cpp: Dumped internal ROM.
+  [Peter Wilhelmsen, David Haywood]
+- 10247: ibm5170.xml: Added seven working items, and replaced one item with a better dump. [ArcadeShadow]
+- 10248: lynx.xml: Use lowercase for descriptive text in descriptions. [ArcadeShadow]
+- 10249: fmtowns_flop_orig.xml: Added four working items, and replaced two items iwth better dumps. [cyo.the.vile, r09]
+- 10250: c64_cass.xml: Added sixteen items (fifteen working, one not working). [The Ultimate Tape Archive Team, Steven Coomber]
+- 10251: formats/fs_oric_jasmin.cpp, Floptool.cpp: Fixed some compiler warnings about unused variables. [napobear]
+- 10252: konami/kpython2.cpp, kpython2.xml: Added Python 2 skeleton driver and installation media software list. [Windy Fairy]
+- 10255: c64_cass.xml: Added ten items (nine working, one not working). [The Ultimate Tape Archive Team, Steven Coomber]
+- 10256: snes.xml: Added two recent prototype dumps (one working, one not working). [Zoda-Y13, Forest of Illusion, DrBizz, kmg]
+- 10260: photoply.cpp: Added notes about security dongles. [ClawGrip]
+- 10261: nintendo/spacefb.cpp: Combined source files and cleaned up code a little. [kmg]
+- 10262: sound/pokey.cpp: Improved accuracy of POKEY emulation. [Mike Saarna, Andrew Green]
+- 10263: monon_color.xml: Corrected the English translations of game titles. [Qiangong2]
+- 10264: tvgames/micom_mahjong.cpp: Added driver for Micom Mahjong console. [hap, David Haywood, Sly DC]
+- 10265: misc/magicard.cpp: Corrected names and parent/clone relationships for Magic Card games. [Paul-Arnold]
+- 10266: seibu/raiden.cpp: Documented more of the configuration bytes, and converted comments to C++-style. [eientei95]
+- 10267: namco/namcos86.cpp: Changed Wonder Momo joysticks to 8-way (MT08404). [Steven Coomber]
+- 10269: tecmo/spbactn.cpp: Emulated second screen for Super Pinball Action prototype. [David Haywood]
+- 10270: Cleaned up some ROM macro indentation and spacing. [kmg]
+- 10271: casio/ctk551.cpp: Adjusted CTK-601 LCD background color. [Devin Acker]
+- 10272: technos/renegade.cpp: Increased sprite RAM size to fix flickering and missing sprites. [kmg]
+- 10273: formats/fdos_dsk.cpp: Added FDOS disk format for the SWTPC 6800. [Michael R. Furman]
+- 10274: Added support for building on OpenBSD/arm64. [Frederic Cambus]
+- 10275: konami/ksys573.cpp: Added 811jaa02 audio CD for drmna. [Taro, Windy Fairy]
+- 10276: konami/kpython2.cpp: Added DANCE 86.4 Funky Radio Station. [Taro, Windy Fairy]
+- 10277: konami/kpython2.cpp: Fixed dongle data format for dance864. [Windy Fairy]
+- 10278: vboy.xml: Use official artwork spelling for “Insmouse”. [kmg]
+- 10279: gbcolor.xml: Added eighteen prototypes (fifteen working, three not working). [VGHF, Hidden Palace, kmg]
+- 10280: apple2_flop_orig.xml: Added Microzine disks; apple2_flop_clcracked.xml: Added two clean cracks. [4am, san inc., Firehawke]
+- 10283: adam_cart.xml: Use lowercase for descriptive text in descriptions. [ArcadeShadow]
+- 10284: adam_cass.xml: Use lowercase for descriptive text in descriptions. [ArcadeShadow]
+- 10285: adam_flop.xml: Use lowercase for descriptive text in descriptions. [ArcadeShadow]
 
 
 Source changes
