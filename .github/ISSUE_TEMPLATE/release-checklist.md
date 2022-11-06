@@ -140,3 +140,4 @@ For the following configurations, ensure a build compiles:
 - [ ] Create reddit posts on [r/MAME](https://www.reddit.com/r/MAME/), [r/emulation](https://www.reddit.com/r/emulation/) and [r/cade](https://www.reddit.com/r/cade/)
 - [ ] Create a new, pinned [GitHub Discussion](https://github.com/orgs/mamedev/discussions/categories/announcements) in the Announcements category, and unpin the previous release announcement discussion
 - [ ] Update version number in topic on #mame on Libera IRC
+- [ ] Update system driver source file list on MAME Testers (use `scripts/xslt/list-system-sources.xslt` to generate the list)
