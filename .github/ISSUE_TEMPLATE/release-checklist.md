@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-# Create release branch branch
+# Create release branch
 
 - [ ] Pull latest `master` branch, and run `make cleansrc`
 - [ ] Check differences, manually clean up anything broken (useful to check `git diff -b` as well as `git diff` to see changes that affect things other than whitespace)
@@ -21,7 +21,7 @@ assignees: ''
 
 # Run build matrix
 
-In addition to the basic coverage provided by GitHub Actions, MAME needs to be built and tested in across a representative spectrum of configurations.
+In addition to the basic coverage provided by GitHub Actions, MAME needs to be built and tested across a representative spectrum of configurations.
 
 For the following configurations, ensure a build compiles, links and validates, `-listxml` output validates, and basic functionality works:
 - [ ] x86-64, MinGW, GCC, debug, SDL OSD, with Qt debugger, without tools
@@ -128,11 +128,11 @@ For the following configurations, ensure a build compiles:
 - [ ] Use `7za t` to test integrity of downloaded archives
 - [ ] Verify SHA1 and SHA256 digests, e.g. `sha1sum -c < SHA1SUMS` and `sha256sum -c < SHA256SUMS`
 - [ ] Set timestamp on assets to midnight UTC for release date, e.g. `TZ=utc touch -t 201909040000 0.213/* 0.213`
-- [ ] Upload assets, to SourceForge FRS, e.g. `rsync -avzhc --progress -e ssh 0.213 frs.sf.net:/home/frs/project/mame/mame/`
+- [ ] Upload assets, to SourceForge FRS, e.g. `rsync -avzhc --progress -e ssh 0.124 frs.sf.net:/home/frs/project/mame/mame/`
 
 # Publish release
 
-- [ ] Mark current version as released on MAME Testers
+- [ ] Mark current version as released on MAME Testers, and update with actual release date
 - [ ] Publish release on GitHub
 - [ ] Push web site changes to `master` branch and wait for static pages to be regenerated
 - [ ] Check HTML and RSS pages, ensure a few links work
