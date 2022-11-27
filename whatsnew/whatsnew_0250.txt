@@ -41,6 +41,7 @@ MAME Testers bugs fixed
 - 08498: [Misc.] (misc/krokha.cpp) krokha: Invalid accesses drawing outside bitmap. (hap)
 - 08499: [Crash/Freeze] (sord/m5.cpp) m5p_brno: Reading from invalid cartridge offsets. (hap)
 - 08501: [Misc.] (playmark/sslam.cpp) all playmark/sslam.cpp sets: Invalid sprite memory accesses. (hap)
+- 08507: [Media Support] (trs/trs80.cpp) trs80l2, trs80m3: DMK disk images containing FM tracks are unsupported. (pnp2084)
 
 
 New working machines
@@ -129,6 +130,7 @@ Yamaha CX7/128 (MSX2, Japan) [openMSX]
 
 Machines promoted to working
 ----------------------------
+Alpine Surfer (World, AF2 Ver.A, set 1) [hap, Guru]
 Bawareth Perfect MSX1 (MSX1, Middle East) [Wilbert Pol]
 Daewoo Zemmix CPG-120 Normal (MSX2, Korea) [Wilbert Pol]
 Quizard 3 (v3.4, German, i8751 DE 132 D3) [Ryan Holtz]
@@ -143,7 +145,6 @@ Tandy Radio Shack Videotex [Tim Lindner]
 
 Clones promoted to working
 --------------------------
-Alpine Surfer (World, AF2 Ver.A, set 2) [hap]
 The Crystal Maze (v1.3, Datapak) (MPU4 Video) [James Wallace]
 The Crystal Maze Team Challenge (v0.9, Datapak) (MPU4 Video) [James Wallace]
 The New Crystal Maze Featuring Ocean Zone (v2.2, Datapak) (MPU4 Video) [James Wallace]
@@ -344,103 +345,25 @@ Merged pull requests
 - 10490: spectrum_cass.xml: Added fourteen working items, and replaced one item with a better dump. [ArcadeShadow]
 - 10493: gamecom.xml: Added a Castlevania – Symphony of the Night prototype. [anonymous, diskman.com, Hidden Palace, kmg]
 - 10503: handheld/hh_sm510.cpp: Added Tiger Mega Man 3. [algestam, Sean Riddle]
-
-10506: force a partial update for seta x1_012 tilemaps whenever the scroll registers change - needed for a crude raster effect when
-  entering underground areas on Caliber 50 [DavidHaywood]
-
-10510: midway/seattle.cpp: blitz typo fix. [mikehyrus]
-1997, not 1987 on the description.
-
-10512: msx1_cart.xml: added msxlogo uk, es, ar, br, pl and renamed nl [goldnchild]
-I wanted to make it easier to run the various flavors of msxlogo.  The current softlist only contains the NL version.
-There are a few that aren't included but I wasn't able to locate them (DE, IT, JP etc).
-Full list at https://www.generation-msx.nl/company/lcsi/1224/software/
-
-10514: Implement FM and mixed FM/MFM reading to DMK disk image format [pnp2084]
-Add FM (and mixed MFM/FM) support to the DMK floppy image format.  Since FM is now supported, add it to the trs80l2 driver as an
-  allowed format.  See bug 8507 for sample DMK images.
-
-10515: scv.xml: Metadata cleanings [ArcadeShadow]
-- Lowercase applied on "Alt" descriptive word
-- Add tag info with `alt_title` on y2mnstld set (and removed the comment)
-
-10516: sg1000.xml: Metadata cleanings [ArcadeShadow]
-- Replaced countries' abbreviation by their full name
-- Lowercase on descriptive words ("Alt", "Older", "Prototype", "Hacked")
-
-10517: a2600.xml: Set default controllers for Omega Race. [0kmg]
-
-10518: a7800.xml: Added 10 homebrew cartridges. [0kmg]
-New working software list additions
------------------------------------
-Armor Attack II [Robert Tuccitto]
-Bentley Bear's Crystal Quest (NTSC) [Robert Tuccitto]
-Crazy Otto (NTSC, Ms. Pac-Man hack) [Robert Tuccitto]
-Crazy Otto (PAL, Ms. Pac-Man hack) [Robert Tuccitto]
-Froggie [Robert Tuccitto]
-K.C. Munchkin! [Robert Tuccitto]
-Rip-Off (NTSC) [Robert Tuccitto]
-Rip-Off (PAL) [Robert Tuccitto]
-Scramble (NTSC) [Robert Tuccitto]
-Worm! [GroovyBee]
-
-10520: Add AgVision and fix VideoTex drivers [tlindner]
-New working machine added
------------
-Tandy Radio Shack AgVision [tim lindner]
-Machines promoted to working
------------
-Tandy Radio Shack Videotex [tim lindner]
-
-10523: neocd.xml: Metadata cleanings [ArcadeShadow]
-- Replaced countries' abbreviation by their full name
-- Lowercase on descriptive "Alt" abbreviation
-
-10524: neogeo.xml, ngp.xml and ngpc.xml: Metadata cleanings [ArcadeShadow]
-- Replaced countries' abbreviation by their full name
-- Lowercase on descriptive words
-
-10526: 32x.xml: Metadata cleanings [ArcadeShadow]
-Replaced countries' abbreviation by their full name
-
-10529: megacd.xml, megacdj.xml: Metadata cleanings [ArcadeShadow]
-Replaced countries' abbreviation by their full name
-
-10530: Remove reference to incorrect Yamaha TX81Z ROM image [ajxs]
-The Yamaha TX81Z driver references a `tx81z-last-revision.ic15` ROM binary. This is an error.
-The TX81Z's most recent firmware version is v1.6 from 1989. The binaries for the various firmware ROMs can be obtained here: _\<link
-  removed\>_, as well as Yamaha's official documentation of changes: https://mgregory22.me/tx81z/files/TX81Z_Service_News.pdf
-A version of the erroneous `tx81z-last-revision.ic15` ROM file (with the correct hash) can be found here: _\<link removed\>_. Doing
-  a diff between this file and the v1.6 ROM shows the only thing that has changed is the version string. There are no functional
-  changes.
-I'm not sure where this file came from. It's not an official ROM, and does not appear to be of any practical use. I've removed the
-  reference from the driver file.
-
-10531: msx2.cpp: Fix rom definitions for nms8245, y503iiir and y503iiire. [wilbertpol]
-msx2.cpp: Fix sha1 copy/paste mistake for nms8245. Removed duplicate rom entries on y503iiir and y503iiire.
-
-10532: taito/tc0100scn.cpp: fix longstanding color regression with wgp [angelosa]
-Caused by https://github.com/mamedev/mame/pull/5207/files#diff-d1157515ada7840f50c950748ba77671119be687fda8d13dfc3c99291f470170L269
-- taito/tc0100scn.cpp: removed `set_color_base` setter since it's unused.
-
-10535: a7800.xml: Marked light gun games as unsupported. [0kmg]
-
-10536: a2600.xml: Marked light gun games unsupported. Added a prototype. [0kmg]
-New working software list additions
------------------------------------
-Shootin' Gallery (PAL, prototype) [Buckaroo]
-
-10537: capcom/sonson: Change vsync to 55.40Hz [birdybro]
-Source of measurements --> https://github.com/MikeS11/Arcade-Sonson_MiSTer/issues/1#issuecomment-1312089702
-The value originally set must have been a typo, according to @kold669 (aka Corrado Tomaselli who is credited in the original change
-  made back in 0.156). The original PCB alternates between 55.37Hz and 55.43Hz and it is Corrado's suggestion to run it at 55.40Hz.
-  Measurement pictures backed up here as well:
-Vsync
-!Vsync
-Hsync
-!Hsync
-Csync
-!Csync
+- 10506: seta/x1_012.cpp: Force a screen update on scroll registers change (fixes Caliber 50 line scroll). [David Haywood]
+- 10510: midway/seattle.cpp: Fixed typo in blitz description (incorrect year). [Michael Sanborn]
+- 10512: msx1_cart.xml: Added regional variants of MSX-Logo. [Golden Child]
+- 10514: formats/dmk_dsk.cpp: Implemented FM and mixed FM/MFM read support (addresses MT08507). [pnp2084]
+- 10515: scv.xml: Use lowercase for descriptive text, and put alternate titles in info elements. [ArcadeShadow]
+- 10516: sg1000.xml: Use lowercase for descriptive text and full country names in descriptions. [ArcadeShadow]
+- 10517: a2600.xml: Set default controllers for Omega Race. [kmg]
+- 10518: a7800.xml: Added ten working homebrew cartridges. [Robert Tuccitto, GroovyBee, kmg]
+- 10520: Add Elanco AgVision driver, and fixed TRS VideoTex. [Tim Lindner]
+- 10523: neocd.xml: Use lowercase for descriptive text and full country names in descriptions. [ArcadeShadow]
+- 10524: neogeo.xml, ngp.xml, ngpc.xml: Use lowercase for descriptive text and full country names in descriptions. [ArcadeShadow]
+- 10526: 32x.xml: Use full country names in descriptions. [ArcadeShadow]
+- 10529: megacd.xml, megacdj.xml: Use full country names in descriptions. [ArcadeShadow]
+- 10530: yamaha/ymtx81z.cpp: Removed apparently hacked ROM image. [Anthony]
+- 10531: msx/msx2.cpp: Fixed ROM definitions for nms8245, y503iiir and y503iiire. [Wilbert Pol]
+- 10532: taito/tc0100scn.cpp: Fix longstanding color regression in wgp. [Angelo Salese]
+- 10535: a7800.xml: Marked games requiring light gun as unsupported. [kmg]
+- 10536: a2600.xml: Marked games requiring light gun as unsupported, and added a Shootin' Gallery prototype. [kmg, Buckaroo]
+- 10537: capcom/sonson.cpp: Changed video refresh rate to 55.40 Hz based on measurements from PCB. [birdybro, Corrado Tomaselli]
 
 10538: Add FDC Write Protect Delay [tlindner]
 Added 108 microsecond delay between an attempt to write to a write protected disk and the subsequent INTRQ.
