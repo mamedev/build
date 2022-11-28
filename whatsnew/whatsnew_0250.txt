@@ -42,6 +42,7 @@ MAME Testers bugs fixed
 - 08499: [Crash/Freeze] (sord/m5.cpp) m5p_brno: Reading from invalid cartridge offsets. (hap)
 - 08501: [Misc.] (playmark/sslam.cpp) all playmark/sslam.cpp sets: Invalid sprite memory accesses. (hap)
 - 08507: [Media Support] (trs/trs80.cpp) trs80l2, trs80m3: DMK disk images containing FM tracks are unsupported. (pnp2084)
+- 08521: [Graphics] (chess/tasc.cpp) tascr30: Numeric parameter handling in layouts is locale-sensitive. (Vas Crabb)
 
 
 New working machines
@@ -260,6 +261,8 @@ ibm5170:
   Fleet Defender, RoboSport (3.5" DD), RoboSport (5.25" HD), The Humans: Insult to Injury (France) [The Good Old Days]
 megadriv: Segapede (USA, prototype) [Craig Stitt, Hidden Palace]
 msx1_cart:
+  HOT-LOGO (Brazil, version 1.1), HOT-LOGO (Brazil, version 1.2), MSX-Logo (Argentina), MSX-Logo (Poland), MSX-Logo (Spain),
+  MSX-Logo (UK) [Arnaud de Klerk]
   CDX-2 + 5.25" DSDD floppy drive (Brazil), DDX + 5.25" DSDD floppy drive (Brazil, v3.0),
   DDX + 5.25" DSDD floppy drive (Brazil, v3.0d), DPF-550 Controller + 5.25" SSDD floppy drive (Argentina),
   DPF-550 Controller + 5.25" SSDD floppy drive (Belgium/Netherlands), EC-700 Word Processor (EC-701 + EC-702) (Japan),
@@ -364,435 +367,55 @@ Merged pull requests
 - 10535: a7800.xml: Marked games requiring light gun as unsupported. [kmg]
 - 10536: a2600.xml: Marked games requiring light gun as unsupported, and added a Shootin' Gallery prototype. [kmg, Buckaroo]
 - 10537: capcom/sonson.cpp: Changed video refresh rate to 55.40 Hz based on measurements from PCB. [birdybro, Corrado Tomaselli]
-
-10538: Add FDC Write Protect Delay [tlindner]
-Added 108 microsecond delay between an attempt to write to a write protected disk and the subsequent INTRQ.
-Fixes: https://mametesters.org/view.php?id=8258.
-
-10539: msx: Fixed problems with hb55d and hbf900a [wilbertpol]
-msx1.cpp: Fixed incorrect configuration of hb55d.
-msx2.cpp: Fixed regression of hbf900a.
-
-10540: olympia/portrait.cpp: apply some WIP cleanups, make it playable [angelosa]
-- Make color palette to be b&w for the time being, being more visible to the eye than the previous washed out attempt;
-- mask sprite area against defined playfield clip rectangle;
-- fix global sprite Y positions, they mostly follow up current scroll value except for some edge cases;
-- attempt to fix sprite priorities;
-- make tilemap bank more logical (?) bitwise;
-
-10541: gameboy.xml: Added a prototype. [0kmg]
-New working software list additions
------------------------------------
-Altered Space - A 3-D Alien Adventure (USA, prototype, 19910215) [SteelGeneral, Forest of Illusion]
-I've marked this as partial because all of its clones are marked partial. I'm not sure if/when there are issues with MAME's
-  emulation for this game. There's this page which describes issues related to the edge-triggered STAT IRQ. MAME doesn't have the
-  glitches in the screenshot shown there, so maybe things are all good? Or maybe there are yet more subtle issues for this title?
-  I'll leave it to somebody more knowledgeable about the GB drivers to say whether the "partial" flags can be removed here.
-
-10542: ibm5170.xml: 9 new software additions [ArcadeShadow]
-New working software list additions
------------------------------------
-Best of the Best: Championship Karate (Spain, PC Games release) [AbandonSocios]
-Fleet Defender [The Good Old Days]
-RoboSport (3.5" DD) [The Good Old Days]
-RoboSport (5.25" HD) [The Good Old Days]
-The Humans: Insult to Injury (France) [The Good Old Days]
-The Humans: Insult to Injury (Spain, PC Games release) [AbandonSocios]
-Moved from ibm5150 Software List
------------------------------------
-Both "Nova 9" games requires hard disk installation and EGA or VGA graphic card (box cover info) 
-Nova 9: The Return of Gir Draxon (v1.1, 3.5" DD)
-Nova 9: The Return of Gir Draxon (v1.0, 3.5" DD)
-Requires IBM AT (box cover info) 
-Mario Andretti's Racing Challenge
-
-10543: vsmile_cd.xml: Metadata cleaning [ArcadeShadow]
-Replaced countries' abbreviation by their full name
-
-10544: pico.xml: Metadata cleaning [ArcadeShadow]
-- Replaced countries' abbreviation by their full name
-- Lowercase on descriptive words ("Alt", "Prototype")
-
-10545: nes.xml: Added new working entry [ICEknigh7]
-- The Cheetahmen: The Creation (USA) [Magic Jewelry Nerd]
-
-10546: newport: Split out iterator setup stage [FlyGoat]
-In REX3, iterator setup should be a dedicated operation that is only execuated if
-a). A Draw command is execuated with DoSetup at DRAWMODE0 set or
-b). A host write is issued to SETUP register
-At setup stage REX3 will calcuate quadrant for a block or span drawcall or octant together with some Bresenham parameters for a line
-  drawcall.
-Linux newport_con driver is rely on this behavior to use quadrant calculated by previous draw call to render characters.
-Fixes: #9667
-Now Debian installation disk seems display properly:
-!image
-
-10547: Refine write protect delay value [tlindner]
-Adjust write protect delay to better match real hardware.
-
-10548: nintendo/nes_arcade_bl.cpp: Added emulation for NES side of hardware. [0kmg]
-
-10549: msx.cpp: Add external floppy and kanji cartridges. [wilbertpol]
-msx1_flop.xml:
-- Move msxdostb to msx1_flop_525.xml
-msx1_cart.xml:
-- Add Kanji ROM to Japanese MSX-Write.
-- Add Toshiba Kanji ROM
-- Add Konami Word Processor with Kanji cartridge.
-- Added several external floppy controllers and drives.
-New working software list additions
-----------------------------------
-CDX-2 + 5.25" DSDD floppy drive (Brazil) [openMSX]
-DDX + 5.25" DSDD floppy drive (Brazil, v3.0d) [openMSX]
-DDX + 5.25" DSDD floppy drive (Brazil, v3.0) [openMSX]
-DPF-550 Controller + 5.25" SSDD floppy drive (Argentina) [openMSX]
-DPF-550 Controller + 5.25" SSDD floppy drive (Belgium/Netherlands) [openMSX]
-EC-700 Word Processor (EC-701 + EC-702) (Japan) [openMSX]
-FD-051 Controller + FD-05 3.5" DSDD floppy drive [openMSX]
-HB-3600 Controller + HB-6000 5.25" DSDD floppy drive (Brazil) [openMSX]
-HBD-20W (Floppy controller + 3.5" DSDD floppy drive) (Japan) [openMSX]
-HBD-50 (Floppy controller + 3.5" SSDD floppy drive, SNYJX121) [openMSX]
-HBD-F1 (Floppy controller + 3.5" DSDD floppy drive) (Japan) [openMSX]
-HX-F101PE Controller + 3.5" SSDD floppy drive (Europe) [openMSX]
-MFD-001 (Controller + enclosure with 1 5.25" DSDD floppy drive) (Europe) [openMSX]
-ML-30DC Controller + ML-30FD enclosure with 1 3.5" DSDD floppy drive (Japan) [openMSX]
-NMS-1200 Floppy controller + 3.5" DSDD floppy drive (Europe, v1.06) [openMSX]
-NMS-1200 Floppy controller + 3.5" DSDD floppy drive (Europe, v1.04) [openMSX]
-Toshiba Kanji ROM Cartridge HX-M200 (Japan) [openMSX]
-New software marked as NOT_WORKING
-----------------------------------
-FD-03 Controller + 3.5" DSDD floppy drive v3.8 [openMSX]
-FD-03 Controller + 3.5" DSDD floppy drive v3.5 [openMSX]
-
-10550: Fixed missing bit mask in e132xsfe.cpp causing UBSAN warnings [MooglyGuy]
--e132xsfe.cpp: Fixed missing bit mask causing UBSAN warnings. (Github #10502) [Ryan Holtz, Oliver Stöneberg]
-
-10551: New working machine added [algestam]
------------
-Castlevania II: Simon's Quest (Tiger handheld) [algestam, Sean Riddle]
-
-10552: n64.xml: Added an unreleased prototype. [0kmg]
-New working software list additions
------------------------------------
-SimCopter 64 (prototype 19970616) [VGHF]
-
-10554: Dumped and added Inder's "El Circulo" [clawgrip]
-New NOT_WORKING machine
--------------------------------
-El Circulo [jordigahan, Pikolo, ArcadeHacker, ClawGrip]
-
-10555: spectrum_cass.xml: 12 new working software list additions + 2 redumps [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Fantasia Diamond (set 4, VTR) [Steven Brown, Planeta Sinclair]
-FORTH (Microbyte) [spectrumcomputing.co.uk]
-Hundra (Dinamic) [spectrumcomputing.co.uk]
-King Arthur [Luís Rato, Planeta Sinclair]
-Mr. Shaw's Double Whammy (compilation) [Luís Rato, Planeta Sinclair]
-Nonamed (Spanish, medium case, alt) [spectrumcomputing.co.uk]
-Nonamed (Spanish, small case - black spine) [spectrumcomputing.co.uk]
-Nosferatu: Quest for the Vampire (alt) [Steven Brown, Planeta Sinclair]
-Nuclear Reactor [Steven Brown, Planeta Sinclair]
-Starship Mulvaney [Steven Brown, Planeta Sinclair]
-Starstrike II [spectrumcomputing.co.uk]
-Tremor (pirate) [Planeta Sinclair]
-Redump
---------------------------------------------
-Nonamed (Spanish, small orange case) [spectrumcomputing.co.uk]
-Nosferatu el Vampiro (Zafiro) [spectrumcomputing.co.uk]
-Metadata cleanups: Corrected parent/cloneof relationships, publishers, release years (based on the info provided by
-  spectrumcomputing.co.uk)
-
-10556: msx2.cpp: Fix floppy support for y805128r2 and y805128r2e [wilbertpol]
-
-10557: jvshost: Fix size of encoded packet with escaped bytes [987123879113]
-The size of the encoded packet returned by the `encode` function was off by the number of bytes that were escaped. This issue is
-  only seen when a raw packet includes bytes that need to be escaped (0xd0 or 0xe0).
-The `add` variable is added to the output `size` variable after the loop but since the `add` variable is directly decremented every
-  time a byte is escaped in the loop, the final `size += add` turns into `size += 0`.
-
-10558: a2600.xml: Added an unreleased prototype. [0kmg]
-New working software list additions
------------------------------------
-Turbo (NTSC, prototype) [Rom Hunter]
-
-10559: hornet: Replace JVS impl with jvs_host device [987123879113]
-The JVS code in hornet seems to predate `jvs_host` so I ripped out the old code and replaced it with an equivalent using `jvs_host`
-  to allow for hooking up a `jvs_device`-based JVS device as well as get rid of some duplicated logic.
-Gradius 4 with the Master Calendar JVS device as well as a stubbed Windy 2 JVS I/O device (identifies as `KONAMI
-  CO.,LTD.;Windy2;Ver1.0;Windy2 I/O Ver1.0`) were used for testing.
-I also tested gradius4, nbapbp, terabrst, thrilldbu, sscope, sscope2 to make sure they were still booting without a JVS device
-  hooked up.
-!0000
-!0015
-
-10560: Ensure queue->thread will have at least 1 work_thread_info in it [CasualPokePlayer]
-For platforms which do not support threads (i.e. emuscripten), queue->thread might not have any work_thread_info's added to it. This
-  is bad as osd_work_item_queue_multiple will access queue->thread[0] when queue->threads == 0, and subsequently crash as the queue
-  has no items in it.
-
-10561: casio/ld50.cpp: identify unknown ICs & signals, add link to service manual [devinacker]
-
-10563: hash/*: Remove zero offsets from cassette and CD-ROM setup floppy lists. [0kmg]
-
-10564: Fixed MESS build [MASHinfo]
-
-10565: Another MESS build fix [MASHinfo]
-
-10566: msx1_cass.xml: Added 47 titles, 1 redump. [wilbertpol]
-msx1_cart.xml: Marked testcart as bad dump.
-msx1_cass.xml: Added 47 titles, 1 redump.
-New working software list additions
------------------------------------
-Aprende astronomía con El Sol (Spain) [msxcassettes]
-Aprende astronomía con la Luna (Spain) [msxcassettes]
-Aprende astronomía con la Tierra en el espacio (Spain) [msxcassettes]
-Aprende astronomía con los planetas (Spain) [msxcassettes]
-Cocos (Spain) [msxcassettes]
-Contabilidad Personal (Spain) [msxcassettes]
-Data MSX - Issue 01 (Spain) [msxcassettes]
-Data MSX - Issue 04 (Spain) [msxcassettes]
-Data MSX - Issue 09 (Spain) [msxcassettes]
-Dog Fighter (Spain) [msxcassettes]
-Floppy el Pregunton (Spain) [msxcassettes]
-Frankie (Spain) [msxcassettes]
-Freddy Hardest (UK, Italy) [msxcassettes]
-Generador de Sprites (Spain) [msxcassettes]
-Golf (Spain) [msxcassettes]
-Juegue con su MSX - Issue 02 - Alpha Centauro (Spain) [msxcassettes]
-Juegue con su MSX - Issue 07 - Robber (Spain) [msxcassettes]
-La Liebre y la Tortuga (Spain) [msxcassettes]
-Lenguaje 7° E.G.B. (Spain) [msxcassettes]
-Lenguaje 8° E.G.B. (Spain) [msxcassettes]
-Lenguaje Maquina - Issue unknown (Spain) [msxcassettes]
-M-47 Combate de blindados (Spain) [msxcassettes]
-MSX Games Vol 05 - Patrullera XH-63 (Spain) [msxcassettes]
-MSX Games Vol 10 - Invasores (Spain) [msxcassettes]
-MSX Soft Magazine - Issue 08 - Rana Sideral (Spain, alt) [msxcassettes]
-MSX Soft Magazine - Issue 09 - Cazador de tiburones (Spain) [msxcassettes]
-MSX Software - Issue 04 (Spain) [msxcassettes]
-MSX Software - Issue 16 - Hungry Harry (Spain) [msxcassettes]
-Mad-Fox (Spain) [msxcassettes]
-Música en Juego I - Notas (Spain) [msxcassettes]
-PHCalc (Spain) [msxcassettes]
-Panic Kong (Spain) [msxcassettes]
-Perspective (Japan, v1.1) [msxcassettes]
-Quinielas y Reducciones (Spain) [msxcassettes]
-Sky Hawk (Spain) [msxcassettes]
-Snackbar + Mouse Jump (Spain) [msxcassettes]
-Soccer Boss (UK) [msxcassettes]
-Soft-MSX 1 (Spain) [msxcassettes]
-Soft-MSX 3 (Spain) [msxcassettes]
-Star Seeker - Solar System (Spain) [msxcassettes]
-Stars MSX 1 (Spain) [msxcassettes]
-Stars MSX 2 (Spain) [msxcassettes]
-Stars MSX 4 (Spain) [msxcassettes]
-Viaje Espacial (Spain) [msxcassettes]
-Who Dares Wins 2 (UK, Italy) [msxcassettes]
-Redump
---------
-Contabilidad 2 (Spain) [msxcassettes]
-New NOT_WORKING software list additions
----------------------------------------
-Aprendiendo Inglés 1 - en el campo y en el castillo (Spain) [msxcassettes]
-Juegos de Inteligencia (Spain) [msxcassettes]
-
-10568: new NOT_WORKING machine [devinacker]
---------------
-Yamaha PSS-12 [Edward d-tech]
-
-10569: Updated Greek Translation [BraiNKilleRGR]
-
-10570: Dumped and added "Golden Chip" slot machine from SegaSA / Sonic [clawgrip]
-New NOT_WORKING machine
------------------------------------
-Golden Chip [jordigahan]
-
-10571: Dumped and added two different versions of Falgas "Fantastic Car" kiddie ride [clawgrip]
-New NOT_WORKING machine
------------------------
-Fantastic Car (M89 hardware) [Eduardo Anay]
-New NOT_WORKING  clone
------------------------
-Fantastic Car (Micro-87 hardware) [Eduardo Anay]
-
-10573: New working machine added: Ninja Gaiden III (Tiger handheld) [algestam]
------------
-Ninja Gaiden III (Tiger handheld) [algestam, Sean Riddle]
-
-10574: gaelco/mastboy.cpp: Fix description for 'mastboyib' and rename it to 'mastboyiv2' [clawgrip]
-!IMG_6856
-
-10578: konami/hornet.cpp: Added x76 security chip, and added new regional variants of games [987123879113]
-- x76 security chip which is used by Gradius 4 and NBA Play By Play has been implemented.
-  - Fixes NBA Play By Play showing as "Ver. ***" and the language changes as expected based on region now (`nbapbp` claims to be
-  Japanese but would boot as a default region and became English instead). On boot this game will always read a chunk from the
-  security EEPROM and write it to the top of the RTC data and contains the region information.
-- Fixed Silent Scope Voodoo 2 configuration not working as intended. The k033906 had a fixed PCI ID for a Voodoo 1 so games thought
-  they were using a Voodoo 1 even when using the Voodoo 2 configuration. Silent Scope 1/2 quick crashed with the Voodoo 2
-  configuration due to an unimplemented register which was also implemented in this PR.
-- The Silent Scope 2 revision C set had a "931a04.16t" file which only had 2 bytes different from every other set, and between those
-  only 1 bit is different in each of the 2 bytes. I suspect it's a bad dump but I have no way to verify so I added a comment about
-  it. The game will boot with either of the available dumps so it's not a game breaker.
-Every game in the Hornet driver, including all regional variants and hardware configurations, has been tested to make sure they boot
-  to at least the title screen using the region specified. The only game that does not boot is the A revision set for Teraburst for
-  which I added some information about the issue and a hack to skip the problem code for whoever tries to fix that in the future.
--------
-Edit: Made up the full change log for this PR. I did not change the working/not working tags for any games so Gradius IV and NBA
-  Play By Play retain their previous working status. I am not the original dumper of the actual game ROMs so I don't care if I'm
-  credited for these or not.
-```
-New clones marked as WORKING
---------------------------------
-Gradius IV: Fukkatsu (ver JAA) [windyfairy]
-Gradius IV (ver UAC) [windyfairy]
-Gradius IV (ver AAC) [windyfairy]
-Gradius IV (ver AAA) [windyfairy]
-NBA Play By Play (ver UAB) [windyfairy]
-NBA Play By Play (ver JAB) [windyfairy]
-NBA Play By Play (ver UAA) [windyfairy]
-NBA Play By Play (ver AAA) [windyfairy]
-NBA All The Way (ver EAB) [windyfairy]
-NBA All The Way (ver EAA) [windyfairy]
-New clones marked as NOT_WORKING
---------------------------------
-Teraburst (1998/07/17 ver JEL) [windyfairy]
-Teraburst (1998/07/17 ver HEL) [windyfairy]
-Teraburst (1998/02/25 ver UAA) [windyfairy]
-Teraburst (1998/02/25 ver JAA) [windyfairy]
-Teraburst (1998/02/25 ver HAA) [windyfairy]
-Silent Scope (ver EAD, Ver 1.33) [windyfairy]
-Silent Scope (ver AAD, Ver 1.33) [windyfairy]
-Silent Scope (ver EAC, Ver 1.30) [windyfairy]
-Silent Scope (ver AAC, Ver 1.30) [windyfairy]
-Silent Scope (ver EAB, Ver 1.20) [windyfairy]
-Silent Scope (ver AAB, Ver 1.20) [windyfairy]
-Silent Scope (ver JAB, Ver 1.20) [windyfairy]
-Silent Scope (ver EAA, Ver 1.00) [windyfairy]
-Silent Scope (ver AAA, Ver 1.00) [windyfairy]
-Silent Scope (ver JAA, Ver 1.00) [windyfairy]
-Silent Scope (ver EAD, Ver 1.33, GQ871 Voodoo 2 video board) [windyfairy]
-Silent Scope (ver AAD, Ver 1.33, GQ871 Voodoo 2 video board) [windyfairy]
-Silent Scope (ver UAC, Ver 1.30, GQ871 Voodoo 2 video board) [windyfairy]
-Silent Scope (ver EAC, Ver 1.30, GQ871 Voodoo 2 video board) [windyfairy]
-Silent Scope (ver AAC, Ver 1.30, GQ871 Voodoo 2 video board) [windyfairy]
-Silent Scope 2 : Innocent Sweeper (ver JAD, Ver 1.03) [windyfairy]
-Silent Scope 2 : Innocent Sweeper (ver AAD, Ver 1.03) [windyfairy]
-Silent Scope 2 : Dark Silhouette (ver UAC, Ver 1.02) [windyfairy]
-Silent Scope 2 : Fatal Judgement (ver EAC, Ver 1.02) [windyfairy]
-Silent Scope 2 : Innocent Sweeper (ver JAC, Ver 1.02) [windyfairy]
-Silent Scope 2 : Innocent Sweeper (ver AAC, Ver 1.02) [windyfairy]
-Silent Scope 2 : Dark Silhouette (ver UAB, Ver 1.01) [windyfairy]
-Silent Scope 2 : Fatal Judgement (ver EAB, Ver 1.01) [windyfairy]
-Silent Scope 2 : Innocent Sweeper (ver JAB, Ver 1.01) [windyfairy]
-Silent Scope 2 : Innocent Sweeper (ver AAB, Ver 1.01) [windyfairy]
-Silent Scope 2 : Dark Silhouette (ver UAD, Ver 1.03, GN715 Voodoo 1 video board) [windyfairy]
-Silent Scope 2 : Fatal Judgement (ver EAD, Ver 1.03, GN715 Voodoo 1 video board) [windyfairy]
-Silent Scope 2 : Innocent Sweeper (ver JAD, Ver 1.03, GN715 Voodoo 1 video board) [windyfairy]
-Silent Scope 2 : Innocent Sweeper (ver AAD, Ver 1.03, GN715 Voodoo 1 video board) [windyfairy]
-Silent Scope 2 : Dark Silhouette (ver UAC, Ver 1.02, GN715 Voodoo 1 video board) [windyfairy]
-Silent Scope 2 : Fatal Judgement (ver EAC, Ver 1.02, GN715 Voodoo 1 video board) [windyfairy]
-Silent Scope 2 : Innocent Sweeper (ver JAC, Ver 1.02, GN715 Voodoo 1 video board) [windyfairy]
-Silent Scope 2 : Innocent Sweeper (ver AAC, Ver 1.02, GN715 Voodoo 1 video board) [windyfairy]
-Silent Scope 2 : Dark Silhouette (ver UAB, Ver 1.01, GN715 Voodoo 1 video board) [windyfairy]
-Silent Scope 2 : Fatal Judgement (ver EAB, Ver 1.01, GN715 Voodoo 1 video board) [windyfairy]
-Silent Scope 2 : Innocent Sweeper (ver JAB, Ver 1.01, GN715 Voodoo 1 video board) [windyfairy]
-Silent Scope 2 : Innocent Sweeper (ver AAB, Ver 1.01, GN715 Voodoo 1 video board) [windyfairy]
-```
-
-10579: msx.cpp: Made the general purpose ports (joystick/mouse) a slot device. [wilbertpol]
-msx.cpp: Made the general purpose ports (joystick/mouse) a slot device.
-Moved msx slot devices to subfolders.
-
-10580: machine/upd71071.cpp: initialize variables, prevents random HDD failures in fmtowns [rzero9]
-For some time I've noticed that the hard drives were occasionally (randomly) not working on startup in the FM Towns machines, which
-  usually points to something using uninitialized variables. After tracing it with Valgrind it seems the issue is in the uPD71071
-  DMA controller.
-I have tested the driver with these changes and in about 30 tries it hasn't failed at all (it didn't take more than 3 or 4 before),
-  so I'm pretty confident that it's working correctly now.
-
-10581: Fixed MESS build [MASHinfo]
-
-10582: devices/machine/jvsdev.cpp: Fix chaining resets [987123879113]
-Previously only the first device in the chain would receive the reset command, causing any slave devices to retain their assigned
-  address after the reset. The desired behavior is for all slaves in the chain to reset.
-
-10583: Update ymfm to latest. [aaronsgiles]
-Update ymfm library to latest. [Aaron Giles]
-* Uninitialized member was causing slight jitter in timing when timer B is used.
-* OPNA now has correct attenuation when LFO is disabled.
-* PCM address incrementing was incorrect, resulting in some wraparound bugs.
-
-10584: msx1_cass: Fix 2 incorrect sha1 hashes in datmsx04 and soccerbo [wilbertpol]
-
-10586: Yamaha DX9 Skeleton Driver [ajxs]
-This is a skeleton driver for the Yamaha DX9 synthesizer. The layout has a functional UI, with the LCD, LEDs, and front-panel
-  buttons. I intend to improve the layout file when time permits.
-This is the first driver I've implemented. If there are any issues with how I've structured the code, or any extra documentation
-  required, please let me know, and I'll be happy to correct the issues.
-If I understand it correctly, I need to email the required ROM image to the MAME developers. If someone could instruct me where to
-  send that, I'm happy to do so.
-
-10587: nintendo/vsnes.cpp: Added missing DIP switch settings for vsmahjng. [0kmg]
-
-10588: devices/cpu/powerpc/ppccom.cpp: (PPC4xx) Add configurable external serial clock and use actual system clock value for serial
-  timer [987123879113]
-As per the PPC403 CPU manual, SerClk is supposed to be an external clock and can only be up to half of SysClk, and SysClk should be
-  the actual system clock speed.
-!image
-The hardcoded 33333333 (system clock) and 3686400 (serial clock) constants have existed for longer than I can see in the Git history
-  (pre-0.121) so I don't have more context for those specific values.
-https://github.com/mamedev/mame/blame/7b77f1218624ea26dbb2efd85a19f795f5d4e02e/src/emu/cpu/powerpc/ppc403.c#L625-L629
-I tested with a few random Konami Hornet, Konami Cobra, and Konami Firebeat games and everything seems to be working as well as
-  before, and a fatal error with Hornet games when frequently polling for inputs on the JVS I/O has been fixed (commented in code).
-  The fatal error does not affect any games currently but will occur when a JVS I/O device is hooked up as required for 4 player
-  inputs in NBA Play By Play.
-
-10589: nintendo/vsnes.cpp: Fill in missing Dora DIP settings. [0kmg]
-I played around with this some more and learned some more about mahjong. The dora rule variants seem to usually be referred to as 現物
-  and ネクスト, so that's what I've called them here. If there's some other common MAME nomenclature let me know.
-
-10591: konami/hornet.cpp: Fix 4 player cabinet type in NBA Play By Play [987123879113]
-Windy 2 JVS I/O device has been tested in NBA Play By Play on Konami Hornet and Fighting Wu-Shu 2nd! on Konami Cobra hardware.
-The panel configuration is normally determined by the DIPSW8 on the I/O PCB but I found the games can be picky about the minimum
-  number of buttons available for it to accept the panel configuration, so I removed the user configurable dipswitch in favor of
-  having the driver programmer decide the best panel type for a game to reduce any false reports from bad panel configuration
-  settings.
-This is the panel layout and dipswitch setting reference from the manual:
-!image
-
-10598: -cdi: Added support for Italian version of Quizard 1. [Ryan Holtz, f205v, Team Europe] [MooglyGuy]
-New working machines
---------------------
-Quizard (v1.8, Italian, i8751 IT 11 I2) [Ryan Holtz, f205v, Team Europe]
-Quizard (v1.7, Italian, i8751 IT 11 I2) [Ryan Holtz, f205v, Team Europe]
-Quizard (v1.2, Italian, i8751 IT 11 I2) [Ryan Holtz, f205v, Team Europe]
-Quizard (v1.0, Italian, i8751 IT 11 I2) [Ryan Holtz, f205v, Team Europe]
-Machines promoted to working
-----------------------------
-Quizard 3 (v3.4, German, i8751 DE 132 D3) [Ryan Holtz]
-Quizard 3 (v3.4, German, i8751 DE 132 A1) [Ryan Holtz]
-Quizard 3 (v3.2, German, i8751 DE 132 D3) [Ryan Holtz]
-Quizard 4 Rainbow (v4.2, German, i8751 DE 142 D3) [Ryan Holtz]
-Quizard 4 Rainbow (v4.2, Czech, i8751 TS142 CZ1) [Ryan Holtz]
-Quizard 4 Rainbow (v4.1, German, i8751 DE 142 D3) [Ryan Holtz]
-Quizard 4 Rainbow (v4.0, German, i8751 DE 142 D3) [Ryan Holtz]
-
-10600: namco/20pacgal.cpp: Update SERVICE and EEPROMIN port bits [pdaderko]
-Update SERVICE and EEPROMIN port bits to reflect actual hardware behavior.
-Fixes bug in 25pacmano where after 64 plays, copy protection prevents game from starting (tracked at address 0x3E-0x3F in EEPROM).
-Changes to 20pacgal ports verified on hardware, though makes no noticeable difference to gameplay.
-Ports of 25pacman left as-is, no hardware to verify with.
-
-10601: megadriv.xml: Added an unreleased prototype. [0kmg]
-New working software list additions
------------------------------------
-Segapede (USA, prototype) [Craig Stitt, Hidden Palace]
-
-10602: nes.xml: Add the Yuletide homebrew in prep for MAMEmas! [0kmg]
-New working software list additions
------------------------------------
-8-bit Xmas 2022 [retroUSB]
+- 10538: machine/wd_fdc.cpp: Delay interrupt when attempting to write to a write-protected disk (fixes MT08258). [Tim Lindner]
+- 10539: msx/msx1.cpp, msx/msx2.cpp: Fixed machine configuration issues with hb55d and hbf900a. [Wilbert Pol]
+- 10540: olympia/portrait.cpp: Cleaned up code, fixed some graphical issues, and made the game playable. [Angelo Salese]
+- 10541: gameboy.xml: Added a prototype of Altered Space - A 3-D Alien Adventure. [SteelGeneral, Forest of Illusion, kmg]
+- 10542: ibm5170.xml: Added six working items. [AbandonSocios, The Good Old Days, ArcadeShadow]
+- 10543: vsmile_cd.xml: Use full country names rather than abbreviations in descriptions. [ArcadeShadow]
+- 10544: pico.xml: Use lowercase for descriptive text and full country names in descriptions. [ArcadeShadow]
+- 10545: nes.xml: Added The Cheetahmen: The Creation (USA). [Magic Jewelry Nerd, ICEknight]
+- 10546: bus/gio64/newport.cpp: Split out REX3 iterator setup operation (fixes issues with Linux newport_con driver). [Jiaxun Yang]
+- 10547: machine/wd_fdc.cpp: Reduced delay from attempting to write to write-protected disk to interrupt. [Tim Lindner]
+- 10548: nintendo/nes_arcade_bl.cpp: Added emulation for the NES side of the hardware. [kmg]
+- 10549: bus/msx1_cart.xml, msx1_cart.xml: Added external floppy and kanji cartridges. [Wilbert Pol, openMSX]
+- 10550: cpu/e132xs/e132xsfe.cpp: Fixed missing bit mask causing UBSAN warnings (GitHub #10502). [Ryan Holtz]
+- 10551: handheld/hh_sm510.cpp: Added Tiger Castlevania II: Simon’s Quest. [algestam, Sean Riddle]
+- 10552: n64.xml: Added an unreleased prototype of SimCopter 64. [VGHF, kmg]
+- 10554: skeleton/elcirculo.cpp: Added skeleton driver for Inder’s “El Circulo”. [jordigahan, Pikolo, ArcadeHacker, ClawGrip]
+- 10555: spectrum_cass.xml: Added twelve working items, and replaced two items with better dumps. [ArcadeShadow]
+- 10556: msx/msx2.cpp: Fixed floppy support for y805128r2 and y805128r2e. [Wilbert Pol]
+- 10557: machine/jvshost.cpp: Fixed the size of encoded packets containing escaped bytes. [Windy Fairy]
+- 10558: a2600.xml: Added Turbo (NTSC, prototype). [Rom Hunter, kmg]
+- 10559: konami/hornet.cpp: Replaced local JVS implementation with common JVS host device. [Windy Fairy]
+- 10560: osd/osdsync.cpp: Ensure work queue will always have at least one work thread info item (fixes MT06828). [CasualPokePlayer]
+- 10561: casio/ld50.cpp: Identified some ICs and signals, and added a link to the service manual. [Devin Acker]
+- 10563: Removed zero offsets from cassette and floppy disk images in various software lists. [kmg]
+- 10564: Added new MSX source files to MESS subtarget filter. [MASH]
+- 10565: Added Omron Luna 88K² source file to MESS subtarget filter. [MASH]
+- 10566: msx1_cass.xml: Added 47 items, and replaced one item with a better dump. [msxcassettes, Wilbert Pol]
+- 10568: yamaha/ympss12.cpp: Added skeleton driver for Yamaha PSS-12. [Edward d-tech, Devin Acker]
+- 10569: Updated Greek user interface translation. [BraiNKilleRGR]
+- 10570: misc/diamondking.cpp: Dumped and added SegaSA/Sonic “Golden Chip” slot machine. [jordigahan, ClawGrip]
+- 10571: misc/falgas_m89.cpp: Dumped and added two versions of the Falgas “Fantastic Car” children’s ride. [Eduardo Anay, ClawGrip]
+- 10573: handheld/hh_sm510.cpp: Added Tiger Ninja Gaiden III (Tiger handheld). [algestam, Sean Riddle]
+- 10574: gaelco/mastboy.cpp: Corrected title of Italian version of Master Boy Version II in description. [ClawGrip]
+- 10578: konami/hornet.cpp: Added x76 security chip, and added new regional variants of games. [Windy Fairy]
+- 10579: msx/msx.cpp: Made the general purpose controller ports slot devices with basic joystick and mouse options. [Wilbert Pol]
+- 10580: machine/upd71071.cpp: Initialize address and count registers – fixes random hard disk failures in FM Towns systems. [r09]
+- 10581: Added some new system driver source files to subtarget filters. [MASH]
+- 10582: machine/jvsdev.cpp: Fixed chaining resets, and always cascade broadcast messages to slave devices. [Windy Fairy]
+- 10583: 3rdparty/ymfm: Updated to latest version, fixing issues with OPNA, PCM playback and uninitialized members. [Aaron Giles]
+- 10584: hash/msx1_cass.xml: Fixed incorrect SHA-1 digests for datmsx04 and soccerbo. [Wilbert Pol]
+- 01586: yamaha/ymdx9.cpp: Added skeleton driver for Yamaha DX9 synthesizer. [Anthony]
+- 10587: nintendo/vsnes.cpp: Added missing DIP switch settings for vsmahjng. [kmg]
+- 10588: cpu/powerpc/ppccom.cpp: Made PPC400 series external serial clock configurable. [Windy Fairy]
+- 10589: nintendo/vsnes.cpp: Filled in missing Dora DIP switch settings for vsmahjng. [kmg]
+- 10591: konami/hornet.cpp: Fixed four-player cabinet type in NBA Play By Play, and added Windy 2 JVS I/O device. [Windy Fairy]
+- 10598: philips/cdi.cpp: Added support for Italian version of Quizard 1. [Ryan Holtz, f205v, TeamEurope]
+- 10600: namco/20pacgal.cpp: Improved values returned for unknown SERVICE and EEPROMIN bits (fixes protection issue). [pdaderko]
+- 10601: megadriv.xml: Added an unreleased Segapede prototype. [Craig Stitt, Hidden Palace, kmg]
+- 10602: nes.xml: Added 8-bit Xmas 2022 homebrew cartridge. [retroUSB, kmg]
 
 
 Source changes
@@ -2179,12 +1802,6 @@ Segapede (USA, prototype) [Craig Stitt, Hidden Palace]
 
 -Metadata corrections [Vas Crabb]
 
+-scmp: Fix unreliable order of execution in JMP instruction [AJR]
 
-msx1_cart (msx1_cart.xml):
-  Working
-    MSX-Logo (Argentina)
-    HOT-LOGO (Brazil, version 1.1)
-    HOT-LOGO (Brazil, version 1.2)
-    MSX-Logo (Poland)
-    MSX-Logo (Spain)
-    MSX-Logo (UK)
+-emu/rendlay.cpp: Fixed locale-sensitive number handling (fixes MT08521). [Vas Crabb]
