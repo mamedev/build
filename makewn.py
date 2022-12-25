@@ -787,12 +787,12 @@ def print_preliminary_whatsnew(stream, wrapcol, title, repository, api, release,
     placeholders = (
             '%s' % (title, ),
             'MAME Testers bugs fixed',
-            'New working machines',                     'New working clones' ,
-            'Machines promoted to working',             'Clones promoted to working',
-            'New machines marked as NOT_WORKING',       'New clones marked as NOT_WORKING',
-            'New working software list additions',
+            'New working systems',                      'New working clones' ,
+            'Systems promoted to working',              'Clones promoted to working',
+            'New systems marked not working',           'New clones marked not working',
+            'New working software list items',
             'Software list items promoted to working',
-            'New NOT_WORKING software list additions',
+            'New software list items marked not working',
             'Translations added or modified')
     for heading in placeholders:
         print_section_heading(stream, heading)
@@ -800,12 +800,12 @@ def print_preliminary_whatsnew(stream, wrapcol, title, repository, api, release,
 
     print_fresh_pull_requests(stream, wrapcol, repository, api, release, candidate)
     print_source_changes(stream, wrapcol, repository, release, candidate)
-    print_new_machines(stream, wrapcol, 'New working machines', new_working_parents);
+    print_new_machines(stream, wrapcol, 'New working systems', new_working_parents);
     print_new_machines(stream, wrapcol, 'New working clones', new_working_clones);
-    print_new_machines(stream, wrapcol, 'Machines promoted to working', new_promoted_parents);
+    print_new_machines(stream, wrapcol, 'Systems promoted to working', new_promoted_parents);
     print_new_machines(stream, wrapcol, 'Clones promoted to working', new_promoted_clones);
-    print_new_machines(stream, wrapcol, 'New machines marked as NOT_WORKING', new_broken_parents);
-    print_new_machines(stream, wrapcol, 'New clones marked as NOT_WORKING', new_broken_clones);
+    print_new_machines(stream, wrapcol, 'New systems marked not working', new_broken_parents);
+    print_new_machines(stream, wrapcol, 'New clones marked not working', new_broken_clones);
 
     comp = SoftlistComparator(stream, verbose)
     current = candidate.tree['hash']
