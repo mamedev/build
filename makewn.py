@@ -672,13 +672,9 @@ class LogScraper:
         fmt.finalise()
 
 
-nowhatsnew_pat = re.compile('.*([[(]n/?w[])].*|[\s,]n/?w$)')
 bullet_pat = re.compile('^([-*]\s*)?(.+)$')
 credit_pat = re.compile('^(.+)\s+\[(.+)\]$')
 markdown_url_pat = re.compile('\[([^]]+)\]\(([^)])+\)')
-newdrivers_pat = re.compile('^new|(game|machine|system|clone)s? promot')
-softlist_pat = re.compile('soft(ware)? ?list')
-notworking_pat = re.compile('not[_ ]working')
 
 new_working_parents = []
 new_promoted_parents = []
@@ -686,6 +682,9 @@ new_broken_parents = []
 new_working_clones = []
 new_promoted_clones = []
 new_broken_clones = []
+new_working_software = []
+new_promoted_software = []
+new_broken_software = []
 
 
 def wrap_paragraph(stream, paragraph, wrapcol, prefix, indent):
@@ -750,10 +749,15 @@ def print_fresh_pull_requests(stream, wrapcol, repo, api, previous, current):
 
 
 def print_source_changes(stream, wrapcol, repo, previous, current):
+    newdrivers_pat = re.compile('new |((game|machine|system|clone)s?|soft(ware|list) .+) promot(ed|ion)')
+    softlist_pat = re.compile('soft(ware| ?list) ')
+    notworking_pat = re.compile('not[_ ]working')
+
     def categorise(heading, item):
         heading = heading.lower()
-        if (newdrivers_pat.match(heading) is not None) and (softlist_pat.match(heading) is None):
+        if newdrivers_pat.match(heading) is not None:
             clone = heading.find('clone') >= 0
+            software = softlist_pat.search(heading) is not None
             if heading.find('promot') >= 0:
                 working = True
                 promoted = True
@@ -763,7 +767,9 @@ def print_source_changes(stream, wrapcol, repo, previous, current):
             else:
                 working = True
                 promoted = False
-            if clone:
+            if software:
+                (new_promoted_software if promoted else new_working_software if working else new_broken_software).append(item)
+            elif clone:
                 (new_promoted_clones if promoted else new_working_clones if working else new_broken_clones).append(item)
             else:
                 (new_promoted_parents if promoted else new_working_parents if working else new_broken_parents).append(item)
@@ -806,6 +812,9 @@ def print_preliminary_whatsnew(stream, wrapcol, title, repository, api, release,
     print_new_machines(stream, wrapcol, 'Clones promoted to working', new_promoted_clones);
     print_new_machines(stream, wrapcol, 'New systems marked not working', new_broken_parents);
     print_new_machines(stream, wrapcol, 'New clones marked not working', new_broken_clones);
+    print_new_machines(stream, wrapcol, 'New working software list items', new_working_software);
+    print_new_machines(stream, wrapcol, 'Software list items promoted to working', new_promoted_software);
+    print_new_machines(stream, wrapcol, 'New software list items marked not working', new_broken_software);
 
     comp = SoftlistComparator(stream, verbose)
     current = candidate.tree['hash']

@@ -296,9 +296,9 @@ if __name__ == '__main__':
             output.write('%s\n' % (description, ))
         output.write('\n')
 
-    printResult('New working machines', new_working_parents)
+    printResult('New working systems', new_working_parents)
     printResult('New working clones', new_working_clones)
-    printResult('Machines promoted to working', promoted_parents)
+    printResult('Systems promoted to working', promoted_parents)
     printResult('Clones promoted to working', promoted_clones)
-    printResult('New machines marked as NOT_WORKING', new_nonworking_parents)
-    printResult('New clones marked as NOT_WORKING', new_nonworking_clones)
+    printResult('New systems marked not working', new_nonworking_parents)
+    printResult('New clones marked not working', new_nonworking_clones)
