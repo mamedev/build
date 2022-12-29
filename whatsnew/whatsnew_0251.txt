@@ -1,4 +1,4 @@
-0.251 2022-12-xx
+0.251 2022-12-31
 ----------------
 
 
@@ -39,6 +39,7 @@ Institut für Kosmosforschung Gerät 32620 (Sprach/Morsegenerator) [Dirk Best, 
 Konami (licensed from Electronic Arts) Skate or Die (Konami, handheld) [hap, Sean Riddle, Mr. Do]
 Konami Bill Elliott's NASCAR Racing (handheld) [hap, Sean Riddle, Mr. Do]
 Multitech Micro-Professor I/88 [Nigel Barnes]
+Nebula (DECO Cassette) (UK) [Rene Balke, Darksoft, Senil Data Systems, David Haywood]
 
 
 New working clones
@@ -232,603 +233,101 @@ Merged pull requests
 - 10509: msx1_cart.xml, msx1_cass.xml, msx1_flop.xml: Cleaned up descriptions. [ArcadeShadow]
 - 10513: msx2_cart.xml, msx2_cass.xml, msx2_flop.xml, msx2p_flop.xml: Cleaned up descriptions. [ArcadeShadow]
 - 10527: sega_beena_cart.xml: Use lowercase for things that aren’t proper nouns in list description. [ArcadeShadow]
-
-10572: 6x09 TFR / EXG Improvement [tlindner]
-1. Remove tuple implementation used by the EXG and TFR instructions of the 6809, 6309 and Konami CPUs. It was unnecessary because
-  fundamentally these are implemented with a single, 16 bit wide temporary register.
-2. Changed how the 6809 CPU processes the invalid 8 to/from 16 bit register combinations. Their behavior now matches actual
-  hardware. I used page 66 and 138 of Darren Atkinson's 6x09 manual [1] for reference. I also double checked with my own hardware
-  [2].
-3. Checked for regressions using NitrOS-9 (6809 and 6309) on the CoCo, And Aliens and 88Games (Konami).  
-[1]
-  https://colorcomputerarchive.com/repo/Documents/Books/Motorola%206809%20and%20Hitachi%206309%20Programming%20Reference%20%28Darren%20Atkinson%29.pdf
-[2] http://tlindner.macmess.org/?p=945
-
-10575: CoCo Disto Upgrade [tlindner]
-1. Remove realtime clock and no-halt functions from Radio Shack floppy disk controller.
-2. Create Disto Super Controller II floppy disk controller that contains no-halt functionality
-3. Create "mini expansion bus" that the SCII use for add on cards.
-4. Put MEB into SCII and Disto RAM cartridge.
-5. Create Disto "Realtime Clock" MEB slot device. Also includes a parallel printer interface
-
-10595: Support added for HP9825A & HP9831 [fulivi]
-Hi,
-this PR adds the support for HP9825A (B & T versions are already supported) and for the ultra-rare HP9831 (according to
-  hpmuseum.net).
-I've also added the emulation of HP9871 printer as a pass-through to a "printer" device. This printer is needed to see the output
-  from 9831.
-I'm going to mail all the relevant the ROM images shortly.
-Thanks.
---F.Ulivi
-
-10604: Added 4 Israeli games [Josh Renaud, Sali Ariel, Keith Hacke] [telanus]
-Added:
-    “Aleph Baiters” (1983)
-    “Nosh Kosh” (1983)
-    “Borders” (1983)
-    “The Georgia Variations” (1984)
-
-10605: Fix some misspelling occurrences here and there. [0kmg]
-
-10607: misc/cocoloco.cpp: Correct DIP switch name Cocoloco typo. [0kmg]
-
-10610: msx.cpp: Add support for Hudson Soft Bee Card and Electric Software Astron Softcard. [wilbertpol]
-
-10611: snes.xml: Put a couple holiday homebrews in your SNES stocking. [0kmg]
-New working software list additions
------------------------------------
-16 Bit Xmas 2011 - Christmas Craze (USA) [retroUSB]
-16 Bit Xmas 2012 - Snowball Fight (USA) [retroUSB]
-
-10614: konami/hornet.cpp, konami/cobra.cpp, konami/nwk-tr.cpp: Refactor JVS host code [987123879113]
-I refactored the JVS host code I was using for these PowerPPC 4xx-based Konami machines into konppc_jvshost.cpp and made them use
-  that instead of having 3 identical implementations. konppc.cpp already exists for "Konami PowerPC Common Functions" so I decided
-  to use the same naming scheme since it applies to almost all of the same machines. konami/nwk-tr.cpp doesn't have anything hooked
-  up to the JVS host but it was tested with the Master Calendar JVS device.
-I also ripped out the old generic JVS I/O device code from konami/cobra.cpp and replaced it with a Windy2 I/O device, and fixed the
-  bug stopping coins from working in bujutsu (cc: @angelosa).
-
-10615: upd765.cpp: return a command_end with data_completion = false for failed commands [angelosa]
-- fixes most CHRN marked fails in pc8801_flop.xml and (eventually) pc88va FDC PIO mode stall at POST.
-
-10617: konami/nwk-tr.cpp, konami/hornet.cpp: Rewrite GN676 LAN board and add variants for Thrill Drive, Racing Jam, Racing Jam 2
-  [987123879113]
-The commits are self contained so I recommend reading at the commit level at first.
-Fixes MT07241.
-The GN676 LAN board has been rewritten nearly from scratch. Thrill Drive can boot without the "skip post" dipswitch now as all boot
-  tests are passing. I added a lot of documentation about this in the code but the games reprogram the FPGA at specific times
-  depending on what it should be doing (boot memory test, security checks, etc) and I've tried my best to replicate the
-  functionality based on the firmware that was uploaded. All games that use the board have been tested to make sure everything is
-  working as expected. All known firmware versions for all games available currently have been documented as well. The actual
-  networking has *not* been implemented but this should provide an accurate enough base for someone to be able to implement it in
-  the future.
-All possible regional and cabinet variants for Thrill Drive have been added and documented to the extent I could find major
-  differences. The security chip data has been added for all NWK-TR Thrill Drive versions. The RTC chip is used to determine the
-  cabinet type in Hornet Thrill Drive games whereas the security chip is used to determine cabinet type in NWK-TR Thrill Drive
-  games.
-Racing Jam and Racing Jam 2 has all regional variants added but only the GQ cabinet variants were added. The GQ cabinet type has the
-  simplest I/O configuration and requires less hardware to be emulated. I've documented the differences between the cabinet types
-  that I could find but I did not add them because the naming will just become increasingly more cryptic. I left a note on how to
-  create working RTC files required for those cabinet types so it shouldn't be hard for someone to add them in the future. The
-  cabinet type *does* change the user gameplay experience slightly.
-```
-New clones marked as NOT_WORKING
---------------------------------
-Racing Jam (GQ676UAC) [windyfairy]
-Racing Jam (GQ676EAC) [windyfairy]
-Racing Jam (GQ676AAC) [windyfairy]
-Racing Jam: Chapter 2 (GQ888UAA) [windyfairy]
-Racing Jam: Chapter 2 (GQ888AAA) [windyfairy]
-Thrill Drive (UDE) [windyfairy]
-Thrill Drive (JCE) [windyfairy]
-Thrill Drive (EDE) [windyfairy]
-Thrill Drive (ACE) [windyfairy]
-Thrill Drive (ABE) [windyfairy]
-Thrill Drive (UDB) [windyfairy]
-Thrill Drive (JCB) [windyfairy]
-Thrill Drive (EDB) [windyfairy]
-Thrill Drive (ACB) [windyfairy]
-Thrill Drive (ABB) [windyfairy]
-Thrill Drive (ver GN713JAB) [windyfairy]
-Thrill Drive (ver GM713JAB) [windyfairy]
-Thrill Drive (ver GP713JAB) [windyfairy]
-Thrill Drive (ver GE713JAB) [windyfairy]
-Thrill Drive (ver GK713EAB) [windyfairy]
-Thrill Drive (ver GK713EEB) [windyfairy]
-Thrill Drive (ver GK713K*B) [windyfairy]
-```
-
-10619: v9938.cpp: Add support for V9958 registers 26 and 27 to modes graphic23 and graphic4 mode. Fixes MT#08466 [wilbertpol]
-…es MT#08466.
-
-10621: x68k_flop.xml: 12 new dumps from original disks, removed offsets [rzero9]
-This adds 12 new X68000 dumps from original disks, mostly from protected games. They were dumped by krugman in SCP format
-  (flux-level) and I converted them to the HxC MFM format so they can be used in MAME with the protection intact. As usual, the
-  existing dumps have been renamed as "cracked" so they are still documented.
-Also I took the opportunity to remove the "offset" attribute from the entire list, since there seems to be a consensus that it isn't
-  needed for the floppy lists. I put it in a separate commit so it's easier to see the actual changes.
-New working software list additions
------------------------------------
-Casablanca ni Ai o - Satsujin-sha wa Jikuu o Koete [krugman]
-Death Bringer [krugman]
-Dome [krugman]
-Emerald Dragon [krugman]
-Genocide 2 - Master of the Dark Communion [krugman]
-Signatory - Chouinsha [krugman]
-The Hot File Express (1991-12-24) [krugman]
-The Hot File Express (1993-10-28) [krugman]
-Tritorn Final [krugman]
-Warning Type 68 [krugman]
-New not working software list additions
----------------------------------------
-38 Man Kilo no Kokuu [krugman]
-Soft de Hard na Monogatari II [krugman]
-
-10622: apple2_flop_orig.xml: Uppercase on publisher's initials [ArcadeShadow]
-Uppercase on "Brøderbund Software" publisher's initials
-
-10623: rz1_cass.xml: Lowercase on descriptive word [ArcadeShadow]
-Lowercase on descriptive "samples" word
-
-10624: a800.xml: Metadata cleanups [ArcadeShadow]
-- Replaced countries' abbreviations by their full name
-- Lowercase on some descriptive words like "Rev", "Alt", "Prototype", "Pirate", ...
-
-10625: konmedal.cpp: Corrected the K051649 clock for a few titles. [b0x-Cub3d]
-The clock divider that was previously defined caused the music for the games that used shuriboy's machine configuration to be
-  pitched higher than hardware recordings. This should match, if not at least be close, to the actual clock from hardware
-  recordings.
-Shuriken Boy: hardware(https://youtu.be/EeRqRCpqzkE?t=23) vs. MAME (https://youtu.be/YkUlJdstDrA?t=33)
-Fuusen Pentai: hardware(https://youtu.be/JL45gafk2_Y?t=8) vs. MAME(https://youtu.be/M6qyGSBPD5o?t=6)
-Tsururin Kun: hardware(https://youtu.be/loGvV6tgkhY?t=8) vs. MAME(even though it's unplayable, it was affected by this.)
-Tsurikko Penta: hardware(https://youtu.be/ggqx9tX3jEw?t=13) vs. MAME(https://youtu.be/J4vxjq8NPwg?t=5)
-Mario Roulette: hardware(https://youtu.be/8QMDrwWOvG0?t=4) vs. MAME(https://youtu.be/SmzuAp-lfzA?t=162)
-I should preface that Buttobi Striker and Dam Dam Boy have the correct clock settings through comparisons.
-You can credit this pull request as BoxCubed.
-
-10627: konami/hornet.cpp: Improvements to Silent Scope and Teraburst [987123879113]
-- The Silent Scope's scope I/O board's ADC is hooked up where it should be so the game can boot without the machine init skip
-  dipswitch enabled now.
-~~- I added a hack for Silent Scope's scope screen to fix the screen update issue. I documented why the scope screen was broken and
-  why the hack will fix it but I have no idea how to fix it properly so I'm hoping the hack + comment gives someone some leads to
-  fix it properly in the future. The function of interest called by IRQ1 in `sscope` is 0x80008828 if someone wants to take a look
-  at it.~~
-- I hooked up controls to `gun_r` which allows Teraburst to work without the machine init skip dipswitch enabled and generally makes
-  the game more playable (previously only had keyboard controls). It's an HLE style emulation instead of trying to implement the CCD
-  camera setup.
-
-10629: msx/slot/cartridge.cpp: Stop copying software memory region contents. [wilbertpol]
-
-10630: dataeast/deco_mlc.cpp - Add Japanese subtitle to Skull Fang clones. [mikehyrus]
-This subtitle is found on both Asian and Japanese rom sets.
-
-10633: mpu4.cpp: Many sound related fixes [james-wallace-ghub]
-Separated the OKI sound card handler into its own file
-Converted MPU4Video and MPU4 to use the common OKI implementation
-Set sound output to mono to match the circuit schematics.
-Added Alarm tone circuitry
-ROC10937 and clones: Set duty to 0 on reset, fixes prematurely loading text.
-
-10635: hash/ibm5150.xml: first pass at QA [angelosa]
-- Revisit all of the supported="partial" / "no" flags, promote or demote depending on observations.
-Software list items promoted to working
----------------------------------------
-ibm5150.xml: Ancient Land of Ys [Angelo Salese]
-
-10636: megadriv.xml: add offset="0x000000" back for multi-rom entries; fix rockman1 entry [einstein95]
-Software list items promoted to working
----------------------------------------
-megadriv.xml: Rockman Mega World (Japan, EEPROM) [eientei]
-
-10637: konami/hornet: Fix regression in Teraburst's gun I/O not passing boot test [987123879113]
-Hornet games default to having the "skip post" dipswitch set to on because most games have issues during boot still, so I didn't
-  notice when I broke the gun I/O's boot test in https://github.com/mamedev/mame/pull/10627. The two problems being that I
-  completely forgot to fix returning m_gn680_ret0 and m_gn680_ret1 after I changed the functions from 32 bit to 16 bit, and also
-  didn't take into account that gun I/O polling wants 0x7408000e to be set to 0.
-Teraburst has a bunch of `[:voodoo0] internal_lfb_r: Buffer offset out of bounds x=486 y=1023 offset=000FFDE6 bufoffs=FFFB01E6`
-  errors and eventually is reset by the watchdog so it's impossible to test if guns work skip post disabled.
-Tested that the gun I/O check was passing again with skip post disabled, and also checked that the guns are still working by playing
-  up to the car chase type scene on level 2 with "disable machine init" disabled.
-
-10639: pcecd.xml: Metadata cleanups [ArcadeShadow]
-Replaced "Jpn" country abbreviation by "Japan"
-
-10640: pc98.xml: Metadata cleanups [ArcadeShadow]
-Lowercase on descriptive words (like: "Alt", Disk", "Format", "Fix", etc...)
-
-10641: MC68328 and PalmPilot: More cleanups and better LCDC emulation [MooglyGuy]
--mc68328: Improved LCDC and SPI handling. [Ryan Holtz]
--palm: Added LCD blanking bits, improved port handling, removed unneeded prefixes. [Ryan Holtz]
-
-10642: New WORKING Machines (Nebula, DECO Cassette) [DavidHaywood]
-New WORKING Machines
-------
-Nebula (DECO Cassette) (UK) [Rene Balke, Darksoft, Arcadeautomaten/Senil Data Systems, David Haywood]
-
-10643: spectrum_cass.xml: 3 New working software list additions [ArcadeShadow]
-New working software list additions
---------------------------------------------
-ACE 2088 (MCM) [spectrumcomputing.co.uk]
-Adidas Championship Football (Erbe) [spectrumcomputing.co.uk]
-Adidas Championship Tie Break (Musical 1) [spectrumcomputing.co.uk]
-Remove
---------------------------------------------
-Agent - X 2 (Dro Soft) [duplicated entry]
-Metadata cleanups: Corrected parent/cloneof relationships, publishers, release years (based on the info provided by
-  spectrumcomputing.co.uk)
-
-10644: sound/nes_apu.cpp: Can no longer read from anything but status register. [0kmg]
-nintendo/nes_vt*: Aligned PnP APU code with core changes.
-nintendo/dkong.cpp: Fixed dkong3b crash regression.
-
-10645: cave.cpp: added pwrinst2 and plegends pld dumps [sergiopolog]
-Added dumps for PLDs (PEEL18CV8 devices) used in Power Instinct 2 and Power Instinct Legends sets (pwrinst2, plegends sets and
-  clones)
-They are unlocked and I could read them directly.
-* U7: https://i.imgur.com/9POaJt8.png
-* U21: https://i.imgur.com/YbV674D.png
-* U25: https://i.imgur.com/MNHJ5TZ.png
-
-10647: bus/coco: minor cleanup of interfaces [tlindner]
-Move device initialization to constructor. Added resolve_safe() to remove some checks.
-
-10648: trs/coco12.cpp: add deluxe color computer [tlindner]
-New working clones
-------------------
-Deluxe Color Computer (Radio Shack, 1983) [tim lindner]
-Unreleased product. Boisy asked me to make this driver based on this blog post:
-  http://latenightcoco.blogspot.com/2015/05/under-cover.html
-The real ROM has not been found. I'm not sure the best way to document this.
-
-10649: atari/sprint8.cpp: Cleaned up input code. [0kmg]
-- Label gas and gear shift buttons. Set gear shift as PORT_TOGGLE as it is a high/low shifter. Starts in low gear now.
-- Use finders for ioports, cut down on repeated code.
-
-10651: new clones (teedoff) [DavidHaywood]
-new clones
----------
-Tee'd Off (World) [system11]
-note, since the new set has the same 'protection' code that we thought might be due to a bad dump, I've unflagged the other ROMs.
-this is the new parent set.  I've also demoted the game to NOT WORKING for now because there's something strange going on, and it
-  isn't clear that the behavior is 100% correct with the patch.
-system11 also provided the following PCB images http://mamedev.emulab.it/haze/amisc/teedoff_pcb_images.zip note @angelosa there
-  doesn't seem to be anything out of the ordinary anywhere on the PCB.  Maybe this code shouldn't be being executed at all and the
-  failure is earlier? maybe it's an open bus read?
-
-10653: decocass.cpp - remove 'clown car credits' and leave only the copyright holders [DavidHaywood]
-
-10654: x1_012.cpp: restrict partial updates in the seta tilemap chip to caliber 50, it breaks too many other places due to unmasking
-  some bad timing problems in the drivers. [DavidHaywood]
-
-10656: nec/pc88va.cpp: overhaul, make most software to start running with pc88va2 [angelosa]
-- nec/v5x.cpp: add ICU slave ack readback;
-
-10658: misc/cave.cpp: Added new Power Instinct 2 set [sergiopolog]
-New WORKING clone
--------------------------------
-Power Instinct 2 (US, Ver. 94.04.08, set 1) [Sergio Galiano, Recreativos Piscis]
-
-10659: apple1.xml: Fix publisher capitalisation [einstein95]
-
-10660: [VSMILE] machine configuration switches [KanedaFr]
-Hi,
-I added dipswitches to control 3 values of IOPortB.
-ON and OFF switches allow to access BIOS test screen.
-I first tried with classic inputs but since BIOS tests them on first ticks at launch, you can't press ON and OFF at the right time.
-Based on this test screen, I was able to confirm every value of the language dipswitches.
-
-10663: Updated FME alphanumeric emulation [james-wallace-ghub]
-ROC10937 and clones: Added duty effects to built in FME layouts
-BFM_BD1: Added flash mode, corrected character table
-JPM IMPACT: Registered variables for state saving
-BFM_BDA: Added brightness and flash controls
-ROC10937 and clones: Preserved internal data buffers on POR, fixes blanked display in JPM IMPACT
-
-10664: gamecom: Adjustments to channel 1 and 2 audio [FateForWindows]
-* Channels 1 and 2 now use their level registers.
-* m_sound_cnt max value halved; the old value was reading twice as far, causing channel 2 to play back incorrectly.
-Sound emulation as a whole is still VERY inaccurate to real SM8521 behavior, but this can at least serve as a temporary fix until a
-  proper implementation can be added.
-The mixing itself also needs a bit of work at the moment before this can be considered for merging.
-
-10665: mappy.cpp: Undo dip switch reordering from PR #10166 [einstein95]
-
-10666: nintendo/vsnes.cpp: Set DIP switches to factory defaults. [0kmg]
-- Affects hogalley, smgolf, suprmrio, vsbball, vsgradus, vsgshoe, vssoccera and any clones.
-- Made separate DIP switch settings for vssoccer and smgolfj, since their starting point values differ from other sets.
-
-10667: atari/starshp1.cpp: Set thrust control to slow when not pushing button. [0kmg]
-
-10668: hp/hp80.cpp: Fixed keyboard issue on hp86b_001 and hp86b_004 [fulivi]
-Hi,
-I'm opening this PR because I fixed the long-standing keyboard problem on `hp86b_001` and `hp86b_004`.
-The bug was apparently due to the keyboard controller being enabled too early during the boot process.
-Thanks.
---F.Ulivi
-
-10669: new machine (not working/skeleton): Yamaha keyboard/musicstation pss-780 [TwistedTom]
-dumped pss-780 ic4
-(ic3 is same as pss-680)
-
-10670: nintendo/cham24.cpp: Enable save stating + general cleanups. [0kmg]
-
-10671: sms.xml: Added 3 prototypes. [0kmg]
-New working software list additions
------------------------------------
-King's Quest - Quest for the Crown (USA, prototype, 19890203) [Ed Semrad, smspower, VGHF]
-Monopoly (USA, prototype, alt) [Ed Semrad, smspower, VGHF]
-Super Monaco GP (USA, prototype) [Ed Semrad, smspower, VGHF]
-
-10672: coleco.xml: Added a couple prototypes. [0kmg]
-New working software list additions
------------------------------------
-Frogger II: Threedeep! (prototype, 19840615) [Ed Semrad, Hidden Palace, VGHF]
-Star Wars: The Arcade Game (prototype, 19840412) [Ed Semrad, Hidden Palace, VGHF]
-
-10673: created proper sfzch mapper [TwistedTom]
-created proper sfzch mapper (decoded the recently found/dumped SFZ63B pal)
-
-10674: nes.xml: Added 12 dumps. [0kmg]
-New working software list additions
------------------------------------
-2 in 1 - GEMiNIM & Siamond [NESBrew12]
-Crazy Land (USA, prototype) [Ed Semrad, Hidden Palace, VGHF]
-Galaxy 5000 - Racing in the 51st Century (USA, prototype) [Ed Semrad, Hidden Palace, VGHF]
-Hoops (USA, prototype) [Ed Semrad, Hidden Palace, VGHF]
-Iron Tank - The Invasion of Normandy (USA, prototype) [Ed Semrad, Hidden Palace, VGHF]
-Nighttime Bastards [anonymous]
-R.B.I. Baseball 2 (USA, prototype, 19900307) [Ed Semrad, Hidden Palace, VGHF]
-Rally Bike (USA, prototype, 19900226) [Ed Semrad, Hidden Palace, VGHF]
-RoadBlasters (USA, prototype) [Ed Semrad, Hidden Palace, VGHF]
-Shadow of the Ninja (USA, sample) [Ed Semrad, Hidden Palace, VGHF]
-Silkworm (USA, prototype) [Ed Semrad, Hidden Palace, VGHF]
-Sudoku 2007 [NESBrew12]
-
-10677: sega/model3.cpp: Dirt Devils uses the same Drive board (same PCB and same ROMs) as Scud Race [Museo del Recreativo]
-  [clawgrip]
-
-10678: video/ppu2c0x.cpp: Improve behavior of OAM writes during PPU rendering. [0kmg]
-
-10680: Fixed MESS and Arcade builds [MASHinfo]
-
-10681: decocass.cpp - rework BIOS macros, adding missing 'older' types, sorting by new/old, added support for a different
-  aftermarket multigame kit + use correct cnebula cassette image - single bit error before [DavidHaywood]
-decocass.cpp - rework BIOS macros, adding missing 'older' types, sorting by new/old, added support for a different aftermarket
-  multigame kit, avoid some runtime tag lookups, use correct cnebula cassette image
-new WORKING machines
------
-DECO Cassette System ROM Multigame (Darksoft, v17) [David Haywood]
-new clones
------
-DECO Cassette System ROM Multigame (Darksoft, v16) [David Haywood]
-DECO Cassette System ROM Multigame (Darksoft, v15) [David Haywood]
-
-10682: sega/sms.cpp: Refactored Game Gear handling [cuavas]
-* Use a memory view to switching between Game Gear and Master System compatibility I/O space mapping.  Got rid of most of the
-  conditional code checking whether it's a Game Gear driver.
-* Got rid of the special Game Gear EXT port slot.  It's the same thing as a Mega Driver controller/expansion I/O port with a
-  different connector.
-* sega/mdioport.cpp: Added a variant for the Game Gear with the TH/PC6 interrupt latch, and added it to the Game Gear.
-There are still a couple of places it‘s checking for Game Gear in the function where it sets up cartridge mapping.
-We need tests on real hardware to confirm details of behaviour when reading Game Gear built-in controls and EXT port in Master
-  System compatibility mode.  Also need confirmation on whether it’s possible for TH input on the EXT port to latch the horizontal
-  count in Master System compatibility mode – the main purpose on a Master System is to support light guns, which obviously don’t
-  work on a Game Gear.
-Opening as a pull request because I’m tired and don’t trust myself to push directly at the moment.
-
-10683: new NOT WORKING machines [DavidHaywood]
-new NOT WORKING machines
-----------
-Gun Gun Adventure (Japan) [Sean Riddle]
-
-10684: -mc68328: Added EZ variant support. [MooglyGuy]
-- Split MC68328 device into a base class with shared functionality, and derived MC68328 and MC68EZ328 models.
-- Added roughly-functional implementation of the Epson SED1375 LCD controller.
-Machines promoted to working
-----------------------------
-Palm IIIc [Ryan Holtz]
-
-10685: nec/pc8801.cpp: promote machines to working status [angelosa]
-- video/upd3301.cpp: fix off by one attribute bugs happening for pc8801 N-88 Basic and several other entries;
-- nec/pc8801.cpp: backported centronics hookup from pc8001, allows supporting Jast Sound thru Covox interface in some Jast entries;
-- nec/pc8801.cpp: fix 1bpp graphic layer drawing when uPD3301 is not in color mode, fixes byoin regression;
-Machines promoted to working
-----------------------------
-nec/pc8801.cpp: PC-8801mkIISR, PC-8801MH, PC-8801MA [Angelo Salese, Oliver Galibert, Carl]
-Clones promoted to working
-----------------------------
-nec/pc8801.cpp: PC-8801mkIIFR, PC-8801mkIIMR, PC-8801FA, PC-8801MA2 [Angelo Salese, Oliver Galibert, Carl]
-New working software list additions
------------------------------------
-pc8801_flop.xml: D' (cracked) [Neo Kobe], Donkey Kong 3 - Dai Gyakushuu [Game Preservation Society, Carl, Disk Blitz]
-New NOT_WORKING software list additions
----------------------------------------
-pc8801_flop.xml: D' (alt) [Neo Kobe]
-
-10686: bus/a7800/rom.cpp: Use proper bank order for Activision 128K cartridges. [0kmg]
-The current ROMs don't work when put back on an original cartridge due to pairs of 8K blocks being swapped. This corrects that and
-  other minor details.
-
-10687: bus/megadrive/jcart.cpp: fix include guard typo. [0kmg]
-
-10689: vsmileb_cart.xml: Add info about missing game [clawgrip]
-
-10690: capcom/gunsmoke.cpp: Dumped and added a new Gun.Smoke set [clawgrip]
-New WORKING clone
--------------------------
-Gun.Smoke (USA and Canada, 1986/01/20) [Victor Fernandez (City Game), Jordi Beltrán]
-* Also fixed metadata on the other sets
-
-10691: nintendo/playch10.cpp: Added separate gun trigger input. [0kmg]
-- Also fixes incorrect Zapper-like trigger behavior. The PC10 trigger is just a button that fires upon being pushed. The NES trigger
-  is a more complex mechanism where a full trigger motion pushes and then releases a micro switch (still not handled well in MAME as
-  it generally means games fire when you _release_ a button).
-For some reason (laziness?) P1's first button (B) was being repurposed for the light gun's trigger. Playchoice-10 has separate
-  dedicated pins for both P1/P2 standard controls AND the light gun. All three happily coexist on hardware (unlike a light gun on a
-  VS cabinet).
-
-10692: Fixed a crash when toggling fullscreen w/ NES Gyromite on Windows [MooglyGuy]
--osd/windows/window.cpp: Check for a non-null renderer before issuing a draw request to the renderer. [Ryan Holtz]
-
-10694: sega/sg1000.cpp: SG-1000 only has one control port. Prevent Othello M… [0kmg]
-...ultivision drivers from segfaulting.
-
-10695: bugfix in snes header logerror reporting [TwistedTom]
-Was always reporting speed as fastrom
-
-10696: More MC68EZ328 work for palmm100 and iqunlim [MooglyGuy]
--mc68328: Improved LCD controller emulation. [Ryan Holtz]  
--mc68328lcd: Added a generic device to handle MC68328-style LCD output signals. [Ryan Holtz]
--iqunlim: Hooked up MC68EZ328 device. [Ryan Holtz]
-
-10697: skeleton: Rename Vector 4 to Vector 3 [ejona86]
-It appears Vector Graphic Monitor 4 was confused with Vector 4. The majority of the functioning parts are for the Vector 3, as that
-  is the source of the ROMs.
-I've fixed some of the easier Vector 4-isms that were copied from the user guide, but it will need more thorough work. That should
-  be a lot easier with the better understanding of which machine was running and the detailed documentation.
-------
-I'm familiar with the Vector 4, but not so much with the Vector 3. I have a follow-up to add Vector 4. It doesn't conflict except
-  for mame.lst.
-
-10698: ibm5150.xml: 11 New working software list additions [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Arcade Hits [The Good Old Days]
-Bombuzal [The Good Old Days]
-Mega Man (3.5") [The Good Old Days]
-Pole Position [The Good Old Days]
-Street Fighting Man (alt) [The Good Old Days]
-Teenage Mutant Hero Turtles (5.25") [old-games.ru]
-Teenage Mutant Hero Turtles (Spain, 3.5") [Abandon Socios]
-Teenage Mutant Hero Turtles (Spain, 5.25") [Abandon Socios]
-Zeliard (3.5") [The Good Old Days]
-Zeliard (3.5", v2.0) [old-games.ru]
-Zeliard (5.25") [The Good Old Days]
-
-10699: ibm5170_cdrom.xml: Typo correction [ArcadeShadow]
-Corrected "Peristroka" to "Perestroika" on "5plus1_25" notes
-
-10700: upd934g: use device_rom_interface instead of a read callback [devinacker]
-
-10702: Yamaha DX9: Resolve issue with incoming MIDI clock [ajxs]
-This PR resolves an issue with handling incoming MIDI on the Yamaha DX9 driver.
-I made a mistake in my original analysis of the schematics. There's a divider on the 500 kHz crystal attached to the MIDI clock. I
-  also forgot to finalise the reading of MIDI.
-This PR should resolve those issues.
-
-10704: sega/turbo.cpp: Added missing pedal inputs. [0kmg]
-- turbo: Added pedal. Made shifter start in low gear by default.
-- buckrog: Added pedal, which is selected by accelerator type DIP switch. Corrected cabinet type DIP switch, which now also controls
-  presence of 2P start button.
-
-10705: mrjong: fixed sprite position [pcornier]
-
-10707: turbo: Clarify lives DIP switch setting name. [0kmg]
-I thought this was maybe a manual misprint that didn't make the released versions. You always earn one life each time you make it to
-  extended play, so it seemed like the DIP switch had no effect. Correct meaning verified through cheating :)
-
-10709: JPM System 5: Start on inputs, add reel interface [james-wallace-ghub]
-ROC10937: Added fade effect using two elements for consistency
-
-10712: sega/turbo_v.cpp: another minor code simplification [0kmg]
-@happppp Here's another minor cleanup to go along with all the others. When I tried (and failed) to fix the priority issue I somehow
-  found these lines very annoying.
-
-10715: nes_apu.cpp: Implemented frame counter IRQ (MT06186, MT07625, MT07658). [0kmg]
-Software list items promoted to working (nes.xml)
----------------------------------------
-Akagawa Jirou no Yuurei Ressha (Japan) [kmg]
-Castelian (Europe) [kmg]
-Door Door (Japan) [kmg]
-Door Door (FMG pirate) [kmg]
-Dragon Quest (Japan) [kmg]
-Dragon Quest II - Akuryou no Kamigami (Japan) [kmg]
-GeGeGe no Kitarou - Youkai Daimakyou (Japan) [kmg]
-GeGeGe no Kitarou - Youkai Daimakyou (Japan, prototype) [kmg]
-GeGeGe no Kitarou - Youkai Daimakyou (FMG pirate) [kmg]
-The Guardian Legend (Europe) [kmg]
-The Guardian Legend (USA) [kmg]
-Guardic Gaiden (Japan) [kmg]
-Jesus - Kyoufu no Bio Monster (Japan) [kmg]
-Mahjong Taikai (Japan) [kmg]
-Ninja Jajamaru - Ginga Daisakusen (Japan) [kmg]
-Ninja Jajamaru - Ginga Daisakusen (Japan, prototype) [kmg]
-Ninja Kid (USA) [kmg]
-Mendel Palace (USA) [kmg]
-The Mutant Virus (USA) [kmg]
-Qix (USA) [kmg]
-Quinty (Japan) [kmg]
-Portopia Renzoku Satsujin Jiken (Japan) [kmg]
-Squashed (USA, prototype) [kmg]
-WWF WrestleMania (Europe) [kmg]
-WWF WrestleMania (USA) [kmg]
-
-10716: nintendo/dkong.cpp: more notes about dkong3 sound. [0kmg]
-
-10717: docs: Added preliminary guide for would-be contributors [cuavas]
-@MooglyGuy wrote the bulk of the C++ guidelines here.  Other parts of that page are taken from comments on various pull requests.
-The software list contributors’ guide needs improvement/expansion, but it’s a start and mentions the most important metadata
-  elements.
-
-10718: nes.xml: Added five builds of an unreleased prototype. [0kmg]
-New working software list additions
------------------------------------
-Mick & Mack as the Global Gladiators (prototype, 19930709) [ICEknight, steem69]
-Mick & Mack as the Global Gladiators (prototype, 19930630) [ICEknight, steem69]
-Mick & Mack as the Global Gladiators (prototype, 19930616) [ICEknight, steem69]
-Mick & Mack as the Global Gladiators (prototype, 19930528) [ICEknight, steem69]
-Mick & Mack as the Global Gladiators (prototype, 19930528, alt) [ICEknight, steem69]
-
-10719: x68k_v.cpp: Clean up screen_update [grantek]
-- Delete initial fills of PCG bitmap, these are always fully filled by later code.
-- Use default PCG palette colour directly instead of pre-filling PCG bitmap.
-- Combine per-pixel branches of logic based on "blend gfx with PCG/Text layers".
-No changes to pixel logic, slight performance boost.
-
-10725: Revert "x68k_v.cpp: Clean up screen_update" [cuavas]
-Reverts mamedev/mame#10719
-Unfortunately it doesn’t work.  Backgrounds are completely broken in Super Hang-On.
-
-10728: midway/omegrace.cpp: Replaced input lookup table with encoder function. [0kmg]
-
-10731: msx1_flop.xml: Add notes, mark double sided images for single sides releases as bad dumps, remove disk conversions for
-  software present in other software lists. [wilbertpol]
-msx1_flop.xml
-- Marked double sided images for single sided releases as bad dumps.
-- Add notes and serial numbers.
-- Add ‘disk conversion’ to the titles of disk conversions.
-- Removed disk conversions for software entries which are present in their original software list(s).
-- Removed entries that were made single sided by cutting a double sided dump in half (and thus resulted in not working images):
-  msxdosb, burgkilla, spacewlk, ballblaza, diamine2a, mj05, phstripa, raththaa, safarixa.
-- Renamed spacewlka to spacewlk, mj05a to mj05, and pm1_asia to pm2_asia.
-Software list items promoted to working (msx1_flop.xml)
----------------------------------------
-Spectravideo SVI-738 [Wilbert Pol]
-
-10732: tvgogo.xml: Countries and zone full name [ArcadeShadow]
-Replaced US and EU abbreviations by USA and Europe
-
-10733: Add SX-Window 3.1 alternate dump [briceonk]
-I found a boxed SX-Window 3.1 set that had two extra disks not in the already existing dumps. These images were dumped directly from
-  the pictured floppy disks using a Greaseweazle and a Mitsumi 5.25" drive.
-Images: -link removed-
-!IMG_4309
-I've never updated a software list before, so let me know if I made any mistakes :)
-
-10734: einstein.xml: Metadata cleaning [ArcadeShadow]
-Lowercase on descriptive words like "Alt" or "Cracked"
-
-10735: spectrum_cart.xml: Metadata cleaning [ArcadeShadow]
-Lowercase on descriptive words like "Alt" and "Prototype"
-
-10736: cdi.xml: Metadata cleaning [ArcadeShadow]
-Replaced "Euro" abbreviation by "Europe"
-
-10737: vtech_storio_cart.xml: Lowercase on soft. list media name [ArcadeShadow]
-Lowercase on "cartridges" media name
-
-10739: digiblast_cart.xml: Lowercase on soft. list media name [ArcadeShadow]
-Lowercase on software list media "cartridges" name
+- 10572: cpu/m6809: Improved emulation to TFR and EXG instructions. [Tim Lindner]
+- 10575: trs/coco12.cpp, trs/coco3.cpp: Moved real-time clocks to slot cards where they belong (addresses MT08416). [Tim Lindner]
+- 10595: hp/hp9825.cpp: Added support for the HP 9825A and HP 9831. [fulivi]
+- 10604: apple2_flop_misc.xml: Added four working Israeli games. [Josh Renaud, Aali Ariel, Keith Hacke, telanus]
+- 10605: Fixed some misspellings, mostly involving the word “occurrences”. [kmg]
+- 10607: misc/cocoloco.cpp: Corrected misspelled DIP switch setting name for Coco Loco. [kmg]
+- 10610: bus/msx: Added support for Hudson Soft Bee Cards and Electric Software Astron Softcards. [Wilbert Pol]
+- 10611: snes.xml: Added two 16 Bit Xmas titles. [retroUSB, kmg]
+- 10614: konami/hornet.cpp, konami/cobra.cpp, konami/nwk-tr.cpp: Refactored JVS host code. [Windy Fairy]
+- 10615: machine/upd765.cpp: Don’t raise data interrupt on abnormal command termination. [Angelo Salese]
+- 10617: konami/konami_gn676_lan.cpp: Rewrote GN676 LAN board emulation. [Windy Fairy]
+- 10619: video/v9938.cpp: Implemented V9958 registers 26 and 27 for graphic23 and graphic4 modes (fixes MT08466). [Wilbert Pol]
+- 10621: x68k_flop.xml: Added twelve new dumps from original disks (ten working). [krugman, r09]
+- 10622: apple2_flop_orig.xml: Use title case for publisher names. [ArcadeShadow]
+- 10623: rz1_cass.xml: Use lowercase for descriptive text in descriptions. [ArcadeShadow]
+- 10624: a800.xml: Use unabbreviated country names and lowercase for descriptive text in descriptions. [ArcadeShadow]
+- 10625: konami/konmedal.cpp: Corrected the K051649 clock frequency for a few titles (fixes sound pitch). [BoxCubed]
+- 10627: konami/hornet.cpp: Improved Silent Scope and Teraburst I/O emulation. [Windy Fairy]
+- 10629: msx/slot/cartridge.cpp: Don’t unnecessarily copy software memory region contents. [Wilbert Pol]
+- 10630: dataeast/deco_mlc.cpp: Added subtitle to descriptions for Asian releases of Skull Fang games. [Michael Sanborn]
+- 10633: barcrest/mpu4.cpp, barcrest/mpu4vid.cpp: Encapsulated sampled sound board as a device. [James Wallace]
+- 10635: ibm5150.xml: Retested software marked as partially supported or unsupported. [Angelo Salese]
+- 10636: megadriv.xml: Fixed cartridge type for rockman1. [einstein95]
+- 10637: konami/hornet: Fixed regression causing Teraburst’s gun I/O to fail boot test. [Windy Fairy]
+- 10639: pcecd.xml: Use unabbreviated country names in descriptions. [ArcadeShadow]
+- 10640: pc98.xml: Use lowercase for descriptive text in descriptions. [ArcadeShadow]
+- 10641: machine/mc68328.cpp, palm/palm.cpp: Improved LCD controller emulation and cleaned up code. [Ryan Holtz]
+- 10642: dataeast/decocass.cpp: Added Nebula (UK). [Rene Balke, Darksoft, Senil Data Systems, David Haywood]
+- 10643: spectrum_cass.xml: Added three working items, and removed a duplicate item. [spectrumcomputing.co.uk, ArcadeShadow]
+- 10644: sound/nes_apu.cpp: Only allow reading status register; nintendo/dkong.cpp: Fixed crashes in dkong3b. [kmg]
+- 10645: misc/cave.cpp: Added PEEL18CV8 PLD dumps for Power Instinct 2 and Power Instinct Legends. [Sergio Galiano]
+- 10647: bus/coco: Cleaned up code a little. [Tim Lindner]
+- 10648: trs/coco12.cpp: Added unreleased Deluxe Color Computer machine configuration with a placeholder ROM. [Tim Lindner]
+- 10649: atari/sprint8.cpp: Cleaned up input code. [kmg]
+- 10651: tecmo/tehkanwc.cpp: Added world version of Tee'd Off. [system11, David Haywood]
+- 10653: dataeast/decocass.cpp: Removed “clown car credits” from comments. [David Haywood]
+- 10654: seta/x1_012.cpp, seta/seta_v.cpp: Moved video update trigger from device to drivers (works around MT08530). [David Haywood]
+- 10656: nec/pc88va.cpp: Improved emulation, allowing most software to boot on the PC-88VA2. [Angelo Salese]
+- 10658: misc/cave.cpp: Added a newly dumped US version of Power Instinct 2. [Sergio Galiano, Recreativos Piscis]
+- 10659: apple1.xml: Use title case for publisher names. [einstein95]
+- 10660: vtech/vsmile.cpp: Added machine configuration switches, allowing access to BIOS test mode. [KanedaFr]
+- 10663: Added duty cycle effects to layouts for fruit machines using ROC10937 and clones, and improved emulation. [James Wallace]
+- 10664: tiger/gamecom.cpp: Improved audio emulation (still very innacurate). [FateForWindows]
+- 10665: namco/mappy.cpp: Put DIP switch settings in order from least generous to most generous. [einstein95]
+- 10666: nintendo/vsnes.cpp: Aligned default DIP switch settings with factory defaults. [kmg]
+- 10667: atari/starshp1.cpp: Set thrust control to slow when not pushing button. [kmg]
+- 10668: hp/hp80.cpp: Fixed keyboard issues with hp86b_001 and hp86b_004 systems. [F.Ulivi]
+- 10669: yamaha/ympsr16.cpp: Added skeleton driver for Yamaha PSS-780. [TwistedTom]
+- 10670: nintendo/cham24.cpp: Added save state support and cleaned up code. [kmg]
+- 10671: sms.xml: Added three working prototypes. [Ed Semrad, smspower, VGHF, kmg]
+- 10672: coleco.xml: Added two working prototypes. [Ed Semradm Hidden Palace, VGHF, kmg]
+- 10673: capcom/cps1.cpp: Created mapper by decoding the recently dumped SFZ63B PAL. [TwistedTom]
+- 10674: nes.xml: Added twelve working items. [Ed Semrad, Hidden Palace, VGHF, NESBrew12, anonymous, kmg]
+- 10677: sega/model3.cpp: Added drive board ROMs from Scud Race to Dirt Devils (uses the same PCB). [Museo del Recreativo, ClawGrip]
+- 10678: video/ppu2c0x.cpp: Improve behavior of OAM writes during PPU rendering. [kmg]
+- 10680: Added recently-added system driver source files to arcade and MESS filter files. [MASH]
+- 10681: dataeast/decocass.cpp: Cleaned up BIOS macros, fixed bit error in cnebula tape image and added bootlegs. [DavidHaywood]
+- 10682: sega/sms.cpp: Refactored Game Gear handling. [Vas Crabb]
+- 10683: tvgames/xavix.cpp: Added Gun Gun Adventure (not working). [Sean Riddle, David Haywood]
+- 10684: palm/palm.cpp: Improved Palm IIIc support; machine/mc68328.cpp: Added MC68EZ328 variant. [Ryan Holtz]
+- 10685: nec/pc8801.cpp: Promoted PC-8801 MK II machines to working. [Angelo Salese, O. Galibert, Carl]
+- 10686: bus/a7800/rom.cpp, nes.xml: Use proper bank order for Activision 128K cartridges. [kmg]
+- 10687: bus/megadrive/jcart.cpp: Fixed typo in include guard macro. [kmg]
+- 10689: vsmileb_cart.xml: Added regional titles for undumped Teletubbies game. [ClawGrip]
+- 10690: capcom/gunsmoke.cpp: Added a new North American set of Gun.Smoke. [Victor Fernandez (City Game), Jordi Beltrán, ClawGrip]
+- 10691: nintendo/playch10.cpp: Added separate gun trigger input. [kmg]
+- 10692: osd/windows: Fixed a crash potential crash when toggling full-screen mode (MT08535). [Ryan Holtz]
+- 10694: sega/sg1000.cpp: Made SG-1000 player 1 controller fixed, and fixed crash on starting Othello Multivision consoles. [kmg]
+- 10695: bus/snes/snes_slot.cpp: Fixed reported ROM speed when logging cartridge header. [TwistedTom]
+- 10696: palm/palm.cpp: Split Palm LCD controller into sa separate device, promoted Palm m100 to working. [Ryan Holtz]
+- 10697: skeleton: Renamed Vector 4 to Vector 3, and fixed some incorrect Vector 4 machine configuration. [Eric Anderson]
+- 10698: ibm5150.xml: Added eleven working items. [The Good Old Days, Abandon Socios, Old-Games.RU, ArcadeShadow]
+- 10699: ibm5170_cdrom.xml: Corrected misspelled game title in notes for 5plus1_25. [ArcadeShadow]
+- 10700: sound/upd934g.cpp: Use device_rom_interface rather than a read callback for external memory. [Devin Acker]
+- 10702: yamaha/ymdx9.cpp: Resolved issues with incoming MIDI. [Anthony]
+- 10704: sega/turbo.cpp: Added missing pedal inputs. [kmg]
+- 10705: kiwako/mrjong.cpp: Fixed horizontal sprite offset when screen is flipped. [Pierre Cornier]
+- 10707: sega/turbo.cpp: Clarified lives DIP switch setting name for Turbo. [kmg]
+- 10709: jpm/jmpsys5.cpp: Started working on inputs, and added reel interface. [James Wallace]
+- 10712: sega/turbo_v.cpp: Simplified bit field extraction. [kmg]
+- 10715: sound/nes_apu.cpp: Implemented frame counter interrupt (fixes MT06186, MT07625 and MT07658). [kmg]
+- 10716: nintendo/dkong.cpp: Added more notes about dkong3 sound. [kmg]
+- 10717: docs: Added preliminary guide for would-be contributors. [Ryan Holtz, Vas Crabb, O. Galibert]
+- 10718: nes.xml: Added five builds of an unreleased prototype. [ICEknight, steem69, kmg]
+- 10719: sharp/x68k_v.cpp: Cleaned up screen update function. [grantek]
+- 10725: Reverted “sharp/x68k_v.cpp: Cleaned up screen update function” (PR #10719) – it breaks Super Hang-On. [Vas Crabb]
+- 10728: midway/omegrace.cpp: Replaced input lookup table with encoder function. [kmg]
+- 10731: msx1_flop.xml: Improved metadata and removed disk conversions. [Wilbert Pol]
+- 10732: tvgogo.xml: Replaced country name abbreviations in descriptions with full names. [ArcadeShadow]
+- 10733: x68k_flop.xml: Added an alternate version of SX-Window 3.1. [Brice Onken]
+- 10734: einstein.xml: Use lowercase for descriptive text in descriptions. [ArcadeShadow]
+- 10735: spectrum_cart.xml: Use lowercase for descriptive text in descriptions. [ArcadeShadow]
+- 10736: cdi.xml: Replaced country name abbreviations in descriptions with full names. [ArcadeShadow]
+- 10737: vtech_storio_cart.xml: Use lowercase for things that aren’t proper nouns in software list description. [ArcadeShadow]
+- 10739: digiblast_cart.xml: Use lowercase for things that aren’t proper nouns in software list description. [ArcadeShadow]
 
 
 Source changes
@@ -2099,15 +1598,3 @@ Yataimura Shateki (1-player, Japan, Ver 1.000) [Darksoft, MetalliC, rtw]
 -adc0808: one logerror was missing \n [hap]
 
 -srcclean in preparation for 0.251 branch [Vas Crabb]
-
-
-New working systems
--------------------
-Nebula (DECO Cassette) (UK) [Rene Balke, Darksoft, Arcadeautomaten/Senil Data Systems, David Haywood]
-
-
-Comparing 0.250 (mame0250) to 0.250 (mame0250-326-gbb457cea6cc)
-
-New working systems
--------------------
-Nebula (DECO Cassette) (UK)
