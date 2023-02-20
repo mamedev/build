@@ -4,11 +4,11 @@
 
 MAME Testers bugs fixed
 -----------------------
-- 06475: [Gameplay] (taito/gladiatr.cpp) gladiatr and clones: Games start with one credit. (hap)
+- 06475: [Gameplay] (taito/gladiatr.cpp) gladiatr and clones: Games boot with one credit. (hap)
 - 07586: [Graphics] Artwork: Screen blended using RGB multiplication does not work using BGFX with Direct3D 9 back-end. (Ryan Holtz)
 - 07587: [Graphics] (handheld/hh_sm510.cpp) Artwork: Multi-screen layer blending exhibits issues when using BGFX. (Ryan Holtz)
 - 07660: [Graphics] BGFX slider settings are reset to default values when toggling full screen mode. (Vas Crabb)
-- 08084: [Misc.] (namco/warpwarp.cpp) All: Internal artwork is no rendered correctly when using BGFX. (Ryan Holtz)
+- 08084: [Misc.] (namco/warpwarp.cpp) All: Internal artwork is not rendered correctly when using BGFX. (Ryan Holtz)
 - 08506: [Color/Palette] (amstrad/amstrad.cpp) cpc464 and clones: Colors are incorrect. (holub)
 - 08539: [Interface] UI: The system selection menu initially renders images at the wrong resolution. (Vas Crabb)
 - 08543: [Graphics] (taito/taito_f2.cpp) megablst and clones: Shield power-up aura on option is not drawn. (David Haywood)
@@ -24,7 +24,7 @@ I-Star Co., Ltd. Chess King (Model ET-6) [Ankos, David Haywood, hap]
 NABU PC [Brian Johnson]
 Pikkari Chance [SpinalFeyd, R. Belmont]
 Saturn: Space Fighter 3D [Dillweed, SNESNESCUBE64]
-Super Petrix (ver. 1P) [Paul-Arnold]
+Super Petrix (ver. 1P) [Paul-Arnold, caius]
 Vs. Super Captain Flag (Japan) [Phil Bennett]
 
 
@@ -44,7 +44,7 @@ Jungle King (Japan, earlier, alt) [CWorks]
 Ms. Pac-Man ('Made in Greece' Enavi bootleg) [H4M573R]
 Omega Race (set 3, 7/27) [Marc Deslauriers]
 Raiden II (Australia) [Ben Maff]
-SegaSonic Cosmo Fighter (Japan) [IAMAMAZING100]
+SegaSonic Cosmo Fighter (World) [IAMAMAZING100]
 T.T Spacian Part-2 [anonymous]
 Tekken 2 (US, TES3/VER.A) [Guru]
 Tekken 3 (World, TET2/VER.C) [Heihachi_73, Guru]
@@ -189,645 +189,116 @@ Ukrainian [Stanley Kid]
 
 Merged pull requests
 --------------------
-10592: nintendo/nds.cpp: Added two prototype firmware dumps. [HudU, MasChief, Forest of Illusion] [0kmg]
-
-10609: f1gp notes (link and banners) [FMecha]
-Per this remark on MT08411:
->It also should be noted that the "ID CHECK ERROR" note on f1gp.cpp is no longer accurate - the game does boot with Game Mode set to
-  Multiple, but the ID CHECK gives random numbers every boot
-...and this TCRF page) documenting Set 1 vs Set 2 changes.
-
-10676: nabupc: Support for the NABU PC computer system [brijohn]
-This patch adds support for the NABU PC system from around 1982.
-Most of the functionality are currently implemented, these include:
-- Video
-- Sound
-- Printer
-- Bus support
-- Floppy controller
-- HCCA port/adapter
-It is still missing emulation of the original native keyboard, but works with the serial HLE keyboard I wrote. 
-
-10701: konami/nwk-tr.cpp: Racing Jam: Chapter 2 -> Racing Jam: Chapter II [mikehyrus]
-Despite the Arabic numeral shown at boot, the Roman numerals are shown in most other cases.
-
-10724: sgi_mips: Three new software list additions [darkstar]
-Three new Onyx2 demo CDs popped up on IA recently. This PR adds them to the `sgi_mips.xml` softlist.
-They are "working" in a technical sense (standard ISO format, files can be installed/copied to an SGI running IRIX) but many of them
-  don't run properly since they require an Onyx2 which I don't have/cannot test on/isn't emulated yet, so I'll add them as "not
-  working".
-````
-New NOT_WORKING software list additions:
-- sgi_mips: Onyx2 - As Real As it Gets Demo CD - Volumes 1, 2 and 3
-````
-
-10726: ibm5170.xml: 8 New working software list additions [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Caesars Palace for Windows [Ihatediskettes, archive.org]
-PC Plus (Issue 80 - May 1993) [Tkrns, archive.org]
-PC Plus (Issue 96 - September 1994) [Tkrns, archive.org]
-PC Plus (Issue 102 - April 1995) [Tkrns, archive.org]
-Syndicate (Europe, alt) [The Good Old Days]
-Syndicate (Germany) [The Good Old Days]
-Syndicate: American Revolt [The Good Old Days]
-Where in Space is Carmen Sandiego? [The Good Old Days]
-
-10729: HP LIF support for floptool [svenschnelle]
-Hi,
-i wanted to extract some files from old teledisk images, so i thought i add support for the LIF lifesystems + disk formats, so i can
-  use floptool to extract the files.
-
-10730: new working clones [DavidHaywood]
-new working clones
------
-Jungle King (Japan, earlier, alt) [CWorks]
-
-10747: BGFX frontend fixes for per-pass blend handling (MT07586, MT07587) [MooglyGuy]
-MAME Testers bugs fixed
------------------------
-- 07586: [Graphics] Artwork: screen combined with multiply-blend does not work on BGFX D3D9 (Ryan Holtz)
-- 07587: [Graphics] (handheld/hh_sm510.cpp) Artwork: multi-screen layer blending problem with BGFX (Ryan Holtz)
--bgfx: Adjusted per-pass blending handling. Fixes MT07586, MT07587. [Ryan Holtz]
-
-10748: Revert "BGFX frontend fixes for per-pass blend handling (MT07586, MT07587)" [MooglyGuy]
-Reverts mamedev/mame#10747
-
-10750: Update BGFX, BX and BIMG [mmicko]
-Update libraries (as of 26th of December 2022):
-- BGFX to https://github.com/bkaradzic/bgfx/commit/a93a714632b79b5ddbf5c86ac323fa9b76ed3433
-- BX to https://github.com/bkaradzic/bx/commit/aed1086c48884b1b4f1c2f9af34c5198624263f6
-- BIMG to https://github.com/bkaradzic/bimg/commit/1af90543ca262c1cfa10aa477aef9dc1b11419f4
-- shaders updated (note dx9 and dx11 are not affected, have regenerated them on Windows machine)
-- imgui is not using any more deprecated KeyIo functions
-
-10751: pacman/pengo.cpp: Sorted Pengo sets, and changed scheme for short names [DavidHaywood]
-reorganized the Pengo sets a little
-- The Export versions are the versions with replaced music / faster maze drawing
-- The Japan versions have slow maze drawing and the 'popcorn' music
-- The unencrypted sets are the newest releases we have of both versions - for Japan that is ROMs 5120-5127 and for export that is
-  ROMs 5128 - 5135 (suggesting these unencrypted versions were both released at the same time)
-- see https://tcrf.net/Pengo_(Arcade) for some research
-
-10753: new WORKING machines: Chess King [DavidHaywood]
-new WORKING machines
-----
-Chess King (Model ET-6) [Ankos, David Haywood, hap]
-
-10756: new WORKING Software List additions (Chess King) [DavidHaywood]
-new WORKING Software List additions
-----
-chessking_cart.xml:
-chn_dic - Chinese Dictionary [David Haywood]
-
-10761: Apple II double lo-res: work around issue #10760 [benrg]
-This implements the same workaround for double lo-res that was already used for double hi-res: shift the whole image right by one
-  pixel (losing the rightmost pixel) in monochrome mode so that the NTSC shader is happy. This doesn't affect color mode.
-This rewrite incidentally fixes an incorrect shift count in the old code (see the issue).
-
-10762: pgm.cpp: Use logmacro.h for logging [cam900]
-
-10763: new WORKING clones (YoYo Spell) [DavidHaywood]
-new WORKING clones
-------
-YoYo Spell (prototype) [Opernet,  Recreativas.org, Museo del Recreativo]
-
-10764: Remove a2_video_device::hgr_update_tk2000 [benrg]
-It was not referenced anywhere in the source tree, and was just a copy of hgr_update with the address of page 2 changed from $4000
-  to $A000. If support for this is ever needed, it could be handled by adding a parameter to hgr_update.
-
-10765: upd765: unify data_irq and other_irq [cracyc]
-The observed behavior of other_irq and data_irq appear to be the same where they are cleared by reading or writing the data
-  register.  This implements that, using a pr to get some additional testing.
-
-10766: Merge copies of text_update and plot_text_character in a2_video_device [benrg]
-a2_video_device::{text_update,plot_text_character} already had a template parameter to distinguish II/II+ from IIe/IIc. Extending it
-  enables {text_update,plot_text_character}{_ultr,_jplus,GS} to be merged in as well.
-I preserved all of the logic of the old functions even where I suspect it's wrong. Behavior that seems suspicious to me: not masking
-  by 0x3f on II/II+ (isn't their character ROM only 0.5K?); logic for the range 60..7f on IIe/c not applied on GS; and inconsistent
-  use of m_aux_mask in aux_page accesses.
-One exception to the previous paragraph: text_update_{jplus,ultr} didn't calculate startcol and stopcol, which seems to be just a
-  missed optimization opportunity, and they tested row <= stoprow instead of row < stoprow, which is a bug that would make them emit
-  25 lines instead of 24. I removed those differences.
-This commit doesn't merge the screen_update_* functions, but they should also be merged.
-
-10767: Remove a2_video_device::m_dhires_artifact_map [benrg]
-m_dhires_artifact_map was just a rotate-four-bits-by-2 lookup table. The code that used it was already doing four-bit rotations by
-  arbitrary amounts, so it is slightly simplified by eliminating the table.
-
-10771: wy50: add beep [goldnchild]
-I was using the wy50 with nabu cp/m and thought I'd try to add the beeper.  
-I don't know the proper frequency of the wy50 beeper so I made a port_changed_member so you could adjust the beeper clock from the
-  slider controls menu.
-
-10773: Improved Apple II hires graphics color simulation [benrg]
-The current color algorithm uses a 3-bit sliding window over the 280 bits of each scan line to determine the color of the center
-  pixel, with bit 7 of the middle bit's byte as an auxiliary input.
-This algorithm decodes the scan line to 560 bits in the same way as the hardware (and MAME's monochrome modes) and uses a 7-bit
-  sliding window on the decoded bits. The result is the same as before if all high bits are clear. If high bits are set, the output
-  is shifted right by one pixel as it should be, and the unique artifact colors at the boundaries between bytes with opposite high
-  bits are simulated. (For more about those colors see page 8-20 of Understanding the Apple II by Jim Sather.)
-The monochrome modes are rewritten to use the same decoding logic, which incidentally fixes some bugs: the left pixel of a 14-pixel
-  group was not updated at 0-to-1 bit-7 transitions (leaving old pixels on the screen), the test against cliprect was incorrect, and
-  m_dhires was ignored.
-
-10774: sanritsu/bankp.cpp: Dumped and added a Bank Panic bootleg set from Tecfri [clawgrip]
-New WORKING clone
--------------------------------
-Bank Panic (Tecfri bootleg) [Eduardo Anay, Recreativas.org]
-
-10776: casio/ctk551.cpp: better default velocity controls [devinacker]
-This just cleans up some input definitions and gives the key velocity control some different inc/dec key defaults that don't
-  interfere with actual directional buttons. Also fixed a minor element positioning issue in the ctk530 layout that I forgot to
-  include originally.
-
-10777: Merge copies of Apple II screen_update function [benrg]
-Following the merge of `text_update` and `plot_text_character` (93500d7), this merges `apple2_state::screen_update{,_jp,_ultr}`,
-  `apple2e_state::screen_update`, and `a2_video_device::screen_update_GS_8bit` into a single function in `a2_video_device`.
-The only complication was that when I merged the IIe function that tested `apple2e_state::m_80store` into the IIGS function that
-  tested `a2_video_device::m_80store`, it didn't work properly on IIe, because the IIGS driver updated the latter variable but the
-  IIe driver ignored it and it was always false. I took the safest way out and copied the code from the IIGS driver to the IIe
-  driver, but it would probably be better to pass the page number as a parameter.
-
-10779: vsmile_cart.xml: Add UK versions of ten V.Smile games [clawgrip]
-New WORKING software list additions
-----------------------------------
-Nick Jr. Dora the Explorer - Dora's Fix-it Adventure (UK, 2005), Nick Jr. Go Diego Go! - Save the Animal Families! (UK), Disney's
-  Mickey Mouse - Mickey's Magical Adventure (UK), Scooby-Doo! - Funland Frenzy (UK, 2004), Marvel Spider-Man & Friends - Secret
-  Missions (UK), Disney's Winnie de Pooh - The Honey Hunt (UK), Zayzoo - My Alien Classmate (UK), Disney/Pixar Cars - Rev It Up in
-  Radiator Springs (UK, alt), Alphabet Park Adventure (UK), Disney's Aladdin - Aladdin's Wonders of the World (UK) [TeamEurope]
-
-10781: hd6309: Fix STBT instruction [tlindner]
-This is a weird instruction that can copy a bit from a register to a memory location.
-Previously it was not reading the value of the memory of the location before modifying it.
-
-10782: Improve NTSC parameter descriptions and ranges in OSD [benrg]
-Correct units of some parameters (they are MHz, not Hz) and correct one default (color carrier should be 3.57 MHz, not 35.7). Use a
-  step size of 1/8800 MHz for the color carrier so that the NTSC value of 315/88 MHz can be exactly represented (to float
-  precision). Add some units and change some ranges.
-There are still some discrepancies in defaults and ranges between d3dhlsl.cpp and hlsl.json. I don't know which values make more
-  sense.
-
-10784: technos/ddragon.cpp: Added Double Dragon II layer priority PROM to clones [jotego]
-Double Dragon II clones (and alternate versions) are missing one of the PROMs in the ROM section. I have checked that the systems
-  work correctly using the same dump as in ddragon2.
-In this commit, I have added that PROM to the ROM section. This matches what other drivers do in these circumstances. The comments
-  suggest that a better dump may exist (although I doubt it).
-
-10785: Add Super Petrix to misc/magic10.cpp [Paul-Arnold]
-This adds Super Petrix, a Tetris game with hidden poker game to the magic10 driver.
-Rom dumps etc for verification have been sent to the relevant place.
-The roms were dumped by Caius, just in case we credit rom dumpers.
-
-10786: macadb: mouse x/y variables are reversed [ksherlock]
-...which doesn't entirely matter because they were sent in the wrong order so it all works out but it was confusing none-the-less.
-More importantly, bit 7 of the X position is the second mouse button status (or 1 in most cases).
-https://developer.apple.com/library/archive/technotes/hw/hw_01.html#Section6
-Guide to the Macintosh Family Hardware, Chapter 8, table 8-4, page 301
-
-10787: Revert "Update BGFX, BX and BIMG" [rb6502]
-Reverts mamedev/mame#10750 - macOS failed to link in spite of CI passing.
-
-10788: Removed non-functional sun4c_mmu cache emulation [MooglyGuy]
--sun4c_mmu: Removed non-functional cache emulation. sun4_60 can install and boot SunOS 4.1.4 again. [Ryan Holtz]
-
-10789: Update BGFX, BX and BIMG [mmicko]
-Update libraries (as of 26th of December 2022):
-- BGFX to https://github.com/bkaradzic/bgfx/commit/a93a714632b79b5ddbf5c86ac323fa9b76ed3433
-- BX to https://github.com/bkaradzic/bx/commit/aed1086c48884b1b4f1c2f9af34c5198624263f6
-- BIMG to https://github.com/bkaradzic/bimg/commit/1af90543ca262c1cfa10aa477aef9dc1b11419f4
-- shaders updated (note dx9 and dx11 are not affected, have regenerated them on Windows machine)
-- imgui is not using any more deprecated KeyIo functions
-
-10792: Better Apple II artifact color table [benrg]
-Replace the "old" (committed just a few days ago) artifact color lookup table, which was designed in a somewhat ad-hoc way for hires
-  graphics only, with a table based on simpler rules that can be used in any Apple II (not GS) video mode, though at the moment it
-  is still used only for hires. Move it upward in the file in anticipation of other uses.
-The only visible effect of this commit should be that the hires bit pattern ...1100100... (after expansion to 560 pixels), and one's
-  complements and reflections of that, produce a medium color for the middle pixel, while in the old table it was a light/dark
-  color. This is an unusual corner case, the new color is about as reasonable as the old, and both are more accurate than the
-  behavior before the commit of a few days ago.
-
-10793: SPARC and sun4 fixes and boilerplate cleanup [MooglyGuy]
--sparc: Implement STBAR opcode as a no-op. Fixes illegal instruction error in Solaris 2.4 installer. [Ryan Holtz]
--sun4: Multiple changes. [Ryan Holtz]
-  * Converted to logmacro, cleaned up duplicate handlers, split switch/case handlers, removed tag #defines, use shorter types.
-  * Added FDC dor_w hookup, fixing Solaris 2.4 installer hang.
--sun4c_mmu: Converted to logmacro. [Ryan Holtz]
-
-10794: Fixed array-bounds oversight in sun4.cpp, fixes macOS and Linux compiles [MooglyGuy]
-See title
-
-10796: vsmile: fix swap between off and on buttons [KanedaFr]
-I made a mistake between ON and OFF buttons on last commit
-this allows to change controller on BIOS test screen for exemple
-it's now fixed
-
-10797: Apple II: fix Video-7 RGB card double hi-res modes [benrg]
-Fix an off-by-1 error in the 160-column mode that caused the rightmost 2 pixels to be omitted. In 140-column color and mixed modes,
-  use custom logic to make 140 wide pixels instead of simulating blurry artifact color. In mixed mode, each high bit controls 7
-  narrow pixels according to the manual.
-With these changes, the card seems to pass all of the tests on the official demo disk, except that foreground-background hires
-  remains unimplemented, "Color Mouse Draw" seems to hang/crash, and some demos sometimes set the wrong mode when run after other
-  demos (including themselves). The last could be a bug in the demos.
-
-10798: apple2gs.cpp: make kmstatus match observed IIgs behavior; [ksherlock]
-* mouse data register is full until both x/y are read
-* X/Y bit set after X is read, cleared after Y is read
-* X/Y bit was accidentally dependent on the KGS_ANY_KEY_DOWN bit
-
-10802: Fixed a bug in the OS-9 file system module [npwoods]
-Fixed a bug in the OS-9 file system's file name validation function that caused it to incorrectly tolerate characters with the
-  seventh bit set
-
-10803: nes.xml: Update some PCB label details. [0kmg]
-
-10804: video/virge_pci.cpp: fix remapping, allow pcipc with ibm5170_hdd:win98se to boot without hacks in 256 color mode [angelosa]
-- bus/isa/s3virge.cpp: implement DPna, DSna, DSno, DSPDxax and DSo ROP opcodes;
-- bus/isa/s3virge.cpp: fix source pitch stride;
-- bus/isa/s3virge.cpp: clip against de bit;
-- bus/isa/s3virge.cpp: initialize pattern variable in mono mode;
-
-10806: Separate Apple II video config from system config [benrg]
-Add a `a2_video_config` port to contain the monitor type (with the idea of adding other settings later), and add some private
-  accessors to avoid magic numbers. This incidentally fixes a bug in `apple2` and `apple2cp` which had another configuration field
-  that overlapped with the monitor-type field. On the IIc+, setting 80-column mode would make the video system think a IIe RGB card
-  was installed.
-
-10807: a2_video_device: make some accessors const [benrg]
-
-10808: cpu/arcompact - rewrote core [DavidHaywood]
-rewrote arcompact core, almost everything has changed.
-
-10809: Make all clients of a2_video_device use screen_update [benrg]
-The superga2 and tk2000 drivers called hgr_update directly. Instead set the appropriate mode and call screen_update, and make
-  hgr_update private along with the other mode-specific functions.
-
-10810: taito/taito_f2.cpp: Use screen_vblank_partial_buffer_delayed for Mega Blast (MT08543) [DavidHaywood]
-Fixes MT08543 – megablst and clones: Shield powerup aura on option is missing.
-Many other games in the driver use `m_screen->screen_vblank().set(FUNC(taitof2_state::screen_vblank_partial_buffer_delayed));` and
-  there's a long explanation about the game software and how they buffers things and why it is needed in those cases.  I don't know
-  why it wasn't set for this game however, so please check for new issues elsewhere.
-
-10812: spectrum_cass.xml: 12 New working software list additions [ArcadeShadow]
-New working software list additions
---------------------------------------------
-A Global Games Adventure [Luís Rato, Planeta Sinclair]
-Critical Mass [spectrumcomputing.co.uk]
-Critical Mass (Erbe, medium case) [spectrumcomputing.co.uk]
-Gricko [spectrumcomputing.co.uk]
-Mithos (small cardboard case) [spectrumcomputing.co.uk]
-Shake! (issue 03) [Steven Brown, Planeta Sinclair]
-Shake! (issue 09) [Steven Brown, Planeta Sinclair]
-Sinclair User (Issue 133) [spectrumcomputing.co.uk]
-Sinclair User Club (Issue 03) [Steven Brown, Planeta Sinclair]
-Sinclair User Club (Issue 04) [Steven Brown, Planeta Sinclair]
-The Snow Queen (alt) [Steven Brown, Planeta Sinclair]
-The Squirrel's Nuts [Steven Brown, Planeta Sinclair]
-Redump
---------------------------------------------
-Mix And Match With Maggie [Luís Rato, Planeta Sinclair]
-Metadata cleanups: Corrected parent/cloneof relationships, publishers, release years (based on the info provided by
-  spectrumcomputing.co.uk)
-
-10813: pinball/inder.cpp: Add note about 'Mundial 90' [clawgrip]
-
-10818: bfm/bfm_bd1.cpp, bfm/bfm_bda.cpp: Fixed window/clear operations [james-wallace-ghub]
-This should fix the regressions noted here
-  (https://github.com/mamedev/mame/commit/6e5d7328cb152e56612bb5bc20ddb0ec3434c617#commitcomment-95293594)
-In short, the window code for BDA still uses the clear all method that was missed out before.
-There's more that needs to be done, but this restores the behaviour on error currently seen
-
-10821: sun4c, SPARC, and NCR53C90 bugfixes [MooglyGuy]
--ncr5390: Fixed 'Select w/ ATN and Stop' command in DMA mode. [Ryan Holtz]
--ncr5390: Renamed to ncr53c90 to avoid confusion about the actual NCR part name. [Ryan Holtz]
--sun4c_mmu: Fixed l2p debugger command by removing inadvertent narrowing conversion. [Ryan Holtz]
--sparc: Avoid using temporary C-strings as address space names. [Ryan Holtz]
--sun4: Switched to NCR 53C90 from 53C90A, and fixed DMA byte-address masking. Along with 53c90 fix above, allows Solaris 2.4 to
-  boot. [Ryan Holtz]
-
-10823: NCR53C90: Accuracy changes re: Transfer Information + message-out phase [MooglyGuy]
-- ncr53c90: Drop ATN during the message-out phase of Transfer Information command, per OG's suggestion. [Ryan Holtz]
-
-10824: Fix compile error on mingw due to invalid setting for ASTCENC_SSE [DopefishJustin]
-
-10825: Revised vcs_ctrl/paddles to use one input definition [MooglyGuy]
--vcs_ctrl/paddles: Swap ports and button bits at runtime. Avoids multiple input defs per-device. [Ryan Holtz]
-
-10826: ibm5170_cdrom.xml: 13 New working software list additions [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Humans 1 and 2 (Europe, OEM) [redump.org]
-Humans 1 and 2 (Europe, re-release) [redump.org]
-Prince of Persia 2 - The Shadow and the Flame (USA) [redump.org]
-Prince of Persia CD Collection (Europe) [redump.org]
-Prince of Persia CD Collection (USA) [redump.org]
-Prince of Persia Collection: Limited Edition (Europe) [redump.org]
-Prince of Persia Collection: Limited Edition (Europe, alt) [redump.org]
-Prince of Persia Collection: Limited Edition (USA) [redump.org]
-Prince of Persia Collection: Limited Edition (Netherlands) [redump.org]
-Prince of Persia Collection: Limited Edition (Brazil) [redump.org]
-Telstar 10 CD ROM Box Set [redump.org]
-The Humans (Europe) [redump.org]
-The Humans (USA) [redump.org]
-
-10827: merit/merits.cpp: Fix ROM label for 'pubtimed2ch' [clawgrip]
-
-10828: edevices/fantland.cpp: Dumped and added a new 'Born to Fight' clone [clawgrip]
-New WORKING clone
--------------------------------
-Born To Fight (set 2) [jordigahan, ClawGrip]
-
-10829: Updated Japanese Translation [k2-git]
-Add new string translations.
-Fix some spelling inconsistencies.
-
-10830: QA cleanups for various PC-based Arcade skeleton drivers [angelosa]
-New clones marked not working
------------------------------
-Hydro Thunder (1.01b) [archive.org]
-Hydro Thunder (1.00d) [archive.org]
-- gaelco/gaelcopc.cpp: add an alternate BIOS set for tokyocop [Gerald (COY), The Dumping Union]
-- misc/neomania.cpp, misc/playcenter.cpp, pc/quakeat.cpp, midway/midqslvr.cpp, misc/comebaby.cpp, unico/unianapc.cpp: demote HDD
-  images to BAD_DUMP having bad chs geometries.
-- funworld/photoplys.cpp, funworld/photoplysx.cpp, ice/frenzyxprss.cpp ,misc/bntyhunt.cpp, misc/cavepc.cpp, misc/chameleonrx1.cpp,
-  misc/ez2d.cpp, misc/gfamily.cpp, misc/globalvr.cpp, misc/neomania.cpp, misc/odyssey.cpp, misc/playcenter.cpp,
-  misc/radikaldarts.cpp, misc/rawthrillspc.cpp, misc/rfslotspcpent.cpp, misc/silverball.cpp, misc/skopro.cpp, misc/startouch.cpp,
-  misc/xtom3d.cpp, namco/rbowlorama.cpp, pc/quakeat.cpp, pinball/newcanasta.cpp, taito/taitotx.cpp, unico/unianapc.cpp,
-  midway/midqslvr.cpp, misc/comebaby.cpp: rearrange driver base setup and QA notes, for future conversion to PCI drivers.
-
-10834: misc/rfslots8085.cpp: Dumped and added a new 8085-based Recreativos Franco slot machine [clawgrip]
-New NOT_WORKING machine
--------------------------------
-Baby Formula 2 [jordigahan, ClawGrip]
-Also identify unknown game on rfslots8085.cpp as "Baby & Bombo"
-
-10835: Apple II: factor out NTSC color simulation and add config options [benrg]
-Make most video modes produce a 560x192 monochrome bitmap that goes through shared artifact color simulation code, and add some
-  dip-switch options to control the algorithm.
-This also implements the Video-7 foreground-background hires mode, since it was easy to do with the shared code.
-
-10837: ibm5150.xml: 12 New working + 1 not working software list additions [ArcadeShadow]
-New working software list additions
---------------------------------------------
-BC's Quest for Tires [Total DOS Collection]
-Buck Rogers: Countdown to Doomsday [The Good Old Days]
-Fire Power [The Good Old Days]
-Leisure Suit Larry in the Land of the Lounge Lizards (3.5") [Total DOS Collection]
-Manhattan Dealers (Europe, The 16-bit Pocket Power Collection release) [old-games.ru]
-Prehistorik [Total DOS Collection]
-Ski or Die [Total DOS Collection]
-Space 1889 [The Good Old Days]
-Super Ski (5.25") [old-games.ru]
-Super Ski (3.5", alt) [The Good Old Days]
-Super Ski (3.5", alt 2) [old-games.ru]
-The Cycles: International Grand Prix Racing (5.25") [abandonsocios.org]
-New NOT working software list addition
---------------------------------------------
-Bubble Bobble (5.25") [Total DOS Collection]
-
-10838: omegrace.cpp: Added omegrace3 rom set. [mdeslaur]
-This adds a previously unknown Omega Race romset with handwritten labels.
-Matching roms will be sent by email.
-
-10839: Dumped and added a Z80-based slot machine from Andra: Baby Suprem [clawgrip]
-New NOT_WORKING machine
--------------------------------
-Baby Suprem [jordigahan, ClawGrip]
-
-10840: misc/globalvr.cpp: Note about two games and typo fixes. [mikehyrus]
-Left off from (#10805) The Swarm and Redline Rampage use the same MSI bios as Aliens Extermination, Paradise Lost and so forth.
-
-10842: Update rapidjson to 012be8528783cdbf4b7a9e64f78bd8f056b97e24 [mmicko]
-This gets rid of deprecation warnings related to rapidjson
-
-10843: amigaocs_flop.xml: Metadata cleanings [ArcadeShadow]
-Replace countries' abbreviation by their full name
-
-10844: vsmilem: motion uses same 'system' machine config that classic [KanedaFr]
-fix issue on vsmile motion -> https://github.com/mamedev/mame/pull/10796#issuecomment-1396374528
-
-10845: nakajima/nakajies.cpp: Add v3.1 bios for drwrt400. [AbortRetryFail] [wilbertpol]
-
-10846: amigaaga_flop.xml: Metadata cleanings [ArcadeShadow]
-Replaced countries' abbreviation by their full name
-
-10847: amigaecs_flop.xml: Metadata cleanings [ArcadeShadow]
-Replaced countries' abbreviation by their full name
-
-10848: cd32.xml, cdtv.xml: Metadata cleanings [ArcadeShadow]
-Replaced "Euro" by "Europe" and lowercase on some descriptive words
-
-10851: pinball/inder.cpp: Fix date in note about "Mundial 90" [clawgrip]
-!86bb2c9d-45be-4879-9155-bf2ff5c6b920
-
-10856: dynax/ddenlovr.cpp mmpanic: fix AY8910 clock [negunma]
-According to videos from PCB, AY8910 clocks need to be corrected to half. 
-PCB Video 1: Waiwai Animal Land(ワイワイアニマルランド) (Japanese "Monkey Mole Panic") - Game start countdown sound, Mode confirm sound, etc.
-PCB Video 2: The First Funky Fighter (ザ・ファースト・ファンキーファイター) - Game start countdown sound, etc.
-Also, Animalandia Jr. PCB Notes shows all clock values already verified.
-
-10858: Major D3D and BGFX code refactoring and bug fixes [MooglyGuy]
-MAME Testers bugs fixed
------------------------
-- 08512: [Misc.] (osd/modules/render/bgfxutil.cpp) AddressSanitizer: heap-buffer-overflow with -video bgfx [Ryan Holtz]
-- 08505: [Misc.] (osd/modules/render/bgfxutil.cpp) eggventr: Segfault on startup [Ryan Holtz]
-- 07907: [Core] (drawbgfx): Prescale option doesn't work for bgfx video mode [Ryan Holtz]
-- 07341: [Image Enhancement] HLSL & BGFX: HLSL Scanline_alpha zooms screen [Ryan Holtz]
-- 07660: [Graphics] (osd/modules/render/bgfx/chainmanager.cpp) Toggle Full Screen bgfx screen chains reset to default [Ryan Holtz]
-- 07586: [Graphics] (osd/modules/render/bgfx/chainentry.cpp) Artwork: screen combined with multiply-blend does not work on BGFX D3D9
-  [Ryan Holtz]
-- 07587: [Graphics] (osd/modules/render/bgfx/chainentry.cpp) Artwork: multi-screen layer blending problem with BGFX [Ryan Holtz]
-- 08084: [Misc.] New BGFX files interacting poorly with art/overlays in warpwarp.cpp games [Ryan Holtz]
-
-10860: msx1_cass.xml: Update meta data and notes on a lot of software releases. [wilbertpol]
-- Moved 7cardstd and 7cardstda to B sides of Samantha Fox Strip Poker.
-- Renamed cityconj to citycona
-- Renamed queenglf to golfa
-- Renamed bumpygts to juegue03
-- Renamed maziacs to msxsof02
-- Renamed cubik to msxsof06
-- Renamed 007agesp to msxsof07
-- Renamed batespac to msxsw13
-
-10863: sanritsu/jantotsu.cpp : fix SN76489A clock [negunma]
-According to video from PCB, SN76489A clocks need to be corrected.
-Reference Video: https://twitter.com/kakikukecat/status/1530945420347645952
-
-10864: plist.h - fix deprecation warning [mmicko]
-
-10865: misc/discoboy.cpp: Added clone DJ Girl [DavidHaywood]
-new WORKING clones
------------
-DJ Girl (Promat license) [Buenrip, Recreativas.org]
-
-10869: bus/ata/atahle.cpp: Reset error state on writing CS0 command [holub]
-* ata never resets error state (worked for happy paths, but detected during testing)
-* IDE_COMMAND_STANDBY* constants added according to the spec with no implementation
-
-10870: ncr53c90: Add NCR53CF96 + bugfixes [987123879113]
-Discussion can be found in this commit: https://github.com/mamedev/mame/commit/8518c8421555e9ad7443e4537ea02ed6d4f4c441#r98926600
-Basic NCR53CF96 was added in preparation for an upcoming PR to convert the Konami arcade drivers using AM53CF96 to use NSCSI.
-The nscsi/cd change is required to fix sun4_60 booting because Solaris 2.6 requests 48 bytes from the SCSI INQUIRY command but only
-  receives the hardcoded 36 bytes, so it would time out waiting for the remaining data.
-
-10871: ibm5170_cdrom.xml: 25 New working software list additions [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Alien Incident (Europe, v1.01) [redump.org]
-Alone in the Dark (Europe) [redump.org]
-Alone in the Dark (Europe, rev. 1) [redump.org]
-Alone in the Dark (Europe, Pay as You Play version, CD-ROM User) [redump.org]
-Alone in the Dark (Europe, Pay as You Play version, PC Power) [redump.org]
-Alone in the Dark 2 (Europe) [redump.org]
-Alone in the Dark 2 (Europe, English only) [redump.org]
-Alone in the Dark 2 (France) [redump.org]
-Beneath a Steel Sky (USA, Slash release) [redump.org]
-Epic Pinball (Europe, Romware release) [redump.org]
-Epic Pinball (USA, Mail Order release) [redump.org]
-Formula One Grand Prix (Netherlands) [archive.org]
-Gobliiins (Italy, Collezione Cd-Rom) [redump.org]
-Gobliiins (USA, Sierra Originals release) [redump.org]
-Goblins 3 (Europe, Sierra Originals release) [redump.org]
-Goblins 3 (Italy, Collezione Cd-Rom) [redump.org]
-Gods (Europe) [redump.org]
-Indiana Jones and the Last Crusade (Europe) [redump.org]
-Leisure Suit Larry in the Land of the Lounge Lizards (USA, SierraOriginals release) [redump.org]
-PC Rally (Europe) [redump.org]
-Prince of Persia 2 - The Shadow and the Flame (France) [redump.org]
-Pyrotechnica (USA) [redump.org]
-Soccer Kid (Europe) [redump.org]
-Where in Space is Carmen Sandiego? (USA, Deluxe Edition) [redump.org]
-Wrath of the Demon (USA) [redump.org]
-
-10874: misc/opercoin.cpp: Dumped and added an Oper Coin slot machine [clawgrip]
-New NOT_WORKING machine
------------------------------------------
-Super Pirulo [jordigahan, ClawGrip]
-
-10875: machine/via6522.cpp: Don't clear all interrupts on IFR writes with bit 7 set [mzattera]
-These 3 datasheets:
-http://archive.6502.org/datasheets/mos_6522_preliminary_nov_1977.pdf
-  http://archive.6502.org/datasheets/synertek_sy6522_via_1978_jan.pdf
-http://archive.6502.org/datasheets/rockwell_r6522_via.pdf
-state that:
-The IFR bit 7 is not a flag. Therefore, this bit is not directly cleared by writing a logic 1 into it. It can only be cleared by
-  clearing all the flags in the register or by disabling all the active interrupts as discussed in the next section.
-but this is what current code does. If more updated datasheets are available, please share the links.
-
-10876: galaxian/galaxian.cpp: Dumped and added a new Spanish Moon Cresta bootleg [clawgrip]
-New NOT_WORKING clone
-----------------------------
-Mutacion (Explomatic Spanish Moon Cresta bootleg) [Recreativas.org]
-
-10877: misc/nabupc.cpp: Add three additional BIOS options [brijohn]
-This adds three additional roms/bioses to the nabupc emulator. 
-Two new 4k roms (ver 14 and ver 17), which support floppy and hdd booting.
-One new 8k rom (ver 29), which supports floppy and hdd booting.
-
-10880: bus/nabupc: Added support for hard disk controller card [brijohn]
-This adds support for hard drive emulation to the nabupc system. 
-
-10881: megaphx.cpp: Add PCBs ASCII layouts and corrected placeholders for PLDs on YoYo Spell [clawgrip]
-Also added some notes
-
-10882: misc/rawthrillspc.cpp: Dumped and added a new Raw Thrills PC-based arcade game [clawgrip]
-New NOT_WORKING machine
----------------------------------
-Doodle Jump Arcade (v1.16) [jordigahan, Museo del Recreativo]
-
-10883: msx1_cart.xml: Hexadecimal sizes, explicitly configure loading for smaller images, add information and usage notes.
-  [wilbertpol]
-- Use hexadecimal sizes.
-- Add a feature to explicitly indicate where in memory cartridges without mappers should be loaded.
-- Updated serial, isbn, gtin, and usage notes.
-- Updated versions for Arabic releases and added Arabic alt_titles.
-
-10884: toaplan2.cpp: Split class per hardware feature [cam900]
-
-10887: amstrad.cpp: palette fix (MT08506) [holub]
-!image
-
-10888: bus/msx/cart/ram.cpp: Add RAM expansion cartridges. [wilbertpol]
-
-10891: hng64.cpp: Hyper NeoGeo 64 video updates [DavidHaywood]
-- filter out most (but not all) the bad polygons in roadedge / xrally by handling display list more correctly
-- fixed 4bpp texture handling (they were being treated as 'low resolution' textures, throwing away 3/4 of the data) (used
-  extensively for background details on sams64/sams64_2)
-- added 4bpp texture decode for easy viewing of the 4bpp texture pages, handy for debugging
-- fixed some texture palette issues connected to the 4bpp textures and incorrect enable bits being used (wheels+windscreen palette
-  in racing games for example)
-- found a flag which seems to enable/disable the backface culling, improves bbust2 school bus without breaking roadedge
-- a few small tidyups / cleanups (disabled some printf/logerrors that would be heavily spammed at times)
-- add ADK as the developer of bbust2 (SNK/ADK is credited in the ending, even if not on the title screen)
-
-10893: msx/cart/msxdos2.cpp: Full MSX-DOS2 support. [wilbertpol]
-
-10894: ibm5170.xml: 11 New working software list additions [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Fables & Fiends - Book One: The Legend of Kyrandia (Germany, v1.8, 5.25") [DFXThomas, archive.org]
-Formula One Grand Prix (Spain, v1.05) [abandonsocios.org]
-Jeweler's Dilemma (3.5" DD) [ibmpc5150, archive.org]
-Jeweler's Dilemma (5.25" HD) [ibmpc5150, archive.org]
-Lotus - The Ultimate Challenge (Spain, Maxi Juegos Erbe №3) [abandonsocios.org]
-Operation Stealth (Spain, Maxi Juegos Erbe №14) [abandonsocios.org]
-Star Control 2 [The Good Old Days]
-Shadowlands (UK) [ibmpc5150, archive.org]
-Shadowlands (USA) [The Good Old Days]
-Shadowlands (USA, 5.25") [The Good Old Days]
-The Lemmings Chronicles (USA) [ibmpc5150, archive.org]
-
-10897: misc/playcenter.cpp: Redumped the current HDD and added two PlayCenter clones [clawgrip]
-New NOT_WORKING clones
--------------------------------
-PlayCenter Champions Tournament (v9.3, 'K6' hardware)  [Recreativas.org]
-PlayCenter Champions Tournament (v9.3, 'Celeron' hardware) [Recreativas.org]
-The HDD CHDs boot fine now. The procedure used to create the CHDs from the Norton Ghost images was:
-1.- Use Norton Ghost to convert from GHO to VHD.
-2.- Use QEmu to convert from VHD to raw.
-3.- Use chdman to convert from raw to CHD.
-
-10898: misc/megaphx.cpp: Fix typo on xtal frequency on ASCII PCB scheme [clawgrip]
-!3df137f0-866c-4f12-85d7-57281065fe4a
-
-10900: misc/neomania.cpp: Redumped the HDD image [Recreativas.org] [clawgrip]
-The HDD CHD boots fine now. The procedure used to create the CHD from the Norton Ghost images was: 1.- Use Norton Ghost to convert
-  from GHO to VHD.
-2.- Use QEmu to convert from VHD to raw.
-3.- Use chdman to convert from raw to CHD.
-
-10902: msx2_cart.xml: Fix incorrect sha1s on msxdos2 floppy images. [wilbertpol]
-I managed to put in the wrong sha1 hash for all the msxdos2 floppy image; this fixes those.
-
-10904: misc/gfamily.cpp: Re-encoded the CHD from the GHO the right way [Recreativas.org] [clawgrip]
-The HDD CHD boots fine. The procedure used to create the CHD from the Norton Ghost image was: 
-1.- Use Norton Ghost to convert from GHO to VHD using the 'ntexact' option. 
-2.- Use QEmu to convert from VHD to raw.
-3.- Use chdman to convert from raw to CHD.
-
-10905: hng64_v.cpp : added some missing Hyper NeoGeo 64 video features [DavidHaywood]
-- enabled additive blending in certain situations where it improves the visuals
-- prevent background colour flickering in sams64/sams64_2 due to using wrong register bit
-- added mosaic effect for tilemaps
-- general cleanups
-
-10906: msx2_cass.xml: Update note and serials. Replace redlight with redlighta. [wilbertpol]
-The Red Lights of Amsterdam was released as a double sided tape. The redlight entry was both sides in a single file as if all the
-  data was on a single side.
-
-10907: msx2_cart.xml: Use hexadecimal sizes and remove offset="0" attributes on single roms. [wilbertpol]
-
-10908: Update Ukrainian translation [StanleyKid-22]
-Updating new and correcting current strings in Ukrainian strings.po.
-
-10909: msx2_flop.xml: Removed obvious cartridge to floppy conversion hacks. [wilbertpol]
-
-10910: amiga_demos.xml: Lowercase on descriptive words [ArcadeShadow]
-Lowercase on "demo" word
-
-10911: c64_flop_misc.xml, c64_flop_orig.xml: Metadata cleaning [ArcadeShadow]
-Replaced countries' abbreviation by the full name
+- 10592: nintendo/nds.cpp: Added two prototype firmware dumps. [HudU, MasChief, Forest of Illusion, kmg]
+- 10609: vsystem/f1gp.cpp: Updated notes in comments. [ArtLine]
+- 10676: misc/nabupc.cpp, bus/nabupc: Added support for NABU PC and simulated host. [Brian Johnson]
+- 10701: konami/nwk-tr.cpp: Use Roman numerals in Racing Jam: Chapter II titles. [Michael Sanborn]
+- 10724: sgi_mips: Added three Onyx2 - As Real as it Gets Demo CDs. [archive.org, darkstar]
+- 10726: ibm5170.xml: Added eight working items. [archive.org, The Good Old Days, Tkrns, Ihatediskettes, ArcadeShadow]
+- 10729: formats/hp300_dsk.cpp, formats/hp_lif.cpp: Added HP 300 floppy format and LIF filesystem. [Sven Schnelle]
+- 10730: taito/taitosj.cpp: Added another Japanese version of Jungle King. [CWorks, David Haywood]
+- 10747: render/bgfx: Fixed per-pass blend handling issues (addresses MT07586 and MT07587). [Ryan Holtz]
+- 10748: Reverted pull request #10747 (render/bgfx: Fixed per-pass blend handling issues). [Ryan Holtz]
+- 10750: Updated BGFX, BX and BIMG. [Miodrag Milanović]
+- 10751: pacman/pengo.cpp: Sorted Pengo sets, and changed scheme for short names. [David Haywood]
+- 10753: handheld/chesskng.cpp: Emulated  I-Star Chess King hand-held chess computer. [Ankos, David Haywood, hap]
+- 10756: handheld/chesskingc.cpp, chessking_cart.xml: Added support for dictionary cartridge. [David Haywood, Ankos, furrtek]
+- 10761: apple/apple2video.cpp: Shift double lo-res video right in monochrome mode to work better with NTSC shader. [benrg]
+- 10762: igs/pgm.cpp: Use logmacro.h for logging. [cam900]
+- 10763: misc/megaphx.cpp: Added YoYo Spell (prototype of Little Robin). [OperNet Sistemas, Recreativas.org, David Haywood]
+- 10764: apple/apple2video.cpp: Removed unused TK2000 video update function. [benrg]
+- 10765: machine/upd765.cpp: Handle read/write completion interrupts the same way as any other interrupts. [Carl]
+- 10766: apple2video.cpp: Turned text update and character drawing functions into templates to reduce duplication. [benrg]
+- 10767: apple/apple2video.cpp: Eliminated a lookup table that just performed a bitwise rotation. [benrg]
+- 10771: wyse/wy50.cpp: Added beeper. [Golden Child]
+- 10773: apple/apple2video.cpp: Improved color simulation for hi-res graphics mode. [benrg]
+- 10774: sanritsu/bankp.cpp: Dumped and added a Bank Panic bootleg from Tecfri. [Eduardo Anay, Recreativas.org, ClawGrip]
+- 10776: casio/ctk551.cpp: Changed default key velocity controls so they don’t conflict with directional buttons. [Devin Acker]
+- 10777: apple/apple2video.cpp: Turned screen update functions into a template. [benrg]
+- 10779: vsmile_cart.xml: Add UK versions of ten V.Smile games. [TeamEurope, ClawGrip]
+- 10781: cpu/m6809: Fixed HD6309 STBT instruction. [Tim Lindner]
+- 10782: bgfx, render/d3d: Improved NTSC parameter descriptions and ranges. [benrg]
+- 10784: technos/ddragon.cpp: Added Double Dragon II layer priority PROM to clones. [jotego]
+- 10785: misc/magic10.cpp: Added Super Petrix (stealth gambling game). [Paul-Arnold, caius]
+- 10786: apple/macadb.cpp: Corrected mouse X/Y movement and second mouse button fields. [Kelvin Sherlock]
+- 10787: Reverted pull request #10750 (Updated BGFX, BX and BIMG). [R. Belmont]
+- 10788: machine/sun4c_mmu.cpp: Removed non-functional cache emulation. [Ryan Holtz]
+- 10789: Updated BGFX, BX and BIMG. [Miodrag Milanović]
+- 10792: apple/apple2video.cpp: Improved hi-res graphics artifact color table. [benrg]
+- 10793: cpu/sparc, machine/sun4c_mmu.cpp, sun/sun4.cpp: Fixed issues affecting Solaris 2.4 installer. [Ryan Holtz]
+- 10794: sun/sun4.cpp: Fixed array-bounds oversight (fixes clang build failures). [Ryan Holtz]
+- 10796: vtech/vsmile.cpp: Corrected On and Off button I/O port bits. [KanedaFr]
+- 10797: apple/apple2video.cpp: Fixed Video-7 RGB card double hi-res modes. [benrg]
+- 10798: apple/apple2gs.cpp: Made kmstatus match observed behavior. [Kelvin Sherlock]
+- 10802: formats/fs_coco_os9.cpp: Fixed file name validation on targets with signed character type. [Nathan Woods]
+- 10803: nes.xml: Updated some PCB label details. [kmg]
+- 10804: video/virge_pci.cpp: Fixed remapping, allowing Windows 98 SE t use 256-color mode. [Angelo Salese]
+- 10806: apple/apple2video.cpp: Separated video device configuration from system configuration port. [benrg]
+- 10807: apple/apple2video.h: Made some accessors const-qualified. [benrg]
+- 10808: cpu/arcompact: Rewrote CPU emulation and disassembler. [David Haywood]
+- 10809: apple/apple2video.cpp: Use screen update function for all systems. [benrg]
+- 10810: taito/taito_f2.cpp: Use screen_vblank_partial_buffer_delayed for Mega Blast (fixes MT08543). [David Haywood]
+- 10812: spectrum_cass.xml: Added twelve working items and replaced one item with a better dump. [ArcadeShadow]
+- 10813: pinball/inder.cpp: Added note about ‘Mundial 90”. [ClawGrip]
+- 10818: bfm/bfm_bd1.cpp, bfm/bfm_bda.cpp: Fixed window/clear operations. [James Wallace]
+- 10821: machine/ncr53c90.cpp, cpu/sparc, sun/sun4.cpp: Fixed bugs affecting Solaris 2.4 and cleaned up code. [Ryan Holtz]
+- 10823: machine/ncr53c90.cpp: Drop ATN during message-out phase of Transfer Information command. [Ryan Holtz, O. Galibert]
+- 10824: 3rdparty/bimg: Fixed compilation on MinGW. [Justin Kerk]
+- 10825: vcs_ctrl/paddles.cpp: Made I/O port definitions static and not dependent on configuration. [Ryan Holtz]
+- 10826: ibm5170_cdrom.xml: Added thirteen working items. [redump.org, ArcadeShadow]
+- 10827: merit/merits.cpp: Fixed ROM label for pubtimed2ch. [ClawGrip]
+- 10828: edevices/fantland.cpp: Dumped and added another version of ‘Born to Fight’. [jordigahan, ClawGrip]
+- 10829: Updated Japanese UI translation (added new messages, fixed some inconsistencies). [Katsuhiko Kagami]
+- 10830: Cleaned up various PC-based arcade hardware skeleton drivers. [Angelo Salese]
+- 10834: misc/rfslots8085.cpp: Dumped and added another 8085-based Recreativos Franco slot machine. [jordigahan, ClawGrip]
+- 10835: apple/apple2video.cpp: Use a single path for NTSC color simulation in all video modes. [benrg]
+- 10837: ibm5150.xml: Added thirteen items (twelve working). [ArcadeShadow]
+- 10838: midway/omegrace.cpp: Added a previously unknown version of Omega Race. [Marc Deslauriers]
+- 10839: misc/babysuprem.cpp: Added skeleton driver for Andra Z80-based slot machine Baby Suprem. [jordigahan, ClawGrip]
+- 10840: misc/globalvr.cpp: Note two games to list of released games, and fixed some spelling errors in comments. [Michael Sanborn]
+- 10842: Updated RapidJSON (fixes some deprecation warnings). [Miodrag Milanović]
+- 10843: amigaocs_flop.xml: Cleaned up descriptions. [ArcadeShadow]
+- 10844: vtech/vsmile.cpp: Use the same SYSTEM port inputs for vsmilem and vsmile. [KanedaFr]
+- 10845: nakajima/nakajies.cpp: Modernised code and added v3.1 BIOS option for drwrt400. [AbortRetryFail, Wilbert Pol]
+- 10846: amigaaga_flop.xml:  amigaaga_flop.xml: Replaced abbreviated country names in descriptions with full names. [ArcadeShadow]
+- 10847: amigaecs_flop.xml: Replaced abbreviated country names in descriptions with full names. [ArcadeShadow]
+- 10848: cd32.xml, cdtv.xml: Cleaned up descriptions. [ArcadeShadow]
+- 10851: pinball/inder.cpp: Fixed date in note about ‘Mundial 90’. [ClawGrip]
+- 10856: dynax/ddenlovr.cpp: Fixed mmpanic AY8910 clock frequency. [negunma]
+- 10858: render/d3d, render/bgfx: Refactored and cleaned up code, fixing numerous bugs and improving performance. [Ryan Holtz]
+- 10860: msx1_cass.xml: Updated metadata and notes on a lot of software releases. [Wilbert Pol]
+- 10863: sanritsu/jantotsu.cpp: Fix SN76489A clock frequency. [negunma]
+- 10864: plib/plist.h: Stop using deprecated std::iterator template. [Miodrag Milanović]
+- 10865: misc/discoboy.cpp: Added clone DJ Girl. [Buenrip, Recreativas.org, David Haywood]
+- 10869: bus/ata/atahle.cpp: Reset error state on writing CS0 command. [holub]
+- 10870: machine/ncr53c90.cpp: Fixed issues with DMA transfers; nscsi/cd.cpp: Handle larger INQUIRY sizes. [Windy Fairy]
+- 10871: ibm5170_cdrom.xml: Added twenty-five working items. [redump.org, ArcadeShadow]
+- 10874: misc/opercoin.cpp: Dumped and added Oper Coin slot machine Super Pirulo. [jordigahan, ClawGrip]
+- 10875: machine/via6522.cpp: Don’t clear all interrupts on IFR writes with bit 7 set. [Massimiliano Zattera]
+- 10876: galaxian/galaxian.cpp: Dumped and added a Spanish Moon Cresta bootleg called Mutacion. [Recreativas.org, ClawGrip]
+- 10877: misc/nabupc.cpp: Added three additional BIOS options [Brian Johnson]
+- 10880: bus/nabupc: Added support for hard disk controller card. [Brian Johnson]
+- 10881: misc/megaphx.cpp: Add ASCII PCB layouts and corrected placeholders for PLDs on YoYo Spell. [ClawGrip]
+- 10882: misc/rawthrillspc.cpp: Dumped recovery DVD for Doodle Jump Arcade. [jordigahan, Muse del Recreativo, ClawGrip]
+- 10883: msx1_cart.xml: Use hexadecimal sizes, explicitly configure loading for smaller images, and updated metadata. [Wilbert Pol]
+- 10884: toaplan/toaplan2.cpp: Split up driver state class by hardware features. [cam900]
+- 10887: amstrad/amstrad.cpp: Improved palette (addresses major part of MT08506). [holub]
+- 10888: bus/msx/cart: Added support for RAM expansion cartridges. [Wilbert Pol]
+- 10891: snk/hng64_v.cpp: Improved polygon visibility and added support for 4 BPP textures. [David Haywood]
+- 10893: bus/msx/cart: Added full support for MSX-DOS2. [Wilbert Pol]
+- 10894: ibm5170.xml: Added eleven working items. [ArcadeShadow]
+- 10897: misc/playcenter.cpp: Replaced plycntrchtr disk dump with a restore image and added two clones. [Recreativas.org, ClawGrip]
+- 10898: misc/megaphx.cpp: Fixed misread crystal frequency on ASCII PCB diagram. [ClawGrip]
+- 10900: misc/neomania.cpp: Replaced neomania hard disk image with an official restore image. [Recreativas.org, ClawGrip]
+- 10902: msx2_cart.xml: Fixed incorrect SHA-1 digests on MSX-DOS2 floppy disk images. [Wilbert Pol]
+- 10904: misc/gfamily.cpp: Replaced gmfamily hard disk image with a correctly created CHD. [Recreativas.org, ClawGrip]
+- 10905: snk/hng64_v.cpp: Implemented some missing Hyper NeoGeo 64 video features. [David Haywood]
+- 10906: msx2_cass.xml: Replaced badly dumped redlight with redlighta, and updated metadata. [Wilbert Pol]
+- 10907: msx2_cart.xml: Use hexadecimal sizes, and removed zero offsets for cartridges containing a single ROM. [Wilbert Pol]
+- 10908: Updated Ukrainian UI translation. [Stanley Kid]
+- 10909: msx2_flop.xml: Removed obvious cartridge-to-floppy conversion hacks. [Wilbert Pol]
+- 10910: amiga_demos.xml: Use lowercase for descriptive text in descriptions. [ArcadeShadow]
+- 10911: c64_flop_misc.xml, c64_flop_orig.xml: Use full country names in descriptions. [ArcadeShadow]
 
 
 Source changes
@@ -2427,3 +1898,11 @@ Workbench 1.2 Rev. 33.61 A500/A2000 [dackerman/archive.org]
 -3rdpary/bimg: Just disable SSE on all 32-bit builds to be safe. [Vas Crabb]
 
 -chessking_cart.xml: Corrected cartridge title. [Vas Crabb]
+
+-toaplan/toaplan2.cpp: Made RAM-based text layer graphics and linescroll finders optional. [Vas Crabb]
+
+-sgi_mips.xml: Explicitly mark demos requiring Onyx2 as unsupported. [Vas Crabb]
+
+-chessking_cart.xml: Use better short name for cartridge, too. [Vas Crabb]
+
+-apple/apple2video.cpp: Use real fall-through attribute. [Vas Crabb]
