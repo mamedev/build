@@ -5,7 +5,10 @@
 MAME Testers bugs fixed
 -----------------------
 - 05777: [Misc.] (commodore/c64.cpp) c64 all systems: C64 [systemm1]: Software disconnect is not implemented. (Curt Coder)
+- 05995: [Gameplay] (nec/pce.cpp) pce [macr2036]: Attempting to start a game returns to the title screen. (Angelo Salese)
 - 06643: [Sound] (rare/kinst.cpp) kinst, kinst2: DCS audio fade-in effects are not emulated correctly. (mjrgh)
+- 07791: [Gameplay] (nec/pce.cpp) pce [madstlkr]: Game freezes on Kogado logo or when starting a game. (Angelo Salese)
+- 07972: [Crash/Freeze] (nec/pce.cpp) pce and clones [fzone2]: Emulator freezes and eventually crashes on cutscenes. (Angelo Salese)
 - 08562: [Crash/Freeze] (pc/genpc.cpp) ibm5150 and clones [digger]: MAME freezes when the game sets invalid CRTC parameters. (Carl)
 - 08564: [Crash/Freeze] (apple/apple2gs.cpp) apple2gs [zanygolf]: Emulated system freezes loading the fourth level. (Peter Ferrie)
 - 08570: [DIP/Input] (midway/midyunit.cpp) mkla1, mkla2: Buttons for the second player are labelled incorrectly. (Ivan Vangelista)
@@ -14,6 +17,7 @@ MAME Testers bugs fixed
 - 08579: [Misc.] (taito/flstory.cpp) flstory, flstoryj: These games are newer and older versions, not regional variants. (Vas Crabb)
 - 08580: [Crash/Freeze] (dynax/royalmah.cpp) janyoup2: MAME crashes with an access violation. (Vas Crabb)
 - 08582: [Media Support] (commodore/c128.cpp) c128 all variations: Tape data is not received. (Curt Coder)
+- 08590: [Sound] (heathkit/h19.cpp) h19: Keyclick sound plays indefinitely. (Mark Garlanger)
 
 
 New working systems
@@ -240,24 +244,24 @@ Merged pull requests
 - 10890: bus/msx/cart/slotexpander.cpp: Added support for MSX four-slot expander cartridges. [Wilbert Pol]
 - 10892: Reduced usage of sprintf. [Erik Newton]
 - 10899: Removed local copy of SDL source and updated Android build support. [Miodrag Milanović]
-- 10901: misc/babysuprem.cpp: Fleshed out driver and added layout, making Baby Suprem playable. [Paul-Arnold]
+- 10901: misc/babysuprem.cpp: Fleshed out driver and added layout, making Baby Suprem playable. [Paul-Arnold]
 - 10912: Updated Japanese UI translation. [Katsuhiko Kagami]
 - 10914: snk/hng64_sprite.ipp, snk/hng64_v.cpp: Improved Hyper Neo Geo 64 sprite drawing. [David Haywood]
 - 10917: Explicitly include cstdint in places where it’s used (fixes building with GNU libstdc++ 13). [Belegdol]
-- 10919: nintendo/n64_v.cpp: Simplified N64 RDP disassembler. [Erik Newton]
+- 10919: nintendo/n64_v.cpp: Simplified Nintendo 64 RDP disassembler. [Erik Newton]
 - 10920: taito/taito_f3_v.cpp: Improved line clipping effects and palette for landmakr and quizhuhu. [ywy]
 - 10921: Updated Greek UI translation. [BraiNKilleRGR]
 - 10923: msx2_cart.xml: Added serials/GTINs, and updated notes. [Wilbert Pol]
-- 10924: osd/sdl: Do not raise fatal error on -video auto -videodriver wayland. [Belegdol]
-- 10925: misc/rawthrillspc.cpp: Added some notes about Doodle Jump hardware. [ClawGrip]
+- 10924: osd/sdl: Do not raise fatal error on -video auto with Wayland video driver. [Belegdol]
+- 10925: misc/rawthrillspc.cpp: Added some notes about Doodle Jump hardware. [ClawGrip]
 - 10926: bus/isa: Added HP82321A BASIC Language coprocessor card. [Sven Schnelle]
 - 10929: vsmile_cart.xml: Added a new UK game cartridge dump and changed ROM sizes to hexadecimal. [ClawGrip, apex2504]
 - 10931: tecfri/sauro.cpp: Added an “easy” version of Sauro. [Jordi Beltrán, Victor Fernandez (City Game), ClawGrip]
 - 10932: msx/msx.cpp: Added layouts for displaying internal drive activity. [Wilbert Pol]
 - 10933: cpu/dsp56156: Updated string formatting code. [Erik Newton]
-- 10934: mame.lst: Added ‘sauroc’ and add year to ‘spirulo’. [ClawGrip]
+- 10934: mame.lst: Added ‘sauroc’, and added year to ‘spirulo’. [ClawGrip]
 - 10935: snk/hng64_sprite.ipp: Improved sprite mosaic effect. [David Haywood]
-- 10938: sony/news_r3k.cpp: Flagged NWS-3410 as having unemulated graphics. [Brice Onken]
+- 10938: sony/news_r3k.cpp: Flagged NWS-3410 as having unemulated (rather than imperfect) graphics. [Brice Onken]
 - 10939: sony/news_r4k.cpp: Fixed graphics flag (unemulated rather than imperfect). [Brice Onken]
 - 10941: snk/hng64_3d.ipp: Use 16-bit indexed format for 3D layer buffer. [David Haywood]
 - 10942: sega/segaybd.cpp: Use default assignment for pdrift Gear Shift input. [sairuk]
@@ -277,7 +281,7 @@ Merged pull requests
 - 10957: nmk/nmk16.cpp: Ignore lane select for main RAM writes for vandyke and bioship. [David Haywood]
 - 10959: msx2_flop.xml: Added alt_title, serial, gtin, and part_id meta information and notes. [Wilbert Pol]
 - 10960: msx1_cart.xml: Moved the Albatross extended course tapes from msx1_cass.xml to msx1_cart.xml. [Wilbert Pol]
-- 10961: misc/gameace.cpp: Completed Hot Body emulation and ROM unscrambling. [David Haywood]
+- 10961: misc/gameace.cpp: Completed Hot Body emulation and ROM unscrambling. [David Haywood]
 - 10962: misc/playcenter.cpp: Added a couple of notes about the hardware. [ClawGrip]
 - 10964: bus/msx: Added a slot device for 30-pin Yamaha mini cartridges. [Wilbert Pol]
 - 10965: neogeo/neogeo.cpp: Don’t treat puzzldpr as a clone; added additional irrmaze BIOS. [David Haywood]
@@ -312,7 +316,7 @@ Merged pull requests
 - 11010: cinematronics/leland_*.cpp: Modernized logging using logmacro.h utilities. [cam900]
 - 11011: snk/hng64.cpp: Implemented tilemap wrap enable flag. [David Haywood]
 - 10013: snk/hng64.cpp: Implemented global tile animation disable flag (used in buriki attract mode). [David Haywood]
-- 11014: orca/akazukin.cpp: Added driver for Akazukin (Sigma, 1983) [Alberto Salso, Ignacio Seki, Angelo Salese]
+- 11014: orca/akazukin.cpp: Added driver for Akazukin (Sigma, 1983). [Alberto Salso, Ignacio Seki, Angelo Salese]
 - 11015: snk/hng64.cpp: Re-enabled lighting in layer mixing, and adjusted video timings. [David Haywood]
 - 11016: sinclair/tsconf.cpp: Added NeoGS sound card and Kempston mouse. [holub]
 - 11017: ibm5170_cdrom.xml: Added 28 working items. [redump.org, archive.org, ArcadeShadow]
@@ -1825,3 +1829,7 @@ Sound Blaster 16 CD [archive.org]
 -hash/oric1_cass.xml: Use rebuilt Cross Bomber tape. [Vas Crabb]
 
 -hash/oric1_cass.xml: Update year for rebuilt Cross Bomber tape, too. [Vas Crabb]
+
+-heathkit/h19.cpp: Initialise bell state. [Vas Crabb]
+
+-osd/modules/input/input_dinput.cpp: Adjusted heuristics to work better with newer DualShock/DualSense controllers. [Vas Crabb]
