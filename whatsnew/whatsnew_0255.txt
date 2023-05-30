@@ -223,721 +223,96 @@ n64_lodgenet:
 
 Merged pull requests
 --------------------
-11018: sinclair/sprinter.cpp: new working clone [holub]
-Another addition to Sinclair's family Sprinter Sp2000 clone inspired by/compatible with ZX Spectrum 128K.
-P.S. sorry I broke original #10754 
-
-11037: Initial work towards i440bx chipset [angelosa]
-- implements stubs for i82443bx_host and i82371eb PCI devices, hooks up base PCI stubs to midway/midqslvr.cpp, misc/comebaby.cpp and
-  misc/xtom3d.cpp
-- misc/xtom3d.cpp: preliminary implementation of Oksan ROM DISK ISA card
-- machine/pci-smbus.h: make map public so it can be reused by i82371eb_acpi (would otherwise fail mapping to the intended HW)
-New systems marked not working
-----------------------------------
-Pump It Up: The 1st Dance Floor [ATR4X, Gergc, Pawprint, infamouspat, Ruubbinnexx, H4M573R, Angelo Salese, Hammy]
-
-11057: video/vrender0.cpp: More accurate VRender0 pipeline inner workings [angelosa]
-- Fixes donghaer split screen;
-
-11084: vgmplay.xml: Software list rename [ArcadeShadow]
-Lowercase on descriptive support file
-
-11108: heathkit/h89.cpp: Implement more functionality, add new monitor ROMs, add more tech details [mgarlanger]
-Implemented more of the H89. 
-- Added the 4 ports which cause an NMI (these were ports that were defined on the H8, the NMI allows the ROM to handle some backward
-  compatibility with the H8).
-- Added the 3 serial ports from the H-88-3 serial board.
-- Implemented the ORG-0 upgrade, which allowed the H89 to run CP/M, and was still compatible with HDOS.
-- Fixed the read value for non-existent memory.
-- Added the write-protectable Floppy RAM.
-New ROMs
-- MTR-88
-- MTR-89
-More tech details
-- description of the different models.
-- available commands for MTR-88 and MTR-89.
-- description of the memory map.
-- list of assigned port addresses.
-
-11127: msm5232: revise caps and resistors values [Yaei, TremiRodomi] [galibert]
-
-11128: SGI Indy: PRID and clock fixes [FlyGoat]
-To align more with actual hardware behaviour and make IRIX happy in various aspects.
-
-11140: ata/gdrom.cpp: overhaul [angelosa]
-- ata/gdrom.cpp: Fix READ_TOC command, improve logging, add redbook playback & repeat, add basic CD status;
-- ata/gdrom.cpp: fix loopchk Maker/Model identify ATA command 0104;
-- ata/gdrom.h: flip is_ready() to true, fixes several hangs (cfr. hash/dc.xml)
-- sound/aica.cpp: fix EXTS[1] routing;
-- sega/dccons.cpp: fix dcfish gdrom region hookup regression;
-
-11141: machine/t10mmc.cpp: track command 48h just plays track when TNO start == TNO end [angelosa]
-* fix MT#07184 redbook silent regression with konami/konamigv.cpp
-
-11146: vectorgraphic/sbcvideo.cpp: Fix color accuracy and addressing bugs [ejona86]
-
-11148: namco/namcos10: Add decrypter for Mr. Driller G [Samuel Neves, Peter Wilhelmsen] [987123879113]
-Hopefully this made it in before the freeze.
-
-11153: MSM5232: Use correct attack/decay time nominal value when certain attack/decay time data is specified [yaei]
-MSM5232 determines the attack or decay duration of each note from the lower 3 bits of Attack Time Data(addr $8,$9), or the value
-  specified in the lower 4 bits of Decay Time Data(addr $A,$B).
-According to the datasheet, when the lower 3 bits of the Attack/Decay Time Data are 0x6 or 0x7, the second bit is ignored and the
-  value for 0x4 or 0x5 is used.
-The current msm5232 emulation implementation does not take this into account.
-For example, with 0xE specified in the Decay Time Data, the decay duration of a note should be 4 seconds, but the current
-  implementation decays for 16 seconds.
-This commit corrects the Attack/Decay time to be in line with the datasheet when 0x6 or 0x7 is specified for the lower 3 bits of
-  Attack/Decay Time Data.
-5232.pdf
-The attached datasheet is the reference.
-It is described on p.15-16, 25.
-
-11154: gameboy.xml: Metadata cleanups [ArcadeShadow]
-- Added parent/cloneof relation between asteroid/asteroidp
-- Lowercase on "Rev" descriptive word
-
-11155: namco/namcos10: Add decrypters for Taiko no Tatsujin 3 and 5 [987123879113]
-Also cleaned up the constants some more as mentioned in the last PR.
-
-11157: Added IBM PS/2 speech adapter (ISA) [LuigiThirty] [Luigi30]
-Adds the IBM PS/2 speech adapter as an 8-bit ISA slot device.
-
-11158: rs232 pty: flow control copied from null_modem [drougge]
-Using the rs232 pty backend works very badly as there is no flow control. I have copied flow control support from the null_modem
-  backend, and at least the XON/XOFF version works well with the emulated VT102. (I don't know what to test the other ones with.)
-
-11160: seta/seta.cpp: workaround extdwnhl ending crash [angelosa]
-- fix MT#08614
-
-11165: Dumped and added a skeleton driver for a slot machine from Sleic/Petaco [clawgrip]
-New NOT_WORKING machines
--------------------------------
-Bolsa Internacional (euro) [Javier Blanco Ojeda, ClawGrip]
-
-11166: namcos10: Add decrypted Point Blank 3 program code [windyfairy, Guru] [987123879113]
-The decrypted program code has been scrambled into the same format that the rest of the NAND data uses and placed into the same
-  blocks the encrypted program code occupied. The NAND data read function will passthrough to the unscramble function when a
-  decrypter isn't present, so the patched ROM will work as-is without any game specific hacks required in driver. When a decrypter
-  is made then it is required to remove the unenc ROM entry or it will try to read the scrambled program code as encrypted program
-  code.
-~~Cursor could possibly use some offsetting to make it dead center, but using the offset parameter of `PORT_CROSSHAIR` causes the UI
-  cursor to just stop working properly for me in macOS for some reason. For example, setting the X offset to a non-0 value causes
-  the Y to stop working visually, but in the in-game gun calibration menu I can see that it's still reading the gun values for both
-  X and Y. Maybe something to report as a separate issue?~~
-
-11167: z80.cpp: Fix incorrect cycle counts when custom cycle tables are used. [wilbertpol]
-z80.cpp: Fix incorrect cycle counts when custom cycle tables are used.
-Software list items promoted to working
----------------------------------------
-msx1_cart.xml:
-A Life Planet - M36 - Mother Brain has been aliving (Japan)
-
-11171: Changed logerror stuff in i386 to use granular masking [Luigi30]
-At the moment, the cores derived from i386 create megabytes of logerror() debug spew every second when running protected-mode
-  applications.
-For example, under EMM386, most hardware IRQs will cause a GPF. Since all GPFs are printed by logerror() in i386, that means that
-  under normal usage you get thousands and thousands of task gate error GPFs in your error log that don't mean anything.
-This sets up a more granular logging system based on LOGMASKED bits to control the output and make it easier to debug systems using
-  i386.
-
-11172: dec/vt100.cpp: add setting for phosphor color. [drougge]
-Not everyone likes green, and I think at least most of those terminals were available with these colors.
-
-11174: sega/megatech.cpp: Fixed some titles in the comments [ICEknigh7]
-Replaced the duplicate After Burner entry with the missing Great Soccer, in the initial comments. Also did a bit of cleanup with the
-  titles.
-Judging from the comments, perhaps these should be marked as "Bad Dump"?
-- Fantasy Zone
-- Turbo Outrun
-
-11175: Filesystem handlers for HP9825, 9831 & 9845 [fulivi]
-Hi,
-this PR is for the addition to floptool of filesystem handlers for hp9825, 9831 & 9845 systems.
-Thanks.
---F.Ulivi
-
-11176: st_flop.xml: Metadata cleanups [ArcadeShadow]
-- Replaced regions abbreviation by their full name ("Euro", "Swe")
-- Lowercase to descriptive word "Rev."
-
-11177: nintendo/n64_gateway.cpp: New driver and software list submission [Foxhack, Angelo Salese] [FoxhackDN]
-New software list items marked not working
-------------------------------------------
-n64_lodgenet.xml: 1080° Snowboarding, Donkey Kong 64, Dr. Mario, Excitebike 64, F-Zero X, Gauntlet Legends, Hydro Thunder, Kirby 64
-  - The Crystal Shards, The Legend of Zelda - Majora's Mask, The Legend of Zelda - Ocarina of Time, Mario Golf, Mario Kart 64, Mario
-  Party 3, Mario Tennis, Midway's Greatest Arcade Hits Vol. 1, Mortal Kombat 4, The New Tetris, Paper Mario, Pilotwings 64, Pokémon
-  Snap, Rampage 2 - Universal Tour, Ready 2 Rumble Boxing, Rush 2 - Extreme Racing USA, Star Fox 64, Star Wars - Rogue Squadron,
-  Super Mario 64, Super Smash Bros., Virtual Chess, Virtual Pool 64, Wave Race 64, Yoshi's Story [Forest of Illusion]
-
-11180: archimedes.xml: Metadata cleanups [ArcadeShadow]
-- Lowercase on descriptive words ("Demo", "Alt")
-- Moved relevant software comments to  `notes` tag
-
-11181: mobigo_cart.xml: Software list rename [ArcadeShadow]
-Lowercase on the media type
-
-11182: New working machine added [algestam]
-Tronica: Super Goal Keeper [algestam]
-
-11184: x68k_flop.xml: New partially working entry "Mi ni Ikuzo! Hedgehog" [ICEknigh7]
-(AKA "Minic the hedgehog")
-Just adding one of the first Sonic fan games, made by Kiyoshi Sakai of Umihara Kawase fame.
-Original video and release page:
-https://www.youtube.com/watch?v=rXGCWeasnD8
-http://www.os.rim.or.jp/~pekochan/develop/X68k/
-Partial translation of video description:
-https://twitter.com/necrosofty/status/1064970251798892544
-
-11185: cz101: add MIDI and get it booting fully [devinacker]
-
-11186: Misc small changes [clawgrip]
-skeleton/bolsaint.cpp: Fix copyright holder.
-atari/bzone.cpp: Add notes about Desert Wars blue overlay.
-
-11188: heathkit/tlb.cpp: Add a ROM variant for the watz19 device [mgarlanger]
-This ROM is an enhancement to not reset the clock when resetting the rest of terminal.
-Let me know where I should upload the new watz19.zip file with the copy of the new rom.
-
-11190: mcs51: implement uart as serial bit stream [pmackinlay]
-- fix: MT#05495
-
-11191: zxbus/neogs: sdcard support [holub]
-* neogs: new default rom v1.10.2
-* neogs: sdcard support
-* tsconf/pentevo: optional zxbus slot
-
-11195: konami/firebeat: Update pop'n music to use DVD CHDs + add new clones [987123879113]
-Rebuilt DVD CHDs for Firebeat pop'n music by using extractraw and then createdvd. The generated pop'n music 4 DVD CHD matches OG's
-  original hash using this method.
-Additionally, both popnanm and popnanm2 have a license period system presumably due to licensing agreements made with the anime
-  studios in order to make these games. The dongles have the date they were made and the license period baked into the dongle, with
-  the license period set to 5 years each. After 5 years when the license has expired, the games disable a bunch of graphics
-  (basically anything that uses the logos or characters from the featured animes) and replace them with generic graphics.
-Setting the period to 00/00 instead of 05/00 is enough to turn the dongles into "forever" license dongles, so I made the patch to
-  the existing dongle dumps and marked them as BAD_DUMP because they're modified data. But probably a real forever license wouldn't
-  be found in the wild.
-The license expired versions have significant enough differences, even if it's a worse experience, to the fully featured versions so
-  I added the expired license versions as clones and the forever license version as the parents.
-Lastly, all Firebeat pop'n music games have been promoted to working since they're running on par with the rest of the games in the
-  driver now that the DVD images can be loaded.
-
-11196: berzerk.cpp - frenzy is from 1982 [DavidHaywood]
-All sources seem to suggest a June/July 82 release date (based on feedback from Livestream)   The title screen shows 82.
-If there's a version from 81, this isn't it.
-
-11197: abc806_flop.xml: Update CRC value [ArcadeShadow]
-Update CRC value (missing first character) on "cpm_turbo.img" file
-- fix: #11192
-
-11198: gameboy.xml; snes.xml: Changed NP abbreviation [ArcadeShadow]
-Changed the "NP" abbreviation by "Nintendo Power service"
-
-11200: trs/coco12.cpp: add bios options [tlindner]
-Remove cocoe and coco2 drivers. They existed to have multiple bios options available.
-Make available all of the combinations Color BASIC and Extended Color BASIC versions to the coco driver.
-
-11201: msx/ctrl/vaus.cpp: Add MSX Arkanoid Vaus controller [wilbertpol]
-
-11202: spectrum_cass.xml: Software list additions [ArcadeShadow]
-New working software list additions
---------------------------------------------
-3D Combat Zone (Aackosoft) [Steven Brown, Planeta Sinclair] 
-3D Combat Zone (Profisoft) [Steven Brown, Planeta Sinclair]
-3D Seiddab Attack (Aackosoft) [Steven Brown, Planeta Sinclair]
-Androide (pirate) [Steven Brown, Planeta Sinclair]
-Ant Attack (pirate) [Steven Brown, Planeta Sinclair]
-Hormigas [spectrumcomputing.co.uk]
-La Corona Magica [spectrumcomputing.co.uk]
-Lenguaje Maquina - Spectrum №4 [spectrumcomputing.co.uk]
-Lenguaje Maquina - Spectrum №10 [spectrumcomputing.co.uk]
-Poli Diaz: El Potro de Vallecas (alt) [spectrumcomputing.co.uk]
-S.O.S. no Paraíso [Planeta Sinclair]
-The Dragonstar Trilogy - Part I (Delta 4) [spectrumcomputing.co.uk]
-The Dragonstar Trilogy - Part II (Delta 4) [spectrumcomputing.co.uk]
-The Dragonstar Trilogy - Part III (Delta 4) [spectrumcomputing.co.uk]
-The Rocky Horror Show (Sound on Sound) [Luís Rato, Planeta Sinclair]
-Van Driver (no loading screen) [Steven Brown, Planeta Sinclair]
-Redump
---------------------------------------------
-Lenguaje Maquina - Spectrum №1 [spectrumcomputing.co.uk]
-Merlin (Adventure Workshop) [Luís Rato, Planeta Sinclair]
-Jason of the Argonauts (Adventure Workshop) [Luís Rato, Planeta Sinclair]
-Fix Parent/CloneOf relationships, Publishers and Years (information provided by spectrumcomputing.co.uk)
-
-11205: konami/ksys573: Fix CD region names + fix e-amusement information [987123879113]
-Fixed the newly changed CD region names introduced in OG's recent DVD image commit. This covers multiple drivers.
-For ksys573 specifically:
-Also added some extra documentation for installation where it was non-trivial and some recent discoveries relating to rental cabinet
-  types for ddr4mp/ddr4mps and dmx2/dmx2majp.
-Mambo a Go Go "e-Amusement" is the rental e-Amusement and not the online service e-Amusement so I renamed it to avoid confusion, and
-  also removed the NPU from its configuration because it's not used.
-All of the e-Amusement CDs for GFDM actually just install the data to the NPU's HDD that should be connected to the machine. They're
-  meant to be used with the main machine and not separately so I moved them into the main games as install/install2 CDs (depending
-  on if the game already had an installer CD, like for the ones that had a patch CD). The envisioned usage is in the future when/if
-  the NPU is working in MAME you'll switch to the e-amusement data installer CD to install the extra song data to NPU's HDD and then
-  switch back to the runtime CD to run the game normally again.
-
-11206: atari/atarigt.cpp: Added input definitions for newest version of Primal Rage [halcyon00]
-This most recent romset seems like it uses a separate start button and player buttons, at least electrically.  The maps previous
-  debug-only ports to p1 & p2 button4.
-This change adds a new port mapping just for primrage to fix up the inputs, and renames the prior mapping to match the older roms. 
-
-11207: simpl156.cpp - add workram mirror for osman (needed for truck in final stage) [DavidHaywood]
-see https://twitter.com/ohfivepro/status/1655907421687099394
-
-11209: snes.xml: Region and parent/clone fixes [FoxhackDN]
-
-11210: namco/namcos10: Add MP3 decoder support to the MEM(P3) board [987123879113]
-This PR fixes the BGM in Golgo 13, BGM and voices in Nice Tsukkomi, and the BGM in Seishun-Quiz Colorful High School so those games
-  have been promoted to working.
-Since both Sys573 and now Namco System 10 need an MP3 decoder I moved minimp3 out to a new shared mp3_audio class styled after
-  mpeg_audio (which is what I assume will contain a the layer 3 decoder in the future). Now devices don't know about minimp3 and it
-  shouldn't be too difficult in the future to switch out the MP3 decoder in the future whenever layer 3 is implemented in
-  mpeg_audio. This change also affects System 573 games so I also tested a few Sys573 digital games to make sure those are still
-  working as well. I made a tiny modification to the minimp3 code itself to remove the exported functions but the code is otherwise
-  the same as upstream.
-A full datasheet for the Sanyo LC82310 isn't public so I implemented what little I could based on the little information found in
-  the English and Japanese information sheets, and whatever I could figure out from usage context.
-Also realized that I hadn't implemented the gun I/O correctly for Golgo 13 so I fixed that as well in this PR, which required
-  implementing the AD repeat mode for the TMP95C061. While reading through the datasheet I also realized that the A/D conversion
-  speed values weren't right so I changed too.
-<img width="547" alt="image" src="https://github.com/mamedev/mame/assets/63495610/cab0a7f5-a850-453c-bc6d-94af8e8b3025">
-
-11211: taito/taito_f3_v.cpp: fix vram wrap width (bubble symphony platforms) [y-ack]
-correct a mistake introduced in 819a5c4
-
-11214: nes.xml: Metadata cleanups [ArcadeShadow]
-Replaced countries' abbreviation by their full name.
-Lowercase on descriptive words.
-
-11216: msx.cpp: Refactored to standard layout and output usage. [wilbertpol]
-
-11220: nabupc/keyboard: Fully implement true keyboard emulation on the NABU [brijohn]
-I finally had time to do a bit more in depth analysis of one of my NABU keyboards and was able to figure out the missing information
-  on how everything fits together.
-This patch is the result of that and gets the existing stub for low level keyboard emulation up and working. This includes adding
-  the keyboard matrix as well as support for the joysticks and paddles.
-
-11221: sinclair/tsconf.cpp,pentevo.cpp: various fixes [holub]
-* ZX-Evolution (tsconf/pentevo): TurboSound AY-mod configuration
-* tsconf: add covox; kemston/beta conflict with DOS enabled
-* tsconfdma: fix dma blitting mode
-
-11222: qx10: Add Commodity quote graphics memory expansion board [brijohn]
-This implements the 1 MB memory expansion board that was released by Commodity Quote Graphics for the Epson QX-10.
-
-11223: yamaha/ympcs30.cpp: Added skeletop driver for Yamaha PCS-30 [devinacker]
---------------
-Yamaha PCS-30 [Edward d-tech]
-
-11225: Skeleton driver for 600 Cellular Activation Tester [MooglyGuy]
-In addition to a simple skeleton driver that at least shows an initial readout on the LCD, this includes the following other
-  changes:
-- Fixed the HD6303R CPU to use an internal map derived from the M6803, and removed the now-unneeded address map entries from drivers
-  using it.
-- A prescale limit of 8 for systems with particularly small LCDs still produces bad-looking results, so I raised it to 20, as it
-  should be relatively harmless, and any accelerated renderers will clamp to the maximum-supported texture size anyway.
-- I noticed that `screen_device` was still referring to old MCFG_ macros in its logerror call to exhort devs to use raw screen
-  parameters, so I replaced both with the relevant member function names.
-- The Dallas DS1643 is a near-identical clone of the STMicro M48T58, so I added it to `timekpr.h/.cpp`, and noted in comments where
-  certain not-yet-emulated control bits don't apply to it.
-
-11226: cpc_cass.xml: Metadata cleanups [ArcadeShadow]
-- Replaced countries' abbreviation by their full name.
-- Lowercase on descriptive words (like: "Alt", "Demo", "Side", "Incomplete Dump", etc...)
-
-11227: video/epic12.cpp: Fix clipping of CV1K games [buffis]
-Change clipping for CV1K games to draw 32 pixels surrounding the visible area.
-This can be easily seen in Muchi Muchi Pork, which has a VRAM viewer in Special mode (Object Test), which will show 32 px drawn
-  around the visible areas of framebuffers.
-See: https://www.arcade-projects.com/threads/research-into-cv1000-blitter-performance-and-behavior.24385/#post-364121
-For most gamers, this wont really matter at all... except for in Muchi Muchi Pork, where changing this actually fixes a bug for
-  Rafute (yellow ship).
-When Bombing with Rafute (not the other two character), the screen background will go wavy in a sine-like pattern. Currently in
-  mame, the top of screen will show black pixels when this happens.
-Like this: http://img.buffis.com/mmppatch/without_patch.png
-With this fix for clipping, the background will instead be visible correctly.
-Like this: http://img.buffis.com/mmppatch/with_patch.png
-Theres still some potential for artifacts though, both at top and on right side of screen... but this happens on PCB too.
-Mame with patch, top artifact: http://img.buffis.com/mmppatch/mame_top_artifacts.png
-Mame with patch, right artifact: http://img.buffis.com/mmppatch/mame_top_artifacts.png
-PCB top artifact: http://img.buffis.com/mmppatch/pcb_top.jpg and http://img.buffis.com/mmppatch/pcb_top2.jpg
-PCB right artifact: http://img.buffis.com/mmppatch/pcb_right.png
-PCB footage of some bombs for reference: http://img.buffis.com/mmppatch/pcb_footage.mp4
-Also renamed the "scroll registers" to have it more clear which one of these are actually used as a "scroll register" (or rather
-  offset for drawing), and which one is strictly used for clipping.
-
-11228: st: Add mouse buttons [ksherlock]
-
-11229: stkbd: Add missing keycodes [ksherlock]
-The st ikbd matrix was missing a number of characters.
-
-11230: New working machine added [algestam]
-Teenage Mutant Ninja Turtles 3: Shredder's Last Stand (Konami handheld) [algestam, Sean Riddle, Mr. Do]
-
-11231: psikyo/psikyosh_v.cpp: Add notes for VREG usage [cam900]
-
-11232: sound/mp3_audio: Implement save states for MP3 decoder [987123879113]
-Follow up to https://github.com/mamedev/mame/pull/11210 based on a comment from cuavas.
-Tested save states in squizchs (Namco System 10) and ddrmax (Konami System 573) to make sure the known devices that use the MP3
-  decoder are working now. For ddrmax I tested both in the game menus where it plays an MP3 for BGM without anything special, and
-  also in-game during a song to make sure everything looked fine with the notes as they scrolled.
-Also missed two save items in LC82310 so I added those in as well.
-
-11235: msx1_cart.xml: Added 100 items (99 working). [wilbertpol]
-New working software list items
--------------------------------
-The Love Plus Pack 0 (Korea, pirate) [file-hunter]
-Trun (demo) [file-hunter]
-Twin Hammer (Europe, alt) [file-hunter]
-Twin Hammer (Europe, alt 2) [file-hunter]
-Video Hustler (Japan, alt 2) [file-hunter]
-Volguard (Japan, alt) [file-hunter]
-TT Racer (Al Alamiah) [file-hunter]
-Voyage to Mecca (Arab, alt 3) [file-hunter]
-T-Game 4 [file-hunter]
-T-Game 4 (alt) [file-hunter]
-T-Virus [MSXDev]
-Tales of Popolon (English, v1.3.1) [santiontanon]
-Tales of Popolon (Spanish, v1.3.1) [santiontanon]
-Tales of Popolon (English, v1.3) [santiontanon]
-Tales of Popolon (Spanish, v1.3) [santiontanon]
-Tales of Popolon (English, v1.2) [santiontanon]
-Tales of Popolon (Spanish, v1.2) [santiontanon]
-Tales of Popolon (English, v1.1.1) [santiontanon]
-Tales of Popolon (English, v1.1) [santiontanon]
-Tales of Popolon (English, v1.0) [santiontanon]
-Teki-Paki [file-hunter]
-Teki-Paki (beta) [MSXDev]
-Tekmo 400 [file-hunter]
-Teodoro no Sabe Volar (English) [MSXDev]
-Teodoro no Sabe Volar (Spanish) [MSXDev]
-The Circus Mystery (v1.4) [MSXDev]
-The Circus Mystery (v1.3) [file-hunter]
-The Cure [MSXDev]
-The Cure (alt) [file-hunter]
-The Lost Mines [file-hunter]
-The Mansion (English) [MSXDev]
-The Mansion (Spanish) [MSXDev]
-The Menace from Triton (v1.2) [santiontanon]
-The Menace from Triton (v1.1) [santiontanon]
-The Menace from Triton (v1.0.2) [santiontanon]
-The Menace from Triton (v1.0.1) [santiontanon]
-The Menace from Triton (v1.0.0) [santiontanon]
-The Queen's Footsteps (v1.1.1) [Davide Bucci]
-The Queen's Footsteps (v1.0) [file-hunter]
-Tiles of Shalom [MSXDev]
-Tilez [msx.org]
-Tina's Adventure Island [hobbyretro]
-Tiny Slot Checker (v3.2) [tiny-yarou]
-Tiny Slot Checker (v2) [tiny-yarou]
-Tiny Slot Checker (older) [file-hunter]
-Tomb of Genghis Khan [MSXDev]
-Tool Blocks [MSXDev]
-Tortilla Sunrise (English, v1.1) [MSXDev]
-Tortilla Sunrise (Spanish, v1.1) [MSXDev]
-Tortilla Sunrise (English, v1.0) [MSXDev]
-Toss a Coin to your Witcher [cobinee]
-Traffic Jam [MSXDev]
-Traffic Jam (alt) [file-hunter]
-Tragaperras (Spanish) [MSXDev]
-Trail 2 [file-hunter]
-Transball (v1.3.2, English) [santiontanon]
-Transball (v1.3.2, Spanish) [santiontanon]
-Transball (v1.3.1, English) [santiontanon]
-Transball (v1.3.1, Spanish) [santiontanon]
-Transball (v1.3, English) [santiontanon]
-Transball (v1.3, Spanish) [santiontanon]
-Transball (v1.2.1, English) [santiontanon]
-Transball (v1.2.1, Spanish) [santiontanon]
-Transball (v1.2, English) [santiontanon]
-Transball (v1.2, Spanish) [santiontanon]
-Transball (v1.1.1, English) [santiontanon]
-Transball (v1.1.1, Spanish) [santiontanon]
-Transball (v1.1, English) [santiontanon]
-Transball (v1.1, Spanish) [santiontanon]
-Transball (v1.0.1, Spanish) [santiontanon]
-Transball (v1.0, English) [santiontanon]
-Transball (v1.0, Spanish) [santiontanon]
-Turfy (2019 version) [file-hunter]
-Turfy (2016 version) [file-hunter]
-Twinlight [retrosouls]
-Twinlight (alt) [file-hunter]
-Txupinazo! [MSXDev]
-U-Do [file-hunter]
-U.F.O. [file-hunter]
-UnidentifiedFlyingObject [cobinee]
-Universe Unknown [file-hunter]
-Universe Unknown (alt) [file-hunter]
-Up Tack [cobinee]
-Uridium [file-hunter]
-Uridium (alt) [file-hunter]
-Uridium (alt 2) [file-hunter]
-Uridium (alt 3) [file-hunter]
-Utopia [file-hunter]
-veejingSX (v0.996b) [303bcn]
-veejingSX (v0.99b) [303bcn]
-veejingSX (v0.9b) [303bcn]
-9918-veejing (v0.7b, Russian) [303bcn]
-9918-veejing (v0.1b) [303bcn]
-Viking (English) [MSXDev]
-Viking (Spanish) [MSXDev]
-Virus LPQ-79 (v1.20) [MSXDev]
-Virus LPQ-79 (v1.10) [file-hunter]
-Virus LPQ-79 (v1.00) [file-hunter]
-VVVVVV (unfinished) [hap]
-New NOT_WORKING software list additions
-------------------------------------------
-Tel-Tron (Netherlands) [file-hunter]
-
-11238: ata/atapicdr, scsi/scsicd: Set CDDA image on device reset [987123879113]
-This fixes the recently broken CDDA audio for CD-ROM drives. nscsi already had set_cdrom called on device_reset so no change
-  required there. Tested on Konami GV, Konami Firebeat (ppp series), and Konami System 573 (early DDR games before 3rd mix).
-The reason these broke is the DVD commit (https://github.com/mamedev/mame/commit/28104cdbdfc39b0ced6411381ffb074772dce345) removed
-  `t10mmc::SetDevice` which was called when an image was changed and was responsible for calling `m_cdda->set_cdrom(...)`.
-@galibert Please review and fix any remaining issues with CDDA before this month's release.
-
-11240: yamaha/ympsr150.cpp: add psr190 [devinacker]
-New working machine
-----------
-Yamaha PSR-190 [Edward d-tech]
-
-11241: formats/fs_coco_rsdos.cpp: Fix directory entry count [tlindner]
-There are 8 entries per sector, not 4.
-
-11242: misc/compucranes.cpp: Dumped and added a new crane on V7 PCB [jordigahan] [clawgrip]
-New NOT_WORKING machine
---------------------------------
-Master Crane (set 2) [jordigahan]
-* Rename existing set 2 as set 3
-
-11243: misc/rawthrillspc.cpp: Replace ASUS BIOS with the Compaq one found on the original Raw Thrills machine [jordigahan,
-  Recreativas.org] [clawgrip]
-
-11244: namco/namcos10: Add partial decrypter for Point Blank 3 [Peter Wilhelmsen, Samuel Neves] [987123879113]
-Redo of https://github.com/mamedev/mame/pull/11236 + fix a small save state-related explosion caused by the SPU if you save state in
-  any PS1-based game at the wrong time (when a "valid" reverb preset isn't in the registers).
-`spu_reverb_cfg` should also probably be set to null when a valid reverb preset isn't found, but that'd have noticeable changes to
-  the audio for potentially all PS1 games and I don't have the energy to test that.
-Edit: To give more extra info. The save state issue happens with `mrdrilr2`. Save state on the title screen or similar and load the
-  save state again from command line using something like `mame mrdrilr2 -state 1`. It immediately crashes MAME due to the null
-  pointer without the patch here. The reverb settings in the registers don't match any known presets so `spu_reverb_cfg` is null
-  when the process function is called.
-
-11247: misc/rawthrillspc.cpp: Fix ROM name [clawgrip]
-
-11248: sinclair/tsconf.cpp: finalize regs delayed updates; fix graphic pages padding [holub]
-- finalize regs delayed updates
-- fix graphic pages padding
-
-11249: BGFX and D3D9 renderer fixes for issues #11104, #11106, and #11107 [MooglyGuy]
-Fix for #11107: Simply removed the erroneously copy/pasted line.
-Fix for #11106: Avoiding redundant state-set calls was going awry. We now ensure that the first `set_texture` call of a scene always
-  succeeds by clearing the cached texture pointer at frame start.
-Fix for #11104: Calling `post_pass` and `downsample_pass` to generate bloom targets when bloom is disabled was causing issues when
-  applying the post/shadowmask pass. Avoid calling them entirely if bloom is disabled, since the downsampled targets are not used
-  anyway.
-
-11250: Logging cleanup, more LOGMASKED usage, remove LOG_GENERAL redefines (#10183) [MooglyGuy]
-Among tidying up logging and adjusting the formatting on LOGMASKED constants across the codebase, this change includes:
-- Fixups of dead-code rot as a result of logging functions that were behind defines; this is why we don't #if-out code.
-    * Added `m_video.` prefix where necessary in fmtowns_v.cpp logging.
-    * Replaced now-missing SX() macro in es5510.cpp with `util::sext(value, 24)` to replace prior functionality.
-- Major stylistic cleanup of mgavegas.cpp and fireball.cpp; there's no way they would have been accepted under current standards in
-  their poor state:
-    * Intermingling of m_ prefixed and non-m_ prefixed members.
-    * Not using `output_finder`.
-    * Unintelligible comments.
-    * Bracing style chosen by random die-roll throughout the source files.
-    * Broken space bar.
-    * Seemingly random tabulation style.
-    * Random ordering of driver members.
-    * Using the bitwise-AND operator in an `if` statement instead of the logical-AND operator.
-
-11255: hash/n64.xml: perform a QA pass [Angelo Salese, Happy] [angelosa]
-
-11258: ibm5170_cdrom.xml: Software list additions [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Desert Strike & Jungle Strike (Europe) [redump.org] First Samurai (Europe) [redump.org]
-Jazz Jackrabbit (Europe, re-release) [redump.org]
-Jazz Jackrabbit (Europe) [redump.org]
-Jazz Jackrabbit 2 (Europe) [redump.org]
-Leisure Suit Larry's Greatest Hits and Misses! (Europe, re-release) [redump.org]
-Leisure Suit Larry's Greatest Hits and Misses! (USA) [redump.org]
-Links - The Challenge of Golf (USA) [redump.org]
-Loom (USA) [redump.org]
-Loom (USA, alt) [redump.org]
-Loom (USA, alt 2) [redump.org]
-Monkey Island Madness (USA) [redump.org]
-The Dig (USA) [redump.org]
-
-11259: m6809/m6809.lst: Set V flag on XDEC [tlindner]
-Further testing has determined there is an error in the Hoglet67 paper.
-
-11260: gba.xml: Added 21 prototypes. [FoxhackDN]
-New working software list items
--------------------------------
-AGB Aging Cartridge (World, version 1.0) [SmellyGhost, Forest of Illusion]
-AGB Aging Cartridge (World, version 9.0) [Suicune41, Forest of Illusion]
-Aero the Acro-Bat - Rascal Rival Revenge (Europe, prototype earlier) [LongwoodGeek, Forest of Illusion]
-Chokkan Hitofude Advance (Japan, prototype) [xprism, Forest of Illusion]
-Commandos 2 (USA, prototype) [DillyDylan, Forest of Illusion]
-Dark Eden (prototype) [Ian Dunlop, Forest of Illusion]
-Demon's Crest (prototype) [Ian Dunlop, Forest of Illusion]
-Manic Miner (Europe, 20030307) [March42, Forest of Illusion]
-Mario Kart XXL (demo, 20040417) [Forest of Illusion]
-R3D-Demo V1 (demo) [Forest of Illusion]
-Racing Gears Advance (USA, prototype, 20030922) [XBrav, Forest of Illusion]
-Sea Boy (prototype) [Ian Dunlop, Forest of Illusion]
-Star Wars Trilogy - Apprentice of the Force (USA, prototype) [Rezrospect, Forest of Illusion]
-The Holy Bible - World English Bible (USA, prototype) [Gonz, Forest of Illusion]
-Ultimate Muscle - The Kinnikuman Legacy - The Path of the Superhero (USA, prototype, 20030429) [Zach Lambert, Forest of Illusion]
-Uridium Advance (Europe, prototype, 20030307) [March42, Forest of Illusion]
-New software list items marked not working
-------------------------------------------
-The King of Fighters EX2 - Howling Blood (USA, prototype, 20030403) [March42, Forest of Illusion]
-Quake (demo) [Randy Linden, Forest of Illusion]
-Paradroid (Europe, prototype, 20030320) [March42, Forest of Illusion]
-Uridium Advance (Europe, prototype, 20020911) [March42, Forest of Illusion]
-Uridium Advance and Paradroid 2 in 1 (Europe, prototype, 20030430) [March42, Forest of Illusion]
-
-11261: Add skeleton for Yamaha PS-400 [devinacker]
-
-11262: dataeast/kchamp.cpp: Dumped and added a new Karate Champ set [clawgrip]
-New WORKING clone
-----------------------------------
-Karate Champ (US, 2 players) [Museo Arcade Vintage, ClawGrip]
-
-11264: apple2gs: rom1 ram size logic [ksherlock]
-The ROM 1, the ram size calculation is a little off. For the base case of 256K-1.125MB, the e0/e1 memory needs to be subtracted as
-  well. (Currently, a 256K apple2gsr1 has 384k).  Once you start getting into 2MB and 4MB, etc memory cards, that memory shouldn't
-  be subtracted - if you install a 4MB card, you have 4megs on top of 0/1/e0/e1, for a total of 4.25MB.
-
-11265: oric1_cass.xml: Software list additions [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Bandit (Express Software) [oric.org]
-Caspak [oric.org]
-Dinky Kong [oric.org]
-Base Mercure [oric.org]
-New NOT working software list additions
---------------------------------------------
-1815 [oric.org]
-Lone Raider (France) [oric.org]
-Changed the system's name in the softwarelist name (missing the dash)
-Lowercase on some French words
-
-11266: msx1_cart.xml: Add 76 items [wilbertpol]
-New working software list items
--------------------------------
-Safari X (Japan, The Links) [file-hunter]
-Sasa (Japan, alt 2) [file-hunter]
-Scramble Eggs (Korea) [file-hunter]
-Sea Horse (Arab, v1.01) [file-hunter]
-Skooter (Arab) [file-hunter]
-Snake It (Arab) [file-hunter]
-Snake It (Japan, alt) [file-hunter]
-Space Shuttle - A Journey into Space (Japan) [file-hunter] Star Trek (Japan) [file-hunter]
-Star Trek (Japan, alt) [file-hunter]
-Star Wars (Arab, alt) [file-hunter]
-Super Bioman 1 (Korea) [file-hunter]
-Super Bioman 1 (Korea, alt) [file-hunter]
-Super Game 25 (Korea) [file-hunter]
-Super Racer (Japan) [file-hunter]
-Super Snake (Japan, alt 3) [file-hunter]
-Supertripper (Spain, alt) [file-hunter]
-S.o.L.o. (English) [MSXDev]
-S.o.L.o. (Spanish) [MSXDev]
-Sacred Valley [MSXDev]
-Saimazoom (English) [MSXDev]
-Saimazoom (Spanish) [MSXDev]
-SD Sniper [MSXDev]
-Seleniak [MSXDev]
-Seleniak (alt) [MSXDev]
-Sensha Game (20211107) [ochixn]
-Sensha Game (20210318) [file-hunter]
-Sensha Game (20201128) [file-hunter]
-Shadow of the Pig (v1.3) [MSXDev]
-Shadow of the Pig (v1.2) [file-hunter]
-Shadow of the Pig [file-hunter]
-Shadow Switcher [MSXDev]
-Shmup! (v1.1) [MSXDev]
-Shmup! (v1.0) [MSXDev]
-Shouganai (v1.1) [MSXDev]
-Shouganai (v1.0) [MSXDev]
-Sink King [MSXDev]
-Skate Air (English) [MSXDev]
-Skate Air (Spanish) [MSXDev]
-SKULLrs [MSXDev]
-Slender - The Camping (v1.1) [MSXDev]
-Slender - The Camping (v1.0) [MSXDev]
-Slime Center [MSXDev]
-Snail Maze [MSXDev]
-Snake [file-hunter]
-Snoopy Town [file-hunter]
-Snowclimber 2K [file-hunter]
-Snowclimber [file-hunter]
-Soukoban Pocket Edition [MSXDev]
-Sp8 Invaders [MSXDev]
-Space Crussader (English) [MSXDev]
-Space Crussader (Spanish) [MSXDev]
-SpaceCat [MSXDev]
-SPC Super HOOPS [MSXDev]
-Speedjet Racers (demo) [file-hunter]
-Sphere Redux [file-hunter]
-Sport Racer [file-hunter]
-SquareBall [MSXDev]
-Stan, the Dreamer [MSXDev]
-Step (v1.2) [MSXDev]
-Step (v1.1) [file-hunter]
-Stevedore (demo) [file-hunter]
-Stratos (2005) [MSXDev]
-Stratos (2004) [MSXDev]
-Stray Cat (10th anniversary) [Imanok]
-Stray Cat (MSX cartridge shop) [file-hunter]
-Stray Cat [MSXDev]
-Stupid Martians (v1.1) [MSXDev]
-Stupid Martians (v1.0) [file-hunter]
-Subacuatic [MSXDev]
-Subacuatic (alt) [file-hunter]
-SubCommander (v1.02) [MSXDev]
-SubCommander (v1.01) [file-hunter]
-SubCommander (v1.00) [file-hunter]
-Sudoku [MSXDev]
-Super Ilevan [file-hunter]
-Replaced Super Bros. World 1 (Korea)
-Renamed seahorse to seahorsea
-
-11268: New working machine added [algestam]
-----------
-Teenage Mutant Ninja Turtles Basketball (Konami handheld) [algestam, Sean Riddle, Mr. Do]
-
-11269: vsmile_cart.xml: Added six new USA dumps [clawgrip]
-New WORKING software list additions
------------------------------------
-Disney's Aladdin - Aladdin's Wonders of the World (USA)
-Nick Jr The Backyardigans - Viking Voyage (USA)
-Bert & Ernie's Imagination Adventure (USA)
-Lil' Bratz Dressed Up - Friends, Fashion and Fun (USA)
-Disney/Pixar Ratatouille - Remy's New Recipes (USA)
-DreamWorks Shrek - Dragon's Tale (USA)
-[anonymous dumper]
-
-11270: hh_sm510: fix LCD segment for ktmntbb [algestam]
-This fixes the issue found by @happppp  in #11268 where an LCD segment for the ball-kick segment was grouped with the wrong part.
-
-11272: dataeast/kchamp.cpp: Fix parent/clone on kchamp2p [clawgrip]
-
-11275: factory reset taiko3 and taiko5 [DavidHaywood]
-
-11277: sinclair/tsconfdma.cpp: fix burst [holub]
-
-11280: imagedev/midiin.cpp: fix error condition handling so midi files can be loaded again [devinacker]
-
-11281: factory reset ptblank3 + gunbalina to defaults and provide functional default gun calibration [DavidHaywood]
-I've split this from the other ns10 PR as maybe default calibration isn't wanted
+- 11018: sinclair/sprinter.cpp: Added Sprinter Sp2000 enhanced ZX Spectrum derivative. [holub]
+- 11037: Added preliminary support for the Intel 440BX/PIIX4 chipset. [Angelo Salese]
+- 11057: video/vrender0.cpp: Improved simulation of pipeline (fixes screen split in Donggul Donggul Haerong). [Angelo Salese]
+- 11084: vgmplay.xml: Improved list description. [ArcadeShadow]
+- 11108: heathkit/h89.cpp: Implemented more functionality, added new monitor ROMs, and expanded notes. [Mark Garlanger]
+- 11127: sound/msm5232.cpp: Revised envelope generator based on capacitors seen in practice. [eito, TremiRodomi, O. Galibert]
+- 11128: cpu/mips, sgi/sgi.cpp: Fixed MIPS3 PRID and memory controller RPSS issues. [Jiaxun Yang]
+- 11140: bus/ata/gdrom.cpp: Fixed audio playback, TOC read, media status and ATA identify. [Angelo Salese]
+- 11141: machine/t10mmc.cpp: Adjusted audio playback stop condition to fix music in Koname GV games (MT07184). [Angelo Salese]
+- 11146: vectorgraphic/sbcvideo.cpp: Fixed color accuracy and addressing bugs. [Eric Anderson]
+- 11148: namco/namcos10: Add decrypter for Mr. Driller G. [Samuel Neves, Peter Wilhelmsen, Windy Fairy]
+- 11153: sound/msm5232.cpp: Fixed envelope when bits 2 and 3 of time data are set. [eito]
+- 11154: gameboy.xml: Made asteroidp a clone of asteroid and cleaned up descriptions. [ArcadeShadow]
+- 11155: namco/namcos10.cpp: Added decrypters for Taiko no Tatsujin 3 and 5. [Samuel Neves, Peter Wilhelmsen, Windy Fairy]
+- 11157: bus/isa: Added IBM PS/2 speech adapter card. [Luigi30]
+- 11158: bus/rs232/pty.cpp: Copied flow control code from null_modem.cpp. [Carl Drougge]
+- 11160: seta/seta.cpp: Return zero for an apparently unmapped read address in extdwnhl (works around MT08614). [Angelo Salese]
+- 11165: skeleton/bolsaint.cpp: Added a skeleton driver for Bolsa Internacional slot machine. [Javier Blanco Ojeda, ClawGrip]
+- 11166: namco/namcos10.cpp: Added decrypted Point Blank 3 program code. [Windy Fairy, Guru]
+- 11167: cpu/z80: Fixed incorrect cycle counts when custom cycle tables are used. [Wilbert Pol]
+- 11171: cpu/i386: Use logmacro.h granular logging. [Luigi30]
+- 11172: dec/vt100.cpp: Added a setting for phosphor color. [Carl Drougge]
+- 11174: sega/megatech.cpp: Fixed some titles in comments. [ICEknight]
+- 11175: formats/fs_hp98x5.cpp: Added filesystem handlers for HP9825, HP9831 and HP9845. [F.Ulivi]
+- 11176: st_flop.xml: Use lowercase for descriptive text and avoid non-standard abbreviations in descriptions. [ArcadeShadow]
+- 11177: Added preliminary driver and software list for LodgeNet Nintendo 64. [Forest of Illusion, David Silva, Angelo Salese]
+- 11180: archimedes.xml: Cleaned up descriptions and moved some comments into notes elements. [ArcadeShadow]
+- 11181: mobigo_cart.xml: Use lowercase for things that aren’t proper nouns in the list description. [ArcadeShadow]
+- 11182: handheld/hh_sm510.cpp: Added Tronica Super Goal Keeper [algestam]
+- 11184: x68k_flop.xml: Added the Mi ni Ikuzo! Hedgehog doujin game. [ICEknight]
+- 11185: casio/cz101.cpp: Added MIDI ports and got the system booting fully. [Devin Acker]
+- 11186: skeleton/bolsaint.cpp: Fixed copyright holders; atari/bzone.cpp: Added notes about Desert Wars screen overlay. [ClawGrip]
+- 11188: heathkit/tlb.cpp: Add a ROM variant for the watz19 device. [Mark Garlanger]
+- 11190: cpu/mcs51: Implement UART as serial bit stream (fixes MT05495). [Patrick Mackinlay]
+- 11191: bus/spectrum/neogs.cpp: Added SD Card support and v1.10.2 ROM. [holub]
+- 11195: konami/firebeat: Rebuilt Pop'n Music disc images to use newly added DVD support. [Windy Fairy]
+- 11196: stern/berzerk.cpp: Corrected frenzy release year to 1982. [David Haywood]
+- 11197: abc806_flop.xml: Corrected CRC for Turbo disk image (fixes GitHub #11192). [ArcadeShadow]
+- 11198: gameboy.xml, snes.xml: Don’t abbreviate name of Nintendo Power service. [ArcadeShadow]
+- 11200: trs/coco12.cpp: Added BIOS options for Color Computer 1 and 2. [Tim Lindner]
+- 11201: bus/msx/ctrl: Added support for Arkanoid Vaus controller. [Wilbert Pol]
+- 11202: spectrum_cass.xml: Added sixteen items and replaced three items with better dumps. [ArcadeShadow]
+- 11205: konami/ksys573.cpp: Fix CD region names, and corrected e-Amusement information. [Windy Fairy]
+- 11206: atari/atarigt.cpp: Added input port definitions for newest version of Primal Rage. [halcyon00]
+- 11207: dataeast/simpl156.cpp: Added work RAM mirroring for osman (affects the truck in the final stage). [David Haywood]
+- 11209: snes.xml: Fixed release regions and parent/clone relationships for boxing games. [David Silva]
+- 11210: namco/namcos10.cpp: Add MP3 decoder support to the MEM(P3) board. [Windy Fairy]
+- 11211: taito/taito_f3_v.cpp: Corrected video RAM address mask (fixes regression on platforms in Bubble Symphony). [ywy]
+- 11214: nes.xml: Use lowercase for descriptive text and avoid non-standard abbreviations in descriptions. [ArcadeShadow]
+- 11216: msx: Refactored to standard layout and output usage. [Wilbert Pol]
+- 11220: misc/nabupc_kbd.cpp: Fully emulated NABU PC keyboard. [Brian Johnson]
+- 11221: sinclair/tsconf.cpp, pentevo.cpp: Added sound options and fixed I/O issues. [holub]
+- 11222: bus/epson_qx: Added QX-10 Commodity Quote graphics memory expansion board. [Brian Johnson]
+- 11223: yamaha/ympcs30.cpp: Added skeleton driver for Yamaha PortaSound PCS-30 keyboard. [Edward d-tech, Devin Acker]
+- 11225: skeleton/600cat.cpp: Added skeleton driver for Wavetek 600 Cellular Activation Tester. [Ryan Holtz, Leo Romo]
+- 11226: cpc_cass.xml: Cleaned up descriptions. [ArcadeShadow]
+- 11227: video/epic12.cpp: Fix clipping of CV1K games. [buffi]
+- 11228: atari/stkbd.cpp: Added mouse buttons. [Kelvin Sherlock]
+- 11229: atari/stkbd.cpp: Added characters and default assignments for several keys. [Kelvin Sherlock]
+- 11230: handheld/hh_sm510.cpp: Added Konami Teenage Mutant Ninja Turtles 3: Shredder's Last Stand. [algestam, Sean Riddle, Mr. Do]
+- 11231: psikyo/psikyosh_v.cpp: Added notes about unconfirmed video register usage. [cam900]
+- 11232: sound/mp3_audio.cpp: Added save state support for MP3 decoder. [Windy Fairy]
+- 11235: msx1_cart.xml: Added 100 items (99 working). [Wilbert Pol]
+- 11238: bus/ata/atapicdr.cpp, bus/scsi/scsicd.cpp: Set CDDA media image on device reset. [Windy Fairy]
+- 11240: yamaha/ympsr150.cpp: Added the Yamaha PSR-190 keyboard. [Edward d-tech, Devin Acker]
+- 11241: formats/fs_coco_rsdos.cpp: Fixed the directory entry count. [Tim Lindner]
+- 11242: misc/compucranes.cpp: Dumped and added another crane game from a V7 PCB. [jordigahan, ClawGrip]
+- 11243: misc/rawthrillspc.cpp: Use Compaq BIOS found on original machines. [jordigahan, Recreativas.org, ClawGrip]
+- 11244: namco/ns10crypt.cpp: Added partial decrypter for Point Blank 3. [Peter Wilhelmsen, Samuel Neves, Windy Fairy]
+- 11247: misc/rawthrillspc.cpp: Fixed doodlejmp BIOS ROM label. [ClawGrip]
+- 11248: sinclair/tsconf.cpp: Finalized the list of registers needing delayed updated and fixed graphics page padding. [holub]
+- 11249: Fixed several reported BGFX and Direct3D 9 renderer issues (GitHub #11104, #11106 and #11107). [Ryan Holtz]
+- 11250: Cleaned up logging across the codebase (GitHub #10183). [Ryan Holtz]
+- 11255: n64.xml: Updated compatibility notes. [Angelo Salese, Happy]
+- 11258: ibm5170_cdrom.xml: Added thirteen working items. [redump.org, ArcadeShadow]
+- 11259: cpu/m6809/m6809.lst: Set V flag on undocumented XDEC instrcution. [Tim Lindner]
+- 11260: gba.xml: Added 21 prototypes (fifteen working). [Forest of Illusion, David Silva]
+- 11261: yamaha/ymps400.cpp: Added a skeleton driver for the Yamaha PS-400 keyboard. [Guru, Devin Acker]
+- 11262: dataeast/kchamp.cpp: Added a newly dumped US version of Karate Champ. [Museo Arcade Vintage, ClawGrip]
+- 11264: apple/apple2gs.cpp: Fixed RAM mapping for ROM1 machines. [Kelvin Sherlock]
+- 11265: oric1_cass.xml: Added six items (four working). [The Oric Site, ArcadeShadow]
+- 11266: msx1_cart.xml: Add 76 working items. [Wilbert Pol]
+- 11268: handheld/hh_sm510.cpp: Added Konami Teenage Mutant Ninja Turtles: Basketball. [algestam, Sean Riddle, Mr. Do]
+- 11269: vsmile_cart.xml: Added USA releases of six games. [anonymous dumper, ClawGrip]
+- 11270: handheld/hh_sm510.cpp: Fixed LCD segments for ktmntbb. [hap, algestam]
+- 11272: dataeast/kchamp.cpp: Marked kchamp2p as a clone of kchamp. [ClawGrip]
+- 11275: namco/namcos10.cpp: Reset settings area for taiko3 and taiko5. [David Haywood]
+- 11277: sinclair/tsconfdma.cpp: Fixed burst [holub]
+- 11280: imagedev/midiin.cpp: Fix error condition handling so MIDI files can be loaded again. [Devin Acker]
+- 11281: namco/namcos10.cpp: Calibrated light guns for Point Blank 3 and Gunbalina. [David Haywood]
 
 
 Source changes
