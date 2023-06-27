@@ -1,10 +1,10 @@
-0.256 2023-06-2x
+0.256 2023-06-28
 ----------------
 
 
 MAME Testers bugs fixed
 -----------------------
-- 00899: [Graphics] (taito/taito_f3.cpp) kaiserkn: Best Players does not show scores. (ywy)
+- 00899: [Graphics] (taito/taito_f3.cpp) kaiserkn: Best Players screen does not show scores. (ywy)
 - 02576: [Graphics] (taito/taito_f3.cpp) kirameki: Backgrounds in dance stage and photo shoot are not displayed correctly. (ywy)
 - 08650: [Crash/Freeze] (sharp/x68k.cpp) x68000: Emulator crashes with less than four emulated floppy drives connected. (AJR)
 - 08656: [DIP/Input] (misc/micro3d.cpp) botss, f15se: Analog joystick range is asymmetrical. (Vas Crabb)
@@ -15,7 +15,7 @@ MAME Testers bugs fixed
 - 08666: [Misc.] (sega/segahang.cpp) All sets in segahang.cpp: Coin counters are incremented on boot. (hap)
 - 08668: [Misc.] (sega/segas16a.cpp) All sets in segas16a.cpp: Coin counters are incremented on boot. (hap)
 - 08670: [Misc.] (sega/stv.cpp) All sets on stv.cpp: Coin counters are incremented on boot. (hap)
-- 08677: [Graphics] (nintendo/popeye.cpp) All sets in popeye.cpp: Interlaced video is incorrect with frame skipping. (hap)
+- 08677: [Graphics] (nintendo/popeye.cpp) All sets in popeye.cpp: Interlaced video output is incorrect with frame skipping. (hap)
 
 
 New working systems
@@ -183,13 +183,13 @@ segacd:
   Compton's Interactive Encyclopedia v2.00S (USA), Note! Color Mechanica (USA), Note! Color Mechanica (USA, alt),
   What is X'Eye Multi Entertainment System (USA) [redump.org]
 specpls3_flop:
-  19 Part One - Boot Camp, El Asombroso Spider-Man y Capitán America en La Venganza del Dr. Muerte!, Dragons of Flame,
-  The Duel - Test Drive II (Dro Soft), El Equipo A, Frightmare (Zafiro), Gunship (Erbe, alt), Pit-Fighter (Dro Soft),
-  Power Magic (alt), Rainbow Islands (Erbe, alt), Renaud, Shadow Warriors (Erbe), Solo, Starlife, Ulises [El Trastero del Spectrum]
   Dungeons of Gomilandia (v0.1a) [RetroWorks]
   Dungeons of Gomilandia (v0.1), Reaper, Seto Taisho Special Edition [Spectrum Computing]
   2 por 1: Rock'n Roller + Wells & Fargo, Averno, The Dragonslayer Trilogy, High Steel (Erbe, alt), The Sunflower Number Show (alt),
   The Tears of the Moon + Laskar's Crystals, Test Match [Steven Brown, Planeta Sinclair]
+  19 Part One - Boot Camp, El Asombroso Spider-Man y Capitán America en La Venganza del Dr. Muerte!, Dragons of Flame,
+  The Duel - Test Drive II (Dro Soft), El Equipo A, Frightmare (Zafiro), Gunship (Erbe, alt), Pit-Fighter (Dro Soft),
+  Power Magic (alt), Rainbow Islands (Erbe, alt), Renaud, Shadow Warriors (Erbe), Solo, Starlife, Ulises [El Trastero del Spectrum]
 spectrum_cass:
   Z80 Attack [Javi Ortiz]
   Futebol 87 (pirate) [João Cruz, Planeta Sinclair]
@@ -202,7 +202,7 @@ spectrum_cass:
   Campo Minato (pirate), Carambola (pirate), Carrarmati Tanx (pirate), Chequered Flag (pirate), Cookie (pirate),
   Dragons of Flame (Erbe), Everest Ascent (pirate), Firebirds (Microbyte), Firebirds (pirate), Flight Joystick (pirate),
   Talisman of Lost Souls + The Guardian, Temple of Vran (sample), Temple of Vran (sample, alt) [Steven Brown, Planeta Sinclair]
-tx0_ptp (tx0_ptp.xml):
+tx0_ptp:
   FLIT - Flexowriter Interrogation Tape, FLIT II [Bitsavers]
   FLITloader Punch [Bitsavers, AJR]
 
@@ -235,8 +235,8 @@ r8_card: SN-R8-09 Power Drums U.S.A. [ValleyBell]
 roland_tnsc2: TN-SC2-04 Dance [ValleyBell]
 segacd: Surgical Strike (Brazil, 32X) [redump.org]
 specpls3_flop:
-  Heavy Metal [El Trastero del Spectrum]
   The Archon Collection, Skate Wars, Spectrum +3 Spectacular [Steven Brown, Planeta Sinclair]
+  Heavy Metal [El Trastero del Spectrum]
 spectrum_cass:
   Time-Gate (Investronica) [Spectrum Computing]
   Asteroidi (pirate), Astro Blaster (pirate), Centipede (pirate), Cruising On Broadway (pirate), Dictator (pirate)
@@ -253,10 +253,10 @@ Merged pull requests
 - 11237: exidy/exidy.cpp: Corrected palettes for Targ and Spectar. [Timothy Shiels]
 - 11257: seibu/raiden.cpp: Marked version with checkpoints as Japan release. [cam900]
 - 11267: gameboy.xml: Added Debagame Tester, and corrected cartridge type for bartescj. [Christopher Graves, LuigiBlood, ICEknight]
-- 11273: dragon_cart.xml: Replaced cyrus dump with individual chip dumps. [ClawGrip, ICEknight]
+- 11273: dragon_cart.xml: Replaced cyrus cartridge dump with individual chip dumps. [ClawGrip, ICEknight]
 - 11276: heathkit/z37_fdc.cpp: Added H/Z-37 soft-sectored floppy controller, and promoted Heathkit H89 to working. [Mark Garlanger]
 - 11283: emu/device.h: Removed device read/write line member macros in favor of explicit function signatures. [Ryan Holtz]
-- 11284: Moved PC VGA classes to separate sources, and added some additional variants. [Angelo Salese]
+- 11284: Moved PC VGA classes to separate source files, and added some additional variants. [Angelo Salese]
 - 11286: msx1_cart.xml: Added 28 items (26 working). [file-hunter, MSXDev, n.i, Inufuto, Wilbert Pol]
 - 11291: galaxian/galaxian.cpp: Added an Amidar bootleg. [Rubén Casaña, ClawGrip]
 - 11292: skeleton/happyvideo.cpp: Added a skeleton driver for a Chinese kiddy ride. [jordigahan, Recreativas.org, ClawGrip]
@@ -270,7 +270,7 @@ Merged pull requests
 - 11307: cpu/z80: Handle EI instruction received on interrupt acknowledge cycle in interrupt mode 0. [Mark Garlanger]
 - 11309: compis.xml: Added some recently spotted titles to the list of undumped software. [FakeShemp]
 - 11310: Tidied up descriptions for LeapFrog software lists. [ArcadeShadow]
-- 11311: taito/taito_f3_v.cpp: Fixed visible tile check for alternate tilemap (fixe MT02576). [ywy]
+- 11311: taito/taito_f3_v.cpp: Fixed visible tile check for alternate tilemap (fixes MT02576). [ywy]
 - 11321: leapfrog/leappad.cpp: Dumped LeapPad Plus Microphone system ROM. [Sean Riddle, ClawGrip]
 - 11322: taito/taito_f3_v.cpp: Fixed trstar line zoom regression caused by pull request #11073. [ywy]
 - 11323: Added two Roland sample cards dumps, a Roland style card dump and a placeholder driver. [ValleyBell]
