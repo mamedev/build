@@ -1,4 +1,4 @@
-0.260 2023-10-2x
+0.260 2023-10-25
 ----------------
 
 
@@ -6,7 +6,7 @@ MAME Testers bugs fixed
 -----------------------
 - 08597: [Gameplay] a5200: Not possible to start a game in Pitfall 2. (AJR)
 - 08771: [DIP/Input] (misc/dgpix.cpp) btplay2k: Player controls are incorrect and incomplete. (Windy Fairy)
-- 08772: [Gameplay] (misc/gei.cpp) gtsers9: Category ROM in second position is not loaded. (Nightvoice)
+- 08772: [Gameplay] (misc/gei.cpp) gtsers9: Category ROM in second position is not loaded correctly. (Nightvoice)
 
 
 New working systems
@@ -137,7 +137,7 @@ Merged pull requests
 --------------------
 - 11451: render/drawbgfx.cpp: Added initial support for Wayland on Linux. [Belegdol]
 - 11539: 3rdparty/bgfx: Cherry-picked upstream commits needed to support Wayland on Linux. [Belegdol]
-- 11551: seta/seta.cpp: Updated descriptions, machine configuration settings, input labels. [cam900]
+- 11551: seta/seta.cpp: Updated descriptions, machine configuration settings and input labels. [cam900]
 - 11552: seta/simple_st0016.cpp: Added subtitles to descriptions for Koi Koi Shimasho and Renju Kizoku. [cam900]
 - 11553: toaplan/toaplan2.cpp: Corrected DIP switch and jumper settings for bgaregga bootlegs. [cam900]
 - 11570: formats: Reduced compile-time dependencies in filesystem headers. [AJR]
@@ -150,291 +150,30 @@ Merged pull requests
 - 11584: nmk/ddealer.cpp, nmk/nmk16.cpp: Emulate microcontrollers, replacing simulation code. [Sergio Galiano, David Haywood, hammy]
 - 11586: docs: Fixed a title underline too short warning. [Firehawke]
 - 11590: seibu/wiz.cpp: Added preliminary protection simulation for kungfuta (avoids crash after bonus rounds). [David Haywood]
-
-11593: workaround compile issue with tms57002.h / tms57002.hxx [mamehaze]
-I don't know if there's a better way to do this, but I can't see one with genie
-The problem arises when a file includes tms57002.h before tms57002.hxx has been built, which on a sufficiently quick to compile
-  system and high enough -j value is guaranteed to happen, causing compile failure.
-None of the other generated cores appear to include the hxx from the header in this way.
-Creating this PR to log the issue as much as anything else.
-
-11594: Fix synchronization between MC6847 video display generator and screen device [dave-br]
-@tlindner: FYI
- 
-- fix: #11567 
-PROBLEM: The vertical position of the screen and the physical scanline of the MC6847 video display generator drift out of sync
-  further and further every few frames.
-PRIMARY FIX: Initialize the screen device using set_raw, with more precise parameters to describe horizontal and vertical blanking.
-  (Full list of supporting changes below.)
-SCENARIOS FIXED:
-1) mame 6809 debugging (my primary objective): Hitting F7 (run until next interrupt) stops at the next FS interrupt.  Before this
-  fix, the debugger reports a beamy (based on the screen's vertical position) that varies all over the frame.  About every 3 frames
-  (3 hits of F7), beamy goes up by one, through the entire range of vertical positions due to a continuous drift between the
-  screen's and 6847's timing.  After this fix, beamy no longer drifts further and further away from the VDG's vertical position.
-  Beamy reliably rests in the range between the end of 216 and beginning of 217.
-2) Dragonfire: Not my primary objective with this fix, but I tried out this game since its code is meticulously timed to allow
-  multiple display mode changes per line.  It is still not perfect, but is significantly better.  The changing video garbage of the
-  margins is gone, and the flashing on the sides of the castle walls is 99% gone.  There are still static fringes of purple around
-  the moat.
-3) When viewing logging, it is now clear that the 6847's scanline matches the screen's vpos.  The debugger scenario no longer
-  drifts, but is imperfect due to varying cycles expended between an interrupt getting issued and the debugger stopping.  Logging,
-  on the other hand, reliably shows the exact same screen hpos & vpos each time the 6847 advances to a new scanline or issues the FS
-  timer.
-OTHER EFFECTS:
-1) The L/R margins were smaller than what a CoCo 1/2 normally generates.  I believe they are now the correct size.
-2) Due to how the screen device handles the larger number of pixels I'm feeding it, the active display area now appears a bit more
-  stretched vertically than prior builds.  This was jarring to me at first, but when I compare with my CoCo on an old CRT, it looks
-  similar.
-LIST OF CODE CHANGES:
-Initialize screen device using raw parameters
-Inform screen device of full vblanking and hblanking amounts
-All hblanking moved from beginning of line to end of line (vblanking remains at end of field)
-New logging on next scanline, more detailed logging elsewhere
-Moved some repeatedly-used hard-coded numbers into #defines
-
-11595: apple/apple2video.cpp: Fix Apple II DHGR rendering in Color/Composite mode [uraniumgun]
-Fix DHGR rendering when in Color/Composite mode (rgbmode == -1, in this function), so it doesn't fall through to the Video-7 RBG
-  rendering, where only rgbmode == 1 or rgbmode == 3 is expected.  DHGR graphics look much better when the color artifact emulation
-  is applied, which the Video-7 rendering does not do.
-This returns the rendering back to what it was like in the MAME 252.  The bIsRGBMonitor was removed, as it seems to just be a patch
-  to try and fix the issue introduced in 253, where the monochrome flag was added.  The addition of bIsRGBMonitor just made it so
-  that when rgbmode was -1 in the function, it acted like rgbmode == 3, but that is not ideal.
-This was tested using a Total Replay image, and playing DHGR games, such as Airheart and Heavy Barrel.
-
-11596: 3rdparty/bgfx: Fix duplicate import of GL functions on Linux when using GLES 2.0 [rtissera]
-Current MAME git master code breaks if trying to compile on Linux / GLES 2.0 with bgfx and Wayland enabled because of bgfx r recent
-  commit which has not been cherry-picked.
-So this PR is loosely based on the following upstream bgfx commit :
-  https://github.com/bkaradzic/bgfx/commit/66d50eb721334d6538a7eccdfdabb997667af1db
-
-11597: Update Turkish(Türkçe) strings.po [kadireksi]
-
-11599: saturn.xml: Metadata cleaning [ArcadeShadow]
-Replaced countries' and "Euro" abbreviations
-
-11600: Dumped and added a Korean "Triple Fun" set [clawgrip]
-New WORKING clone
-------------------------
-Sumeoinneun Deongdarireul Chajara! [Taksangs]
-Also reformatted single line comments.
-
-11602: Update Turkish strings.po (231005_2315) [kadireksi]
-
-11603: Dumped and added a new Korean "Treasure Island" clone named "New HUNTer" [clawgrip]
-New WORKING clone
----------------------------
-New HUNTer [Taksangs]
-Also reformatted single line comments.
-
-11604: PortAudio: sync to upstream [invertego]
-Update PortAudio to pick up the following fix: https://github.com/PortAudio/portaudio/pull/846
-Tested with the tiny subtarget on Windows, Linux (Ubuntu), and macOS.
-In addition to updating the docs to remove the now obsolete workaround for MSVC builds, I went ahead and enabled PortAudio for
-  Clang-CL. I'll note the Clang-CL build is not in a healthy state, so a few small changes were needed elsewhere to produce a
-  successful build (not included in this PR).
-Aside from the fix motivating this PR, not much of note has changed in PortAudio with one major exception: a new PulseAudio backend
-  was introduced. Since MAME has its own PulseAudio backend I opted not to enable the PortAudio wrapper. I did try it out though,
-  and for future reference, here is the change to enable it:
-```
-diff --git a/scripts/src/3rdparty.lua b/scripts/src/3rdparty.lua
-index 2ded17d2ccf..b65cdd79576 100755
---- a/scripts/src/3rdparty.lua
-+++ b/scripts/src/3rdparty.lua
-@@ -1677,6 +1677,17 @@ project "portaudio"
-                        MAME_DIR .. "3rdparty/portaudio/src/hostapi/alsa/pa_linux_alsa.c",
-                        MAME_DIR .. "3rdparty/portaudio/src/hostapi/oss/pa_unix_oss.c",
-                }
-+               if _OPTIONS["NO_USE_PULSEAUDIO"]~="1" then
-+                       defines {
-+                               "PA_USE_PULSEAUDIO=1",
-+                       }
-+                       files {
-+                               MAME_DIR .. "3rdparty/portaudio/src/hostapi/pulseaudio/pa_linux_pulseaudio_block.c",
-+                               MAME_DIR .. "3rdparty/portaudio/src/hostapi/pulseaudio/pa_linux_pulseaudio.c",
-+                               MAME_DIR .. "3rdparty/portaudio/src/hostapi/pulseaudio/pa_linux_pulseaudio_cb.c",
-+                               MAME_DIR .. "3rdparty/portaudio/src/common/pa_ringbuffer.c",
-+                       }
-+               end
-        end
-        if _OPTIONS["targetos"]=="macosx" then
-                defines {
-```
-
-11605: subsino/subsino.cpp: Dumped and added a "New HUNTer" clone [clawgrip]
-New WORKING clone
--------------------------
-New HUNTer (bootleg) [Taksangs]
-Also fixed the year for 'newhunter' set.
-
-11606: msx2_cart.xml: Added 53 items, 42 working. [wilbertpol]
-New working software list items
--------------------------------
-Zanac EX (Japan, Woomb) [file-hunter]
-Michelangelo II (Japan) [file-hunter]
-Super Lode Runner (Japan, alt) [file-hunter]
-Word Processor (Arab) [file-hunter]
-Zukkoke Yajikita Onmitsu Douchuu (Japan, alt 2) [file-hunter]
-The Adventures of Moron van der Slut - Escape from Castro Castro [msxdev Compo]
-The Bet [Orazio Cacciola]
-CR3 [NabetaJisho]
-Gogoboom [ESP Soft]
-Memory (v1.1) [MSXdev]
-Memory (v1.0) [file-hunter]
-No Ren-Sha (v0.13) [file-hunter]
-O'Conner Among the Falling Walls [file-hunter]
-Operatión Brazil World Cup [file-hunter]
-Pac-Man Collection DX (demo) [Opcode Games]
-Pengo (freeware) [file-hunter]
-Pengo (demo) [Paxanga Soft]
-Penpen Bubble [N.I]
-Pointless Fighting [msxdev Compo]
-Police Force 2 (English) [MRC Mega-Challenge]
-Police Force 2 (Spanish) [MRC Mega-Challenge]
-Princess Quest [nanochess]
-Randoom (v1.1) [MSXdev]
-Randoom (v1.0) [MSXdev]
-Safari Kids (v1.1) [MSXdev]
-Safari Kids (v1.0) [MSXdev]
-Shift [file-hunter]
-Shift (alt) [file-hunter]
-Shoulder Blade OVERDRIVE [MSXdev]
-Street Fighter II [file-hunter]
-The Sword of Ianna (v1.2) [file-hunter]
-The Sword of Ianna (v1.2, alt) [file-hunter]
-The Sword of Ianna (v1.1) [file-hunter]
-The Sword of Ianna (v1.0) [file-hunter]
-TestRAM [file-hunter]
-Vectroids [Norakomi]
-Who Dares Wins (remake) [file-hunter]
-Wild Puzzle [Pac]
-Wild Puzzle (alt) [Pac]
-Wild Puzzle (alt 2) [Pac]
-Zevimodoki (v1.10) [MSXdev]
-Zevimodoki (v1.00) [file-hunter]
-New NOT_WORKING software list additions
-------------------------------------------
-Super Rambo Special (Korea) [file-hunter]
-The Goonies r Good Enough (Kralizec goodbye present) [file-hunter]
-Manbow 2 [file-hunter]
-Manbow 2 (alt) [file-hunter]
-Mr. Balloon [msxdev compo]
-Super Mario World (v1.1) [file-hunter]
-Super Mario World (v1.0) [file-hunter]
-Super Mario World (advanced prototype) [file-hunter]
-Super Mario World (early prototype) [file-hunter]
-Super Mario World (demo 2) [file-hunter]
-Super Mario World (demo 1) [file-hunter]
-
-11609: heathkit/tlb.cpp - add back in gp19 fix TODOs [mgarlanger]
-Add back in the TODO list, 2 issues with the GP-19 emulation that was inadvertently removed with
-  https://github.com/mamedev/mame/pull/11534 since it looks like a fix proposed in https://github.com/mamedev/mame/pull/11504 is not
-  going to be accepted.
-
-11610: src/devices/sh: Numerous improvements [Ryan Holtz, Phil Bennett] [philipjbennett]
-src/devices/sh: Numerous improvements [Ryan Holtz, Phil Bennett]
-- General cleanup
-- Renamed SH2A to SH7021
-- Added (rudimentary) SH7021 DMA, timers and GPIO, and logging for the rest
-- Fix NMIs occurring in a delay slot (interpreter only)
-
-11611: fmtowns_cd.xml: added 13 new dumps, replaced 4 [rzero9]
-- Removed the floppy disk from the Deep set as it was a "fake" disk that didn't come with the game originally.
-- Fixed and cleaned up some dump source comments.
-New working software list additions
------------------------------------
-Auto Demo '93 Fuyu [redump.org]
-CONFIG-ROM [beanstalk]
-Drive Simulator - Home Navi V1.0 L01 [redump.org, cyo.the.vile]
-Heike Monogatari (Gekan) [redump.org]
-Hyper Planet Shiki Vol. 3 [redump.org]
-Many Colors II [redump.org]
-Naomi Komaki for Janis [redump.org]
-NHK Special - Ginga Uchuu Odyssey Vol. 2 - Choushinsei Bakuhatsu (FM Towns Marty version) [redump.org]
-Wing Commander (alt) [redump.org]
-Woman's Memory [redump.org]
-Z's Staff Pro Towns [redump.org]
-New not working software list additions
----------------------------------------
-Fujitsu Habitat V2.1 L13A [redump.org]
-Hyper Dream [redump.org]
-Replaced software list items
-----------------------------
-Deep [redump.org]
-Flashback [redump.org]
-Kiwame [redump.org]
-That's Toukou - Natsu no Daitokushuu [redump.org]
-
-11613: casio/cz101: promote to working [devinacker]
-Systems promoted to working
-----------------
-Casio CZ-101 [Devin Acker]
-
-11614: Update German translation [WebSnke]
-
-11621: Working Casio Loopy driver [philipjbennett]
-Systems promoted to working
----------------------------
-Casio Loopy [Phil Bennett, Ryan Holtz]
-New working software list items
--------------------------------
-Chakra-kun no Omajinai Paradise [Rachel Simone Weil]
-
-11623: misc/vamphalf.cpp: Dumped and added a new game: 'Solitaire' [clawgrip]
-New working systems
--------------------
-Solitaire (version 2.5) [Recreativas.org, Brito_cat]
-
-11624: subsino/subsino.cpp: Dumped and added another New HUNTer set (as MNW) [clawgrip]
-New NOT_WORKING clone
-------------------------------
-New HUNTer (bootleg, set 2) [Taksangs]
-
-11625: midiin_device: support loading sysex dumps [devinacker]
-This was tested on the cz101 driver using the patches from https://github.com/alphacharlie/CZ-Presets/tree/master/CZ-230S
-The 100ms delay between messages is probably overkill for most devices, but it should be safe enough.
-
-11626: casio_ra3_device: fill newly created image with zero instead of 0xff [devinacker]
-Just to make sure the user doesn't get blasted with noise if they try to play an empty patch.
-
-11641: subsino/subsino.cpp: Maked PROMs as BAD_DUMP for 'newhunterc' [clawgrip]
-As they weren't dumped from that PCB
-
-11642: msx2_cart.xml: Added 31 items, 29 working. [wilbertpol]
-New working software list items
--------------------------------
-Aleste (Woomb) [file-hunter]
-Arkanoid 2 (Korea) [file-hunter]
-Ashguine - Fukushuu no Honoo (Japan, alt 2) [file-hunter] 
-Daisenryaku MSX2 (Japan, alt) [file-hunter]
-Gekitotsu Pennant Race 2 (Japan, sample) [file-hunter]
-Hydlide 3 - The Space Memories (Woomb) [file-hunter]
-Alien 8 Remake [file-hunter]
-Los Amores de Brunilda (v1.01) [file-hunter]
-Los Amores de Brunilda (v1.0) [file-hunter]
-Barbarian the Duel [MSXdev]
-Bomb Jack [file-hunter]
-Bomb Jack (alt) [file-hunter]
-Booming Boy (demo) [MSX Area]
-Bubble Dream [MRC Tenliner Challenge]
-DIM X (demo) [file-hunter]
-Equivocal (v1.5) [Passion MSX2 Contest]
-Equivocal (v1.0) [Passion MSX2 Contest]
-Gold Fan [N.I]
-Highway Fighter (demo) [file-hunter]
-Inferno [msxdev Compo]
-Jailbreak (v1.02) [Passion MSX2 Contest]
-Jailbreak (alt) [Passion MSX2 Contest]
-Jailbreak (alt 2) [Passion MSX2 Contest]
-Knight Lore Remake [Retroworks]
-Lilly's Saga - The Stones of Evergreen (v1.2) [MSXdev] 
-Lilly's Saga - The Stones of Evergreen (v1.1) [MSXdev] 
-Lilly's Saga - The Stones of Evergreen (v1.0) [MSXdev] 
-La Sorpresa (Spanish) [Oniric Factor]
-A Surpresa (Portuguese) [Oniric Factor]
-New NOT_WORKING software list additions
-------------------------------------------
-Ehagaki-yō wāpuro (Japan) [file-hunter]
-Life on Earth (demo) [file-hunter]
+- 11593: cpu/tms57002: Pasted generated content into header to work around GENie’s lack of dependency analysis. [David Haywood]
+- 11594: video/mc6847.cpp: Improved timings and cleaned up code (improves synchronization between CPU, CRTC and screen). [dave-br]
+- 11595: apple/apple2video.cpp: Fixed Apple II double high resolution graphics rendering in color/composite mode. [uraniumgun]
+- 11596: 3rdparty/bgfx: Fixed duplicate import of GL functions on Linux when using OpenGL ES 2.0. [Romain Tisserand]
+- 11597: Updated Turkish (Türkçe) UI translation. [Kadir Ekşi]
+- 11599: saturn.xml: Replaced unnecessary abbrivations in descriptions. [ArcadeShadow]
+- 11600: seta/seta.cpp: Added a Korean version of Triple Fun. [Taksangs, ClawGrip]
+- 11602: Updated Turkish (Türkçe) UI translation. [Kadir Ekşi]
+- 11603: subsino/subsino.cpp: Added a Korean version of Treasure Island called New HUNTer. [Taksangs, ClawGrip]
+- 11604: 3rdparty/portaudio: Updated to latest upstream version (resolves issues building with Visual Studio). [invertego]
+- 11605: subsino/subsino.cpp: Added a bootleg of New HUNTer. [Taksangs, ClawGrip]
+- 11606: msx2_cart.xml: Added 52 items (41 working). [Wilbert Pol]
+- 11609: heathkit/tlb.cpp: Re-added TODO comments about 49/50 row mode. [Mark Garlanger]
+- 11610: cpu/sh: Improved SH7021 system-on-a-chip emulation. [Ryan Holtz, Phil Bennett]
+- 11611: fmtowns_cd.xml: Added thirteen items (eleven working), and replaced four items with better dumps. [r09]
+- 11613: casio/cz101.cpp: Added µPD933 phase distortion synthesis and RAM cartridge, and promoted system to working. [Devin Acker]
+- 11614: Corrected grammar of several German UI message translations. [Sönke Joppien]
+- 11621: casio/casloopy.cpp: Emualated most features of the system, besides sound output and the printer. [Phil Bennett, Ryan Holtz]
+- 11623: misc/vamphalf.cpp: Added an arcade Solitaire card game. [Recreativas.org, Brito_cat, clawgrip]
+- 11624: subsino/subsino.cpp: Added another bootleg of New HUNTer (not working). [Taksangs, ClawGrip]
+- 11625: imagedev/midiin.cpp: Added support for MIDI system exclusive message (SysEx) files. [Devin Acker]
+- 11626: casio/ra3.cpp: Fill newly created RAM cartridge files with zeroes (avoids loud noise if empty patch is used). [Devin Acker]
+- 11641: subsino/subsino.cpp: Noted that PROMs were not dumped for the second New HUNTer bootleg. [ClawGrip]
+- 11642: msx2_cart.xml: Added 31 items (29 working). [Wilbert Pol]
 
 
 Source changes
