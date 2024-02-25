@@ -751,7 +751,7 @@ def print_fresh_pull_requests(stream, wrapcol, repo, api, previous, current):
 def print_source_changes(stream, wrapcol, repo, previous, current):
     newdrivers_pat = re.compile('new |((game|machine|system|clone)s?|soft(ware|list) .+) promot(ed|ion)')
     softlist_pat = re.compile('soft(ware| ?list) ')
-    notworking_pat = re.compile('not[_ ]working')
+    notworking_pat = re.compile('no[nt][_ -]working')
 
     def categorise(heading, item):
         heading = heading.lower()
