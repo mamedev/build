@@ -9,6 +9,7 @@ MAME Testers bugs fixed
 - 08822: [Crash/Freeze] (igs/pgm.cpp) drgw3, drgw3100, drgw3105, dwex, dwex101cn: Hangs before games start. (Ivan Vangelista)
 - 08824: [Core] (funworld/funworld.cpp) pool10j, pool10k: Placeholder PAL dumps have incorrect sizes. (hap)
 - 08825: [DIP/Input] (msx/sfkick.cpp) sfkick, sfkicka, spinkick: Analog and digital paddle controls have opposite directions. (hap)
+- 08826: [Crash/Freeze] (taito/rbisland.cpp) jumping and clones: Emulator crashes when starting system. (hap)
 
 
 New working systems
@@ -57,6 +58,7 @@ Clones promoted to working
 --------------------------
 Joker's Wild (B52 system, BP55114-V1104, Ver.054NMV, Harrah's GFX) [Roberto Fresca]
 Joker's Wild (B52 system, WP02001-054, Ver.031WM) [Roberto Fresca]
+Tandy Radio Shack Deluxe Color Computer [Brian Wiesler, Tim Lindner]
 
 
 New systems marked not working
@@ -211,9 +213,9 @@ bbc_rom:
   User Port Transfer 1.01, Wordwise Companion, Zalaga (unofficial RFS) [Nigel Barnes]
 ekara_japan:
   Kids' Song Best 40 (Japan) (EC0084-KSB) [TeamEurope, David Haywood]
-  Enkamichi Volume 8 (Japan) (EC0058-ENK) [xtrasmiley]
+  Enkamichi Volume 8 (Japan) (EC0058-ENK) [TeamEurope]
 ekara_japan_d:
-  Dream Cartridge: Best Artist Vol.7 (Japan) (DC0008-BAT), Dream Cartridge: Best Hit Vol.10 (Japan) (DC0006-BHT) [xtrasmiley]
+  Dream Cartridge: Best Artist Vol.7 (Japan) (DC0008-BAT), Dream Cartridge: Best Hit Vol.10 (Japan) (DC0006-BHT) [TeamEurope]
 ekara_japan_en: Enka-shū Dai Ichi-hen (Japan) (EN-1), Enka-shū Dai Ni-hen (Japan) (EN-2) [TeamEurope, David Haywood]
 ekara_japan_kd: Kids' Song 20 (Japan) (KD-1) [TeamEurope, David Haywood]
 ekara_japan_m:
@@ -222,7 +224,7 @@ ekara_japan_m:
 ekara_japan_packin: Saiten Cartridge: Morning Musume Special (Japan) (BX01-MOR) [TeamEurope, David Haywood]
 ekara_japan_s:
   Saiten Cartridge: Nesshō Vol. 5 (Japan) (SC0016-SAI), Saiten Cartridge: PostPet (Japan) (SC0011-PST) [TeamEurope, David Haywood]
-ekara_japan_sp: Super Cartridge: TV Pop Junior (Japan) (SP-06) [xtrasmiley]
+ekara_japan_sp: Super Cartridge: TV Pop Junior (Japan) (SP-06) [TeamEurope]
 h88_cass:
   BUG-8 02.05.00, BUG-8 02.06.00, Extended Benton Harbor Basic 10.05.00, Extended Benton Harbor Basic 10.05.01,
   Extended Benton Harbor Basic 10.06.00, Heath H8 Assembler 04.05.00, Heath H8 Assembler 04.06.00, Heath/Wintek H8 Editor 03.05.00,
@@ -277,7 +279,7 @@ Russian [Arbars, holub, Vas Crabb]
 Merged pull requests
 --------------------
 - 11801: heathkit/h89.cpp: Added Heathkit H89 with SigmaSoft Interactive Graphics Controller as a clone system. [Mark Garlanger]
-- 11840: bus/qbus/ Added DVK MX floppy controller card. [shattered]
+- 11840: bus/qbus: Added DVK MX floppy disk drive controller card. [shattered]
 - 11964: cpu/t11: Fixed MTPS/MFPS data width and improved emulation of differences between variants. [shattered]
 - 11971: apple2_flop_clcracked.xml, apple2_flop_orig.xml: Added latest floppy disk dumps and cracks. [4am, san inc, A-Noid]
 - 11972: pinball/recel.cpp: Added ‘Space Game (Bingo 6+1)’, and corrected comments. [BonelessChicken, Recreativas.org, ClawGrip]
@@ -285,9 +287,9 @@ Merged pull requests
 - 11981: machine/sa1110.cpp: Use address maps for on-board peripherals; hp/jornada.cpp: Hooked up entire keyboard. [Ryan Holtz]
 - 11984: phoenix/phoenix.cpp: Added a bootleg of Phoenix. [Recreativas.org, ClawGrip]
 - 11985: emu/memarray.cpp: Fixed little Endian byte reads and writes for 64-bit areas. [amameuser]
-- 11986: msx/msx.cpp,msx/msx2.cpp: Enabled floppy drive sounds. [Wilbert Pol]
+- 11986: msx/msx.cpp,msx/msx2.cpp: Enabled floppy disk drive sounds. [Wilbert Pol]
 - 11988: rm/rm380z.cpp: Fixed video RAM addressing, allowing characters to be read back from the screen. [Robin Sergeant]
-- 11989: jaleco/megasys1.cpp: Added Hachoo! (Japan) as a clone; ekara_japan*.xml: Added four cartridges. [xtrasmiley, David Haywood]
+- 11989: jaleco/megasys1.cpp: Added Japanese version of Hachoo! as a clone; ekara_japan*.xml: Added four cartridges. [David Haywood]
 - 11990: apple/apple2e.cpp: Removed a duplicate variable assignment in Ctrl-Reset handler code. [xotmatrix]
 - 11991: sega/segaai.cpp: Improved µPD7759 ROM bank selection (improves speech). [Wilbert Pol]
 - 11992: konami/hexion.cpp, konami/spy.cpp, konami/thunderx.cpp: Made K052591 simulation better reflect real programs. [furrtek]
@@ -295,7 +297,7 @@ Merged pull requests
 - 11995: cpu/t11: Added basic support for the K1801VM1. [shattered]
 - 11996: apple/apple2e.cpp: Update language card memory map when language card is enabled or disabled. [xotmatrix]
 - 11999: nec/pce.cpp, nec/pce_cd.cpp: Cleaned up code. [cam900]
-- 12000: netlist/pexception.cpp, sound/pulse_sound.cpp: Fixed compilation when using musl libc. [Elaine Gibson]
+- 12000: netlist/pexception.cpp, sound/pulse_sound.cpp: Fixed compilation when using musl libc runtime library. [Elaine Gibson]
 - 12001: irem/travrusa.cpp: Added an alternate palette PROM arrangement for Traverse USA, MotoTour and MotoRace USA. [ClawGrip]
 - 12002: heath/h89.cpp: Added Ultimeth 2k ROM as a BIOS option. [Mark Garlanger]
 - 12006: sega/sega_beena_cart.xml: Added two working items. [TeamEurope, QUFB]
@@ -303,360 +305,34 @@ Merged pull requests
 - 12012: util/cdrom.cpp: Removed unreachable additional handler for MODE2/2336 tracks (GitHub #9084). [stonedDiscord]
 - 12013: mattel/pixtermu.cpp, pixter_cart.xml: Added a skeleton Mattel Pixter Multi-Media driver and software list. [QUFB]
 - 12015: galaxian/galaxian.cpp: Added a Spanish bootleg of UniWar S from Centromatic. [Jorge Silva, Arnaldo Lopes, ClawGrip]
-
-12016: hd6309.cpp: Fix index addressing modes [tlindner]
-Add case statements to enable indirect register W references. Problem discovered by Glenn Hewlett. Patch by Ciaran Anscomb.
-When an illegal index addressing mode is executed, pop next CPU state off stack to ensure vector is correctly jumped to. Problem
-  discovered by Glenn Hewlett.
-
-12017: rainbow.xml; intv.xml; digilog320.xml; compclr2_flop.xml: Normalize software list description [ArcadeShadow]
-rainbow.xml: Lowercase on storage media description (DEC Rainbow 100 disk images).
-digilog320.xml: Lowercase on storage media description (Digilog 320 disks).
-intv.xml: Added manufacturer's name (Mattel Intellivision cartridges)
-compclr2_flop.xml: Lowercase on storage media description (Compucolor II disk images) and lowercase on descriptive text on
-  software's name
-
-12019: heathkit/h89.cpp: Add software list for H88 cassette software [mgarlanger]
-Added official Heath software programs for the H88 cassette interface. These programs were originally written for the H8 and it's
-  cassette interface, but needed updating to support the H89's 8250 UART for the console, instead of the original 8251 used in the
-  H8.
-
-12020: tecmo/gaiden.cpp: Add a newer Wild Fang set, may be a year hack [clawgrip]
-New working clone
--------------------------
-Wild Fang (year hack?) [Tailsnic Retroworks]
-
-12026: cpu/patinhofeio/patinho_feio.cpp: Fix missing space in printf string [amameuser]
-Fixes the string concatenation "withthe" without a space between the words.
-
-12027: ussr/bk.cpp: K1801VP1-014 keyboard controller and MS7008 keyboard [shattered]
-
-12028: netlist/build/makefile: Remove duplicate $(OBJ)/devices directory [amameuser]
-Removes the duplicate $(OBJ)/devices directory from the list of object directories.
-
-12029: Remove some extra semicolons [amameuser]
-cpu/z180/z180op.hxx: Remove extra semicolon
-machine/ldv1000hle.cpp: Remove extra semicolon
-
-12030: Fix some END macro indents [amameuser]
-bus/electron/plus1.cpp: Fix ROM_END macro indent
-nintendo/n8080.cpp: Fix ROM_END macro indent
-misc/rfslots8085.cpp: Fix INPUT_PORTS_END macro indent
-tiger/gamecom.cpp: Fix INPUT_PORTS_END macro indent
-
-12031: rm/rm380z.cpp: Use real character ROM for COS 4.0, correct screen resolution and add support for user defined characters
-  [RobinSergeant]
-I've managed to obtain a dump of the real character ROM for COS 4.0 courtesy of the Research Machines user group, and this PR pulls
-  this in and updates the display code to use it.
-What is the correct process for updating a rom set?  This my working version that includes the new character rom:
-rm380z.zip
-The real characters are actually larger than the fake set we used before (8x10 rather then 5x9) and even include 2 extra rows to be
-  used when the underline attribute is set.  This all makes the display handling much easier and improves the display greatly.
-So with these characters 80 column mode has a display resolution of 640x240 and 40 column mode uses 320x240.
-For COS 3.4 I've set the display resolution to 240x240 which I think is correct because COS 3.0 only supported the VDU40 adaptor
-  which uses the TI 74LS262 character ROM.  These characters are 5x9, padded to 6x10 for display.  It's a shame we don't have the
-  real ROM for this as well, but at the moment I'm concentrating on getting COS 4.0 to work properly anyway!
-The new ROM only includes characters 0x00 to 0x79 because the additional teletext characters (0x80 to 0xFF) are actually generated
-  by COS as user defined characters.  I've also added support for user defined characters so that these continue to work.
-This PR includes all my changes for HW scrolling from the last PR which is still in review
-  (https://github.com/mamedev/mame/pull/12014), but I don't want to close that until the review comment has been cleared.  I can do
-  any further re-work under this PR.
-
-12032: msx1_cart.xml: Added 5 items. [wilbertpol]
-New working software list items
--------------------------------
-Hotbit HB-8000 Demo (Brazil) [file-hunter]
-Ligue-se ao Expert (Brazil) [file-hunter]
-Magical Tower Adventure [MSXdev]
-Mood Land [file-hunter]
-Princess Quest [file-hunter]
-
-12033: spg29x.cpp : add spg290 internal ROM [ppcasm] [mamehaze]
-spg29x.cpp : add spg290 internal ROM [ppcasm]
-(not properly hooked up yet, as it can bootstrap to multiple different device types - in the case of hyprscan, the external BIOS
-  ROM)
-
-12034: sound/discrete.cpp: Use appropriate memory barriers for task synchronisation [cuavas]
-The synchronisation barriers used in the discrete sound device aren’t really thought out properly.  There are two variable where
-  concurrent accesses matter:
-* `output_buffer::ptr`, used to determine the number of samples available to the consumer.
-* `discrete_task::m_threadid`, used to ensure only a single thread runs a given task at any given time.
-Using the `volatile` qualifier for `output_buffer::ptr` doesn’t really help, as it doesn’t enforce ordering between writes to the
-  buffer and writes to the pointer itself.  The pointer itself needs to be updated with release semantics, while it needs to be read
-  with acquire semantics when determining how many samples are available to the consumer.
-`discrete_task::m_threadid` needs to be updated with acquire semantics when locking and release semantics when unlocking to ensure
-  no work gets reordered outside the critical section.  It’s a bad idea to use `compare_exchange_weak` when locking as it isn’t in a
-  loop attempting to complete a lock-free operation.  On x86 you’ll never notice the difference, but on most other architectures it
-  can fail on contention for a cache line, which isn’t what we want to happen here.
-`discrete_task` seems to use `public`/`protected`/`private` randomly, and doesn’t need a vtable as it’s never used as a base class.
-This may or may not fix #11373, but I don’t like having dodgy synchronisation code around that works by chance at best.
-
-12035: added internal H8_328 ROM for Bandai Design Master [Sean Riddle] [mamehaze]
-
-12036: cpu/tms32010.cpp: Fix TMS32016 64k-word program memory access [cam900]
-
-12037: New NOT_WORKING machine (Vocalizer 1000) [devinacker]
-----------
-Breakaway Music Systems Vocalizer 1000 [Loscha, Devin Acker]
-Uses a rebadged (or cloned?) ES5503 made by NCR. Currently "not working" due to lack of mic input + several patches that use the
-  sync/AM mode not sounding right. Unfortunately I don't have any hardware recordings at the moment. Otherwise mostly works, though.
-
-12040: Fix tiny CHD creation (Fixes #12023) [balr0g]
-This should fix #12023. The maximum output size of the buffer is now calculated based on what will be placed in it.
-
-12041: ksys573: Add Martial Beat JAB variant [987123879113]
-The main difference with the JA variant is that it lacks the "original program" game mode.
-
-12042: spectrum_cass.xml: Added 61 working items [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Ad Lunam (English) [Spectrum Computing]
-Ad Lunam (Italian) [Spectrum Computing]
-Ad Lunam (Spanish) [Spectrum Computing]
-Ad Lunam Plus (English) [Spectrum Computing]
-Ad Lunam Plus (Italian) [Spectrum Computing]
-Ad Lunam Plus (Spanish) [Spectrum Computing]
-Adventure 4-Pack (alt) [Planeta Sinclair]
-Alien Girl (demo, English) [Javier Fopiani]
-Alien Girl (demo, Spanish) [Javier Fopiani]
-Apulija-13 (v2.1, English) [Zankle Soft]
-Apulija-13 (v2.1, German) [Zankle Soft]
-Apulija-13 (v2.1, French) [Zankle Soft]
-Apulija-13 (v2.1, Italian) [Zankle Soft]
-Apulija-13 (v2.1, Portuguese) [Zankle Soft]
-Apulija-13 (v2.1, Spanish) [Zankle Soft]
-Apulija-13 (v2.1, English, extra) [Zankle Soft]
-Cocoa and the Time Machine (128K, English) [Minilop Retroware]
-Cocoa and the Time Machine (128K, Spanish) [Minilop Retroware]
-Cocoa and the Time Machine (48K, English) [Minilop Retroware]
-Cocoa and the Time Machine (48K, Portuguese) [Minilop Retroware]
-Cocoa and the Time Machine (48K, Spanish) [Minilop Retroware]
-Demon's Dream [Spectrum Computing]
-Desdobramentos de Totobola [Planeta Sinclair]
-F-19 Stealth Fighter (set 4, Erbe) [Spectrum Computing]
-Hakkenkast - The Demo Dungeon (128K) [Minilop Retroware]
-Hakkenkast - The Demo Dungeon (48K) [Minilop Retroware]
-Inspector Gadget and the Circus of Fear [Spectrum Computing]
-Impossabubble [Dave Clarke]
-Insert Coins II [Spectrum Computing]
-La Diosa de Cozumel (Matra edition) [Planeta Sinclair]
-Máquina do Poker [Planeta Sinclair]
-Melotron [Planeta Sinclair]
-Micro Olympics / Olympic Spectacular (Profisoft) [Spectrum Computing]
-Micro Primer - Software Pack 1 [Spectrum Computing]
-Micro Primer - Software Pack 2 [Spectrum Computing]
-Microfair Madness (Zenobi, alt) [Spectrum Computing]
-Mysterious Dimensions (48K) [Spectrum Computing]
-NATO Assault (128K version) [Spectrum Computing]
-Poker Aberto [Planeta Sinclair]
-Project Future (bug fix) [Spectrum Computing]
-Pud Pud (Zafi Chip) [Spectrum Computing]
-Puffy's Saga (MCM) [Spectrum Computing]
-Red Arrows (System 4) [Spectrum Computing]
-Rival Gang [Spectrum Computing]
-Rival Gang EXT [Spectrum Computing]
-Road Toad (bug fix) [Spectrum Computing]
-Roust (demo) [Spectrum Computing]
-Super 48K Box (rev. 2, TAP tape image) [Spectrum Computing]
-Stripping Penelope [Planeta Sinclair]
-Terrapins (demo) [Spectrum Computing]
-Tiro al Blanco (Investronica) [Spectrum Computing]
-The Swarm is Coming... (128K, update 2) [Minilop Retroware]
-The Swarm is Coming... (48K, update 2) [Minilop Retroware]
-Throne of Fire (IBSA) [Spectrum Computing]
-Throne of Fire (TIM) [Planeta Sinclair]
-Twenty Four Hour Parsley People (English) [Minilop Retroware]
-Twenty Four  Hour Parsley People (Portuguese) [Minilop Retroware]
-Twenty Four Hour Parsley People (Spanish) [Minilop Retroware]
-World Games (Erbe) [Spectrum Computing]
-Wunderwaffe [Spectrum Computing]
-ZX Larry [Spectrum Computing]
-Removed software list item
---------------------------------------------
-[ronniego_a] Ronnie Goes To Hollywood - Help (merge into "Ronnie Goes To Hollywood" set as side B)
-Large cleanups and fixes: parent/cloneof relationships, descriptions, publishers, years (information provided by
-  spectrumcomputing.co.uk) and added languages info
-
-12043: trs/coco12.cpp: Update deluxecoco driver with newly found ROMs and hardware information [tlindner]
-Update deluxecoco driver with newly found ROMs and hardware information.
-
-12046: mindset_flop.xml; adam_flop.xml; next_hdd.xml: Normalize software list description [ArcadeShadow]
-mindset_flop.xml: Lower case on storage media's description (Mindset Corporation Mindset floppy discs).
-adam_flop.xml: Keep upper case only on the first letter of the system's name (Coleco Adam diskettes).
-next_hdd.xml: Put the manufacturer's name on first place (NeXT hard disk images).
-
-12047: Remove some unnecessary backslash line continuation [amameuser]
-* devices/*: Remove unnecessary backslash line continuation
-* frontend/*: Remove unnecessary backslash line continuation
-* lib/*: Remove unnecessary backslash line continuation
-* mame/*: Remove unnecessary backslash line continuation
-* osd/*: Remove unnecessary backslash line continuation
-* cpu/m68000/m68000gen.py: Use parentheses in preference to using a backslash for line continuation
-* cpu/m68000/m68000gen.py: Regenerate source files
-  m68000gen.py decode m68000.lst m68000-decode.cpp
-  m68000gen.py header m68000.lst m68000-head.h
-  m68000gen.py sdf m68000.lst m68000-sdf.cpp
-  m68000gen.py sdp m68000.lst m68000-sdp.cpp
-  m68000gen.py sif m68000.lst m68000-sif.cpp
-  m68000gen.py sip m68000.lst m68000-sip.cpp
-  m68000gen.py headerm m68000.lst m68000mcu-head.h
-  m68000gen.py sdfm m68000.lst m68000mcu-sdfm.cpp
-  m68000gen.py sdpm m68000.lst m68000mcu-sdpm.cpp
-  m68000gen.py sifm m68000.lst m68000mcu-sifm.cpp
-  m68000gen.py sipm m68000.lst m68000mcu-sipm.cpp
-  m68000gen.py header8 m68000.lst m68008-head.h
-  m68000gen.py sdf8 m68000.lst m68008-sdf8.cpp
-  m68000gen.py sdp8 m68000.lst m68008-sdp8.cpp
-  m68000gen.py sif8 m68000.lst m68008-sif8.cpp
-  m68000gen.py sip8 m68000.lst m68008-sip8.cpp
-
-12049: coco12.cpp: Fix tiny error in RAM banking [tlindner]
-Off by one. Thanks @pernod
-
-12050: machine/z80scc.cpp: Added support for RTxC transmit/receive clock source [colinleroy]
-Fixes serial emulation at 115200bps.
-This leaves some things unimplemented (like TRxC and DPLL clock sources), but makes programs communicating at 115.200bps function
-  properly.
-For context, toggling this chip to 115200bps or 230400bps is done by
-1) setting the clock multiplier to 16 (230400bps) or 32 (115200bps), WR4 bits 6 or 7
-2) setting the clock source for TX and RX to /RTxC instead of BRG, WR11
-3) stopping the baud rate generator, WR14 bit 0
-I hope this is a good first PR.
-Thanks!
-
-12052: msx2_cart.xml: Added 6 items, 5 working. [wilbertpol]
-machine/mb87030.cpp: Fix some bit definitions for the SCMD register. [pmackinlay]
-msx2_cart.xml: Added 6 items, 5 working. [Wilbert Pol]
-New working software list items
--------------------------------
-MEGA-SCSI (1024KB) [file-hunter, Wilbert Pol]
-MEGA-SCSI (512KB) [file-hunter, Wilbert Pol]
-MEGA-SCSI (256KB) [file-hunter, Wilbert Pol]
-MEGA-SCSI (128KB) [file-hunter, Wilbert Pol]
-DSKPRO (v11.6) [file-hunter]
-New NOT_WORKING software list additions
-------------------------------------------
-Video Digitizer (Japan) [file-hunter]
-
-12055: ekara: add 9 cartridges [David Haywood, Team Europe] [mamehaze]
-new software list entries
------------
-Kids' Song Best 40 (Japan) (EC0084-KSB) [Team Europe, David Haywood]
-Morning Musume Special (Japan) (BX01-MOR) [Team Europe, David Haywood]
-Enka-shū Dai Volume 1 (Japan) (EN-1) [Team Europe, David Haywood]
-Enka-shū Dai Volume 2 (Japan) (EN-2) [Team Europe, David Haywood]
-Kids' Song 20 (Japan) (KD-1) [Team Europe, David Haywood]
-J-Pop Mix Mini Volume 1 (Japan) (MC0009-JPM) [Team Europe, David Haywood]
-Artist Mini Volume 9 (Yamaguchi Momoe) (Japan) (MC0016-ATM) [Team Europe, David Haywood]
-PostPet (Japan) (SC0011-PST) [Team Europe, David Haywood]
-Saiten Cartridge: Nesshō vol. 5 (Japan) (SC0016-SAI) [Team Europe, David Haywood]
-these titles aren't optimal, ideally this will be merged and the titles corrected by somebody who knows the language, along with the
-  alt tags added.
-new NOT WORKING machines
-----------------
-Sou-Kai Golf Champ (Japan) [Team Europe, David Haywood]
-Nekketsu Pawapuro Champ (Japan) [Team Europe, David Haywood]
-Zettai Zetsumei Dangerous Jiisan - Mini Game de Taiketsu ja! (Japan) [Team Europe, David Haywood]
-Zettai Zetsumei Dangerous Jiisan Party ja! Zen-in Shuugou!! (Japan) [Team Europe, David Haywood]
-
-12057: util/bitstream: Fix cases where bits would be dropped when reading and writing [987123879113]
-Additional testing from someone else before merging would be appreciated.
-In this case, the parent chunk types were using 26 bits per offset values which behaved unexpectedly resulting in some bits being
-  dropped when reading and writing the data. I think the issue only happens when dealing with values larger than 24 bits due to the
-  way buffering was implemented. So I've changed both `bitstream_in` and `bitstream_out` to more greedily fill its buffers,
-  including partial reads for `bitstream_in`.
-Old (can see an additional CRC error message I added to help debug, should be reproducible):
-```
-> ./chdman copy -i gdj_aaa_2007071100.chd -op gdj_aaa_2007100800.chd -o newchild2.chd 
-chdman - MAME Compressed Hunks of Data (CHD) manager 0.262 (mame0252-3687-gb0c8802da65-dirty)
-Output CHD:   newchild2.chd
-Parent CHD:   gdj_aaa_2007100800.chd
-Input CHD:    gdj_aaa_2007071100.chd
-Compression:  lzma (LZMA), zlib (Deflate), huff (Huffman), flac (FLAC)
-Hunk size:    4,096
-Logical size: 40,000,000,000
-Compression complete ... final ratio = 7.8%
-> ./chdman info -i newchild2.chd
-chdman - MAME Compressed Hunks of Data (CHD) manager 0.262 (mame0252-3687-gb0c8802da65-dirty)
-CRC did not match! expected 0000f003, found 000055da
-Error opening CHD file (newchild2.chd): Decompression error
-Fatal error occurred: 1
-```
-New:
-```
-> ./chdman copy -i gdj_aaa_2007071100.chd -op gdj_aaa_2007100800.chd -o newchild3.chd
-chdman - MAME Compressed Hunks of Data (CHD) manager 0.262 (mame0252-3658-gbaf313500d7)
-Output CHD:   newchild3.chd
-Parent CHD:   gdj_aaa_2007100800.chd
-Input CHD:    gdj_aaa_2007071100.chd
-Compression:  lzma (LZMA), zlib (Deflate), huff (Huffman), flac (FLAC)
-Hunk size:    4,096
-Logical size: 40,000,000,000
-Compression complete ... final ratio = 7.8%
-> ./chdman info -i newchild3.chd
-chdman - MAME Compressed Hunks of Data (CHD) manager 0.262 (mame0252-3658-gbaf313500d7)
-Input file:   newchild3.chd
-File Version: 5
-Logical size: 40,000,000,000 bytes
-Hunk Size:    4,096 bytes
-Total Hunks:  9,765,625
-Unit Size:    512 bytes
-Total Units:  78,125,000
-Compression:  lzma (LZMA), zlib (Deflate), huff (Huffman), flac (FLAC)
-CHD size:     3,137,000,409 bytes
-Ratio:        7.8%
-SHA1:         af76f981a86d117df0799170aa1a6babeb92fd00
-Data SHA1:    f86c948f8ab9124ed04d0462c7b9b31aabd0afa4
-Parent SHA1:  b32f4f09e155f2fd0fc16b0bb77331756b3928d0
-Metadata:     Tag='GDDD'  Index=0  Length=37 bytes
-              CYLS:156250,HEADS:10,SECS:50,BPS:512.
-```
-Parent CHDs just to make it easy to verify the metadata of the new child CHD looks correct:
-```
-> ./chdman info -i gdj_aaa_2007071100.chd
-chdman - MAME Compressed Hunks of Data (CHD) manager 0.262 (mame0252-3658-gbaf313500d7)
-Input file:   gdj_aaa_2007071100.chd
-File Version: 5
-Logical size: 40,000,000,000 bytes
-Hunk Size:    4,096 bytes
-Total Hunks:  9,765,625
-Unit Size:    512 bytes
-Total Units:  78,125,000
-Compression:  lzma (LZMA), zlib (Deflate), huff (Huffman), flac (FLAC)
-CHD size:     10,268,950,478 bytes
-Ratio:        25.7%
-SHA1:         af76f981a86d117df0799170aa1a6babeb92fd00
-Data SHA1:    f86c948f8ab9124ed04d0462c7b9b31aabd0afa4
-Metadata:     Tag='GDDD'  Index=0  Length=37 bytes
-              CYLS:156250,HEADS:10,SECS:50,BPS:512.
-              
-> ./chdman info -i gdj_aaa_2007100800.chd
-chdman - MAME Compressed Hunks of Data (CHD) manager 0.262 (mame0252-3658-gbaf313500d7)
-Input file:   gdj_aaa_2007100800.chd
-File Version: 5
-Logical size: 40,000,000,000 bytes
-Hunk Size:    4,096 bytes
-Total Hunks:  9,765,625
-Unit Size:    512 bytes
-Total Units:  78,125,000
-Compression:  lzma (LZMA), zlib (Deflate), huff (Huffman), flac (FLAC)
-CHD size:     7,161,091,862 bytes
-Ratio:        17.9%
-SHA1:         b32f4f09e155f2fd0fc16b0bb77331756b3928d0
-Data SHA1:    2001011370d1201129d7f43f5f8cf37752985645
-Metadata:     Tag='GDDD'  Index=0  Length=37 bytes
-              CYLS:156250,HEADS:10,SECS:50,BPS:512.
-```
-
-12060: util/bitstream: Adjust m_doffset based on m_dbitoffs when flushing [987123879113]
-Found that in addition to forgetting to clear `m_dbitoffs` when flushing resulting in data being shifted incorrectly after a flush
-  when `m_dbitoffs` was non-0, the variable `m_doffset` would go out of sync after flushing when `m_dbitoffs` was used so that
-  needed to be adjusted as well.
-I've tested with `chdman info` to check that the 175 CHDs I have on hand can still decompress the map data still, recreated the
-  delta CHD (`chdman copy -i ~/chd_test/gdj_aaa_2007071100.chd -op ~/chd_test/gdj_aaa_2007100800.chd -o ~/chd_test/newchild5.chd`)
-  and verified that all of the hashes validated, and then did various tests using the `dlair` laserdisc CHD including extracting
-  using `chdman extractld`, recreating using `chdman createld`, and verifying that the SHA1 and Data SHA1 were the same in the
-  original CHD and the recreated CHD.
+- 12016: cpu/m6809: Fixed HD6309 indirect W register references in indexed addressing modes. [Tim Lindner]
+- 12017: rainbow.xml; intv.xml; digilog320.xml; compclr2_flop.xml: Use lowercase for things that aren't proper nouns. [ArcadeShadow]
+- 12019: heathkit/h89.cpp, h88_cass.xml: Added a software list for Heathkit H88 cassettes. [Mark Garlanger]
+- 12020: tecmo/gaiden.cpp: Added an version of Wild Fang using a different program version. [Tailsnic Retroworks, ClawGrip]
+- 12026: cpu/patinhofeio/patinho_feio.cpp: Fixed missing space in warning log message. [amameuser]
+- 12027: ussr/1801vp014.cpp: Added simulated MS7008 keyboard using K1801VP1-014 controller. [shattered]
+- 12028: lib/netlist: Removed duplicate $(OBJ)/devices from object directories in makefile. [amameuser]
+- 12029: cpu/z180, machine/ldv1000hle.cpp: Removed some extraneous semicolons. [amameuser]
+- 12030: Fixed indentation of some ROM_END and INPUT_PORTS_END statements. [amameuser]
+- 12031: rm/rm380z.cpp: Improved character mode video emulation. [Robin Sergeant]
+- 12032: msx1_cart.xml: Added five working items. [file-hunter, MSXdev, Wilbert Pol]
+- 12033: tvgames/spg29x.cpp: Added the internal SPG290 ROM for the Mattel HyperScan (not hooked up yet). [ppcasm, David Haywood]
+- 12034: sound/discrete.cpp: Use appropriate memory barriers for task synchronisation (fixes GitHub #11373). [Vas Crabb]
+- 12035: bandai/design_master.cpp: Added the internal H8/328 ROM for the Bandai Design Master. [Sean Riddle, David Haywood]
+- 12036: cpu/tms32010: Fixed memory access helpers for variants with 64k-word program space. [cam900]
+- 12037: misc/vocalizer.cpp: Added a driver for the Breakaway Music Systems Vocalizer 1000 (not working). [Loscha, Devin Acker]
+- 12040: util/chd.cpp: Calculate pessimistic size for buffer needed to store compressed hunk map (fixes GitHub #12023). [balrog]
+- 12041: konami/ksys573.cpp: Added Martial Beat JAB version (not working). [Windy Fairy]
+- 12042: spectrum_cass.xml: Added 61 working items, and added language information for many items. [ArcadeShadow]
+- 12043: trs/coco12.cpp: Dumped ROMs for Deluxe Color Computer and promoted it to working. [Brian Wiesler, Tim Lindner]
+- 12046: mindset_flop.xml, adam_flop.xml, next_hdd.xml: Made software list descriptions follow conventions. [ArcadeShadow]
+- 12047: Removed some unnecessary backslash line continuations in C++ and Python code. [amameuser]
+- 12049: trs/coco12_m.cpp: Fixed base address for Deluxe Color Computer RAM bank. [Nigel Barnes, Tim Lindner]
+- 12050: machine/z80scc.cpp: Added support for RTxC transmit/receive clock source. [Colin Leroy-Mira]
+- 12052: msx2_cart.xml: Added six items (five working); bus/msx/cart/scsi.cpp: Added partial MegaSCSI support. [Wilbert Pol]
+- 12055: hash/ekara_japan*.xml: Added nine cartridges; skeleton/hudson_poems.cpp: Added four games. [David Haywood, TeamEurope]
+- 12057: util/bitstream.cpp: Fixed cases where bits would be dropped when reading and writing. [Windy Fairy]
+- 12060: util/bitstream.h: Adjust m_doffset based on m_dbitoffs when flushing (fixes errors reading LaserDisc CHDs). [Windy Fairy]
 
 
 Source changes
@@ -2130,15 +1806,3 @@ Konami Zettai Zetsumei Dangerous Jiisan Party ja! Zen-in Shuugou!! [TeamEurope, 
 -bbc_rom.xml: Use idiomatic markup in descriptions. [Vas Crabb]
 
 -yamaha/ymmu15.cpp: Marked Yamaha MU15 as not working. [Vas Crabb]
-
-
-Systems promoted to working
----------------------------
-Tandy Radio Shack Deluxe Color Computer [tlindner]
-
-
-Comparing 0.262 (mame0262) to 0.262 (mame0262-347-g9827b7f5478)
-
-Clones promoted to working
---------------------------
-Deluxe Color Computer
