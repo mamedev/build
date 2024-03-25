@@ -1,10 +1,11 @@
-0.264 2024-04-2x
+0.264 2024-04-27
 ----------------
 
 
 MAME Testers bugs fixed
 -----------------------
 - 06483: [Original Reference] (rm/rm380z.cpp) rm380z34d, rm380z34e: COS 3.4 systems boot to debugger. (Robin Sergeant)
+- 08736: [DIP/Input] (apple/apple2gs.cpp) apple2gs: Joystick buttons are ignored. (Kelvin Sherlock)
 
 
 New working systems
@@ -173,646 +174,84 @@ spectrum_cass: Prioridade Em Cruzamentos [Planeta Sinclair]
 
 Merged pull requests
 --------------------
-11608: util/ioprocs.cpp: Add wrappers for common patterns [cuavas]
-First, some background on this.  POSIX-like read/write operations have somewhat complicated semantics.  In particular, they can
-  return short for multiple reasons:
-* If a read or write call is interrupted by an asynchronous signal before completing, it will return short.  If no data has been
-  read/written it will set `EINTR`, otherwise it will return success.
-* If a read or write to a non-blocking descriptor would block, it will return short.  If no data has been read/written, it will set
-  `EAGAIN` or `EWOULDBLOCK`, otherwise it will return success.
-* If some characteristic of the underlying device  would prevent a read/write of the requested size from appearing to be atomic with
-  respect to other read/write calls, it will return short.
-* A read will return short if the end of the stream is reached.  However the application must attempt to complete the read to
-  distinguish between a read that failed to complete for some other reason (e.g. `EAGAIN`) and actually reaching the end of the
-  stream.
-* If a write partially completes before encountering an error, it will return short.  To obtain the actual error, you must attempt
-  to complete the write, which means the error is not obtained atomically.  This can lead to results that are not intuitive.  For
-  example, if a write partially completes because the device runs out of free space, but more space is freed before the application
-  attempts to complete the write, the application will see the write complete (albeit not atomically with respect to other
-  read/write calls), never seeing the `ENOSPC` or `EDQUOT` error.
-Reading/writing zero bytes may cause error checking to be performed, so it may fail in some cases.  As such, attempting to
-  read/write zero bytes should not be simply ignored.
-This adds `try_read`/`try_read_at` and `try_write`/`try_write_at` wrappers to encapsulate the process of attempting to complete a
-  read or write for cases where one doesn’t care whether the operation is atomic with respect to other reads/writes.
-The functions return pairs or tuples so they can be used with structured binding declarations and `std::tie` when convenient.
-  They’re declared as free functions to keep the interfaces pure.  They can be called using unqualified names due to
-  argument-dependent name lookup.
-There are variants of `try_read` and `try_read_at` that allocate space for the output.  Note that they will always allocate the
-  requested number of bytes even though fewer bytes may actually be read.  One limitation of the allocating variants is that they
-  won’t work if you try to read zero bytes for the purpose of checking for errors – the non-allocating variants must be used for
-  this purpose (or you can call `read` directly on the stream).
-I’m not convinced `try_read` and `try_write` are necessarily the best names for these.  If someone can come up with unambiguously
-  better names, I’d be happy to change them.
-Like #11588, this also removes some `device_image_interface` member functions in favour of working with the image file object
-  directly.
-I haven’t ported much code across to use these functions, since the names may need to change.
-
-11997: heath/h17_fdc.cpp: Skeleton impl for the H-88-1 Hard-Sectored Controller [mgarlanger]
-Initial code for the Heath H-88-1 Hard-sectored controller for the H-89 family of systems. This supported up to 3 floppy drives. 
-This initial code implements the I/O ports of the controller, includes the AMI S2350 USRT, the transmitter clock for the USRT. 
-Things still needed
-- MAME's core code must support hard-sectored disk images.
-- Receiver clock for the USRT, based on read clock bits from the disk.
-- Add support for a Heath hard-sectored disk image format.
-- Add controller to the H89 systems.
-
-12003: apple/apple2e.cpp: Correctly reset IOU softswitches on system reset [xotmatrix]
-Some IOU softswitches are not being reset when the system is reset. This can leave the display and annunciators in an incorrect
-  state after a reset.
-From a fresh start, enter the following into the monitor to enable 80-column video and then press RESET. Note the 80-column video
-  remains enabled which is not correct.
-```
-*C00D:1
-```
-From a fresh start, enter the following into the monitor to draw MouseText characters to the screen and then press RESET. Note the
-  MouseText characters remain enabled which is not correct.
-```
-*C00F:1 N 428:40 41 42 43 44 45
-```
-This patch corrects these issues by adding reset handling for the missing IOU softswitches:
-- 80COL
-- ALTCHR
-- AN0
-- AN1
-- AN2
-- AN3
-In addition, reset code related to MMU, IOU, and LC softswitches has been reorganized into logical groups.
-
-12004: process all new ROM dumps sent by Team Europe and Sean Riddle [David Haywood] [mamehaze]
-new NOT WORKING machines
---------------
-Interactive M.A.G. Motion Activated Gear: Toy Story and Beyond! Buzz Lightyear Galactic Adventure [David Haywood, Sean Riddle]
-Interactive M.A.G. Motion Activated Gear: The Batman - Villains of Gotham City [David Haywood, Sean Riddle]
-Interactive M.A.G. Motion Activated Gear: Spider-Man - Triple Threat [David Haywood, TeamEurope]
-Who Wants to Be a Millionaire? (Play Vision, Plug and Play, UK, 8-bit version) [David Haywood, TeamEurope]
-Excite Tennis (Japan) [David Haywood, TeamEurope]
-Sudoku: Do You Sudoku? [David Haywood, TeamEurope]
-new NOT WORKING clones
----------
-Fun 2 Learn Smart Fit Park (France) [David Haywood, TeamEurope]
-
-12007: video/mc6845.cpp: Restore support for zero active width/height configuration [mgarlanger]
-Verified with the build artifacts on this PR that the DE check prevents the crash in Windows (tested with a load prior to the
-  original revert and saw the crash to verify my setup).
-
-12010: heathkit/tlb.cpp: Use layout to mask border and create a visible bezel [mgarlanger]
-Disabling the border fixes the off-center issue of the active area, and adjusting the visarea makes it similar to what a real
-  h19/h89 screen would look like.
-
-12039: New NMK214 device: added implementation for NMK214 descrambling GFX device and hook it up to nmk16 driver [sergiopolog]
-Added implementation for NMK214 as a new device. It's used for descrambling GFX data on some games in the nmk16 driver.
-The implementation was made based on the reverse engineering work of the chip at silicon level: 
-https://github.com/sergiopolog/GateArray-RE/tree/master/NMK/nmk-214
-Results of the descrambling GFX process for both sprites and background tiles using this implementation match exactly with the ones
-  from previous implementation made by @mamehaze (and Antiriad) back then.
-In this case, all the internal configurations that could be selected to perform it are included, even if they are never used for any
-  game, just for documentation purposes.
-Real hardware performs the descrambling process on the fly for each word/byte fetch from GFX ROMs, but due how the drawgfx system is
-  made on MAME, I couldn't find an option to integrate it and mimic the real hw behaviour.
-I simply run the decoding of the entire GFX regions just when both devices are initialized at startup, (similar to what the previous
-  implementation did on init handler).
-If there is a way to do this on real GFX fetches from 'sprites' and 'bgtiles' regions, please, let me know.
-By now, the descrambling process is only hooked up for sabotenb (and clones) set.
-On a later PR, I plan to apply it to the rest of games using it on nmk16 driver and split the current "tdragon_prot_state" class
-  into two different classes: One for NMK111 and NMK113 protection (tdragon and hachamf) and another one for NMK214-215 protection,
-  as they are completely different processes, even if they use the same MCU model (TLCS-90)
-
-12044: rm/rm380z.cpp: Add support for high resolution graphics, colour and text character dimming [RobinSergeant]
-This PR adds supports for the HRG board described here:
-https://vt100.net/rm/docs/380z-hrg.pdf
-It was needed to run most educational software so would be nice to get this in.  As I had to change the palette I've also added the
-  missing dimmed text attribute, and a config port to choose between a colour or monochrome monitor.
-Support for both the High Resolution mode (320x192, 4 colour) and Medium Resolution (160x96, 16 colour) is included.  The two modes
-  share video ram, and the medium mode includes two separate display pages (one page is stored at odd addresses, and the other at
-  even addresses).  Each logical colour index maps to one of a possible 256 different colours, which was quite impressive for the
-  time - much more colourful than many 8-bit home computers!
-The HRG occupies the first 20 lines of the display, with the lower 4 lines reserved for text.  Although it is also possible to draw
-  text over the graphics area (when the VDU is not set to graphics mode).
-It is best demonstrated by using RM Basic where you can now easily draw colourful graphics like this:
-!image
-
-12054: emu/save.cpp: Make illegal save state registrations always fatal [cuavas]
-The only thing that causes non-fatal illegal save state registrations right now is registering an item for save states after start
-  in a system not marked as supporting save states.
-It’s high time anything doing that gets fixed.  Not supporting save states means save state support is incomplete, not that the
-  driver has a license to do illegal things.
-Opening this as a pull request to give fair warning, and so it can be merged after freeze.
-
-12058: osd/osdnet.cpp: Removed dependency from OSD network device to libemu [cuavas]
-This is required for #12054 to avoid fatal errors with network devices.  This doesn’t completely clean up the interface to OSD
-  network modules (it’s still using free functions and static variables in a really nasty way), but it does clean up a very nasty
-  cross dependency.
-There are still issues with the receive polling timer:
-* The interval is set based on the MTU, assuming the rate packets arrive is no more than the theoretical maximum rate that maximal
-  length packets can be serialised.  However, smaller packets can arrive much faster, particularly when using jumbo frames (9000
-  octet MTU).
-* That aside, the code was always based on the incorrect assumption that an `emu_timer` will synchronise with real time.  It
-  doesn’t, so for a system that’s fairly lightweight to emulate (e.g. an Apple II with a Uthernet card), it polls furiously while
-  running the emulation for a frame, then doesn’t poll at all for the majority of the time while it waits for the real world to
-  catch up before updating video and starting the next frame.
-* It probably needs a postload handler to deal with the fact that changing the host network interface isn’t something that can be
-  included in save states.
-I realise this wreaks havoc with the macOS netdev PR.  I haven’t forgotten.  I’ll update that PR to deal with this myself.
-
-12061: casio/cfx9850.cpp: Add new ROM for CFX-9850GB Plus [qufb]
-
-12064: msx1_flop_525.xml: Added 6 items, 5 working. [wilbertpol]
-Corrected Informatica to Informática in publisher names.
-Updated some usage instructions.
-New working software list items
--------------------------------
-Poster Maker (Brazil) [file-hunter]
-Professional Paint (Brazil) [file-hunter]
-Professional Stripes (Brazil) [file-hunter]
-Retrato Falado (Brazil) [file-hunter]
-SuperCalc 2 (Brazil) [file-hunter]
-New NOT_WORKING software list additions
-------------------------------------------
-Gradius System (Brazil) [file-hunter]
-
-12065: Document tools-only building procedures... [Firehawke]
-Add a small section talking about the ``EMULATOR=0`` build option.
-
-12067: gdbstub fixes for Windows and m68000 [BartmanAbyss]
-- `debug_gdbstub::generate_target_xml()` contained newlines that were converted from '\n' to '\r\n' on Windows, thus breaking the
-  gdb packet checksum (`debug_gdbstub::send_reply`), so removed newlines in `escape_packet`. GDB doesn't care about newlines in XML
-  files. This seemed to be the least invasive fix I could think of.
-- m68000: complained about not finding registers  `A7` => `SP`, `PC` => `CURPC`
-I guess we should rename other instances of `PC` to `CURPC` as well, as `device_state_entry::device_state_entry()` automatically
-  changes the name of PC to `CURPC` (see distate.cpp line 66)
-
-12069: scripts/build/verinfo.py: use a python raw string for the regular expression [ksherlock]
-so \ chars aren't treated as part of an escape sequence. (It does the right thing but it generates a warning)
-```
-python3 ./scripts/build/verinfo.py 
-./scripts/build/verinfo.py:26: SyntaxWarning: invalid escape sequence '\s'
-  pattern = re.compile('\s+BARE_BUILD_VERSION\s+"(([^."]+)\.([^."]+))"')
-usage: verinfo.py [-h] [--target <target>] [--subtarget <subtarget>] [--executable <executable>] [--format <format>] [--resources
-  <resfile>] [-o <outfile>]
-                  <srcfile>
-```
-
-12070: hash/coco_cart.xml: correct hash for Predator [tlindner]
-Update Predator hash.
-
-12071: trs/gime.cpp: Fix crash in rare circumstance [tlindner]
-A zero in `memory` was being used as a flag for a dummy memory bank. Adding the `offset` before checking the condition could cause
-  unallocated memory to be referenced.
-
-12072: new WORKING + NOT WORKING plug and play machines [mamehaze]
-new WORKING machines
--------------
-Tokyo Friend Park 2 [David Haywood, TeamEurope]
-new WORKING clones
---------------
-Dora the Explorer - Dora TV Globe-Trotter (France) [David Haywood, TeamEurope]
-new NOT WORKING machines
-------------
-Gu~Chocolate Lantern Spoo Daisuki! Playmat [David Haywood, TeamEurope]
-Croaky Karaoke 16-in-1 [David Haywood, TeamEurope]
-Lexibook Junior My 1st Drawing Studio [David Haywood, TeamEurope]
-new NOT WORKING software list entries
----------------
-gcslottv.xml: Beast King Junior [David Haywood, Team Europe]
-
-12073: New working software list items (apple2_flop_misc.xml) [Firehawke]
--------------------------------
-Anti-M (Version 1.9) [4am, Firehawke]
-Anti-M (Version 2.0) [4am, Firehawke]
-Anti-M (Version 2.1) [4am, Firehawke]
-Anti-M (Version 2.2) [4am, Firehawke]
-
-12074: Use literal romaji for Jikkyou Powerful Pro Yakyuu game titles [cuavas]
-Looking to solicit opinions on this.
-The 実況パワフルプロ野球 franchise is usually called “Jikkyou Powerful Pro Yakyuu” in English.  However, in Japanese media, it seems to be
-  more frequently rendered in literal romaji as “JIKKYOU PAWAFURU PURO YAKŪ”.  You can see this in the attract sequences for the
-  games on Konami System 573, for example (e.g. `powyakex`).
-“Powerful” and “Pro” are definitely loanwords from English.  The MAME convention has always been to use standard English spellings
-  for loanwords.  Also, if we switch to literal romaji, we’ll be the odd ones out as all the other software catalogues will still be
-  using “Jikkyou Powerful Pro Yakyuu”.
-So in this case, should “JIKKYOU PAWAFURU PURO YAKŪ” be treated as an official Latin script title and used for system and software
-  descriptions?  Or should it be treated as a pronunciation guide so we keep the conventional spellings of the loanwords?
-
-12078: spi_sdcard.cpp: implement SEND_CSD (SD_TYPE_V2) [holub]
-
-12079: g65816: Emulation accuracy fixes - (stack,S),Y and emulation mode quirks [asiekierka]
-This covers all the CPU bugs found by gilyon's snes-tests; the ROM allows reproduction on real hardware.
-I've attempted to split each fix into a separate commit, to make it easier to review. The first fix (g65816: Fix wraparound in
-  (stack,S),Y addressing mode) concerns operation of code in native mode; the remaining commits involve edge cases in the
-  intersection of 65816-introduced opcodes with emulation mode.
-
-12080: trs/mc10.cpp: Add "Multiport" cartridge and RAM expansion for the Matra & Hachette Alice [Mokona]
-This addition to the Alice line (4k, 32 and 90) adds RAM and Cartridge support in a different way as the already supported Darren
-  Atkinson's MCX-128 cartridge.
-
-12083: Fix a comment typo and clean up a few unnecessary spaces. [mikehyrus]
-Just cleaning up a few problems where certain things were amiss.
-
-12085: hash/scv.xml Fix BASIC Nyuumon entry to work properly [TWEgit]
-BASIC Nyuumon contains on-cart battery-backed RAM (the cartridge includes a battery compartment for it, and
-  http://takeda-toshiya.my.coocan.jp/scv/scv.pdf even uses it as an example of on-cart RAM), though scv.xml does not specify this,
-  causing the title to freeze after selecting an option on its title screen.
-
-12086: pc1512_hdd: Change interface so it's accessible from internal UI when running pc1512hd20 [einstein95]
-pc1512hd20 uses hdc so this will also make it available for pc1512 w/ hdc
-
-12087: util/cdrom: Refactor parse_cue and parse_gdicue [987123879113]
-Closes https://github.com/mamedev/mame/issues/12081. Follow up to https://github.com/mamedev/mame/pull/11913.
-After fixing the problem mentioned in the issue (the first commit) I realized there isn't that much unique code between
-  `parse_gdicue` and `parse_cue` so I decided to merge them into one function so that there's no need to maintain two separate .cue
-  parsers anymore.
-Additionally I did some other small cleanups such as clearing out some of the line buffers and adding some additional error checks
-  in. Sufficient size checks were already in place already so it wasn't likely to crash anything but I figured it didn't hurt while
-  I'm at changing things around. Mainly was concerned that it looks like you could end up copying a bunch of garbage into `token` if
-  `linebuffer` had garbage in it when `cdrom_file::tokenize` was called.
-For testing I extracted some v5 CHDs I had on hand and then recreated them to make sure the hashes matched. Also tried a few Redump
-  Dreamcast dumps to make sure the extracted .bin matched the original Redump data (compared with all individual tracks combined
-  into a single file so I could just do a SHA1 check between the CHD dump and original data).
-
-12089: 1801VP1-128 gate array (MFM codec) [shattered]
-
-12090: Bulk move misc/cave drivers to new cave folder [angelosa]
-
-12096: a2600.xml: Added 2 working items + 1 not working [ArcadeShadow]
-New working software list additions
-----------------------------------------------------------
-R2D Tank [Atarimania]
-Spiders [Atarimania]
-New NOT_WORKING software list addition
-----------------------------------------------------------
-Hobo [Atarimania]
-
-12099: cpu/hcd62121: Implement missing mov instructions and timer wait [qufb]
-These changes bring emulation closer to the intended speed, allowing screens in CFX9850 models to be interacted without the system
-  turning off immediately (instead of the intended 6 minutes of idle time).
-George Stagg identified some missing instructions and how timers were set. In particular, that instruction 0xB3 sets the timeout for
-  the next sleep operation at instruction 0xFE.
-Concrete values for timeouts are based on test ROMs I wrote to iterate over almost all possible parameters, using a logic analyzer
-  to get approximate durations for each timeout. If anyone is interested in checking out these timings, you can open these traces in
-  DSView, using the sigrok decoder found on the same repo.
-
-12100: fmtowns_cd.xml: Metadata cleanups [ArcadeShadow]
-- Lowercase on descriptive words
-- Fixed parent/cloneof relationships
-
-12103: capcom/vulgus.cpp: Add a 1942 bootleg from Itisa (not working) [clawgrip]
-New not working clone
-----------------------------
-1942 (Itisa bootleg) [Recreativas.org]
-
-12104: Added zoom table dump for cosmogng [PabloArcade]
-This memory chip is also present in the Cosmo Gang PCB. I read it and the content matches what is used in other games.
-
-12106: galaxian/galaxian.cpp: Add a new Bagman bootleg on Moon Cresta hardware [clawgrip]
-New working clone
-----------------------
-Bagman (bootleg on Moon Cresta hardware, set 3) [David Bosque, Recreativas.org]
-
-12107: Mega-Tech game cart documentation additions [mourix]
-Added some more game data to the readme.
-PCB photo sources:
-Shinobi
-Fantasy Zone 
-Parlour Games
-
-12108: megasys1.cpp: added MCU dump for cybattlr and hook it up [kuze] [sergiopolog]
-Added MCU dump for cybattlr. [kuze]
-Also added and hooked it up for chimerab set which uses the same MCU, but marked as BAD_DUMP, as it only was dumped by kuze from a
-  Cybattler PCB
-
-12109: igs/goldstar.cpp: Added a 4th Animal House set and PLDs dumps for 'animalhsb' [clawgrip]
-New not working clone
----------------------------------
-Animal House (set 4) [Taksangs, charlie]
-Aso added PLDs dumps for 'animalhsb' [Taksangs, charlie]
-
-12110: taito/2mindril.cpp: Added Two Minute Drill Ver 2.2A [sergiopolog]
-------------------
-Two Minute Drill (Ver 2.2A 1993/10/18) [Sergio Galiano, Recreativos Piscis]
-Picture of the actual pcb:
-https://i.imgur.com/wnwBEx2.jpg
-As you can see in the picture, program roms (d58-16 and d58-17) has an asterisk next to their reference, but I omitted it on the
-  filenames due to incompatibility.
-
-12113: machine/t10mmc: Fix MSF to LBA conversion for T10MMC_CMD_PLAY_AUDIO_MSF [987123879113]
-This fixes audio being noticeably out of sync in pumpit1. The current dump of pumpit1 was thought to be a bad dump previously due to
-  this bug, but T10MMC_CMD_PLAY_AUDIO_MSF had its own MSF to LBA conversion code which did not adjust the LBA value as shown in the
-  formula below which was causing all songs played via the MSF playback command to be 2 seconds off.
-ref: MMC-3 draft
-<img width="833" alt="image" src="https://github.com/mamedev/mame/assets/63495610/5c1ebb67-8c5c-44eb-8192-ae0fae6afbf3">
-
-12114: msx1_cass.xml: Added 4 items, 3 working. Updated 2 items. [wilbertpol]
-Renamed Aackobase II (Europe) and Aackobase II (Europe, alt) to Aackobase II (Netherlands) and Aackobase II (Netherlands, alt).
-Add disk version to Aackobase II (Netherlands) and Aackobase II (Netherlands, alt) [file-hunter]
-New working software list items
--------------------------------
-The Games Collection (Europe) [anonymous]
-Games Tutor (I) (Spain) [file-hunter]
-Hard-Copy (Spain) [file-hunter]
-New NOT_WORKING software list additions
-------------------------------------------
-T-GRAPH (Europe) [file-hunter]
-
-12115: imagedev/cassette.cpp: Add save support for flac files. [wilbertpol]
-
-12116: cpu/z80/r800dasm.cpp: Add disassembler for ASCII R800. [wilbertpol]
-
-12117: bus/msx/slot/disk.cpp: Add rom banking support for msx turbo-r internal disk rom. [wilbertpol]
-
-12118: formats/dmk_dsk.cpp: Improve checks in identify. [wilbertpol]
-And be more lenient towards images where the amount of stored tracks does not match the amount of tracks set in the header.
-
-12121: sms.xml: Added 19 working items [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Arcade Volleyball [SMS Power!]
-Blast Arena [SMS Power!]
-Extreme Volleyball Infernal League (v1.0.2) [SMS Power!]
-Extreme Volleyball Infernal League (v1.0.5) [SMS Power!]
-Extreme Volleyball Infernal League (v1.0.6) [SMS Power!]
-Extreme Volleyball Infernal League (v2.0.21, demo) [raphnet]
-Fantasy Zone: The Maze (prototype) [SMS Power!]
-Jewel Stone (demo) [SMS Power!]
-Lucky Penguin (v1.0) [SMS Power!]
-Lucky Penguin (v1.1) [SMS Power!]
-Pitman (v1.02) [SMS Power!]
-Pitman (v1.03) [SMS Power!]
-SKBN (v1.0) [SMS Power!]
-SKBN (v1.1) [SMS Power!]
-SKBN (v1.2) [SMS Power!]
-SKBN (v1.3) [SMS Power!]
-SKBN (v1.4) [SMS Power!]
-Wing Warriors [SMS Power!]
-Wing Warriors (fix) [SMS Power!]
-
-12123: cdi.xml: Added a Hotel Mario prototype [FoxhackDN]
-New working software list additions
------------------------------------
-Hotel Mario (prototype v0.09, 19931123) [redump.org]
-
-12124: debugger: add nul-terminated string output to printf/logerror [pmackinlay]
-* support lower-case hexadecimal output
-* remove some format handling code obsoleted by strformat.h
-This proposed change extends the debugger `printf`/`logerror` commands with a `%s` format specifier, allowing nul-terminated strings
-  to be output from emulated system memory. I've found this incredibly handy for debugging Unix system calls like `open()` and
-  `execve()`, and combined with exception points, allow this kind of tracing purely from the debugger instead of adding system
-  dependent compile-time enabled debug code in the CPU.
-As an example of usage, for my current ns32k system target, I'm using debugger commands like this: `eps 5,w@(pc+1)==0x003b,{
-  logerror "0x%08x: execve(%s)\n", PC, :cpu, d@(r0); g; }`. That is, when exception 5 ("supervisor call instruction") is triggered
-  with system call number 0x3b, grab the first parameter from a `dword` in memory pointed at by register 0, and dump it as a
-  nul-terminated string from the specified device address space.
-Other than possibly adding a precision specifier to limit the maximum output length to minimize the impact of user error or
-  unexpected data, I'm interested to hear any comments on this addition or its implementation.
-
-12125: funworld/photoply.cpp: Typo [clawgrip]
-
-12126: taito_h.cpp: some updates [sergiopolog]
-- added notes about real function of DSW2-7 and `0x430000` address on the memory map.
-- updated default values for DSW2 - 5 to 7, as per shown in operator manual. Default player lives at '2' and DSW2-7 to 'ON'
-  (TC0160ROM addressing mode as 1MB Mask ROM DIP28 pinout): https://i.imgur.com/hEC4hMd.jpg
-- added note about flip-screen doesn't work on backgrounds.
-- added flag to `syvalion` and clones marking they don't work fine in cocktail mode.
-
-12128: rm/rm380z.cpp: Use sn74s262 as the VDU-40 COS 3.4 character generator [RobinSergeant]
-This PR uses the sn74s262 device, to replace the old fake character ROM, for VDU-40 character generation.
-As a dump of the sn74s262 ROM does not seem to exist I have re-created it by hand from the datasheet:
-http://www.datasheetarchive.com/SN74S262N-datasheet.html
-The complete character set now looks like this when displayed in MAME:
-!image
-which matches the COS 3.4 character tables shown on pages 2.3 and 2.5 of the Firmware reference manual:
-https://vt100.net/rm/docs/pn10971.pdf
-This is my new sn74s262 romset:
-sn74s262.zip
-I've used the same format as the existing sn74s263 ROM which was also created by hand, but have only included the 1280 bytes used
-  for the 128 characters in the sn74s262 character set.  The other ROM seems to include further characters, but only the first 128
-  are actually accessible using the device.
-The main benefit of this is that the special characters, such as arrow symbols, are now drawn properly as can be seen from the
-  following Front Panel screenshot.  It also means we don't need the silly zero -> 'O' hack anymore.
-!image
-This is my assembler program to display the character set:
-charset_vdu40.zip
-I also wrote a Python program to display and edit the character ROM if anybody is interested.  It's just something I hacked together
-  for this task, but I might make it more generic eventually.
-
-12129: const -> constexpr, fixes undefined references when building with -O0 on macOS [balr0g]
-Ran into this while debugging; the fix appears to be valid under C++17.
-
-12130: msx2p_cart.xml: Added 3 items, 2 working. [wilbertpol]
-msx2p_cart.xml: Added 3 items, 2 working.
-New working software list items
--------------------------------
-Ghostly Manor [9958 crew]
-Nothing Thing [msxdev Compo]
-New NOT_WORKING software list additions
-------------------------------------------
-Knit Designer (Japan) [Takamichi]
-
-12132: igs/pgm2.cpp: Add the program ROM of "Bu Bu Car" [clawgrip]
-New not working machine
------------------------------
-Bu Bu Car (English) [Victor Fernandez (City Game), Recreativas.org]
-We haven't desoldered and dumped the surface mounted flash ROMs because we'd better wait for the program ROM to be decrypted (by
-  anyone able of doing it) so we can then run a trojan and extract the CPU internal ROM.
-
-12133: new WORKING machines (Vampire) [mamehaze]
-new WORKING machines
------------
-Vampire (prototype?) [Tomasz Slanina, Heiko Klusmann]
-
-12134: rygar, gemini: change difficulty names to match manual [devinacker]
-The manuals for Rygar and Gemini Wing use "Normal" and "Difficult 1/2/3" (or "Dilfficulty [sic]"):
-!image
-!image
-
-12137: casio/cfx9850.cpp: Various fixes [qufb]
-- Fix CFX9850GB `display_ram` mapping, this one doesn't write to segment 0x60;
-- Debugger edits to register values were all being incorrectly applied to the first register, now they should go to the
-  corresponding set of 4 registers;
-- Implement TIME register;
-- Add more instructions tested on hardware;
-- Fix swap flags, they are always cleared regardless of values;
-- Fix timer so that it expires on KO enabled key input;
-- Add an infinite timer variant, which seems to only be used along with the low power variant of `timer_wait`;
-- Prefer more accurate palette taken from an online Casio manual, although it isn't clear what contrast levels they used for those
-  screenshots;
-
-12138: casio/pickytlk.cpp: Add new not working driver [qufb]
-# New not working machine
-Casio Super Picky Talk - Forest Of Gurutan (JD-370) [QUFB]
-
-12139: apple/apple2gs.cpp: fix joystick buttons to return in bit 7 [ksherlock]
-reported in MAMETesters 8736
-reproduction:
-```
-10 def fnp(x)=peek(49248+x)>127
-20 ? fnp(0)fnp(1)fnp(2)fnp(3)
-30 goto 20
-```
-
-12141: subsino/subsino.cpp: Add a new Korean game from 'Hyoja Game' [clawgrip]
-New not working machine
-------------------------------
-New Animal Animal [Taksangs, charlie]
-
-12144: rm/rm380z.cpp: Correct floppy disk handling so double sided disks work and also add support for 8 inch disks [RobinSergeant]
-Double sided disks would not load before because the floppy drives were wrongly configured as single sided.  The wrong control port
-  bit was also being used to select the side.  After fixing this I can load more software and access the second side of double sided
-  disks (logical drives C: and D:).
-I've also added support for 8 inch disks used by the /F firmware variants such as "COS 3.4D/F".  The "/F" refers to FDS (Full Disc
-  System - 8") as opposed to MDS (Mini Disc System - 5.25"), which is designated by "/M".
-FDS and MDS actually use different ports, so I've also updated the IO port map to include both sets.  The firmware guide shows both
-  as being reserved for FDC use.  NB the control port address is not fully decoded and can actually be written to using 4 addresses
-  which is why I've expanded this.
-I have tested various double sided MDS disks, but have not been able to test FDS as there don't seem to be any 8" disk dumps
-  available.  However, it does now show the "Disk not ready" message when trying to boot without a disk (previously nothing happened
-  when trying to boot with COS 3.4D).
-
-12146: New working machine (Jaminator) [devinacker]
-Toy guitar thing from 1990, co-developed by Steve Capps of classic Mac and Newton fame, plus the original run of six song carts
-  (along with an attempt at cataloguing the later series of carts from when the system was rereleased in 1993).
-New working machine
-----------
-Noise Toys Inc. Jaminator [Devin Acker]
-New working software list items
-----------
-jaminator.xml: Classic Rock I (USA), Classic Rock II (USA), Hard Rock I (USA), Hard Rock II (USA), Lead Rock Guitarists (USA),
-  Modern Rock (USA) [Devin Acker]
-
-12147: Adding sound support to Model Racing Dribbling driver (part 2) [aovestdipaperino]
-Continuation of PR 12127
-
-12148: spectrum_cass.xml: Added 40 working items + 1 not working [ArcadeShadow]
-New working software list additions
---------------------------------------------
-48K №3 - Maziacs [Spectrum Computing]
-48K №5 - Regata [Spectrum Computing]
-48K №6 - Especial Marcianitos [Spectrum Computing]
-48K №9 - Frank N' Stein [Spectrum Computing]
-48K №11 - Camara Secreta [Spectrum Computing]
-Bulbo and the Blue Dragon [Spectrum Computing]
-Bulbo's Intrepid Adventure [Spectrum Computing]
-Corrida de Cavalos [Planeta Sinclair]
-Chip's Challenge (one sided tape) [Spectrum Computing]
-Chip's Challenge (Erbe) [Spectrum Computing]
-Ditador + Treinador de Futebol [Planeta Sinclair]
-Diversidade e Classificação de Seres Vivos [Planeta Sinclair]
-Férias em Portugal [Planeta Sinclair]
-Italia 1944 (English) [Zankle Soft]
-Italia 1944 (German) [Zankle Soft]
-Italia 1944 (Italian) [Zankle Soft]
-Italia 1944 (Portuguese) [Zankle Soft]
-Italia 1944 (Russian) [Zankle Soft]
-Italia 1944 (Spanish) [Zankle Soft]
-H.E.R.O. (Proein Soft) [Planeta Sinclair]
-Metamorphosis [ITNL-team]
-Metamorphosis (128K, Valentine's Day demo) [ITNL-team]
-Metamorphosis (48K, Valentine's Day demo) [ITNL-team]
-Mira Técnica [Planeta Sinclair]
-Mira Técnica (patched) [Planeta Sinclair]
-O Esqueleto Humano [Planeta Sinclair]
-Orgãos Reprodutores [Planeta Sinclair]
-Ring-O (alt) [Planeta Sinclair]
-Scrabble + Campo de Minas [Planeta Sinclair]
-Star Bowls [Spectrum Computing]
-Super Bomberman 2 Remix (demo v0.1) [ZX Evolution]
-Super Bomberman 2 Remix (demo v1.1) [ZX Evolution]
-Super Soho [Planeta Sinclair]
-Swords & Sorcery (set 4) [Planeta Sinclair]
-The Dungeon of Torgar (Adventure Workshop, alt) [Planeta Sinclair]
-The Last Escape [Ariel Endaraues]
-Treinador de Futebol [Planeta Sinclair]
-Wudang (standard loader) [Spectrum Computing]
-Wudang (turbo loader) [Spectrum Computing]
-Wudang (Pure Basic Contest version) [Spectrum Computing]
-New NOT working software list addition
---------------------------------------------
-Prioridade Em Cruzamentos [Planeta Sinclair]
-Cleanups and fixes: Parent/CloneOf relationships, Descriptions, Publishers, Years and added Notes (information provided by
-  spectrumcomputing.co.uk)
-
-12149: rm/rm380z.cpp: Add sound for COS 4.0 [RobinSergeant]
-This PR adds sound for COS 4.0 only as the beep control character, and escape codes to change the beep duration and frequency are
-  not supported by COS 3.4.  The firmware guide lists these as only being implemented in COS 4.0 and later releases.
-With this change <Ctrl+G> beeps, and more excitingly music is played in the "Go West" game!  It plays a recognisable rendition of
-  "Coming 'Round the Mountain" and another tune when you reach San Francisco.  I have not found any other software with sound yet.
-
-12150: galaxian/galaxian.cpp: Added a Spanish bootleg of Galaxian from 'Multivideo' [clawgrip]
-New working clones
------------------------
-Diviertate Galaxia (Multivideo, Spanish bootleg of Galaxian) [Juan Romero, Recreativas.org]
-
-12151: cpu/t11: Improve trace trap processing; add basic interrupt processing to the K1801VM1. [shattered]
-…g to the K1801VM1.
-
-12152: nmk16.cpp: The new MCU based GFX decryption method is added for rest of games [sergiopolog]
-The new gfx decryption method and mcu dump are added to every game (and clones) which use it on the driver:
-- `macross`
-- `gunnail`
-- `bjtwin`
-- `nouryoku`
-Internal ROM on NMK215 is the same for all games, so the dump already included for `saboten` is now added for the rest of the games.
-Old method is still in use for bootleg clones in which the actual decryption process used is still not in-depth documented.
-- Also updated CPU clock for `mustang` (and clones) to proper value and added notes about bootlegs [hammy]
-
-12153: Add a skeleton for a new PC-based game named 'Pull The Trigger' [clawgrip]
-New not working machine
------------------------------
-Pull The Trigger [Arcade Planet, Recreativas.org]
-
-12155: heathkit/h89.cpp: Fix dip switch settings [mgarlanger]
-First commit is the fix to properly condition the dip switch settings for the Ultimeth MTRHEX 2k ROM. 
-Second commit is just spacing changes to make it easier to read.
-
-12157: cirsa/neptunp2.cpp: Added a new mechanical slot machine from 'Europea'  [clawgrip]
-New not working machine
------------------------------
-Charleston (V2.1, Catalonia) [Arcade Planet, Recreativas.org]
-
-12158:  cirsa/neptunp2.cpp: Added two electromechanical slot machines from Cirsa. [clawgrip]
-New not working machine
------------------------------
-Gladiadores (V1.0, CAA) [Arcade Planet, Recreativas.org]
-New not working clone
---------------------------
-Corsarios (Cirsa slot machine, V5.10D, Catalonia) [Arcade Planet, Recreativas.org]
-
-12159: gp32.xml: Metadata cleanups [ArcadeShadow]
-Replaced countries' abbreviations by their full name
-Moved test comments to `notes` tag
-
-12160: snes_bspack.xml: Metadata cleanups [ArcadeShadow]
-Lowercase on descriptive words ("Bad Header", "Hacked", "Alt", etc...)
-
-12162: mr/dribling.cpp: Add a Dribbling bootleg from Automave (partial dump) [clawgrip]
-New working clone
----------------------
-Dribbling (Automave bootleg, Spain) [David Bosque, Recreativas.org]
-Also renamed 'driblingbr' to 'driblingvm' and change game description.
-
-12163: xavix.cpp : gave tomplc & tcarnavi inputs (they seem to use digital pedals/steering etc.) and promoted both to working [David
-  Haywood] [mamehaze]
-
-12166: rm/rm380z.cpp: Fix 8" disk clock frequency and minor VDU-80 display improvements [RobinSergeant]
-The RM 8" disk format is actually the IBM-3740 standard which means that generic CP/M disks in this format are compatible.  By
-  testing these I've discovered that the FD-1771 square wave clock frequency needs to be changed for 8" disks.  This PR does that
-  and allows such disks to load.  For example, I've just played the Infocom text adventure Zork from an 8" disk image :-)
-I have also removed the slot device "fixed" restriction to allow switching between MDS and FDS drives.  It is actually possible to
-  use FDS drives with MDS firmware if you patch the CP/M disk parameter tables, i.e boot from MDS disk in drive A:, then patch the
-  disk parameter tables for drive B: before using with FDS disks!  I have written an assembler program to do just that.  The extra
-  disk space allows larger CP/M programs to load which is actually very useful.  Apparently RM originally used something similar to
-  transfer data between the two systems.
-Display improvements include supporting the VID INHIB port flag which is used to control whether text is displayed with HRG or not.
-  There is an escape sequence for switching between these modes, which of course now works.
-
-12167: misc/diamondking.cpp: Added "Caribe" slot machine from Segasa Sonic [clawgrip]
-New not working machine
------------------------------
-Caribe [Arcade Planet, Recreativas.org]
-
-12169: Revert "video/mc6845.cpp: Restore support for zero active width/height configuration" [cuavas]
-Reverts mamedev/mame#12007
-This is a case of attempting to fix the symptom rather than the issue, and it breaks all systems that use 6845-family CRTCs with
-  "show borders" set.
+- 11608: util/ioprocs.cpp: Added wrappers to simplify common pattern. [Vas Crabb]
+- 11997: heath/h17_fdc.cpp: Added skeleton H-88-1 hard sectored floppy drive controller device. [Mark Garlanger]
+- 12003: apple/apple2e.cpp: Correctly reset IOU soft switches on system reset [xotmatrix]
+- 12004: tvgames: Added seven TV games (not working). [David Haywood, TeamEurope, Sean Riddle]
+- 12007: video/mc6845.cpp: Re-added support zero active width/height; suppress drawing when DE is not asserted. [Mark Garlanger]
+- 12010: heathkit/tlb.cpp: Added a layout to give approximately correct visible screen area and a visible bezel. [Mark Garlanger]
+- 12039: nmk/nmk214.cpp: Added NMK214 graphics unscrambling device. [Sergio Galiano]
+- 12044: rm/rm380z.cpp: Added support for high resolution graphics, colour and text character dimming. [Robin Sergeant]
+- 12054: emu/save.cpp: Made illegal save state registrations always fatal. [Vas Crabb]
+- 12058: osd/osdnet.cpp: Removed dependency from OSD network device to libemu. [Vas Crabb]
+- 12061: casio/cfx9850.cpp: Added Casio CFX-9850GB Plus (not working). [QUFB]
+- 12064: msx1_flop_525.xml: Added six Brazilian items (five working), and improved metadata. [file-hunter, Wilbert Pol]
+- 12065: docs: Described `EMULATOR` make option. [Firehawke]
+- 12067: debugger/debuggdbstub.cpp: Fixed some M68000 register mappings, and strip line endings from XML. [Bartman/Abyss]
+- 12069: scripts/build/verinfo.py: Use a raw string literal for regular expression (fixes Pylint warnings). [Kelvin Sherlock]
+- 12070: coco_cart.xml: Corrected ROM for Predator. [Tim Lindner]
+- 12072: Added five TV games (two working) and a Gachinko Shōbu! PachisloTV cartridge (not working). [David Haywood, TeamEurope]
+- 12073: apple2_flop_misc.xml: Added four new versions of Anti-M. [4am, Firehawke]
+- 12074: Use literal romaji for Jikkyou Powerful Pro Yakyū game titles. [Vas Crabb]
+- 12078: machine/spi_sdcard.cpp: Implemented SEND_CSD (SD_TYPE_V2). [holub]
+- 12079: cpu/g65816: Fixed issues with (stack,S),Y addressing and emulation mode quirks (passes snes-tests). [Adrian Siekierka]
+- 12080: bus/mc10: Added partial emulation of the Alice Multiports Extension (only RAM/ROM features emulated). [Sylvain Glaize]
+- 12083: Fixed a Korean transliteration in a comment, and cleaned up spacing in a few places. [Michael Sanborn]
+- 12085: scv.xml: Added cartridge RAM to BASIC Nyuumon to make it work properly. [TWEgit]
+- 12086: pc1512_hdd.xml: Changed interface to match the ISA Fixed Disk Controller card used in the pc1512hd20. [einstein95]
+- 12087: util/cdrom.cpp: Refactored parse_cue/parse_gdicue to fix data integrity issues (should fix GitHub #12081). [Windy Fairy]
+- 12089: machine/1801vp128.cpp: Emulated 1801VP1-128 MFM codec for floppy drive controllers. [shattered]
+- 12090: Moved Cave drivers and devices to atlus project and a new cave project. [Angelo Salese]
+- 12096: a2600.xml: Added three prototypes (two working). [Atarimania, ArcadeShadow]
+- 12099: cpu/hcd62121: Implemented additional move instructions and timer wait. [QUFB]
+- 12100: fmtowns_cd.xml: Marked demos as clones, and use lowercase for descriptive text in descriptions. [ArcadeShadow]
+- 12103: capcom/vulgus.cpp: Added a 1942 bootleg from Itisa (has bad graphics). [Recreativas.org, ClawGrip]
+- 12104: namco/namcos2.cpp: Added zoom table ROM to cosmogng and cosmogngj (same as other games on the platform). [PabloArcade]
+- 12106: galaxian/galaxian.cpp: Added another Bagman bootleg on Moon Cresta hardware. [David Bosque, Recreativas.org, ClawGrip]
+- 12107: sega/megatech.cpp: Added/corrected cartridge/PCB/ROM labels for Shinobi, Fantasy Zone and Parlour Games.  [Jos van Mourik]
+- 12108: jaleco/megasys1.cpp: Added microcontroller program for Cybattler (also added to Chimera Beast). [kuze, Sergio Galiano]
+- 12109: igs/goldstar.cpp: Added a fourth version of Animal House, and PLD dumps for “animalhsb”. [Taksangs, charlie, ClawGrip]
+- 12110: taito/2mindril.cpp: Added Two Minute Drill Ver 2.2A (not working). [Sergio Galiano]
+- 12113: machine/t10mmc: Fixed MSF to LBA conversion for “play audio MSF” T10 multimedia command. [Windy Fairy]
+- 12114: msx1_cass.xml: Added four items (thee working), and added disks for Aackobase II. [file-hunter, Wilbert Pol]
+- 12115: imagedev/cassette.cpp, formats/flacfile.cpp: Added support for saving cassette images in FLAC format. [Wilbert Pol]
+- 12116: cpu/z80/r800dasm.cpp: Added a disassembler for the ASCII R800 CPU. [Wilbert Pol]
+- 12117: bus/msx/slot/disk.cpp: Added banking support for the MSX Turbo-R internal disk ROM. [Wilbert Pol]
+- 12118: formats/dmk_dsk.cpp: Improved format identification checks. [Wilbert Pol]
+- 12121: sms.xml: Added nineteen working items. [SMS Power!, raphnet, ArcadeShadow]
+- 12123: cdi.xml: Added a prototype of Hotel Mario. [redump.org, David Silva]
+- 12124: emu/debug/debugcmd.cpp: Add NUL-terminated string argument support to printf/logerror. [Patrick Mackinlay]
+- 12125: funworld/photoply.cpp: Fixed a spelling error in a comment. [ClawGrip]
+- 12126: taito_h.cpp: Updated notes, DIP switch defaults and emulation status flags. [Sergio Galiano]
+- 12128: rm/rm380z.cpp: Use SN74S262 for VDU-40 COS 3.4; video/sn74s263.cpp: Added ROM based on data sheet. [Robin Sergeant]
+- 12129: bfm/bfm_bd1.h, bfm/bfm_bda.h: Made some static data members constexpr so they will be instantiated automatically. [balrog]
+- 12130: msx2p_cart.xml: Added a software list for MSX2+ cartridges with three items (two working). [Wilbert Pol]
+- 12132: igs/pgm2.cpp: Dumped the program ROM for Bu Bu Car. [Victor Fernandez (City Game), Recreativas.org, ClawGrip]
+- 12133: misc/vampire.cpp: Added Entertainment Enterprises Vampire. [Tomasz Slanina, Heiko Klusmann, David Haywood]
+- 12134: tecmo/tecmp.cpp: Changed rygar/gemini difficulty setting names to better reflect documentation. [Devin Acker]
+- 12137: cpu/hcd62121, casio/cfx9850.cpp: Improved emulation, and fixed issues with debugger. [QUFB]
+- 12138: casio/pickytlk.cpp: Added a skeleton driver for the Casio Super Picky Talk children’s personal digital assistant. [QUFB]
+- 12139: apple/apple2gs.cpp: Fixed c000_r to return joystick button states in bit 7 (fixes MT08736). [Kelvin Sherlock]
+- 12141: subsino/subsino.cpp: Added New DongmulDongmul from Hyoja Game (not working). [Taksangs, charlie, ClawGrip]
+- 12144: rm/rm380z.cpp: Fixed disk drive handling so double sided disks work, and added 8" disk support. [Robin Sergeant]
+- 12146: misc/jaminator.cpp, jaminator.xml: Added driver and software list for Noise Toys Jaminator guitar toy. [Devin Acker]
+- 12127: mr/dribling.cpp: Added netlist sound simulation for Model Racing Dribbling. [Paperinik]
+- 12148: spectrum_cass.xml: Added 41 items (40 working), and improved metadata. [ArcadeShadow]
+- 12149: rm/rm380z.cpp: Added sound output for COS 4.0 systems. [Robin Sergeant]
+- 12150: galaxian/galaxian.cpp: Added Diviertate Galaxia (Multivideo bootleg of Galaxian). [Juan Romero, Recreativas.org, ClawGrip]
+- 12151: cpu/t11: Improved trace trap processing, and added basic interrupt processing to the K1801VM1. [shattered]
+- 12152: nmk/nmk16.cpp: Use emulated NMK214/NMK215 protection for more games. [Sergio Galiano]
+- 12153: skeleton/pullttrigger.cpp: Added a skeleton driver for Pull the Trigger. [Arcade Planet, Recreativas.org, ClawGrip]
+- 12155: heathkit/h89.cpp: Added missing conditions to some Ultimeth MTRHEX-2k DIP switch settings. [Mark Garlanger]
+- 12157: cirsa/neptunp2.cpp: Added Charleston slot machine from Europea (not working). [Arcade Planet, Recreativas.org, ClawGrip]
+- 12158: cirsa/neptunp2.cpp: Added two slot machines from Cirsa (not working). [Arcade Planet, Recreativas.org, ClawGrip]
+- 12159: gp32.xml: Replaced abbreviations in descriptions and moved some comments to notes elements. [ArcadeShadow]
+- 12160: snes_bspack.xml: Use lowercase for descriptive text. [ArcadeShadow]
+- 12162: mr/dribling.cpp: Added partial dump of an Automave version of Dribbling. [David Bosque, Recreativas.org, ClawGrip]
+- 12163: tvgames/xavix.cpp: Hooked up controls for tomplc and tcarnavi, and promoted them to working. [David Haywood]
+- 12166: rm/rm380z.cpp: Fixed 8" disk controller clock frequency and improved VDU-80 display. [Robin Sergeant]
+- 12167: misc/diamondking.cpp: Added Caribe slot machine from SegaSA/Sonic. [Arcade Planet, Recreativas.org, ClawGrip]
+- 12169: Reverted pull request #12007 – it breaks systems that draw content in areas with DE deasserted. [Vas Crabb]
 
 
 Source changes
@@ -2006,3 +1445,5 @@ Mr Pac-Turbo ('Made in Greece' Fermin bootleg)
 -misc: small cleanups [hap]
 
 -Various metadata fixes. [Vas Crabb]
+
+-util/unzip.cpp: Work around spurious maybe uninitialised warning with certain GCC versions. [Vas Crabb]
