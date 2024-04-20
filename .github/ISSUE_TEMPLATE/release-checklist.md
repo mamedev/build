@@ -72,7 +72,7 @@ For the following configurations, ensure a build compiles:
 # Generate preliminary release notes
 
 - [ ] Pull latest release branch from `mame` repository and latest `master` branch from `build` repository
-- [ ] In `build` repository, run script to scrape commits and pull requests, e.g. `python3 makewn.py -c ../mame -u <user> -o whatsnew/whatsnew_0124.txt`
+- [ ] In `build` repository, run script to scrape commits and pull requests, e.g. `python3 makewn.py -C ../mame -u <user> -o whatsnew/whatsnew_0124.txt`
 - [ ] Get `-listxml` output from previous release from a download mirror
 - [ ] Generate `-listxml` output with a preliminary build from the release branch
 - [ ] In `build` repository, run script to identify added/promoted/renamed/removed machines, e.g. `python3 newdrivers.py mame0123.xml new.xml | tee -a whatsnew/whatsnew_0124.txt`

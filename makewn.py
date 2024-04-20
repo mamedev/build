@@ -126,7 +126,7 @@ class Options:
 
         # parse command line
         parser = argparse.ArgumentParser(description='Write preliminary whatsnew.')
-        parser.add_argument('-c', '--clone', metavar='<path>', type=str, default='.', help='local repository clone')
+        parser.add_argument('-C', '--clone', metavar='<path>', type=str, default='.', help='local repository clone')
         parser.add_argument('-r', '--release', metavar='<release>', type=str, help='previous release revision')
         parser.add_argument('-b', '--branch', metavar='<candidate>', type=str, help='current release candidate revision')
         parser.add_argument('-u', '--user', metavar='<username>', type=str, help='github username')
