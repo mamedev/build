@@ -194,752 +194,90 @@ spectrum_cass: O Segredo dos Templários (TZX tape image) [Spectrum Computing]
 
 Merged pull requests
 --------------------
-10139: konamim2.cpp: Redumped CD for 'heatof11' [Victor Fernandez (City Game), Arcade Planet] [clawgrip]
-Dumped the CD with DIC and a Plextor, without errors.
-Also reformatted comments and fix spacing.
-
-11581: namco/namcops2.cpp: correct notes with regards of THE IDOLM@STER & V300 I/O boards [Keropon]
-Updated the dump status of THE IDOLM@STER & Minna de Kitaeru Zenno Training.
-Also added some info about the V300 FCB PCB found on the actual THE IDOLM@STER cabinets.
-
-12091: saturn.xml: Metadata cleanups [ArcadeShadow]
-- Fixed "raymanu" and "raymanp" cloneof relationship
-- Lowercase on descriptive words on "crimewavd", "bugud", "panzerud", "raymanud"
-
-12093: Battle Gear 3 has an US version + export ver. dongle info + MotoGP should be 1 word [FMecha]
-Battle Gear 3 has an US version released by Betson in 2004, using American-style budget/wooden cabinets. Contrary to disclaimers
-  printed throughout the bilingual flyer, it does have Honda cars (contrast to sidebs2u and batlgear, the US versions for Side by
-  Side 2 and Battle Gear 1) and even shown prominently in the cabinet marquee. Since the export BG3 has a notice against exporting
-  that version to the U.S. on startup, it seems to have its own unique region dongle - apparently to show a Japanese model
-  disclaimer, as well to use Betson's North American NESYS (online service, closed after 2005) server.
-Links:
-- Betson's BG3 NESYS server site; Honda cars are mentioned on US server leaderboards (there were also Japanese and Hong Kong NESYS
-  servers, but the latter is completely lost)
-- Video of the US cabinet; does not go to gameplay, but not only there's Honda logo on the marquee, there's a Honda Civic on the
-  attract mode.
----
-Other stuff:
-- Someone on a Russian forum might have an export/English BG3 dongle ID? (image, ID B3900068A)
-- Unrelated to Battle Gear, "MotoGP" should be one, camelcased word.
-
-12131: osd/strconv.cpp: Support UTF-8 Windows ANSI code page. [invertego]
-- Defer to MAME's built-in UTF-8 decoding because MultiByteToWideChar needs the length of the code unit and once that's been
-  determined it's convenient do the rest of the conversion and sidestep the complication of UTF-16 (surrogate pairs).
-- Remove the FIXME about other variable length encodings such as GB18030. With the sole exception of UTF-8, only single- and
-  double-character encodings are supported as the active ANSI code page. Other code pages are only usable in conversion functions
-  and not relevant here. Source: [[MS-UCODEREF]: Supported Codepage in Windows | Microsoft
-  Learn](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-ucoderef/28fefe92-d66c-4b03-90a9-97b473223d43).
-- Remove the FIXME about surrogate pairs because these only arise in the context of Unicode inputs not representable as a single
-  UTF-16 code unit, and as mentioned above UTF-8 (the only selectable Unicode ANSI code page) is now handled directly in MAME code.
-
-12161: Add console support for KIM-1. [jefftranter]
-Adds console support including emulation of hardware character echo.
-Serial monitor commands work and I am able to load and run programs like Microsoft Basic.
-
-12172: megadriv.xml: Added and corrected info on the Sega Game Toshokan games [ICEknigh7]
-- Added list of known missing Sega Game Toshokan games.
-- Added the specific titles of the collections where some of these dumps come from.
-- Corrected Kandume -> Kanzume.
-- Added proper years for all of their entries according to Sega's website.
-- Added full "serialized" title to existing Riddle Wired entry.
-
-12175: HP9885: Format command implemented [fulivi]
-Hi,
-this PR is for the implementation of format command I added to HP9885 drive HLE.
-Thanks.
---F.Ulivi
-
-12176: mr/dribling.cpp: Add the missing ROMs from the Automave version of Dribbling [David Bosque, Recreativas.org] [clawgrip]
-
-12177: Remove spurious executable bits [davide125]
-These files shouldn't be executable.
-
-12183: cheat: Make string.char and string.format available to cheats [einstein95]
-
-12184: nes.xml: Added a prototype. [FoxhackDN]
-New working software list items (nes.xml)
--------------------------------
-Spy vs Spy: The Island Caper (USA, prototype) [Hidden Palace]
-
-12185: snes.xml: Added a prototype. [FoxhackDN]
-New working software list items (snes.xml)
--------------------------------
-Rockman's Soccer (Japan, sample) [C. Davis]
-
-12187: igs/igs036crypt.cpp: added preliminary decryption for bubucar [XingXing] [HappyASR]
-
-12188: Add Robotron K7071 (text-only video card for A7100 series) [shattered]
-
-12191: chdman: Add support for exporting Dreamcast cues and outputting one bin per track [987123879113]
-The output split bins code took inspiration from from @landfillbaby's PR (https://github.com/mamedev/mame/pull/11727). I included
-  some of their changes and did some additional refactoring, and also implemented the start of a formatting system for output
-  filenames after some general design feedback from cuavas.
-An example of the formatting system:
-`chdman extractcd -i test.chd -o test.cue -ob "test %03t.bin"`
-will result in the output bin filenames in the format of "test 001.bin", "test 002.bin", "test 003.bin", etc. 
-And `%t` will give the track number without any additional formatting.
-The output split bins is a prerequisite for implementing exporting of Dreamcast cues so the two changes have been included together.
-  The commits are fully independent changes so I recommend looking at the specific commits separately instead of the full PR diff
-  for reviewing.
-Throwing this out as a draft PR for now to just get some feedback and additional testing.
-
-12192: strtdriv: fixed incorrect brake pedal port mapping in harddriv.cpp [Madcadden]
-Fixed wrongly mapped brake pedal input from 8ADC:6 to 8ADC:2 and swapped the Voice Mic function which is unused from 8ADC:2 to
-  8ADC:6 to avoid any conflict/loss of functionality. Steering input still needs to be fixed (if you turn to the far left of right
-  the centre point of the steering wheel will shift and constantly pull the wheel in the opposite direction) Hard Drivin's Airborne
-  has the same problem. Will try to fix that if I can and update the code here on GitHub.
-
-12193: sms.xml: Added 2 working items [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Gemitas [SMS Power!]
-Sydney Hunter and the Sacred Tribe [No-Intro]
-Renamed set [jewelstn] to [jeweljon] and renamed description to "Jewel Jones"
-
-12194: Use pkgconfig to determine wayland include dir [belegdol]
-Some distros (e.g. openSUSE) put the headers in /usr/include/wayland
-This should fix the error reported over at bannister.org forums [1]. Unfortunately, I have no way of testing this.
-[1] https://forums.bannister.org/ubbthreads.php?ubb=showflat&Number=123347
-
-12196: Fixed steering issues in strtdriv and hdrivair harddriv.cpp  [Madcadden]
-Edited the PORT_BIT and PORT_MINMAX mask to stop wheel values going out of range and screwing up the centre point of the steering
-  wheel so the vehicle doesn't pull to one side anymore. Vehicles still have the full range of motion on the steering wheel axis.
-
-12197: debug/express.cpp: Fix bad iterator comparison in postfix conversion. [invertego]
-One iterator was being compared with another from the wrong container. I observed this by chance when I hit an assert in a debug
-  MSVC build with checked iterators enabled. This bug could cause dereferencing of a past-the-end iterator in expressions ending
-  with an operator.
-
-12198: msx1_flop.xml: Added 11 items, 8 working. [wilbertpol]
-Replace TT Racer (Netherlands) with a better dump. [file-hunter]
-Replace Zanac (Netherlands) with a better dump. [file-hunter]
-New working software list items
--------------------------------
-Aackotext II (Netherlands, v2.2) [file-hunter]
-Brasil Geográfico (Brazil) [file-hunter]
-dBASE II (Netherlands) [file-hunter]
-MS Text (Netherlands) [file-hunter]
-Score Editor (Japan) [file-hunter]
-MSX-AIDS (Japan, v1.1) [file-hunter]
-Nihongo Waupuro Kan-juku Tomato (Japan) [file-hunter]
-JUBILEUM Diskette (Netherlands) [file-hunter]
-New NOT_WORKING software list additions
-------------------------------------------
-Serial Interface (Netherlands) [file-hunter]
-MSX Data Communications (Netherlands) [file-hunter]
-Yamaha Portatone PSR-6300 Demonstration [file-hunter]
-
-12199: msxr_flop.xml: Added 28 not working items. Removed 1 item. [wilbertpol]
-Demoted all items.
-Use full country names and lowercase alt/demo/etc modifiers.
-Removed MSX View (Jpn, Bad Dump?)
-Rename Moon Light Saga (Jpn) to Moon Light Saga (Japan, alt).
-Replace Space Panic! (Japan) with a better dump. [file-hunter]
-New NOT_WORKING software list additions
-------------------------------------------
-FS-A1GT (Japan) [file-hunter]
-FS-A1ST (Japan) [file-hunter]
-The Best of Hamaraja Night (Japan) [file-hunter]
-Dewoman Zenpen (Japan) [file-hunter]
-Dewoman Chuuhen (Japan) [file-hunter]
-Fantasy Attraction (Japan) [file-hunter]
-innocent wish ~destiny2~ (Japan) [file-hunter]
-Mahouno Kunino Hoippuru (Japan) [file-hunter]
-Mechanical Brain (Japan) [file-hunter]
-Me-yuu Isago - Mejuusa (Japan) [file-hunter]
-MSX ViewCALC (Japan) [file-hunter]
-R2 Chaser's (Japan) [file-hunter]
-South Town's Hero II (Japan) [file-hunter]
-South Town's Hero Turbo (Japan) [file-hunter]
-Speedline (demo) [file-hunter]
-Superiority Fighters (Japan) [file-hunter]
-Turbo Blaster (Japan) [file-hunter]
-Welkis the Legend (Japan) [file-hunter]
-Hyper Role Playing Story LOSTWORD Episode 0 (Japan) [file-hunter]
-Moon Light Saga - Horus no Shou (Japan) [file-hunter]
-Qui Veut Gagner Des Millions [file-hunter]
-Quien Quiere Ser Milionario [file-hunter]
-Stage 11 (Japan) [file-hunter]
-Stage 11 Kai (Japan) [file-hunter]
-Telebasic Edición No. 1 (Spain) [file-hunter]
-Telebasic Edición No. 2 (Spain) [file-hunter]
-Telebasic Edición No. 3 (Spain) [file-hunter]
-
-12200: msx2p_flop.xml: Added 6 items. [wilbertpol]
-New working software list items
--------------------------------
-FS-A1FX (Japan) [file-hunter]
-FS-A1WSX (Japan) [file-hunter]
-FS-A1WX (Japan) [file-hunter]
-HB-F1XV (Japan) [file-hunter]
-PHC-70FD/FD2 (Japan) [file-hunter]
-Game Programming Tool HB-F1XDJ Sen'you (Japan) [file-hunter]
-
-12202: coleco.xml: Added 27 working items + 7 not working [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Anti-Environment Encounter [ColecoVision Addict]
-Arno Dash [ColecoVision Addict]
-Bank Panic [ColecoVision Addict]
-Burn Rubber [ColecoVision Addict]
-C-So! [ColecoVision Addict]
-Caterpillar S.O.S. [ColecoVision Addict]
-Champion Pro Wrestling [ColecoVision Addict]
-Diamond Dash II [ColecoVision Addict]
-Flapee Byrd [ColecoVision Addict]
-Klondike Solitaire (v1.0) [ColecoVision Addict]
-Kobashi [ColecoVision Addict]
-Mahjong Solitaire (v1.0) [ColecoVision Addict]
-Mario Bros. [ColecoVision Addict]
-Minesweeper (v1.0) [ColecoVision Addict]
-Mr Chin [ColecoVision Addict]
-Pegged (v1.0) [ColecoVision Addict]
-Pillars [ColecoVision Addict]
-Pitman [ColecoVision Addict]
-Pooyan [ColecoVision Addict]
-Pyramid Warp + Battleship Clapton II [ColecoVision Addict]
-Snake [ColecoVision Addict]
-Spunky's Super Car! [ColecoVision Addict]
-Vexed [ColecoVision Addict]
-Winky Trap [ColecoVision Addict]
-Zippy Race [ColecoVision Addict]
-Zombie Calavera Prologue [ColecoVision Addict]
-Zombie Near [ColecoVision Addict]
-New NOT working software list addition
---------------------------------------------
-Booming Boy [ColecoVision Addict]
-Boxxle [ColecoVision Addict]
-Buck Rogers Super Game [ColecoVision Addict]
-Caos Begins [ColecoVision Addict]
-Caverns of Titan [ColecoVision Addict]
-Kung-Fu Master [ColecoVision Addict]
-The Black Onyx [ColecoVision Addict]
-
-12206: igs/pgm.cpp: fix chinese spelling in multiple descriptions [barbudreadmon]
-A chinese friend was telling me "chuan" is incorrect for those descriptions, it should be "zhuan".
-
-12207: machine/icd2061a: Fix out of bounds array access [987123879113]
-Just to be sure I checked and all other usages of `m_reg_clocks` are using constants instead of variables. `truckk` and `ujlnow` are
-  both still booting so code-wise it's working as expected (they rely on the feature clock working properly to even boot).
-cc: @happppp 
-
-12208: NamcoSystem12- remove note in list of wanted games [simzy39]
-Removed Um Jammer Lammy from the list of wanted games
-
-12211: seta/srmp2.cpp: Added PCB ref. numbers for all games [sergiopolog]
-Taken from PCB pictures:
-- `srmp2`: **P0-023**: https://archive.org/download/srmp2_p0-023/srmp2_p0-023.jpg
-- `srmp3`: **P0-037A**: https://archive.org/download/srmp3_p0-037a/srmp3_p0-037a.jpg
-- `mjyuugi` and clones: **P0-049A**: https://archive.org/download/mjyuugi_p0-049a/mjyuugi_p0-049a.jpg
-- `ponchin` and clones: **P0-049A**: https://archive.org/download/ponchin_p0-049a/ponchin_p0-049a.jpg
-
-12212: machine/spi_sdcard.cpp: Report status for requests of CMD58 (READ_OCR) [holub]
-
-12213: apple2gs_flop_clcracked.xml: added 6 dumps, used info tags for a lot of dumps [Brian Troha] [Osso13]
-New working software list items
--------------------------------
-GBA Championship Basketball: Two-on-Two (cleanly cracked) [Brian Troha]
-Reader Rabbit (Version 2.0) (cleanly cracked) [Brian Troha]
-ShowOff (Version 1.0) (cleanly cracked) [Brian Troha]
-Sid Meier's Pirates! (cleanly cracked) [Brian Troha]
-USA GeoGraph (Version 1.0) (cleanly cracked) [Brian Troha]
-World GeoGraph (Version 1.3) (cleanly cracked) [Brian Troha]
-
-12214: msx2_flop.xml: Added 77 items, 64 working. [wilbertpol]
-Replaced with better dumps: [file-hunter]
-Veldslag (Netherlands)
-Zeeslag (Netherlands)
-Zoo (Europe)
-New working software list items
--------------------------------
-Mitsubishi ML-G30 [file-hunter]
-Atlas / Encyclopedie (Belgium) [file-hunter]
-Belasting Diskette 1989 (Netherlands) [file-hunter]
-Brainstorm (Netherlands) [file-hunter]
-Cheat Master (Netherlands) [file-hunter]
-Compass - Finally Free Edition (v1.2.09) [turbor]
-Copy Aid Tenka Muteki (Japan, v2.32+) [file-hunter]
-Copy Aid Tenka Muteki (Japan, v2.32) [file-hunter]
-Copy Aid Tenka Muteki (Japan, v2.30) [file-hunter]
-Copy Aid Tenka Muteki (Japan, v2.20) [file-hunter]
-Copy Aid Tenka Muteki (Japan, v2.12) [file-hunter]
-DemoKit Deluxe (Netherlands) [file-hunter]
-Disk Album 42 - MSX-C Nyuumon Jougekan (Japan) [file-hunter]
-DupeDisk (Netherlands, v1.02) [file-hunter]
-DupeDisk (Netherlands, v1.02) [file-hunter]
-F1 Tool Disk (Japan) [file-hunter]
-F1 Tool Disk II (Japan) [file-hunter]
-FAC Soundtracker (Netherlands, v2.0) [file-hunter]
-FAC Soundtracker Pro (Netherlands, v1.03) [file-hunter]
-FAC Soundtracker Pro (Netherlands, 1992) [file-hunter]
-MSX2 Disk Backup Tool - Focus (Japan, v2.0) [file-hunter]
-Home Office - MSX Designer (Italy) [file-hunter]
-Home Office 2 (Italy) [file-hunter]
-Image Maker & Poster 8 (Netherlands) [file-hunter]
-Melbrains Note (Japan?) [file-hunter]
-MIDI Saurus (Japan) [file-hunter]
-MoonBlaster (Netherlands, v1.4) [file-hunter]
-MoonBlaster Music #2 (Netherlands) [file-hunter]
-MSX BASIC Kun (Netherlands) [file-hunter]
-MSX Technical Guide Daiyonhan (Japan) [file-hunter]
-Music Editor Onchi Kun (Japan) [file-hunter]
-Nihongo Waupuro Bunsyo Sakuzaemon (Japan) [file-hunter]
-Palet 2 (Netherlands) [file-hunter]
-PictureKit Deluxe (Netherlands) [file-hunter]
-Print Shop II (Japan, cracked) [file-hunter]
-Private School (Japan) [file-hunter]
-PSG Tracker (Netherlands) [file-hunter]
-Superscreendumper (Netherlands) [file-hunter]
-Synth Saurus v2.0 (Japan, v2.03) [file-hunter]
-T/Maker IV [file-hunter]
-De T.V. Krant (Netherlands) [file-hunter]
-Troubles in Town (Netherlands) [file-hunter]
-Turbowipe (Netherlands) [file-hunter]
-Ultra BASIC (Netherlands) [file-hunter]
-Workmate (Europe) [file-hunter]
-Animecha (Japan, v2.00) [tempest]
-Copy CAT (Japan, v2.00) [file-hunter]
-Developer II (Netherlands) [file-hunter]
-DMK Creator (v6.3) [cbsfox]
-DSKPRO (v11.6) [cbsfox]
-DSKPRO (v9.01) [cbsfox]
-DSKPRO (v6.51) [cbsfox]
-DSKPRO Light (v1.4) [cbsfox]
-EPROM - Extra Products ROM (Netherlands) [file-hunter]
-The Magical Editor (German) [file-hunter]
-MSX Utility Disk (Netherlands) [file-hunter]
-Pro-tracker (Netherlands) [file-hunter]
-Sampbox 2 Deluxe (Netherlands) [file-hunter]
-Sampbox 3 Deluxe (Netherlands) [file-hunter]
-Sampbox 4 Macro (Netherlands) [file-hunter]
-Studio FM (Netherlands) [file-hunter]
-Super-X (Japan, v1.2) [file-hunter]
-Synchro Copy [file-hunter]
-TwinCopy (Japan) [file-hunter]
-New NOT_WORKING software list additions
-------------------------------------------
-Easy Telopper II (Japan) [file-hunter]
-NMS 1170 (Netherlands) [file-hunter]
-MSX Data Communications (Netherlands, v1.7) [file-hunter]
-Panasonic FS-IFA1 (Japan) [file-hunter]
-Amimoto-san (Japan) [file-hunter]
-Amimoto-san 2 (Japan) [itochi]
-GFX9000 Toolbox [file-hunter]
-Graph Saurus Ver.2.1 Interlace Mode Plus (Japan) [file-hunter]
-Multi-Barcode (Netherlands) [file-hunter]
-Barad (Netherlands) [file-hunter]
-Philips NMS 8280 Digitiser Disk (Netherlands) [file-hunter]
-Print Shop II (Japan) [file-hunter]
-TraxPlayer [file-hunter]
-
-12216: Add C compiler flags for Wayland EGL backend to bgfx build options [belegdol]
-Follow up to #12194.
-
-12217: Update notes on Teckno Werk in namcos12.cpp [simzy39]
-Added a small description of Teckno Werk, a video, and its last known whereabouts
-
-12218: namco/galaga.cpp: Add a note about Sidam version of Galaga [Xavier Panadero, Recreativas.org] [clawgrip]
-
-12219: Fixes chdman extract cd (Broken since splitbin option) [MetalSlug]
-trackinfo.splitframes was not initialized.
-
-12220: midway/astrocde.cpp: Add a Irecsa licensed Spanish set of Gorf  [clawgrip]
-New working clone
----------------------
-Gorf (Irecsa license, Spanish) [Recreativas.org]
-
-12221: bus/msx/slot/disk.cpp: Small improvement to Turbo-R disk interface. [wilbertpol]
-Add register mirrors.
-Add read back of rom bank.
-Add media change and some unknown registers.
-
-12222: taito/taito_x.cpp: Added PCB ref. numbers for all games [sergiopolog]
-Taken from PCB pictures:
-- `kyustrkr`: P0-057A + P1-046A: https://archive.org/download/last_striker_p0-057a_p1-046a/last_striker_p0-057a_p1-046a.png
-- `ballbros`: P0-057A + P1-046A: https://archive.org/download/ballon_brothers_p0-057a_p1-046a/ballon_brothers_p0-057a_p1-046a.jpg
-rest of games are well-known
-
-12223: i186: fix dma on timer2 and timer2 as prescaler [hjanetzek]
-For the driver I'm currently writing there were two issues with the i186 emulation:
-- drq_callback from timer 2 did not start dma transfer causing a blank screen
-- when timer 0 or 1 use timer 2 as pre-scaler they were also incremented by their timer device, causing way too fast sequenced
-  rhythms.
-It would be good if someone familiar with the implementation would review this as I just did the changes to make it work for me -
-  especially the pre-scaler commit.
-https://github.com/orgs/mamedev/discussions/99
-My WIP driver for testing can be found here  https://github.com/hjanetzek/mame/pull/2
-
-12224: docs: remove unnecessary repetition in othertools.rst [angelosa]
-Header claims "Developer-focused" tools, repeating "Most users will not need to work with this." is an unnecessary hyperbole
-  considering all these tools expect specific domain knowledge already.
-
-12227: Added Roland JV880 roms info [giulioz]
-How do I submit the rom files?
-
-12228: asmjit: sync with upstream [pmackinlay]
-
-12229: konami/konamigv: Implement sensors and printer check for Tokimeki Memorial Oshiete Your Heart [987123879113]
-- Implemented heart beat sensor and GSR sensor for Tokimeki Memorial Oshiete Your Heart to make the games playable
-- Implemented basics of the printer for Tokimeki Memorial Oshiete Your Heart. Only enough to trigger simple errors via dip switches
-  and also to allow the game to not error out whenever the printer is used
-- Added hand crafted EEPROM for `tmosh` to allow the game boot
-- Swapped the left and right channel audio in the SPU for konamigv. The game `btchamp` has a sound test that specifically says the
-  words "left", "right", and "center" to clear up doubts.
-Not promoted to working due to the printer not being fully functional, but otherwise the games seem to be playable from limited
-  testing. I also noticed some weirdness with the graphics that get shown when something is printed but I don't know if it's bugged
-  or not.
-
-12230: seta/seta2.cpp: Fixed year for Guardians / Denjin Makai II (bootleg) [barbudreadmon]
-As seen on title screen, this bootleg is from 1998 : 
-!grdiansbl-240410-075554
-
-12231: itech/itech32.cpp: Various cleanups and updates: [cam900]
-Recuce runtime tag macros
-Fix metadatas (ex: shufshot and clones are hasn't strata related stuff (logo, etc)) Use machine().side_effects_disabled() for debug
-  stuffs Use correct, constant typename values
-Fix naming for ROM regions
-Use logmacro for logging features
-Use C++ style comments for single line comments
-Reduce defines
-Use array for reduce duplicates
-Move drivedge specific stuffs into drivedge_state
-
-12232: lib/formats/dmk_dsk.cpp: Header byte 4 is not reserved. Fixes MT 08851. [wilbertpol]
-
-12233: konami/konamigv: Add printer support for Tokimeki Memorial Oshiete Your Heart [987123879113]
-HLE implementation of the printer Sony UP-1200 analog video printer used by Tokimeki Memorial Oshiete Your Heart. The printer
-  receives an S-Video signal from the subboard PCB and separately a communication line to control the machine. `tmosh` and `tmoshs`
-  only take and print one picture, but `tmoshsp` takes 16 different pictures and uses the 16 image layout setting of the printer.
-The printer output is shown as a second screen as can be seen in the example pictures below.
-tmosh (1 large image):
-!0022
-tmoshs (Konami logo position changes, text and icon in the very center of the picture):
-!0007
-tmoshsp (Konami logo and Tokimeki Memorial logo are always in the same spot):
-!0059
-Here's a picture of multiple prints from both the `tmosh` version and the `tmoshsp` version for layout reference.
-!image
-This PR also promotes the games to working, except for the `tmoshspa` clone which has a note about the CD being damaged.
-```
-Tokimeki Memorial Oshiete Your Heart (GQ673 JAA)
-Tokimeki Memorial Oshiete Your Heart Seal Version (GE755 JAA)
-Tokimeki Memorial Oshiete Your Heart Seal Version Plus (GE756 JAB)
-```
-
-12235: itech/itech8.cpp: Various cleanups [cam900]
-Reduce unnecessary lines
-Reduce preprocessing defines
-Constantize variables
-Use correct typename values
-Use C++ style comment for single line comments
-Use palette_device for grmatch color behaviour
-Remove unpopulated device
-Fix filename comments
-Use input_merger for FIRQ with VIA
-Use machine().side_effect_disabled() for avoid debugger issue
-Replace pointers to references
-Fix spacing in metadatas
-
-12236: itech/capbowl.cpp: Add machine().side_effects_disabled() check for debug [cam900]
-
-12237: misc/xtom3d: Implement PIU10 PCB board for Pump It Up hardware configuration [987123879113]
-PIU10 PCB images can be found here thanks to @icex2.
-Combined with https://github.com/mamedev/mame/pull/12201 this allows the rest of the MK3-based Pump It Up games to be playable with
-  working MP3 decoder audio and security chip implemented.
-The PIU games are working with this PR but the games get into a tight loop decompressing PNGs and applying filters in libpng such
-  that there is very long loading times at every load transition that loads new resources. The later games also generally don't run
-  at 100% even when all of the sprites are are loaded due to all of the animated graphics the UI uses. In-game playing songs is ok
-  depending on the song, but some songs that make heavy use of certain animated sprite effects can cause heavy lag spikes during the
-  duration of the specific animation.
-The `pumpitup` BIOS entry can be used to test all of the games that don't have a game entry yet.
-`./mame -w pumpitup -cdrom path/to/pump/game.cue`
-There's an optional dummy ROM entry to allow the CAT702 to be initialized using `roms/pumpitup/cat702.bin` for testing. 
-There are a lot of bootleg/hacked CDs out in the wild so it's hard to find the good ones. The bad ones can range from working (no
-  lock chip cracked copies and/or versions that were rebuild as a single session instead of multisession CDs) to not working. The
-  real CDs make use of CD-ROM XA and in the ISO9660 filesystem the directory records have XA extension data in the system use
-  section, but the bad CDs include XA extension even in the file records and mscdex.exe is programmed to ignore anything with XA
-  attribute mode 2 form 1 set so mscdex.exe ends up ignoring most of the files on the bad CDs.
-This isn't needed for good CDs, but a 1 byte patch can be applied to the BIOS (piu10.u8 or board1_pumpitup_piu10_flash_u8 in nvram)
-  to make mscdex.exe not ignore XA mode 2 form 1 file entries which allows even the bad CDs to work fine:
-`0x59dd7: 08 -> 00`
-I gave some sony/zn.cpp games a quick go to make sure the CAT702 change didn't break things, and also some Sys573 DDR games a check
-  to make sure the mas3507d changes didn't break anything there either.
-
-12238: bk.cpp: add DAC, QBus; fix cassette motor control [shattered]
-
-12239: msx/msx.cpp: Small MSX2+ related updates [wilbertpol]
-- Move MSX2+ machines to msx/msx2p.cpp.
-- Add support for Kanji level 2 I/O ports.
-- Add support for MSX2+ boot flags register.
-- Hook up msx2p_cart and msxr_cart software lists.
-
-12240: kaneko/sandscrp.cpp: Add machine().side_effects_disabled() check for latch reading, Fix ROM region naming [cam900]
-
-12242: trs/coco.cpp: Fix light gun offset [tlindner]
-Changed offset to align MAME's light gun cursor with what the games expect. I believe this fell out of adjustment with the recent
-  MC6847 changes.
-
-12243: msx/msx.cpp: Use arrays of memory views. [wilbertpol]
-
-12244: msx/msx2p.cpp: Fix validation. [wilbertpol]
-
-12245: konami/konamigv: Remove unused inputs from Tokimeki Memorial Oshiete Your Heart games [987123879113]
-Clean up input keybinds for these games.
-Control panel: https://twitter.com/BEEP_SHOP/status/1759432324473835546
-I/O test
-!0007
-
-12246: midway/williams.cpp, wmg.cpp: Various cleanups [cam900]
-Use memory_view for ROM/Palette overlay
-Reduce unnecessary devices, variables
-Reduce ROM region size, rearrange ROM offsets
-Fix naming for tile ROM region
-Reduce runtime tag lookups
-suppress machine().side_effects_disabled() for debugger reading PIA constantize variables
-
-12248: midway/midyunit.cpp: Various cleanups [cam900]
-Split class per devices to reduce optional finders
-Fix naming of ROM region, paletteram finder
-Fix filename, Reduce defines
-Use C++ style comments for single line comments
-Use logmacro for logging protection related stuffs
-Constantize variables, Use correct typename values
-suppress side_effects_disabled() for debugger reading protection result
-use soundlatch->data_pending_callback() for mkyawdim2 sound irq
-Move driver init to machine_config for mkyawdim2 sound related stuffs
-
-12249: machine/spi_sdcard.cpp: fix write data leaking into cmd buffer [holub]
-somehow related to MT08855 - but it's unclear how "wrong" spi commands can kill entire emu memory.
-
-12250: rx78_cart.xml: New working item added, metadata cleanup [FoxhackDN]
-* Fixed names for Hamburger Shop and Tatakae! Ultraman
-* Added serial and alt_title metadata where available
-* Updated list of available titles
-New working software list items (rx78_cart.xml)
----------------------------------------
-Cannon Ball [Gaming Alexandria]
-
-12251: cirsa/neptunp2.cpp: Added the Counters SEEPROM for "Gladiadores (V1.0, CAA)" [clawgrip]
-
-12252: shared/dcs.cpp: Add device_mixer_interface for sound output, Cleanups: [cam900]
-Use C++ style comment for single line comments
-Suppress machine().side_effects_disabled() for debugger reading Reduce hardcoded tag
-Use constant and correct typename values
-
-12253: Update RTD to 2.0.0 and fix search [Firehawke]
-**DO NOT MERGE THIS WITHOUT REVIEW**
-*Important: Due to the way that the RTD theme imports the search script (it's different between localhost and online due to ajax
-  handling) I was unable to completely test this. Be ready to back this back out immediately if it breaks in production. It SHOULD
-  work, but I can't 100% guarantee it and it's not something I can easily test..*
-As for what changed:
-Three issues needed to be resolved:
-First, Sphinx no longer inherently carries JQuery, so any RTD calls to JQuery broke (e.g. search).
-Secondly, RTD 2.0.0 came out back in November, and that's going to ne needed going forward for future Sphinx compatibility. 
-Unfortunately, RTD 2.0.0 still tries to call out to JQuery for search, as noted in https://github.com/mamedev/mame/issues/12181
-The best workaround as things stand is to update our RTD to V2.0.0, make necessary adjustments to the theme and download template I
-  created back in 2021, and hold things in this place until the RTD team actually fixes their own stuff upstream. Considering it's
-  been three months since the last commit on their theme repo and no response to the issue filed on the search issue, it could be a
-  while before any kind of fix happens.
-I'm not entirely thrilled with the results, but it's better than having no search at all (and potentially a completely broken docs
-  site with future Sphinx versions). I'll take a look at refactoring the download panel template at some point in the near future;
-  the changes I had to make were related to the old version of the template completely breaking with the new theme version.
-
-12254: uknc.cpp: hook up cassette and floppy [shattered]
-
-12255: bmc/koftball: decode bitmap layer [angelosa]
-
-12256: apple2_flop_clcracked: Added 9 dumps, 1 redump, 1 removed.  Meta data cleanups for MECC. [A-Noid33]
-Meta data cleanups for MECC eduware titles (1/3 done).
-New working software list items (apple2_flop_clcracked.xml)
--------------------------------
-Mastering Math Series 4: Space Subtraction (A-145 version 1.0) (4am crack) [4am]
-Mastering Math Series 5: Subtraction Puzzles (A-146 version 1.0) (4am crack) [4am]
-Mastering Math Series 6: Multiplication Puzzles (A-147 version 1.0) (4am crack) [4am]
-Mastering Math Series 7: Quotient Quest (A-148 version 1.0) (4am crack) [4am]
-Mastering Math Series: Diagnostic System (A-149 version 1.1) (4am crack) [4am]
-Mastering Math Series: Management System (A-150 version 1.0) (4am crack) [4am]
-Mastering Math Series: Management System (A-150 version 1.1) (4am crack) [4am]
-Mastering Math Series: Worksheet Generator (A-151 version 1.0) (4am crack) [4am]
-Mastering Math Series: Worksheet Generator (A-151 version 1.1) (4am crack) [4am]
-Redumped (apple2_flop_clcracked.xml)
--------------------------------
-Phantasie (version 1.0) (4am and san inc crack) [4am, san inc]
-Removed (apple2_flop_clcracked.xml)
--------------------------------
-MECC-A405 Sports Stats (version 1.0) (imperfect clean crack)
-
-12257: capcom/cps2.cpp: Fix qndream title & standardize mshud title [barbudreadmon]
-
-12260: igs/igs009.cpp: Add a Jingle Bell bootleg named "Animal House" [clawgrip]
-New working clone
---------------------------
-Animal House (bootleg of Jingle Bell) [Taksangs, charlie]
-
-12262: midway/midwayic.cpp: Reduce hardcoded tags, Cleanups: [cam900]
-Suppress side effects for debugger reads
-Use C++ style line comments for single line comments
-Reduced use of literal tag
-
-12266: shared/decobsmt.cpp: Various updates and cleanups [cam900]
-Implement device_mixer_interface for sound output
-Add variables into save state
-Remove hardcoded tags
-Use C++ style comments for single line comments
-dataeast/deco32.cpp:
-Split tattass driver state into its own state for reduce optional_device usage
-Use C++ style comments for single line comments
-dataeast/deco32.h: Move virtual override member into protected:
-pinball/de_3.cpp, whitestar.cpp: Use C++ style comments for single line comments
-
-12267: tomy/tomy_princ.cpp: Add cart ROM mapping [qufb]
-
-12268: spectrum_cass.xml: Added 30 working items + 1 not working [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Anti-Lune [Michael Bruhn / Planeta Sinclair]
-Black & White [Spectrum Computing]
-Cálculo de Areas e Volumes [Planeta Sinclair]
-Cálculo de Estrutura Tronco-Cónicas [Planeta Sinclair]
-Box Reloaded [Spectrum Computing]
-Editor Musical [El Trastero del Spectrum]
-Flunky (Zafi Chip) [Spectrum Computing]
-Foguetão [Planeta Sinclair]
-Geografia de Portugal (Astor) [Planeta Sinclair]
-GP Motocross [Spectrum Computing]
-Juego de Damas [El Trastero del Spectrum]
-La Balada del Duende [El Trastero del Spectrum]
-La Isla Maldita [El Trastero del Spectrum]
-Left Behind: Escape From Mars [Spectrum Computing]
-Mad Cars [Spectrum Computing]
-Mad Mix Game & The Pepsi Challenge (Portuguese) [Planeta Sinclair]
-O Segredo dos Templários (TAP tape image) [Planeta Sinclair]
-Pot-Pourri [Spectrum Computing]
-Pro Golf II (System 4, alt) [Planeta Sinclair]
-Pssst (Nuova Newel Software) [Planeta Sinclair]
-Pssst + Jetpac + Kucharik [Planeta Sinclair]
-Quest for the Sacred Flame of Hestia [Spectrum Computing]
-Rodmän [Misfit]
-Sachy Psion + Reversi + Backgammon [Planeta Sinclair]
-Space Racer [Spectrum Computing]
-Starblazer [Planeta Sinclair]
-Stop Virus (demo) [Spectrum Computing]
-Tabela Periódica [Planeta Sinclair]
-Tabela Periódica (fast version hack) [Planeta Sinclair]
-Tokimal (demo) [Pat Morita Team]
-New NOT working software list addition
---------------------------------------------
-O Segredo dos Templários (TZX tape image)
-Software list item promoted to working
---------------------------------------------
-Prioridade Em Cruzamentos
-Software list item removed (duplicated set)
-----------------------------------------------
-Ghostly Grange Triple Decker (System 4)
-Cleanups and fixes: parent/cloneof relationships, descriptions, publishers, years (information provided by spectrumcomputing.co.uk)
-  and added languages info.
-
-12269: sinclair/sprinter.cpp: update [holub]
-- accelerator writes through page fd only in COPY mode
-- io access 1f (z84 int) available through replacing to 0f
-- hold IRQ for 32 clocks (unscaled)
-
-12270: new SOFTWARE LIST additions (GameKing / GameKing 3) [mamehaze]
-new SOFTWARE LIST additions
------------
-gameking.xml
-4 in 1 - Three Battles + Light Sword + Risker + Metal Deform (512KB cartridge, set 2) [sCZther, SSJ, Gaming Alexandria, TeamEurope]
-gameking3.xml
-Diamond [sCZther, SSJ, Gaming Alexandria, TeamEurope]
-Hemic Battle [sCZther, SSJ, Gaming Alexandria, TeamEurope]
-(also replaced panzer dump in gameking3.xml with a new one, the old dump has a flipped bit in an unused area)
-
-12272: misc/skimaxx.cpp: Cleanups [cam900]
-Reduce runtime tag lookups
-Suppress side effect for debugger reads
-Constantize variables
-Use C++ style comments for single line comments
-
-12273: pinball/decodmd*.cpp: Add missing item to save state, Cleanups [cam900]
-Initialize member variables
-Reduce unnecessary bank finders, Reduce unnecessary DUMMY_TAG
-Reduce literal tag usage
-Constantize variables
-Suppress side effects for debugger reads
-
-12274: galaxian/galaxian.cpp: Add a new Bongo set [clawgrip]
-New working clone
----------------------
-Bongo (set 2) [Arcadedealer aka Edgar Solé aka Dios, Recreativas.org]
-
-12276: apple2_flop_orig.xml: Added 14 dumps. apple2_flop_cllcracked.xml: Added 1 dump. [A-Noid33]
-Improved meta data for Essential Data Duplicator and Nibbles Away.
-New working software list items (apple2_flop_orig.xml) 
--------------------------------
-Anchorman [4am, ianoid, A-Noid]
-Back It Up III (version 3.4) [4am, ianoid, A-Noid] 
-Candy Land [4am, A-Noid]
-Chuck Yeager's Advanced Flight Trainer [4am, A-Noid] 
-Copy II Plus (version 3.3) [4am, txgx42, A-Noid]
-Essential Data Duplicator 4 Plus (version 4.1) [4am, txgx42, A-Noid] 
-Nibbles Away (version B2) [4am, txgx42, A-Noid]
-Nibbles Away ][ (version A1) [4am, A2_Canada, A-Noid] 
-Questmaster I: The Prism of Heheutotol [4am, ianoid, A-Noid] 
-Wizimore: Catacombs of Vlad [4am, A2_Canada, A-Noid] 
-Wizimore: Nihonbashi [4am, A2_Canada, A-Noid]
-Wizimore: O'Connor's Mine [4am, A2_Canada, A-Noid] 
-Wizimore: The Emperor's Seal [4am, A2_Canada, A-Noid] 
-Wizimore: The Scarlet Brotherhood of Hsi Ho [4am, A2_Canada, A-Noid]
-New working software list items (apple2_flop_clcracked.xml) 
--------------------------------
-From The Beginning... Contraception (4am crack) [4am, A-Noid]
-
-12277: sinclair/tsconf.cpp: switch to rgb32 bitmap for dynamic palette updates [holub]
-
-12279: oric1_cass.xml: Added 1 working item [ArcadeShadow]
-New working software list addition
---------------------------------------------
-Rodmän [Misfit]
-
-12280: nmk/nmk16.cpp: Correct origin of "Many Block" [negunma]
-According to the former developer's submission to X, "Jewels" was followed by "Slot Gal," which was based on it. 
-> "Jewels" was followed by "Slot Gal," which was based on it. The panel patterns that had been jewels in "Jewels" were changed to a
-  slot machine, and pictures of gals were added as a sexy element. I have heard that this change has increased location test income
-  from 300 yen to 500 yen (a whopping 66% increase).
-"Many Block" uses tiles with a slot machine pattern and has a title image of "SLOT GAL" inside (though the gal does not appear).
-  Therefore, "Many Block" should be called a "Slot Gal" hack rather than a "Jewels" hack.
-!SLOT GAL
-
-12281: midway/midtunit.cpp, midtunit_v.cpp, midwunit.cpp, midxunit.cpp: Cleanups [cam900]
-midtunit_v.cpp:
-Use devcb_write_line for DMA IRQ handling
-Reduce hardcoded tags
-Reduce unnecessary DUMMY_TAG
-Initialize variables in constructor
-Constantize variables
-Use logmacro.h for logging
-Fix function name
-midtunit.cpp:
-Split class related to sound system
-Reduce defines
-Reduce literal tag usage
-Use logmacro.h for logging
-Fix function name
-Suppress side effects for debugger read
-Reduce unnecessary functions
-Reduce unnecessary finders
-midwunit.cpp:
-Reduce defines
-Constantize variables
-Reduce literal tag usages
-Suppress side effects for debugger read
-Fix function naming
-Reduce unnecessary finders
-midxunit.cpp:
-Reduce defines
-Constantize variables
-Reduce literal tag usages
-Suppress side effects for debugger read
-Fix function naming
+- 10139: konami/konamim2.cpp: Re-dumped CD for Heat of Eleven ’98. [Victor Fernandez (City Game), Arcade Planet, ClawGrip]
+- 11581: namco/namcops2.cpp: Corrected notes about THE IDOLM@STAR games and V300 I/O boards. [Alexander Poyanco]
+- 12091: saturn.xml: Added language info elements, and corrected parent/clone relationships for Rayman games. [ArcadeShadow]
+- 12093: namco/namcops2.cpp: Corrected title of MotoGP and added a note about the US version of Battle Gear 3. [ArtLine]
+- 12131: osd/strconv.cpp: Handle UTF-8 Windows code page internally in osd_uchar_from_osdchar. [invertego]
+- 12161: commodore/kim1.cpp: Added RS-232 port for console. [Jeff Tranter]
+- 12172: megadriv.xml: Added and corrected info about the Sega Game Toshokan games. [ICEknight]
+- 12175: bus/hp9845_io/hp9885.cpp: Implemented format track command. [F.Ulivi]
+- 12176: mr/dribling.cpp: Dumped missing ROMs from the Automave version of Dribbling. [David Bosque, Recreativas.org, ClawGrip]
+- 12177: Cleared inappropriate execute bits on a few source files. [Davide Cavalca]
+- 12183: plugins/cheat: Added string.char and string.format to the environment for Lua cheats. [einstein95]
+- 12184: nes.xml: Added a US prototype of Spy vs. Spy. [Hidden Palace. David Silva]
+- 12185: snes.xml: Added a prototype of Rockman’s Soccer. [C. Davis, David Silva]
+- 12187: igs/igs036crypt.cpp: Added preliminary decryption code for Bu Bu Car. [XingXing]
+- 12188: bus/multibus: Added Robotron K7071 text-only video card for the A7100 series. [shattered]
+- 12191: tools/chdman.cpp: Added support for extracting cue/bin GD-ROM images and producing one binary file per track. [Windy Fairy]
+- 12192: atari/harddriv.cpp: Corrected brake pedal ADC channel for Street Drivin’. [Jamie McCadden]
+- 12193: sms.xml: Added Gemitas and Sydney Hunter and the Sacred Tribe. [SMS Power!, No-Intro, ArcadeShadow]
+- 12194: Add C compiler flags for Wayland EGL from pkgconfig to OSD build options on Linux. [Belegdol]
+- 12196: atari/harddriv.cpp: Fixed ranges for Street Drivin’ and Hard Drivin’s Airborne controls. [Jamie McCadden]
+- 12197: debug/express.cpp: Fixed comparison of iterators from different containers. [invertego]
+- 12198: msx1_flop.xml: Added eleven items (eight working), and replaced two items with better dumps. [file-hunter, Wilbert Pol]
+- 12199: msxr_flop.xml: Added 27 items, and replaced one item with a better dump. [file-hunter, Wilbert Pol]
+- 12200: msx2p_flop.xml: Added six working items. [file-hunter, Wilbert Pol]
+- 12202: coleco.xml: Added 34 items (27 working). [ColecoVision Addict, ArcadeShadow]
+- 12206: igs/pgm.cpp: Fixed readings for Chinese titles of Oriental Legend games. [BarbuDreadMon]
+- 12207: machine/icd2061a.cpp: Fixed out-of-bounds array access when configuring video clock output. [Windy Fairy]
+- 12208: namco/namcos12.cpp: Remove Um Jammer Lammy NOW! from the list of undumped games. [simzy]
+- 12211: seta/srmp2.cpp: Added PCB reference numbers for all games. [Sergio Galiano]
+- 12212: machine/spi_sdcard.cpp: Report status for CMD58 (READ_OCR) requests. [holub]
+- 12213: apple2gs_flop_clcracked.xml: Added six cracks, and improved metadata for many items. [Brian Troha, Ivan Vangelista]
+- 12214: msx2_flop.xml: Added 76 items (63 working), and replaced three items with better dumps. [Wilbert Pol]
+- 12216: Add C compiler flags from pkgconfig for Wayland EGL to BGFX build options. [Belegdol]
+- 12217: namco/namcos12.cpp: Improved description Teckno Werk in comments. [simzy]
+- 12218: namco/galaga.cpp: Added a note about the Sidam version of Galaga. [Xavier Panadero, Recreativas.org, ClawGrip]
+- 12219: util/cdrom.cpp: Clear entire output TOC structure in cdrom_file::parse_metadata. [MetalSlug]
+- 12220: midway/astrocde.cpp: Added a version of Gorf licensed to Irecsa for Spanish distribution. [Recreativas.org, ClawGrip]
+- 12221: bus/msx/slot/disk.cpp: Improved MSX Turbo-R disk interface emulation. [Wilbert Pol]
+- 12222: taito/taito_x.cpp: Added PCB reference numbers for all games. [Sergio Galiano]
+- 12223: cpu/i86/i186.cpp: Fixed issues with DMA and timers using timer 2 as source. [Hannes Janetzek]
+- 12224: docs: Removed unnecessary repetition in descriptions of external tools. [Angelo Salese]
+- 12227: roland/roland_jv80.cpp: Dumped wave ROMs and main CPU ROM, and added older v1.0.0 program as a BIOS option. [Giulio Zausa]
+- 12228: 3rdparty/asmjit: Updated to upstream version 1.13.0. [Patrick Mackinlay]
+- 12229: konami/konamigv.cpp: Implemented inputs and printer check for Tokimeki Memorial Oshiete Your Heart games. [Windy Fairy]
+- 12230: seta/seta2.cpp: Corrected release year for bootleg of Guardians / Denjin Makai II. [BarbuDreadMon]
+- 12231: itech/itech32.cpp: Cleaned up code and improved metadata. [cam900]
+- 12232: formats/dmk_dsk.cpp: Fixed a bug in the format identification header check (fixes MT08851). [Wilbert Pol]
+- 12233: konami/konamigv.cpp: Added printer simulation for Tokimeki Memorial Oshiete Your Heart games. [Windy Fairy]
+- 12235: itech/itech8.cpp: Cleaned up code. [cam900]
+- 12236: itech/capbowl.cpp: Suppress side effects for debugger reads. [cam900]
+- 12237: misc/xtom3d.cpp, misc/xtom3d_piu10.cpp: Added PIU10 ISA PCB device for Pump It Up. [Windy Fairy]
+- 12238: ussr/bk.cpp: Added DAC, QBus and unmapped read/write traps. [shattered]
+- 12239: msx: Implemented a little more MSX2+ functionality. [Wilbert Pol]
+- 12240: kaneko/sandscrp.cpp: Suppress side effects for debugger reads from sound latches. [cam900]
+- 12242: trs/coco.cpp: Corrected light gun raster spot detection timing. [Tim Lindner]
+- 12243: msx/msx.cpp: Use arrays of memory views. [Wilbert Pol]
+- 12244: msx/msx2p.cpp: Correctly configure MSX Music devices (fixes validation errors). [Wilbert Pol]
+- 12245: konami/konamigv.cpp: Removed inputs that are not present from Tokimeki Memorial Oshiete Your Heart games. [Windy Fairy]
+- 12246: midway/williams.cpp, wmg.cpp: Cleaned up code. [cam900]
+- 12248: midway/midyunit.cpp: Cleaned up code. [cam900]
+- 12249: machine/spi_sdcard.cpp: Don’t write received data to the command shift register. [holub]
+- 12250: rx78_cart.xml: Added Cannon Ball, and improved metadata for various items. [Gaming Alexandria, David Silva]
+- 12251: cirsa/neptunp2.cpp: Added a Counters serial EEPROM dump to gladiador. [ClawGrip]
+- 12252: shared/dcs.cpp: Implemented device_mixer_interface for sound output and cleaned up code. [cam900]
+- 12253: docs: Updated RTD theme to 2.0.0 and removed dependency on jQuery. [Firehawke]
+- 12254: ussr/uknc.cpp: Added cassette interface and QBus slots with floppy controller card. [shattered]
+- 12255: bmc/koftball.cpp: Decode bitmap layer and use back layer pen. [Angelo Salese]
+- 12256: apple2_flop_clcracked.xml: Added nine cracks, updated one crack, and removed an outdated crack. [4am, san inc, A-Noid33]
+- 12257: capcom/cps2.cpp: Corrected release region and date in two system descriptions. [BarbuDreadMon]
+- 12260: igs/igs009.cpp: Added a bootleg of Jingle Bell called “Animal House”. [Taksangs, charlie, ClawGrip]
+- 12262: midway/midwayic.cpp: Reduced hard-coded tags and cleaned up code. [cam900]
+- 12266: shared/decobsmt.cpp: Implemented device_mixer_interface for sound output and improved save state support. [cam900]
+- 12267: tomy/tomy_princ.cpp: Install cartridge ROM into CPU address space. [QUFB]
+- 12268: spectrum_cass.xml: Added 31 items (30 working), removed a duplicate item and improved metadata. [ArcadeShadow]
+- 12269: sinclair/sprinter.cpp: Improved interrupt and accelerator emulation accuracy. [holub]
+- 12270: gameking.xml, gameking3.xml: Added three working cartridges and replaced one cartridge with a better dump. [David Haywood]
+- 12272: misc/skimaxx.cpp: Suppress side effects for debugger reads, and reduced tag lookups. [cam900]
+- 12273: pinball/decodmd*.cpp: Register data members for save states and suppress side effects for debugger reads. [cam900]
+- 12274: galaxian/galaxian.cpp: Added an alternate version of Bongo found on an original Namco PCB. [ClawGrip]
+- 12276: apple2_flop_orig.xml, apple2_flop_clcracked.xml: Added fourteen original dumps and one crack. [A-Noid33]
+- 12277: sinclair/tsconf.cpp: Use RGB screen bitmap so mid-screen palette changes work. [holub]
+- 12279: oric1_cass.xml Added Rodmän. [Mika Keranen, ArcadeShadow]
+- 12280: nmk/nmk16.cpp: Updated comments to note that Many Block is a hack of Slot Gal. [negunma]
+- 12281: midway/midtunit.cpp, midtunit_v.cpp, midwunit.cpp, midxunit.cpp: Cleaned up code. [cam900]
 
 
 Source changes
@@ -1539,7 +877,7 @@ Igor (Excalibur) [hap, Sean Riddle]
  * Added hand crafted EEPROM for tmosh to allow the game boot.
  * Corrected SPU audio channel routing (btchamp test mode exposes this).
 
--roland/roland_jv80.cpp: Dumped wave ROMs and main CPU ROM. (#12227) [Giulio Zausa‮]
+-roland/roland_jv80.cpp: Dumped wave ROMs and main CPU ROM. (#12227) [Giulio Zausa]
  * Also added older program ROM v1.0.0 as a BIOS option.
 
 -konami/konamigv.cpp: Added configuration option for direct heartbeat pulse input to tmosh games. [Vas Crabb]
