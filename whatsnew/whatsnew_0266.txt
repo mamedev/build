@@ -4,18 +4,19 @@
 
 MAME Testers bugs fixed
 -----------------------
-- 00026: [Graphics] (taito/taito_f3.cpp) gseeker: Continue screen is completely black. (ywy)
-- 01907: [Graphics] (taito/taito_f3.cpp) elvactr and clones: Background graphics are drawn over level introduction screens. (ywy)
-- 01922: [Graphics] (taito/taito_f3.cpp) dariusg and clones: Sprites are not visible during scene transitions. (ywy)
+- 00026: [Graphics] (taito/taito_f3.cpp) gseeker: Continue screen is completely black. (12Me21)
+- 01907: [Graphics] (taito/taito_f3.cpp) elvactr and clones: Stage elements are drawn over level introduction screens. (ywy)
+- 01922: [Graphics] (taito/taito_f3.cpp) dariusg and clones: Persistence effects during scene transitions don’t work. (ywy)
 - 01923: [Graphics] (taito/taito_f3.cpp) dariusg and clones: Background transparency and blending effects are not applied. (ywy)
-- 01924: [Graphics] (taito/taito_f3.cpp) dariusg and clones: Zone V boss shadow is not visible. (ywy)
+- 01924: [Graphics] (taito/taito_f3.cpp) dariusg and clones: Zone V' boss shadow is not visible. (ywy)
 - 02002: [Graphics] (taito/taito_f3.cpp) elvactr and clones: Dimming effect after shooting lights doesn’t work. (ywy)
 - 02097: [Graphics] (taito/taito_f3.cpp) spcinvdj: Brightness levels are incorrect for simulated cellophane overlay mode. (ywy)
+- 02527: [Graphics] (taito/taito_f3.cpp) gunlock, rayforcej, rayforce: Spurious black squares appear on title screen. (12Me21)
 - 02733: [Graphics] (taito/taito_f3.cpp) arabianm: Text layer is not visible during cutscenes. (ywy)
 - 03741: [Graphics] (taito/taito_f3.cpp) puchicar, puchicarj: Graphics blending/transparency effects don’t work. (ywy)
 - 05893: [Graphics] (taito/taito_f3.cpp) elvactr: Dimming effect after shooting lights doesn’t work. (ywy)
 - 07321: [Graphics] (taito/taito_f3.cpp) bubblem, bubblemj, bubblemu: Blending effects on boss explosions don’t work. (ywy)
-- 08697: [Graphics] (taito/taito_f3.cpp) kaiserknj: Vertically scaled text is drawn incorrectly. (ywy)
+- 08697: [Graphics] (taito/taito_f3.cpp) kaiserknj: Vertically scaled text is drawn incorrectly. (12Me21)
 - 08783: [Crash/Freeze] (sega/segaybd.cpp) pdrift and clones: Emulated game freezes with a black screen. (R. Belmont)
 - 08856: [Crash/Freeze] (konami/konamigq.cpp) cryptklr: Game fails to boot, showing a media error. (Windy Fairy)
 - 08857: [Image Enhancement] Changing BGFX screen chains from the user interface may cause MAME to crash. (Vas Crabb)
@@ -156,7 +157,7 @@ electron_rom: Pluscom + v1.0 [Nigel Barnes]
 mm1_flop: Formula, Nokia CP/M 2.2 (M4), Nokia CP/M 2.2 (M6) [MikkoMuseo]
 megadriv:
   Sonic The Hedgehog 2 (prototype 199209xx, pirate, hacked) [drx, Hidden Palace]
-  Férias Frustradas do Pica-Pau (Brazil, pirate) [MARCSLASH, arthurthekidboy]
+  Férias Frustradas do Pica-Pau (Brazil) [MARCSLASH, arthurthekidboy]
   Sonic The Hedgehog (JP2, ripped from Sonic Mega Collection) [Sonic Cult, SonicBlur, Just Me, Haku Ronin]
 neogeo:
   The Eye of Typhoon (alpha), The Eye of Typhoon (Tsunami Edition, beta 1), The Eye of Typhoon (Tsunami Edition, beta 2),
@@ -228,295 +229,44 @@ ramstar:
 segaai: Eigo no Uta, Pinpon Music Melody, Pinpon Music Rhythm [SMS Power!]
 
 
-Translations added or modified
-------------------------------
-
-
 Merged pull requests
 --------------------
-10461: a7800.xml: Updated some publication years. [0kmg]
-
-11811: taito/taito_f3_v.cpp: major rewrite [y-ack]
- * simplify sprite logic, eliminate game-specific kludge
- * simplify line ram access 
- * simplify draw loop
- * fix sprite bankswitch - riding fight sprites now 60fps
- * more accurate sprite scaling 
- * x mosaic effect (ring rage, riding fight, command war, moriguchi hiroko no quiz de hyuu!hyuu!)
- * screen raw parameters based on others' measurements and mosaic quirk
- * identify mosaic flags for sprites and pivot layer
- * re-derive blending rules (riding fight, **space invaders dx**, **elevator action returns**, recalhorn, gekirindan, **bubble
-  memories**, cleopatra fortune, **puchi carat**, **land maker**)
- * identify sprite and pivot blend value select (arabian magic, grid seeker)
- * line ram alternate subsections (bubble memories)
- * sprite framebuffer unblit disable (sprite trails) (darius gaiden)
- * emulate blending priority conflict (**darius gaiden**, bubble memories, grid seeker)
-MT#8697, MT#2527, MT#1922, MT#26, MT#2733, MT#3741, MT#2002, MT#1907, MT#7321, MT#2097, MT#1924, MT#1923, MT#8827, GH #10033
-Systems promoted to working
----------------------------
-Moriguchi Hiroko no Quiz de Hyuu!Hyuu! [ywy, 12Me21]
-
-12171: megadriv.xml: Fixed descriptions, added notes [ICEknigh7]
-Fixed some descriptions and added some notes.
-
-12180: mr/nl_drlibling.cpp: Fixed the PARATA netlist and optimized performance [aovestdipaperino]
-@cuavas 
-I finally found a way to have enough perf to emulate the PARATA netlist correctly.
-After regenerating the static solvers, this one works quite well.
-Possible improvement: put more sounds behind ``OPTIMIZE_FRONTIERS``, I couldn't figure out how to do it.
-~With a little bit of effort, this can make the 0.264 release.~
-P.S. of course static solvers will need to be regenerated.
-
-12190: megadriv.xml: Added 2 working items, replaced bad dump [ICEknigh7]
-Bad Dump replaced with verified one:
-- Férias Frustradas do Pica-Pau (Brazil) (fixes GitHub Issue https://github.com/mamedev/mame/issues/11950)
-  [MARCSLASH, arthurthekidboy]
-Clones added:
-- Sonic The Hedgehog (World, JP2, ripped from Sonic Mega Collection) [Sonic Cult, SonicBlur, Just Me, Haku Ronin]
-- Sonic The Hedgehog 2 (prototype 199209xx, pirate) [drx, Hidden Palace]
-
-12195: rm/rm380z.cpp: Add COS 4.0/F firmware [RobinSergeant]
-This PR adds support for COS 4.0/F, new romset attached below:
-rm380zf.zip
-It's basically the same as COS 4.0/M, but with some differences in the FDC code (no motor control and different timing).  The 8"
-  disk support is useful as it allows larger CP/M programs to run using the VDU-80 display.
-I have also verified that the 4.0/M roms we had are good, and made the machine descriptions clearer by adding "/M" and "/F"
-  postfixes.
-
-12201: util/cdrom, machine/t10mmc: Add preliminary support for multisession CD-ROMs, indexes, and track flags [987123879113]
-All of the commits can be reviewed independently. Opening as a draft to get feedback because it's a lot of changes.
-I won't be adding CHD support for these features. This is just to get the features somewhat functional within MAME and then in the
-  future someone can figure out how to add CHD support. All of the features can be tested by loading a .cue/.bin through `-cdrom`.
-- Did some refactoring of util/cdrom for readability since there was a lot of samey code doing the same initializations and checks
-  in `parse_metadata` in particular
-- Removed `idx0offs` and `idx1offs` in favor of an array of index values and added the code to read indexes from .cues
-- Parsed out the `FLAGS` from .cue and made them readable through `get_adr_control`
-- Added preliminary multisession support. Multisession support in cues seems to be a bit fragmented so I pulled samples from various
-  dumper tools and made notes of the differences
-- Filled out the code to return index, sessions, and full TOC for the `T10MMC_CMD_READ_TOC_PMA_ATIP` command
-- Implemented `T10MMC_CMD_MECHANISM_STATUS` since it was used by cdrdao, which I was using for testing within MAME to easily check
-  if things were reading properly
-- Some other small cleanups to t10mmc
-Multisession CDs can be tested using the `pumpitup` BIOS machine and manually specifying one of the multisession .cue games. I've
-  tested "Pump it Up: The 2nd Dance Floor" and "Pump it Up The O.B.G: The 3rd Dance Floor" and they both are booting and playable
-  with these changes. The later games after that are also multisession CD but need additional hardware emulation to boot.
-It's possible to run cdrdao within MAME using `shutms11` via a Knoppix live CD (enter `knoppix 2` to boot without the X11 GUI) to do
-  more thorough testing. Index detection probably won't work without CDDA scanning implemented, which I didn't include in this PR.
-The generated full TOC and legacy TOC were checked against data dumped via Redumper and/or DiscImageCreator when possible. It isn't
-  perfect (first lead-in area being hardcoded to 95:00:00 for example) but it mostly generates a matching full TOC and legacy TOC.
-
-12247: atari/atetris.cpp: Add a new Atari Tetris bootleg (with an extra OKI for sound) [clawgrip]
-New working clone
----------------------
-Tetris (bootleg set 7, with OKI M5205) [Taksangs]
-
-12263: Add a skeleton for Datawind's Pocket Surfer (pocket internet terminal) [clawgrip]
-New not working machine
----------------------------------
-Pocket Surfer (prototype) [Chan Chu Yo]
-
-12264: subsino/subsino.cpp: Add a new bootleg of 'Treasure Bonus' named 'Lucky Seven' [clawgrip]
-New not working clone
---------------------------
-Lucky Seven [Taksangs, charlie]
-
-12265: Add a skeleton for a Spanish touch games machine from Comatel [clawgrip]
-New not working machine
------------------------------
-Onliner Touch Party [Cuclis, Oskarito]
-
-12275: heathkit/tlb.cpp: Various file cleanup [mgarlanger]
-General cleanup including
-- Removed method declarations that were not used/implemented.
-- Changed to use u8/u16/u32.
-- Add consistent horizontal spacing for readability.
-- Removed some duplicate comments.
-
-12282: jaguar.xml: Metadata cleanups [ArcadeShadow]
-- Lowercase on descriptive words/abbreviatures ("Demo", "Rev.", "Ver.")
-- Moved test result comments to `notes` tag
-
-12283: casio/rz1.cpp: implement individual line outputs [devinacker]
-The RZ-1 has ten individual line outs for individual samples in addition to the regular mix output. This lets the individual sounds
-  be more easily mixed and panned through the frontend.
-
-12286: atlus/cave.cpp: Added Jumbo Godzilla. [Mikejmoffitt]
-New Working Software: Jumbo Godzilla [Toho / Namco]
-Jumbo Godzilla runs on hardware nearly identical to Pac-Slot, with the board moniker N-42 EM VIDEO PCB stamped on it.
-Notable differences compared to N-44:
-* The second OKI is used and has its ROM socket populated
-* Instead of a GAL16V8 at U1 controlling the memory map, a simple 74LS138 is installed (albeit socketed).
-All ROM names are based directly upon the labels on the ROMs on the PCB. All GALs were found to be locked and thus remain undumped.
-I do not have access to an original cabinet, so I can not 100% verify the accuracy of the lamp and motor control outputs. My PCB has
-  damage, possibly from overcurrent on one of these controls, so at this time it is not something I can use for further testing.
-  Furthermore, I do not have a wiring harness for it, so no clues may be offered there either.
-This game has both an operator menu as well as a self-check screen, even though the PCB itself has no DIP switches.
-
-12287: cpu/tms34010.cpp: Suppress side effects for debugger read [cam900]
-
-12288: bus/msx/slot/*: Use arrays of memory views. [wilbertpol]
-
-12290: t11: reuse z80_daisy_chain for QBus vectored interrupts; forward INIT [shattered]
-signal to all cards on QBus.
-
-12292: bus/msx/cart/*: Use arrays of memory views. [wilbertpol]
-bus/msx/cart/dooly.cpp: Use banks instead of views.
-
-12293: galaxian/galaxian.cpp: Redumped ROM 5 of 'bongoa' [Recreativas.org] [clawgrip]
-It turned out to be unique. Now the set is complete.
-
-12294: apple2_flop_clcracked.xml: Added thirteen cracks. [A-Noid33]
-Meta data cleanups for Micrograms Publishing.
-New working software list items (apple2_flop_clcracked.xml)
--------------------------------
-Falcons (Softsmith) (4am and san inc crack) [4am, san inc, A-Noid] 
-Capitalization: Building Better Language Skills (4am crack) [4am, txgx42, A-Noid] 
-Clauses and Whole Sentences (4am crack) [4am, A-Noid] 
-Desktop Zoo (revision 2) (4am crack) [4am, A-Noid] 
-Grammar: Building Better Language Skills: Adjectives and Adverbs (4am crack) [4am, A-Noid] 
-Grammar: Building Better Language Skills: Nouns (4am crack) [4am, A-Noid] 
-Grammar: Building Better Language Skills: Sentences (4am crack) [4am, A-Noid] 
-Grammar: Building Better Language Skills: Verbs (4am crack) [4am, A-Noid] 
-Kinder Critters: Address and Phone Number (4am crack) [4am, A-Noid] 
-Mathosaurus: Kindergarten (4am crack) [4am, A-Noid] 
-Punctuation: Building Better Language Skills (4am crack) [4am, A-Noid] 
-Scramble (4am crack) [4am, A-Noid]
-The Spy's Adventures in North America (version 1986-10-01) (4am crack) [4am, ianoid, A-Noid]
-
-12295: misc/coolpool.cpp: Cleanups [cam900]
-Split driver state to reduce optional finders
-Use palette_device for amerdart palette
-Suppress side effects for debugger read
-Constantize variables
-Use logmacro.h for logging functions
-Use C++ style comments for single line comments
-Use std::swap for swap function
-
-12296: galaxian/galaxian.cpp: Add a new Zero Time hack/bootleg [clawgrip]
-New working clone
-----------------------------------
-Zero Time (Spanish bootleg, set 2) [Arcadedealer aka Edgar Solé aka Dios, Recreativas.org]
-
-12297: midway/midyunit.cpp: Further cleanups [cam900]
-Reduce unnecessary MACHINE_RESET_MEMBER and VIDEO_START_MEMBER Split machine config to reduce duplicates
-Split driver state class to reduce optional finders Add missing items in save state
-
-12299: pacman/pacman.cpp: Add a new The Glob clone on Pac-Man hardware [clawgrip]
-New working clone
----------------------
-The Glob (Pac-Man hardware, set 2) [Arcadedealer aka Edgar Solé aka Dios, Recreativas.org]
-
-12300: sound/swp00.cpp: Improved DPCM sample decompression [TaleTN]
-Through reverse engineering the ROMs of the MU50 and related sound modules I think I've figured out that the magic number that the
-  MU50 stores along with the sample format isn't the fractional part of the loop point, but instead holds an offset and scale for
-  DPCM decompression (which I guess makes it ADPCM).
-I guess some of the related sound devices (like maybe the SWP30?) cloud also use this patch.
-
-12301: galaxian/galaxian.cpp: Add another Video Dens Pac-Man bootleg [clawgrip]
-New working clone
----------------------
-Pac-Man (Video Dens, Spanish bootleg on Galaxian hardware, set 2) [Arcadedealer aka Edgar Solé aka Dios, Recreativas.org]
-
-12302: heathkit/h89.cpp: General file cleanup [mgarlanger]
-Functional change:
-- Adds writing to standard RAM when H89 has a full 64k and lower 8k is in ROM/special RAM mode.
-Changes include:
-- Changed to use u8/u16/u32.
-- Add consistent horizontal spacing for readability.
-- Update some comments.
-
-12303: midway/midvunit.cpp: Split driver state class to reduce optional finders, cleanups: [cam900]
-Suppress side effects for debugger reads
-Add missing item to save state
-Use logmacro.h for logging function
-Fix region naming and variable naming
-Fix video clock related to PCB docs (33.3333MHz)
-Use C++ style comments for single line comments
-Constantize variables
-
-12305: sound/swp30.cpp, sound/swx00.cpp: Improved DPCM sample decompression [TaleTN]
-Just like commit 48161ce9ca, but this time for SWP30 and SWX00.
-@galibert As promised! :-)
-
-12306: sinclair/scorpion,pentevo: rom updates [holub]
-Scorpion TURBO+: ProfROM V.4.xx.041
-Scorpion GMX: ProfROM +GMX V.5.xx.041, 6.xx.041
-ZX Evolution: ERS v0.59.13
-
-12309: skeleton/tvcobrasd.cpp: Add a new Cobra Sport Dart set with AY-8910 sound [clawgrip]
-New not working clone
---------------------------
-Cobra Sport Dart / Tour Sport Dart (AY-8910 sound) [Vicente y Sergio de ElectronicaVyS, Tascabarrio]
-
-12310: new SOFTWARE LIST additions (ekara etc.) - mostly XaviX [mamehaze]
-- consolidated ekara form-factor carts into a single list with compatibility filters [David Haywood]
-new SOFTWARE LIST additions
---------
-evio.xml:
-Anime Mix 2 [David Haywood, TeamEurope]
-ekara_cart.xml:
-BH-01 Best Hit Collection (Japan)  [David Haywood, TeamEurope]
-BH-04 Best Hit Collection (Japan)  [David Haywood, TeamEurope]
-BH-07 Best Hit Collection (Japan)  [David Haywood, TeamEurope]
-Kids' Song 20 (Japan) (KD-3)  [David Haywood, TeamEurope]
-Artist Mini Volume 2 (PIKA☆NCHI, A・RA・SHI／他) (Japan) (MC0002-ATM)  [David Haywood, TeamEurope]
-Kids Song Mini Volume 4 (Fantastic) (Japan) (MC0011-KSM)  [David Haywood, TeamEurope]
-Saiten Cartridge Nesshō vol. 4 (Japan) (SC0013-SAI)  [David Haywood, TeamEurope]
-Kids' Challenge Vol.2 (Japan) (SC0017-SAI)  [David Haywood, TeamEurope]
-PR-01 Morning Musume - I'm Here! (Not for Sale, Japan)  [David Haywood, TeamEurope]
-Natsukashi no Meikyoku-shū  [David Haywood, TeamEurope]
-Dream Cartridge: TV Pop Junior Vol.8 (Japan) (DC0004-TPJ) [David Haywood, TeamEurope]
-Dream Cartridge: TV Pop Junior Vol.10 (Japan) (DC0009-TPJ) [David Haywood, TeamEurope]
-hikara_cart.xml:
-Hi-kara 5-song capacity user cartridge (used, with 4 songs) (Japan) [David Haywood, TeamEurope]
-Best Hit Collection Volume 3: J-Pop 3 (Japan) [David Haywood, TeamEurope]
-Best Hit Collection Volume 5: Anime Song 2 [David Haywood, TeamEurope]
-Best Hit Collection Volume 7 [David Haywood, TeamEurope]
-Best Hit Collection Volume 8 [David Haywood, TeamEurope]
-Ciao Special [David Haywood, TeamEurope]
-Pocket Monsters Special [David Haywood, TeamEurope]
-bkrankp_cart.xml:
-J-Pop Blue [David Haywood, TeamEurope]
-Aikatsu Ver. Best [David Haywood, TeamEurope]
-J-Pop - Strawberry [David Haywood, TeamEurope]
-J-Pop - Green [David Haywood, TeamEurope]
-J-Pop - Pink [David Haywood, TeamEurope]
-Kid's Pop - Lemon Yellow [David Haywood, TeamEurope]
-Kid's Pop - Red [David Haywood, TeamEurope]
-Kid's Pop - Apple Green [David Haywood, TeamEurope]
-J-Pop - Grapefruit [David Haywood, TeamEurope]
-Disney Dream Hit Song [David Haywood, TeamEurope]
-J-Pop - Mint [David Haywood, TeamEurope]
-Best Hit Song [David Haywood, TeamEurope]
- 
-new NOT WORKING machines
------------
-TV-PC Thomas & Friends (Japan) [TeamEurope]
-TV-PC Doraemon (Japan) [TeamEurope]
-
-12311: misc/cb2001.cpp: Added a partial dump for 'New DongmulDongmul 2' [clawgrip]
-New not working machine
------------------------------
-New DongmulDongmul 2 [Taksangs, charlie]
-
-12312: taito/taito_f3_v.cpp: regain performance after major rewrite [y-ack]
-addresses my own concerns with #11811 speed regression against previous implementation.
- * switch AoS z buffers and per-pix blend info to SoA
- * allow vectorization of line blending operation
- * regains empty line optimization by tracking tilemap row usage
- * consolidate sprite framebuffers (we still pull from it multiple times for each sprite priority group)
- * other minor wins from safe logic reorderings
-
-12313: Add a skeleton for a new Recreativos Franco slot game and move all RF drivers to their own folder [clawgrip]
-New not working machine
------------------------------
-Jail Break (Recreativos Franco slot machine) [Hammy, ClawGrip]
-
-12314: galaxian/galaxian.cpp: 'bongoa' dip switches are memory mapped [devinacker]
-Compared to the parent set, `bongoa` ignores the AY input ports and reads dip switches from a memory-mapped port.
-This set also hacks out the code which initializes the AY port direction bits (compare code at $2288 in both sets), which means the
-  'noise enable' bits are never initialized either, leaving the noise generator enabled on all three channels. Is that actually
-  what's supposed to happen or should the noise output be disabled by default instead?
+- 10461: a7800.xml: Changed years from copyright years to years of release. [kmg]
+- 11811: taito/taito_f3_v.cpp: Reimplemented Taito F3 video emulation. [ywy, 12Me21]
+- 12171: megadriv.xml: Updated descriptions for some Sonic The Hedgehog games, and added notes. [ICEknight]
+- 12180: mr/nl_drlibling.cpp: Improved approximation of JFETs in PARATA section and improved performance. [Paperinik]
+- 12190: megadriv.xml: Added three working items. [ICEknigh7]
+- 12195: rm/rm380z.cpp: Added COS 4.0/F system configurations. [Robin Sergeant]
+- 12201: util/cdrom.cpp, machine/t10mmc.cpp: Added initial support for multi-session discs, indexes and track flags. [Windy Fairy]
+- 12247: atari/atetris.cpp: Add an Atari Tetris bootleg with an extra OKI M5205 sound chip. [Taksangs, ClawGrip]
+- 12263: skeleton/pcksurfer.cpp: Added a skeleton driver for the Datawind Pocket Surfer mobile terminal. [Chan Chu Yo, ClawGrip]
+- 12264: subsino/subsino.cpp: Added a Treasure Bonus bootleg called Lucky Seven. [Taksangs, charlie, ClawGrip]
+- 12265: pc/conliner.cpp: Added a skeleton driver for Spanish touchscreen games from Comatel. [Cuclis, Oskarito, ClawGrip]
+- 12275: heathkit/tlb.cpp: Cleaned up code. [Mark Garlanger]
+- 12282: jaguar.xml: Cleaned up descriptions and moved some comments to <notes> elements. [ArcadeShadow]
+- 12283: casio/rz1.cpp: Use separate speaker devices for individual line outputs. [Devin Acker]
+- 12286: atlus/cave.cpp: Added Jumbo Godzilla. [Moffitt]
+- 12287: cpu/tms34010.cpp: Suppress side effects for debugger reads. [cam900]
+- 12288: msx/slot: Use arrays of memory views to make code more concise. [Wilbert Pol]
+- 12290: cpu/t11, bus/qbus: Reuse Z80 daisy chain code for vectored interrupts. [shattered]
+- 12292: bus/msx/cart: Use arrays of memory views to make code more concise. [Wilbert Pol]
+- 12293: galaxian/galaxian.cpp: Re-dumped bad program ROM for Bongo bootleg. [Recreativas.org, ClawGrip]
+- 12294: apple2_flop_clcracked.xml: Added thirteen cracks. [4am, san inc, A-Noid33]
+- 12295: misc/coolpool.cpp: Moved different configurations to separate driver state classes and cleaned up code. [cam900]
+- 12296: galaxian/galaxian.cpp: Added an additional Spanish Zero Time bootleg. [Recreativas.org, ClawGrip]
+- 12297: midway/midyunit.cpp: Moved different sound systems to separate driver state classes. [cam900]
+- 12299: pacman/pacman.cpp: Added an additional set of The Glob on Pac-Man hardware. [Recreativas.org, ClawGrip]
+- 12300: sound/swp00.cpp: Improved DPCM sample decompression. [Theo Niessink]
+- 12301: galaxian/galaxian.cpp: Added another Spanish bootleg of Pac-Man from Video Dens. [Recreativas.org, ClawGrip]
+- 12302: heathkit/h89.cpp: Fixed RAM writes when full 64K is present and lower 8K is in ROM/special RAM mode. [Mark Garlanger]
+- 12303: midway/midvunit.cpp: Split driver state class to reduce optional object finders, and cleaned up code. [cam900]
+- 12305: sound/swp30.cpp, sound/swx00.cpp: Improved DPCM sample decompression. [Theo Niessink]
+- 12306: sinclair/scorpion.cpp: Added three BIOS options; sinclair/pentevo.cpp: Added ZX Evolution ERS v0.59.13 BIOS option. [holub]
+- 12309: skeleton/tvcobrasd.cpp: Added a Cobra Sport Dart set with an AY-8910 sound chip. [ClawGrip]
+- 12310: bkrankp_cart.xml, ekara_cart.xml, evio.xml: Added cartridges; tvgames/xavix.cpp: Added two TV-PC variants. [David Haywood]
+- 12312: taito/taito_f3_v.cpp: Optimised for performance. [ywy]
+- 12313: recfranco/rfjailbrk.cpp: Added a skeleton driver for the Recreativos Franco Jail Break slot machine. [hammy, ClawGrip]
+- 12314: galaxian/galaxian.cpp: Hooked up memory mapped DIP switches for the Bongo bootleg. [Devin Acker]
 
 12315: intvecs.xml: Metadata cleaning [ArcadeShadow]
 - Added manufacturer's name in software list name
