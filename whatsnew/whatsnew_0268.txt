@@ -22,6 +22,7 @@ Novag Industries Sapphire II [hap, Berger]
 Saitek Kasparov Centurion [hap, Berger]
 Saitek Kasparov GK 2100 [hap, Berger]
 Sanyo PHC-20 [Nigel Barnes, Tony Jewell]
+Sega Toys / Alpine Electronics, Inc. Car Beena [TeamEurope, QUFB]
 Thaler MPS-65 [Nigel Barnes]
 
 
@@ -33,6 +34,7 @@ Excalibur Electronics Ivan The Terrible (H8/3216 version) [hap, Sean Riddle]
 Guttang Gottong [system11]
 Hegener + Glaser Mephisto ESB II (ESB II board) [hap, Berger]
 Hegener + Glaser Mephisto II (set 3) [Berger]
+Jingle Bell (v200US) [Ioannis Bampoulas]
 Link (Korean bootleg of Atari Tetris) [Taksangs]
 Miss World 2002 [system11, Brian Troha, The Dumping Union]
 Missile Command (rev 1, A035467-01 PCBs) [Joe Magiera, The Dumping Union]
@@ -227,297 +229,38 @@ psion_ssd:
 
 Merged pull requests
 --------------------
-12088: trs/mc10.cpp: add minimum rom size and block size for cartridge rom, clean global namespace [Mokona]
-Resolving the comments on #12080
-- Clean some mentioned code aspects
-- Specify the ROM minimum size and block size
-- Sort includes
-- Clean the global namespace
-- Add license lines
-Report the comments on other previously written MC10 cart devices.
-
-12387: Add Comelta's DRAC-1 (AIM 65 based) and it's BASIC [OldComputers ES] [clawgrip]
-Add Comelta's DRAC-1 as a new AIM 65 BIOS, and it's BASIC, an alternate version of the AIM 65 BASIC v1.1, as a new software list
-  item.
-New working software list items
--------------------------------
-aim65_cart.xml:
-  AIM 65 BASIC v1.1 (alt) [OldComputers ES]
-
-12395: ibm5170.xml: Added 15 working items + 1 redump [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Aces of the Deep [Total DOS Collection]
-Aces of the Deep: Expansion Disk [The Good Old Days]
-Aces Over Europe [Total DOS Collection]
-Aces Over Europe (German) [Total DOS Collection]
-Arcade Pool (alt) [Total DOS Collection]
-Archon Ultra [Total DOS Collection]
-Blackthorne [Total DOS Collection]
-Lethal Weapon [Total DOS Collection]
-Lethal Weapon (Big Games) [Total DOS Collection]
-Psycho Pinball [Total DOS Collection]
-Sensible World of Soccer [Total DOS Collection]
-Super Street Fighter II Turbo  [Total DOS Collection]
-Warriors [Total DOS Collection]
-Worms [Total DOS Collection]
-Zoop [Total DOS Collection]
-Redump software list item
---------------------------------------------
-Micro Machines 2: Turbo Tournament [Total DOS Collection]
-
-12403: hash/nes.xml: Add a not working NES multigame pirate cart [clawgrip]
-New software list items marked not working
-------------------------------------------
-nes.xml: 150 Super Cool Cards [Taksangs]
-
-12410: Various video system driver fixes/cleanups [cam900]
-vsystem/vsystem_spr.cpp: Use device_gfx_interface for gfx decode, Minor cleanups
-- Constantize variables
-- Use correct type for variables
-- Use delegate for priority handling
-- Use C++ style comments for single line comments
-vsystem/vsystem_spr2.cpp: Use device_gfx_interface for gfx decode, Minor cleanups
-- Constantize variables
-- Use correct type for variables
-- Add missing item in save states
-- Fix function naming
-vsystem/crshrace.cpp, suprslam.cpp, welltris.cpp: Use generic gfx decode layout
-vsystem/gstriker.cpp: Fix sprite delay
-vsystem/pspikes.cpp: Reduce duplicates
-vsystem/aerofgt.cpp: Remove unnecessary region pointer, Fix ROM region naming
-vsystem/f1gp.cpp: Tidy in bootleg sprite draw routine
-vsystem/inufuku.cpp: Add notes
-vsystem/f1gp.cpp, fromance.h, pipedrm.cpp: Use C++ style comments for single line comments
-
-12444: shared/rax.cpp: Use device_mixer_interface for sound route, Cleanups [cam900]
-- Use C++ style comments for single line comments
-- Suppress side effect for debugger reads
-- Make variables constant
-- Fix spacing
-- Reduce literal tag usages
-- Add variables into save state
-sony/zn.cpp: Cleanups
-- Suppress side effects for debugger reads
-- Make variables constant
-sega/stv.cpp: Add notes
-
-12446: nichibutsu/cclimber.cpp: Improves Swimmer driver and adds a new game set [NeilBakersTech]
-Hey folks. I was granted access to a private arcade collection to repair some game boards and an unusual one caught my eye.
-The game board stack was a Tehkan Swimmer, the same as one in my own collection but with modifications to the CPU and Video layers.
-Using a Willem programmer I was able to read the EPROM data as 2764 and 2764 types and a grep of MAME code returned no match on the
-  checksums.
-When trying to add it to MAME it did not work when renamed as Swimmer and creating replacement EPROMs for my Swimmer game board
-  yielded no results either.
-I spent some time making technical notes from my Swimmer game board to understand the working of the board and source of the
-  problem. These notes did not allow the game to run either but led me to see some problems with MAME and the emulation of Swimmer.
-Foremost there are numerous places on the game board where address lines are not fully decoded resulting in what MAME calls
-  mirroring. It can be seen on the input section where MAME had separated ports. I have corrected these.
-Specific to Swimmer and not Crazy Climber is the sound latch handling. The Swimmer board is a Tehkan game board and uses the same
-  flp-flop configuration with LS273 as found on Bomb Jack for clearing sound latch on read.
-After fixing these mistakes in MAME and performing a routine cleaning of the source files I began narrow down what was required to
-  run this new ROM.
-Without ongoing access to the modified game board I am unable to determine how the alterations work on hardware but they provide 2
-  new RAM areas over the standard Swimmer configuration. One of them bypasses the fixed color generation circuits of the original by
-  providing dynamic colors with 3 bits per gun while the other acts as scratch RAM.
-The ROM started up as a game I had not heard of before 'Au' with a copyright of 1983
-I have begun understand the Dipswitch requirements but could not discover the meaning for a couple. Is there an AI game code
-  analysis tool to help with them or is it a labor intensive process?
-Please thank Neill Baker Tech if you decide to include my changes.
-
-12464: new NOT WORKING clones (KaraokeTV Star) [mamehaze]
-new NOT WORKING clones
------------------
-KaraokeTV Star (US, with 25 songs, 'FREE 35 Hit Songs / $35 value' packaging) [David Haywood, Sean Riddle]
-Star Singer Karaoke (MKS4001) [David Haywood, Sean Riddle]
-
-12467: alice32.xml, alice90.xml, nes_datach.xml: Metadata cleanups [ArcadeShadow]
-alice32.xml, alice90.xml: Lowercase on descriptive words
-nes_datach.xml: Replaced countries' abbreviations
-
-12485: cops.cpp: Promote Revelations to working [james-wallace-ghub]
--cops.cpp: Added CHD for Revelations [James Wallace, AintBigAintClever]
--ldp1450hle.cpp: Create an HLE implementation of the LDP1450 player [James Wallace]
-Systems promoted to working
-Revelations [James Wallace, AintBigAintClever]
-
-12502: heathzenith/h89.cpp: Add wait states for mms 77316 fdc [mgarlanger]
-The 77316 FDC requires wait states to work with 8" DD disks, since the 2 MHz Z80 could not handle the data rate of 8" DD disks. The
-  hardware on the card will hold the CPU in wait states until the DRQ state is raised.
-Reading and writing is now working correctly with the latest comit.
-
-12503: sega/sega_beena.cpp, carbeena.xml: Add Car Beena and BIOS MIDI PCM ROMs [qufb]
-New working software items (carbeena.xml)
--------------------------
-Car Beena Tentou-you Demo 1 [TeamEurope, QUFB]
-
-12504: cpu/xa: New Philips XA disassembler  [mamehaze]
-- added a disassembler for the XA architecture from Philips which is sometimes referred to as  80c51XA (it isn't binary compatible
-  with an 8051 in any way, just designed to have a similar enough instruction set and memory layout that code can be translated
-  easily over using software Philips provided)
-- hooked this up to igs_fear.cpp (fearless, superkds) and igs_m027.cpp (haunthig, crzybugs)
-
-12506: cpu/tms32025.cpp: Add primary TMS32020 support [cam900]
-taito/mlanding.cpp: Use TMS32020 DSP instead TMS32025
-
-12509: new NOT WORKING machines - Virtual Tennis [mamehaze]
-new NOT WORKING machines
---------------------
-Virtual Tennis (VTG) [Sean Riddle, David Haywood]
-
-12510: cpu/m68000: Fix fmovem reads for mode=2 [svenschnelle]
-commit 6957c469983 changed the write part, but missed to convert the read part. This fixes booting HP-UX 9 boot on hp9k_3xx.
-Fixes: 6957c469983 ("cpu/m68000: Updated 680x0 FPU to Softfloat 3 from 2.")
-
-12511: floptool: fix HP 9121 format #4 [svenschnelle]
-With this change, all the SSDD disks from hpmuseum can be read, and the size of the disk matches. While at it, also fix a typo.
-
-12513: rendersw: Generate cosine table at compile time [FlykeSpice]
-
-12514: hp_dio: add HP98624 GPIB interface card [svenschnelle]
-
-12515: casio/pv1000.cpp: fix border color [lidnariq]
-Research I did a year ago established that Casio's PV-1000 border colors red and blue bits are reversed. 
-See https://forums.nesdev.org/viewtopic.php?p=288421#p288421
-People on the discord agreed that swapping the palette definition and tiles interpretation structure was cleaner than explicitly
-  bit-reversing the value received during the I/O port writes
-
-12516: pc/cuttherope.cpp: Fix year and add notes about another Cut The Rope arcade game [clawgrip]
-
-12519: cops.cpp: Make the first boot instruction clearer (nw) [james-wallace-ghub]
-Hopefully this is clearer, I do have a default NVRAM, but I don't know if that's worth including
-
-12520: gaelco/atvtrack.cpp: Add notes and ROM placeholder for Gaelco Football I/O PCB [Recreativas.org] [clawgrip]
-
-12521: gaelco/gaelcopc.cpp: Add note about Tuning Race I/O board, reformat comments [clawgrip]
-
-12522: heathzenith/h89.cpp: Fix shadow memory writes [mgarlanger]
-Fixes shadow writes when in ROM mode. 
-- This now properly writes to the floppy RAM which fixes a boot issue with HDOS 2.0.
-
-12523: heathzenith/mms77316_fdc.cpp,z37_fdc.cpp: Minor cleanup, improve logs. [mgarlanger]
-No functional changes in this PR.
-mms77316_fdc.cpp:
-- Update/Add logs.
-- Minor logic simplification
-z37_fdc.cpp:
-- display log data in hex.
-
-12524: machine/ncr5385.cpp: raise IRQ for INT_INVALID_CMD [Elektraglide]
-- Tek4404 issues cmd=0xff which expects an IRQ even though its an INT_INVALID_CMD
-- minor readability; replaced magic hex value with symbolic names
-
-12525: spg2xx: Switch ADPCM algorithm to IMA ADPCM [sp1187]
-Based on some investigations I made of V.Smile sound samples and the waveforms generated by different algorithms, it seems very
-  likely to me that the ADPCM algorithm used in SPG2xx is actually IMA rather than OKI.
-This PR adds a new class for IMA ADPCM adapted from the existing OKI ADPCM class and updates the SPG2xx machine to use this instead.
-
-12526: heathzenith/z29.cpp: Add some documentation based on ROM listing [mgarlanger]
-Add port definitions and memory map based on ROM listing for the terminal.
-
-12528: bus/hp_dio: Modernize all of the HP DIO cards to use anonymous namespaces [svenschnelle]
-In #12514 rb6502 proposed to change the hp_dio cards to an anymous namespace, like the intelliset bus. So here's the PR changing the
-  cards.
-
-12529: nmk/nmk16.cpp: Adjusted values for proper screen size, timings and interrupts, according to real hw [sergiopolog]
-Fixed screen size, interrupts and raster timings on nmk16 driver to be more accurate with original hw.
-This hardware relies on two counters and the contents of two PROMs for the timing signals generation. The counters are implemented
-  inside NMK-902 custom chip (except `tharrier`) for all "low-res" games and are used to address the entries on each PROM in a
-  sequential way. On "hi-res" games, one of the counters is implement outside the custom chip, due to they decided to boost up the
-  horizontal resolution.
-- "Horizontal" signals, such as HBlank, HSync... are generated using one of the counters and a 256x4bit PROM, and each step on the
-  counter takes 2 pixel clock cycles.
-  - For "low-res" games the counter starts on `0x40` and goes to `0xFF` having 192 steps. As each step is 2 px, so the total H-size
-  is 384px wide. PROM entries from `0x00` to `0x39` address are never used.
-  - For "hi-res"  games the counter starts on `0x00` and goes to `0xFF` having 256 steps. As each step is 2 px, the total H-size is
-  512px wide. All PROM entries are used.
-- "Vertical" signals, such as VBlank, Interrupt requests... are generated using the other counter and a 256x8bit PROM, and each step
-  on the counter takes 2 scanlines.
-  - In this case, for all games the counter starts on `0x75` and goes to `0xFF` having 139 steps. As each step is 2 lines, the total
-  V-size is 278 lines high. PROM entries from `0x00` address to `0x74` are never used.
-Going into more detail:
-The H-timing PROMs is a 82S129 (256x4bit) (first 64 entries are not used in "low-res") and the format is:
-```
-    Offset  Bits     Description
-            3210
-    0       ---x     Line counter trigger (active low)
-    1       --x-     HSYNC (active low)
-    2       -x--     HBLANK (active low)
-    3       x---     unused on almost all games (only used in gunnail and raphero, purpose unknown)
-```
-Considering that and looking at the contents of the PROM, the horizontal timings are below:
-- For "low-res" (6MHz pixel clock):
-```
-                         0.....31.........91.....................................................................348.....366.....383
-/LINE-END (2 px):        ----------------------------------------------------------------------------------------------------------X
-HSYNC  (32 px):          XXXXXXXX---------------------------------------------------------------------------------------------------
-HBLANK (92 + 36 px):     XXXXXXXXXXXXXXXXXXX------------------------------256-wide-------------------------------XXXXXXXXXXXXXXXXXXX
-  // HBlank ends 92 pixels after 'start of line'
-                         ^
-                         |
-                 'start of line'  (pixel 0)
-```
-				 
-Each line:         ( 6MHz / 384 pixels per line )  =  15625Hz  =  64 usec
-- For "hi-res" (8MHz pixel clock):
-```
-                         0...27............................................................................412...432...448.479...511
-/LINE-END (2 px):        ----------------------------------------------------------------------------------------------------------X
-HSYNC  (32 px):          ----------------------------------------------------------------------------------------------XXXXXXX------
-HBLANK (28 + 100 px):    XXXXXX-------------------------------------------384-wide-------------------------XXXXXXXXXXXXXXXXXXXXXXXXX
-  // HBlank ends 28 pixels after 'start of line'
-                         ^
-                         |
-                 'start of line'  (pixel 0)
-```
-Each line:         ( 8MHz / 512 pixels per line )  =  15625Hz  =  64 usec
-For V-timing PROM, it's a 82S135 (256x8bit) (first 117 entries are not used) and the format is:
-```
-    Offset  Bits         Description
-            76543210
-    0       -------x     Sprite DMA trigger (active low)
-    1       ------x-     VSYNC (active low)
-    2       -----x--     VBLANK (active low)
-    3       ----x---     unused
-    4       ---x----     IRQ1 (active high)
-    5       --x-----     IRQ2 (active high)
-    6       -x------     IRQ4 (active high)
-    7       x-------     Interrupt Trigger (active low and effective on the very next PROM entry (2 scanlines), the interrupt is
-  triggered on 0 to 1 transition)
-```
-Considering that and looking at the content of the PROM, the vertical timings are below:
-```
-                         0.8.13..22.37.....................................................................................262...277
-/SPR-DMA-START (2 lines):--------------------------------------------------------------------------------------------------X--------
-VSYNC  (6 lines):        --XXXX-----------------------------------------------------------------------------------------------------
-VBLANK (38 + 16 lines):  XXXXXXXXXXXXX------------------------------------224-high-----------------------------------------XXXXXXXXX
-  // VBlank ends 16 lines after 'start of frame'
-                         0.9...21.....38..53......90..103..................................................218.231.........262...277
-IRQ1 (15 + 15 lines):    -------------------------XXXXXXX-----------------128-gap--------------------------XXXXXXX------------------
-  // some games like bioship and vandyke have this interrupt a bit shifted, will be fixed in the next PR
-IRQ2 (16 lines):         -------------XXXXXX----------------------------------------------------------------------------------------
-  // sometimes not present, i.e. tdragon2, macross2...
-IRQ4 (26 lines):         XXX-----------------------------------------------------------------------------------------------XXXXXXXXX
-/FRAME-END (22 lines):   XXXXXXXX---------------------------------------------------------------------------------------------------
-  // This signal is low on last 22 lines of each frame and goes high on the first line of the next one
-                                 ^
-                                 |
-                         'start of frame'  (line 22)
-```
-VBLANK time:       ( 6MHz / 384 pixels per line ) /  54 lines per VBlank    =  289.35185185Hz =  3456 usec
-Active video time: ( 6MHz / 384 pixels per line ) / 224 lines per Active    =   69.75446428Hz = 14336 usec
-Time between IRQ1: ( 6MHz / 384 pixels per line ) / 128 lines between IRQ1s =  122.0703125Hz  =  8192 usec
-Given that, the screen size, HBlank and VBlank are adjusted on each case. Interrupts and video offsets are also fixed to their
-  proper positions.
-On a later Pull-Request I'll submit new code for triggering interrupts based on the actual contents on the V-timing PROM, in order
-  to trigger the interrupts dynamically and allowing each game trigger them by its own, instead of hardcoding them on the code. It's
-  known that IRQ1 in 'bioship' and 'vandyke` is a bit shifted compared to other games, and some hi-res games don't use IRQ2.
-No clue how they implemented it on Afega games hw, but they work in the same way.
-Additionally, flip-screen is fixed for `vandyke`, `bioship` and clones. Contrary to rest of games, `vandyke` writes a 1 instead of 0
-  when flip-screen is required, so a new adapter handler is added for that special case.
-Adjusted `MACHINE_NO_COCKTAIL` flag on:
-- removed from: `macross2`, `tdragon2`, `sabotenb`, `bjtwin`, `nouryoku`, `ssmissin`, `airattck` and clones of all them
-- added to: `tharrier`, `stagger1`, `grdnstrm`, and clones
+- 12088: bus/mc10: Added minimum ROM size and block size checks for cartridge ROMs, and cleaned up code. [Sylvain Glaize]
+- 12387: rockwell/aim65.cpp: Added DRAC-1 ROM BIOS option; aim65_cart.xml: Added another BASIC version. [OldComputers ES, ClawGrip]
+- 12395: ibm5170.xml: Added fifteen working items and replaced one item with a better dump. [Total DOS Collection, ArcadeShadow]
+- 12403: nes.xml: Added a pirate multi-game cartridge (not working). [Taksangs, ClawGrip]
+- 12410: vsystem/vsystem_spr.cpp, vsystem/vsystem_spr2.cpp: Converted to use device_gfx_interface to decode graphics ROMs. [cam900]
+- 12444: shared/rax.cpp: Converted to use device_mixer_interface for sound output and cleaned up code. [cam900]
+- 12446: nichibutsu/cclimber.cpp: Added Au (Swimmer conversion) and refactored code. [Neill Baker Tech]
+- 12464: skeleton/easy_karaoke.cpp, ibm5170_cdrom.xml: Added KaraokeTV Star and Star Singer Karaoke sets.
+  [Sean Riddle, David Haywood]
+- 12467: alice32.xml, alice90.xml, nes_datach.xml: Avoid abbreviations and use lowercase for descriptive text. [ArcadeShadow]
+- 12485: atari/cops.cpp: Dumped LaserDisc for Revelations and emulated necessary devices. [James Wallace, AintBigAintClever]
+- 12502: heathzenith/mms77316_fdc.cpp: Hooked up wait output for DMA burst mode. [Mark Garlanger]
+- 12503: sega/sega_beena.cpp, carbeena.xml: Added Car Beena and software list with one item. [TeamEurope, QUFB]
+- 12504: cpu/xa: Added a disassembler for the Philips XA architecture. [David Haywood]
+- 12506: cpu/tms32025.cpp: Added the TMS32020 variant. [cam900]
+- 12509: tvgames/spg2xx.cpp: Added VTG Interactive Virtual Tennis (not working). [Sean Riddle, David Haywood]
+- 12510: cpu/m68000: Fixed fmovem loads for mode 2. [Sven Schnelle]
+- 12511: formats/fs_hplif.cpp, formats/hp300_dsk.cpp: Fixed HP 9121 format #4. [Sven Schnelle]
+- 12513: emu/rendersw.hxx: Calculate cosine table at compile time. [FlykeSpice]
+- 12514: bus/hp_dio: Added the HP98624 GPIB interface card. [Sven Schnelle]
+- 12515: casio/pv1000.cpp: Fixed border colors. [lidnariq]
+- 12516: pc/cuttherope.cpp: Corrected year and added notes clarifying which game has been dumped. [ClawGrip]
+- 12519: atari/cops.cpp: Added more detailed setup instructions for Revelations in comment. [James Wallace]
+- 12520: gaelco/atvtrack.cpp: Added notes and placeholder for ROM for the Gaelco Football I/O board. [Recreativas.org, ClawGrip]
+- 12521: gaelco/gaelcopc.cpp: Added a note about the Tuning Race I/O board. [ClawGrip]
+- 12522: heathzenith/h89.cpp: Fixed memory writes when ROM is enabled (fixes a boot issue with HDOS 2.0). [Mark Garlanger]
+- 12523: heathzenith/mms77316_fdc.cpp, heathzenith/z37_fdc.cpp: Improved logging and tidied up code. [Mark Garlanger]
+- 12524: machine/ncr5385.cpp: Assert interrupt output for invalid/reserved commands. [Adam Billyard]
+- 12525: machine/spg2xx_audio.cpp, sound/imaadpcm.cp: Use IMA ADPCM sample format (rather than Oki ADPCM). [Simon Eriksson]
+- 12526: heathzenith/z29.cpp: Added comments about I/O port connections based on ROM listing. [Mark Garlanger]
+- 12528: bus/hp_dio: Moved all card implementation classes to anonymous namespaces. [Sven Schnelle]
+- 12529: nmk/nmk16.cpp: Adjusted video timings to match real hardware and updated emulation status flags. [Sergio Galiano]
 
 12530: cpu/z80/r800.cpp: Updated instruction execution. [wilbertpol]
 - Removed undocumented Z80 instructions that are not supported by the R800
@@ -2198,15 +1941,4 @@ Best Hit Collection Volume 6: Kids' Song 1 [David Haywood, TeamEurope]
 
 -fp1100_cass.xml: Corrected two titles. [Vas Crabb]
 
-
-New working clones
-------------------
-Jingle Bell (v200US)  [Ioannis Bampoulas]
-
-
-Comparing 0.267 (mame0267) to 0.267 (mame0267-253-g0f64064d47c)
-
-New working systems
--------------------
-Sega Toys / Alpine Electronics, Inc. Car Beena
-Jingle Bell (v200US)
+-igs/igs009.cpp, igs/spoker.cpp: Re-parented Jingle Bell sets to make latest version the parent. [Vas Crabb]
