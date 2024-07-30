@@ -240,7 +240,7 @@ Merged pull requests
   [Sean Riddle, David Haywood]
 - 12467: alice32.xml, alice90.xml, nes_datach.xml: Avoid abbreviations and use lowercase for descriptive text. [ArcadeShadow]
 - 12485: atari/cops.cpp: Dumped LaserDisc for Revelations and emulated necessary devices. [James Wallace, AintBigAintClever]
-- 12502: heathzenith/mms77316_fdc.cpp: Hooked up wait output for DMA burst mode. [Mark Garlanger]
+- 12502: heathzenith/mms77316_fdc.cpp: Hooked up wait output for burst mode used with 8" drives. [Mark Garlanger]
 - 12503: sega/sega_beena.cpp, carbeena.xml: Added Car Beena and software list with one item. [TeamEurope, QUFB]
 - 12504: cpu/xa: Added a disassembler for the Philips XA architecture. [David Haywood]
 - 12506: cpu/tms32025.cpp: Added the TMS32020 variant. [cam900]
@@ -261,478 +261,60 @@ Merged pull requests
 - 12526: heathzenith/z29.cpp: Added comments about I/O port connections based on ROM listing. [Mark Garlanger]
 - 12528: bus/hp_dio: Moved all card implementation classes to anonymous namespaces. [Sven Schnelle]
 - 12529: nmk/nmk16.cpp: Adjusted video timings to match real hardware and updated emulation status flags. [Sergio Galiano]
-
-12530: cpu/z80/r800.cpp: Updated instruction execution. [wilbertpol]
-- Removed undocumented Z80 instructions that are not supported by the R800
-- Updated basic instruction timing
-- Implement MULUB and MULUW 
-Other R800 features are still not implemented
-
-12531: sinclair/beta_m.cpp: allow to use turbo clock for wd179x [holub]
-
-12532: sprinter.cpp: fix #1f IO detect and redirect [holub]
-
-12534: Add a skeleton driver for Alcatel Web Touch One web phone [clawgrip]
-New systems marked not working
-------------------------------
-Alcatel Web Touch One (model 2840, Terra, Spanish) [Arcade Hacker, ClawGrip]
-
-12535: heathzenith/z37_fdc.cpp: Fix HDOS 2.0 INIT (disk formatting) [mgarlanger]
-Fixes disk formatting under HDOS 2.0. 
-This change is not needed for HDOS 3.0 or CP/M 2.2.04 disk formatting.
-Verified with the schematics, the ready line is tied to +5V. 
-
-12537: konami/firebeat: Add pop'n music Animelo 2 (JAA) [987123879113]
-Some version difference details: pop'n Animelo 2 (JAA) has a nonstop mode that lets you play all of the songs in the game until you
-  either clear them or fail. It was removed in later revisions of the game, so it's a substantial change compared to the existing
-  JAC version. And as was the same with the JAC version, a dongle with an expired license makes the game swap out all of the anime
-  license-related artwork with more generic replacement artwork.
-Also added some newly discovered info about the seemingly first game to use the Twinkle game, Ugoke! Purimucho also thanks to Taro.
-  The schematic text is too hard to read but I included it in the email.
-
-12540: skeleton/madmoney2.cpp: Fix typo on ROM name [clawgrip]
-
-12542: toaplan/toaplan2.cpp: fix video filename ref [cam900]
-
-12543: skeleton/design.cpp: Add (not working) more Azkoyen vending machines [clawgrip]
-New systems marked not working
-------------------------------
-Vending machine model T6 [Joan RF, jordigahan]
-Vending machine model T8 [Joan RF, jordigahan]
-Vending machine model T12 [Joan RF, jordigahan]
-Vending machine model T61 (set 1) [Joan RF, jordigahan]
-New clones marked not working
------------------------------
-Vending machine model T61 (set 2) [Joan RF, jordigahan]
-
-12544: apple2_flop_clcracked.xml: Added thirty-nine working dumps, updated one dump, removed three dumps. [A-Noid33]
-* apple2_flop_clcracked.xml: Added thirty-nine working dumps.
-* apple2_flop_clcracked.xml: Updated one dump.
-* apple2_flop_clcracked.xml: Removed three imperfect dumps.
-* apple2_flop_clcracked.xml: Improved metadata.
-* apple2_flop_orig.xml: Improved metadata.
-New working software list items (apple2_flop_clcracked.xml)
- -------------------------------
-Alpine Tram Ride (revision 0) (4am crack) [4am, A-Noid] 
-Bike Hike (revision 0) (4am crack) [4am, A-Noid]
-Developing Writing Skills (4am crack) [4am, txgx42, A-Noid] 
-Earthquakes and Volcanoes (4am crack) [4am, txgx42, A-Noid] 
-Factactics Trivia Game: Sports (4am crack) [4am, txgx42, A-Noid] 
-Fantastic Animals (4am crack) [4am, A-Noid]
-Kinder Critters: Letters and Patterns (4am crack) [4am, A-Noid] 
-Language Activities Courseware Level 3 (4am crack) [4am, txgx42, A-Noid] 
-Language Carnival 2 (4am crack) [4am, txgx42, A-Noid] 
-Math Word Problems Volume 2: Money (4am and san inc crack) [4am, A-Noid] 
-Mathosaurus: Computation (4am crack) [4am, A-Noid] 
-Monster Smash (version 2.0) (4am crack) [4am, A-Noid] 
-On Balance (4am crack) [4am, A-Noid]
-Peanuts Math Matcher (4am crack) [4am, txgx42, A-Noid] 
-Pet Shop (A-347 version 1.0) (4am crack) [4am, A-Noid] 
-Punctuation Rules (4am and san inc crack) [4am, A-Noid] 
-Punctuation Skills: End Marks, Semicolon, and Colon (4am crack) [4am, A-Noid] 
-Questprobe featuring Spider-Man (version B-258) (4am crack) [4am, A-Noid] 
-Questprobe featuring Spider-Man (version F-261) (4am crack) [4am, A2_Canada, A-Noid] 
-Ray Tracing (version 1.0, July 1986) (4am crack) [4am, txgx42, A-Noid] 
-Reader's Treasure Chest: Level One (4am crack) [4am, A-Noid] 
-Real Math: Level I (4am crack) [4am, A-Noid]
-Real Math: Level II (4am crack) [4am, A-Noid]
-Real Math: Level III (4am crack) [4am, A-Noid]
-Scott Adams Graphic Adventure 1: Adventureland (version 2.2/416) (4am crack) [4am, txgx42, A-Noid] 
-Success with Algebra: Advanced Linear Equations (4am crack) [4am, txgx42, A-Noid] 
-Success with Math: Multiplication/Division (4am crack) [4am, A-Noid] 
-Teacher's Pet (4am crack) [4am, A-Noid]
-The Teacher's Tool Kit: Multiple Choice (4am crack) [4am, A-Noid] 
-The Teacher's Tool Kit: Word Match (version 2.0) (4am crack) [4am, A-Noid] 
-The Teacher's Tool Kit: Word Scramble (version 2.0) (4am crack) [4am, A-Noid] 
-The Teacher's Tool Kit: Word Search (version 2.0) (4am crack) [4am, A-Noid] 
-The Trivia Arcade (4am crack) [4am, A-Noid]
-Tink!Tonk!: Tinka's Mazes by Mercer Mayer (4am crack) [4am, A-Noid] 
-Top Readers' Club: Grade 2 (4am crack) [4am, A-Noid] 
-Top Readers' Club: Grade 3 (4am crack) [4am, A-Noid] 
-Top Readers' Club: Grade 4 (4am crack) [4am, A-Noid] 
-Top Readers' Club: Grade 5 (4am crack) [4am, A-Noid] 
-War (4am crack) [4am, A-Noid] [4am, A2_Canada, A-Noid]
-Redumped software list items (apple2_flop_clcracked.xml) 
--------------------------------
-Sherwood Forest (cleanly cracked) [4am, A-Noid]
-Removed software list item (apple2_flop_clcracked.xml)
--------------------------------
-Tink Tonk - Tuk Goes to Town (imperfect clean crack) 
-Tink! Tink! Tink's Subtraction Fair (imperfect clean crack) 
-Tonk in the Land of the Buddy-Bots (imperfect clean crack)
-
-12545: nmk/nmk004.cpp: redumped internal ROM of NMK004 sound CPU [sergiopolog]
-It was dumped from two different devices taken from `acrobatm` and `tdragon` boards.
-![NMK004 dump](https://imgur.com/pi6B6jc)
-The dump was exactly the same from those 2 devices, so I consider it a good and reliable dump. It was achieved using a custom tool
-  to read internal ROMs from TLCS90 MCUs: https://github.com/sergiopolog/tlcs90-rom-reader
-Previously existing dump made by 'trap15' only differs in 3 bytes starting at 0xFBD address. That difference could be caused by the
-  method used to extract the ROM back then.
-Actually, I talk to him about it and he stated that area around 0xFBF address was marked as unsure when he carried out the process.
-
-12547: atari/atetris.cpp: Add a new Tetris Korean bootleg and redumped atetb5205 OKI ROMs [clawgrip]
-New working clones
--------------------
-Link (Korean bootleg of Atari Tetris) [Taksangs]
-
-12548: casio/pv1000.cpp: borders are on top and bottom [lidnariq]
-Casio's PV-1000 puts the border on top and bottom, not the left and right as in the previous implementation. See:
-  https://forums.nesdev.org/viewtopic.php?p=288422#p288422
-(The pixel aspect ratio is also wrong; I will submit that change in a future pull request)
-
-12549: trs/gime.cpp: video 512k bank is not tied to the frame start [tlindner]
-Video 512k bank is external to the GIME. It can be changed at anytime.
-
-12551: igs/pgmcrypt.cpp: fix decryption for fearless [XingXing] [HappyASR]
-
-12552: added 4 XaviX based games, not working [mamehaze]
-new NOT WORKING machines
---------------
-Excite Ping Pong 2 (Japan) [Team Europe, Peter Wilhelmsen, David Haywood]
-Croket! Itada Kinka! Banker Battle!! (Japan) [Team Europe, Peter Wilhelmsen, David Haywood]
-Shooting King (Japan) [Team Europe, Peter Wilhelmsen, David Haywood]
-Gun Gun Revolution (Japan) [Team Europe, Peter Wilhelmsen, David Haywood]
-these all run, but lack inputs.  Excite Ping Pong 2 has some graphical corruption which looks like it might be bitrot, so is marked
-  as bad (reads were consistent)
-
-12553: igs/igs_fear.cpp - add IGS027A dump to fearless [tormod, Peter Wilhelmsen, XingXing] [mamehaze]
-igs_fear.cpp - add IGS027A dump to fearless
-pgmcrypt.cpp - properly fix fearless decryption
-
-12554: seibu/goal92.cpp: DIP Switches updates [UnclePetros]
-- Added DIP Switches (DIPSW2) (used cupsoc implementation)
-- Updated existing DIP Switches to show placeholder in DIP Switches menu
-
-12555: Fixes/ROMs for Roland stuff [giulioz]
-- Renames `rolandpcm` into `roland_lp` to make it distinct from other PCM chips
-- Adds a skeleton for the GP (TC6116) chip
-- Fixes the T6963C LCD controller by adding ram read support and correct text/graphics enable register handling. This makes the
-  Roland D-70 behave correctly with message popups
-   <img width="997" alt="image" src="https://github.com/mamedev/mame/assets/1353142/f510de21-3808-4d2e-b880-f83ce2b0dbb4">
-- Fixes the allocation of waveroms in the Roland D-70
-- Adds the first ever dump of the internal mask ROM of the Roland D-50 CPU
-- Fixes the memory map of the JV80 and wires up the PCM chip skeleton
-- Adds a skeleton and ROM dumps for the RD-500
-
-12558: atari/atetris.cpp: Redumped Link graphics ROM [Taksangs] [clawgrip]
-
-12559: nmk/nmk16.cpp: Fix max sprite clock related to screen size [cam900]
-
-12561: Add HP9133 disk drive [svenschnelle]
-This adds the HP9133 disk drive, which was common with HP9000 200 and 300 systems. It also adds a sync acknowledge callback to the
-  6809, and multi sector read/write to wd2010.
-
-12562: nmk/nmk16.cpp: upgraded interrupts trigger system based on PROM contents [sergiopolog]
-* Added a new system for triggering interrupts based on PROM contents:  `set_interrupt_timing()` and `nmk16_scanline`.
-* Bootleg sets, Afega and Comad games, and other sets that PROMs are still undumped (or not exist), on which the new interrupt
-  triggering system cannot be applied, remain using the old `set_hacky_interrupt_timing()` and `nmk16_hacky_scanline` handlers.
-* Added info about screen resolutions and timings.
-* Removed "hacky" denomination to `set_screen_xxxxxx()` functions as the screen sizes are confirmed for each available resolution
-* PROM dumps from `hachamfp` are added to `hachamf` and other clones, and marked as `BAD_DUMP` until they are properly dumped
-* PROM dumps from `bjtwin` are added to `nouryoku` and clones, and marked as `BAD_DUMP` until they are properly dumped
-* `strahl` and clones could benefit from the new interrupt system, but PROMs for them are undumped. They still use the old system
-  until they are properly dumped
-* `ssmissin` and `airattck` "Comad" games could also benefit from the new interrupt system, but the V-Timing PROM on them is a
-  82S147 (512x8bit) in which only half of space is used and A5 address line is tied to ground. The `nmk16_scanline` code could be
-  tweaked to support them, but more research is needed to apply that. They still use the old system.
-* Merged `powerins.cpp` into `nmk16.cpp` driver to make use the new interrupt system, too. New `set_screen_midres()` function is
-  added to be used by `powerins` sets.
-* Sprite DMA process might be triggered using PROM contents aswell, but that needs more testing and it could be a future
-  enhancement.
-
-12563: igs/igs_fear.cpp: made game playable without sound [XingXing] [HappyASR]
-- added timer and interrupt
-- added rtc
-- add input and dipswitch
-- add fipx in sprite drawing
-- correct game version of superkids
-
-12565: nintendo/snesb.cpp: fill in missing DIP switches for several games, add continue counter init for Wild Guns [devinacker]
-This adds/verifies the DIP definition for all the SNES bootlegs that had a TODO for them. Defaults are based on the original SNES
-  games, when possible, aside from Wild Guns (the original gives extends at 100k, which isn't an option with this bootleg, so the
-  default is 400k to match current MAME behavior).
-Also, Wild Guns now inits the continue counter on boot/reset, which is apparently supposed to be done by whatever's on the other
-  side of the shared RAM. The only times it's initialized by the game itself are when the current counter hits zero or when a second
-  player joins mid-game. I promoted it to working since I didn't encounter any other issues during a full playthrough.
-
-12567: dectalk: fixed distortion in DTC07 DAC emulation [datajake1999]
-
-12570: casio/pv1000.cpp: Three tiny changes [lidnariq]
-* ioFF has a toggle that just draws border color instead of tiles, so that the CPU runs faster.
-* The pixel clock is slow, so the pixel aspect is noticeably wide - about 4:3
-* ioFF supports drawing tile data from all eight 8KiB windows out of the 64KiB address space; add support for the easy bottom four
-
-12571: taito/buggychl.cpp: add description of undumped versions. [negunma]
-Add other known undumped versions:
-- Another ranking song version - ported to PS2 "Taito Memories".
-  https://youtu.be/JXIvaM5508c?si=wCojMales2Kg9L7u&t=270 (Ranking 1st song)
-  https://youtu.be/Btnl9FYTiL8?si=rrGTblIfOlIQo6NJ&t=308 (Ranking 2nd song)
-- 2 player joystick version - after inserting a coin, 
-  instead of "START YOUR ENGINE", it displays "PUSH ONLY 1-PLAYER BUTTON".
-  https://youtu.be/iE9-q4IruS4?si=eYL5_iXDZDyH9TS_&t=31
-  (The title of this video states that this is the joystick version)
-- Japanese version - after inserting a coin, instead of "START YOUR ENGINE", 
-  it displays "セレクトボタンをおしてね！！(Press select button!!)" 
-  and "クレジット(Credit)" instead of "CREDIT".
-  https://youtu.be/gmC8Al1oCpo?si=JTO6eJ5Q_6-bj_NQ&t=6
-
-12572: spg2xx: Fix behavior of audio channel enable/stop flags [sp1187]
-Summary of new behavior:
-* Automatic stops sets channel stop flag while keeping channel enable flag unchanged (unlike current emulation where it's cleared). 
-* Channel is only active (channel status flag true) when enable flag is true and stop flag is false.
-This was verified in real hardware by running audio test roms on V.Smile. From what testing I have done so far, the changes don't
-  really affect the games much if at all, but it should be technically more accurate.
-
-12575: speglsht.cpp: Add notes [cam900]
-Transparent color is wrong at title screen animation, reference: https://youtu.be/cK7mGnt6YfY?si=Ah5hC_iFS2Li7Xwl
-
-12580: spg2xx: Auto-increment wave address register when channel is playing [sp1187]
-Also discovered from testing in real hardware (V.Smile). Probably not likely to noticeably affect games, but should still be
-  technically more accurate.
-
-12582: msx2_flop.xml: Added 56 items, 52 working. Removed 1 item. [wilbertpol]
-Renamed “NV Magazine Special 26 (Japan)” to “NV Magazine 1996-7 (Japan)”.
-Renamed “NV Magazine 1996-08 (Japan)” to “NV Magazine 1996-8 (Japan)”.
-Renamed “NV Magazine 1996-09 (Japan)” to “NV Magazine 1996-9 (Japan)”.
-Renamed “NV Magazine 1997-01 (Japan)” to “NV Magazine 1997-1 (Japan)”.
-Renamed “NV Magazine 1997-09 (Japan)” to “NV Magazine 1997-9 (Japan)”.
-Renamed “NV Magazine 2002-06 (Japan)” to “NV Magazine 2002-6 (Japan)”.
-Renamed “NV Magazine 2002-07 (Japan, incomplete dump)” to “NV Magazine 2002-7 (Japan)”.
-Renamed “NV Magazine 2002-08 (Japan)” to “NV Magazine 2002-8 (Japan)”.
-Removed “R・SYSTEM 3.2 (Japan)”, it was part of NV Magazine 1996-12.
-New working software list items
--------------------------------
-NV Hokkaido Vol. 1 (Japan) [file-hunter]
-NV Magazine 1 (Japan) [file-hunter]
-NV Magazine 2 (Japan) [file-hunter]
-NV Magazine #3 (Japan) [file-hunter]
-NV Magazine 4 (Japan) [file-hunter]
-NV Magazine #5 (Japan) [file-hunter]
-NV Magazine #7 (Japan) [file-hunter]
-NV Magazine #8 (Japan) [file-hunter]
-NV Magazine #9 (Japan) [file-hunter]
-NV Magazine #10 (Japan) [file-hunter]
-NV Magazine #20 (Japan) [file-hunter]
-NV Magazine #21 (Japan) [file-hunter]
-NV Magazine #22 (Japan) [file-hunter]
-NV Magazine #23 (Japan) [file-hunter]
-NV Magazine #24 (Japan) [file-hunter]
-NV Magazine #26 (Japan) [file-hunter]
-NV Magazine 1996-10 (Japan) [file-hunter]
-NV Magazine 1996-11 (Japan) [file-hunter]
-NV Magazine 1998-6 (Japan) [file-hunter]
-NV Magazine 1998-9 (Japan) [file-hunter]
-NV Magazine 1998-10 (Japan) [file-hunter]
-NV Magazine 1999-1 (Japan) [file-hunter]
-NV Magazine 1999-2 (Japan) [file-hunter]
-NV Magazine 1999-3 (Japan) [file-hunter]
-NV Magazine 1999-5 (Japan) [file-hunter]
-NV Magazine 1999-6 (Japan) [file-hunter]
-NV Magazine 1999-7 (Japan) [file-hunter]
-NV Magazine 1999-8 (Japan) [file-hunter]
-NV Magazine 1999-9 (Japan) [file-hunter]
-NV Magazine 1999-10 (Japan) [file-hunter]
-NV Magazine 1999-11 (Japan) [file-hunter]
-NV Magazine 2000-1 (Japan) [file-hunter]
-NV Magazine 2000-2 (Japan) [file-hunter]
-NV Magazine 2000-3 (Japan) [file-hunter]
-NV Magazine 2000-4 (Japan) [file-hunter]
-NV Magazine 2000-5 (Japan) [file-hunter]
-NV Magazine 2000-6 (Japan) [file-hunter]
-NV Magazine 2000-7 (Japan) [file-hunter]
-NV Magazine 2000-8 (Japan) [file-hunter]
-NV Magazine 2000-9 (Japan) [file-hunter]
-NV Magazine 2000-10 (Japan) [file-hunter]
-NV Magazine 2000-11 (Japan) [file-hunter]
-NV Magazine 2000-12 (Japan) [file-hunter]
-NV Magazine 2002-1 (Japan) [file-hunter]
-NV Magazine 2002-2 (Japan) [file-hunter]
-NV Magazine 2002-4 (Japan) [file-hunter]
-NV Magazine 2002-5 (Japan) [file-hunter]
-NV Magazine SP #2 (Japan) [file-hunter]
-NV Magazine Special #3 (Japan) [file-hunter]
-NV Magazine Special #4 (Japan) [file-hunter]
-NV Magazine Special #6 (Japan) [file-hunter]
-NV RSDM #4 (Japan) [file-hunter]
-New NOT_WORKING software list additions
-------------------------------------------
-NV Magazine 1996-12 (Japan) [file-hunter]
-NV Magazine 1998-11 (Japan) [file-hunter]
-NV Magazine 2001-12 (Japan) [file-hunter]
-NV Magazine 2002-3 (Japan) [file-hunter]
-
-12583: bus/msx/cart/ide.cpp: Add support for Sunrise ATA-IDE [msxpro, Wilbert Pol] [wilbertpol]
-bus/msx/cart/ide.cpp: Add support for Sunrise ATA-IDE [msxpro, Wilbert Pol]
-machine/atahle.cpp:
-- Clear DMA modes when switching to PIO mode.
-- Do not log when reading from the debugger.
-msx2_flop.xml: Added 2 items.
-New working software list items
--------------------------------
-Sunrise IDE firmware (v2.50) [anonymous]
-Sunrise IDE firmware (v2.40) [anonymous]
-
-12585: upd765: Drive busy bits should not be cleared until a SIS is executed [brijohn]
-The upd765 does not clear the drive busy bits until you issue a sense interrupt status command. Without this fix CP/M Plus on the
-  QX-10 gives disk I/O errors because it expects the busy bit to stay set until it has a chance to issue the SIS command.
-I have verified this is the correct behavior on a real QX-10, which uses a NEC D765AC as its floppy controller. Regarding the
-  cpc6128, this fix does not seem to cause an issues with accessing a disk, I can run cat from basic and get a directory as well
-  load files from the disk. Same thing with the specpl3e, loading programs from disk appears to work fine.
-
-12588: rs232: Add Mouse Systems serial mouse to default rs232 list. [brijohn]
-This adds the support for using the Mouse Systems serial mouse in the QX-10 emulation. Valdocs supported this mouse when using
-  programs like valpaint and valdraw.
-
-12590: Heath/Zenith H8: Add Front Panel Keypad and Support for Serial Console [jefftranter]
-Add front panel keypad and support for serial console to Heathkit H8.
-
-12591: konami/viper.cpp: hookup wcombat inputs, update QA [Hydreigon223]
-Most changes from #12546 along with additional changes.
-- Updated TODO to remove problems "fixed" by the skeleton LAN controller device.
-- Removed outdated "Game status" list.
-- Added lightgun inputs to wcombatu.
-- Marked thrild2c's CF dump as bad.
-- Removed all clones with alt CF dumps of the same version: p911ea, thrild2ab, thrild2ac, tsurugie, wcombatb
-
-12594: machine/at28c64b.cpp: Fix read overflow initializing nvram [ksherlock]
-actual rom size may be less than AT28C64B_DATA_BYTES. a2bus/booti,  as a motivating example, has a ROM size of 0x2000.
-MT 08524
-
-12595: new NOT WORKING machines (Sutjaro Haeyo Deluxe) [mamehaze]
-new NOT WORKING machines
------------
-Sutjaro Haeyo Deluxe [Taksangs, David Haywood]
-
-12597: sound/scspdsp.cpp: Use util::sext for sign extend, Use lowercase hexadecimal values [cam900]
-
-12599: hp/hp98x6.cpp: Support 3 new machines [fulivi]
-Hi,
-this PR adds the emulation of hp9826a, 9836a & 9836c machines (of the hp98x6 family).
-I'll e-mail the relevant ROM images shortly.
-Thanks.
---F.Ulivi
-
-12600: msx/cart/ide.cpp: Cleanup: remove interface_pre_start and rom bank. [wilbertpol]
-
-12603: spectrum_cass.xml: Added 29 working items [ArcadeShadow]
-New working software list additions
---------------------------------------------
-1º Campeonato Nacional de Jogos de Computador [Planeta Sinclair]
-Bride of Frankenstein (bugfix) [Spectrum Computing]
-Bride of Frankenstein (Dro Soft) [Spectrum Computing]
-Cálculo de Cadernetas [Planeta Sinclair]
-Cálculo de Rumo e Base e Irradiação [Planeta Sinclair]
-Castlevania: Spectral Interlude (v1.1, Portuguese, 128K) [Spectrum Computing]
-Castlevania: Spectral Interlude (v1.1a, Portuguese, 128K) [Rewind]
-Comilão (Timex) [Planeta Sinclair]
-Dark Star (MCM) [Spectrum Computing]
-Dimensionamento de Vigas [Planeta Sinclair]
-Dimensionamento de Vigas (prototype) [Planeta Sinclair]
-Dustin (small case) [Spectrum Computing]
-Dyna Star (alt) [Spectrum Computing]
-El Mantecas [Spectrum Computing]
-Evaristo el Punky [Spectrum Computing]
-Fallen Angel (Musical 1) [Spectrum Computing]
-Farmer Jack In Harvest Havoc! (Bob Smith, digital release) [Bob Smith]
-Football Manager 2 (System 4) [Spectrum Computing]
-Football Manager 2 (System 4, small case) [Spectrum Computing]
-Manchester United (System 4, alt) [El Trastero del Spectrum]
-Moonraker [Luís Rato, Planeta Sinclair]
-Programa "Zig Zag" - 1º Campeonato Nacional de Jogos de Computador  [Planeta Sinclair]
-Promoção 84 [Planeta Sinclair]
-Promoção 84 (split files) [Planeta Sinclair]
-Puncman 3 and 4 (alt) [Luís Rato, Planeta Sinclair]
-Rotinas para Efeitos Especiais [Planeta Sinclair]
-Saboteur II - O Angelos Edikeitai (PIM) [Luís Rato, Planeta Sinclair]
-Saimazoom (medium case) [Spectrum Computing]
-Saimazoom (small case) [Spectrum Computing]
-Merged Sets
---------------------------------------------
-Entrepreneur - Applications Tape / Entrepreneur - Teaching Tape
-Cleanups and fixes: parent/clone relationships, descriptions, publishers, years (information provided by Spectrum Computing) and
-  added languages info.
-
-12606: new NOT WORKING machines (Disney Classic Handheld Karaoke Player) [mamehaze]
-new NOT WORKING machines
-------------------------
-Disney Classic Handheld Karaoke Player (DKS7000-C) [Sean Riddle, David Haywood]
-new NOT WORKING software list entries
--------------------------------------
-easy_karaoke_cart.xml
-dkp2: Disney Princess 10-Song Karaoke Cartridge II (DK-P2)  [Sean Riddle, David Haywood]
-dkp3: Disney Princess 10-Song Karaoke Cartridge III (DK-P3)  [Sean Riddle, David Haywood]
-(also removed the parent/clone relationships from most of these, as they're distinct products in reality)
-
-12607: namco/namcos10: Add additional notes for Hajime no Ippo 2 [987123879113]
-The real hardware checksums were verified thanks to buffi.
-MAME:
-!image
-Real hardware: https://imgur.com/a/1q1atDB
-
-12608: sega/dsbz80.cpp: Fix volume, Add variables into save states, Cleanups: [cam900]
-- Move devices into private:
-- Initialize variables at machine start
-- Remove hardcoded tags and literal tag usage
-- Add notes
-- Fix spacing
-- Constantize values
-- Use correct typename values
-- Fix naming for member variables
-
-12612: pc8801_flop.xml: Metadata fix [ArcadeShadow]
-Added parent/clone relationship between "ddash", "ddasha", "ddashb"
-
-12613: new NOT WORKING Software List entry [mamehaze]
-new NOT WORKING Software List entry
-----------
-megaduck.xml: Bilder Lexikon [PeT, TeamEurope, SSJ, Youkal3]
-"The Bilder Lexikon contains 512kbyte via 32kbyte Bankswitching at $0, but the switching address is $1 like for the 16kbyte
-  bankswitching."
-
-12614: mtx_cass.xml; n64.xml; snes_bspack.xml: Metadata cleanings [ArcadeShadow]
-Lowercase on descriptive words (Prototype, Rev, Alt, etc.)
-
-12616: hikara.xml : add 5 carts [mamehaze]
-new software list entries
--------------------------
-hikara.xml:
-user5b : Hi-kara 5-song capacity user cartridge (used, with 4 songs, set 2) (Japan) [David Haywood, TeamEurope]
-user5c: Hi-kara 5-song capacity user cartridge (used, with 2 songs) (Japan [David Haywood, TeamEurope]
-user10a: Hi-kara 10-song capacity user cartridge (used, with 10 songs, set 2) (Japan) [David Haywood, TeamEurope]
-user20a: Hi-kara 20-song capacity user cartridge (used, with 20 songs, set 2) (Japan) [David Haywood, TeamEurope]
-bh6kids1: Best Hit Collection Volume 6: Kids' Song 1 [David Haywood, TeamEurope]
-
-12617: cpu/xa: CPU core work for fearless/superkds - adds sound, promotes to working [mamehaze]
-(squashed version of the PR, as requested)
-this adds basic execution to XA core.  It emulates enough of the XA to give fearless and superkds working sound.
-some considerations
-- only the exact forms of the opcodes used so far have been implemented
-- no optimizations have been done, use of const, inline use, templates etc. are planned for a future update; code is still primed
-  for debugging and development
-- overall structure, code style are not 100% final (see above) and will be adjusted as the CPU is better understood
-- peripherals, interrupts etc. are not yet fully implemented, nor is anything outside of the page zero mode used here due to lack of
-  test cases
-Machines Promoted to WORKING
------------------------------------
-Super Kids (S019CN) [David Haywood, XingXing]
-Fearless Pinocchio (V101US) [David Haywood, XingXing, Peter Wilhelmsen, rtw]
-
-12618: hp_dio/hp98620: use device_execute_interface (nw) [svenschnelle]
-Fixes #12611.
-
-12621: nmk/macrossp.cpp: Cleanups: [cam900]
-- Use generic gfx decode layout
-- Use array for background tilemaps and related stuffs
-- Fix code style consistency
-- Use C++ style single line comments
-- Reduce literal tag usages
-- Make some variables constant
-- Use cliprect for background drawing
-- Fix ROM region and function namings
-- Reduce duplicates
-- Fix spacing
-- Use correct typename for member variables
-- Demote quizmoon MACHINE_IMPERFECT_GRAPHICS and MACHINE_IMPERFECT_SOUND via incorrect blending method and sound in title scene
+- 12530: cpu/z80: Started implementing the R800 instruction set and timings. [Wilbert Pol]
+- 12531: sinclair/beta_m.cpp: Allow turbo clock to be used for WD179x floppy drive controller. [holub]
+- 12532: sinclair/sprinter.cpp: Fixed #1f I/O detection and redirection. [holub]
+- 12534: skeleton/webtouchone.cpp: Added a skeleton driver for the Alcatel Web Touch One phone. [ArcadeHacker, ClawGrip]
+- 12535: heathzenith/z37_fdc.cpp: Always assert floppy drive controller’s ready input (fixes HDOS 2.0 formatting). [Mark Garlanger]
+- 12537: konami/firebeat.cpp: Added Pop'n Music Animelo 2 (JAA); konami/twinkle.cpp: Added notes. [Taro, Windy Fairy]
+- 12540: skeleton/madmoney2.cpp: Corrected ROM file name. [ClawGrip]
+- 12542: toaplan/toaplan2.cpp: Sorted address map entries and updated a source file name in a comment. [cam900]
+- 12543: skeleton/design.cpp: Added skeleton drivers for five more Azkoyen vending machines. [Joan RF, jordigahan, ClawGrip]
+- 12544: apple2_flop_clcracked.xml: Added latest cracks (39 new working items) and improved metadata. [4am, A-Noid]
+- 12545: nmk/nmk004.cpp: Extracted internal ROM using a new technique. [Sergio Galiano]
+- 12547: atari/atetris.cpp: Added a Korean Tetris bootleg called Link and re-dumped the atetb5205 sound ROM. [Taksangs, ClawGrip]
+- 12548: casio/pv1000.cpp: Corrected screen image position within borders. [lidnariq]
+- 12549: trs/gime.cpp: Don’t latch video RAM bank at start of frame. [Tim Lindner]
+- 12551: igs/pgmcrypt.cpp: Fixed decryption for Fearless Pinocchio. [XingXing, Happy]
+- 12552: tvgames/xavix.cpp: Added four TV games (not working). [TeamEurope, Peter Wilhelmsen, David Haywood]
+- 12553: igs/igs_fear.cpp, igs/pgmcrypt.cpp: Dumped the internal IGS027A CPU ROM and fixed decryption for Fearless Pinocchio.
+  [tormod, Peter Wilhelmsen, XingXing, David Haywood]
+- 12554: seibu/goal92.cpp: Identified some DIP switch settings and added DIP switch locations. [Uncle Petros]
+- 12555: Dumped Roland RD-500 and D-50 ROMs, added preliminary GP TC6116 sound chip device, and fixed some issues. [Giulio Zausa]
+- 12558: atari/atetris.cpp: Re-dumped graphics ROM for Link. [Taksangs, ClawGrip]
+- 12559: nmk/nmk16.cpp: Fixed sprite chip clock frequency for high-resolution games. [cam900]
+- 12561: bus/ieee488: Added HP9133 Floppy/Fixed disk drive used with HP9000 systems. [Sven Schnelle]
+- 12562: nmk/nmk16.cpp: Use PROM contents to configure video interrupts. [Sergio Galiano]
+- 12563: igs/igs_fear.cpp: Implemented timer, real-time clock, interrupts and I/O, making games playable. [XingXing, Happy]
+- 12565: nintendo/snesb.cpp: Identified DIP switch settings and fixed Wild Guns continue counter initialization. [Devin Acker]
+- 12567: bus/isa/dectalk.cpp: Use unrealistically high DSP clock frequency to work around DAC output issues. [datajake1999]
+- 12570: casio/pv1000.cpp: Fixed PCG tile banking, implemented video disable bit, and corrected default aspect ratio. [lidnariq]
+- 12571: taito/buggychl.cpp: Listed undumped versions seen in videos in header comment. [negunma]
+- 12572: machine/spg2xx_audio.cpp: Fixed behavior of audio channel enable and stop flags. [Simon Eriksson]
+- 12575: seta/speglsht.cpp Added note about graphical issues in title screen animation. [cam900]
+- 12580: machine/spg2xx_audio.cpp: Update wave address register during playback. [Simon Eriksson]
+- 12582: msx2_flop.xml: Added 56 items (52 working), and removed one item that was part . [file-hunter, Wilbert Pol]
+- 12583: bus/msx/cart/ide.cpp: Added support for Sunrise ATA-IDE interfaces. [msxpro, Wilbert Pol]
+- 12585: machine/upd765.cpp: Only clear drive busy bits on executing sense interrupt status command. [Brian Johnson]
+- 12588: bus/rs232.cpp: Added Mouse Systems serial mouse to default RS-232 devices. [Brian Johnson]
+- 12590: heathzenith/h8.cpp: Added serial console and layout views with keypad and console screen. [Jeff Tranter]
+- 12591: konami/viper.cpp: Hooked up World Combat gun inputs, and removed some redundant clone sets. [Hydreigon]
+- 12594: machine/at28c64b.cpp: Fixed reading off the end of small default non-volatile RAM content regions. [Kelvin Sherlock]
+- 12595: kaneko/snowbros.cpp: Added Semicon Sutjaro Haeyo Deluxe (not working). [Taksangs, David Haywood]
+- 12597: sound/scspdsp.cpp: Use util::sext for sign extension and use lowercase hexadecimal literals. [cam900]
+- 12599: hp/hp98x6.cpp, hp/hp98x6_upi.cpp: Added support for the HP 9826A, HP 9836A and HP 9836C. [F.Ulivi]
+- 12600: bus/msx/cart/ide.cpp: Removed unnecessary interface_pre_start and ROM bank. [Wilbert Pol]
+- 12603: spectrum_cass.xml: Added 29 working items and improved metadata. [ArcadeShadow]
+- 12606: skeleton/easy_karaoke_cart.cpp: Dumped a Disney-themed version and two associated cartridges. [Sean Riddle, David Haywood]
+- 12607: namco/namcos10.cpp: Added notes and improved inputs for Hajime no Ippo 2. [Windy Fairy]
+- 12608: sega/dsbz80.cpp: Fixed volume control, added member variables to save satates, and cleaned up code. [cam900]
+- 12612: pc8801_flop.xml: Added parent/clone relationships for D' sets. [ArcadeShadow]
+- 12613: megaduck.xml: Added Bilder Lexikon for the Megaduck computer (not working). [PeT, TeamEurope, SSJ, Youkal3]
+- 12614: mtx_cass.xml, n64.xml, snes_bspack.xml: Use lowercase for descriptive text in descriptions. [ArcadeShadow]
+- 12616: hikara.xml: Added four user cartridges and one Best Hit Collection cartridge. [David Haywood, TeamEurope]
+- 12617: cpu/xa: Added initial Philips XA CPU emulation; igs/igs_fear.cpp: Hooked up XA sound CPUs. [David Haywood]
+- 12618: hp_dio/hp98620: Implement device_execute_interface to schedule DMA transfers. [Sven Schnelle]
+- 12621: nmk/macrossp.cpp: Cleaned up code and marked quizmoon as having imperfect graphics emulation. [cam900]
 
 
 Source changes
@@ -1942,3 +1524,9 @@ Best Hit Collection Volume 6: Kids' Song 1 [David Haywood, TeamEurope]
 -fp1100_cass.xml: Corrected two titles. [Vas Crabb]
 
 -igs/igs009.cpp, igs/spoker.cpp: Re-parented Jingle Bell sets to make latest version the parent. [Vas Crabb]
+
+-heathzenith/h8.cpp: Fixed up H8 layout. [Vas Crabb]
+ * Don't use collections that hide everything in a view.
+ * Allow views to resize automatically when collections are hidden
+ * Use even spacing around keypad.
+ * Use sensible coordinates and repeating blocks inside groups.
