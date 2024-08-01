@@ -502,20 +502,26 @@ class SoftlistComparator:
         for shortname in renames:
             if shortname in old_working: del old_working[shortname]
             elif shortname in old_nonworking: del old_nonworking[shortname]
-        removed = list()
-        for shortname, description in old_working.items(): removed.append(description)
-        for shortname, description in old_nonworking.items(): removed.append(description)
-        removed.sort()
+        removed_working = list()
+        removed_nonworking = list()
+        for shortname, description in old_working.items(): removed_working.append(description)
+        for shortname, description in old_nonworking.items(): removed_nonworking.append(description)
+        removed_working.sort()
+        removed_nonworking.sort()
 
-        if renames or removed or added_working or added_nonworking or promoted:
+        if renames or removed_working or removed_nonworking or added_working or added_nonworking or promoted:
             self.output.write('%s (%s):\n' % (listname, filename))
             if renames:
                 self.output.write('  Renames\n')
                 for old_name, info in renames.items():
                     self.output.write('    %s -> %s %s\n' % (old_name, info[1], info[0]))
-            if removed:
-                self.output.write('  Removed\n')
-                for description in removed:
+            if removed_working:
+                self.output.write('  Removed (working)\n')
+                for description in removed_working:
+                    self.output.write('    %s\n' % (description, ))
+            if removed_nonworking:
+                self.output.write('  Removed (non-working)\n')
+                for description in removed_nonworking:
                     self.output.write('    %s\n' % (description, ))
             if added_working:
                 self.output.write('  Working\n')

@@ -273,27 +273,36 @@ if __name__ == '__main__':
     if (error_handler.errors > 0) or (error_handler.warnings > 0):
         sys.exit(1)
 
-    removed = list()
+    removed_working = list()
     for driver in old_working:
         if (driver not in new_working) and (driver not in new_nonworking) and (driver not in renames):
-            removed.append(old_working[driver])
+            removed_working.append(old_working[driver])
+    removed_working.sort()
+
+    removed_nonworking = list()
     for driver in old_nonworking:
         if (driver not in new_working) and (driver not in new_nonworking) and (driver not in renames):
-            removed.append(old_nonworking[driver])
-    removed.sort()
+            removed_nonworking.append(old_nonworking[driver])
+    removed_nonworking.sort()
 
     output.write('Comparing %s to %s\n\n' % (oldbuild, newbuild))
 
     if renames:
         output.write('Renames\n')
         for old_name, info in renames.items():
-            output.write('%s -> %s %s\n' % (old_name, info[1], info[0]))
+            output.write('  %s -> %s %s\n' % (old_name, info[1], info[0]))
         output.write('\n')
 
-    if removed:
-        output.write('Removed\n')
-        for description in removed:
-            output.write('%s\n' % (description, ))
+    if removed_working:
+        output.write('Removed (working)\n')
+        for description in removed_working:
+            output.write('  %s\n' % (description, ))
+        output.write('\n')
+
+    if removed_nonworking:
+        output.write('Removed (non-working)\n')
+        for description in removed_nonworking:
+            output.write('  %s\n' % (description, ))
         output.write('\n')
 
     printResult('New working systems', new_working_parents)
