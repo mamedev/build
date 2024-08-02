@@ -280,7 +280,7 @@ class SoftlistComparator:
             self.ignored_depth = 0
 
             # attributes of current item
-            self.softname = None
+            self.shortname = None
             self.is_clone = None
             self.is_working = None
             self.description = None
@@ -325,7 +325,7 @@ class SoftlistComparator:
                             self.locator))
                 else:
                     self.in_software = True
-                    self.softname = attrs['name']
+                    self.shortname = attrs['name']
                     self.is_clone = 'cloneof' in attrs
                     self.is_working = ('supported' not in attrs) or (attrs['supported'] != 'no')
             elif not self.in_description:
@@ -335,7 +335,7 @@ class SoftlistComparator:
                 else:
                     self.ignored_depth = 1
             else:
-                self.ignored_depth = 1;
+                self.ignored_depth = 1
 
         def endElement(self, name):
             if self.ignored_depth > 0:
@@ -361,9 +361,9 @@ class SoftlistComparator:
                                 None,
                                 self.locator))
                     else:
-                        self.handleSoftware(self.softname, self.description, self.is_clone, self.is_working)
+                        self.handleSoftware(self.shortname, self.description, self.is_clone, self.is_working)
                     self.in_software = False
-                    self.softname = None
+                    self.shortname = None
                     self.is_clone = None
                     self.is_working = None
                     self.description = None
@@ -456,34 +456,34 @@ class SoftlistComparator:
         added_working = set()
         added_nonworking = set()
         promoted = set()
+        demoted = set()
         renames = dict()
         if current is not None:
             def handle_new_software(shortname, description, is_clone, is_working):
                 if self.verbose:
-                    sys.stderr.write('item %s (%s) now %sworking' % (shortname, description, '' if is_working else 'not '))
-                if is_working: new_working[shortname] = description
-                else: new_nonworking[shortname] = description
-                if (shortname in old_working) or (shortname in old_nonworking): old_name = shortname
-                elif description in old_descriptions: old_name = old_descriptions[description]
-                else: old_name = None
-                if (old_name is None) or (old_name in renames):
-                    if self.verbose:
-                        sys.stderr.write(' (added)\n')
-                    if is_working: added_working.add(description)
-                    else: added_nonworking.add(description)
+                    sys.stderr.write('item %s (%s) now %sworking\n' % (shortname, description, '' if is_working else 'not '))
+                old_name = old_descriptions.get(description)
+                if old_name is None:
+                    if is_working: new_working[shortname] = description
+                    else: new_nonworking[shortname] = description
                 else:
+                    del old_descriptions[description]
                     if old_name != shortname:
                         if self.verbose:
-                            sys.stderr.write(' (was %s)\n' % (old_name, ))
+                            sys.stderr.write('  was %s\n' % (old_name, ))
                         renames[old_name] = (description, shortname)
-                        if old_name in new_working: added_working.add(new_working[old_name])
-                        elif old_name in new_nonworking: added_nonworking.add(new_nonworking[old_name])
-                    if is_working and (old_name not in old_working):
-                        if self.verbose:
-                            sys.stderr.write(' (promoted)\n')
-                        promoted.add(description)
-                    elif self.verbose:
-                        sys.stderr.write('\n')
+                    if old_name in old_working:
+                        del old_working[old_name]
+                        if not is_working:
+                            if self.verbose:
+                                sys.stderr.write('  demoted\n')
+                            demoted.add(description)
+                    else:
+                        del old_nonworking[old_name]
+                        if is_working:
+                            if self.verbose:
+                                sys.stderr.write('  promoted\n')
+                            promoted.add(description)
             content_handler.handleSoftware = handle_new_software
             filename = current.name
             current = current.data_stream
@@ -493,23 +493,36 @@ class SoftlistComparator:
             del current
             listname = content_handler.listname
 
-        for shortname in new_working:
-            if shortname in old_working: del old_working[shortname]
-            elif shortname in old_nonworking: del old_nonworking[shortname]
-        for shortname in new_nonworking:
-            if shortname in old_working: del old_working[shortname]
-            elif shortname in old_nonworking: del old_nonworking[shortname]
-        for shortname in renames:
-            if shortname in old_working: del old_working[shortname]
-            elif shortname in old_nonworking: del old_nonworking[shortname]
-        removed_working = list()
-        removed_nonworking = list()
-        for shortname, description in old_working.items(): removed_working.append(description)
-        for shortname, description in old_nonworking.items(): removed_nonworking.append(description)
-        removed_working.sort()
-        removed_nonworking.sort()
+            for shortname, description in new_working.items():
+                if shortname in old_working:
+                    del old_working[shortname]
+                elif shortname in old_nonworking:
+                    if self.verbose:
+                        sys.stderr.write('item %s (%s) promoted\n' % (shortname, description))
+                    del old_nonworking[shortname]
+                    promoted.add(description)
+                else:
+                    if self.verbose:
+                        sys.stderr.write('item %s (%s) added (working)\n' % (shortname, description))
+                    added_working.add(description)
 
-        if renames or removed_working or removed_nonworking or added_working or added_nonworking or promoted:
+            for shortname, description in new_nonworking.items():
+                if shortname in old_working:
+                    if self.verbose:
+                        sys.stderr.write('item %s (%s) demoted\n' % (shortname, description))
+                    del old_working[shortname]
+                    demoted.add(description)
+                elif shortname in old_nonworking:
+                    del old_nonworking[shortname]
+                else:
+                    if self.verbose:
+                        sys.stderr.write('item %s (%s) added (not working)\n' % (shortname, description))
+                    added_nonworking.add(description)
+
+        removed_working = sorted(old_working.values())
+        removed_nonworking = sorted(old_working.values())
+
+        if renames or removed_working or removed_nonworking or demoted or added_working or added_nonworking or promoted:
             self.output.write('%s (%s):\n' % (listname, filename))
             if renames:
                 self.output.write('  Renames\n')
@@ -522,6 +535,10 @@ class SoftlistComparator:
             if removed_nonworking:
                 self.output.write('  Removed (non-working)\n')
                 for description in removed_nonworking:
+                    self.output.write('    %s\n' % (description, ))
+            if demoted:
+                self.output.write('  Demoted\n')
+                for description in sorted(demoted):
                     self.output.write('    %s\n' % (description, ))
             if added_working:
                 self.output.write('  Working\n')

@@ -9,7 +9,7 @@ import xml.sax
 import xml.sax.handler
 
 
-class ErrorHandler():
+class ErrorHandler:
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.errors = 0
@@ -27,7 +27,7 @@ class ErrorHandler():
         sys.stderr.write('warning: %s\n' % (exception))
 
 
-class Categoriser():
+class Categoriser:
     def __init__(self, error_handler, **kwargs):
         super().__init__(**kwargs)
 
@@ -43,10 +43,10 @@ class Categoriser():
         self.ignored_depth = 0
 
         # attributes of current driver
-        self.driver = None
+        self.shortname = None
         self.is_clone = None
-        self.description = None
         self.is_working = None
+        self.description = None
 
         # output
         self.build = None
@@ -62,7 +62,7 @@ class Categoriser():
         elif not self.in_mame:
             if name != 'mame':
                 self.error_handler.fatalError(xml.sax.SAXParseException(
-                        'Found unexpected element %s' % (name),
+                        'Found unexpected element %s' % (name, ),
                         None,
                         self.locator))
             elif 'build' not in attrs:
@@ -76,7 +76,7 @@ class Categoriser():
         elif not self.in_machine:
             if name != 'machine':
                 self.error_handler.fatalError(xml.sax.SAXParseException(
-                        'Found unexpected element %s' % (name),
+                        'Found unexpected element %s' % (name, ),
                         None,
                         self.locator))
             elif 'name' not in attrs:
@@ -88,7 +88,7 @@ class Categoriser():
                 self.ignored_depth = 1
             else:
                 self.in_machine = True
-                self.driver = attrs['name']
+                self.shortname = attrs['name']
                 self.is_clone = 'cloneof' in attrs
         elif not self.in_description:
             if name == 'description':
@@ -113,7 +113,7 @@ class Categoriser():
         elif self.in_description:
             if name != 'description':
                 self.error_handler.fatalError(xml.sax.SAXParseException(
-                        'End of element %s does not match start of element description' % (name),
+                        'End of element %s does not match start of element description' % (name, ),
                         None,
                         self.locator))
             else:
@@ -121,7 +121,7 @@ class Categoriser():
         elif self.in_machine:
             if name != 'machine':
                 self.error_handler.fatalError(xml.sax.SAXParseException(
-                        'End of element %s does not match start of element machine' % (name),
+                        'End of element %s does not match start of element machine' % (name, ),
                         None,
                         self.locator))
             else:
@@ -136,23 +136,23 @@ class Categoriser():
                             None,
                             self.locator))
                 else:
-                    self.handleMachine(self.driver, self.description, self.is_clone, self.is_working)
+                    self.handleMachine(self.shortname, self.description, self.is_clone, self.is_working)
                 self.in_machine = False
-                self.driver = None
+                self.shortname = None
                 self.is_clone = None
                 self.description = None
                 self.is_working = None
         elif self.in_mame:
             if name != 'mame':
                 self.error_handler.fatalError(xml.sax.SAXParseException(
-                        'End of element %s does not match start of element mame' % (name),
+                        'End of element %s does not match start of element mame' % (name, ),
                         None,
                         self.locator))
             else:
                 self.in_mame = False
         else:
             self.error_handler.fatalError(xml.sax.SAXParseException(
-                    'Found unexpected end of element %s' % (name),
+                    'Found unexpected end of element %s' % (name, ),
                     None,
                     self.locator))
 
@@ -228,44 +228,44 @@ if __name__ == '__main__':
     old_working = dict()
     old_nonworking = dict()
     old_descriptions = dict()
-    def handleOldMachine(driver, description, is_clone, is_working):
-        if is_working: old_working[driver] = description
-        else: old_nonworking[driver] = description
-        old_descriptions[description] = driver
+    def handleOldMachine(shortname, description, is_clone, is_working):
+        if is_working: old_working[shortname] = description
+        else: old_nonworking[shortname] = description
+        old_descriptions[description] = shortname
     content_handler.handleMachine = handleOldMachine
     parser.parse(oldlist)
     oldbuild = content_handler.build
 
-    new_working = dict()
-    new_nonworking = dict()
-    new_working_parents = set()
-    new_working_clones = set()
     promoted_parents = set()
     promoted_clones = set()
-    new_nonworking_parents = set()
-    new_nonworking_clones = set()
+    demoted_parents = set()
+    demoted_clones = set()
+    new_working = dict()
+    new_nonworking = dict()
     renames = dict()
-    def handleNewMachine(driver, description, is_clone, is_working):
-        if is_working: new_working[driver] = description
-        else: new_nonworking[driver] = description
-        if (driver in old_working) or (driver in old_nonworking): old_name = driver
-        elif description in old_descriptions: old_name = old_descriptions[description]
-        else: old_name = None
-        if (old_name is None) or (old_name in renames):
-            if is_working:
-                if is_clone: new_working_clones.add(description)
-                else: new_working_parents.add(description)
-            else:
-                if is_clone: new_nonworking_clones.add(description)
-                else: new_nonworking_parents.add(description)
+    def handleNewMachine(shortname, description, is_clone, is_working):
+        old_name = old_descriptions.get(description)
+        if old_name is None:
+            if is_working: new_working[shortname] = (description, is_clone)
+            else: new_nonworking[shortname] = (description, is_clone)
         else:
-            if old_name != driver:
-                renames[old_name] = (description, driver)
-                if old_name in new_working: new_working_clones.add(new_working[old_name])
-                elif old_name in new_nonworking: new_nonworking_clones.add(new_nonworking[old_name])
-            if is_working and (old_name not in old_working):
-                if is_clone: promoted_clones.add(description)
-                else: promoted_parents.add(description)
+            del old_descriptions[description]
+            if old_name != shortname:
+                renames[old_name] = (description, shortname)
+            if old_name in old_working:
+                del old_working[old_name]
+                if not is_working:
+                    if is_clone or (shortname in renames) or (shortname in old_working) or (shortname in old_nonworking):
+                        demoted_clones.add(description)
+                    else:
+                        demoted_parents.add(description)
+            else:
+                del old_nonworking[old_name]
+                if is_working:
+                    if is_clone or (shortname in renames) or (shortname in old_working) or (shortname in old_nonworking):
+                        promoted_clones.add(description)
+                    else:
+                        promoted_parents.add(description)
     content_handler.handleMachine = handleNewMachine
     parser.parse(newlist)
     newbuild = content_handler.build
@@ -273,17 +273,39 @@ if __name__ == '__main__':
     if (error_handler.errors > 0) or (error_handler.warnings > 0):
         sys.exit(1)
 
-    removed_working = list()
-    for driver in old_working:
-        if (driver not in new_working) and (driver not in new_nonworking) and (driver not in renames):
-            removed_working.append(old_working[driver])
-    removed_working.sort()
+    new_working_parents = set()
+    new_working_clones = set()
+    for shortname, info in new_working.items():
+        if shortname in old_working:
+            del old_working[shortname]
+        elif shortname in old_nonworking:
+            del old_nonworking[shortname]
+            if info[1] or (shortname in renames):
+                promoted_clones.add(info[0])
+            else:
+                promoted_parents.add(info[0])
+        else:
+            if info[1] or (shortname in renames):
+                added_working_clones.add(info[0])
+            else:
+                added_working_parents.add(info[0])
 
-    removed_nonworking = list()
-    for driver in old_nonworking:
-        if (driver not in new_working) and (driver not in new_nonworking) and (driver not in renames):
-            removed_nonworking.append(old_nonworking[driver])
-    removed_nonworking.sort()
+    added_nonworking_parents = set()
+    added_nonworking_clones = set()
+    for shortname, info in new_nonworking.items():
+        if shortname in old_working:
+            del old_working[shortname]
+            if info[1] or (shortname in renames):
+                demoted_clones.add(info[0])
+            else:
+                demoted_parents.add(info[0])
+        elif shortname in old_nonworking:
+            del old_nonworking[shortname]
+        else:
+            if info[1] or (shortname in renames):
+                added_nonworking_clones.add(info[0])
+            else:
+                added_nonworking_parents.add(info[0])
 
     output.write('Comparing %s to %s\n\n' % (oldbuild, newbuild))
 
@@ -293,21 +315,23 @@ if __name__ == '__main__':
             output.write('  %s -> %s %s\n' % (old_name, info[1], info[0]))
         output.write('\n')
 
-    if removed_working:
+    if old_working:
         output.write('Removed (working)\n')
-        for description in removed_working:
+        for description in sorted(old_working.values()):
             output.write('  %s\n' % (description, ))
         output.write('\n')
 
-    if removed_nonworking:
+    if old_nonworking:
         output.write('Removed (non-working)\n')
-        for description in removed_nonworking:
+        for description in sorted(old_nonworking.values()):
             output.write('  %s\n' % (description, ))
         output.write('\n')
 
-    printResult('New working systems', new_working_parents)
-    printResult('New working clones', new_working_clones)
+    printResult('New working systems', added_working_parents)
+    printResult('New working clones', added_working_clones)
     printResult('Systems promoted to working', promoted_parents)
     printResult('Clones promoted to working', promoted_clones)
-    printResult('New systems marked not working', new_nonworking_parents)
-    printResult('New clones marked not working', new_nonworking_clones)
+    printResult('New systems marked not working', added_nonworking_parents)
+    printResult('New clones marked not working', added_nonworking_clones)
+    printResult('Systems demoted to not working', demoted_parents)
+    printResult('Clones demoted to not working', demoted_clones)
