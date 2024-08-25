@@ -273,8 +273,8 @@ if __name__ == '__main__':
     if (error_handler.errors > 0) or (error_handler.warnings > 0):
         sys.exit(1)
 
-    new_working_parents = set()
-    new_working_clones = set()
+    added_working_parents = set()
+    added_working_clones = set()
     for shortname, info in new_working.items():
         if shortname in old_working:
             del old_working[shortname]
