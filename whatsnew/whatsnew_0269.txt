@@ -127,165 +127,31 @@ psion1: Science Pack (alt), Utility Pack (alt) [Nigel Barnes]
 
 Merged pull requests
 --------------------
-11670: Add Altos 586 emulation [lkundrak]
-Hi. This adds incomplete emulation of Altos 586 -- the main board and a hard drive board. It is good enough to boot and pass tests
-  on the diagnostic floppy, but not much else (no XENIX, CCP/M, OASIS). More details in the commit messages of the individual
-  commits and code comments.
-I eventually intend to extend the emulation to boot all the supported software, but as I'm pretty new to MAME, I thought it's a good
-  idea to post this for review early, before I go too far doing something stupid.
-This is my first time programming C++ so please go easy on me :)
-
-12494: z80dma.cpp: burst mode and refactoring [holub]
-~~Opening as a draft as requires following (volunteers are appreciated) to be completed...~~
-* ~~validate existing drivers which uses it and wire **busack**~~
-```
-	m_maincpu->busack_cb().set(m_dma, FUNC(z80dma_device::bai_w));
-	m_dma->out_busreq_callback().set_inputline(m_maincpu, Z80_INPUT_LINE_BUSRQ);
-```
-* ~~update drivers which use HALT for **busreq** and replace with pattern above~~
-
-12564: misc/marywu.cpp: fixed psg and divisor. add nvram support [flama12333]
-This Allows sound and LED to work
-
-12569: Add skeletons for Zanussi/Necta vending machines [clawgrip]
-New systems marked not working
-------------------------------
-Firenze (vending machine) [Joan RF, jordigahan]
-Venezia (coffee vending machine) [Joan RF, jordigahan]
-unknown Zanussi / Necta vending machine [Joan RF, jordigahan]
-Also did some small fixes:
- * skeleton/webtouchone.cpp: Typo
- * skeleton/pulltrigger.cpp: Change COMP to GAME
- * move 'radikaldarts' to Gaelco Folder
- * skeleton/design.cpp: Add a note about the displays on "T" series machines
-
-12596: Add a skeleton driver for Mars Electronics vending machines [clawgrip]
-New systems marked not working
-------------------------------
-Automatic Products Vending Machine model 110 (set 1) [Joan RF, jordigahan]
-New clones marked not working
------------------------------
-Automatic Products Vending Machine model 110 (set 2) [Joan RF, jordigahan]
-
-12604: dai_cass.xml; pcw.xml; xegs.xml: Metadata cleanings [ArcadeShadow]
-- Replaced countries' abbreviations by their full name.
-- Lowercase on descriptive words.
-- Added language info.
-
-12610: gdbstub: add -debugger_host option [ramiropolla]
-This allows setting the host to 0.0.0.0 to accept connections from outside of localhost.
-
-12615: a800_flop.xml; a2600.xml: Metadata cleanings [ArcadeShadow]
-Lowercase on descriptive words (Prototype, Light Pen, Extensions, etc.)
-
-12619: c128_flop.xml; plus4_cart.xml; vic1001_flop.xml; pet_rom.xml: Cleanups [ArcadeShadow]
-Lowercase on descriptive words (Alt, Version)
-Replaced countries' abbreviations (Ger, Hun)
-
-12623: casio/pv1000.cpp: Toggle BUSREQ like hardware does [lidnariq]
-This slows down games to realistic speeds.
-Please let me know if there's a better way to do any of this.
-
-12624: new NOT WORKING machines (karaoke) [mamehaze]
-new NOT WORKING machines
-------------------------
-Karaoke Microphone Pro / KaraokeMicro Star (Greece) [David Haywood, Team Europe]
-Disney Princess Handheld Karaoke Player (DKS7000-P) [David Haywood, Team Europe]
-new Software List entries
--------------------------
-easy_karaoke_cart.xml
-dkp1: Disney Princess 10-Song Karaoke Cartridge I (DK-P1) [David Haywood, Team Europe]
-Karaoke Microphone Pro Cartridge 1 (Greece) [David Haywood, Team Europe]
-ekara_cart.xml
-sp07: Super Cartridge: Best Hit (Japan) (SP-07) [David Haywood, Team Europe]
-
-12626: new NOT WORKING Software List entries (CocoPad) [mamehaze]
-new NOT WORKING Software List entries
---------------------------
-leapfrog_leappad_cart.xml  [David Haywood, Team Europe]
-ecchello1: ECC Junior no hajimete eikaiwa! 1 Eigo de tanoshiku Say Hello! (Japan)
-funtogeth: Minna de tanoshiku! CoCoPad (Otameshi soft) (Japan)
-bennyeng2: Benny and Friends English Book Vol. 2 -Majo to taiketsu! Daibouken- (Japan)
-thomasj: Kikansha Thomas to nakamatachi - Kikansha Thomas Yakunitatsu kikansha (Japan)
-multy2j: Shinkenzemi Challenge 2 nensei Korasho to issho ni kuku o oboeyou! (Japan)
-anpapinj: Anpanman no CoCoPad de aiueo kyoushitsu Pinocchio (Japan)
-idainaru: Idainaru Sakkyokukatachi (Japan)
-anpanmnj: Yuuki Rinrin Anpunch! (Japan)
-helkitj: Hello Kitty no gakkou no ichinichi (Japan)
-disprinj: Disney Princess (Japan)
-poohj: Kuma no Pooh-san Hachimitsu no tsubo ga ippai Pooh-san to kazu・katachi (Japan)
-disbf1: Disney's World of English 1: Birthday Fun (Japan)
-dispic2: Disney's World of English 2: The Picnic (Japan)
-discirc3: Disney's World of English 3: The Circus (Japan)
-diszoo4: Disney's World of English 4: The Zoo (Japan)
-k3mar07: CoCoPad Rom Cassette Kono men o ue ni shiteirete ne! (3 March 2007 - 5 May 2007) (Japan)
-k7jul07: CoCoPad Rom Cassette Kono men o ue ni shiteirete ne! (7 July 2007, 9 September 2007) (Japan)
-k11nov07: CoCoPad Rom Cassette Kono men o ue ni shiteirete ne! (11 November 2007, 1 January 2008) (Japan)
-abcj: Kodomo Challenge English CoCoPad Rom Cassette Kono men o ue ni shiteirete ne! (2008/3 March - Shimajirou to Libby no ABC
-  Adventure, 2008/5 May - Shimajirou to Libby no Touch and step game de asobou) (Japan)
-smartguid4 - FUN-damentals Series - Smart Guide to 4rd Grade (UK)
-goochoco- Okaasan to Issho: Goo Choco Lantan: Spoo no Fushigi na Oto no Daibouken! (Japan)
-poohhach- Kuma no Pooh-san: Pooh-san to Hachimitsu (Japan)
-
-12627: heathzenith/mms77316_fdc.cpp: Fix read side-effects [mgarlanger]
-
-12628: igs_fear.cpp - Publisher licenses and Chinese title addition for superkds. [mikehyrus]
-Fearless Pinocchio was licensed by American Alpha
-Super Kids was licensed by Golden Dragon Amusement
-Added Chinese title to superkds
-
-12630: metro/metro.cpp: Split driver state class via hardware config, Cleanups: [cam900]
-- Suppress side effects for debugger read
-- Move save_items and some init stuffs in machine_start()
-- Use correct typename values
-- Use C++ style single line comments
-- Make some variables constant
-- Fix variables and function namings
-- Reduce literal tag usage and runtime tag lookups
-
-12631: casio/pv1000.cpp: IRQs were broken in a08b1138; now commercial games work again [lidnariq]
-Oops
-
-12632: new NOT WORKING machines (DBZ One Piece) [mamehaze]
-new NOT WORKING machines
----------------------------------
-Dragon Ball Z x One Piece: Battle Taikan Gum-Gum no Kamehameha: Omee no Koe de Ora o Yobu (Japan) [David Haywood, Team Europe]
-
-12633: new NOT WORKING machines (Train) [mamehaze]
-new NOT WORKING machines
-----------------------------------------------
-Boku wa Plarail Untenshi Shinkansen de Ikkou! Plus (Japan) [David Haywood, Team Europe]
-
-12634: neogeo/neogeo_spr.cpp: Fix display timing related parameters [cam900]
-neogeo/midas.cpp: Fix zoom table RAM size (The maximum allowed access is 64K bytes)
-
-12638: capcom/cps2.cpp: Add new revisions of Hyper Street Fighter 2 and X-Men vs Street Fighter [bugcutt]
-Hyper Street Fighter 2 (Japan) 040123 has two new roms (hs2j.03a and hs2j.04a) all other roms were identical. X-Men vs Street
-  Fighter (Japan) 970113 also has two new roms (xvsj.03m and xvsj.04m) with all others being identical.
-One oddity on X-Men vs Street Fighter is all of the program roms, besides the two new ones, are either mask roms or one time
-  programable roms with the standard metallic Capcom stickers on them. Both boards were on battery (xmvsf had a date code of 96 on
-  it) when I acquired them from Japan but have since been switched to using infinikeys. The rom labels appear to be legit Capcom
-  labels but have hand written rom numbers on them.
-I just made this change to confirm the rom dumps. If I added/named this stuff wrong feel free to ignore this pull request and add
-  the roms in the correct way.
-Roms and images of boards sent to code@mamedev.org
-
-12639: tvgames/xavix_2000.cpp: Add preliminary support for Duel Masters: Duel Station [mamehaze]
-new NOT WORKING machines
----------------------------------------
-Duel Masters (Japan) [David Haywood, Team Europe]
-
-12640: gaelco/gaelco3d.cpp: Add note and ROM placeholder about Speed Up coin distribution [Recreativas.org] [clawgrip]
-
-12641: konami/xmen.cpp: Add service switch inputs [jotego]
-Connects service ports, following our schematic extraction for a GX065 board (xmen 2p)
-!image
-Note that I am reviewing the schematics and the PDF may change in the coming weeks with corrections.
-
-12642: igs/pgm2.cpp: Add CPLD dump for Bu Bu Car [Victor Fernandez (City Game), Recreativas.org] [clawgrip]
-
-12643: misc/changyu.cpp: Add VBL NMI and hook up the opll for changyu2 [flama12333]
-except the psg since its mapped at 0x0502 0x0503 data address write in the mcu.
+- 11670: altos/altos586.cpp: Added preliminary Altos ACS586 emulation. [Lubomir Rintel]
+- 12494: machine/z80dma.cpp: Implemented burst mode and refactored code, and hooked up BUSRQ/BUSAK in systems using it. [holub]
+- 12564: misc/marywu.cpp: Improved peripherals – it’s now possible to trigger music from the debugger. [flama12333]
+- 12569: skeleton/zfirenze.cpp, skeleton/zvenezia.cpp: Dumped three Zanussi/Necta vending machines. [Joan RF, jordigahan, ClawGrip]
+- 12596: skeleton/marsvending.cpp: Dumped two Mars Electronics vending machines. [Joan RF, jordigahan, ClawGrip]
+- 12604: dai_cass/xml: Moved language information to info elements; pcw.xml, xegs.xml: Cleaned up descriptions. [ArcadeShadow]
+- 12610: debugger/debuggdbstub.cpp: Added an option to set the IP address to listen on. [Ramiro Polla]
+- 12615: a800_flop.xml; a2600.xml: Improved descriptions. [ArcadeShadow]
+- 12619: c128_flop.xml; plus4_cart.xml; vic1001_flop.xml; pet_rom.xml: Cleaned up descriptions. [ArcadeShadow]
+- 12623: casio/pv1000.cpp: Assert BUSRQ during active display (gives more realistic performance). [lidnariq]
+- 12624: Dumped three karaoke cartridges and two IVL Technologies karaoke systems. [David Haywood, TeamEurope]
+- 12626: leapfrog_leappad_cart.xml: Dumped 21 CocoPad cartridges and one LeapPad cartridge. [David Haywood, TeamEurope]
+- 12627: heathzenith/mms77316_fdc.cpp: Suppress side effects of data reads for debugger accesses. [Mark Garlanger]
+- 12628: igs/igs_fear.cpp: Added more detail to manufacturer and description metadata. [Michael Sanborn]
+- 12630: metro/metro.cpp: Split driver state class for different hardware configurations and cleaned up code. [cam900]
+- 12631: casio/pv1000.cpp: Fixed video scan line interrupt generation regression. [lidnariq]
+- 12632: skeleton/koto_zevio.cpp: Added a skeleton Koto Laboratory Zevio SoC driver with one game. [David Haywood, TeamEurope]
+- 12633: tvgames/generalplus_gpl16250_spi.cpp: Added a Plarail Shinkansen driving game (not working). [David Haywood, TeamEurope]
+- 12634: neogeo/neogeo_spr.h: Fixed horizontal video timings; neogeo/midas.cpp: Fixed zoom table RAM size. [cam900]
+- 12638: Added newer revisions of Hyper Street Fighter II and X-Men Vs. Street Fighter. [bugcutt]
+- 12639: tvgames/xavix_2000.cpp: Added preliminary support for Duel Masters: Duel Station. [David Haywood, TeamEurope]
+- 12640: gaelco/gaelco3d.cpp: Added placeholders for undumped microcontroller used by Speed Up. [Recreativas.org, ClawGrip]
+- 12641: konami/xmen.cpp: Added service switch inputs. [jotego]
+- 12642: igs/pgm2.cpp: Dumped the CPLD for Bu Bu Car. [Victor Fernandez (City Game), Recreativas.org, ClawGrip]
+- 12643: misc/changyu.cpp: Hooked up OPLL sound chip and vertical sync interrupt. [flama12333]
 
 12645: hash/sgi_mips.xml: rename netbsd 2 images to allow to merge into same directory [jflatt]
 make partly consistent with other versions
@@ -1032,3 +898,13 @@ Crazy Balls (Bontempi) [Domenico Cervini]
 -matsushita/kn5000.cpp: Corrected some LED connections, sorted mame.lst. [Felipe Sanches]
 
 -srcclean in preparation for MAME 0.259 release freeze. [Vas Crabb]
+
+-ui/menu.cpp: Avoid floating point equality comparison. [Vas Crabb]
+ * Fixes pointer input not working on menus at some window sizes in 32-bit x86 builds.
+
+-leapfrog_leappad_cart.xml: Fixed a description. [Vas Crabb]
+
+-Cleaned up the mess from #12610: [Vas Crabb]
+ * Command line options need to be documented.
+ * Don't assume C strings returned as option values remain valid indefinitely.
+ * Fixed wording for option description.

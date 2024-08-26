@@ -65,7 +65,7 @@ For the following configurations, ensure a build compiles, links and validates, 
 - [ ] x86-64, Linux, GCC, libstdc++, non-debug, without tools, `tiny` subtarget
 - [ ] x86-64, Linux, GCC, libstdc++, non-debug, without tools, `virtual` subtarget
 
-For the following configurations, ensure a build compiles:
+For the following configurations, ensure a build compiles, links and validates:
 - [ ] i686, Linux, GCC, libstdc++, debug, with tools
 - [ ] i686, Linux, GCC, libstdc++, non-debug, with tools
 
