@@ -1,4 +1,4 @@
-0.269 2024-08-2x
+0.269 2024-08-29
 ----------------
 
 
@@ -146,134 +146,38 @@ Merged pull requests
 - 12632: skeleton/koto_zevio.cpp: Added a skeleton Koto Laboratory Zevio SoC driver with one game. [David Haywood, TeamEurope]
 - 12633: tvgames/generalplus_gpl16250_spi.cpp: Added a Plarail Shinkansen driving game (not working). [David Haywood, TeamEurope]
 - 12634: neogeo/neogeo_spr.h: Fixed horizontal video timings; neogeo/midas.cpp: Fixed zoom table RAM size. [cam900]
-- 12638: Added newer revisions of Hyper Street Fighter II and X-Men Vs. Street Fighter. [bugcutt]
+- 12638: capcom/cps2.cpp: Added newer revisions of Hyper Street Fighter II and X-Men Vs. Street Fighter. [bugcutt]
 - 12639: tvgames/xavix_2000.cpp: Added preliminary support for Duel Masters: Duel Station. [David Haywood, TeamEurope]
-- 12640: gaelco/gaelco3d.cpp: Added placeholders for undumped microcontroller used by Speed Up. [Recreativas.org, ClawGrip]
+- 12640: gaelco/gaelco3d.cpp: Added placeholders for the undumped microcontroller used by Speed Up. [Recreativas.org, ClawGrip]
 - 12641: konami/xmen.cpp: Added service switch inputs. [jotego]
 - 12642: igs/pgm2.cpp: Dumped the CPLD for Bu Bu Car. [Victor Fernandez (City Game), Recreativas.org, ClawGrip]
-- 12643: misc/changyu.cpp: Hooked up OPLL sound chip and vertical sync interrupt. [flama12333]
-
-12645: hash/sgi_mips.xml: rename netbsd 2 images to allow to merge into same directory [jflatt]
-make partly consistent with other versions
-
-12646: cpu/t11, ussr/bk: Improve interrupt handling on 1801VM1, misc fixes. [shattered]
-Allows bus error handlers on BK to deal with interrupt from STOP key (which causes a HALT-mode IRQ and triggers access to unmapped
-  region at 177674).
-
-12647: sinclair/tsconf.cpp: fix layers priority, screen updates [holub]
-
-12649: Technics KN5000 musical keyboard [felipesanches]
-This is a much smaller pull request with a smaller amount of code, in the hope to facilitate code-reviews. Once this lands, I'll
-  open subsequent PRs with additional chunks, to be reviewed as well.
-The full wip patchset is still available at PR #11835, but that seems to be too big a fish to fry all at once... 
-
-12651: konami/k052109.cpp: Remove the color kludge for xmen/gradius3 [jotego]
-- adds missing information about internal registers
-- correctly implements color bit selection (one kludge removed)
-Tested on xmen and gradius3 (set the selection bit high) and several of the other games
-  (tmnt,tmnt2,aliens,mia,scontra,thunderx,ssriders) which do not set it.
-
-12652: new WORKING machine (Drum Super Star) [mamehaze]
-new WORKING machine
-----------------
-Drum Super Star [David Haywood, Sean Riddle, Peter Wilhelmsen]
-
-12654: gaelco/gaelco3d.cpp: Add notes and ROM placeholder for Football Power I/O PCB [Recreativas.org] [clawgrip]
-
-12655: spg2xx.cpp : drumsups is from 2007 [mamehaze]
-
-12656: new WORKING clones (TV Boy) [mamehaze]
-new WORKING clones
---------------
-TV Boy (Nics, NTSC) [Taksangs]
-
-12657: spg2xx_wiwi.cpp - ddmmeg12 is also from 2007 [mamehaze]
-(copyright year shown on box)
-
-12659: casio/pv1000.cpp: implement IRQs (and acknowledgement) like hardware does [lidnariq]
-Hardware documentation is at https://obscure.nesdev.org/wiki/Casio_PV-1000/ASIC_registers#Interrupt_enable_($FC)_%3E_write
-
-12661: HP98X6: added support for option ROMs [fulivi]
-Hi,
-this commit adds the support for optional ROMs to HP98x6 family of systems.
-I'll e-mail the relevant ROM images shortly.
-Thanks.
---F.Ulivi
-
-12662: cirsa/neptunp2.cpp: Add (not working) Dancing Bells (from BGT) [clawgrip]
-New systems marked not working
-------------------------------
-Dancing Bells [hammy]
-
-12663: cops.cpp: revlatns - provide a default nvram [mamehaze]
-we tend to provide default nvrams for games which require non-obvious bootup/init procedures, so do that here.
-
-12664: igs/igs_fear.cpp : save sram/nvram, tidy up inputs [mamehaze]
-igs_fear.cpp : save sram/nvram, tidy up inputs (F2 service key, single button, no trackball on fearless)
-
-12665: sat_cart.xml; sat_vccart.xml: Metadata cleanings [ArcadeShadow]
-Replaced countries' abbreviations by their full name and lowercase on descriptive words.
-
-12667: jking02,  crzybugs - add IGS027A internal ROM dumps [Peter Wilhelmsen] [mamehaze]
-jking02,  crzybugs - add IGS027A internal ROM dumps [Peter Wilhelmsen]
-I've also moved the sprite/tile gfx decryptions out of igs017.cpp driver file, and into the video device, as I think it must be a
-  configurable behavior of the 031 (many IGS encryptions are configurable, and it needs to be shared between drivers too)
-The machines with an XA have also been split out to a different driver for now
-
-12671: igs_m027.cpp - add 4 more internal IGS027A dumps [Guru, XingXing] [mamehaze]
-
-12672: k573fpga: Implement proper MP3 decryption algorithm for ddrsbm [spicyjpeg] [987123879113]
-Code and research thanks to @spicyjpeg.
-
-12675: machine/intelfsh.cpp: Add ST M29W640GB [wilbertpol]
-
-12677: igs_m027.cpp - add 2 more 027A ROMs [Guru, XingXing] [mamehaze]
-
-12679: Fix MAME Debugger GUI issues: horizontal disassembly scrolling and maxwidth [dave-br]
-@tlindner : FYI
-This fixes https://github.com/mamedev/mame/issues/12678
-### PROBLEMS FIXED
-1. Horizontally scrolling disassembly pane causes garbage to appear.
-2. The parent debugger window refuses to be widened or horizontally scrolled even when disassembly contents are very wide (e.g., due
-  to comments).
-NOTE: I have observed the above problems on the MAME Windows Debugger under Windows.  I briefly tried the QT Debugger under Windows:
-  Problem 1 occurs, but Problem 2 seems ok.  I briefly tried the imgui debugger, but it crashes every time I click on it.  I do not
-  have access to MacOS or Linux.
-### SCENARIOS FIXED
-Anyone using the disassembly window (either embedded in the main window or free-floating) might hit problem (1) if the window is
-  sized narrowly enough.  But the real issue is for folks (like me) who extensively use the comments feature.  In particular, I use
-  a CoCo-based tool which allows the original assembly source you're debugging to appear as a comment for each machine code
-  instruction (complete with labels and symbols).  This can make the information in the disassembly view quite wide (each comment
-  alone could be about 100 characters).  Inability to widen the window or scroll the right portion of the comments into view is a
-  pain.
-### LIST OF CODE CHANGES
-- debug_view_disasm::redraw: Fixed calls to print that were passing a "relative" end parameter (a column number based on where the
-  horizontal scrollbar was situated) so they instead pass the expected "absolute" end parameter (a column number independent of what
-  is horizontally scrolled into view).  This fixes the garbage (problem 1).
-- debug_view_disasm: Replace hard-coded value of 50 for comment length with a dynamically calculated value based on the comments
-  retrieved for the current buffer of disassembly to be shown (debug_view_disasm::complete_information).
-- consolewin_info: Factor code that computes minwidth/maxwidth based on child windows so it may also be called from
-  consolewin_info::recompute_children.
-- debugwin_info::window_proc: Added call to recompute_children() at top of case WM_GETMINMAXINFO.  This ensures that when the system
-  queries the parent window's min/max width, the parent first consults its children (specifically the disassembly window) so it
-  calculates the values properly.
-- Some minor changes to replace use of "int" in neighboring code with s32/u32.
-
-12680: igs_m027.cpp - add 2 more 027A internal dumps (and 2 in igs_m027_link too) [Guru, XingXing] [mamehaze]
-igs_m027.cpp - add 2 more 027A internal dumps [Guru, XingXing]
-igs_m027_link.cpp - add 2 more 027A internal dumps from the link 'HOST' boards [Guru, XingXing]
-
-12681: msx1_cart.xml: Promoted 1 item to working. [wilbertpol]
-Software list items promoted to working
-------------------------------------------
-X & Y (Arab)
-
-12683: - igs/igs_m027.cpp: added decryption for lhdmg and lhdmgp [XingXing] [HappyASR]
-
-12685: igs/pgmcrypt.cpp: fix decryption for mgcs3 and mgzz [XingXing] [HappyASR]
-- igs/pgmcrypt.cpp: fix decryption for mgcs3 and mgzz
-- igs/igs_m027.cpp: change game name from "Man Guan Fu Xing" to "Man Guan Zhi Zun (V101CN)" to match the title screen for
-  consistency.
+- 12643: misc/changyu.cpp: Hooked up the OPLL sound chip and vertical sync interrupt. [flama12333]
+- 12645: sgi_mips.xml: Renamed some NetBSD CD-ROM images to make labels unique across parent/clone sets. [jflatt]
+- 12646: cpu/t11, ussr/bk.cpp: Improved interrupt handling on the 1801VM1 CPU and fixed miscellaneous issues. [shattered]
+- 12647: sinclair/tsconf.cpp: Fixed graphics layer priorities and screen updates. [holub]
+- 12649: matsushita/kn5000.cpp: Added a skeleton driver for the Technics SX-KN5000 keyboard. [Felipe Sanches, Angelo Salese]
+- 12651: konami/k052109.cpp: Implemented a configuration bit used by xmen and gradius3 allowing a workaround to be removed. [jotego]
+- 12652: tvgames/spg2xx.cpp: Added Senario Drum Super Star. [David Haywood, Sean Riddle, Peter Wilhelmsen]
+- 12654: gaelco/gaelco3d.cpp: Added placeholder for Football Power ball controller microcontroller ROM. [Recreativas.org, ClawGrip]
+- 12655: tvgames/spg2xx.cpp: Filled in the year for Drum Super Star. [David Haywood]
+- 12656: atari/a2600.cpp: Added an NTSC TV Boy variant from Nics. [Taksangs, David Haywood]
+- 12657: tvgames/spg2xx_wiwi.cpp: Filled in the year for Double Dance Mania: Mega 12 (shown on packaging). [David Haywood]
+- 12659: casio/pv1000.cpp: Fixed I/O port reads and interrupt acknowledgement. [lidnariq]
+- 12661: hp/hp98x6.cpp, hp/hp98x6_optrom.cpp, hp98x6_rom.xml: Added HP98x6 series option ROM support. [F.Ulivi]
+- 12662: cirsa/neptunp2.cpp: Dumped B. Gaming Technology Dancing Bells (not working). [hammy, ClawGrip]
+- 12663: atari/cops.cpp: Added default non-volatile RAM contents for Revelations. [David Haywood]
+- 12664: igs/igs_fear.cpp: Save non-volatile RAM contents, and cleaned up inputs. [David Haywood]
+- 12665: sat_cart.xml, sat_vccart.xml: Avoid abbreviations and use lowercase for descriptive text in descriptions. [ArcadeShadow]
+- 12667: igs/igs_m027.cpp: igs/igs_m027xa.cpp: Dumped internal ROMs for two IGS027A CPUs. [Peter Wilhelmsen, David Haywood]
+- 12671: igs/igs_m027.cpp: Dumped internal ROMs for four IGS027A CPUs. [Guru, XingXing, David Haywood]
+- 12672: konami/k573fpga.cpp: Implemented proper MP3 decryption for Dance Dance Revolution Solo Bass Mix. [spicyjpeg, Windy Fairy]
+- 12675: machine/intelfsh.cpp: Added ST M29W640GB 8K Flash device. [Wilbert Pol]
+- 12677: igs/igs_m027.cpp: Dumped internal ROMs for two IGS027A CPUs. [Guru, XingXing, David Haywood]
+- 12679: emu/debug/dvdisasm.cpp: Fixed horizontal scrolling; debugger/win: Don’t restrict maximum window width. [dave-br]
+- 12680: igs/igs_m027.cpp, igs/igs_m027_link.cpp: Dumped internal ROMs for four IGS027A CPUs. [Guru, XingXing, David Haywood]
+- 12681: msx1_cart.xml: Corrected ROM loading for X & Y. [Wilbert Pol]
+- 12683: igs/igs_m027.cpp: Added decryption for lhdmg and lhdmgp. [XingXing, Happy]
+- 12685: igs/pgmcrypt.cpp: Fixed decryption for mgcs3 and mgzz; igs/igs_m027.cpp corrected a game title. [XingXing, Happy]
 
 
 Source changes
