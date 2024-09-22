@@ -520,7 +520,7 @@ class SoftlistComparator:
                     added_nonworking.add(description)
 
         removed_working = sorted(old_working.values())
-        removed_nonworking = sorted(old_working.values())
+        removed_nonworking = sorted(old_nonworking.values())
 
         if renames or removed_working or removed_nonworking or demoted or added_working or added_nonworking or promoted:
             self.output.write('%s (%s):\n' % (listname, filename))
