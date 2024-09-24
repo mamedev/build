@@ -87,7 +87,6 @@ Jack's Venture - Inca Treasure [Ioannis Bampoulas, TeamEurope]
 JoyPalette Anpanman: Let's Go! Ikunou Drive (Japan) [TeamEurope, David Haywood]
 Konami Teleshibai (Japan) [David Haywood, TeamEurope]
 Konami Teleshibai - Purple Version (Japan) [David Haywood, TeamEurope]
-Linksys (Cisco) PAP2 [unknown]
 Lucky V Line [hammy]
 Magical Kengo [Ioannis Bampoulas]
 Penguin Party [Ioannis Bampoulas, TeamEurope]
@@ -178,487 +177,79 @@ zx81_cass: 1K Games Pack (Crystal), Deflexx, Lemonade [Team Zeddy, Planeta Sin
 
 Merged pull requests
 --------------------
-12620: nmk/ddealer.cpp: upgraded interrupts trigger system based on PROM contents [sergiopolog]
-Same work done on this PR for **nmk/nmk16.cpp** driver:
-https://github.com/mamedev/mame/pull/12562
-is now applied in **nmk/ddealer.cpp**
-Double Dealer uses the same "hires" screen resolution than several games in the nmk16 driver, and the same interrupt system based on
-  PROM contents, so the same config is applied to it.
-Pixel Clock was confirmed on real hw, too.
-
-12650: megadriv.xml: Added 4 working items [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Breach (prototype) [Gaming Alexandria]
-Earthworm Jim (USA, prototype 19940728) [Hidden Palace]
-Earthworm Jim 2 (Europe, prototype 19950824) [Hidden Palace]
-Out of the Vortex (prototype 19950913) [Hidden Palace]
-Added language and compatibility info.
-
-12660: misc/changyu2.cpp: Add PSG to sound CPU memory map [flama12333]
-At least PSG on MCU has hooked up.
-except the machine tried to write to send commad the soundcpu mcu at 0x2038.  at 0c data space memory of mcu if write 21. will sound
-  alarm.
-
-12666: a2bus: Add support for Wico Trackball, Wico Command Control Joystick Adapter, and 4 paddles connected to the Sirius JoyPort
-  to the Apple ][/][+ [as-tb-dev]
-Adds support for these Apple ][ / ][+ controls:
-- Wico Trackball
-- Wico Command Control Joystick Adapter
-- 4 paddles connected to the Sirius JoyPort
-To test the Wico Command Control Adapter with 2 Atari-style joysticks:
-mame apple2p -gameio wicojoy 1on1
-Play Mode: Two Player
-Play Ball!: New Game
-Ensure that both players can play using the 1st and 2nd joysticks
-To test the Wico Trackball control:
-mame apple2p -sl2 wicotrackball apple2_flop_misc:spaceark
-Press Control-N
-Change the input device from Keyboard to Wico Trackball using the space-bar.
-Press Return, and select SLOT -2
-Press Esc to return to the game
-mame apple2p -sl7 wicotrackball apple2_flop_orig:matezone
-Press Control-I
-Select: WICO TRACKBALL: 7 and WICO FIREBUTTON: 1
-Verify that the trackball and first button works
-Press Control-I
-Select: WICO TRACKBALL: 7 and WICO FIREBUTTON: 2
-Verify that the trackball and second button works
-To test the Sirius JoyPort with 4 paddles:
-mame apple2p -gameio joyport_paddles foosball
-When prompted for the player count, press 4 to select 4 player mode
-Verify that each of the four paddles can control a distinct set of player rows
-
-12668: zx81_cass.xml: Added 18 working items + 2 not working [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Accounts [zx81stuff]
-Adventure (Gavin Baker) [zx81stuff]
-Bridgehead [Team Zeddy, Planeta Sinclair]
-Gamespack [Team Zeddy, Planeta Sinclair]
-Grand Prix [Planeta Sinclair]
-Inheritance [Team Zeddy, Planeta Sinclair]
-Le Chateau Hanté [Team Zeddy, Planeta Sinclair]
-Purchases [zx81stuff]
-Racehorse Trainer [zx81stuff]
-Sabotagem (Timex Portugal) [Planeta Sinclair]
-Serpents Tomb [Team Zeddy, Planeta Sinclair]
-Simulador de Voo (Timex Portugal) [Planeta Sinclair]
-Star Trek + 3D O's and X's [zx81stuff]
-The Nowotnik Puzzle & Other Diversions [zx81stuff]
-Tutor (French) [zx81stuff]
-Xadrez (Timex Portugal) [Planeta Sinclair]
-Zedman + Spacers [Team Zeddy, Planeta Sinclair]
-Zor [zx81stuff]
-New NOT working software list additions
---------------------------------------------
-Deflexx [Team Zeddy, Planeta Sinclair]
-Lemonade [Team Zeddy, Planeta Sinclair]
-
-12670: cpu: tms34020: Implement cvdxyl_b opcode [plaes]
-Each `cvdxyl_b` call in Atronic software seems to be clustered together with `vcol` and `vfill_l` opcodes which are not yet
-  implemented.
-
-12690: sony/news_r3k.cpp: Add support for the NWS-3720 [briceonk]
-Tested both NEWS-OS 4 and 5 on all 3 drivers, each configuration is working. The desktop machines couldn't boot NEWS-OS 4 before
-  because of the missing SCCVECT implementation (it would cause a bus error trying to use an expansion SCC, which obviously was not
-  installed).
-Also includes some naming cleanup, both of the source code and the BIOS files (to match the startup screen for each machine).
-The ROM dump credit goes to Plamen :)
-
-12692: Add a newer Diet Go Go set (with alt graphics) [clawgrip]
-New working systems
--------------------
-Diet Go Go (Europe v1.1 1992.09.26 v4) [Tailsnic Retroworks]
-
-12693: nintendo/vsnes.cpp: Add items in save state, Minor updates [cam900]
-- Fix type values for some variables
-- Make some variables constant
-- Suppress side effects for debugger read
-- Fix some function namings
-
-12695: Add an Automat (Robocop bootleg) set for Modular System [clawgrip]
-New clones marked not working
------------------------------
-Automat (bootleg of Robocop, Modular System) [Darksoft]
-
-12697: Replace a few complaint with compliant (Part 1) [mikehyrus]
-Replacing the typo word complaint with compliant to help make a little more sense for certain pieces.
-
-12698: Plug and Play additions (ekara + more) [mamehaze]
-new NOT WORKING systems
-------------
-Teleshibai (Japan) [David Haywood, Team Europe]
-Teleshibai - Purple Version (Japan) [David Haywood, Team Europe]
-TV Mahjong Game (VTxx hardware) [David Haywood, Team Europe]
-new software list entries
---------------
-ekara_cart.xml:
-Dream Cartridge: Kids' Song Volume 4 (Japan) (DC0007-KID)  [David Haywood, Team Europe]
-Kids' Song Mini Volume 6 (Japan) (MC0017-KSM)  [David Haywood, Team Europe]
-e-kara Web cartridge 8M (used, with 8 songs) (Japan)  [David Haywood, Team Europe]
-
-12699: sinclair/sprinter.cpp: 312/320 lines video modes [holub]
-
-12700: sinclair: reset caches for device_post_load [holub]
-followup: https://github.com/mamedev/mame/pull/12647#discussion_r1733416421
-
-12701: fix fruitpar decryption - game now boots [mamehaze]
-
-12702: new WORKING machine (DDRGame) [mamehaze]
-new WORKING machine
---------
-16-bit TV Dance Pad with 15 songs (DDRGame) [David Haywood, Sean Riddle]
-
-12703: irem/olibochu.cpp: Tweaked refresh rate (~62hz), misc. cleanups (no functional change) [jackson2k2]
-
-12704: Add a skeleton for IBM ThinkPad 850 and its operating systems [clawgrip]
-New systems marked not working
-------------------------------
-Thinkpad 850 [Arcade Hacker]
-New software list items marked not working
-------------------------------------------
-thinkpad8xx.xml:
-  AIX 4.1.5 [Arcade Hacker, ClawGrip]
-  OS/2 Warp PowerPC Edition [Arcade Hacker, ClawGrip]
-  Solaris 2.5.1 Limited Availability PowerPC Platform Edition [Arcade Hacker, ClawGrip]
-  Windows NT Workstation 3.5 PowerPC Edition [Arcade Hacker, ClawGrip]
-
-12705: igs/igs_m027.cpp: confirm lhzb3 uses the same internal code as lhdmg; remove tilemaps rom scrambling in some games [HappyASR]
-
-12706: msx2_cart.xml: Added 1 working item. [wilbertpol]
-New working software list items
--------------------------------
-Ark-A-Noah [anonymous]
-
-12707: msx1_cart.xml: Added 4 working items. [wilbertpol]
-New working software list items
--------------------------------
-The 4 Masters of Melody [anonymous]
-The Battle on Gojo Ohashi [anonymous]
-Ghost [anonymous]
-Prisoner of War [anonymous]
-
-12708: igs_m027.cpp - fix some tile ROM loading [mamehaze]
-this is how all the booting sets in the driver look now (tilemap visible in at least 1 screen in each)
-!fruitpar_1!fruitpar_2
-!jking02_1!jking02_2
-!lhdmg_1!lhdmg_2
-!lhdmgp_1!lhdmgp_2
-!lthy_1!lthy_2
-!mgcs3_1!mgcs3_2
-!mgzz_1!mgzz_2
-!qlgs_1!qlgs_2
-!slqz3_1!slqz3_2
-!zhongguo_1!zhongguo_2
-
-12709: Add a Skeleton driver for Sun Microsystems Ultra 45 Workstation [clawgrip]
-New systems marked not working
-------------------------------
-Ultra 45 [Arcade Hacker]
-
-12711: igs_m027.cpp - added internal ROM for lhzb4 (now boots) [XingXing] [mamehaze]
-- added internal IGS027A ROMs for lhzb4, oceanpar, triplfev, extradrw [Ioannis Bampoulas, Team Europe, XingXing]
-- added chessc2 IGS027A internal ROM [Siftware]
-- example of using uploaded XOR table for decrypting some of the games
-new clones
-----------
-Fruit Paradise (V206US) [Ioannis Bampoulas]
-
-12712: Plug and Play additions [mamehaze]
-(all [Team Europe, David Haywood])
-New working clones
-------------------
-Mega Drive Play TV 1 (Japan)
-New systems marked not working
-------------------------------
-Bakutou Sengen Daigunder DX (Japan)
-Anpanman: Let's Go! Ikunou Drive (Japan)
-Dragon Ball Z: Scouter Battle Taikan Kamehameha: Ora to Omee to Scouter (Japan)
-New software list items marked not working
-------------------------------------------
-takara_daigander_dx_cart.xml:
-R-01 ROM Robo Aoki Inazuma Bulion
-R-02 ROM Robo Jurassic Soldier Bonerex
-
-12713: Initial support for the Motorola MEX68KECB Educational Computer Board [eschaton]
-Initial implementation of the Motorola 68K Educational Computer Board (MEX68KECB).
-
-12718: nintendo/nes_arcade_bl.cpp: Add note about variant on different ROM s ize (but same contents) [clawgrip]
-
-12719: mex68kecb: Add Abort button, minor cleanup [eschaton]
-Add an Abort button that triggers an NMI, just like the hardware.
-Also fix the boot vector handler's comment to refer to the correct ROM location and the correct number of bytes that are mapped from
-  the ROM.
-
-12720: apple2e: Apple //c mouse fixes [as-tb-dev]
-- Initializes Apple //c mouse related variables
-- Sets Y0 interrupt flag on //c mouse Y-axis movement even if X-axis movement is still being processed (allowing both the X0 and Y0
-  interrupt flags to be set at the same time)
-- Increases //c mouse port sensitivity (found in apple2e.cpp) from 20 to 40 to match that of the //e mouse (found in
-  a2bus/mouse.cpp)
-
-12721: a2gameio: Add support for the Softape Bright Pen [as-tb-dev]
-Adds support for the Softape Bright Pen for the Apple ][ and ][+
-Can be tested with these Softape games:
-- Bright Pen Craps
-- Roulette
-
-12723: MS68K: Marion Systems MS68K [eschaton]
-The Marion Systems MS68K was a single-board 68000 system designed by Tom Oberheim in 1985 with a DUART providing two serial ports
-  and (in combination with a latch) a parallel printer port, WD1772 floppy controller, optional NCR53C80 SCSI controller, and up to
-  512KB of RAM and 128KB of ROM onboard. Also included is an expansion connector providing access to most of the 68000 bus as well
-  as memory refresh signals and a single dedicated interrupt line.
-The stock ROM is a monitor that also contains a port of Tiny BASIC 1.2 at 0xF04900 with a loader at 0xF04800. Thus while there is no
-  direct monitor command to start it, a simple GF04800 will start Tiny BASIC (and as usual BYE will exit back to the monitor).
-The monitor’s included floppy boot functionality will load the first sector of the disk to 0x800 and jump to it in supervisor mode.
-  There is no SCSI boot functionality built in.
-The MS68K was used in a number of college and university computer systems classes, and a variant of Peter Stark’s SK*DOS was
-  available.
-
-12725: yamaha mu2000 internal artwork improvements [felipesanches]
-Internal artwork in this PR:
-!Screenshot from 2024-09-03 14-04-36
-And with external artwork (available at https://github.com/ArqueologiaDigital/MAME_synths_artwork/tree/main/mu2000):
-!Screenshot from 2024-09-03 15-17-12
-
-12726: Add Linksys PAP2 and other MIPS-X improvements [Octocontrabass]
-cpu/mipsx/mipsx.cpp: probably 32-bit addresses
-cpu/mipsx/mipsxdasm.cpp: fix various bugs
-tomy/kissite.cpp: memory map borrowed from Linksys PAP2
-
-12727: floppy.cpp: Use standard drives for hard-sectored systems [mgarlanger]
-Here is an alternate approach for handling hard-sectored floppy drives. Instead of requiring duplicating the existing drives and
-  updating the variants, the sectoring is set during device configuration. This allows the drive to select the proper variants based
-  on the sectoring type.
-
-12728: rename sddz -> cjddz, add internal IGS027A ROM [XingXing] [mamehaze]
-
-12729: yamaha mu50: set LEDs and LCD contrast [felipesanches]
-
-12731: Update igs_m027.cpp - bypass chessc2 startup check so decryption can be verified [mamehaze]
-this is fairly crude, but it allows us to see that the decrypt functions are correct for program (was correct) and sprites (was not
-  correct)
-
-12732: ussr/pk32.cpp: Elektronika PK-32 - not working [holub]
-*Elektronika PK32* is based on MPL1839 and wasn't produced to mass market.
-at the current state PK32 runs in terminal mode with all internal tests pass.
-\+ mpl1839/kl1839vm1.cpp: MPL's *L1839VM1* cpu device:
-1839 cpu is able to execute code in user space fully compatible with VAX11
-Some info available here (rus):
-http://turbinium.com/forum/index.php?topic=16.0
-
-12733: sun3, sun3x, sun4: Add NSCSI tape to default devices. [eschaton]
-Add default NSCSI tape support to sun3, sun3x, and sun4.
-
-12734: sun3: Add DIAG/NORMAL switch [eschaton]
-Adds a DIAG/NORMAL switch that affect how a Sun-3/60 (and other models) are configured.
-
-12736: pgm - use uploaded xor tables for some games where the IGS027A dumps are complete [mamehaze]
-
-12737: bus/msx/slot/panasonic08r.cpp: Add MSX Turbo-R internal firmware mapper. [wilbertpol]
-
-12738: msx.cpp: Fix MSX2+ soft reset behavior. [wilbertpol]
-
-12739: New working machine (Casio/Tandy Zoomer) [devinacker]
-
-12741: hash/nes.xml: Add 8-bit Xmas 2023, NOT WORKING [chungy]
-New NOT WORKING software list additions
----------------------------------------
-8-bit Xmas 2023
-ROM can be downloaded from
-  https://www.retrousb.com/product/8-bit-xmas-2023/33?cp=true&sa=false&sbp=false&q=false&category_id=W4OKTBSUZRS2F3DC6WNNJ476
-Game doesn't function in MAME presently; maybe a new mapper is required? Very similar graphical bugs as xmas16, perhaps they are
-  related.
-
-12742: hash/nes.xml: add three working NES homebrew games [chungy]
-New working software list items (nes.xml)
------------------------------------------
-D-Pad Hero (version 1.0)
-D-Pad Hero (version 1.1)
-D-Pad Hero II
-The latest version of the games are available at https://dpadhero.com/Download.html
-D-Pad Hero 1 1.0 can be found on the wayback machine at
-  https://web.archive.org/web/20100110052408/https://dpadhero.com/Download.html
-
-12743: igs_m027xa : copy the XA logic from igs_fear.cpp for now + use uploaded XOR tables [mamehaze]
-note, this stops crzybugs booting for now, as it fails the XA check rather than passing it by chance.  I've done some
-  experimentation and I think this needs irq mask / source / pending registers hooking up too, otherwise the ARM will keep writing
-  commands to the XA when it doesn't want them
-the comms structure otherwise seems the same (command structure is the same, the method of shifting in/out values seems the same
-  etc.)
-
-12744: TLCS900: reduce usage of preprocessor macros. [felipesanches]
-Based on feedback from @cuavas at https://github.com/mamedev/mame/pull/12684#discussion_r1730039950, this PR replaces a bunch of
-  `#define`s with `enum` and `static constexpr`.
-
-12745: taito_f2.cpp: Notes and game name change about different PCB configurations for PuLiRuLa [Tailsnic Retroworks] [clawgrip]
-
-12746: bus/msx/slot: Use std::unique_ptr instead of std::vector. [wilbertpol]
-
-12750: igs/igs_m027xa.cpp: fix communication with XA [XingXing] [HappyASR]
-- hook up sound device and implement sound ROM banking
-- hook up inputs and DSW for Crazy Bugs
-
-12753: msx/msxtr.cpp: Moved fsa1st and fsa1gt to msxtr driver file. [wilbertpol]
-
-12758: use templates for TLCS900 I/O ports [felipesanches]
-Based on feedback from @cuavas at https://github.com/mamedev/mame/pull/12684#discussion_r1730040576, this PR uses templates to
-  "avoid copy/pasta".
-
-12759: igs/igs027a.cpp: Correct timer interval calculation [HappyASR]
-Fixed a bug in the timer interval calculation that caused slowdown in jking02.
-
-12761: spectrum_cass.xml: Added 25 working items [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Amnesia (v1.02, Spanish) [Spectrum Computing]
-Astor Musica [Planeta Sinclair]
-Chaos (Aackosoft) [Planeta Sinclair]
-Ficheiro Astor (cracked) [Planeta Sinclair]
-Galivan (Erbe) [Spectrum Computing]
-Grand National (ABC) [World of Spectrum]
-Grand National (Zafi Chip) [World of Spectrum]
-Gridrunner (Century) [Spectrum Computing]
-Hydrofool (Zafi Chip) [Spectrum Computing]
-Impero Romano [Planeta Sinclair]
-Indoor Soccer (System 4) [Spectrum Computing]
-Master Word (Hopkinson / Tribe) [Planeta Sinclair]
-Match Point (alt) [Spectrum Computing]
-Match Point (IBSA) [Spectrum Computing]
-N.O.M.A.D. (Erbe) [Spectrum Computing]
-Raptores de la Galaxia (Microbyte) [Spectrum Computing]
-Simulador de Voo (Groupi, pirate) [Planeta Sinclair]
-Soko Ban [Planeta Sinclair]
-Soko Ban (hack) [Planeta Sinclair]
-Sokoban (Spanish) [Spectrum Computing]
-Strike Attack (alt) [Spectrum Computing]
-SSTV [Planeta Sinclair]
-SSTV (sample pictures) [Planeta Sinclair]
-Tabuada Infantil (master tape) [Planeta Sinclair]
-Tabuada Infantil [Planeta Sinclair]
-Merged sets
---------------------------------------------
-Gridmaster - Part 1 + Gridmaster - Part 2
-Alien Swarm & Arena! + Alien Swarm (K-Tel)
-Demoted to NOT working software list item
---------------------------------------------
-Ficheiro Astor
-Cleanups and fixes: parent/cloneof relationships, descriptions, publishers, years (information provided by spectrumcomputing.co.uk)
-  and added languages info.
-
-12763: attache.xml; smc777.xml: Added more accurate soft. list descriptions [ArcadeShadow]
-[attache] Added accent to "Attaché" system.
-[smc777] Fixed system name and lowercase on media storage name.
-
-12764: coleco.xml; coleco_homebrew.xml: Metadata cleanups [ArcadeShadow]
-[coleco] Replaced "Euro" abbreviation to "Europe"
-[coleco_homebrew] Uppercase to "64K" description
-
-12766: igs_m027.cpp: Added OKI samples ROM banking with 128KB size [HappyASR]
-- igs_m027.cpp: Corrected OKI samples ROM banking for lhdmg/lhzb3
-- igs_m027.cpp: Added NVRAM support
-- igs_m027xa.cpp: Corrected OKI samples ROM banking for jking02
-- igs_m027xa.cpp: Added NVRAM support
-
-12767: formats/mfi_dsk.cpp: Update mfi spec for new hard-sectored support. [mgarlanger]
-Updates the mfi file definition with the way hard-sectored support was added to mame.
-
-12771: zx81_cass.xml: Added 10 working items + 1 not working [ArcadeShadow]
-New working software list additions
---------------------------------------------
-3D Formule 1 [Team Zeddy, Planeta Sinclair]
-AERI - Análise de Estruturas Recticuladas Isostácticas [Planeta Sinclair]
-Alien Invaders [Team Zeddy, Planeta Sinclair]
-Air Traffic Control [Team Zeddy, Planeta Sinclair]
-Colunas - Dimensionamento de Colunas Montantes de Edifícios [Planeta Sinclair]
-Dis-ACSem [Planeta Sinclair]
-Em Busca dos Tesouros [Spectrum Computing]
-Geometria I [Planeta Sinclair]
-Letter Hunt [Planeta Sinclair]
-Tut-Tut [Spectrum Computing]
-New NOT working software list addition
---------------------------------------------
-1K Games Pack (Crystal) [Team Zeddy, Planeta Sinclair]
-
-12772: atari/jaguar.cpp: Fix notes [cam900]
-GPI0 is actually GPIO (General Purpose Input Output).
-
-12774: Update notes on undumped namcos12 games [simzy39]
--Added links to a flyer for Aerosmith's Quest For Fame and changed the date from 2001 to 1999 in order to match the year on the
-  flyer and other sources that reference this as the release year
--Added a link to videogame footage of Submarines and a specific reference of the tradeshow where the cabinet was demonstrated
-Reference of the trade show:
-https://web.archive.org/web/20200927151212/https://ascii.jp/elem/000/000/314/314701/
-
-12778: samcoupe_flop.xml: Added 8 working items [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Boggle Bubble [Spectrum Computing]
-Dave Infuriators [Black Jet]
-Dave Invaders [Black Jet]
-Hexagonia [Spectrum Computing]
-Lost Disks of Sam [Black Jet]
-Moby DX [Black Jet]
-WaterWorks [TOSEC]
-Wop Gamma (pre-release version) [World of SAM]
-
-12779: new NOT WORKING machines (IGS Triple Slot + Triple Fever clones) [mamehaze]
-new NOT WORKING machines
------------
-Triple Slot (V200VE) [Ioannis Bampoulas, TeamEurope]
-new NOT WORKING clones
-----------
-Triple Fever (V108US) [Ioannis Bampoulas, TeamEurope]
-Triple Fever (V105US) [Ioannis Bampoulas, TeamEurope]
-- improve ROM labels for extradrw, add note about extra 8255 [Jorge Silva, Team Europe]
-- added XA dump to Triple Fever (matches crzybugs) [Ioannis Bampoulas, TeamEurope] 
-
-12780: trs/coco3.cpp: Extend display from 639 to 640 pixels [tlindner]
-Fixes bug id 8903.
-
-12781: nes_kstudio.xml; nes_ntbrom.xml: Metadata cleaning [ArcadeShadow]
-Replaced "Jpn" abbreviation to "Japan"
-
-12785: sinclair/tsconf.cpp: replace covox with DAC device [holub]
-sinclair/tsconf.cpp: replace covox with DAC device
-sinclair/tsconfdma.cpp: refactoring
-
-12788: sinclair/tsconf.cpp: default BIOS upgrade 24.07.28 [holub]
-
-12794: hash/{ibm5170,mac}_cdrom: Doom and related games [chungy]
-This is basically a dump of all the physical Doom games I have.  It's a bit more complete than before. :-)
-New working software list titles (ibm5170_cdrom.xml)
-----------------------------------------------------
-Chex Quest [Digital Café]
-Demon Gate: 666 New Levels for Doom & Doom II [Laser Magic] Depths of Doom Trilogy [id Software]
-Doom II [id Software]
-Doom II French [id Software]
-Doom Shareware [id Software]
-Doom: Collector's Edition [id Software]
-Final Doom [id Software]
-Hell to Pay [Wraith Corporation]
-Heretic: Shadow of the Serpent Riders [Raven Software]
-Hexen: Beyond Heretic [Raven Software]
-Hexen: Deathkings of the Dark Citadel [Raven Software]
-Master Levels for Doom II [id Software]
-Strife: Quest for the Sigil [Rogue Entertainment]
-The Ultimate Doom [id Software]
-New working software list titles (mac_cdrom.xml)
-------------------------------------------------
-Chex Quest [Digital Café]
-Hexen: Beyond Heretic [Raven Software]
-The Ultimate Doom [id Software]
-
-12795: added missing XA opcode for tripfevb, although it still hangs [mamehaze]
-
-12797: gm1000.cpp: Add dump of Eniac Sound Saurus BH-1000 [buffis]
-Add dump of Eniac Sound Saurus BH-1000
-https://piano.tyonmage.com/eniac/bh-1000.html
-There's a previous dump of the Suzuki GM-1000 which seems to be pretty much the same device. That one lacks the mask rom dumps.
-Pics: https://photos.app.goo.gl/G12YJPEWpDKQPYr69
-Roms have been sent to DU. Let me know if you need them.
-Credit: buffi
+- 12620: nmk/ddealer.cpp: Use timing PROM contents to trigger video interrupts. [Sergio Galiano]
+- 12650: megadriv.xml: Added four working prototypes. [Hidden Palace, Gaming Alexandria, ArcadeShadow]
+- 12660: misc/changyu.cpp: Added AY8910 to microcontroller external address space. [flama12333]
+- 12666: bus/a2bus: Added Wico trackball card; bus/a2gameio: Added Sirius JoyPort and Wico Command Joystick. [as-tb-dev]
+- 12668: zx81_cass.xml: Added twenty items (eighteen working). [ArcadeShadow]
+- 12670: cpu/tms34010: Implemented TMS34020 cvdxyl_b instruction. [Priit Laes]
+- 12690: sony/news_r3k.cpp: Added support for the NWS-3720 and cleaned up code. [Brice Onken, Plamen Mihaylov]
+- 12692: dataeast/dietgo.cpp: Added a newer version of Diet Go Go with alternate graphics available. [Tailsnic Retroworks, ClawGrip]
+- 12693: nintendo/vsnes.cpp: Fixed some save state and debugger issues. [cam900]
+- 12695: dataeast/ffantasy_ms.cpp: Added a bootleg of Robocop on Gaelco Modular System called Automat. [Darksoft, ClawGrip]
+- 12697: Fixed a number of places where comments said “complaint” when they meant “compliant”. [Michael Sanborn]
+- 12698: Added three TV games (not working) and three e-kara cartridges. [David Haywood, TeamEurope]
+- 12699: sinclair/sprinter.cpp: Added support for 312-line/320-line video mode selection. [holub]
+- 12700: sinclair: Clear caches after loading saved states. [holub]
+- 12701: igs/pgmcrypt.cpp: Fixed decryption for the Fruit Paradise games, allowing them to boot. [David Haywood]
+- 12702: tvgames/spg2xx.cpp: Added the DDRGame 16-bit TV Dance Pad with 15 songs. [David Haywood, Sean Riddle]
+- 12703: irem/olibochu.cpp: Adjusted video and interrupt timings and cleaned up code. [jackson2k2]
+- 12704: ibm/thinkpad8xx.cpp, thinkpad8xx.xml: Added a skeleton IBM ThinkPad 850 driver and software list. [ArcadeHacker, ClawGrip]
+- 12705: igs/igs_m027.cpp: Identified lhzb3 CPU ROM and removed inappropriate tilemap ROM unscrambling. [XingXing, David Haywood]
+- 12706: msx2_cart.xml: Added Ark-A-Noah. [Wilbert Pol]
+- 12707: msx1_cart.xml: Added four working items. [Wilbert Pol]
+- 12708: igs_m027.cpp: Corrected byte order for 16-bit timemap ROMs for several games. [David Haywood]
+- 12709: sun/ultra45.cpp: Added a skeleton driver for the Sun Ultra 45 workstation. [ArcadeHacker, ClawGrip]
+- 12711: igs/igs_m027.cpp: Dumped IGS027A ROMs for five games. [Ioannis Bampoulas, TeamEurope, XingXing, Siftware, David Haywood]
+- 12712: tvgames: Added four TV games (one working) and two associated cartridges. [TeamEurope, David Haywood]
+- 12713: motorola/mex68kecb.cpp: Added basic Motorola 68000 Educational Computer Board emulation. [Chris Hanson]
+- 12718: nintendo/nes_arcade_bl.cpp: Added a note about the smb3bl timer CPU ROM content. [ClawGrip]
+- 12719: motorola/mex68kecb.cpp: Added the Abort (non-maskable interrupt) button and fixed a comment. [Chris Hanson]
+- 12720: apple/apple2e.cpp: Allow Apple IIc horizontal and vertical mouse movement flags to be set concurrently. [as-tb-dev]
+- 12721: bus/a2gameio: Added support for the Softape Bright Pen. [as-tb-dev]
+- 12723: trainer/ms68k.cpp: Emulated the Marion Systems MS68K single-board computer. [Chris Hanson]
+- 12725: layout/mu2000.lay: Made internal Yamaha MU2000 artwork prettier. [Felipe Sanches]
+- 12726: cpu/mipsx: Changed to 32-bit addresses, fixed disassembler bugs; tomy/kisssite.cpp: Improved addresss map. [Octocontrabass]
+- 12727: imagedev/floppy.cpp: Set sectoring mode on the floppy connector rather than using different drive devices. [Mark Garlanger]
+- 12728: igs/igs_m027.cpp: Dumped the internal IGS027A CPU ROM for Chaoji Dou Dizhu. [XingXing]
+- 12729: yamaha/ymmu50.cpp: Hooked up LCD contrast and LED outputs. [Felipe Sanches]
+- 12731: igs/igs_m027.cpp: Patched out Chess Challenge II startup checks to aid in verifying decryption. [David Haywood]
+- 12732: cpu/mpk1839, ussr/pk32.cpp: Added preliminary L1839VM1 CPU and Elektronika PK-32 emulation (Soviet VAX-11 clone). [holub]
+- 12733: sun/sun3.cpp, sun3/sun3x.cpp, sun/sun4.cpp: Added a SCSI tape drive as a slot option. [Chris Hanson]
+- 12734: sun/sun3.cpp: Added the normal/diagnostic mode switch as a machine configuration option. [Chris Hanson]
+- 12736: igs/pgm.cpp, igs/pgmcrypt.cpp: Use uploaded XOR tables for some games with their IGS027A CPU ROMs dumped. [David Haywood]
+- 12737: bus/msx/slot/panasonic08r.cpp: Added the MSX turbo R internal firmware mapper. [Wilbert Pol]
+- 12738: msx/msx.cpp: Reset MSX2+ boot flags on system reset. [Wilbert Pol]
+- 12739: casio/zoomer.cpp: Emulated the Casio/Tandy “Zoomer” PDA. [Devin Acker]
+- 12741: nes.xml: Added 8-bit Xmas 2023 (not working). [retroUSB, Mike Swanson]
+- 12742: nes.xml: Added three D-Pad Hero homebrew games. [Kent Hansen, Andrean Pedersen, Mike Swanson]
+- 12743: igs/igs_m027xa.cpp: Copied microcontroller interface and timers from igs/igs_fear.cpp (not working). [David Haywood]
+- 12744: cpu/tlcs900: Replaced a number of preprocessor macro constants with enumerations and constexpr variables. [Felipe Sanches]
+- 12745: taito/taito_f2.cpp: Distinguish PuLiRuLa World sets by the board sets they work with. [Tailsnic Retroworks, ClawGrip]
+- 12746: bus/msx/slot: Use std::unique_ptr rather than std::vector for fixed size arrays. [Wilbert Pol]
+- 12750: igs/igs_m027xa.cpp: Fixed communication with microcontroller, and fixed sound and inputs for Crazy Bugs. [XingXing]
+- 12753: msx/msx_s1990.cpp, msx/msxtr.cpp: Added preliminary MSX-Engine S1990 device and MSX turbo R emulation. [Wilbert Pol]
+- 12758: cpu/tlcs900: Use callback arrays and member function templates to simplify I/O port handling. [Felipe Sanches]
+- 12759: igs/igs027a.cpp: Improved timer interval calculation (fixes slowdown in Jungle King 2002). [XingXing]
+- 12761: spectrum_cass.xml: Added 25 working items and improved metadata. [ArcadeShadow]
+- 12763: attache.xml; smc777.xml: Edited software list descriptions. [ArcadeShadow]
+- 12764: coleco.xml; coleco_homebrew.xml: Cleaned up software descriptions. [ArcadeShadow]
+- 12766: igs/igs_m027.cpp: Implemented dual Oki sound sample banks and added non-volatile RAM. [XingXing]
+- 12767: formats/mfi_dsk.cpp: Updated comments to cover newly supported hard-sectored formats. [Mark Garlanger]
+- 12771: zx81_cass.xml: Added eleven items (ten working). [ArcadeShadow]
+- 12772: atari/jaguar.cpp: Fixed comments incorrectly referring to GPIO as “GPI0”. [cam900]
+- 12774: namco/namcos12.cpp: Edited comments about undumped games on the platform. [simzy]
+- 12777: samcoupe_flop.xml: Added eight working items. [ArcadeShadow]
+- 12779: igs/igs_m027.cpp, igs/igs_m027xa.cpp: Added three more video slots games. [Ioannis Bampoulas, TeamEurope, David Haywood]
+- 12780: trs/coco3.cpp: Corrected visible display width to 640 pixels (fixes MT08903). [tlindner]
+- 12781: nes_kstudio.xml; nes_ntbrom.xml: Avoid unnecessary abbreviations in descriptions. [ArcadeShadow]
+- 12785: sinclair/tsconf.cpp: Replaced the Centronics port and Covox sound output device with a DAC. [holub]
+- 12788: sinclair/tsconf.cpp: Added BIOS upgrade 24.07.28 option and made it the default. [holub]
+- 12794: ibm5170_cdrom.xml, mac_cdrom.xml: Added seventeen items using or for use with the Doom game engine. [Mike Swanson]
+- 12795: cpu/xa: Implemented add with indexed addressing mode for the source operand. [David Haywood]
+- 12797: skeleton/gm1000.cpp: Dumped the ROMs from the Nihon Eniac BH-1000 Sound Saurus MIDI module. [buffi]
+- 12810: thinkpad8xx.xml: Fixed boot floppy image sizes for Solaris and Windows NT. [ClawGrip]
+- 12811: thinkpad8xx.xml: Fixed label for second AIX CD. [ClawGrip]
 
 
 Source changes
@@ -1820,3 +1411,13 @@ Micro Mages [Mike Swanson]
 -srcclean in preparation for 0.270 release branch. [Vas Crabb]
 
 -motorola/mex68kecb.cpp: Use the actual name of the system. [Vas Crabb]
+
+-thinkpad8xx.xml: Fixed boot floppy image sizes for Solaris and Windows NT. (#12810) [ClawGrip]
+
+-thinkpad8xx.xml: Fixed label for second AIX CD. (#12811) [ClawGrip]
+
+-shared/dcs.cpp: Got rid of unused memory share (fixes mismatched width warning for DCS Denver). [Vas Crabb]
+
+-skeleton/pap2.cpp: Removed source file with no license information. [Vas Crabb]
+ * I don't like to do this, but we can't ship with sources that have no license information - without explicit licensing, "all
+    rights reserved" is the default.  This would create a release with no clarity on whether it can be redistributed at all.
