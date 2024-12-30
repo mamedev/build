@@ -11,7 +11,7 @@ MAME Testers bugs fixed
 - 04902: [Flip Screen/Cocktail] (konami/bladestl.cpp) bladestl and clones: Sprites are not flipped when screen is flipped. (hap)
 - 05604: [Speed] (cvs/cvs.cpp) hunchbak, hunchbaka: The game incorrectly slows down at various points. (hap)
 - 05607: [Sound] (dataeast/kchamp.cpp) karatedo, kchamp: Speech samples play too slowly. (hap)
-- 05724: [Graphics] (konami/contra.cpp) contra and clones: The second player’s death animation is 3D stages is flipped. (hap)
+- 05724: [Graphics] (konami/contra.cpp) contra and clones: The second player’s death animation in 3D stages is flipped. (hap)
 - 05865: [Misc.] (irem/m92.cpp) nbbatman2bl: Video reads out-of-bounds tiles. (hap)
 - 05962: [Sound] (misc/gotcha.cpp) gotcha: Music stops playing during gameplay. (darq)
 - 06511: [Graphics] (konami/bladestl.cpp) bladestl: The Zamboni is not drawn correctly when partially visible on the right. (hap)
@@ -174,6 +174,7 @@ Crazy Bell (V1.2D) [hammy]
 Dream 9 Flower (v1.00c) [hammy]
 DT7 (prototype) [TT19xx_DigitalFoundary, David Haywood]
 Epoch / SSD Company LTD TV de Asobou! Manabou! Chou Nouryoku AIUEO Zukan (Japan) [David Haywood, TeamEurope]
+Epoch Cassette Vision [Sean Riddle, David Haywood]
 Halloween (Ming-Yang Electronic / TSK, version 1.0) [Ioannis Bampoulas]
 Hana Doujou (set 1) [hammy]
 Harikiri Junior Baseball (Japan, main ver. 1.0, video ver. 1.3) [hammy]
@@ -339,6 +340,9 @@ New software list items marked not working
 ------------------------------------------
 a2600: Fix-It Felix Sr. (PAL60) [Cybearg]
 abc832_flop: Teletex 800 [robcfg]
+cassvisn_cart:
+  Astro Command, Baseball, Battle Vader, Big Sports 12, Elevator Panic, Galaxian, Monster Block, Monster Mansion, New Baseball,
+  PakPak Monster, Yosaku [Sean Riddle]
 leapfrog_leappad_cart:
   Korasho Land 1: Gakkou e Ikou! (Japan), Korasho Land 2: Tanoshii Ichinichi (Japan), Korasho Land 3: Tanjoubi Omedetou (Japan),
   Korasho Land 4: Machi no Naka o Tanken! (Japan), Korasho Land 5: Bokutatchi no Ichinen (Japan),
@@ -350,19 +354,15 @@ leapfrog_leappad_cart:
   Shimajirou to Ribby no CoCoPad Game Party / Shougakkou Tanken (Japan),
   Shimajirou to Ribby no Eigo Jiten / Onahashi CoCoPad Time Machine de Daibouken! (Japan) [David Haywood, TeamEurope, Fujix]
 sc3000_cass: Reversi Champion [6502MAN]
-spectrum_betadisc_flop: Batty
+spectrum_betadisc_flop: Batty [Spectrum Computing]
 
 
 Merged pull requests
 --------------------
-11927: new machines marked as NOT WORKING - Cassette Vision [mamehaze]
-This is a fresh, squashed PR for the work done on Epoch Cassette Vision.
-It's free for anybody who wants to pick it up, as I don't feel comfortable working with this design, as it loses a number of
-  important benefits from my original one.
-
+- 11927: cpu/upd777, epoch/cassvisn.cpp: Added preliminary Epoch Cassette Vision emulation. [David Haywood]
 - 11938: toaplan/dt7.cpp: Added preliminary emulation for the Toaplan prototype DT7. [David Haywood]
-- 12756: apple/apple2e.cpp, apple/apple2video.cpp: Improved Apple IIe keyboard layout and language switch handling. [as-tb-dev]
-- 12783: ibm5170.xml, ibm5170_cdrom.xml: Added good dumps of several variants of Windows NT 3.1, 3.5.1 and 4.0. [Mike Swanson]
+- 12756: apple/apple2e.cpp, apple/apple2video.cpp: Improved Apple IIe/IIc keyboard layout and language switch handling. [as-tb-dev]
+- 12783: ibm5170.xml, ibm5170_cdrom.xml: Added good dumps of several variants of Windows NT 3.1, 3.5.1, 4.0 and 2000. [Mike Swanson]
 - 12801: pv1000.xml: Added sixteen working homebrew cartridges. [Inufuto, telanus]
 - 12851: ui/selmenu.cpp: Scale up small icons (for cases where icons were designed for a much lower pixel density). [jflatt]
 - 12908: sinclair/sprinter.cpp: Detect the Game Configuration bitstream in use by checksum. [holub]
@@ -386,10 +386,10 @@ It's free for anybody who wants to pick it up, as I don't feel comfortable worki
 - 13027: heathzenith/h89.cpp, bus/heathzenith/h89: Added H89 variant with CDR Systems BIOS and floppy controller. [Mark Garlanger]
 - 13028: capcom/cps2.cpp: Order Dungeons & Dragons: Shadow over Mystara games from newest to oldest. [Igor-Arabe]
 - 13030: midway/williamsblitter.cpp Converted the Williams SC1/SC2 blitter to a device. [Ryan Holtz]
-- 13032: a2gameio/joyport.cpp: Mention permanently attached joysticks in Sirius JoyPort device description. [as-tb-dev]
+- 13032: a2gameio/joyport.cpp: Mention permanently attached joysticks in the Sirius JoyPort device description. [as-tb-dev]
 - 13033: igs/igs011.cpp: Moved Virtua Bowling to a derived class and cleaned up code. [cam900]
 - 13038: trs/gime.cpp: Fixed lines per row calculation for legacy video modes and fixed a border color issue. [Tim Lindner]
-- 13039: toaplan/dt7.cpp: Implemented text layer row select (used on course select screen. [David Haywood]
+- 13039: toaplan/dt7.cpp: Implemented text layer row select (used on course select screen). [David Haywood]
 - 13049: sega/timetrv.cpp: Changed LED display decoder pattern for uppercase “I” to better match the hardware. [PDAisAok]
 - 13050: tvgames/spg2xx.cpp: Added Boku wa Plarail Untenshi - Shinkansen de Ikou! [David Haywood, TeamEurope]
 - 13051: skeleton/easy_karaoke.cpp: Dumped six more Bandai Karaoke Station units. [David Haywood, TeamEurope]
@@ -1926,25 +1926,3 @@ PCM Demo With Graphics [frantik]
 -yakyuken: correct ay and irq frequency [hap]
 
 -Corrected some metadata. [Vas Crabb]
-
-
-
-cassvisn_cart (cassvisn_cart.xml):
-  Non-working
-    Astro Command
-    Baseball
-    Battle Vader
-    Big Sports 12
-    Elevator Panic
-    Galaxian
-    Monster Block
-    Monster Mansion
-    New Baseball
-    PakPak Monster
-    Yosaku
-
-Comparing 0.272 (mame0272) to 0.272 (mame0272-349-g780490d9ac6)
-
-New systems marked not working
-------------------------------
-Cassette Vision
