@@ -47,6 +47,7 @@ CXG Systems / Newcrest Technology / Intelligent Chess Software Sphinx Junior
 Joker Card (encrypted) [TeamEurope]
 King's Ransom (0301689V, New Zealand) [anonymous, Heihachi_73]
 Let's Go Fishing (5XF5196I02, US) [Brian Troha, The Dumping Union, Heihachi_73]
+Moog Music Moog Source [m1macrophage]
 Novag Industries Chinese Chess [hap, Sean Riddle]
 Penguin Pays Deluxe (AHG1198, US) [Brian Troha, The Dumping Union, Heihachi_73]
 Player's Edge Plus (X000126P+XP000038) Deuces Wild Poker [Brian Troha]
@@ -160,13 +161,18 @@ Bandai / SSD Company LTD Let's! TV Play Ongeki Battle! Kamen Rider Hibiki:
   [David Haywood, TeamEurope]
 Bandai / SSD Company LTD Let's! TV Play Taikan Taitoku Kekkaishi: Houi! Jouso! Ketsu! Metsu! (Japan) [David Haywood, TeamEurope]
 Black Rhino (IGT) [Brian Troha, The Dumping Union]
+Casio Color Picky Talk - Super Denshi Techou [QUFB]
+Casio Picky Talk - Super Denshi Techou [QUFB]
+Casio Plet's (MK-300) [QUFB]
+Casio Plet's (MK-350) [QUFB]
+Casio Super Picky Talk - Access Pet [QUFB]
 Chaku Melo Collection [Darksoft]
 Cherry Bonus IV (V5.0) [hammy]
 Clavia Nord Lead 2X [DBWBP]
 CPS1 Multi Game [hellshinox, H4M573R, NTDEC, nnap, hammy, TeamEurope]
 Crazy Bell (V1.2D) [hammy]
 Dream 9 Flower (v1.00c) [hammy]
-DT7 (prototype) [TT19xx_DigitalFoundary]
+DT7 (prototype) [TT19xx_DigitalFoundary, David Haywood]
 Epoch / SSD Company LTD TV de Asobou! Manabou! Chou Nouryoku AIUEO Zukan (Japan) [David Haywood, TeamEurope]
 Halloween (Ming-Yang Electronic / TSK, version 1.0) [Ioannis Bampoulas]
 Hana Doujou (set 1) [hammy]
@@ -190,6 +196,7 @@ Scatter Magic - Cash Express (0251026, US) [Brian Troha, The Dumping Union, He
 Special Dream 9 (v1.0.5G) [nnap]
 Super 8 Race [Brian Troha, The Dumping Union]
 Takara Tomy / Capcom / SSD Company LTD Ryuusei no Rockman: Denpa Henkan! On Air! (Japan) [David Haywood, TeamEurope]
+Tsukuda Original Disney Characters - Tegaki Electronic Note [QUFB]
 unknown Belatra slot machine [TeamEurope]
 unknown Falcon gambling machine [Mark Beckford]
 Venteta [Ioannis Bampoulas]
@@ -353,252 +360,30 @@ This is a fresh, squashed PR for the work done on Epoch Cassette Vision.
 It's free for anybody who wants to pick it up, as I don't feel comfortable working with this design, as it loses a number of
   important benefits from my original one.
 
-11938: new machines marked as NOT_WORKING - Dynamic Trial 7 [mamehaze]
-new machines marked as NOT_WORKING
----------------------
-DT7 (prototype) [Graham Noble, David Haywood]
-
-12756: apple2e: fix 80/40 and language switches, add additional UK and French Apple IIe/c variants [as-tb-dev]
-- added European Apple IIe/IIc variants:
-  - added additional Apple IIe UK variants of Apple IIc and the Platinum Apple IIe
-  - added French variants of Apple IIc and Unenhanced and Platinum Apple IIe
-  - made minor corrections to the mapping of characters (PORT_CHAR) for the European Apple IIe/IIc keyboard layouts.  This improves
-  the keyboard when used in natural mode.
-- 80/40 column switch fixes:
-  - removed 40/80 column switch from Apple IIc+
-  - added 40/80 column switch to Franklin Ace 500 and Laser 128 series
-- keyboard/language switch implementation changes:
-  - added QWERTY/DVORAK selection mod to US Apple IIe model. ref: Apple IIe Hardware: Dvorak Keyboard Layout (May 25, 1989) from the
-  Apple Tech Info Library
-  - added QWERTY/DVORAK switch to Laser 128 series
-  - added local/US keyboard switch to French, UK, and Spanish Apple IIe and IIc variants, as well as tk3000, spectred, and prav8c
-  machines.  These switches change both keyboard layouts and text-mode character sets.
-    - Apple IIe documentation for international models, including French, document the language switch.  However, the French
-  keyboard ROM ("341-0326-a.f12") currently used by MAME does not have the US keyboard mapping, but instead has 2 identical copies
-  of the French AZERTY keyboard mappings.  Due to the lack of US QWERTY in the "341-0326-a.f12", created a new file called
-  "342-0326-a.f12" that uses the first 1024 bytes of "341-0326-a.f12" and the first 1024 bytes of the UK KBD ROM "341-0150-a.e12".
-  Marked this new KBD ROM as 'bad'.
-    - The newly added Unenhanced French IIe is configured using a good 342-0153-A KBD ROM dump and a 341-0163-a.e9 character ROM
-  that was created by using 342-0274-a.e9 with the MouseText removed.  Marked this created character ROM as 'bad', however, it may
-  by chance be an exact match of a good dump
-  - added character set selection switch, enabling/disabling MouseText, to Franklin ACE.  This switch changes text-mode character
-  sets without changing the keyboard layout.
-  - moved language/keyboard selection to its own configuration I/O port: kbd_lang_select.  This selection use each nibble of the
-  port byte to hold keyboard ROM and character ROM offsets
-    - this is mostly to add some flexibility since different machines have different combinations of offsets between keyboard and
-  video ROMs when the switch is present, allowing code to be shared
-- fixed bug where Apple IIc+ may crash when booting 5 1/4" disks due to uninitialized disk related variables
-- embedded more notes about keyboard, keypad, and regional variants in the apple2e.cpp file
-
-12783: Windows NT 3.x/4.0/2000 pristine images [chungy]
-MAME had a completely broken warez version of Windows NT 3.1, that was replaced with a known-good unmodified copy. Language variants
-  of Windows NT 3.1 were also added (I don't have the non-English copies of future versions, can't do those at this time). Advanced
-  Server is added to the list.
-Windows NT 3.5 was added new.
-Windows NT 3.51's CD-ROM image was not the original copy, and likewise updated to a known-good unmodified copy. Server was added to
-  the list.
-Windows NT 4.0 was added new, all known-good copies and editions of such.
-
-12801: pv1000.xml: Added sixteen working homebrew cartridges [telanus]
-New working software list additions:
-----------------------------------------
-Aerial [Inufuto]
-AntiAir [Inufuto]
-Ascend [Inufuto]
-Battlot [Inufuto]
-Bootskell [Inufuto]
-Cacorm [Inufuto]
-Cavit [Inufuto]
-Cracky [Inufuto]
-Guntus [Inufuto]
-Hopman [Inufuto]
-Lift [Inufuto]
-Mazy [Inufuto]
-Neuras [Inufuto]
-Osotos [Inufuto]
-Ruptus [Inufuto]
-Yewdow [Inufuto]
-
-12851: scale icons up and down [jflatt]
-The scale ratio can be greater than 1, especially on a big 4K screen.  Instead of getting a tiny icon, scale it up
-
-12908: sinclair/sprinter.cpp: Game Configuration bitstream detected with checksum [holub]
-
-12917: Driver for Moog Source, including an interactive layout. No sound. [m1macrophage]
-Hello,
-This is my first contribution. I have multiple other synthesizer drivers in various stages of development, which will follow soon. I
-  intend for these drivers to be an educational tool on the digital-analog interface of synthesizers, with a focus on classic ones.
-This driver comes with an interactive layout. The digital and digital-analog interface are almost fully emulated.  TODOs in the
-  driver outline some of the gaps.  There is no attempt to emulate the analog audio circuits.
-I have been looking at past PRs to get a sense of the feedback, and tried to incorporate it. But I'm sure I missed things, so happy
-  to fix as needed.
-I do not have access to ROMs. 
-Interactive layout:
-!0001
-
-12986: zx81_cass.xml: Added 24 working items [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Aerial [Inufuto]
-AntiAir [Inufuto]
-Ascend [Inufuto]
-Battlot [Inufuto]
-Blitz Balle [Team Zeddy, Planeta Sinclair]
-Bootskell [Inufuto]
-Cacorm [Inufuto]
-Comp-U-Tax/82 [Team Zeddy, Planeta Sinclair]
-Cracky [Inufuto]
-Game of Life [Team Zeddy, Planeta Sinclair]
-Guntus [Inufuto]
-Hopman [Inufuto]
-Jogos 80 - Ano 12 - Número 19 (Julho 2018) (cover tape) [ZX81 Never Die]
-Lift [Inufuto]
-Mazy [Inufuto]
-MicroGame: Caçadores do Tesouro [ZX81 Never Die]
-MicroGame: Challenger [ZX81 Never Die]
-MicroGame: Pinball Wizard [ZX81 Never Die]
-Monitor and Disassembler [Team Zeddy, Planeta Sinclair]
-Neuras [Inufuto]
-Osotos [Inufuto]
-Ruptus [Inufuto]
-Scorpirus [Team Zeddy, Planeta Sinclair]
-Yewdow [Inufuto]
-
-12988: cdicdic: Fix restarting audio_map after stopping it [Slamy]
-Fixes:
-https://mametesters.org/view.php?id=8833
-I also thought it would fix this one but my assumption was wrong:
-https://mametesters.org/view.php?id=8955
-Further tests might be needed but I'm not a big fan of Hotel Mario and therefore unable to complete this game as it is quite
-  repetitive.
-
-12995: ibm5170_cdrom.xml: New software items added [FoxhackDN]
-New working software list items
--------------------------------
-Corel Linux Deluxe [Foxhack]
-Civilization: Call to Power (Limited Edition, v1.1, Linux) [Foxhack]
-
-13000: genie: sync with upstream [pmackinlay]
-* update to GENie version 1181
-* default to Visual Studio 2022 instead of 2019
-* enable MSVC standards conformant preprocessor and compiler
-* default MSVC to UTF-8 source/execution text encoding
-* local GENie fix for resource directory issue
-* in sum these changes allow current MSVC to build most of MAME (still requires NOWERROR=1)
-
-13009: spectrum_betadisc_flop.xml: Added 17 working items + 1 not working [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Delta's Shadow (demo v1.0, English, AY chip sound) [ZX Art]
-Delta's Shadow (demo v1.0, English, Turbo Sound) [ZX Art]
-Delta's Shadow (demo v1.0, Polish, AY chip sound) [ZX Art]
-Delta's Shadow (demo v1.0, Polish, Turbo Sound) [ZX Art]
-Delta's Shadow (demo v1.0, Russian, AY chip sound) [ZX Art]
-Delta's Shadow (demo v1.0, Russian, Turbo Sound) [ZX Art]
-Delta's Shadow (demo v1.0, Spanish, AY chip sound) [ZX Art]
-Delta's Shadow (demo v1.0, Spanish, Turbo Sound) [ZX Art]
-Delta's Shadow (demo v1.6, English, AY chip sound) [Sinc LAIR]
-Delta's Shadow (demo v1.6, English, Turbo Sound) [Sinc LAIR]
-Delta's Shadow (demo v1.6, Polish, AY chip sound) [Sinc LAIR]
-Delta's Shadow (demo v1.6, Polish, Turbo Sound) [Sinc LAIR]
-Delta's Shadow (demo v1.6, Russian, AY chip sound) [Sinc LAIR]
-Delta's Shadow (demo v1.6, Russian, Turbo Sound) [Sinc LAIR]
-Delta's Shadow (demo v1.6, Spanish, AY chip sound) [Sinc LAIR]
-Delta's Shadow (demo v1.6, Spanish, Turbo Sound) [Sinc LAIR]
-Mysterious Dimensions [Spectrum Computing]
-New NOT working software list addition
---------------------------------------------
-Batty [Spectrum Computing]
-
-13010: scv: Implement video register 0 bit 2: hide sprites 64-127 [ReverendGumby]
-Two games -- Kung Fu Road and Super Golf -- set this bit to hide half of the sprites.
-This replaces the "screen_sprite_start_line" hack, which only worked on Kung Fu Road.
-
-13011: misc/compucranes.cpp: Fix hash for 'mastcranea' program ROM [clawgrip]
-
-13012: toaplan/mjsister.cpp: Minor cleanups [cam900]
-- Reduce literal tag usages, Runtime tag lookups
-- Make some variables constant
-- Reduce preprocessor defines
-- Use C++ style single line comments
-- Fix typename value for boolean flags
-- Fix initializations, save states
-- Fix namings
-
-13015: cpu/hcd62121,casio/pickytlk.cpp: Add support for more Picky Talk models [qufb]
-* Implement timer state register updates;
-* Implement monocolor model tablet inputs;
-* Fix invalid copy extension on instruction 0xC5 `movw (lar),i8`;
-New systems added as NOT WORKING
----------------------------------------
-Picky Talk - Super Denshi Techou [QUFB]
-Disney Characters - Tegaki Electronic Note [QUFB]
-Color Picky Talk - Super Denshi Techou [QUFB]
-Super Picky Talk - Access Pet [QUFB]
-Plet's (MK-300) [QUFB]
-Plet's (MK-350) [QUFB]
-
-13017: Add a skeleton for Roland MT-100 [buffis]
-This is basically a MT-32 with a bunch of extra stuff, including a sequencer and a Quick Disk drive.
-The main firmware likely will work on regular MT-32 too since it's labeled similar to those dumps, but a different ver.
-There's an additional rom on the PR Board
-Dump has been sent to DU
-Pics: https://photos.app.goo.gl/FBDHrSYicfop3qVs5
-Credit: "buffi"
-
-13018: tetrisp2.cpp: Use memory_bank finder for sound bankswitching, Cleanups: [cam900]
-- Split state via configurations
-- Use machine_start(), video_start() overrides for video initialization
-- Reduce runtime tag lookups, literal tag usages
-- Fix typename value consistency
-- Use generic gfx decode layout
-- Fix naming
-
-13020: cirsa/cirsa2080606.cpp: Add note about Lucky Player [clawgrip]
-To avoid mistakes when looking for undumped sets
-
-13021: ap2_dsk.cpp/h: clean up constants [SpecLad]
-* convert `#define` to `constexpr`;
-* remove unused constants;
-* replace magic numbers with constants where appropriate.
-
-13022: split monster 'toaplan2.cpp' file into smaller per-board parts + slight modernization [mamehaze]
-this chops down the incredibly entangled toaplan2.cpp into individual drivers for each board making better use of required_device
-  rather than optional_device.  toaplan2.cpp/toaplan2.h are killed off in the process.
-modernizations have also been done, removing legacy VIDEO_START / MACHINE_START / MACHINE_RESET type macros
-this isn't perfect, and there's definitely room for some further improvements, such as maybe moving the bootleg sound systems to a
-  device, or the extra tilemaps (as a little code has ended up duplicated for them) and some notes could probably do with re-homing,
-  but overall I feel this already provides greater clarity compared to the unwieldy toaplan2.cpp driver and is a more more solid
-  footing for further improvements of that nature.
-the raizing side of things is still a little tangled, but I'm picking my battles with that one, it's not as tangled as it was before
-  at least and again this provides a better base for further improvements.
-otherwise the code is pretty much untouched, and there should be no difference to any of the emulation, so I kindly ask that this PR
-  isn't judged on existing code that has just ended up in a new location, as such clean-ups can be scheduled for a later date.
-
-13024: heathzenith/h89.cpp: Convert SigmaSoft parallel port into an h89 left card. [mgarlanger]
-tlb.cpp/.h:
-- move into the src/devce/bus directory so that other bus devices can reference the classes.
-cards.cpp:
-- add new sigmasoft_parallel_port option to left cards
-h89bus.cpp:
-- move left card processing for read/write outside of PROM bit check
-- mask off unavailable address bits for the left card devices.
-sigmasoft_parallel_port.cpp:
-- convert into an h89 left card and move source to devices/bus/heathzenith/h89
-h89.cpp:
-- Update h89_sigmasoft system to use h89 left card for parallel port 
-
-13026: Exposing running_machine::phase() to LUA [npwoods]
-
-13027: heathzenith/h89.cpp: Add h89 clone with CDR hardware [mgarlanger]
-cdr_fdc_880h.cpp:
-- new CDR FDC-880H floppy disk controller (not working)
-h89bus.cpp:
-- Add new I/O PROM decoder for CDR FDC-880H
-h89.cpp:
-- Add new CDR clone for H89
-- Add 2 new Monitor ROMs from CDR.
-
+- 11938: toaplan/dt7.cpp: Added preliminary emulation for the Toaplan prototype DT7. [David Haywood]
+- 12756: apple/apple2e.cpp, apple/apple2video.cpp: Improved Apple IIe keyboard layout and language switch handling. [as-tb-dev]
+- 12783: ibm5170.xml, ibm5170_cdrom.xml: Added good dumps of several variants of Windows NT 3.1, 3.5.1 and 4.0. [Mike Swanson]
+- 12801: pv1000.xml: Added sixteen working homebrew cartridges. [Inufuto, telanus]
+- 12851: ui/selmenu.cpp: Scale up small icons (for cases where icons were designed for a much lower pixel density). [jflatt]
+- 12908: sinclair/sprinter.cpp: Detect the Game Configuration bitstream in use by checksum. [holub]
+- 12917: moog/source.cpp: Added a driver for the Moog Source synthesizer (no sound output). [m1macrophage]
+- 12986: zx81_cass.xml: Added 24 working items. [ArcadeShadow]
+- 12988: philips/cdicdic.cpp: Fixed handling of coding 0xFF in audio map (fixes MT08833). [Andre Zeps]
+- 12995: ibm5170_cdrom.xml: Added Corel Linux Deluxe and Civilization: Call to Power Limited Edition. [David Silva]
+- 13000: Updated GENie and changed Visual Studio target to Visual Studio 2022. [Patrick Mackinlay]
+- 13009: spectrum_betadisc_flop.xml: Added eighteen items (seventeen working). [ArcadeShadow]
+- 13010: epoch/scv.cpp: Implemented video register 0 bit 2 (sprite count). [David Hunter]
+- 13011: misc/compucranes.cpp Corrected mastcranea program ROM. [ClawGrip]
+- 13012: toaplan/mjsister.cpp: Cleaned up code. [cam900]
+- 13015: cpu/hcd62121: Implemented timer register updates, fixed instruction 0xC5; casio/pickytlk.cpp: Added six systems. [QUFB]
+- 13017: roland/roland_mt32.cpp: Dumped the ROMs for the Roland MT-100 synthesizer. [buffi]
+- 13018: jaleco/tetrisp2.cpp: Use configured banking for sound ROMs, and cleaned up code. [cam900]
+- 13020: cirsa/cirsa2080606.cpp: Added a note about the version of Lucky Player based on this platform. [ClawGrip]
+- 13021: formats/ap2_dsk.cpp: Cleaned up constants, and replaced some literal numbers with symbolic constants. [Roman Donchenko]
+- 13022: toaplan: Split the toaplan/toaplan.cpp file into fourteen smaller files at the cost of some duplication. [David Haywood]
+- 13024: bus/heathzenith/h89: Converted the SigmaSoft Parallel Port to a slot card device. [Mark Garlanger]
+- 13026: frontend/mame/luaengine.cpp: Exposed the session phase as a property of the running machine class. [Nathan Woods]
+- 13027: heathzenith/h89.cpp, bus/heathzenith/h89: Added H89 variant with CDR Systems BIOS and floppy controller. [Mark Garlanger]
 - 13028: capcom/cps2.cpp: Order Dungeons & Dragons: Shadow over Mystara games from newest to oldest. [Igor-Arabe]
 - 13030: midway/williamsblitter.cpp Converted the Williams SC1/SC2 blitter to a device. [Ryan Holtz]
 - 13032: a2gameio/joyport.cpp: Mention permanently attached joysticks in Sirius JoyPort device description. [as-tb-dev]
@@ -2160,16 +1945,6 @@ cassvisn_cart (cassvisn_cart.xml):
 
 Comparing 0.272 (mame0272) to 0.272 (mame0272-349-g780490d9ac6)
 
-New working systems
--------------------
-Moog Source
-
 New systems marked not working
 ------------------------------
 Cassette Vision
-Color Picky Talk - Super Denshi Techou
-Disney Characters - Tegaki Electronic Note
-Picky Talk - Super Denshi Techou
-Plet's (MK-300)
-Plet's (MK-350)
-Super Picky Talk - Access Pet
