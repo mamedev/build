@@ -782,11 +782,15 @@ def print_fresh_pull_requests(stream, wrapcol, repo, api, previous, current, not
 
     if notes:
         merged_pat = re.compile('^\\* .+ by @[^ ]+ in https://github\\.com/mamedev/mame/pull/([1-9][0-9]+)$')
+        merged = []
         with open(notes, 'r', encoding='utf-8') as f:
             for line in f:
                 m = merged_pat.match(line)
                 if m:
-                    print_pull_request(api.pull_request(int(m.group(1))))
+                    merged.append(int(m.group(1)))
+        merged.sort()
+        for pr in merged:
+            print_pull_request(api.pull_request(pr))
     else:
         commits = frozenset(repo.git.rev_list(current.hexsha, '^' + previous.hexsha).splitlines())
         for pr in api.fresher_pull_requests(commits):
