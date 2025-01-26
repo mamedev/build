@@ -39,6 +39,9 @@ if 'github' in locals():
                 self.session = github.Github(user)
             self.repo = self.session.get_repo(owner + '/' + repo)
 
+        def pull_request(self, number):
+            return self.repo.get_pull(number)
+
         def fresher_pull_requests(self, commits):
             for pr in self.repo.get_pulls(state='closed', sort='created', direction='asc'):
                 if (pr.merged_at is not None) and (pr.merge_commit_sha in commits):
@@ -62,6 +65,9 @@ elif 'github3' in locals():
                 self.session = github3.GitHub(user, password, token=token)
             self.repo = self.session.repository(owner, repo)
 
+        def pull_request(self, number):
+            return self.repo.pull_request(number)
+
         def fresher_pull_requests(self, commits):
             for pr in self.repo.pull_requests(state='closed', sort='created', direction='asc'):
                 if (pr.merged_at is not None) and (pr.merge_commit_sha in commits):
@@ -83,6 +89,9 @@ elif 'pygithub3' in locals():
                 self.api = pygithub3.Github(user=owner, repo=repo, login=user, token=token)
             else:
                 self.api = pygithub3.Github(user=owner, repo=repo, login=user, password=password, token=token)
+
+        def pull_request(self, number):
+            return self.api.pull_requests.get(number)
 
         def fresher_pull_requests(self, sha):
             date = self.api.git_data.commits.get(sha).committer.date
@@ -131,6 +140,7 @@ class Options:
         parser.add_argument('-b', '--branch', metavar='<candidate>', type=str, help='current release candidate revision')
         parser.add_argument('-u', '--user', metavar='<username>', type=str, help='github username')
         parser.add_argument('-t', '--token', metavar='<token>', type=str, help='github personal access token')
+        parser.add_argument('-n', '--notes', metavar='<file>', type=str, help='github generated release notes')
         parser.add_argument('-o', '--out', metavar='<file>', type=str, help='output file')
         parser.add_argument('-w', '--wrap', metavar='<column>', type=int, default=132, help='wrap width')
         parser.add_argument('-a', '--append', action='store_const', const=True, default=False, help='append to output file')
@@ -141,6 +151,7 @@ class Options:
         # copy simple arguments
         self.wrap = arguments.wrap
         self.verbose = arguments.verbose
+        self.notes = arguments.notes
         self.commits = arguments.commit
 
         # it makes no sense to specify baseline/candidate with specific commits
@@ -754,20 +765,32 @@ def print_section_heading(stream, heading):
     stream.write('%s\n%s\n' % (heading, '-' * len(heading)))
 
 
-def print_fresh_pull_requests(stream, wrapcol, repo, api, previous, current):
+def print_fresh_pull_requests(stream, wrapcol, repo, api, previous, current, notes):
     print_section_heading(stream, 'Merged pull requests')
-    commits = frozenset(repo.git.rev_list(current.hexsha, '^' + previous.hexsha).splitlines())
-    for pr in api.fresher_pull_requests(commits):
-        lines = markdown_url_pat.sub('\\1', pr.body).splitlines() if pr.body else ()
-        title = '%d: %s' % (pr.number, pr.title)
-        if (title[-1] == chr(0x2026)) and pr.body and lines and lines[0] and (lines[0][0] == chr(0x2026)):
+
+    def print_pull_request(pullreq):
+        lines = markdown_url_pat.sub('\\1', pullreq.body).splitlines() if pullreq.body else ()
+        title = '%d: %s' % (pullreq.number, pullreq.title)
+        if (title[-1] == chr(0x2026)) and pullreq.body and lines and lines[0] and (lines[0][0] == chr(0x2026)):
             title = title[:-1] + lines[0][1:]
             lines = lines[1:]
-        title += ' [%s]' % (api.pull_request_username(pr), )
+        title += ' [%s]' % (api.pull_request_username(pullreq), )
         wrap_paragraph(stream, title, wrapcol, '', '  ')
         for line in lines:
             wrap_paragraph(stream, line, wrapcol, '', '  ')
         stream.write('\n')
+
+    if notes:
+        merged_pat = re.compile('^\\* .+ by @[^ ]+ in https://github\\.com/mamedev/mame/pull/([1-9][0-9]+)$')
+        with open(notes, 'r', encoding='utf-8') as f:
+            for line in f:
+                m = merged_pat.match(line)
+                if m:
+                    print_pull_request(api.pull_request(int(m.group(1))))
+    else:
+        commits = frozenset(repo.git.rev_list(current.hexsha, '^' + previous.hexsha).splitlines())
+        for pr in api.fresher_pull_requests(commits):
+            print_pull_request(pr)
     stream.write('\n')
 
 
@@ -812,7 +835,7 @@ def print_new_machines(stream, wrapcol, title, machines):
         stream.write('\n\n')
 
 
-def print_preliminary_whatsnew(stream, wrapcol, title, repository, api, release, candidate, verbose):
+def print_preliminary_whatsnew(stream, wrapcol, title, repository, api, release, candidate, notes, verbose):
     placeholders = (
             '%s' % (title, ),
             'MAME Testers bugs fixed',
@@ -827,7 +850,7 @@ def print_preliminary_whatsnew(stream, wrapcol, title, repository, api, release,
         print_section_heading(stream, heading)
         stream.write('\n\n')
 
-    print_fresh_pull_requests(stream, wrapcol, repository, api, release, candidate)
+    print_fresh_pull_requests(stream, wrapcol, repository, api, release, candidate, notes)
     print_source_changes(stream, wrapcol, repository, release, candidate)
     print_new_machines(stream, wrapcol, 'New working systems', new_working_parents);
     print_new_machines(stream, wrapcol, 'New working clones', new_working_clones);
@@ -879,7 +902,7 @@ if __name__ == '__main__':
     stream = opts.output
 
     if not opts.commits:
-        print_preliminary_whatsnew(stream, opts.wrap, opts.title, opts.repository, opts.api, opts.release, opts.candidate, opts.verbose)
+        print_preliminary_whatsnew(stream, opts.wrap, opts.title, opts.repository, opts.api, opts.release, opts.candidate, opts.notes, opts.verbose)
     else:
         scraper = LogScraper(stream, opts.wrap, None)
         for spec in opts.commits:
