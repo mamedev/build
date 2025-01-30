@@ -1,4 +1,4 @@
-0.274 2025-01-xx
+0.274 2025-01-31
 ----------------
 
 
@@ -18,7 +18,7 @@ MAME Testers bugs fixed
 - 08472: [Misc.] (sinclair/atm.cpp) some sinclair/* drivers: Emulator crashes on out-of-bounds palette accesses. (holub)
 - 08510: [Gameplay] (midway/balsente.cpp) stocker: The gear shift control should be a toggle switch. (John IV)
 - 08660: [DIP/Input] (namco/skykid.cpp) drgnbstr: The “Allow Continue” DIP switch settings are reversed. (Zach S.)
-- 08731: [DIP/Input] (taito/taito_z.cpp) bsharkjjs: Left/Right inputs are reversed. (UnclePetros)
+- 08731: [DIP/Input] (taito/taito_z.cpp) bsharkjjs: Left/Right inputs are reversed. (Uncle Petros)
 - 08962: [DIP/Input] (konami/zr107.cpp) jetwave, jetwavej: Analog inputs are too sensitive. (hap)
 - 08980: [Known Issues/To-Do's] (konami/konamim2.cpp) all sets in konamim2.cpp: Poor performance while loading. (David Haywood)
 - 09052: [Misc.] (sega/segaybd.cpp) rchase: Recoil outputs for both gun controllers are sent to a single output. (AchillesPDX)
@@ -311,1164 +311,132 @@ zx81_cass:
 
 Merged pull requests
 --------------------
-12984: HP98x6: added HP98628 & HP98629 expansion cards [fulivi]
-Hi,
-this PR adds the support for HP98628 & HP98629 expansion cards on HP98x6 systems.
-A few notes:
-* In theory, all existing 16-bit DIO cards should work on 98x6 machines. I had no time
-  to test them, though. That's the reason why for the time being I'm keeping the two
-  cards I developed on a separate set of optional cards (the one in dio16_hp98x6_cards
-  function). Once the other 16-bit cards are tested on hp98x6, the two lists will
-  be merged.
-* I realized that the 98603a and 98603b cards that @svenschnelle developed have the same
-  function of two optional ROMs I put in the ROM software list. I don't know what should
-  be the preferred way to add optional ROMs, either as a plug-in card or as a ROM in
-  a sw list.
-* 98629 card was used to interface to a kind of LAN that HP called SRM (Shared Resource
-  Management). I implemented a file server in Python for it. I will release it once this
-  PR is accepted.
-* I'm going to send the related ROM images shortly.
-Thanks.
---F.Ulivi
-
-13031: Exposing mame_ui_manager::show_menu() to LUA [npwoods]
-
-13040: Heath H-89: Change how SigmaSoft parallel port connects to IGC [mgarlanger]
-bus/heathzenith/h89/cards.cpp:
-- Move slot option config to h89.cpp
-bus/heathzenith/h89/sigmasoft_parallel_port.cpp:
-- Move class declaration to header file.
-- Remove callback variables.
-- Add board jumpers to configure address/enable
-heathzenith/h89.cpp:
-- define card options for left slot cards
-
-13047: Segas32 - Resolution change when zooming [mahoneyt944]
-It seems that zooming requires more resolution but uses 9 bit otherwise.
-This should fix the missing background for harddunk in attract mode, while also working with radr map selection, alien3 map between
-  stages and so on. Has not been verified to real hardware but it seems to test correctly with all games. Let me know if there's a
-  specific transition / case you would like tested.
-
-13070: Cherry-pick wayland improvements from upstream bgfx [belegdol]
-As full sync with upstream is not an option at the moment (see https://github.com/mamedev/mame/pull/13054#issuecomment-2531577035),
-  cherry-pick recent wayland fixes from upstream bgfx instead.
-This uses the API more correctly as well as moves wayland detection to runtime, reducing the build requirements slightly.
-
-13074: superxavix: some research on the bitmap layer, slight visual improvement where it gets used + general XaviX refactoring and
-  improvements + 7 new sets [mamehaze]
-- Started to refactor XaviX bus accesses, moved some in-cartridge logic for e-Kara SEEPROMs to cartridge space
-- XaviX external bus accesses can now go through memory, avoiding the speed-up bypass
-- Mapped RAM in external space for Super TV-PC sets, as well as a ROM bank, allowing bitmaps in RAM to render
-- Added Bitmap plotter, again used by Super TV-PC sets for constructing some bitmaps and the paint program in Super TV-PC Hello
-  Kitty
-- Added previously unsupported video mode used by Excite Stadium
-- Swapped background order when priorities are equal, issue higlighted by Excite Golf 
-- Added some XaviX2000 (2nd Gen and SuperXaviX) opcodes needed by Let's! TV Play Touin Ougi Onmyou Taisenki: Mezase Saikyou
-  Toushinshi for sprites to show
-- Added reduced size sprite DMA transfers, used by Choro-Q Byun Byun Racer 
-- Allow SuperXaviX sets to render in higher horizontal resolutions for proper display of the bitmap layers, doubling the standard
-  XaviX output to match
-- Began some research on SuperXaviX extended ROM modes, used by anpanmdx for sprites and the bitmap layer
-new NOT WORKING machines
-----------------------------------
-Anpanman Kazoku De Ikunou Mat DX (Japan) [TeamEurope, David Haywood]
-Let's TV Play Dragon Ball Z Battle Experience Kamehameha 2 Ossu Ome Goku Tenkaichi Budokai (Japan) [TeamEurope, David Haywood]
-Doraemon Moving! Oekaki (Japan) [TeamEurope, David Haywood]
-Anpanman Pyon-Pyon Ikunou Mat (Japan) [TeamEurope, David Haywood]
-Doraemon anywhere - Japan travel game DX experience! Where is the Dragon Grand Prix! (Japan) [TeamEurope, David Haywood]
-Let's! TV Play Futari wa PreCure MaxHeart Dance on the mat Let's go to MaxHeart (Japan) [TeamEurope, David Haywood]
-Let's! TV Play Disney Characters Oto! Iro! Ton-Ton! Miracle Parade [TeamEurope, David Haywood]
-Hello Kitty Piano PC (Japan)  [TeamEurope, David Haywood]
-
-13080: 3rdparty.lua: Fix compilation of Lzma for arm64 architecture [FlykeSpice]
-The builder was failing in compiling the Lzma source code due to the global compiler flag `-Werror -Wstrict-prototype` triggering
-  errors when compiling code specific to arm64 architecture.
-This PR sets the  `-Wno-error=strict-prototypes` flag when building the Lzma library
-
-13082: heathzenith/h19/tlb.cpp: Make the page 2 memory option configurable for UltraROM [mgarlanger]
-tlb.cpp: 
-- Add machine configuration option to install/remove the optional page 2 memory for the UltraROM.
-h89.cpp:
-- Use class variable instead of tag for memory_view region routine.
-
-13089: psx.xml: Added 9 working items + 3 redumps [ArcadeShadow]
-New working software list additions
---------------------------------------------
-007 - Die Welt Ist Nicht Genug (Germany) [Redump]
-007 - El Mundo Nunca es Suficiente (Spain) [Redump]
-007 - Le Monde ne Suffit Pas (France) [Redump]
-007 - Tomorrow Never Dies (Europe) [Redump]
-007 - Demain ne Meurt Jamais (France) [Redump]
-007 - Der Morgen Stirbt Nie (Germany) [Redump]
-007 - The World Is Not Enough (Europe) [Redump]
-007 - The World Is Not Enough (Sweden) [Redump]
-007 - The World Is Not Enough (USA, prototype) [Redump]
-Redumped software list items
---------------------------------------------
-007 - Tomorrow Never Dies (Japan) [Redump]
-007 - Tomorrow Never Dies (USA) [Redump]
-007 - The World Is Not Enough (USA) [Redump]
-
-13090: Advanced skeleton driver for the Memorymoog. [m1macrophage]
-This driver is marked as ~a skeleton~ "not working", because it is not really usable without a layout. Nonetheless, a large portion
-  of the digital logic and digital-analog interface is emulated. There is no attempt to emulate audio.
-Following the Source (#12917), this is the second in a series of 8 (at the moment) synth drivers.
-Similar to the previous PR, I've incorporated feedback I've seen in other people's PRs, but I am sure I missed things. Happy to fix
-  as needed and proactively apply any feedback to future drivers.
-
-13091: namco/mappy.cpp: Split phozon state for reduce optional finders, Cleanups: [cam900]
-- Fix 15XX sound clock related to XTAL on PCB
-- Suppress side effects for debugger read
-- Simplify gfx layout
-- Reduce duplicates
-- Make some variables constant
-- Reduce unnecessary lines
-- Reduce literal tag usages
-- Fix naming
-- Fix typo
-- Fix filename
-- Reduce preprocessor defines
-
-13095: namco/namco_cus4xtmap.cpp: Device-fied CUS42 + CUS43 tilemap hardware, Cleanups: [cam900]
-namco/baraduke.cpp:
-- Use video/resnet.h for palette initialization
-- Make some variables constant
-- Simplify gfx decode layout
-- Fix address map order
-namco/namcos86.cpp:
-- Use video/resnet.h for palette initialization
-- Use set_pen_indirect and set_indirect_color for indirect color palette beheviour
-- Make some variables constant
-- Simplify gfx decode layout
-- Reduce unnecessary pointer
-- Reduce runtime tag lookups
-- Reduce duplicates
-- Fix type value for some variables
-- Fix address map order
-- Fix spacing
-- Fix naming
-- Use C++ style single line comments
-
-13105: bus/heathzenith/h89: Add Z-89-11 Multi-Mode Interface Card option [mgarlanger]
-When this new card is selected, the CP/M configur.com program properly detects it.
-<img width="1441" alt="Screenshot 2024-12-20 at 10 41 00 PM"
-  src="https://github.com/user-attachments/assets/11a9f283-10d7-4e48-8e81-7cfb6db06e99" />
-
-13106: Replace uPD1771c high level emulation with a cpu core. [wilbertpol]
-cpu/upd177x/upd177x.cpp: Add NEC uPD177x cpu core.
-scv.xml:
-Software list items promoted to working
-------------------------------------------
-Star Speeder
-
-13107: cpu/mpk1839/kl1839vm1.cpp: Improved VAX-11 code decoder in user space [holub]
-Good progress here. CPU is able to decode/process VAX-11 instructions in user space.
-!image
-!image
-
-13108: Fixes to UML and DRC backends [987123879113]
-I've been working on a project involving the DRC lately and found several bugs and inconsistencies when trying to compare results so
-  I tried to fix bugs and make things more consistent between all of the backends.
-Most of the fixes are to mostly unused code paths so I'm not expecting it to fix many, if any, of the known DRC issues.
-I'd appreciate it if people could test the DRC in various games or operating systems before merging so I'm only sending this as a
-  draft PR for now. I've tested mostly SH-4 (Naomi) and PPC (Firebeat) games and I'm not noticing any differences.
-- Added new opcodes
-    - BREAK: Hardware breakpoint that can be caught in a debugger to see exactly what assembly is being generated at any given time.
-  (Warning: will crash the program if used without a debugger attached so use carefully)
-    - SETFLGS: Set the hardware flags to a specific state. Meant for debugging such as testing opcodes in various states
-    - MULUH and MULSH: Unsigned and signed multiplication where the result is only the lower half and the status flags are
-  calculated based on the lower half. Previously the MULU and MULS opcodes would change how status flags were calculated based on
-  whether the upper half output destination was set to something different than the lower half output destination so I decided to
-  split them off to make their intended usages and status register calculations more explicit.
-- General fixes
-    - Standardized how shifts are calculated between the various backends so status flags and results should be the same now
-- UML fixes
-    - Fixed broken multiplication and division in the simplifier
-    - Fixed shift calculations in the simplifier to work the same as the backends
-    - Changed GETFLGS definition such that it will not change status flags in the process of reading out the status flags (and made
-  appropriate changes in backends)
-- C backend
-    - Some opcodes wouldn't be recognized depending on the surrounding operation flag usages so I added the cases where I
-  encountered unrecognized opcodes
-    - Fixed various broken flag calculations
-    - Fixed output when a shift is called with a shift of 0 (previously wouldn't set the output value at all)
-- x86 backend
-    - Many of the 64-bit operations were outright broken so I fixed those up as much as I could
-    - Fixes to status flag calculations
-- x64 backend
-    - Fixed some unsafe code in the FNEG implementation that'd cause segfaults if the case was actually used anywhere (it wasn't)
-    - Fixes to status flag calculations
-- Added some extra documentation in uml.cpp for opcodes with cryptic namings and some status flag behavior
-- Removed a lot of useless comments in the format of `a.test(ecx, ecx); // test ecx,ecx`. I didn't get them all because there's too
-  many so mostly just on the code I touched. The comments almost 99% of the time are exactly the same as the assembly code it's
-  beside so they aren't needed.
-
-13109: ncr5385 aux_status generation [Elektraglide]
-- need to clear bits before we regenerate them
-
-13110: spg2xx_dreamlife.cpp: Add Giga Pets Explorer [qufb]
-New working systems
--------------------
-Giga Pets Explorer (Version 1.34.1, Mar 17 2006) [QUFB]
-
-13112: Fix 2 Visual Studio Warnings [Meerkov]
-Two are for implicit casts (which the visual studio build elevates to Errors) and one is for an unused variable.
-Since these break compilation from a fresh build in default conditions, and the project is set to elevate warnings to errors, these
-  likely should be fixed.
-
-13114: hash/ibm5170_cdrom: Add Sonic CD [chungy]
-All but two of the Sonic CD entries on redump.org are represented here.  The two left out are part of compilations and do not belong
-  as standalone releases.
-This game doesn’t really run well on ct486, but should be fine on pcipc.
-New working software list items (ibm5170_cdrom.xml)
----------------------------------------------------
-Sonic CD (USA) [redump.org]
-Sonic CD (USA, 1997 release) [redump.org]
-Sonic CD (USA, 1996 release) [redump.org]
-Sonic CD (USA, Pentium Processor Edition) [redump.org] Sonic CD (USA, Pentium Processor Edition alt) [redump.org] Sonic CD (USA,
-  Packard Bell) [redump.org]
-Sonic CD (Europe) [redump.org]
-Sonic CD (China) [redump.org]
-
-13115: taito/taito_z.cpp: Port IN2 Left and Right address switch for bsharkjjs [UnclePetros]
-Ref. Bug ID 08731: https://mametesters.org/view.php?id=8731
-- Inverted IPT_JOYSTICK_RIGHT and IPT_JOYSTICK_LEFT port address to fix inverted horizontal movement in game
-
-13119: Various neogeo related driver cleanups: [cam900]
-- neogeo/midas.cpp:
-  - Split hammer to derivated class
-  - Reduce runtime tag lookups
-  - Fix namings
-- neogeo/neogeo_spr.cpp:
-  - Fix typename consistency
-  - Use enum for fix layer bankswitch type
-  - Make some variables constant
-  - Reduce preprocessor macros
-  - Move various functions and variables into protected: section
-  - Fix filename comment
-  - Fix naming
-- neogeo/neogeo.cpp:
-  - Suppress side effects for debugger reads
-  - Reduce literal tag usages
-  - Make some variables constant
-- neogeo/neogeocd.cpp:
-  - Fix code style consistency, Use lowercase hexadecimal digits and variable names
-  - Move various variables and functions into private: section
-  - Reduce preprocessor macros
-  - Suppress side effects for debugger reads
-  - Make some variables constant
-  - Fix save states
-- neogeo/neopcb.cpp:
-  - Reduce literal tag usage
-  - Fix metadata related to hardware configuration
-
-13121: konami/nemesis.cpp: Split driver classes for reduce optional finders, Cleanups: [cam900]
-- Reorder variables and object finders in header file
-- Reduce runtime tag lookups, literal tag usages
-- Make some variables constant
-- Reduce duplicates
-- Fix namings
-- Fix spacings
-- Fix save states
-- Add notes
-
-13123: MT08472: heap overflow [holub]
-Can't reproduce but have high confidence that should fix the issue
-
-13124: taitotz.cpp: Standards cleanup and a functional fix [MooglyGuy]
-This change does some structural cleanup to this largely-abandoned file, mainly:
-- Removal of unnecessary parentheses and case-bracing
-- Case indentation
-- Operator spacing
-- C++ versus C-style comments for single-line comments
-It also removes some small chunks of `#if 0`'d code, and moves some other previously `#if 0`'d code behind `if
-  (SOME_CONSTEXPR_DRIVER_MEMBER)` in order to avoid code-rot.
-As something of a bonus change, there is a fix to expected packet-size calculation in `taitotz_renderer::push_direct_poly_fifo`,
-  which in turn avoids a fatalerror (which has since been removed) in Raizin Ping Pong's attract mode.
-The fatalerror was reportedly due to an unsupported direct-geometry vertex count of 2, but this only came about due to single-vertex
-  direct geometry not consuming an appropriate number of words, resulting in `push_direct_poly_fifo` attempting to process a
-  vertex's header word in place of a direct-geometry header word.
-
-13126: new WORKING machine (JAKKS Pacific Pirates of the Caribbean) [mamehaze]
-new WORKING machine
----
-Pirates of the Caribbean - Islands of Fortune  [David Haywood, TeamEurope]
-
-13127: CD-i: Fix DYUV Format [Vincent-Halver]
-This change fixes the following issues with the DYUV format:
-1. The DYUV format incorrectly was too dark by 16/256. This fix corrects a previously incorrect attempt to fix that issue.
-2. The DYUV format does not allow Mosaic features.
-To Validate this change:
-1. Use the Validation CD (Europe).
-2. Click "Philips Tests"
-3. Click "Video Representations"
-4. Click "DYUV Decoder"
-Result:
-The DYUV format is slightly brighter. Mosaic effects will work more correctly. Unfortunately I don't know of a good example of how
-  to see the mosaic behavior difference, however the spec makes it clear this configuration is not allowed.
-Uncertain Issues:
-The previous midpoint interpolation of 129+129 would be 1. The spec agrees with that formula. As the expected behavior is not yet
-  well understood, a modified algorithm is used to produce more sensible midpoints that do not have this rollover artifact.
-Known Issues:
-There are further transparency issues that are out of scope for this update.
-RGB format fix is not included in this update. Previous discussion about color/noise can be safely ignored for now, and discussed in
-  the RGB update later.
-There are further format issues.
-Updated Test Images:
-!image
-!image
-Compare to previous broken decoder:
-!image
-!image
-
-13129: new WORKING machines (JAKKS Pacific Superman) [mamehaze]
-new WORKING machines
-------------------------------
-Superman in Super Villain Showdown [David Haywood, TeamEurope]
-
-13130: h89/sigmsoft_sound.cpp: Minor cleanup of code. [mgarlanger]
-
-13132: DRC backend fixes pt 2 [987123879113]
-- Fixed an issue with x64 LOAD not clearing the rest of the register in rare cases
-- Fixed x86 LOADS not sign extending properly for 64-bit loads
-- Fixed x86 data widths for FLOAD/FSTORE to support doubles
-- Bandaid fix for clearing x86 upper half of register when writing to a 32-bit ireg. This won't cover all cases but should cover a
-  lot of the common usages (I0-I3)
-
-13133: Various Atari 2d drivers updates & cleanups: [cam900]
-- Various drivers:
-  - Reduce tilemap size for reduce unnecessary glitchy area
-  - Suppress side effects for debugger read
-  - Make some variables constant
-  - Reduce literal tag usages and runtime tag lookups
-  - Use GFXENTRY_SCALE for scaled gfxs
-  - Fix namings
-  - Fix notes
-- atari/arcadecl.cpp:
-  - Use gfxdecode into arcadecl_state only (sparkz_state hasn't sprites)
-- atari/atarimo.cpp:
-  - Remove unused parameter in config
-  - Remove gfx information modification (_raw function ignores them)
-  - Make some variables constant
-  - Fix spacing
-- atari/atarisy1.cpp:
-  - Reduce preprocessor defines
-- atari/atarisy2.cpp:
-  - Reduce preprocessor defines
-- atari/skullxbo.cpp:
-  - Remove unnecessary init functions
-
-13134: new WORKING machines (JAKKS Pacific Spider-Man 3) [mamehaze]
-new WORKING machines
-------------
-Spider-Man 3 (JAKKS Pacific TV Game) [David Haywood, TeamEurope]
-
-13135: imagedev/flopdrv.cpp: Remove code supporting functionality that's no longer used [plaes]
-Seems like the list of machines still using legacy floppy drives has shrinked rapidly..
-
-13136: new WORKING machines (JAKKS Pacific Power Rangers SPD) [mamehaze]
-new WORKING machines
-------------
-Power Rangers S.P.D. [David Haywood, TeamEurope]
-
-13137: osd/interface/inputcode.h: Fix warnings in debug build [ajrhacker]
-This seems to capture the spirit of what the asserts were doing without tripping the enum range warnings.
-
-13140: hh_e0c6x: fix typo in comment [einstein95]
-
-13141: Update spg2xx_jakks.cpp - add 3rd button for jak_spd3 [mamehaze]
-
-13142: Update README.md [startaq]
-- Slightly reorder sections
-- Remove link to gitter
-- Add statistics from repobeats
-- Move CI and Coverity badges down to the Development section
-- Remove link to MESS Wiki
-- Add links to MAME Forums on bannister.org and MAMEWorld
-- Update compiling instructions for vs2022
-- Fix broken link to OSI logo, use official logo from https://opensource.org/osi-logo-files
-- Link COPYING to file in repo
-
-13144: cpu/hcd62121/hcd62121.cpp: Add missing save items [qufb]
-
-13145: sinclair/tsconf.cpp Improved tiles decoding [holub]
-
-13146: Added sixteen working dumps and one redump. Removed one duplicate dump.  Metadata cleanups. [A-Noid33]
-New working software list items (apple2gs_flop_orig.xml) 
--------------------------------
-2088: The Cryllan Mission [4am, A-Noid]
-Draw Plus (version 1.0) [4am, A-Noid]
-First Categories [4am, A-Noid]
-List Plus (version 1.0 (11-Dec-87)) [4am, ianoid, A-Noid]
-MultiScribe IIgs (version 3.01c) [4am, A-Noid]
-Panzer Battles IIgs [4am, ianoid A-Noid]
-Peanuts Maze Marathon IIgs [4am, A-Noid]
-Photonix II (version 2.50) [4am, A-Noid]
-Reading Magic Library: Jack and the Beanstalk IIgs [4am, A-Noid]
-Skate or Die IIgs (version 1.0) [4am, ianoid, A-Noid]
-The New Talking Stickybear Alphabet [4am, A-Noid]
-The New Talking Stickybear Opposites [4am, LoGo, A-Noid]
-The Ugly Duckling (version 1.1) [4am, A-Noid]
-TopDraw (version 1.01A (8/4/87)) [4am, A-Noid]
-Transylvania III IIgs [4am, ianoid, A-Noid]
-New working software list items (apple2_flop_clcracked.xml) 
--------------------------------
-The Coveted Mirror (version 1983) (4am crack) [4am, A-Noid]
-Redumped software list items (apple2_flop_clcracked.xml) 
--------------------------------
-Un Día Típico (4am crack) [4am, A-Noid]
-Removed (apple2gs_flop_misc.xml)
--------------------------------
-Transylvania (Duplicate of Transylvania III)
-
-13149: pc6001_cart.xml: New software items added [FoxhackDN]
-------------------------------
-Turpin (19821012) [Mike Stedman]
-Turpin (19830129) [bsittler]
-
-13151: atari/atarig1.cpp, atarig42.cpp, atarigt.cpp, atarigx2.cpp, atarirle.cpp: Cleanups: [cam900]
-- Reduce preprocessor defines
-- Make some variables constant
-- Fix save states
-- Fix naming
-- Fix spacing
-- Reduce literal tag usages
-- Suppress side effects for debugger read
-atari/atarigx2.cpp:
-- Reduce runtime tag lookups
-
-13153: new NOT WORKING machines (JAKKS Pacific EA Sports Classic NHL/Fifa + Bob the Builder) (SPG110 work) [mamehaze]
-new NOT WORKING machines
--------------------------------
-EA Sports Classics: NHL 95 & FIFA Soccer 96 [David Haywood, Team Europe]
-Bob the Builder - Project: Build It [David Haywood, Team Europe]
-- improved SPG110 interrupt handling, tile y flip, and prepare for other improvements
-
-13154: sigmasoft_sound.cpp: Fix active state for joystick [mgarlanger]
-I found a game that uses this sound board and was able to verify operation of the joystick and sound with this change. 
-
-13155: nmk/quizpani.cpp: Add documents for PROM [cam900]
-
-13156: nmk/ddealer.cpp: Fix notes for PROM bit [cam900]
-
-13157: atlus/patapata.cpp: Add documents for PROM [cam900]
-
-13158: nmk/quizdna.cpp: Cleanups: [cam900]
-- Use memory_view for ROM/RAM bankswitching
-- use set_format for palette format
-- Fix typename for boolean flag
-- Use generic gfx layout for gfx decode
-
-13160: minitel2: fix modem and periinfo default configurations [fabio-d]
-I've tested the command line given at the top of the `minitel_2_rpic.cpp` file (`-modem null_modem -bitb socket.127.0.0.1:20000`)
-  and it didn't work (transferred data was corrupted), because the correct serial parameters are set for `terminal`. This commit
-  makes them apply to `null_modem` instead, so that the documented command line actually works.
-While at it, I've also changed the parameters for the second serial port (`periinfo`) to match the Minitel's defaults and verified
-  that it actually works, despite the comment at the top of the file stating the opposite.
-These are all the test command lines I've successfully validated, to test that the two Minitel serial ports (`modem` and `periinfo`)
-  work, both in isolation and together. I've used minipavi.fr as the test service to connect to.
-### Test n.1: Connecting to a Minitel service through the modem port
-Run in two different terminals:
-* `socat tcp-listen:20000,fork system:'"set -x; IFS= read -d S; echo -n \"Connecting...\"; exec nc go.minipavi.fr 516"'`
-* `./mame -window minitel2 -modem null_modem -bitb socket.127.0.0.1:20000`
-Then power on the Minitel (F10) and start the connection (F8).
-**Notes:**
-* `IFS= read -d S`: waits for the `Connexion ou déconnexion modem` message (`"\x13S"`), emitted when the emulated Minitel modem
-  pretends to start detecting the carrier frequency.
-### Test n.2: Connecting to a Minitel service through the serial port
-Run in two different terminals:
-* `socat tcp-listen:20000,fork system:'"set -x; IFS= read -d r; IFS= read -d r; sleep 3; echo -en \"\\e\\x39\\x68\"; sleep 3; echo
-  -en \"\\e\\x39\\x67\\e\\x3b\\x60\\x58\\x52Connecting...\"; exec nc go.minipavi.fr 516"'`
-* `./mame -window minitel2 -periinfo null_modem -bitb socket.127.0.0.1:20000`
-Then just power on the Minitel (F10), the socat command above will do the rest to put the Minitel in the right mode and start the
-  connection.
-**Notes:**
-* `IFS= read -d r` (twice) : wait for the second `Passage en veille ou sortie de veille` message (`"\x13r"`, emitted by the Minitel
-  when powered on)
-* `\e\x39\x68` (called `PRO1 CONNEXION` in the manual): tells the Minitel to connect the `modem` port.
-* `\e\x39\x67` (called `PRO1 DECONNEXION` in the manual):  tells the Minitel to disconnect the `modem` port.
-* We don't actually use the `modem` port at all, we just send `PRO1 CONNEXION` followed by `PRO1 DECONNEXION` to make it leave the
-  initial address book screen and enter the mode that displays incoming data.
-* `\e\x3b\x60\x58\x52` -> `PRO3 OFF` to disable local echo
-### Test n.3: Both ports at the same time
-Run in three different terminals:
-* `socat tcp-listen:20000,fork stdio`
-* `socat tcp-listen:20001,fork stdio`
-* `./mame -window minitel2 -modem null_modem -bitb1 socket.127.0.0.1:20000 -periinfo null_modem -bitb2 socket.127.0.0.1:20001`
-Then power on the Minitel (F10), start the connection (F8) and notice how everything typed into one port is echoed on the other one,
-  like on a real Minitel.
-
-13162: ARM64 (aarch64) DRC backend [987123879113]
-- Updated asmjit to latest master because it has some fixes for ARM64
-- Removed the vector-related code from UML and backends. It's not used anywhere that I could find so it's better to just cut it out.
-- Added ARM64 (aarch64) DRC backend
-It's a big PR. I've done my best to make it work but I'm sure there are still bugs or questionable implementation choices. It passes
-  all of the same tests I was doing for the previous DRC changes so I think the outputs should be the same as the other DRC
-  backends.
-Additional testing and/or misc feedback like benchmarks on various devices would also be appreciated. For hardware I've tested with
-  an M1 Pro CPU and a Raspberry Pi 4 Model B. For software I've been testing using a few games on the Naomi (SH4), Firebeat (PPC),
-  NWK-TR (PPC), and some very small testing of dgpix (Hyperstone E1-32XT).
-
-13163: mame/moog/*.cpp: Using the more prevalent style for * and & placement. [m1macrophage]
-Just a minor style change. Makes my Moog drivers stylistically consistent with a large number of existing drivers. Will follow this
-  pattern in future drivers too.
-
-13165: oberheim/dmx.cpp: Driver for Oberheim DMX. Includes layout. No sound. [m1macrophage]
-Other than audio, the main missing components are auxiliary ones, such as cassette I/O. The computer portion of the DMX should be
-  complete, and usable via the interactive layout.
-Audio work is far along, and will be sent in a followup PR. 
-!0000
-A bit of a tangent: if anyone else is working on synthesizers and reading this, consider taking a look at this WIP, in order to
-  avoid conflicts.
-
-13168: sound/dac76.h: Documenting equivalence to AM6070. Fixing pin locations. [m1macrophage]
-AM6070 is the DAC being used in the DMX.
-**Questions**
-1) Is documentation of the component compatibility enough? Or is the preference to add a `class am6070_device` and
-  `DECLARE_DEVICE_TYPE(AM6070, am6070_device)` ?
-2) @startaq, just out of curiosity, is the `* 8` below done to improve or avoid aliasing? Or is there some other reason?
-https://github.com/mamedev/mame/blob/82466846f81f93244ee2188c06bae8f45a2e6dd0/src/devices/sound/dac76.cpp#L51-L54
-
-13170: pasogo.cpp: Fix copy/paste errors [einstein95]
-Reading the datasheet at https://bitsavers.org/components/amphus_vadem/VG230/VG230_General_Description.pdf and register 79H is the
-  RTC mode, not RTC status (which is on 7AH), and writing to 78H shouldn't affect the RTC's stored days
-
-13171: heathzenith/h19/tlb.cpp: Add joystick support to IGC board [mgarlanger]
-Adds joystick support to the Sigmasoft IGC board. 
-
-13172: pasogo.xml: Metadata updates [FoxhackDN]
-Added missing cart numbers and an additional undumped game.
-
-13173: nmk/nmk004.cpp, nmk/nmk16.cpp: Cleanups/Updates [cam900]
-nmk/nmk004.cpp Cleanups:
-- Remove hardcoded tags
-- Reduce duplicates
-- Fix naming
-nmk/nmk16.cpp: Cleanups:
-- Suppress side effects for debugger reads
-- Reduce literal tag usage
-- Make some variables constant
-- Fix save states
-- Remove unused variables
-- Fix spacings
-- Fix namings
-- Add notes
-
-13174: zx81_cass.xml: Added 27 working items + 2 not working [ArcadeShadow]
-New working software list additions
---------------------------------------------
-3D 3D! (Kayde) [Steven Brown, Planeta Sinclair]
-3D Monster Maze (Aackosoft) [Steven Brown, Planeta Sinclair]
-3D Monster Maze (ZX Data) [Spectrum Computing]
-Asteroids (dK'tronics) [Steven Brown, Planeta Sinclair]
-Astral Convoy [Spectrum Computing]
-Can of Worms (alt) [Steven Brown, Planeta Sinclair]
-Centipede (Kayde) [Steven Brown, Mark Westmoreland, Planeta Sinclair]
-Constellation (red logo inlay) [Steven Brown, Mark Westmoreland, Planeta Sinclair]
-Dictator (red logo inlay) [Steven Brown, Mark Westmoreland, Planeta Sinclair]
-Frogs (Aackosoft) [Steven Brown, Planeta Sinclair]
-Gulp II (Aackosoft) [Steven Brown, Planeta Sinclair]
-Gulp II (ZX Data) [Spectrum Computing]
-House of Gnomes [Steven Brown, Mark Westmoreland, Planeta Sinclair]
-Invasion Force (Aackosoft) [Steven Brown, Planeta Sinclair]
-Love and Death [Steven Brown, Planeta Sinclair]
-Mazeman [Steven Brown, Planeta Sinclair]
-Monstro das Trevas [Spectrum Computing]
-Morse Decoder [Steven Brown, Planeta Sinclair]
-Multifile (Bug-Byte) [Steven Brown, Mark Westmoreland, Planeta Sinclair]
-Ny Teknik - 7 Program till din Sinclair ZX 81 [Steven Brown, Planeta Sinclair]
-Skak [Steven Brown, Planeta Sinclair]
-Stock Car (alt) [Steven Brown, Planeta Sinclair]
-The Damsel and the Beast (red logo inlay) [Steven Brown, Mark Westmoreland, Planeta Sinclair]
-Videograph [Steven Brown, Mark Westmoreland, Planeta Sinclair]
-ZX Breakout [Spectrum Computing]
-ZX Breakout (pink inlay) [Steven Brown, Planeta Sinclair]
-ZX Nightmare Park (Aackosoft) [Steven Brown, Planeta Sinclair]
-New NOT working software list additions
---------------------------------------------
-Space Invaders (Kayde) [Steven Brown, Mark Westmoreland, Planeta Sinclair]
-ZXED [Steven Brown, Planeta Sinclair]
-Promoted to working
---------------------------------------------
-3D 3D!
-
-13176: misc/4enraya.cpp: swapped difficulty and speed DIP Switches [UnclePetros]
-Swapped _Difficulty_ and _Speed_ DIP Switches as per manual, for games **4enraya** and **4enrayaa**.
-Tested in-game by measuring time to shoot 5 arrows. Works as expected by the manual.
-!image
-
-13177: oberheim/dmx.cpp: Adding mouse control to faders. [m1macrophage]
-
-13178: psx.xml: Added 10 working items + 2 redumped items [ArcadeShadow]
-New working software list additions
---------------------------------------------
-007 Racing (Europe) [Redump]
-007 Racing (France) [Redump]
-007 Racing (Germany) [Redump]
-A Ressha de Ikou 4 - Evolution Global (Japan) [Redump]
-A Ressha de Ikou 4 - Evolution Global (Japan) (PlayStation the Best) [Redump]
-A.IV - Evolution Global (Europe) [Redump]
-Actua Golf (Europe) [Redump]
-Actua Golf (Japan) [Redump]
-Actua Golf 2 (Europe) [Redump]
-Actua Golf 3 (Europe) [Redump]
-Redumped software list items
---------------------------------------------
-007 Racing (USA) [Redump]
-A-Train - Trains, Power, Money (USA) [Redump]
-
-13179: macadb: add support for second button of an ADB mouse [as-tb-dev]
-This PR adds support for the second button of an ADB mouse
-Testing:
-Apple IIGS emulation with MAME 0.273 has the following behavior with regards to the second mouse button:
-- The "Shift-Command-Clear" combination enables the ADB mouse keypad.  With a ROM 01, this sequence seems to only work if System
-  Software is running.  With a ROM 03, it also works if ProDOS is running (probably any OS).
-- The "Clear" disables the ADB mouse keypad.
-- The keypad 5 key emulates the first mouse button.  This works with both apple2gs (ROM 03) and apple2gsr1 (ROM 01)
-- The keypad - key emulates the second mouse button.  This only works with the apple2gs (ROM 03)
-- There is no means to generate the second mouse button press using the MAME emulated mouse.
-Application support (note, with MAME 0.273, the tests below can only be performed with a ROM 03 Apple IIGS):
-- System Software 6.0.1 responds to either of the two mouse buttons.
-- The 8-bit MousePaint application only responds to the first mouse button.  This is expected since it is not a IIGS specific
-  application.  This test is mostly useful in conjunction with the System Software test to confirm that the two buttons are in
-  distinct.
-With this PR's change, the second mouse button can be clicked using the actual mouse.  This works works with the ROM 01 IIGS as
-  well.
-
-13180: bus/heathzenith/h89: Remove unneeded save_item calls for data set by config [mgarlanger]
-
-13182: gaelco/goldart.cpp: Cleanups/Updates: [cam900]
-- Fix clock related to XTAL
-- Reduce runtime tag lookups
-- Fix naming
-- Fix spaicng
-- Restrict bitmap draw behaviour to screen cliprect
-- Suppress side effects for debugger reads
-- Make some variables constant
-- Use unique_ptr for RAMs
-
-13184: Improve DL11 emulation (maintenance mode, break rx/tx) and add support for [shattered]
-1801VP1-065 variant.  Passes ZDLDH0 test and works with TU58 driver (DD.SYS).
-
-13185: misc/4enraya.cpp: Demo Sound DSW updated to Unknown [UnclePetros]
-SW1:2 (Demo Sound) not working as expected.
-Updated to _Unknown_ with a comment note.
-
-13186: moog/*.cpp: Using GM piano keyboard definitions. [m1macrophage]
-... those added in commit: ded2280.
-
-13187: Improvements to Roland D-70 [felipesanches]
-* Chose more accurate colors for the LCD. 
-* Declared more versions of the program ROMs.
-* Split the ROMs to match actual chips and renamed them to indicate their corresponding IC references (IC4 for the even ROMs and IC9
-  for the odd ones).
-Before:
-!d70_old_colors
-After:
-!Screenshot From 2025-01-05 22-07-59
-(@giulioz)
-
-13189: dataeast/exprraid.cpp: fix sw display in menu [UnclePetros]
-Fixed just _SW1:7_, _SW2:4,5_ and _SW2:8_ display in DIP Switches menu, in-game.
-
-13193: bus/heathzenith/h89: Remove signals not present on a real h89bus [mgarlanger]
-Due to unique nature of the H89 bus and how some boards were implemented, additional signals and controls from the CPU board were
-  brought to the card, usually by a ribbon cable from a chip socket. Specifically Heath's Z-89-37 and MMS's Double Density
-  controller handled the the interrupt processing. This is modeled after the changes made for the SigmaSoft's Parallel Port card and
-  IGC in https://github.com/mamedev/mame/pull/13040
-This removes fdcirq, fdcdrq, and blockirq signals from the h89bus.
-
-13194: gaelco/gaelco3d.cpp: Cleanups [cam900]
-- Reduce preprocessor defines
-- Suppress side effects for debugger reads
-- Make some variables constant
-- Reduce literal tag usages
-- Use logmacro.h for logging
-- Fix namings
-- Fix spacing
-- Fix typo
-- Remove unused variable
-
-13195: gaelco/gaelco.cpp: Cleanups [cam900]
-- Split driver class for reduce optional finders
-- Fix typename consistency
-- Reduce duplicates
-- Make some variables constant
-- Reduce literal tag usages
-- Fix namings
-
-13196: bfm\bfcobra.cpp: Add attract mode rom loading to Inquizitor [Paul-Arnold]
-inqvypp2 is the attract mode rom but wasn't being loaded in "user1" rom region
-
-13198: Add a new War of the Bugs clone from Radar Ltd. [clawgrip]
-New working clones
-------------------
-Rocket Convoy [Luis Arrufat]
-
-13199: megacd: merge the three software lists into one [chungy]
-@cuavas had mentioned on IRC that these lists should be merged, and I spent some hours doing just that. Was it all worth it?
-No images have been added nor removed compared to the current HEAD version, but several releases have been renamed and reparented in
-  order to merge them all into a singular "megacd" list. The `mdconsole.cpp` file has also been updated to filter the software list
-  based on region, so "segacd" only shows American games, "megacdj" only shows Japanese games, "megacd" only shows European games.
-
-13200: minitel2: tune palette to differentiate all colors [fabio-d]
-Previously, some distinct levels were mapped to the same color, which made them indistinguishable.
-The progression of the gray levels is documented both in the Videotex documentation (STUM1B) and in the TS9347 datasheet, by mapping
-  colors to grayscale-equivalent levels.
-From STUM1B (page 32):
-!stum1b_extract_with_annotated_colors
-From the TS9347 datasheet (pages 10 and 19):
-!progression1_pag19 !progression2_pag10
-Visually tuned with a test pattern (colors.vdt.zip) using a real Minitel as a reference:
-<img src="https://github.com/user-attachments/assets/ff12c080-4aa5-49da-8b2f-329235b38392" width="45%"/> <img
-  src="https://github.com/user-attachments/assets/5abe7702-c269-43b9-ae3d-cd1ccd12ca50" width="45%"/>
-Note: The number after # is the index in MAME's minitel2 palette
-EDIT: For comparison, with the old palette the above test pattern would have been rendered as:
-<img src="https://github.com/user-attachments/assets/d769459e-725f-45ca-93a7-dc8cca944249" width="45%"/>
-Important: if you test the new palette, in order to actually see the background colors generated by the test pattern, you currently
-  have to comment out this line that makes all backgrounds black. Unlike the real chip, the current code makes all backgrounds
-  black, unconditionally. A proper fix will follow in a different PR (see also the discussion at
-  https://github.com/jfdelnero/minitel/issues/3)
-( cc @jfdelnero )
-
-13203: Update m72.cpp - flip bchopper/mrheli Demo Sounds switch [mamehaze]
-the current 'on' state just plays a single sound on title screen and no sound in attract
-the current 'off' plays full sound in attract
-this switches them around so on plays full attract sound
-
-13204: New working machine added [algestam]
-----------
-Tronica: Diver's Adventure [Milan Galcik, algestam]
-
-13205: ussr/juku: Convert to memory_view, add mouse & fix timer [boamaod]
-* Use memory_view instead of address_map_bank_device
-* Add juku_mouse_device (joystick like mouse with interrupt)
-* Make third PIT8253 clk2 follow the measured ~49.92Hz
-
-13206: oberheim/dmx.cpp: Sound emulation. [m1macrophage]
-System transitioned to working with imperfect sound.
-While still working on this, it is easier to have related computations together. However, it is possible to cache a lot of the
-  computation at voice initialization or triggering. Once the next audio improvements are in (reconstruction filter and voice
-  tuning), I'll take care of these optimizations too.
-
-13209: Added emulation for Roland SA sound chips [giulioz]
-Adds emulation for the sound chips found in the Roland CPU-B board of SA-synthesis digital pianos (MKS-20, RD1000, ...).
-- IC19 R06-0001 (Fujitsu MB60VH142)
-- IC9  R06-0002 (Fujitsu MB60V141)
-- IC8  R06-0003 (Fujitsu MB61V125)
-
-13210: sinclair/tsconf.cpp: Added state save [holub]
-
-13211: gottlieb/gottlieb.cpp: Split driver class related to laserdisc, Cleanups: [cam900]
-- Fix typename consistency
-- Suppress side effects for debugger reads
-- Reduce preprocessor defines
-- Make some variables constant
-- Reduce literal tag usage
-- Fix naming
-- Fix spacing
-
-13212: Adding a layout to the Roland D-70 driver. [felipesanches]
-Support moving sliders with mouse click & drag.
-* **Note 1:** LEDs declared and positioned in the layout, but the driver still does not control them.
-* **Note 2:** The rotary encoder is also not functional yet. I'll leave that one to a future separate commit.
-(@giulioz, @m1macrophage)
-
-13213: excellent/excellent_spr.cpp: Fix sprite delay, Cleanups/updates: [cam900]
-excellent/excellent_spr.cpp:
-- Reduce duplicates
-- Remove unused variable
-- Use decode_gfx for gfx decoding routine
-- Fix docs
-excellent/gcpinbal.cpp:
-- Fix background tilemap bankswitching
-- Use ROMREGION_ERASE00 for Fill empty ROM area
-
-13214: oberheim/ob8.cpp: Skeleton driver for Oberheim OB8. [m1macrophage]
-
-13215: barcrest\mpu3.cpp: Correct 100hz signal to pia6821 ic3 [blueonesarefaster]
-100hz signal to the pia was previously done with m_pia3->cb1_w(~m_signal_50hz);
-As m_signal_50hz was an int with a value of 0 or 1 this meant cb1_w() was always being called with a non-zero value.
-In addition to the above, it's supposed to be a 100hz signal, not 50hz.
-This fixes software which boots and then locks with TURN-ON-DELAY 30 on the display.
-Also, fixes software which use the WAI instruction and then lock.
-
-13217: hash/juku: Add E5104 system disks & additional utils disk [boamaod]
-Add JUKU E5104 system disks currently available:
-* Three Baltiyets system disks from 1988 with EKDOS 2.29 (maybe partly updated later)
-  - JUKU-1 / ДГШ5.106.105
-    - DIAGNOSTICS 1.0, UTY 0.2/0.1, NETOS 2.0/0.1, SED 6.0/2.1, B80 5.21, BASCOM, L80 3.44, SID, RDEM 1.1, CM6329, FX800, COMPU
-  - JUKU-2 / ДГШ5.106.105-01
-     - LINKMT 5.5, UTY 0.2/0.1
-  - JUKU-3 / ДГШ5.106.105-02
-     - DBASE 2.4, MULTIPLAN 1.05, GTR 2.5B, SNAKE 1.3, UTY 0.2/0.1
-* EKTA additional utilities disk 4 from December 1989 with EKDOS 2.30
-   - Updated Epson/Compu printer drivers
-   - A set of various "exciting utilities"
-
-13218: New working clone [algestam]
-----------
-Tronica: Clever Chicken [Milan Galcik, algestam]
-
-13219: [kn5000] Improvements to the internal layout. [felipesanches]
-* Highlight pressed buttons by changing color
-* And also remove many unnecessary 'name' attributes.
-* Add a few details that were missing (like the red lines over a couple sequencer buttons)
-
-13221: edevices/edevices.cpp: Use device_gfx_interface for gfx interface, Cleanups: [cam900]
-- Make some variables constant
-- Fix some typename value
-- Reduce unnecessary lines
-edevices/mwarr.cpp: Cleanups
-- Fix naming
-- Fix spacing
-- Reduce preprocessor defines
-- Reduce literal tag usages
-- Use generic gfx decode layouts, Cleanup gfx layouts
-- Remove unneeded trampoline
-edevices/stlforce.cpp: Cleanups
-- Use generic gfx decode layouts, Cleanup gfx layouts
-- Remove unused function
-- Fix spacing
-
-13222: formats/h17disk.cpp: Add format for Heath hard-sectored formats [mgarlanger]
-Add support for h17disk format needed for the Heath H17 controller. 
-
-13223: oberheim/dmx.cpp: Emulating pitch tunning. Optimizing / caching pitch computations. [m1macrophage]
-Also simplified and documented pitch computations.
-
-13224: cpu/mcs51.cpp: Implement PES bit for DS5002FP [cam900]
-PES bit is peripheral enable select on bytewide bus (technically it controlled by PE1-PE4 pin when PES bit enabled, each pin
-  controls 16KByte block each.), it works same when partition mode enabled or disabled.
-Reference: https://www.analog.com/media/en/technical-documentation/user-guides/secure-microcontroller-users-guide.pdf (It covers
-  DS5001, DS5002, etc.)
-
-13225: ef9345: implement service row for the TS9347 variant [fabio-d]
-With this change, the minitel2 can correctly display its status row at the top of the screen.
-Screenshots before:
-<img src="https://github.com/user-attachments/assets/0a8eb54f-5ec5-4784-ad1b-5a6149884ecc" width="45%"/> <img
-  src="https://github.com/user-attachments/assets/b71a847c-39c0-4a22-98fe-6462517ae7c4" width="45%"/>
-Screenshots after:
-<img src="https://github.com/user-attachments/assets/210daf29-2dac-40bc-b4ca-e33c5f0771bb" width="45%"/> <img
-  src="https://github.com/user-attachments/assets/ed132000-d7d4-4c15-aa48-61d9944d962f" width="45%"/>
-Corresponding picture from a real Minitel 2: http://hxc2001.free.fr/minitel/minitel2.jpg (from @jfdelnero's website).
-### Explanation
-The ef9345.cpp file provides support for both the EF9345 and the TS9347 video chips. Compared to the EF9345, the TS9347 has a
-  slightly different logic for the "service row" (i.e. a text line that is conceptually separate from the main contents of the
-  screen). In particular:
-- the EF9345 lets one select the memory location for fetching data for the service row, but not where to display it (it's always
-  displayed at the top of the screen)
-- the TS9347 lets one select where to display (either at the top or at the bottom), but not where to fetch it from (it's always
-  fetched from the beginning of the video memory block)
-Before this change, the TS9347 peculiarities were not implemented. The EF9345 code path is not affected by this change.
-Relevant extract from the **EF9345** datasheet (i.e. the one that is already implemented):
-<img src="https://github.com/user-attachments/assets/3a9033d3-c6dc-4c0d-ab58-c640f416a279" width="45%"/>
-Relevant extract from the **TS9347** datasheet (i.e. the variant implemented by this change):
-<img src="https://github.com/user-attachments/assets/eafbe027-40ed-4737-8b99-46e2b23466e1" width="45%"/> <img
-  src="https://github.com/user-attachments/assets/921e5bce-5a74-4289-812d-73861cfab456" width="45%"/>
-
-13226: heathzenith/h89.cpp: Update gpp handling for MMS FDC [mgarlanger]
-For the existing `h89bus_device::io_dispatch_r()` routine, a check of the offset was occurring that made the check in
-  `h89_mms_state::port_f2_mms_r` redundant. Between the two checks, having it in h89bus_device simplified the logic.
-@rb6502  let me know if you agree with this approach, or if you think the check should removed from
-  `h89bus_device::io_dispatch_r()`.
-
-13228: oberheim/dmx.cpp: AA filters, VCA as a device, optimizations, bug fix. [m1macrophage]
-- Refactored the gain and decay logic into its own VCA device, to make it easy to add the anti-aliasing filters.
-- Added the anti-aliasing / reconstruction filters.
-- Optimization: Gain and decay-RC-constant variations computed at initialization.
-- Bugfix: voices with pitch control have 1 instead of 3 decay variations. Fixes decay speed in some TOM variations.
-
-13230: ibm5170_cdrom: NT 3.x floppies, SDKs, resource kits, service packs [chungy]
-Found clean floppy disk images from MSDN sets, so build 528 of NT 3.1 now has a 5.25" floppy disk for CD-ROM based installs.  Most
-  translated versions have their floppy disks for CD-ROM based installs added, too.
-MSDN often contained whatever the latest service pack was at the time a set was made, those discs are here now too.  Microsoft was
-  cost-conscious of printing many CDs, so these are often combined with other software.  A sole independent Windows NT 3.51 SP4 disc
-  has been found and included here.  Were other 3.x service pack CD-ROMs made? Most likely SP5 was, but I have not located one.
-Were 3.x service packs released on independent
-CD-ROMs from the MSDN sets?  If so, they should replace the entries here.
-The resource kit CD-ROMs for 3.1, 3.5, 3.51, and 4.0 are all included here.  These contain companion software to the "Windows NT
-  Resource Kit" book that was published.  Even without the book, many of the utilities prove useful for the operating system.
-Windows NT 4.0 Service Pack 6 has been replaced by a properly prepared/shipped disc from Microsoft with an autorun installer.
-New working software list items (ibm5170_cdrom.xml)
----------------------------------------------------
-Win32 Software Development Kit (version 3.51) [chungy]
-Win32 Software Development Kit and Device Driver Kit (version 3.1) [chungy]
-Windows NT 3.1 Service Pack 2 [chungy]
-Windows NT 3.1 Service Pack 3 [chungy]
-Windows NT 3.5 Service Pack 2 [chungy]
-Windows NT 3.51 Service Pack 1 [chungy]
-Windows NT 3.51 Service Pack 3 [chungy]
-Windows NT 3.51 Service Pack 4 [chungy]
-Windows NT Resource Kit (version 3.1) [chungy]
-Windows NT Resource Kit (version 3.5) [chungy]
-Windows NT Resource Kit (version 3.51) [chungy]
-Windows NT Server Resource Kit (version 4.0) [chungy]
-Windows NT Workstation Resource Kit (version 4.0) [chungy]
-
-13232: DRC: Calculate flags for shifts/rotates with a shift of 0 [987123879113]
-Discussed this with cuavas already.
-The original intention (based on the initial commits of the DRC by Aaron) was for the shift/rotate functions to calculate flags even
-  if the shift was 0, but 13-ish years ago it got refactored in a way that made some of the opcodes calculate the flags and some of
-  them not calculate the flags if the shift was 0.
-
-13234: misc/changyu.cpp: change year 19?? to 1991 for changyu2, pinpoint voice roms [flama12333]
-at the driver note
-marked 9101
-1991 january?
-in the maganize 317 of Sep. 91 Replay
-fun nine look similar to 999.
-96c 97c 98c are just voice rom cvsd.
-
-13235: various plug and play additions / fixes [mamehaze]
-(this is a squashed version of the previous 2 PRs, updated to latest code now that CL works again)
-new WORKING machines
-------------
-Webdiver Gladion W-05 DX (Japan) [David Haywood, TeamEurope]
-Let's! TV Play Kawashima Ryuuta Kyouju Kanshuu - Nou to Karada o Kitaeru Taikan Zunou Family Mattore (Japan)
-  [David Haywood, Team Europe]
-new NOT WORKING machines
----------------------
-Let's! TV Play Digital Monster Battle Junction (Japan) [David Haywood, Team Europe]
-TV Art Design Center [David Haywood, TeamEurope]
-The Amazing Spider-Man and The Masked Menace (JAKKS Pacific TV Game) [David Haywood, TeamEurope]
-Let's! TV Play GoGo Sentai Boukenger Run! Shoot! Mission Starts!! (Japan) [David Haywood, TeamEurope]
-Ryo Ishikawa Excite Golf (Japan) [David Haywood, TeamEurope]
-Let's! TV Play Taikan Cast Off - Kamen Rider Kabuto Clock Up & Rider Kick!! (Japan) [David Haywood, TeamEurope]
-Connectv Real Swing Golf (set 2) [David Haywood, Sean Riddle]
-Doraemon Taikan Take-copter! Sora Tobu Daibouken (Japan) [David Haywood, TeamEurope]
-Leadsinger II (LS-K2) [David Haywood, Sean Riddle]
-- spg24x: fixed non 8bpp tileline (320 wide tiles) mode in spg_renderer.cpp as both new Bandai additions require 6bpp mode
-- gpl162xx: treat DMA operations to 0 as going to spriteram
-- xavix: treat far call stack handling in a more normal way for SuperXaviX (some regular XaviX games seem to really want the unusual
-  handling though)
-
-13236: Add a skeleton for VTech Paw Patrol toy computer [clawgrip]
-New systems marked not working
-------------------------------
-Paw Patrol (toy computer, Spanish) [Arcade Hacker]
-
-13237: Add Casiotone 8000 and related systems [devinacker]
-This adds the Casiotone 8000 keyboard, FK-1 bass pedals, and (non-working) MB-1 recording/playback unit all belonging to the
-  "Symphonytron" organ system, as well as an adapter device to make them all controllable over MIDI.
-The stereo chorus is also implemented, but tends to sound noticeably aliased due to the lack of resampling on the BBD output. I
-  don't really have the bandwidth to try fixing it at the moment though.
-New working machines
---------------------
-Casiotone 8000 [=CO=Windler, Devin Acker]
-Casiotone FK-1 [BCM, Devin Acker]
-New NOT_WORKING machines
-------------------------
-Casiotone MB-1 [=CO=Windler, Devin Acker]
-
-13238: alesis/midiverb.cpp: Adding non-working driver for midiverb. [m1macrophage]
-Driver for MIDIverb, including interactive layout. No audio emulation yet. The UI portion of the device is fully emulated, though
-  there isn't much to it.
-!0001
-
-13239: drcbearm64: Fix ADRP usage [987123879113]
-
-13240: dataeast/deco156_m.cpp: Fix filename and systems in each files, Fix spacing [cam900]
-
-13241: added 12 non-working Plug+Plays & 4 working Plug+Play [mamehaze]
-new WORKING machines
-------
-Interactive Coloring Book: Disney / Pixar Toy Story [Sean Riddle, David Haywood]
-Interactive Coloring Book: Disney / Pixar Cars [TeamEurope, David Haywood]
-Interactive Coloring Book: Disney Princess [Sean Riddle, David Haywood]
-Minna no Tetris (Japan) [TeamEurope, David Haywood]
-new NOT WORKING machines
-------
-3-in-1 Smart Sports! (US) [Sean Riddle, David Haywood]
-The Amazing Spider-Man (Senario, floor mat) [Sean Riddle, David Haywood]
-Interactive M.A.G. Motion Activated Gear: Teen Titans Arena Showdown [Sean Riddle, David Haywood]
-Play Portable Color GameU+ (90-in-1) (Japan) [TeamEurope, David Haywood]
-Pac-Man Arcade in a Tin [TeamEurope]
-Tetris Arcade in a Tin [TeamEurope]
-Digimon X Arena (Japan) [TeamEurope, David Haywood]
-unknown VT369 based 128-in-1 (GC31-369-20210702-V2) [TeamEurope, David Haywood]
-Vibes Retro Pocket Gamer 240-in-1 [TeamEurope, David Haywood]
-40 Bonus Games in 1 (AtGames) [TeamEurope, Patryk Stefanski]
-BornKid 32 Bit Preloaded 139-in-1 Handheld Game Console [TeamEurope, David Haywood]
-Menacer (Radica Plug & Play) [TeamEurope, David Haywood]
-Arcade Center (JL1800_01) [TeamEurope, David Haywood]
-
-13243: CD-i: Fix RLE and Transparency Color Key Bitmask [Vincent-Halver]
-This change:
-1. Fixes RLE encoding which was short by 50%
-2. Color Key now supports bit masking
-3. Simplifies code, reducing by >100 lines.
-4. Renames Channel to Path to match the Green Book spec.
-5. Adds TODO for QHY DYUV images. This image type can't be tested without 625 scanline resolution which is currently blocked. So
-  this will remain a known gap until several other features are added.
-**Examples games you can use to test this fix:**
-All the Fun at the Funfair
-Validation Disc (screenshots below).
-#### "Before" will always be on the left. "After" will be on the right.
-### RL3 Encoding Test
-Notice that the flag's triangle is now 2x as wide.
-!{A8498C40-A0BB-4E3E-BE02-04F4190B46D1}
-### Subscreen Test
-Notice that the pointed to line now has uniform size for Red Green and Blue.
-!{5F2B5F70-C387-4B56-A224-50EFFC8346F6}
-### Color Key Test
-In the default case, simply take notice of the RL3 encoded lines are now uniformly sized boxes.
-!{94F422EC-E908-4532-9E14-7B73BD70E3E0}
-#### The transparency color is 0xff0000 and transparency is set to Inverse. Before, this would mean that only exact match of 0xff
-  red would be visible.
-With this fix, the transparency mask bits are coded to allow to non-exact match on shade of red. The result of this is that many
-  games will likely have more accurate transparency (though I don't know of a game to reference to demonstrate it).
-Note: You may notice that the RGB lines do not look right. RGB format decoding is not included in this change, and will be included
-  in a future change.
-!{8FE25ED4-CF1C-4CFD-9D1D-361BCF1A9620}
-### Gameplay - All the Fun at the Fun Fair
-Demonstrating an example game to see the "50% width" issue fixed in this patch.
-!{FF2A4464-3739-4280-9937-20B4C3E642F1}
-
-13244: alesis/midiverb.cpp: Routed entire audio path. DSP just a passthrough. [m1macrophage]
-- Routed the entire audio path.
-- DSP is mostly a passthrough. Just does quantization (ADC) right now.
-- Using 'samples' mechanism for audio input.
-- Other style and code organization fixes.
-It is now possible to "process" audio through the midiverb (see instructions near the top of the driver). There won't be any reverb,
-  but there should still be some difference between wet and dry.
-
-13245: spectrum_cass.xml: Added 34 working items [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Channel 1 - Spectrum Music Club - Issue 5 (Jan. 1991) [Planeta Sinclair, Steven Brown]
-Channel 1 - Spectrum Music Club - Double Issue 6 + 7 (Sept. 1991) [Planeta Sinclair, Steven Brown]
-Computer Form Pools Predictions [Planeta Sinclair, Steven Brown]
-Libreria de Software Spectrum № 6 (covertape) [Spectrum Computing]
-Libreria de Software Spectrum № 6 (covertape, alt) [Spectrum Computing]
-Libreria de Software Spectrum № 7 (covertape) [Spectrum Computing]
-Libreria de Software Spectrum № 7 (covertape, alt) [Spectrum Computing]
-Libreria de Software Spectrum № 8 (covertape) [Spectrum Computing]
-Libreria de Software Spectrum № 9 (covertape) [Spectrum Computing]
-Libreria de Software Spectrum № 9 (covertape, alt) [Spectrum Computing]
-Libreria de Software Spectrum № 10 (covertape) [Spectrum Computing]
-Libreria de Software Spectrum № 10 (covertape, alt) [Spectrum Computing]
-Libreria de Software Spectrum № 11 (covertape) [Spectrum Computing]
-Libreria de Software Spectrum № 12 (covertape) [Spectrum Computing]
-Libreria de Software Spectrum № 12 (covertape, alt) [Spectrum Computing]
-Libreria de Software Spectrum № 13 (covertape) [Spectrum Computing]
-Libreria de Software Spectrum № 14 - Spy Chip (covertape) [Spectrum Computing]
-Libreria de Software Spectrum № 14 - Spy Chip (covertape, alt) [Spectrum Computing]
-Libreria de Software Spectrum № 15 - Invasion (covertape) [Spectrum Computing]
-Libreria de Software Spectrum № 16 - Carr-2001 (covertape) [Spectrum Computing]
-Libreria de Software Spectrum № 17 - Xirius (covertape) [Spectrum Computing]
-Libreria de Software Spectrum № 18 - Zortron (covertape) [Spectrum Computing]
-Libreria de Software Spectrum № 18 - Zortron (covertape, alt) [Spectrum Computing]
-Libreria de Software Spectrum № 19 - Argon (covertape) [Spectrum Computing]
-Libreria de Software Spectrum № 19 - Argon (covertape, alt) [Spectrum Computing]
-Libreria de Software Spectrum № 20 - Night (covertape) [Spectrum Computing]
-Libreria de Software Spectrum № 21 - Voyager (covertape) [Spectrum Computing]
-Libreria de Software Spectrum № 22 - Blue Lands (covertape) [Spectrum Computing]
-Light Force (Zafi Chip) [Spectrum Computing]
-Lode Runner (48K) [Spectrum Computing]
-Misiles [Spectrum Computing]
-Sample Editor [Planeta Sinclair, Steven Brown]
-Silent 'e' & /y/ Rules [Planeta Sinclair, Steven Brown]
-VTX 711 Prestel & Terminal Software [Planeta Sinclair, Steven Brown]
-
-13246: CD-i: Add RGB Decoding [Vincent-Halver]
-1. This fix adds RGB decoding and RGB Transparency bit. It disables transparency color keying for RGB.
-2. It fixes an incorrect enum that was foreshadowed in previous revisions.
-As with previous pulls, you can validate this using the Validation Disc (Europe) for the CD-i.
-### RGB Scroll Test
-Due to the enum for CLUT8 and RGB being the same, this previously decoded as a CLUT8 image. When ICM flag 1 is used on path 1, it is
-  instead decoded as RGB.
-!{24B08B2F-8C6C-4F60-B01C-57E3D8EA26F2}
-### RGB Draw Test
-The house is now the right color
-!{07289C62-1273-4C22-8A7D-13D5680C3CE2}
-### Color Keying Test
-RGB is now decoded correctly. Additionally, RGB does not match color key. Even when matching "red" colors, notice that the line of
-  RGB still shows red. This is correct behavior, as RGB is not allowed to match color keys.
-!{827BF19D-391A-4880-9AC2-BD8BA927D76E}
-### Transparency Control (Uncertain Issue)
-The implementation of RGB color keying is to always be false. However the spec says that "RGB cannot use color key tests". Since
-  this would be a misconfiguration in practice... I am not sure what a true console would produce. The Transparency Control shows a
-  different behavior. It's not clear from looking at it whether the change is expected or unexpected.
-!{9EA9127F-762D-4546-9183-4BC508D6BAFB}
-Despite the last image, this change is much closer to correct spec behavior and it's recommended to pull. Someone with a real
-  console should at some point run through all visual tests to get proper reference images.
-
-13247: Add NOT_WORKING Atari Flashback Portable (fourth edition) dump [devinacker]
-This was dumped from the fourth edition of the handheld from 2019. I don't know which, if any, of the other versions have also been
-  dumped.
-New NOT_WORKING machine
------------------------
-AtGames Atari Flashback Portable (version 4) [Devin Acker]
-
-13249: Fedora 42 build fixes [belegdol]
-Fedora 42 plans to ship gcc-15 and to replace native SDL2 with sdl2-compat. These changes have exposed minor header issues which
-  this PR addresses.
-
-13251: bus/spectrum/zxbus.cpp: Refactored shadow IO handeling [holub]
-as suggested in #13202
-
-13252: new NOT WORKING machines (Gwasuwon from SemiCom) [mamehaze]
-new NOT WORKING machines
---------
-Gwasuwon (Korea) [Taksangs, David Haywood]
-(technically it is playable, but we're using borrowed protection data for now, so leaving it flagged)
-
-13254: sinclair/scorpion.cpp: Updated BIOS GMX V.6.xx.043.9226 [holub]
-
-13256: sinclair/scorpion.cpp: Updated BIOS Turbo+ V.4.xx.043.9226 [holub]
-
-13257: oberheim/dmx.cpp: Stereo output. VCA optimizations and docs. [m1macrophage]
-- Optimized VCA sound processing.
-- Emulated the stereo output, along with the fixed panning of voices.
-  - This also improved accuracy of relative voice volume.
-- Added config option for selecting audio output.
-- Documentated the VCA.
-
-13262: hash/pc8801_flop.xml: babylon updates [wwark]
-- Required V2 Mode set so change PC8801 to PC8801mk2SR
-- Parent set the scenario disk is user disk so make user is not possible (add a note)
-If I set the scenario disk on XM8, the message indicate the disk is not the correct one.
-!image
-If I set Mode n88v1h
-!image
-The user disk of this set seems a blank disk.
-Thanks,
-
-13265: added Power Rangers to the Rescue (JAKKS Pacific TV Game) (as not working) [mamehaze]
-new NOT WORKING machines
----------------------
-Power Rangers to the Rescue (JAKKS Pacific TV Game) (Aug 8 2008 16:46:59) [David Haywood, TeamEurope]
-
-13266: oberheim/dmx.cpp: Surfacing mouse-controlled tunning trimmers on the layout. [m1macrophage]
-Also made sliders and slider script more reusable.
-
-13267: seta/downtown.cpp: Fix metafox music tempo close to real hardware, Fix naming, Add notes [cam900]
-VBlank controls music tempo, reference: https://www.youtube.com/watch?v=RKPM7x73lDk
-This commit also adjusts arbalest music tempo close to real hardware, because this game uses similar hardware as metafox. (and same
-  screen size, refresh rate?)
-
-13269: hash/pc8801_flop.xml: Added 1 working item. [wwark]
-New working software list addition
---------------------------------------------
-Berserkers Front Gaiden 3 Plus - Turning Point (Developer Studio K2) [krugman on archive.org]
-Updates metadatas of other Studio K2 doujin games.
-Auction page of this doujin game : https://www.ebay.com/itm/385366120727
-The game is available on krugman profile of archive.org
-I updated metadatas from previous entry Berserkers Front Gaiden 3 and Battle Entry required V2 Mode.
-Screenshot of both games.
-!Screenshot from 2025-01-24 10-47-20
-!Screenshot from 2025-01-24 10-48-18
-I tested them on Mame with PC8801mkiiSR.
-Thanks,
-
-13270: seta/simple_st0016.cpp: Remove unnecessary trampoline [cam900]
-seta/st0016.cpp: Fix naming
-
-13272: new WORKING machines (JAKKS Disney Pixar Classics) [mamehaze]
-new WORKING machines
--------------
-Disney Pixar Classics (JAKKS Pacific TV Game) [David Haywood, TeamEurope]
+- 12984: bus/hp_dio: Added the HP98628 and HP98629 communication cards. [F.Ulivi]
+- 13040: frontend/luaengine.cpp: Expose mame_ui_manager::show_menu() to scripts. [Nathan Woods]
+- 13040: bus/heathzenith: Use machine configuration fragments to supply additional connections to cards. [Mark Garlanger]
+- 13047: sega/segas32_v.cpp: Use 10-bit tilemap position values when zooming and 9-bit values otherwise. [mahoneyt944]
+- 13070: 3rdparty/bgfx: Cherry-picked upstream improvements for Wayland desktops. [Belegdol]
+- 13074: tvgames: Added eight XaviX-based games (not working), and improved XaviX video emulation. [TeamEurope, David Haywood]
+- 13080: 3rdparty/lzma: Don't treat K&R function definitions as an error. [FlykeSpice]
+- 13082: bus/heathzenith/h19/tlb.cpp: Added a machine configuration option to disable page 2 RAM for UltraROM. [Mark Garlanger]
+- 13089: psx.xml: Added nine working James Bond games and replaced three items with better dumps. [redump.org, ArcadeShadow]
+- 13090: moog/memorymoog.cpp: Added preliminary Memorymoog emulation (no sound output). [m1macrophage]
+- 13091: namco/mappy.cpp: Moved Phozon to a derived state class and cleaned up code. [cam900]
+- 13095: namco/namco_cus4xtmap.cpp: Converted CUS42 + CUS43 tilemap hardware to a device. [cam900]
+- 13105: bus/heathzenith/h89: Added the Z-89-11 multi-function interface card. [Mark Garlanger]
+- 13106: cpu/upd177x: Replaced high-level µPD17771C emulation with a CPU core. [Wilbert Pol]
+- 13107: cpu/mpk1839/kl1839vm1.cpp: Improved user-space VAX-11 instruction decoding. [holub]
+- 13108: cpu: Fixed various recompiler issues and added four UML instructions. [Windy Fairy]
+- 13109: machine/ncr5385.cpp: Mask auxiliary status bits if no interrupts are pending. [Adam Billyard]
+- 13110: tvgames/spg2xx_dreamlife.cpp: Added Hasbro Giga Pets Explorer. [QUFB]
+- 13112: moog/source.cpp, nec/pc88va.cpp: Fixed two Microsoft Visual C++ implicit conversion warnings. [Meerkov]
+- 13114: ibm5170_cdrom.xml: Added eight versions of Sonic CD. [redump.org, Mike Swanson]
+- 13115: taito/taito_z.cpp: Corrected Battle Shark left/right 8-way joystick directions (MT08731). [Uncle Petros]
+- 13119: neogeo: Reduced run-time tag lookups, suppress side effects for debugger reads, and cleaned up code. [cam900]
+- 13121: konami/nemesis.cpp: Moved games to derived state classes to reduce optional object finders, and cleaned up code. [cam900]
+- 13123: sinclair/atm.cpp, sinclair/pentevo.cpp: Fixed out-of-bounds palette accesses (MT08472). [holub]
+- 13134: taito/taitotz.cpp: Fixed FIFO packet size calculation and cleaned up code. [Ryan Holtz]
+- 13126: tvgames/spg2xx_jakks.cpp: Added Pirates of the Caribbean - Islands of Fortune. [David Haywood, TeamEurope]
+- 13127: philips/mcd212.cpp: Fixed CD-i DYUV color format decoding. [Vincent-Halver]
+- 13129: tvgames/spg2xx_jakks.cpp: Added Superman in Super Villain Showdown. [David Haywood, TeamEurope]
+- 13130: bus/heathzenith/h89/sigmasoft_sound.cpp: Fixed reading joysticks, and tidied code. [Mark Garlanger]
+- 13132: cpu: Fixed more recompiler back-end issues, particularly when handling 32-bit operands. [Windy Fairy]
+- 13133: atari: Cleaned up various Atari 2D arcade system drivers. [cam900]
+- 13134: tvgames/spg2xx_jakks.cpp: Added JAKKS Pacific Spider-Man 3. [David Haywood, TeamEurope]
+- 13135: imagedev/flopdrv.cpp: Removed code supporting functionality that’s no longer used. [Priit Laes]
+- 13136: tvgames/spg2xx_jakks.cpp: Added JAKKS Pacific Power Rangers S.P.D. [David Haywood, TeamEurope]
+- 13137: osd/interface/inputcode.h: Fixed enumeration range warnings in debug builds. [AJR]
+- 13140: handheld/hh_e0c6x.cpp: Fixed a typo in a comment. [einstein95]
+- 13141: tvgames/spg2xx_jakks.cpp: Added the third button for JAKKS Pacific Spider-Man 3. [David Haywood]
+- 13142: Updated README.md links and compiling instructions, and rearranged for readability. [Dirk Best]
+- 13144: cpu/hcd62121/hcd62121.cpp: Register recently added member variables for save states. [QUFB]
+- 13145: sinclair/tsconf.cpp Improved decoding of graphics tiles. [holub]
+- 13146: apple2gs_flop_orig.xml, apple2_flop_clcracked.xml: Added sixteen working items and updated one crack. [A-Noid33]
+- 13149: pc6001_cart.xml: Added two versions of Turpin. [Mike Stedman, bsittler, David Silva]
+- 13151: atari/atarig1.cpp, atari/atarig42.cpp, atari/atarigt.cpp, atari/atarigx2.cpp, atari/atarirle.cpp: Cleaned up code. [cam900]
+- 13153: Added two TV Games (not working), and improved SPG110 SoC emulation. [David Haywood, TeamEurope]
+- 13154: bus/heathzenith/h89/sigmasoft_sound.cpp: Fixed joystick polarity. [Mark Garlanger]
+- 13155: nmk/quizpani.cpp: Added comments noting the purpose of the video timing PROMs. [cam900]
+- 13156: nmk/ddealer.cpp: Clarified that the sprite DMA PROM bit is not used at all for this system. [cam900]
+- 13157: atlus/patapata.cpp: Added comments noting the purposed of the video timing PROMs. [cam900]
+- 13158: nmk/quizdna.cpp: Cleaned up memory banking, palette handling and graphics decoding. [cam900]
+- 13160: philips/minitel_2_rpic.cpp: Corrected the default serial frame settings for the second serial port. [Fabio D'Urso]
+- 13162: cpu/drcbearm64.cpp: Added a 64-bit ARMv8 (AArch64) recompiler back-end. [Windy Fairy]
+- 13163: moog: Tidied code to better follow MAME conventions. [m1macrophage]
+- 13165: oberheim/dmx.cpp: Added preliminary Oberheim DMX emulation (no sound output or cassette I/O). [m1macrophage]
+- 13168: sound/dac76.h: Corrected pinout in comment and noted equivalence to AM6070. [m1macrophage]
+- 13170: koei/pasogo.cpp: Fixed apparent copy/paste errors in the real-time clock code (fixes setting alarm). [einstein95]
+- 13171: bus/heathzenith/h19/tlb.cpp: Added joystick support to the SigmaSoft IGC board. [Mark Garlanger]
+- 13172: pasogo.xml: Updated the list of undumped software in the header comment. [David Silva]
+- 13173: nmk/nmk004.cpp, nmk/nmk16.cpp: Improved save state support and cleaned up code. [cam900]
+- 13174: zx81_cass.xml: Added 29 items (27 working), and promoted one item to working with usage instructions. [ArcadeShadow]
+- 13176: misc/4enraya.cpp: Corrected speed and difficulty DIP switch settings. [Uncle Petros]
+- 13177: oberheim/dmx.cpp: Allow faders to be controlled with a single pointing device. [m1macrophage]
+- 13178: psx.xml: Added ten working items and replaced two items with better dumps. [redump.org, ArcadeShadow]
+- 13179: apple/macadb.cpp: Added support for second button of an ADB mouse (used by Apple IIgs). [as-tb-dev]
+- 13180: bus/heathzenith/h89: Don’t register fixed configuration member variables for save states. [Mark Garlanger]
+- 13182: gaelco/goldart.cpp: Changed main CPU clock frequency, and cleaned up code. [cam900]
+- 13184: machine/dl11.cpp: Added 1801VP1-065 variant and implemented more functionality. [shattered]
+- 13185: misc/4enraya.cpp: Labelled DIP switch on bit 1 (0x02) as unknown (it does not control demo sounds). [Uncle Petros]
+- 13186: moog: Added General MIDI note mappings to piano key inputs. [m1macrophage]
+- 13187: roland/roland_d70.cpp: Added five program versions as BIOS options and adjusted LCD palette. [Felipe Sanches]
+- 13189: dataeast/exprraid.cpp: Corrected DIP switch locations for Express Raider. [Uncle Petros]
+- 13193: bus/heathzenith/h89: Removed signals not present on a real H-89 bus. [Mark Garlanger]
+- 13194: gaelco/gaelco3d.cpp: Suppress side effects for debugger reads and cleaned up code. [cam900]
+- 13195: gaelco/gaelco.cpp: Cleaned up code. [cam900]
+- 13196: bfm/bfcobra.cpp: Load Inquizitor attract mode ROM, and added alternate versions as clones. [Paul-Arnold]
+- 13198: galaxian/galaxian.cpp: Added Rocket Convoy (War of the Bugs clone from Radar Ltd.). [Luis Arrufat, ClawGrip]
+- 13199: megacd.xml: Combined the Mega CD and Sega CD software lists. [Mike Swanson]
+- 13200: philips/minitel_2_rpic.cpp: Corrected the palette so all colors are distinct. [Fabio D'Urso]
+- 13203: irem/m72.cpp: Corrected the demo sounds DIP switch settings for Battle Chopper/Mr. HELI. [David Haywood]
+- 13204: handheld/hh_sm510.cpp: Added Tronica Diver’s Adventure. [Milan Galcik, algestam]
+- 13205: ussr/juku.cpp: Use a memory view for switching memory mapping, and added the mouse and fixed timer. [Märt Põder]
+- 13206: oberheim/dmx.cpp: Added sound emulation. [m1macrophage]
+- 13209: sound/roland_sa.cpp: Emulated the CPU-B board sound generation used in Roland SA-synthesis digital pianos. [Giulio Zausa]
+- 13210: sinclair/tsconf.cpp: Register data members for save states. [holub]
+- 13211: gottlieb/gottlieb.cpp: Moved systems with LaserDisc players to a derived state class and cleaned up code. [cam900]
+- 13212: roland/roland_d70.cpp: Added an internal layout. [Felipe Sanches]
+- 13213: excellent/excellent_spr.cpp: Fixed sprite delay and cleaned up code. [cam900]
+- 13214: oberheim/ob8.cpp: Added a skeleton driver for for the Oberheim OB8. [m1macrophage]
+- 13215: barcrest/mpu3.cpp: Corrected the 100 Hz input to the 6821 PIA IC3. [blueonesarefaster]
+- 13217: juku.xml: Added JUKU E5104 system disks from 1988 to 1989. [Elektroonikamuuseum, Märt Põder]
+- 13218: handheld/hh_sm510.cpp: Added Tronica Clever Chicken. [Milan Galcik, algestam]
+- 13219: matsushita/kn5000.cpp: Show feedback for pressed buttons and added some details to the internal layout. [Felipe Sanches]
+- 13221: edevices/edevices.cpp: Derive from device_gfx_interface to decode graphics, and cleaned up code. [cam900]
+- 13222: formats/h17disk.cpp: Added Heath hard-sectored floppy disk formats. [Mark Garlanger]
+- 13223: oberheim/dmx.cpp: Added support for pitch tuning and optimized pitch calculations. [m1macrophage]
+- 13224: cpu/mcs51/mcs51.cpp: Implemented the PES bit for the DS5002FP. [cam900]
+- 13225: video/ef9345.cpp: Implemented the service row for the TS9347 variant (used for Minitel 2 status display). [Fabio D'Urso]
+- 13226: heathzenith/h89.cpp: Simplified GPP handling for the MMS floppy controller. [Mark Garlanger]
+- 13228: oberheim/dmx.xpp: Added anti-aliasing/reconstruction filters, and refactored and optimized the code. [m1macrophage]
+- 13230: ibm5170_cdrom.xml: Added Windows NT service packs, resource kits and development kits. [Mike Swanson]
+- 13232: cpu: Calculate negative and zero flags for shifts/rotates with a zero shift count in DRC back-ends. [Windy Fairy]
+- 13234: misc/changyu.cpp: Identified contents of sound ROMs and set year to 1991 for 999 based on an advertisement. [flama12333]
+- 13235: Added eleven TV games and karaoke systems (two working). [David Haywood, TeamEurope, Sean Riddle]
+- 13236: vtech/vtech5303.cpp: Added a partial dump of the Spanish VTech Paw Patrol Learning Tablet. [ArcadeHacker, ClawGrip]
+- 13237: casio/ct8000.cpp: Emulated the Casiotone 8000 keyboard and related systems. [Devin Acker, BCM, =CO=Windler]
+- 13238: alesis/midiverb.cpp: Added a non-working driver for the Alesis MIDIverb digital delay/reverb unit. [m1macrophage]
+- 13239: cpu/drcbearm64.cpp: Fixed ADRP instruction usage (destination must be an X register. [Windy Fairy]
+- 13240: dataeast/deco156_m.cpp: Updated comments and cleaned up code a little. [cam900]
+- 13241: tvgames: Added seventeen TV games (four working). [TeamEurope, Sean Riddle, Patryk Stefanski, David Haywood]
+- 13243: philips/mcd212.cpp: Fixed CD-i RLE decoding and transparency color key bit mask. [Vincent-Halver]
+- 13244: alesis/midiverb.cpp: Hooked up the audio path with a pass-through placeholder for the DSP. [m1macrophage]
+- 13245: Added 34 working items, and improved metadata. [ArcadeShadow]
+- 13246: philips/mcd212.cpp: Implemented RBG decoding and RGB transparency bit. [Vincent-Halver]
+- 13247: tvgames/monkey_king_3b.cpp: Dumped the AtGames Atari Flashback Portable console. [Devin Acker]
+- 13249: util/corestr.cpp, sound/sdl_sound.cpp: Added missing standard library headers. [Belegdol]
+- 13251: bus/spectrum/zxbus.cpp: Use a memory view for shadow I/O selection. [holub]
+- 13252: kaneko/snowbros.cpp: Added Gwasuwon (made playable using protection data from another game). [Taksangs, David Haywood]
+- 13254: sinclair/scorpion.cpp: Added three variants of the new Scorpion GMX ProfROM +GMX V.6.xx.043.9226s BIOS. [holub]
+- 13256: sinclair/scorpion.cpp: Added the new ProfROM V.4.xx.043.9226su BIOS for the ZS-256 TURBO+. [holub]
+- 13257: oberheim/dmx.cpp: Emulated stereo sound output, improved voice balance, and optimized VCA emulation. [m1macrophage]
+- 13262: hash/pc8801_flop.xml: Updated usage comments for Babylon. [Marc Roy]
+- 13265: tvgames/generalplus_gpl16250_rom.cpp: Added Power Rangers to the Rescue (not working). [David Haywood, TeamEurope]
+- 13266: oberheim/dmx.cpp: Added tuning trim sliders to the internal layout. [m1macrophage]
+- 13267: seta/downtown.cpp: Adjusted Meta Fox/Arbalester video refresh rate to improve Meta Fox music tempo. [cam900]
+- 13269: pc8801_flop.xml: Added Berserkers Front Gaiden 3 Plus - Turning Point. [krugman, Marc Roy]
+- 13270: seta/simple_st0016.cpp: Removed unnecessary trampoline functions; seta/st0016.cpp: Improved member function names. [cam900]
+- 13272: tvgames/spg2xx_jakks.cpp: Added JAKKS Pacific Disney Pixar Classics. [David Haywood, TeamEurope]
 
 
 Source changes
