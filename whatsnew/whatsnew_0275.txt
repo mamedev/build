@@ -11,10 +11,10 @@ MAME Testers bugs fixed
 - 08391: [Sound] (konami/battlnts.cpp) battlnts: FM music has regressed and sounds incorrect. (hap)
 - 09076: [Interface] (netronics/elf.cpp) elf2: It is not possible to enter data. (hap)
 - 09093: [Interface] (amstrad/amstrad.cpp) cpc464, cpc464p [technocp]: No need to be marked unsupported. (Barry Rodewald)
-- 09100: [DIP/Input] (midway/vegas.cpp) gauntleg, gauntleg12, gauntdl, gauntdl24: Button labels are incoorrect. (mmarino4)
+- 09100: [DIP/Input] (midway/vegas.cpp) gauntleg, gauntleg12, gauntdl, gauntdl24: Button labels are incorrect. (mmarino4)
 - 09102: [Sound] (atlus/ohmygod.cpp) ohmygod, naname: [possible] The ADPCM sample rate is too low. (hap)
 - 09104: [Media Support] (sinclair/spec128.cpp) spec128: The emulator crashes when loading TAP format tape images. (holub)
-- 09114: [Debugger] SH2 disassembly: Operands for the MAC.L instruction are exchanged. (Vas Crabb)
+- 09114: [Debugger] SH2 disassembly: Operands for MAC.L instructions are exchanged. (Vas Crabb)
 - 09122: [Sound] (success/othello.cpp) othello: The music tempo is too fast and the PSG sound pitch is too high. (sasuke)
 
 
@@ -27,11 +27,11 @@ The Block Kuzushi (VER 1.10G) [smf]
 Brave Blade (VER 1.40G) [smf]
 Casio WK-1800 [Edward d-tech, Devin Acker]
 CXG Systems / White and Allcock / Intelligent Software Computachess II [hap, Sean Riddle]
-Elektronika Basketbol (Elektronika) [hap, Milan Galcik]
+Elektronika Basketbol (Elektronika) [hap, Milan Galcik, Igor Nys]
 Fighters' Impact (VER 2.10G) [smf]
 Flame Gunner (VER 1.40G) [smf]
 G-Darius (VER 2.70G) [smf]
-Mawasunda!! (V2.08J 2000/02/01 11:02:54) [twistedsymphony, buffi, rtw, ekor, hammy, smf]
+Mawasunda!! (V2.08J 2000/02/01 11:02:54) [twistedsymphony, buffi, rtw, ekorz, hammy, smf]
 PAiA Electronics midi2cv8 [m1macrophage]
 PAiA Electronics midi2cv8 V/Hz [m1macrophage]
 Ray Storm (VER 2.60G) [smf]
@@ -42,9 +42,9 @@ Tronica Space Adventure [Milan Galcik, algestam]
 
 New working clones
 ------------------
-Apple Computer Macintosh PowerBook Duo 230 [R. Belmont]
-Apple Computer Macintosh PowerBook Duo 250 [R. Belmont]
-Apple Computer Macintosh PowerBook Duo 280c [R. Belmont]
+Apple Computer Macintosh PowerBook Duo 230 [R. Belmont]
+Apple Computer Macintosh PowerBook Duo 250 [R. Belmont]
+Apple Computer Macintosh PowerBook Duo 280c [R. Belmont]
 Astro Invader (bootleg) [f205v]
 Cameltry (World, YM2610) [fraspe]
 Casio WK-1600 [Edward d-tech, Devin Acker]
@@ -57,11 +57,11 @@ Konami Chequered Flag (handheld) [algestam]
 Puck Man (bootleg, set 3) [Jordi Tuells]
 Raiden Fighters (Korea, SUB2 cart) [NFG]
 Sonokong / SSD Company LTD PoPiRa - Finger Sports (Korea) [David Haywood, TeamEurope, Taksangs]
-Sprint 2 (bootleg) [Victor Fernandez (City Game)]
-Super Poker (v102U) [ArcadePT]
-Super Poker (v130) [ArcadePT]
-Super Poker (v200) [ArcadePT]
-Super Shot (set 2) [f205v]
+Sprint 2 (bootleg) [Daniel Castellanos, Victor Fernandez (City Game)]
+Super Poker (v102U) [ArcadePT]
+Super Poker (v130) [ArcadePT]
+Super Poker (v200) [ArcadePT]
+Super Shot (set 2) [f205v]
 Waku Waku Anpanman [SpinalFeyd]
 
 
@@ -105,7 +105,7 @@ Lexibook Compact Cyber Arcade - Barbie [David Haywood, TeamEurope]
 Linn Electronics LinnDrum [m1macrophage]
 Majiang Xueyuan 2 - Mahjong School (V108TW) [little0]
 Nissin / SSD Company LTD Dontore da bei - Donbei-kun to Training (Japan) [David Haywood, TeamEurope]
-NubSup TV Interactive Extreme u-box / Extreme u-box Game Station 32Bit Interactive System - New 30 [David Haywood, TeamEurope]
+NubSup TV Interactive Extreme u-box / Extreme u-box Game Station 32Bit Interactive System - New 30 [David Haywood, TeamEurope]
 Oberheim Xpander [m1macrophage]
 PAiA Electronics FatMan [m1macrophage]
 Qi Wang [little0]
@@ -208,7 +208,7 @@ bbc_rom: EURO-Beeb Terminal 4.14, Lambda 7 Spectrophotometer Simulation 1.23 
 ibm5170_cdrom: miroVIDEO Studio DC10 Plus (V. 1.04, 160657) [Parabol]
 pc8801_cass: Computer the Golf [Shawnji]
 pc8801_flop:
-  Hibernia (alt .d88 format) [arcwil]
+  Hibernia (alt .d88 format) [arcwil]
   Red Stack [BabaJeanmel]
 photo_cd: Toilet no Hanako-san (Japan) Winning Run: Ayrton Senna: 20-nen no Kiseki (Japan) [redump.org]
 psion2:
@@ -224,300 +224,44 @@ zx81_cass: Graphix, Graphix (alt) [Spectrum Computing]
 
 Merged pull requests
 --------------------
-12957: Add Casio WK-1600/1800 [devinacker]
-I'm opening this as a draft for now due to issues with the WK-1800 floppy drive, any help would be appreciated:
-- pressing the Disk button with the drive empty starts the drive motor, then the firmware waits forever on some status bit that is
-  never set
-- pressing the Disk button with a disk inserted results in several 'forced abort' errors from the H8 DMA controller
-- wk1800 firmware seems to rely on different TS bit behavior from the HD63266 compared to a standard uPD765, but I have not checked
-  this against other machines that use the same FDC (e.g. those Brother word processors)
-New working machines
-----------
-Casio WK-1800 [Edward d-tech, Devin Acker]
-New working clones
-----------
-Casio WK-1600 [Edward d-tech, Devin Acker]
-
-13128: Make fs::err_t enum a subcategory of std::error_condition; use the standard codes in some places [ajrhacker]
-
-13220: new tlcs900 variant: TMP94C241 [felipesanches]
-Used on the KN5000 driver.
-
-13250: formats/h8_cas.cpp: Update H8T to newer cassette handling [mgarlanger]
-Removes the Legacy handling.
-Changes were verified on H88 system. 
-
-13255: emscripten: fixes to get bgfx working [algestam]
-This PR adds support for the bgfx video backend when building for emscripten.
-In order to get bgfx build and run with mame, the following changes has been done:
-* `src/osd/modules/render/bgfx/shadermanager.cpp`: Change `make_path_string(...)` to always return the path to the `essl` shaders.
-  This wasn't working properly since the call to the function is done before bgfx has been initialised and therefore returned the
-  renderer type `Noop` instead (see https://bkaradzic.github.io/bgfx/bgfx.html#_CPPv4N4bgfx15getRendererTypeEv).
-* `src/osd/modules/render/drawbgfx.cpp`: Change `set_platform_data(...)` to return platform data with a window handle that includes
-  a HTML target selector for the canvas element to use (currently set to `#canvas`).
-* `scripts/genie.lua`: Update emscripten compiler flags to match recent emscripten versions and set memory allocation to work with
-  the drivers I've been testing with. Also embedded a file, `artwork/lut-default.png`, which is required for the lut and hlsl
-  chains.
-Additional changes:
-* `src/osd/modules/font/font_sdl.cpp`: Change SDL_ttf include to use SDL2 since recent emscripten supports this.
-* `docs/source/initialsetup/compilingmame.rst`: Update emscripten version to use.
-The change has been tested by me and works well with the drivers I've tested. The performance is greatly improved when using bgfx
-  compared to the soft renderer and many drivers that struggled to maintain a decent framerate are now running smoothly at 100%.
-!image
-All builds has been done using emscripten 3.1.35. When trying later versions various other issues has been encountered which I
-  haven't addressed or investigated further.
-Setting this as a draft and ask kindly for other Mame developers with more insight into the OSD and build system to please take a
-  look at this PR and suggest how these changes can be improved.
-
-13263: 3rdparty/ymfm: sync to latest [angelosa]
-https://github.com/aaronsgiles/ymfm/commit/d334ab1a957351ce2a0aa2777b8c704664be3189
-
-13271: seta/speglsht.cpp: Cleanups: [cam900]
-- Remove PLOT_PIXEL_RGB macro
-- Reduce duplicates
-- Suppress side effects for debugger reads
-- Reduce literal tag usage
-- Remove unnecessary gfxdecode and palette (both are already handled in ST0016)
-- Fix save state
-- Fix spacing
-- Fix naming
-- Fix filename
-- Fix notes
-
-13274: hooking the sound cpu for captain lucky sigmab31.cpp [flama12333]
-same sound cpu memory maps of b52. 
-only the sound cpu are hooked up except the main cpu. 
-
-13275: hash/x68k_flop.xml: Added 2 working items. [wwark]
-New working software list additions (x68k_flop.xml) 
---------------------------------------------
-Last Force - The Virtual Battle in 1930's (1993)(Hong Kong Project) [Shentok on archive.org] 
-It is available on Shentok profile on archive.org.
-!Screenshot from 2025-01-24 20-58-11
-!Screenshot from 2025-01-24 20-59-49
-Xadlak Plus (1996)(Sprite) [danielham on archive.org]
-It is available on danielham profile on archive.org.
-!Screenshot from 2025-01-24 20-54-49
-!Screenshot from 2025-01-24 20-55-29
-I tested them on Mame with the driver X68000.
-Thanks.
-
-13276: Add a skeleton driver for VTech Genius Color Pocket console [clawgrip]
-New systems marked not working 
-------------------------------
-VTech Genio Color Pocket (Spanish) [jordigahan, ClawGrip]
-
-13279: hash/pc8801_flop.xml: update QA [wwark]
-- sf3dopv is the same game as sf3dthxg. So I make it a alternative. Add sf3dopv to undumped list. Fix the name to reflect the box
-  name.
-I put S.F.3.D Original Operation V on the undumped list.
-TOSEC listed S.F.3.D Original Operation V but it is S.F.3.D Point X Senryou Sakusen - Operation Thanksgiving. (check with TOSEC
-  (2024-05-17))
-Both games existed as mentioned of this website
-https://www.zimmerit.moe/kow-yokoyama-sf3d-original/
-Box art of S.F.3.D Point X Senryou Sakusen - Operation Thanksgiving
-https://gamesdb.launchbox-app.com/games/images/147053-sf3d-original-operation-thanksgiving
-Box art of S.F.3.D Original Operation V
-https://www.ebay.com/itm/375902905939
-Name for S.F.3.D Point X Senryou Sakusen - Operation Thanksgiving
-https://www.8-bits.info/gamelist/PC88/info/info_QI7pTNS9F8yuPygb.php
-- Carmine fix name to reflect the box and set V2 Mode required.
-!Carmine 88 (Cover)  Photomerge + Descreen 300dpi
-Thanks,
-
-13280: amiga_demos.xml: Added 2 not-working entries [ICEknigh7]
-New software list items marked not working
-------------------------------------------
-amiga_demos: Interference, Puggs In Space [pouet.net]
-
-13283: alesis/midiverb.cpp: DSP emulation. Transitioned to working. [m1macrophage]
-
-13284: toaplan/toaplan1.cpp: Fix metadata via region/settings, Cleanups: [cam900]
-- Suppress side effects for debugger read
-- Reduce preprocessor defines
-- Fix typename for boolean flags and member variables
-- Fix save states
-- Make some variables constant
-- Reduce literal tag usage
-- Fix spacing
-- Fix naming
-
-13285: toaplan/twincobr.cpp, toaplan/wardner.cpp: Cleanups [cam900]
-- Suppress side effects for debugger read
-- Fix typename for boolean flags and member variables
-- Use machine_start() for save states
-- Reduce literal tag usages
-- Make some variables constant
-- Fix palette entries for wardner
-- Fix filename
-- Fix spacings
-- Fix namings
-
-13286: Fixes for MC68EZ328 [isotherm]
-In the course of fleshing out the AlphaSmart 3000 emulation, I've made these two changes to more accurately emulate the underlying
-  hardware. They are separate commits to help in case of future regression testing.
-- The Port A change should have no impact on existing emulation, as none of the machines (cowtipping, iqunlim, clie_db, palm) use
-  port A.
-- The timer change should be functionally equivalent, though the timer tick callback will be called more often. It might affect
-  emulation speed on very low power host systems.
-
-13288: galaxian/galaxian.cpp: Add missing PROMs to Rocket Convoy [clawgrip]
-
-13289: formats/tzx_cas.cpp: Cut data size in case header requesting more than available (MT8952) [holub]
-Images reported in MT8952 have wrong headers and requesting more than available. Added guards for segfault prevention.
-
-13290: tidy: fix build after #13289 [holub]
-sorry about that!
-
-13292: formats/cassimg.cpp: prevent regression in cass images [holub]
-We have to revert this part as it potentially can cause regression in other images formats but tap.
-I'll be looking for potential fix of the existing problem but given impact it must be considered more carefully.
-
-13293: apple2gs_flop_clcracked.xml: added 6 dumps, 1 redump [Brian Troha] [Osso13]
-New working software list items (apple2gs_flop_clcracked.xml) 
--------------------------------
-Draw Plus (version 1.0) [Brian Troha]
-MultiScribe IIgs (version 3.01c) [Brian Troha]
-The New Talking Stickybear Alphabet [Brian Troha]
-The New Talking Stickybear Opposites [Brian Troha] The New Talking Stickybear Shapes [Brian Troha]
-TopDraw (version 1.01A (8/4/87)) [Brian Troha]
-- redumped Skate or Die IIgs (version 1.0) [Brian Troha]
-
-13295: Fix gratia roztiles file names to match PCB silkscreen [kuzearcade]
-The gratia roztiles file names "mr94019-08.12" and "mr94019-09.11" should actually be "mr94019-08.11" and "mr94019-09.12" when going
-  by the labels on the PCB.
-See attached PCB picture for validation (image courtesy of Derick2k)
-!Jaleco MS32 - Second Earth Gratia - PCB Side #1
-
-13297: hash/pc8801_cass.xml: Added 1 not-working item [wwark]
-New software list items marked not working (pc8801_cass.xml) 
--------------------------------------------------------------------------------------------
-Computer the Golf (1983)(Nihon Falcom) [shawnji on archive.org]
-It is available on shawnji profile on archive.org.
-!ctg_tape
-Information of the game:
-https://www.giantbomb.com/computer-the-golf/3030-70864/releases/
-Thanks,
-
-13298: paia/midi2cv8.cpp: Adding driver for MIDI2CV8. [m1macrophage]
-Includes layout that displays the output voltages.
-!0000
-
-13300: Various PPC based konami hardware updates/cleanups: [cam900]
-Common:
-- Suppress side effects for debugger reads
-- Make some variables constant
-- Fix save states
-- Reduce literal tag usage
-- Use logerror for logging
-- Fix filename
-- Use BIT for single bit variables
-- Fix initialization
-konami/gticlub.cpp:
-- Remove unnecessary function
-konami/hornet.cpp:
-- Split driver state class via configuration
-- Move bank config into machine_start()
-konami/konppc.cpp:
-- Remove hardcoded tags
-- Reduce duplicates
-- Use memory_bank for texture bank init function
-- Fix naming
-- Fix spacing
-konami/nwk-tr.cpp:
-- Split palette per CG boards (K001604 also has palette RAM interface?)
-
-13301: kontron/kdt6.cpp: Cleanups: [cam900]
-- Reduce duplicates
-- Reduce literal tag usage
-- Use memory_view for boot ROM enable function
-- Make some variables constant
-machine/z80dma.cpp: Suppress side effects for debugger reads, Reduce unnecessary line
-
-13305: skeleton/zorba.cpp: Updates/Cleanups [cam900]
-- Use memory_view for ROM overlay
-- Use required_device_array for multiple devices
-- Make some variables constant
-- Fix types of member variables for fix save state
-
-13306: In megacd software list, make eternalcu a clone of eternalc [jflatt]
-I think this may have been missed during the megacd re-org
-
-13307: cpu/drcbearm64.cpp: Optimise load/store and call generation [cuavas]
-This should implement some of the optimisations previously discussed for AArch64 code generation:
-* `bl` displacement is in words
-* The `emit_*_mem` functions know the operand size, so they can pass the corresponding shift to `emit_ldr_str_base_mem` rather than
-  trying to calculate it after the fact
-* An immediate load/store offset can be either a 9-bit signed byte offset or an unsigned 12-bit element offset
-* An unsigned 12-bit element offset can always reach an entire page, so the page-relative access can always be done in two
-  instructions
-And one bug fix:
-* AArch64 doesn’t allow a variable left shift for a register offset, it only allows zero or the element size, so there’s no point
-  testing intermediate shift values.
-@987123879113 and/or @rb6502 can you check this out and test it?
-
-13308: konami/megazone.cpp: Cleanups: [cam900]
-- Cleanup gfx layouts
-- Fix ROM region and finder namings
-- Reduce duplicates
-- Make some variables constant
-- Fix types of some variables
-- Fix spacing
-
-13309: konami/tutankhm.cpp, konami/junofrst.cpp: Cleanups: [cam900]
-- Reduce unnecessary lines
-- Make some variables constant
-- Reduce duplicates
-- Reduce preprocessor defines
-- Fix namings
-- Fix main CPU ROM region size (for fix OOB error in main CPU ROM bankswitching)
-- Match audio CPU ROM region size into mapped size in CPU
-konami/junofrst.cpp, konami/timeplt_a.cpp: Use array for filter
-
-13310: konami/tp84.cpp: Cleanups [cam900]
-- Fix sound CPU ROM region size for match to mapped size in CPU
-- Fix naming
-- Cleanup gfx decode layouts
-- Fill 0 in empty ROM region areas
-
-13311: konami/spy.cpp: Updates, Cleanups [cam900]
-- Use memory_view for RAM overlay
-- Reduce sound CPU ROM region size for match to mapped size in sound CPU
-- Fix save state supports
-- Reduce duplicates
-- Fix naming
-- Use std::fill_n for initialize PMC RAM
-- Add notes for unknown writes
-
-13312: konami/simpsons.cpp: Cleanups [cam900]
-- Fix save state supports
-- Make some variables constant
-- Reduce literal tag usage, runtime tag lookups
-- Reduce unnecessary lines
-konami/konami_helper.cpp: Allow variable type for konami_sortlayers* function, Make swap function inline
-
-13313: konami/k001005.cpp, konami/k001006.cpp: Cleanups [cam900]
-Common:
-- Suppress side effects for debugger reads
-- Make some variables constant
-- Use BIT function for single bit flags
-konami/k001005.cpp:
-- Fix spacing
-konami/k001006.cpp:
-- Use device_palette_interface for palette
-- Add error if texture ROM size is not multiple of 0x40000 bytes or texture ROM size is less than 0x40000 bytes
-- Match m_texrom data size to texture ROM size
-
-13314: konami/k001604.cpp: Fix max palette numbers of gfxs [cam900]
-
-13315: konami/k037122.cpp: Fix max palette numbers of gfxs [cam900]
-
-13316: konami/k051733.cpp: Cleanups [cam900]
-- Suppress side effects for debugger reads
-- Make some variables constant
-- use logmacro.h for logging
-- Remove unnecessary include
-- Fix spacing
+- 12957: casio/wk1800.cpp, sound/gt155.cpp: Emulated the Casio WK-1800 and WK-1600 music keyboards. [Edward d-tech, Devin Acker]
+- 13128: formats/fsblk.cpp: Replaced the fs::err_t enumeration with a standard error condition category. [AJR]
+- 13220: cpu/tlcs900: Added the TMP94C241 variant (used by the Technics SX-KN5000 music keyboard). [Felipe Sanches]
+- 13250: formats/h8_cas.cpp: Updated H8T tape image format to use newer cassette handling. [Mark Garlanger]
+- 13255: Updated Emscripten support and added support for bgfx video output using OpenGL ES. [algestam]
+- 13263: 3rdparty/ymfm: Updated to latest upstream code as of December 2024. [Angelo Salese]
+- 13271: seta/speglsht.cpp: Fixed save state and debugger issues, and cleaned up code. [cam900]
+- 13274: sigma/sigmab31.cpp: Added the 6809 sound CPU (communication is not hooked up). [flama12333]
+- 13275: x68k_flop.xml: Added Last Force and Xadlak Plus. [Shentok, danielham, Marc Roy]
+- 13276: vtech/geniuscolor.cpp: Dumped the external ROMs for the Spanish VTech Genius Color Pocket. [jordigahan, ClawGrip]
+- 13279: pc8801_flop.xml: Updated metadata, usage notes and comments. [Marc Roy]
+- 13280: amiga_demos.xml: Adde the Interference and Puggs in Space demos (not working). [pouet.net, ICEknight]
+- 13283: alesis/midiverb.cpp: Added DSP emulation and promoted to working. [m1macrophage]
+- 13284: toaplan/toaplan1.cpp: Added detail to descriptions, fixed debugger and save state issues, and cleaned up code. [cam900]
+- 13285: toaplan/twincobr.cpp, toaplan/wardner.cpp: Fixed debugger issues and cleaned up code. [cam900]
+- 13286: machine/mc68328.cpp: Allow selection and use of port A, and update the timer counter on every tick. [Kirk Meyer]
+- 13288: galaxian/galaxian.cpp: Dumped the PROMs from the CPU daughterboard for Rocket Convoy. [ClawGrip]
+- 13289: formats/tzx_cas.cpp: Check for invalid blocks referencing data beyond the end of the file (MT08952). [holub]
+- 13289: formats/oric_tap.cpp, formats/uef_cas.cpp: Updated for API changes in GitHub #13289 and cleaned up code. [holub]
+- 13292: formats/cassimg.cpp: Fixed regressions in cassette image loading caused by GitHub #13289. [holub]
+- 13293: apple2gs_flop_clcracked.xml: Added six cracks, and replaced one crack. [Brian Troha, Ivan Vangelista]
+- 13295: jaleco/ms32.cpp: Corrected PCB locations for Gratia - Second Earth rotate/zoom layer tile ROMs. [kuzearcade]
+- 13297: pc8801_cass.xml: Added Computer the Golf (not working). [Shawnji, Marc Roy]
+- 13298: paia/midi2cv8.cpp: Emulated the PAiA Electronics midi2cv8 MIDI to control voltage devices. [m1macrophage]
+- 13300: konami/konppc.cpp, konami/gticlub.cpp, konami/hornet.cpp, konami/nwk-tr.cpp, konami/zr107.cpp: Cleaned up code. [cam900]
+- 13301: kontron/kdt6.cpp: Cleaned up code; machine/z80dma.cpp: Suppress side effects for debugger reads. [cam900]
+- 13305: skeleton/zorba.cpp: Improved save state support and cleaned up code. [cam900]
+- 13306: megacd.xml: Marked the US version of Eternal Champions as a clone of the PAL version. [jflatt]
+- 13307: cpu/drcbearm64.cpp: Optimised load/store and call generation. [Vas Crabb]
+- 13308: konami/megazone.cpp: Cleaned up code. [cam900]
+- 13309: konami/tutankhm.cpp, konami/junofrst.cpp: Cleaned up code. [cam900]
+- 13310: konami/tp84.cpp: Fixed potential out-of-bounds accesses and cleaned up code. [cam900]
+- 13311: konami/spy.cpp: Cleaned up code and added notes. [cam900]
+- 13312: konami/konami_helper.cpp, konami/simpsons.cpp: Cleaned up code. [cam900]
+- 13313: konami/k001005.cpp, konami/k001006.cpp: Implemented palette interface, fixed debugger issues and cleaned up code. [cam900]
+- 13314: konami/k001604.cpp: Corrected palette count for decoded graphics. [cam900]
+- 13315: konami/k037122.cpp: Corrected palette count for decoded graphics. [cam900]
+- 13316: konami/k051733.cpp: Suppress side effects for debugger reads and cleaned up code. [cam900]
 
 13319: oberheim_dmx.lay: Proper tracking of pointer IDs. Easier fine adjustments. [m1macrophage]
 - Click and adjustment state is now tracked for each pointer ID individually, rather than globally.
