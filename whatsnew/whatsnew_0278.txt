@@ -546,424 +546,54 @@ Belarusian [holub]
 
 Merged pull requests
 --------------------
-7564: Reenabling the write accessor for the LUA input_class enabled property [npwoods]
-This is used by BletchMAME to toggle mouse capture on and off
-
-13456: psx.xml: Added 11 working items + 1 not working + 4 redumped [ArcadeShadow]
-New working software list additions
---------------------------------------------
-2002 FIFA World Cup (Europe) [Redump]
-2002 FIFA World Cup (France) [Redump]
-2002 FIFA World Cup (Germany) [Redump]
-2002 FIFA World Cup (Italy) [Redump]
-2002 FIFA World Cup (Spain) [Redump]
-3, 2, 1, Smurf! My First Racing Game (Europe) [Redump]
-Ace Combat (Japan) [Redump]
-Air Combat (Europe) [Redump]
-Air Combat (Europe) (EDC) [Redump]
-Darkseed (Japan) [Redump]
-Transport Tycoon 3D: SL Kara Hajimeyou!! (Japan) [Redump]
-New NOT working software list addition
---------------------------------------------
-Bedlam (Europe) [Redump]
-Redumped software list items
---------------------------------------------
-2002 FIFA World Cup (USA) [Redump]
-Air Combat (USA) [Redump]
-Smurf Racer! (USA) [Redump]
-Darkseed II (Japan) [Redump]
-
-13471: language: Belarusian [holub]
-
-13490: LDP1450: Added preliminary support for custom On Screen Text mode. [james-wallace-ghub]
-New working system
-------------------
-Vision Quest [James Wallace, Jeff Anderson, Dragon's Lair Project]
-
-13524: vtech/prestige.cpp, snotec.xml: Add snotecut and 4 new software items [qufb]
-* Extended bank selection to support snotecut, as ROM size 0x200000 requires more entries to be fully addressable;
-* Added list of extra programs in currently dumped systems;
-* Sorted software items by name, and added missing fields for alt_title and serial;
-New working software items (snotec.xml)
----
-Nakayoshi Diary (1999) [TeamEurope, QUFB]
-Ochame na PetMate 2 [TeamEurope, QUFB]
-New partially working software items (snotec.xml)
----
-Nakayoshi PetMate [TeamEurope, QUFB]
-Primo Puel [TeamEurope, QUFB]
-New clones marked not working
----
-Super Note Club µ teen's time (Japan) [TeamEurope, QUFB]
-
-13529: adp/stella8085.cpp: add 11 nonworking romsets [stonedDiscord]
-a WIP schematic for 4087-000-101 can be found at
-https://github.com/stonedDiscord/weisse_cpu
-The release dates are largely taken from
-https://www.goldserie.de/index.php/galerien/3217-excellent
-
-13583: victor9k: Fix very slow floppy disk performance [donohoe00]
-- Removed support for the 8048 SCP for the sake of simplicity and maintainability (further rationale in the commit msg)
-- Mimic the SCP reset behaviour, now that the SCP is no longer present
-- Fixes around the reading of signals which can be output by both the SCP and the VIAs
-Result is a big speedup: retries/timeouts that were happening previously do not occur, and the system now seems to perform as
-  expected.
-
-13594: multibus: fixed regression on isbc202 [fulivi]
-Hi,
-this commit fixes a regression on isbc202 emulation caused by cf679363963, which removed ownership of multibus slots by multibus
-  bus. By doing so it removed the propagation of clock down to cards.
-iSBC202 was affected because it (probably) is the only multibus card in MAME that relies on clock to come from the bus.
-Thanks.
---F.Ulivi
-
-13612: snes.xml: Added 17 working items + 1 not working + 3 redumped [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Dragon View (USA, Limited Run Games) [No-Intro]
-Dragon View (USA, prototype) [No-Intro]
-Eyra - The Crow Maiden (demo 20210910) [No-Intro]
-Eyra - The Crow Maiden (digital) [No-Intro]
-Eyra - The Crow Maiden (USA) [No-Intro]
-Fork Parker's Crunch Out [No-Intro]
-Ghoul Patrol (USA, Limited Run Games) [No-Intro]
-Jim Power - The Lost Dimension in 3D [No-Intro]
-Märchen Adventure Cotton 100% (USA) [No-Intro]
-Mechanoids II - The Final Conflict (prototype) [Game That Weren't]
-Mechanoids II - The Final Conflict (non-playable prototype) [Game That Weren't]
-Socks the Cat Rocks the Hill [No-Intro]
-Super Turrican 2 (USA, Strictly Limited Games) [No-Intro]
-Super Turrican Collection (USA) [No-Intro]
-Sydney Hunter and the Caverns of Death (Europe) [No-Intro]
-Unholy Night: The Darkness Hunter (Europe) [No-Intro]
-Zombies Ate My Neighbors (USA, Limited Run Games)
-New NOT working software list additions
---------------------------------------------
-Rendering Ranger R2 (USA) [No-Intro]
-Redumped items
---------------------------------------------
-Jim Power - The Lost Dimension in 3D (enhanced version) [No-Intro]
-Little Medusa [No-Intro]
-Pinkie [No-Intro]
-
-13623: add preliminary driver for Casio FZ series samplers [devinacker]
-and also
-- implement internal serial interrupt for V50 (and made serial signals other than Tx/Rx exclusive to the V33, since other chips
-  don't have those pins)
-- support alternate screen dimensions for HD44352
-New NOT_WORKING machine
-----------
-Casio FZ-1 Digital Sampling Synthesizer [Rainer Buchty, Devin Acker]
-New NOT_WORKING clones
-----------
-Casio FZ-10M Digital Sampling Synthesizer Module [Tom Virostek, Devin Acker]
-Casio FZ-20M Digital Sampling Synthesizer Module [BCM, Devin Acker]
-
-13628: added 2 plug and plays [mamehaze]
-new working clones
-----------
-Dora the Explorer - Dora TV Adventure Globe (UK) [TeamEurope, David Haywood]
-new NOT WORKING machines
-------------
-Let's! TV Play Team Taikou! Card de Power Up! Tamagotchi School Senshuken (Japan) [TeamEurope, David Haywood]
-
-13629: ef9345: apply same double-height scaling as the real chip [fabio-d]
-Before this commit, characters with the double-height attribute (H) were scaled by equally repeating all their scanlines twice.
-In the real chip, the first scanline is repeated three times and the last one only once.
----
-Image comparisons (source code here):
- * real output from both EF9345 and TS9347 chips (captured via a custom board):
-!real_chip
-* current MAME output:
-!mame
-The four boxes show the four different scaling modes supported by the chip:
-1. Regular size (i.e. no scaling)
-1. Double width
-1. Double height
-1. Double width and height
-As you can see, in the last two boxes (those involving double height) the first three lines are different and all the subsequent
-  lines are shifted. This PR makes the output of MAME match the real chips.
-
-13630: cpu/z80: Optimized detection of attention needed in service step [holub]
-
-13631: ef9345: fix insert and cursor rendering logic [fabio-d]
-Hello, this PR rewrites how the "insert" attribute is processed to solve the issue discussed in
-  https://github.com/jfdelnero/minitel/issues/3#issuecomment-2571487936 and briefly mentioned in #13200.
-TL;DR: MAME's current handling of the background color is wrong for the TS9347 video chip variant, and the "insert" attribute is
-  handled wrong on EF9345 too. In addition, the hardware cursor should blink twice as fast as flashing text, instead of the same
-  rate.
-Longer recap from that discussion:
-- EF9345/TS9347 have a per-character attribute called "insert" that, in conjunction with the PAT register, can be used to force
-  colors to black in some conditions.
-- The **minitel2**'s *demov1* bios rendered correctly in MAME, but *ft_bv4* and *ft_bv9* display very noticeable glitches in many
-  Videotex pages, such as those in the screenshots here:<br/><img
-  src="https://github.com/user-attachments/assets/e36c5a5a-0a32-4de5-8e45-3881aaa3dce5" width="150"/> <img
-  src="https://github.com/user-attachments/assets/6ef0c1ef-4be3-4917-abb7-237ea34d8ae2" width="150"/> <img
-  src="https://github.com/user-attachments/assets/eee2038d-bd77-40dc-9620-7310dd44001f" width="150"/> <img
-  src="https://github.com/user-attachments/assets/015b6802-a5bb-4bb7-ae22-1aa4fa630bc3" width="150"/><br/>instead of<br/><img
-  src="https://github.com/user-attachments/assets/0da48bb9-de68-4f32-a5b7-82d09bbe4d1e" width="150"/> <img
-  src="https://github.com/user-attachments/assets/87de90ca-4314-4c18-8cdf-f13102b03c67" width="150"/> <img
-  src="https://github.com/user-attachments/assets/4903b0e4-f2d4-43ad-8ca4-bea1749d313f" width="150"/> <img
-  src="https://github.com/user-attachments/assets/6e0457bc-2f48-47d1-ac85-1c775ca5862b" width="150"/>
-- It turned out that MAME currently contains wrong code that always forces the background of all characters rendered by the
-  **minitel2** machine to black, regardless of insert, PAT or the character's background color.
-https://github.com/mamedev/mame/blob/b4d55beeade387baabb6dcca3a58bbfff51fbb6d/src/devices/video/ef9345.cpp#L417-L420
-- Just removing those lines made *ft_bv4* and *ft_bv9* render correctly but broke *demov1*, because MAME's current support for
-  "insert" (on which *demov1* relies in order to set black backgrounds) is wrong/incomplete
-  https://github.com/mamedev/mame/blob/b4d55beeade387baabb6dcca3a58bbfff51fbb6d/src/devices/video/ef9345.cpp#L433-L440 <img
-  src="https://github.com/user-attachments/assets/a64a79b7-33fd-478f-8664-c9724f9ada10" width="30%"/><br/><img
-  src="https://github.com/user-attachments/assets/4e310dde-0cce-479c-b1ff-c67acfa29a22" width="50%"/>
-@jfdelnero and I initially made some experiments over the Internet on a real Minitel 2 to better understand how the PAT register
-  works. I've then created a custom "development" board hosting real EF9345/TS9347 chips I bought on eBay. Thanks to this board I've
-  written automatic tests to exhaustively capture the output of all the combinations of PAT and insert attribute values and, in
-  addition, the interactions with the hardware cursor too.
-This PR:
-- Removes the wrong "background is always black" code block.
-- Properly implements the insert attribute under all the possible PAT values (pixel-perfect validated against the output of the real
-  chip).
-- Fixes the timing of the hardware cursor which, when positioned on flashing text, shows that it alternates between 4 phases instead
-  of 2:
-  - Old MAME rendering (incorrect):<br/><img src="https://github.com/user-attachments/assets/7bc04cb8-9154-4256-9f21-ef1bf4352509"/>
-  - Correct rendering (with this PR), validated with the real chip:<br/><img
-  src="https://github.com/fabio-d/minitel-ef9345-testsuite/blob/main/tests/test_colors_data/test_40columns_cursor_EF9345_pat60mat60a08b00.png?raw=true"/><br/>(test:
-  test_40columns_cursor/pat60mat60a08b00).
-
-13633: build: update vs/msbuild settings to reflect current clangcl [pmackinlay]
-* separate msvc, intel and clang compiler options
-
-13636: moog/source.cpp: emulating envelope generators and LFO timing. [m1macrophage]
-Used netlists for the simulation of the voltage-to-current converters. The resistor networks in these circuits are non-trivial,
-  requiring solving a system of equations, and the transistors are used in their exponential region. Netlist use is confined to
-  those complex DC calculations.
-
-13637: oberheim/dmx.cpp: Adapting to new sound interface. [m1macrophage]
-This fixes a `Fatal error: Requested input 3 on sound device :left_mixer which only has 1.`
-If this is the right fix (it does work), I will also incorporate it in the linndrum. It requires some rearrangement there, so I
-  first wanted to verify this is an expected change in behavior for `set_input_gain`.
- <br/><br/>
- 
-I also noticed another difference. Say we do the following:
-```
-    m_stream->update(); 
-    attotime t = machine().time();
-```
-In the past, `sound_stream_update()` invocations that happened after the snippet above executed satisfied: `inputs[0].start_time()
-  >= t`.  This does not seem to be the case now, where we can get `stream.start_time() < t`. Is this expected? Or maybe I was just
-  lucky in the past, and there was no such guarantee? :)
-This is reproducible on the `obdmx`. Either in a debug build, or by changing the following `assert` to a hard failure:
-  https://github.com/mamedev/mame/blob/099e3a6a8574e919d9b7b472dc73691cfc119cfb/src/devices/sound/va_eg.cpp#L78-L82
-
-13639: midway/williams.cpp: Add a Spanish Defender clone named Next Century [clawgrip]
-New working clones
-------------------
-Next Century (bootleg of Defender) [Retroclub.es, Recreativas.org]
-
-13640: gaelco/gaelco2.cpp: Sorted out Touch and Go sets and add missing ones [clawgrip]
-New working clones
-------------------
-Touch and Go (North America, 14/Nov/1995, checksum 05737572) [Josep Quingles, Recreativas.org]
-Touch and Go (non North America, 16/Nov/1995, checksum 056533F0) [Josep Quingles, Recreativas.org]
-Touch and Go (non North America, 15/Nov/1995, checksum 056C2336) [Josep Quingles, Recreativas.org]
-Touch and Go (non North America, 15/Nov/1995, checksum 056C138F) [Josep Quingles, Recreativas.org]
-
-13641: formats/tap: added warnings about wrong checksum and size of the image [holub]
-
-13642: linn/linndrum.cpp: Adapting to the new sound interface. [m1macrophage]
-
-13643: 3rdparty/expat: Updated expat to version 2.7.1 (fixes compilation with emscripten 3.1.35). [holub]
-
-13644: midw8080/8080bw.cpp: Add a Spanish Space Invaders bootleg named Cosmic Battle [clawgrip]
-New working clones
-------------------
-Cosmic Battle (Recreativos Franco bootleg of Space Invaders) [Jordi Tuells]
-
-13645: sega/sega_beena.cpp, sega_beena_cart.xml: Add software items and peripheral card reader support [qufb]
-Barcode cards logic done for Sega TV Ocha-ken was refactored to a new slot device, to be also used with Sega Beena software list
-  items. The console's card reader is a peripheral connected to the expansion port, while on TV Ocha-ken it's built into the main
-  PCB.
-In order to render these cards along with Storyware, a layout was added that is conditionally shown and updated when a card reader
-  is detected at runtime.
-In-game example:
-!Screenshot from 2025-04-30 12-34-31
-New working software list items
----
-Densha Daishuugou! Card de Asobou [TeamEurope]
-Go! Go! Advance Drive: 6-tsu no Machine ni Chousen da! (Rev. S-100004-1100) [TeamEurope]
-Software list items promoted to working
----
-Soreike! Anpanman Card de Tanoshiku ABC
-
-13646: namco/mappy.cpp: Pac'n'Pal settings fix - [Lives != 5][Bonus 0x28] = "30k, 80k & Every… [codefrog2002]
-!image
-Pac'n'Pal settings fix - [Lives != 5][Bonus 0x28] = "30k, 80k & Every 80k" not 30/100/80.  
-Behavior observations are backed up by in-game messaging and the bonus tables in ROM at 0xB75A
-[b75a:03 00 30 00 00 80 00 ff:	dc.b	0x03,0x00,0x30,0x00,0x00,0x80,0x00,0xff]
-The structure of this table is 
-0x03 for "3 levels of bonus"
-0x00,0x30,0x00 for 30k
-0x00,0x80,0x00 for 80k  
-
-13651: fmtowns_cd.xml: 23 additions, 3 replacements [rzero9]
-It's been a while, but here's a new batch of additions to the FM Towns software list.
-New working software list additions
------------------------------------
-Advanced Dungeons & Dragons - Heroes of the Lance [redump.org]
-Arquelphos [redump.org]
-CD Learning System II - New Horizon English Course 3 [redump.org]
-CD Learning System II - New Horizon English Course 3 (FM Towns Marty version) [redump.org]
-ClearMind - Shimoguchi Yuuzan no Shuuchuuryoku Kaihatsu [redump.org]
-Digital Pinup Girls Vol. 2 - Lovely Shooting [redump.org]
-Euphony II / Score V1.1 L10 [redump.org]
-F-BASIC386 Compiler V2.1 L20 [redump.org]
-FM Towns Appli Jikkou Set (TownsGEAR, F-BASIC386) V2.1 L20 [redump.org]
-FM Towns Demonstration CD-ROM 1993-nen Haru-gou [redump.org]
-Fouge Vol. 1 - Ki - Japan - Maeda Shinzou no Sekai [redump.org]
-Fujitsu Journal Special Edition by CD-ROM [redump.org]
-Heike Monogatari (Joukan) (rerelease) [redump.org]
-Image Fight (demo) [redump.org]
-Iwanami Bungakukan - Natsume Souseki [redump.org]
-LiveMovie V1.1 L10 [redump.org]
-Many Colors (HMD-225) [redump.org]
-Moko - Dougen Zenji 750-kai Daionki Kinen [redump.org]
-Music Pro-Towns v1.3 (MIDI Ongenban) [redump.org]
-TownsGraph V2.1 L10 [redump.org]
-New not working software list additions
----------------------------------------
-CRI StacCard [redump.org]
-FM Towns Demonstration CD-ROM 1992-nen Haru-gou [redump.org]
-Tele Harmonium - City Lights [redump.org]
-Replaced software list items
-----------------------------
-Hishouzame / Flying Shark [redump.org]
-Strike Commander Plus [redump.org]
-Super Street Fighter II - The New Challengers (sample disc) [redump.org]
-
-13654: cpu/z80 Improved core source - internal TADR var removed [holub]
-
-13655: misc/acefruit.cpp: Added Flashback (not working) [james-wallace-ghub]
-
-13656: casio/pickytlk.cpp: Add Super Picky Talk - My room fantasy [qufb]
-New systems marked not working
----
-Super Picky Talk - My room fantasy [QUFB]
-
-13657: Skeleton driver for Olivetti Celint 2000 [clawgrip]
-New systems marked not working
-------------------------------
-Olivetti Celint 2000 (Superfono Santander edition) [ArcadeHacker]
-
-13658: saturn.xml: Added 1 new item, replaced nine items [FoxhackDN]
-Also removed five bad dumps.
-New not working software items:
----------------------------------
-AI Shougi 2 (Japan) [redump.org]
-Redumped not working software list items:
----------------------------------
-Advanced V.G. (Japan) [redump.org]
-AnEarth Fantasy Stories: The First Volume (Japan) [redump.org]
-Asuka 120% Limited: Burning Fest Limited (Japan) [redump.org]
-Baldy Land (Japan) [redump.org]
-Bomberman Wars (Japan) [redump.org]
-Dark Savior (Europe) [redump.org]
-Dark Savior (USA) [redump.org]
-Dark Seed (Japan) [redump.org]
-Dark Seed 2 (Japan) [redump.org]
-Removed items:
----------------------------------
-AI Shougi (Japan, alt)
-AnEarth Fantasy Stories - The First Volume (Japan, alt)
-Dark Savior (Japan, alt)
-Dark Savior (Japan, alt 2)
-Dark Savior (Japan, alt 3)
-
-13659: sega/model2: prevent infinite loop in geo_parse() [gm-matthew]
-MAME no longer hangs when exiting Sonic the Fighters service menu
-
-13660: capcom/cps2.cpp Added Publicity Version Puzz Loop 2 and Choko [UED-Wayder]
-New working clones
-Puzz Loop 2 (Japan 010201 Publicity) [Team Japump!!!]
-Janpai Puzzle Choukou (Japan 010820 Publicity) [Team Japump!!!]
-
-13662: act/victor9k.cpp: Serial port fixes for Victor 9000 (victor9k) [freitz85]
-Added correct callbacks to make UPD7201 serial ports work
-
-13664: phoenix/phoenix.cpp: Dumped Next Fase PROMs [Jordi Tuells] [clawgrip]
-
-13665: victor9k: Add hard drive support [donohoe00]
-Adds support for expansion bus card which interfaces to the Xebec s1410 via SASI.  Adds support for a single controller + hard
-  drive, although a second controller plus hard drive should be possible.  Using FACTORYF and HDSETUP, I was able to create a new
-  hard drive image, create partitions, and get working c: etc. to appear.  HDTEST utility is passing.
-
-13666: cdi.xml: New  software added [FoxhackDN]
-New working software list additions
------------------------------------
-Cyber Soldier Sharaku [ShiroeNL, Redump.org]
-
-13667: cpu/i960: Reduce padding area size when servicing interrupt [gm-matthew]
-128 bytes of padding was resulting in stack overflow during the Virtual-On ranking screen, crashing MAME. Reducing the padding to 64
-  bytes prevents the stack overflow while still ensuring that saved local registers are not overwritten by the processor state.
-It should be noted that the actual i960 behavior is to save the processor state before performing the call operation (source, 8-5),
-  though this is unlikely to result in any difference in operation.
-
-13668: sega/segaybd.cpp Added G-LOC (Japan) and Power Drift (Japan, Rev C) [UED-Wayder]
-New working clones
-G-LOC Air Battle (Japan) [Team Japump!!!]
-Power Drift (Japan, Rev C) [Team Japump!!!]
-Change Old 'pdriftj' to 'pdriftjb'
-
-13671: cpu/z80: Changed macro call syntax in generator input [holub]
-I found this way more readable.
-
-13672: Small documentation fixes [Firehawke]
-Just a couple of very small fixes for things I saw while looking through the docs tonight.
-The BGFX one will fix formatting issues, the others are fixes for things that bring up warnings during documentation compilation.
-
-13673: cocoa debugger: debug view scroll workarounds [biappi]
-The Cocoa debugger has an annoying bug where the first time the console "overflows" the bottom, the view will not scroll.
-This patch includes a workaround to skip frame size notifications in the middle of the text update, and this seems to fix the issue.
-### Before
-https://github.com/user-attachments/assets/13edad06-76cc-4f65-bcbb-98f936225fb9 
-### After
-https://github.com/user-attachments/assets/b3a9a118-748b-4984-a2da-5d82f40237db 
-
-13674: gaelco/mastboy.cpp: Sorted out Master Boy sets and added missing ones [clawgrip]
-New working clones
-------------------
-Master Boy (Spain, set 3, checksum 6070) [Josep Quingles, Recreativas.org]
-Master Boy (Spain, set 4, checksum CC6D) [Josep Quingles, Recreativas.org]
-Master Boy (Italy, set 3, checksum 6918) [Josep Quingles, Recreativas.org]
-Master Boy (Italy, set 4, checksum 680C) [Josep Quingles, Recreativas.org]
-Master Boy (Italy, test version) [Josep Quingles, Recreativas.org]
-Master Boy Olympic (Italy, set 1, checksum 77A8) [Josep Quingles, Recreativas.org]
-Master Boy Olympic (Spain, set 1, checksum 7309) [Josep Quingles, Recreativas.org]
-Master Boy Olympic (Spain, set 2, checksum 741B) [Josep Quingles, Recreativas.org]
-Master Boy Version II (Italy, set 1, checksum 618F) [Josep Quingles, Recreativas.org]
-Master Boy Version II (Spain, set 1, checksum 5A0B) [Josep Quingles, Recreativas.org]
-Master Boy Version II (Spain, set 2, checksum 5B1D) [Josep Quingles, Recreativas.org]
-Clones promoted to working
---------------------------
-Master Boy Version II (Italy, set 1, checksum 629B) [Josep Quingles, Recreativas.org]
-Also:
-* Added correct MCU ROM for Italian Version II sets.
-* Verified old extracted MCU ROM for Spanish sets is 100% good.
-
-13675: correct sidebs2j (Evoluzione RR) buildtag [FMecha]
-As per test menu (not sure if "buildtag" is the right term)
-!0000
-
-13676: cpu/z80: Flatten 16b rw operations in order to avoid vars manipulations [holub]
-
-13677: current Plug and Play PR (2 not working sets) [mamehaze]
-new NOT WORKING machines
-------
-Disney Princess Dress Mania TV (Japan) [David Haywood, Team Europe]
-XaviX Bowling (XaviXPORT, PT2-BWL-11, Japan) [David Haywood, Team Europe]
-
-13679: gaelco/mastboyo.cpp: Add a new Master Boy (1987) set [clawgrip]
-New working clones
-------------------
-Master Boy (1987, Z80 hardware) [Josep Quingles, Recreativas.org]
-
+- 7564: frontend/mame: Allow Lua scripts to change the enabled property for input classes. [Nathan Woods]
+- 13456: psx.xml: Added twelve items (eleven working), and replaced four items with better dumps. [redump.org, ArcadeShadow]
+- 13471: Added a Belarusian UI translation. [holub]
+- 13490: machine/ldp1450hle.cpp: Added preliminary text overlay support; atari/cops.cpp: Added Vision Quest. [James Wallace]
+- 13524: vtech/prestige.cpp, snotec.xml: Added Note Club µ teen's time and four new software items. [QUFB, TeamEurope]
+- 13529: adp/stella8085.cpp: Added dumps of eleven games (not working). [stonedDiscord]
+- 13583: act/victor9k_fdc.cpp: Greatly improved the Victor 9000 floppy controller emulation. [donohoe00]
+- 13594: bus/multibus: Propagate the bus clock frequency to slots on start. [F.Ulivi]
+- 13612: snes.xml: Added eighteen items (seventeen working), and replaced three dumps with modified headers. [ArcadeShadow]
+- 13623: casio/fz1.cpp: Added preliminary emulation of the Casio FZ series samplers. [Devin Acker, Rainer Buchty, Tom Virostek, BCM]
+- 13628: tvgames/spg2xx.cpp: Added two TV games based on SunPlus SoCs (one working). [TeamEurope, David Haywood]
+- 13629: video/ef9345.cpp: Fixed the double-height character scaling algorithm. [Fabio D'Urso]
+- 13630: cpu/z80: Optimized pending interrupt checks. [holub]
+- 13631: video/ef9345.cpp: Fixed insertt attribute handling and cursor rendering. [Fabio D'Urso]
+- 13636: Updated Visual Studio build settings to separate options by compiler type and reflect current clang-cl. [Patrick Mackinlay]
+- 13636: moog/source.cpp, moog/nl_source.cpp: Emulated the envelope generators and low-frequency oscillator timing. [m1macrophage]
+- 13637: oberheim/dmx.cpp: Updated sound routing for the new sound system. [m1macrophage]
+- 13639: midway/williams.cpp: Added Next Century (Spanish Defender bootleg). [Asociación Retroclub, Recreativas.org, ClawGrip]
+- 13640: gaelco/gaelco2.cpp: Added four versions of Touch and Go. [Josep Quingles, Recreativas.org, ClawGrip]
+- 13641: formats/tzx_cas.cpp: Log warnings for bad checksums and truncated images. [holub]
+- 13642: linn/linndrum.cpp: Updated sound routing for the new sound system. [m1macrophage]
+- 13643: 3rdparty/expat: Updated to expat 2.7.1 (fixes compilation with Emscripten 3.1.35). [holub]
+- 13644: midw8080/8080bw.cpp; Added a Spanish Space Invaders bootleg called Cosmic Battle. [Jordi Tuells, ClawGrip]
+- 13645: sega/sega_beena.cpp, sega_beena_cart.xml: Added peripheral card reader support and three software items. [QUFB, TeamEurope]
+- 13646: namco/mappy.cpp: Fixed the Pac'n'Pal bonus life DIP switch setting labels. [codefrog2002]
+- 13651: fmtowns_cd.xml: Added 23 items (twenty working), and replaced three items with better dumps. [redump.org, r09]
+- 13654: cpu/z80: Removed the effective address variable – effective addresses can be passed around as needed. [holub]
+- 13655: misc/acefruit.cpp: Added Flashback (not working). [James Wallace, BuyItFixIt]
+- 13656: casio/pickytlk.cpp: Added Super Picky Talk - My room fantasy (not working). [QUFB]
+- 13657: olivetti/celint2k.cpp: Dumped an Olivetti Celint 2000 phone/Videotext terminal. [ArcadeHacker, ClawGrip]
+- 13658: saturn.xml: Added one item (not working), and replaced nine items with better dumps. [redump.org, David Silva]
+- 13659: sega/model2_v.cpp: Added an upper limit to the number of geometry operations to avoid an infinite loop. [Matthew Daniels]
+- 13660: capcom/cps2.cpp Added Publicity versions of Puzz Loop 2 and Janpai Puzzle Choukou. [Team Japump, Wayder]
+- 13662: act/victor9k.cpp: Fixed 8253 PIT input clock frequencies and output connections, allowing serial ports to work. [freitz85]
+- 13664: phoenix/phoenix.cpp: Dumped the PROMs for Next Fase. [Jordi Tuells, ClawGrip]
+- 13665: act/victor9k_hdc.cpp: Emulated the Victor 9000 SASI hard disk controller. [donohoe00]
+- 13666: cdi.xml: Added Cyber Soldier Sharaku. [ShiroeNL, redump.org, David Silva]
+- 13667: cpu/i960: Reduced stack padding for servicing interrupts to avoid stack overflows. [Matthew Daniels]
+- 13668: sega/segaybd.cpp: Added additional Japanese versions of G-LOC Air Battle and Power Drift. [Team Japump, Wayder]
+- 13671: cpu/z80: Changed source syntax to use an @ prefix rather than a call keyword to invoke macros. [holub]
+- 13672: docs: Fixed a formatting error and some syntax warnings. [Firehawke]
+- 13673: debugger/osx: Added a workaround for auto-scrolling views failing to scroll when they initially fill. [Antonio Malara]
+- 13674: gaelco/mastboy.cpp: Added eleven versions of Master Boy and corrected/verified supported versions.
+  [Josep Quingles, Recreativas.org, ClawGrip]
+- 13675: taito/taitojc.cpp: Changed the comment for sidebs2j to match the test screen. [FMecha]
+- 13676: cpu/z80: Simplified 16-bit memory accesses (improves performance). [holub]
+- 13677: tvgames: Added two TV games (not working). [David Haywood, TeamEurope]
+- 13679: gaelco/mastboyo.cpp: Added a 1987 version of Master Boy using a Z80 CPU. [Josep Quingles, Recreativas.org, ClawGrip]
 - 13680: moog/nl_source.cpp: Moved the netlist declaration to its own header. [m1macrophage]
 - 13681: galaxian/galaxian.cpp: Added an encrypted Lady Bug bootleg. [Luis Arrufat, Francisco Javier Muñoz Calero, ClawGrip]
 - 13682: dataeast/brkthru.cpp: Added the World release of Break Thru. [Jordi Tuells, ClawGrip]
