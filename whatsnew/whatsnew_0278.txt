@@ -93,7 +93,7 @@ Trapeze / Trampoline [Pedro Suarez, smf]
 Tronica Treasure Island (Tronica) [Milan Galcik, Algestam]
 Victory Paradise II (V9) [hammy]
 Xor World (different hardware, ver 1.1, checksum 3333BA, prototype) [Josep Quingles, Recreativas.org, David Haywood]
-Xor World (Modular System, prototype, set 1) [Josep Quingles, Recreativas.org, David Haywood]
+Xor World (Modular System, prototype, set 1) [Javier Valero, Recreativas.org, David Haywood]
 
 
 New working clones
@@ -208,7 +208,7 @@ World Rally 2: Twin Racing (version 20-07, checksum B1B8) [Josep Quingles, 
 World Rally Championship (version 1.0, checksum 3D84, 02 Apr 1993) [Josep Quingles, Recreativas.org]
 World Rally Championship (version 1.0, checksum C448) [Josep Quingles, Recreativas.org]
 World Rally Championship (version 1.0, checksum DE0D, 08 Nov 1993) [Josep Quingles, Recreativas.org]
-World Rallye Championship (prototype on Modular System, 23 Nov 1992) [Josep Quingles, Recreativas.org, David Haywood]
+World Rallye Championship (prototype on Modular System, 23 Nov 1992) [Javier Valero, Recreativas.org, David Haywood]
 Xor World (different hardware, ver 1.1, checksum 333462, prototype) [Josep Quingles, Recreativas.org, David Haywood]
 Xor World (Modular System, prototype, set 2) [Josep Quingles, Recreativas.org, David Haywood]
 Xor World (ver 1.2, checksum DB5D10, prototype) [Josep Quingles, Recreativas.org, David Haywood]
@@ -370,7 +370,7 @@ Cue Ball Wizard (Spanish) [Victor Fernandez, Jordi Beltrán]
 Dream 9 Flower (v1.00c, set 2) [hammy]
 Funny Land de Luxe (W2 set) [m170.dev]
 Funny Land de Luxe (W4 set) [m170.dev]
-Glass (development PCB) [Josep Quingles, Recreativas.org, David Haywood]
+Glass (development PCB) [Javier Valero, Recreativas.org, David Haywood]
 Glücks-Stern [stonedDiscord]
 Goldart (France, Covielsa license) [Josep Quingles, Recreativas.org]
 Goldart (Germany) [Josep Quingles, Recreativas.org]
@@ -421,7 +421,7 @@ Pro Cycle Tele Cardioline (Salter fitness bike, unknown version) [Josep Quing
 Pro Stepper Tele Cardioline (Salter fitness stepper, older hardware, ver. 1.0, checksum 6D94) [Josep Quingles, Recreativas.org]
 Pro Stepper Tele Cardioline (Salter fitness stepper, older hardware, ver. 1.0, checksum 8BF3) [Josep Quingles, Recreativas.org]
 Pro Stepper Tele Cardioline (Salter fitness stepper, older hardware, ver. 1.0, checksum 8E5A) [Josep Quingles, Recreativas.org]
-Radikal Bikers (prototype) [Josep Quingles, Recreativas.org]
+Radikal Bikers (prototype) [Javier Valero, Recreativas.org]
 Shuang Long Qiang Zhu 2 VS (China, VS203J, set 2) [little0]
 Special Dream 9 (v1.0.7G) [hammy]
 Squash (newer PCB) [Josep Quingles, Recreativas.org]
@@ -964,579 +964,63 @@ New working clones
 ------------------
 Master Boy (1987, Z80 hardware) [Josep Quingles, Recreativas.org]
 
-13680: moog/source.cpp: Moved netlist declaration to nl_source.h. [m1macrophage]
-
-13681: Add a new Lady Bug bootleg set on Galaxian hardware [clawgrip]
-New working clones
-------------------
-Lady Bug (bootleg on Galaxian hardware, encrypted) [Luis Arrufat, Francisco Javier Muñoz Calero]
-
-13682: dataeast/brkthru.cpp: Add the world set of Break Thru (new parent) [clawgrip]
-New working systems
--------------------
-Break Thru (World) [Jordi Tuells]
-
-13683: namcos12: Fix Tekken 3 release date [AnthonyRyuki]
-Despite the copyright year, there are many sources that the game was released in 1997, rather than 1996.
-
-13684: Add PLD dumps to Gaelco games and verify bruteforced ones [Josep Quingles, Recreativas.org] [clawgrip]
-
-13686: [win] debugger crash: Add fallback to "0" if address evaluation fails [dave-br]
-This fixes issue #13685
-If the memory window address string evaluation fails, we have been falling back to the last-known-working string.  This works great
-  if the failure is due to the user changing the string.  But if the user changes the source, that also can cause failures
-  (different symbol table used for evaluation), and this fallback does not help.
-The fix is to add a second fallback: Use "0" as the address string when all else fails.
-
-13687: [win] debugger cleanup: use enums for m_views indices [dave-br]
-For the wininfos that participate as individual panes in the main console window, their viewinfos are referenced via the m_views[]
-  array with hard-coded indices of 0, 1, and 2.
-- Define & use enums for those indices (VIEW_IDX_DISASM, VIEW_IDX_STATE, VIEW_IDX_CONSOLE)
-- Change MAX_VIEWS from a hard-coded constant of 4 to the last enum in that list, which changes it to 3.  (I don't think it should
-  have been 4 in the first place.)
-- wininfos that NEVER appear as panes in the main console window (e.g., logwin_info, pointswin_info, etc.) continue to use
-  m_views[0]
-This cleanup was originally written as part of my large source-level debugging PR (#13444), so merging this will shrink that
-  somewhat.
-
-13688: gaelco/goldart.cpp: Add new sets for different countries [clawgrip]
-New clones marked not working
------------------------------
-Goldart (France, Covielsa license) [Josep Quingles, Recreativas.org]
-Goldart (Germany) [Josep Quingles, Recreativas.org]
-Goldart (United Kingdom) [Josep Quingles, Recreativas.org]
-
-13690: Add missing PROMs and PLDs to several Modular System games [Josep Quingles, Recreativas.org] [clawgrip]
-Games with added PLDs or PROMs:
-* cabalm
-* bigkarnkm
-* raidenm
-* tokims
-* eurogael
-* automatm
-* drgninjam
-* ffantasym
-* secretagm
-
-13691: taitotz.cpp: `batlgr2a` is the Side by Side cabinet revision + other stuff [FMecha]
-Pointed out on a /r/MAME comment: https://www.reddit.com/r/MAME/comments/1iyalur/mame_0275/methugu/
-!image
-Info about Side by Side cabinet versions of Battle Gear games from mokonaXVI (Japanese)
-This will also need some input rework because the Side by Side cabinet versions of Battle Gear 1 and 2 merges the functionality of
-  view and start button, as that cabinet only has the view change button (Battle Gear cabinets have seperate start, view, and
-  blinker buttons).
-EDIT: While at it, I've also:
-- made version labeling consistent across all games. following the format used in the test menu as above.
-- changed `batlgear` year to 1999 - official website archive and a magazine article (direct link) confirm release date of March
-  1999.
-- also corrected `styphp` year to 2001, per the following sources:
-   - '71-'05 Arcade Games List mentions original release was in March 2001 (note that this list is wrong about BG1's release date)
-   - Revealed at AOU 2001 (https://response.jp/article/2001/02/28/7477.html)
-   - Buildtag is "Ver 2.04J 2001/4/6 18:34:59" according to AGS (at least for the Plus update; original release may have an earlier
-  build date but likely still somewhere around December 2000 to January 2001)
-
-13692: dataeast/brkthru.cpp: Remove brkthrubl [clawgrip]
-Has the same ROMs as the original World version
-
-13693: pinball/gts3a.cpp: Add a Vifico licensed version of Cue Ball Wizard [clawgrip]
-New clones marked not working
------------------------------
-Cue Ball Wizard (Spanish) [Victor Fernandez (City Game), Jordi Beltran (Crazy Taxi)]
-
-13694: debugger: symlist usability + symbol table extensibility [dave-br]
-This addresses issue #6655 (symlist command usability), plus adds a bit of plumbing for future extensibility.
-### Symlist command usability
-The distinction between global and CPU symbols is unclear to most who don't read the source, so this makes `symlist` more natural:
-- `symlist` with no arguments displays all global *and* :maincpu symbols, with clear header text for each list.  At the bottom,
-  prints helper text to make user aware of the cpu form
-- `symlist <cpu>` works as it has before, only displays symbols for specified CPU
-### Symbol table extensibility
-This pr includes some changes in anticipation of features that add new kinds of symbol tables.  Example: the source-level debugging
-  pr (#13444) adds symbol tables for local and global variables that appear in the debugged source code.  The following were
-  originally part of the source-level debugging PR, so merging this will shrink that PR somewhat.
-- Add an enum field to symbol table for its 'type', for prettier printing from symlist.
-- symlist now traverses symbol table chain completely.  No noticeable difference from before, but this will make extensions to the
-  chain work automatically
-- Eliminate hard-coded limit (1000) on number of symbols to print per symbol table
-### Sample session
-A CoCo with Speech-Sound cartridge (thus, two valid CPUs).
-```
->symlist
-**** CPU ':maincpu' symbols ****
-a = 0
-b = B
-cc = 90
-curflags = 90
-curpc = 10C
-cycles = 24  (read-only)
-d = B
-dp = 0
-lastinstructioncycles = 18  (read-only)
-logunmap = 1
-pc = 10C
-s = 7F1E
-totalcycles = 24E077  (read-only)
-u = ABEE
-x = 402
-y = A00E
-**** Global symbols ****
-beamx = 85  (read-only)
-beamy = D9  (read-only)
-cpunum = 0  (read-only)
-frame = A1  (read-only)
-temp0 = 0
-temp1 = 0
-temp2 = 0
-temp3 = 0
-temp4 = 0
-temp5 = 0
-temp6 = 0
-temp7 = 0
-temp8 = 0
-temp9 = 0
-wpaddr = 0  (read-only)
-wpdata = 0  (read-only)
-wpsize = 0  (read-only)
-To view the symbols for a particular CPU, try symlist <cpu>,
-where <cpu> is the ID number or tag for a CPU.
->symlist :maincpu
-**** CPU ':maincpu' symbols ****
-a = 0
-b = B
-cc = 90
-curflags = 90
-curpc = 10C
-cycles = 24  (read-only)
-d = B
-dp = 0
-lastinstructioncycles = 18  (read-only)
-logunmap = 1
-pc = 10C
-s = 7F1E
-totalcycles = 24E077  (read-only)
-u = ABEE
-x = 402
-y = A00E
->symlist 0
-**** CPU ':maincpu' symbols ****
-a = 0
-b = B
-cc = 90
-curflags = 90
-curpc = 10C
-cycles = 24  (read-only)
-d = B
-dp = 0
-lastinstructioncycles = 18  (read-only)
-logunmap = 1
-pc = 10C
-s = 7F1E
-totalcycles = 24E077  (read-only)
-u = ABEE
-x = 402
-y = A00E
->symlist 1
-**** CPU ':ext:multi:slot3:ssc:pic7040' symbols ****
-a = FF
-b = 0
-curflags = D0
-curpc = F2D1
-cycles = 0  (read-only)
-genpc = F2D1
-lastinstructioncycles = 9  (read-only)
-logunmap = 1
-pc = F2D1
-sp = 4C
-st = D0
-totalcycles = 24E062  (read-only)
->symlist 2
-Invalid CPU index 2
-```
-
-13695: Skeleton driver for Gaelco/Covielsa Loto-Play [clawgrip]
-New systems marked not working
-------------------------------
-Loto-Play (set 1) [Josep Quingles, Recreativas.org]
-New clones marked not working
------------------------------
-Loto-Play (set 2) [Josep Quingles, Recreativas.org]
-Loto-Play (set 3) [Josep Quingles, Recreativas.org]
-Loto-Play (set 4) [Josep Quingles, Recreativas.org]
-
-13696: namco/rallyx.cpp: Verify Danger Track PROMs [Recreativas.org] [clawgrip]
-
-13697: current Plug and Play PR (mostly JAKKS Pacific) [mamehaze]
-new WORKING machines
-------
-Dreamworks Shrek / Over The Hedge (JAKKS Pacific TV Game) [David Haywood, Sean Riddle, TeamEurope]
-The Amazing Spider-Man in Villain Round-Up (JAKKS Pacific TV Game) (24 Apr 2006 A) [David Haywood, Sean Riddle, TeamEurope]
-Disney Princess Magical Adventures (JAKKS Pacific TV Game) [David Haywood, Sean Riddle, TeamEurope]
-Arcade Gold featuring Pac-Man (20 APR 2007 A SKU O) [David Haywood, Sean Riddle, TeamEurope]
-Cinderella - Once Upon a Midnight (JAKKS Pacific TV Game) (Aug 29 2007 11:15:55) [David Haywood, Sean Riddle, TeamEurope]
-High School Musical (JAKKS Pacific TV Game) (Dec 19 2007 17:08:20) [David Haywood, Sean Riddle, TeamEurope]
-Retro Arcade featuring Pac-Man (20 AUG 2008 A SKU N) [David Haywood, Sean Riddle, TeamEurope]
-Ms. Pac-Man Collection 7-in-1 (JAKKS Pacific TV Game) (QVC version, 12 JUL 2004 A) [David Haywood, Sean Riddle, TeamEurope]
-Ms. Pac-Man Collection 5-in-1 (JAKKS Pacific TV Game) (01 APR 2004 A) [David Haywood, Sean Riddle, TeamEurope]
-Super Pac-Man Collection (26 JAN 2006 A SKU L) [David Haywood, Sean Riddle, TeamEurope]
-Sleeping Beauty - Tales of Enchantment (JAKKS Pacific TV Game) (Sep 17 2007 14:45:02) [David Haywood, Sean Riddle, TeamEurope]
-Marvel Heroes: Ultimate Action (JAKKS Pacific TV Game) [David Haywood, Sean Riddle, TeamEurope]
-new NOT WORKING machines
---------
-SpongeBob SquarePants Dilly Dabbler (JAKKS Pacific TV Game) [David Haywood, Sean Riddle, TeamEurope]
-World Poker Tour (JAKKS Pacific TV Game) [David Haywood, Sean Riddle, TeamEurope]
-Disney (JAKKS Pacific TV Game) (SPG110 hardware, 28 MAY 2004 A) [David Haywood, Sean Riddle, TeamEurope]
-
-13698: Add a PC-based casino Poker machine [clawgrip]
-New systems marked not working
-------------------------------
-Play 4 Texas Hold'em [anonymous]
-
-13699: gaelco/gaelco2.cpp: Add an Alligator Hunt clone with alternate title [clawgrip]
-New working clones
-------------------
-Lizard Hunt (unprotected, checksum 25A83609) [Josep Quingles, Recreativas.org]
-
-13700: gaelco/gaelcof3.cpp: Add two more kiddie ride dumps [clawgrip]
-New systems marked not working
-------------------------------
-Mueve [Josep Quingles, Recreativas.org]
-Ob-La-Di [Josep Quingles, Recreativas.org]
-Also redumped PIC for 'susanita' and 'donpepito', fixed games names and manufacturer and improve notes.
-
-13702: gaelco/gaelco2.cpp: Add four new Gaelco Bang sets [clawgrip]
-New working systems
--------------------
-Bang! (version 2, checksum 140E) [Josep Quingles, Recreativas.org]
-New working clones
-------------------
-Bang! (version 2, checksum D35D) [Josep Quingles, Recreativas.org]
-Gun Gabacho (Japan, version 2, checksum 1C8C) [Josep Quingles, Recreativas.org]
-Gun Gabacho (Japan, version 2, checksum B75B) [Josep Quingles, Recreativas.org]
-Old 'bang' set has been renamed to 'bangb', as it's the older version, and the new V2 set with checksum 140E becomes the new parent.
-
-13703: gaelco/gaelco3d.cpp: Add two more Football Power sets [clawgrip]
-New working systems
--------------------
-Football Power (version 4.6) [Josep Quingles, Recreativas.org]
-New working clones
-------------------
-Football Power (version 1.4) [Josep Quingles, Recreativas.org]
-The old parent set, 'footbpow', has been renamed to 'footbpow12', and the new v4.6 becomes the new parent
-
-13704: misc/flower.cpp: Added Flower (Japan) [UED-Wayder]
-New working clones
-Flower (Japan) [Team Japump!!!]
-Change Old 'Flower (Japan)' to 'Flower (Japan, bootleg)'
-Flower (Japan)
-main cpu ROM(1.5j) is same as Flower (US)
-sound cpu ROM Label fix
-
-13706: gaelco/gaelco.cpp: Add a new Last Km clone [clawgrip]
-New working clones
-------------------
-Last KM (ver 1.0.0227, checksum 747a7443, prototype) [Josep Quingles, Recreativas.org]
-
-13707: Fix tdv2100 display edge-cases [Frodevan]
-I had a closer look at the schematics and a few of the jumper-settings in the manual, and realized a few things:
-1. A handful of jumpers had their polarity wrong, leading to wrong default settings
-2. The latching of the attribute happens on the rising edge of the character-clock, i.e. active with the character immediately
-  following the change
-
-13708: namcos21: clear screen to palette index 0 instead of 0xff [FlykeSpice]
-This makes the sky background from Winning Run games to blend more seamless with the fading horizon (specially winrungp and
-  winrun91), this is just a duct-tape fix and the actual clear screen behavior from the hardware needs to be studied.
-
-13710: roland_tr707.cpp: Extended driver to encompass most hardware other than audio and LCD. [m1macrophage]
-
-13711: gaelco/gaelco2.cpp: Add more Gaelco/Salter Gym equipment sets [clawgrip]
-New working clones
-------------------
-Pro Cycle Tele Cardioline (Salter fitness bike, V.1.0, checksum 3523) [Josep Quingles, Recreativas.org]
-New clones marked not working
------------------------------
-Pro Cycle Tele Cardioline (Salter fitness bike, older, set 1) [Josep Quingles, Recreativas.org]
-Pro Cycle Tele Cardioline (Salter fitness bike, older, set 2) [Josep Quingles, Recreativas.org]
-Pro Cycle Tele Cardioline (Salter fitness bike, older, set 3) [Josep Quingles, Recreativas.org]
-Pro Cycle Tele Cardioline (Salter fitness bike, older, set 4) [Josep Quingles, Recreativas.org]
-Pro Stepper Tele Cardioline (Salter fitness stepper, older, set 1) [Josep Quingles, Recreativas.org]
-Pro Stepper Tele Cardioline (Salter fitness stepper, older, set 2) [Josep Quingles, Recreativas.org]
-Pro Stepper Tele Cardioline (Salter fitness stepper, older, set 3) [Josep Quingles, Recreativas.org]
-Pro Stepper Tele Cardioline (Salter fitness stepper, older, set 4) [Josep Quingles, Recreativas.org]
-
-13712: korgtriton: add a skeleton driver [biappi]
-Adding a nonworking skeleton driver for the Korg TRITON synthesizer/rompler.
-The driver mocks enough devices to let the application run until the splash screen.
-<img width="613" alt="Screenshot 2025-05-18 at 21 46 57"
-  src="https://github.com/user-attachments/assets/51fda97c-6f31-49cc-a96d-45d77b628c5e" />
-
-13713: gaelco/gaelco.cpp: Add a new Big Karnak clone [clawgrip]
-New working clones
-------------------
-Big Karnak (ver. 1.0, checksum 1e38b94) [Josep Quingles, Recreativas.org]
-
-13714: cirsa/missbamby.cpp: Add Arfyc 3 Mini [clawgrip]
-New systems marked not working
-------------------------------
-3 Mini [Javier Blanco, Recreativas.org]
-
-13716: misc/miuchiz.cpp - fix validation errors [gm-matthew]
-
-13718: cpu/mb86235: Improve TGPx4 interpreter [gm-matthew]
-Most Sega Model 2C-CRX games are now working with 3D graphics. Top Skater still doesn't display properly because it uses a secondary
-  transformation matrix which is not implemented in the HLE geometry engine; proper emulation of the geometry DSP is required.
-Resubmitting because the previous pull request failed validation due to unrelated commits that have since been fixed. Hopefully it
-  should pass this time
-
-13720: spectrum_cass.xml: Added 35 working items [ArcadeShadow]
-New working software list additions
---------------------------------------------
-British Isles Geography - Ports [Planeta Sinclair, Steven Brown]
-Chuck Yeager's Advanced Flight Trainer (Dro Soft) [Spectrum Computing]
-Chuckman (ZX Data) [Spectrum Computing]
-Countries - Africa - Cities [Planeta Sinclair, Steven Brown]
-Countries - Africa - Features [Planeta Sinclair, Steven Brown]
-Countries - Australia - Features [Planeta Sinclair, Steven Brown]
-Countries - Australia - Towns [Planeta Sinclair, Steven Brown]
-Countries - South America - Features [Planeta Sinclair, Steven Brown]
-J.S. Compilation 1 [Planeta Sinclair, Luís Rato]
-J.S. Compilation 2 [Spectrum Computing]
-J.S. Compilation 4 [Spectrum Computing]
-J.S. Compilation 5 [Spectrum Computing]
-J.S. Compilation 6 [Spectrum Computing]
-J.S. Compilation 7 [Spectrum Computing]
-Klokkijken Analoog + Klokkijken Digitaal [Planeta Sinclair, Steven Brown]
-Learn Chess [Planeta Sinclair, Steven Brown]
-Lifeboat [Planeta Sinclair, Steven Brown]
-Prince, Princess and the Wicked Witch [Planeta Sinclair, Steven Brown, Gordon Wallis]
-Vindicators (Erbe) [Spectrum Computing]
-Vocabulario Aleman (Cohete) [Spectrum Computing]
-Vocabulario Frances (Portero) [Spectrum Computing]
-Vocabulario Infantil Frances (Raton) [Spectrum Computing]
-Vocabulario Infantil Ingles (Platero) [Spectrum Computing]
-VU-3D (Polbrit) [Spectrum Computing]
-VU-3D (Psion) [Spectrum Computing]
-VU-Calc (Investronica) [Spectrum Computing]
-Wanderer (MCM) [Spectrum Computing]
-Wanderers - Chained in the Dark (alt) (English) [Spectrum Computing]
-Wanderers - Chained in the Dark (Czech) [Spectrum Computing]
-Wanderers - Chained in the Dark (Russian) [Spectrum Computing]
-Wanderers - Chained in the Dark (Slovak) [Spectrum Computing]
-War in the East (for Timex 2068) [Spectrum Computing]
-World Geography - Land & Water [Planeta Sinclair, Steven Brown]
-Your Spectrum Mega Basic (v4.0) [Spectrum Computing]
-ZX Football Manager 2005 (128K) [Spectrum Computing]
-Redumped Set
---------------------------------------------
-Hunchy (1983, Mr. Micro) [Planeta Sinclair, Steven Brown]
-Merged Set
---------------------------------------------
-Chuck Yeager's Advanced Flight Trainer (128K) + Chuck Yeager's Advanced Flight Trainer (48K)
-Demoted to NOT working
---------------------------------------------
-3 Games For Children - 2nd Edition
-Cleanups and fixes: parent/clone relationships, descriptions, publishers, years and languages info (information provided by
-  spectrumcomputing.co.uk).
-
-13721: memorymoog, xpander: Replaced matrix() with write_mx/my(). [m1macrophage]
-Following @happppp 's suggestion in #13710
-
-13722: gaelco/goldart.cpp: Add PIC-based sets (not working) [clawgrip]
-New clones marked not working
------------------------------
-Goldart (PIC16C54, Spain) [Josep Quingles, Recreativas.org]
-Goldart (PIC16C54, France, Covielsa license) [Josep Quingles, Recreativas.org]
-Goldart (PIC16C54, Germany) [Josep Quingles, Recreativas.org]
-Goldart (PIC16C54, Portugal) [Josep Quingles, Recreativas.org]
-Goldart (PIC16C54, United Kingdom) [Josep Quingles, Recreativas.org]
-
-13723: demote to imperfectly sound whtm68k.cpp [flama12333]
-since required rom banking at 8000-FFFF so demoted to imperfectly sound
-Bank 1 music 1-4
-at 8000-FFFF
-Bank 2 music 1-3
-at 10000-17FFF
-Bank 3 music 1-3
-at 18000-1FFFF
-at dip switch 2 seem to be input?
-sw2 3 left
-sw2 4 right
-sw2 5 bet
-sw2 6 start
-sw2 8 pay out
-
-13724: gaelco/thoop2.cpp: Add four TH Strikes Back sets [clawgrip]
-New working clones
-------------------
-TH Strikes Back (non North America, version 1.0, checksum 020EB346) [Josep Quingles, Recreativas.org]
-TH Strikes Back (non North America, version 1.0, checksum 020E154A) [Josep Quingles, Recreativas.org]
-TH Strikes Back (non North America, version 1.0, checksum 0206DF91) [Josep Quingles, Recreativas.org]
-TH Strikes Back (non North America, version 1.0, checksum 0206DF91, without title) [Josep Quingles, Recreativas.org]
-'thoop2a' was renamed to 'thoop2a' (it's the newer set) and 'thoop2a' to 'thoop2b'.
-
-13725: gaelco/gaelco2.cpp: Add another Pro Cycle Tele Cardioline set [clawgrip]
-New working clones
-------------------
-Pro Cycle Tele Cardioline (Salter fitness bike, V.1.0, checksum DECA) [Josep Quingles, Recreativas.org]
-
-13726: gaelco/gaelco.cpp: Add two Gaelco Squash sets [clawgrip]
-New working clones
-------------------
-Squash (USA, ver. 1.1, checksum 015b6f8a) [Josep Quingles, Recreativas.org]
-New clones marked not working
------------------------------
-Squash (newer PCB) [Josep Quingles, Recreativas.org]
-
-13727: various VT3xx (mostly VT369) work + some other VT refactoring, many sets now boot + games selectable [mamehaze]
-(squashed version of https://github.com/mamedev/mame/pull/13705 to use as  a new base)
-- added a derived 6502 core for the VT3xx Sound CPU (built into the SoC), it has some customized opcodes
-- added enough emulation of the Sound CPU to get denv150 to pass initial checks
-- added internal SoC ROM to a number of sets that copy the sound program from it, allowing those to pass startup checks too
-- added preliminary support for some of the extra VT3xx background video features, note even the way the hardware implements these
-  is ugly, they really are hacked on top of the standard NES modes
-- added preliminary support for extra VT3xx sprite modes
-- the above also allow various Lexibook sets to show boot screens eg. lxcmcysw, lxcmcyfz, lxcmcydp, lxcmcysp, lxcmcycr, lxcmcypj,
-  lxcmcyba, lxcmcypp
-- paired some scrambling/encryption to specific SoC classes, as it's likely these represent slightly customized models, added modes
-  for nubsupmf, red5mam, dgun2593, gcs2mgp, 240in1ar which also now show something
-- started looking at the new DMA modes needed by 240in1ar etc. 
-- denv150 basically now works, but leaving it marked as NOT WORKING until the rest of the sound CPU logic is hooked up
-- flagged a few sets as potentially bad dumps
-- verified / corrected metadata for a number of sets now that they boot and can be better identified
-- identified some cases where there seem to be additional protection devices present, supplying either code or data
-- replaced vt1682 ALU in vt3xx emulation with its own implementation as it isn't the same
-- added relative offset support (a kind of banking internal to the VT3xx) allowing the majority of games in the multi-game menus to
-  go ingame
-- added external banking support to a number of the larger games (anything larger than 32Mbytes has to be externally banked)
-- corrected ROM loading for a number of sets
-- fixed additional opcodes on sound CPU, and added the remaining peripherals
-- misc other VT related tweaks
-
-13729: cpu/z80: Handled flags lazyly [holub]
-Credits to @smf- for the idea!
-Before:
-```
-» repeat 3 ./mame zexall -bench 100 && sleep 1
-Average speed: 9008.28% (99 seconds)
-Average speed: 9315.16% (99 seconds)
-Average speed: 9412.46% (99 seconds)
--------------------------------------------------------------------------
-» repeat 3 ./mame docastle -bench 100 && sleep 1
-Average speed: 1529.40% (99 seconds)
-Average speed: 1539.67% (99 seconds)
-Average speed: 1538.97% (99 seconds)
--------------------------------------------------------------------------
-» repeat 3 ./mame pacman -bench 100 && sleep 1
-Average speed: 14265.06% (99 seconds)
-Average speed: 13265.54% (99 seconds)
-Average speed: 13061.40% (99 seconds)
-```
-After:
-```
-» repeat 3 ./mame zexall -bench 100 && sleep 1
-Average speed: 10282.77% (99 seconds)
-Average speed: 10319.55% (99 seconds)
-Average speed: 9790.69% (99 seconds)
--------------------------------------------------------------------------
-» repeat 3 ./mame docastle -bench 100 && sleep 1
-Average speed: 1556.15% (99 seconds)
-Average speed: 1537.15% (99 seconds)
-Average speed: 1557.02% (99 seconds)
--------------------------------------------------------------------------
-» repeat 3 ./mame pacman -bench 100 && sleep 1
-Average speed: 14055.56% (99 seconds)
-Average speed: 13918.92% (99 seconds)
-Average speed: 14550.54% (99 seconds)
-```
-_P.S. I feel I'm getting blind while trying to review it visually. Will do couple more attempts later myself.
-Main flags tests are passing `Timing_Tests-48k_v1.0` and Raxsoft's `z80full`_
-
-13730: Current JAKKS Pacific Plug+Play PR (5 working, 1 not working) [mamehaze]
-new WORKING machines
----
-Dora the Explorer - Dora's World Adventure! [David Haywood, Sean Riddle, TeamEurope]
-The Cheetah Girls - Passport to Fame (JAKKS Pacific TV Game) (Aug 1 2007 10:32:50) [David Haywood, Sean Riddle, TeamEurope]
-Go Diego Go (JAKKS Pacific TV Game) [David Haywood, Sean Riddle, TeamEurope]
-Sesame Street Beat (JAKKS Pacific TV Game) (Aug 23 2006 19:12:03, PAL/UK) [David Haywood, Sean Riddle, TeamEurope]
-Nicktoons - Summer Camp (JAKKS Pacific TV Game) [David Haywood, Sean Riddle, TeamEurope]
-new NOT WORKING machines
----
-EA Sports Classics: NHL 95 & Madden 95 (JAKKS Pacific TV Game) [David Haywood, Sean Riddle, TeamEurope]
-
-13731: demote to imperfectly sound falgas_m89.cpp [flama12333]
-sound hooked up are ok but freeze in fantastic car, does not freeze in rally montecarlos . impefectly sound becauses seem to be
-  missing something https://youtu.be/7e1eGjZOj4o
-if swap roms at rally montecarlos then write 11 at 149 will play music but slower
-
-13732: gaelco/gaelco.cpp: Add new Thunder Hoop sets [clawgrip]
-New working clones
-------------------
-Thunder Hoop (ver. 1, checksum 02a09fcd) [Josep Quingles, Recreativas.org]
-Thunder Hoop (ver. X, checksum 00000020, without title) [Josep Quingles, Recreativas.org]
-Thunder Hoop (North America, ver. C4, checksum 02A0A008) [Josep Quingles, Recreativas.org]
-Thunder Hoop (non North America, ver. X, checksum 00000020, set 1) [Josep Quingles, Recreativas.org]
-Thunder Hoop (non North America, ver. X, checksum 00000020, set 2) [Josep Quingles, Recreativas.org]
-
-13734: Fix dip switches for Mahjong Crystal Gal [buffis]
-Some fixes for dips for Mahjong Crystal Gal.
-I have the papers for "crystalg" and the DIP definition matches the ones of "crystal2" which is pretty much a clone of that game.
-Papers: https://imgur.com/a/TIoM8DT
-- Added correct DIPs for crystalg
-- Replaced "Unknown" to "Unused" where papers state they are unused
-- Changed default difficulty to 7 (specified in papers)
-- Changed Demo Sound default to off (specified in papers)
-
-13735: Driver for a World Rally prototype on Modular System [clawgrip]
-New clones marked not working
------------------------------
-World Rally (prototype on Modular System) [Javier Valero, Recreativas.org, David Haywood]
-
-13736: new handheld game Treasure Island (Tronica) [MilanBA]
-New working systems
--------------------
-Treasure Island (Tronica) [Milan Galcik, hap, Henrik Algestam]
-
-13737: pinball/gts3a.cpp: Add the Vifico-licensed version of Super Mario Bros pinball [clawgrip]
-New clones marked not working
------------------------------
-Super Mario Brothers (pinball, Spanish) [Victor Fernandez (City Game)]
-Sadly, it's missing the Display ROM (it was damaged).
-
-13738: adp: New clones marked not working [stonedDiscord]
-New clones marked not working
------------------------------
-Funny Land de Luxe (W2 set) (Stella) [m170.dev]
-Funny Land de Luxe (W4 set) (Stella) [m170.dev]
-Super Multi (DOB) (Venus) [stonedDiscord]
-Action (ADP) [stonedDiscord]
-Grand Hand (Stella) [stonedDiscord]
-Vulkan (Stella) [stonedDiscord]
-Multi Multi (ADP) [stonedDiscord]
-Sunny (Mega) [stonedDiscord]
-Oh La La (Stella) [stonedDiscord]
-Allfred (Stella) [m170.dev]
-Tai Pan Money (Nova) [stonedDiscord]
-Asterix und Kleopatra (Stella) [stonedDiscord]
-Turbo Sunny (Mega) [stonedDiscord]
-
-13739: hh_sm510.cpp: added new game Vesolaya arifmetika [MilanBA]
-New working systems
--------------------
-Vesolaya arifmetika (Elektronika) [Milan Galcik, Igor Nys]
-
-13740: Driver for Gaelco Xor World on Modular System [clawgrip]
-New clones marked not working
------------------------------
-Xor World (Modular System) [Javier Valero, Recreativas.org]
-
-13742: hh_sm510.cpp: added new game Uchitel' arifmetiki [MilanBA]
-New working systems
--------------------
-Uchitel' arifmetiki (Elektronika) [Milan Galcik, Igor Nys]
-
+- 13680: moog/nl_source.cpp: Moved the netlist declaration to its own header. [m1macrophage]
+- 13681: galaxian/galaxian.cpp: Added an encrypted Lady Bug bootleg. [Luis Arrufat, Francisco Javier Muñoz Calero, ClawGrip]
+- 13682: dataeast/brkthru.cpp: Added the World release of Break Thru. [Jordi Tuells, ClawGrip]
+- 13683: namco/namcos12.cpp: Changed the year for Tekken 3 from the copyright year to the release year. [AnthonyRyuki]
+- 13684: gaelco: Dumped the PLDs for several Gaelco games. [Josep Quingles, Recreativas.org, ClawGrip]
+- 13686: debug/debugvw.cpp: Fall back to zero when recomputing the expression if the previous expression can’t be parsed. [dave-br]
+- 13687: debugger/win: Added symbolic constants for console pane view indices. [dave-br]
+- 13688: gaelco/goldart.cpp: Dumped three additional versions of Goldart (not working). [Josep Quingles, Recreativas.org, ClawGrip]
+- 13690: Dumped the PROMs and PLDs for several Gaelco Modular System games and bootlegs. [Josep Quingles, Recreativas.org, ClawGrip]
+- 13691: taito/taitotz.cpp: Edited descriptions and release years. [FMecha]
+- 13692: dataeast/brkthru.cpp: Removed a bootleg with identical ROMs to the official World release. [ClawGrip]
+- 13693: pinball/gts3a.cpp: Dumped Cue Ball Wizard (Spanish) from Vifico. [Victor Fernandez (City Game), Jordi Beltrán, ClawGrip]
+- 13694: debug/debugcmd.cpp: Changed the behavior of the debugger `symlist` command. [dave-br]
+- 13695: gaelco/lotoplay.cpp: Dumped four versions of Loto-Play (not working). [Josep Quingles, Recreativas.org, ClawGrip]
+- 13696: namco/rallyx.cpp: Confirmed the PROM content for Danger Track. [Recreativas.org, ClawGrip]
+- 13697: tvgames: Added fifteen TV games based on SunPlus SoCs (twelve working). [David Haywood, Sean Riddle, TeamEurope]
+- 13698: pc/play4texash.cpp: Dumped Play 4 Texas Hold’em (casino poker machine). [anonymous, ClawGrip]
+- 13699: gaelco/gaelco2.cpp: Added an unprotected version of Lizard Hunt. [Josep Quingles, Recreativas.org, ClawGrip]
+- 13700: gaelco/gaelcof3.cpp: Dumped the Mueve and Ob-La-Di kiddie rides. [Josep Quingles, Recreativas.org, ClawGrip]
+- 13702: gaelco/gaelco2.cpp: Added four versions of Bang!/Gun Gabacho. [Josep Quingles, Recreativas.org, ClawGrip]
+- 13703: gaelco/gaelco3d.cpp: Added two versions of Football Power. [Josep Quingles, Recreativas.org, ClawGrip]
+- 13704: misc/flower.cpp: Dumped a Sega/Alpha Flower board (the program ROM matches the Komax version). [Team Japump, Wayder]
+- 13706: gaelco/gaelco.cpp: Added a prototype of Last KM. [Josep Quingles, Recreativas.org, ClawGrip]
+- 13707: tandberg/tdv2100_disp_logic.cpp: Fixed attribute handling and polarity for some jumper settings. [Frode van der Meeren]
+- 13708: namco/namcos21.cpp: Changed the background fill colour for the Winning Run games to palette index zero. [FlykeSpice]
+- 13710: roland/roland_tr707.cpp: Emulated most of the hardware besides the display and audio. [m1macrophage]
+- 13711: gaelco/gaelco2.cpp: Dumped nine Salter fitness machine versions (one working). [Josep Quingles, Recreativas.org, ClawGrip]
+- 13712: korg/korgtriton.cpp: Added a skeleton driver for the Korg TRITON sampling music Workstation. [Antonio Malara]
+- 13713: gaelco/gaelco.cpp: Added an additional version of Big Karnak. [Josep Quingles, Recreativas.org, ClawGrip]
+- 13714: cirsa/missbamby.cpp: Dumped Arfyc 3 Mini. [Javier Blanco Ojeda, Recreativas.org, ClawGrip]
+- 13716: misc/miuchiz.cpp: Flagged systems as having unemulated sound (fixes validity errors). [Matthew Daniels]
+- 13718: cpu/mb86235: Improved TGPx4 disassembly and emulation, particularly for data transfers. [Matthew Daniels]
+- 13720: spectrum_cass.xml: Added 35 working items, and replaced one item with a better dump. [ArcadeShadow]
+- 13721: moog/memorymoog.cpp, oberheim/xpander.cpp: Simplified LED matrix output. [m1macrophage]
+- 13722: gelco/goldart.cpp: Dumped four versions of Goldart using PIC16C54 MCUs. [Josep Quingles, Recreativas.org, ClawGrip]
+- 13723: skeleton/whtm68k.cpp: Marked systems as having imperfect sound rather than completely unemulated sound. [flama12333]
+- 13724: gaelco/thoop2.cpp: Added four additional versions of TH Strikes Back. [Josep Quingles, Recreativas.org, ClawGrip]
+- 13725: gaelco/gaelco2.cpp: Added an additional Pro Cycle Tele Cardioline set. [Josep Quingles, Recreativas.org, ClawGrip]
+- 13726: gaelco/gaelco.cpp: Added two additional versions of Squash (one working). [Josep Quingles, Recreativas.org, ClawGrip]
+- 13727: Improved emulation of the VT369 SoC and added internal ROMs to a number of systems using it. [David Haywood]
+- 13729: cpu/z80: Store flag register bits separately (improves performance). [holub]
+- 13730: tvgames: Added six TV games based on SunPlus SoCs (five working). [David Haywood, Sean Riddle, TeamEurope]
+- 13731: misc/falgas_m89.cpp: Marked systems as having imperfect sound, rather than completely unemulated sound. [flama12333]
+- 13732: gaelco/gaelco.cpp: Added five additional versions of Thunder Hoop. [Josep Quingles, Recreativas.org, ClawGrip]
+- 13734: nichibutsu/nbmj8688.cpp: Improved DIP switch setting labels for Mahjong Crystal Gal and Mahjong Crystal Gal 2. [buffi]
+- 13735: galeco/wrally_ms.cpp: Dumped a World Rally Championship prototype running on the Modular System (not working).
+  [Josep Quingles, Recreativas.org, David Haywood, ClawGrip]
+- 13736: handheld/hh_sm510.cpp: Added Tronica Treasure Island. [Milan Galcik, algestam, hap]
+- 13737: pinball/gts3a.cpp: Dumped a Spanish version of the Super Mario Bros pinball. [Victor Fernandez (City Game), ClawGrip]
+- 13738: adp/adp.cpp, adp/stella8085.cpp, adp/stellafr.cpp: Dumped eleven games (not working). [m170.dev, stonedDiscord]
+- 13739: handheld/hh_sm510.cpp: Added Elektronika Vesolaya arifmetiki. [Milan Galcik, Igor Nys]
+- 13740: gaelco/xorworld_ms.cpp: Dumped a version of Xor World for the Modular System. [Javier Valero, Recreativas.org, ClawGrip]
+- 13742: handheld/hh_sm510.cpp: Added the Soviet prototype Uchitel' arifmetiki device. [Milak Galcik, Igor Nys]
 - 13743: gaelco: Dumped the PLDs and PROMs for three games on the Modular System. [Josep Quingles, Recreativas.org, ClawGrip]
 - 13744: gaelco/gaelco.cpp: Moved some Salter fitness machines to a more appropriate source file. [David Haywood]
-- 13746: gaelco/gaelco3d.cpp: Added a prototype of Radikal Bikers (not working). [Josep Quingles, Recreativas.org, ClawGrip]
-- 13747: gaelco/glass.cpp: Added a prototype of Glass (not working). [Josep Quingles, Recreativas.org, David Haywood, ClawGrip]
+- 13746: gaelco/gaelco3d.cpp: Added a prototype of Radikal Bikers (not working). [Javier Valero, Recreativas.org, ClawGrip]
+- 13747: gaelco/glass.cpp: Added a prototype of Glass (not working). [Javier Valero, Recreativas.org, David Haywood, ClawGrip]
 - 13748: video/ppu2c0x_vt.cpp: Added support for high-resolution modes, and improved VT32 PPU emulation. [David Haywood]
 - 13949: tvgames: Added six JAKKS Pacific TV games (four working). [David Haywood, Sean Riddle, TeamEurope]
 - 13750: gaelco/wrally.cpp: Added three additional versions of World Rally Championship. [Josep Quingles, Recreativas.org, ClawGrip]
