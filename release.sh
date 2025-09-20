@@ -2,7 +2,6 @@
 
 copyfiles()
 {
-	cp "${1}/${3}.sym" "${2}/"
 	cp "../build/whatsnew/whatsnew_${5}.txt" "${2}/whatsnew.txt"
 
 	for dir in artwork bgfx hlsl plugins samples ; do
