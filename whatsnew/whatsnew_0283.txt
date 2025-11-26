@@ -174,7 +174,7 @@ apple2_flop_misc:
   DOS 3.1 System Master, DOS 3.1.1 System Master, DOS 3.2 System Master (Plus Version), DOS 3.2 System Master (Standard Version),
   DOS 3.2 Utility Disk, DOS 3.2.1 System Master (Standard Version), [Apple II Documentation Project]
 ibm5170_cdrom:
-  Aracde's Greatest Hits: The Atari Collection 2, Atari Arcade Hits 2, Robotron X [gregf]
+  Aracde's Greatest Hits: The Atari Collection 2, Atari Arcade Hits 2, Robotron X [gregf, Mike Swanson]
   Absolute Pinball (Europe), Absolute Pinball (USA) [redump.org]
 ibmpcjr_flop: 64K RAM Ought to be Enough [Ricardo Quesada]
 mpc3000_flop:
@@ -260,244 +260,32 @@ Merged pull requests
 - 14461: access/acvirus.cpp: Added analog input knobs for the Virus A and Virus B. [Felipe Sanches]
 - 14465: apple/apple2e.cpp: Fixed the Apple IIc mouse not working without a joystick connected (GitHub #14463). [arekkusu42]
 - 14467: cpu/uml.cpp: Added UML bit field extract instructions. [Vas Crabb]
-
-14469: [Access Virus B] Control Panel LEDs [felipesanches]
-
-14470: CD-i: Fix XA Audio Peaking [Vincent-Halver]
--cdicdic: Fixed audio peaking by decoding in 32-bit and clipping to 16 later. [Vincent Halver]
--cdislavehle: Simplified mouse position-update logic. [Vincent Halver]
-
-14472: mips: Move MIPS boards into their own files [eschaton]
-Since the I2000 (Rx2030) and R3030 (Rx3230) boards are so different, they really belong in their own files. I've kept the original
-  mips.cpp file for common functions.
-There doesn't seem to be enough commonality at this time to make a common base class worthwhile, perhaps as more boards are
-  implemented some will be found.
-
-14475: dt7.cpp / toaplan_v25_tables.h - correct (I think) an opcode for DT7 sound CPU [mamehaze]
-
-14476: sega/model2: tilemap fixes [gm-matthew]
-When emulating System 24 tilemaps (which Model 2 uses) MAME currently treats color 0 of any palette as transparent, but some Model 2
-  games use color 0 to encode tile-specific colors. Here is a screenshot of Behind Enemy Lines demonstrating the problem:
-<img width="496" height="384" alt="image" src="https://github.com/user-attachments/assets/a5573bb2-ca76-4a3b-8f64-fe2b61a0c9ec" />
-Here is what that screenshot is supposed to look like:
-<img width="496" height="384" alt="image" src="https://github.com/user-attachments/assets/eb1b02c6-fcd8-4231-82be-f94ae81e5a48" />
-The Sega System 24 Hardware Notes) specifies the following when ABSEL=0:
-> Zero value pixels from the topmost layer are considered transparent.
-> Zero value pixels from the bottommost layer show color 0 of the specified
-> palette.
-> 
-> If the topmost layer is blanked, it is considered transparent.
-> If the bottommost layer is blanked, it is filled with color 0 of palette 0.
-On Model 2, tilemap B is usually the bottommost layer unless it has the priority flag set, in which case either tilemap A or the
-  framebuffer is the bottommost layer depending on whether tilemap A also has the priority flag set. However, I have observed that
-  the polygon layer is never displayed if it is empty even if both tilemaps A and B have priority (Virtual On title screen). It is
-  unknown whether tilemap A would instead be chosen if tilemap B has priority set and tilemap A does not, making tilemap A the
-  bottommost layer; I have not observed any games that depend on this.
-The easiest solution I have found is to display color 0 from the tile-specific palette of tilemap B if all three would otherwise be
-  transparent; this seems to fix all tilegen issues. My current solution works by drawing the layers in this order:
-- tilemap B without priority as opaque
-- tilemap B with priority as opaque
-- tilemap A without priority
-- frame buffer
-- tilemap B with priority
-- tilemap A with priority
-The solution is not quite as neat as I'd like it to be so I'm submitting this commit as a draft for now; any ideas to make the
-  solution more elegant are welcome.
-
-14482: [Access virus] RAM banking + small fix to knob assignment + knob maxstate=127 on .lay file [felipesanches]
-This PR has all my recent improvements on the driver.
-* With RAM banking, the self-test (hold 'A' while booting) now passes (does not display `*** RAM ERROR ***` anymore).
-* The knobs `Osc2Semitone` and `Osc2Detune` were mistakenly swapped, so now I fixed their declaration.
-* I also followed @m1macrophage's suggestion of setting `maxstate=127` for the `simplecounter` element used on knobs on the layout.
-
-14483: Update goldstar.cpp cmast97 settings [jbtx77gr]
-- adding cmast97 correct settings
-
-14485: Fix Typo description paracaidista.cpp [flama12333]
-Are you mean hardware?
-
-14486: apple2e: fix -ramsize crash [arekkusu42]
-This PR fixes apple2c* crashing when using -ramsize.
-To reproduce:
-1. launch MAME with: apple2c3 [or apple2c4, apple2cp] -ramsize 1152K -flop1 A2eDiagnostics_v2.1.dsk
-On arm64 macos Sonoma 14.8.1, MAME 0.282 crashes while booting ProDOS:
-`zsh: segmentation fault  ./appulatord apple2c3 -ramsize 1152K -flop1`
-(this is an uninitialized memory bug, so the results may vary run-to-run or depend on OS-specific allocator behavior.)
-After rebuilding with Asan (ARCHOPTS="-fsanitize=address") we can see:
-`SUMMARY: AddressSanitizer: BUS apple2e.cpp:874 in (anonymous namespace)::apple2e_state::memexp_w(unsigned int, unsigned char)`
-mame_282_asan.txt
-...and logging `m_exp_liveptr` shows that the high byte is non-zero, i.e. beyond any possible apple2 allocation.
-The code updating `m_exp_wptr` masks out each of the low three bytes, but notice: the highest byte was never initialized...
-This commit adds initialization, mimicking the `device_reset()` from a2bus_memexp_device (which works fine in apple2ee.)
-
-14487: ibm5170.xml Add 1 new not working software [FakeShemp]
-New software list items marked not working
-------------------------------------------
-ibm5170: Gary Grigsby's War in Russia [FakeShemp]
-I'm pretty sure this is a good dump, but for some reason I cannot get it to install with at486.
-
-14489: skeleton/squale.cpp: add ROM information for monitor 1.2a and 1.2b [Mokona]
-
-14490: segaic24: draw bottom tilemap layer as opaque [gm-matthew]
-Applying my recent Model 2 tilemap fixes to System 24 and Model 1 as well; fixes the title screen of `qsww` and most of the issues
-  in MT06379.
-The one remaining tilemap bug in Crack Down is the description of the time bomb not scrolling into view during attract mode; this is
-  due to the scrolling of tall playfields not being implemented properly and I am working on a separate fix for this.
-I noted that the System 24 tilegen issues could also be fixed by simply always drawing tilemap B as opaque before drawing the
-  tilemap layers as normal, rather than drawing all the tilemap layers in reverse order:
-`m_vtile->draw(screen, bitmap, cliprect, 6, 0, TILEMAP_DRAW_OPAQUE);`
-`m_vtile->draw(screen, bitmap, cliprect, 4, 0, TILEMAP_DRAW_OPAQUE);`
-However, since the System 24 Hardware Notes) specify that "zero value pixels from the _bottommost_ layer show color 0 of the
-  specified palette", I have implemented the behavior as described.
-
-14492: rare/kinst.cpp: Fix metadata [cam900]
-Nintendo has co-copyright of games in these drivers, until Rare get copyright alone.
-reference: https://flyers.arcade-museum.com/videogames/show/525
-
-14495: apple2gs: fix inconsistent clocks [arekkusu42]
-This commit fixes apple2gs to stop using two slightly different 1 MHz clocks:
-* `1022727` used in update_speed() and IWM()
-* `1021800` used when toggling the ZipGS, and expected by the 262-line video @ 60Hz
-Making the clocks consistent fixes the out-of-sync flickering/slowing rolling drift visible in some beam-racing demos, such as
-  French Touch CC65C02 or deater's double (first part, the second part syncs to C019 instead) or fancy lores.
-More complicated intra-scanline beam racing (as used in the first two of those demos) still doesn't work (the 16 MHz screen timing
-  has no HBL and 14 MHz cliprects are scaled weird and also not honored) but this is enough to make simple whole-scanline timing
-  stable.
-This change undoes part of 623e248 which changed the IWM() Q3 clock.  That change made it consistent with the old A2GS_1M; now it
-  becomes consistent with the rest of the apple2 1021800 clocks.
-Due to the ongoing disk corruption #14474, I ran a bunch of before/after testing on the IWM, with and without the ZipGS enabled:
-```
-                                                        Before 2.8 7 16 After 2.8 7 16
-* Apple IIgs Diagnostic v3.1: Disk Port Test, 100 iterations     √ √ √          √ √ √
-* Disk Muncher 2.0: copy DOS3.3 35-track disk to blank, boot it  √ √ √          √ √ √
-* Apple II System Utilities 3.2: FastCopy & Compare ProDOS disk  √ √ √          √ √ √
-* GSOS 6.0.4 Finder: initialize ProDOS blank, drag-copy disk     √ √ √          √ √ √
-* XPS Diagnostic IIe 1.0.5: E) CPU G) DISK L) MEDIA              1 2 2          1 1 1
-1: XPS shows the same errors before and after:
-G) DISK SYSTEM shows SEEK errors
-L) MEDIA VERIFY shows errors reading the last track
-These errors don't occur in apple2ee with diskiing.  I don't have functional floppy disks to verify this against my IIgs hardware...
-2: XPS shows disk corruption with the ZipGS:
-G) READ errors in addition to SEEK
-L) MEDIA VERIFY shows error with tracks 0, 33 and 34 (and then the disk was corrupt)
-(corruption was intermittent but repeatable, running E) G) L) on fresh copies of the XPS disk.)
-```
-<img width="704" height="460" alt="apple2gs_Zip7_XPS_media"
-  src="https://github.com/user-attachments/assets/5770d341-87fa-40f0-b4cc-b02362abbc09" />
-Note that all of the typical user-facing tasks appear to succeed before this PR, including the long-running Disk Port Test! So
-  whatever the timing problem is that causes corruption in XPS, it is subtle and intermittent.   Making the IWM Q3 clock consistent
-  with the ZipGS 1 MHz temporary delay clock appears to fix (or at least, avoid) the problem.
-
-14496: Current Plug and Play PR + some GPL162xx related hack removal [mamehaze]
-- removed several per-game hacks from GPL162xx code in favour of using registers which control the same behaviour [David Haywood]
-new NOT WORKING systems
-----------
-Bratz Rock Angelz [Team Europe]
-Mecha Nage! Monster Ball (Japan) [Team Europe]
-Cyber Arcade Motion - Lilo & Stitch (JL3180D_01) [Team Europe]
-
-14497: sound/cem3394.cpp: improved CEM3394 and adapted sente6vb to the changes. [m1macrophage]
-Added and improved CEM3394 functionality relevant to the `sixtrak` while working on audio for that driver.
-Sending as a separate PR to keep the scope manageable, given there are also changes to `sente6vb`.
-Incidental improvements to `sente6vb`:
-* Unlocked some sounds. An obvious one is the post-tuning chirp for each voice during boot.
-* Centered audio around 0.
-`sound/cem3394` changes:
-* Made VCO output range [-1, 1], instead of [0, 1].
-* Added pulse-width dependent DC level of pulse waveform, as described in the datasheet.
-* Waveform selection logic now works for voltages outside the bounds provided in the datasheet.
-  * Both the `sixtrak` and `sente6vb` will some times use voltages outside those ranges.
-* Added AC coupling between VCF output and VCA input.
-* Forcing parameter computation in `device_start()`.
-* Added ability to stream voltage inputs. The `sixtrak` needs that for the VCA gain and VCF frequency.
-* New configuration interface:
-  * New `configure()` method computes VCO and VCF zero frequencies based on the attached passive components.
-  * Exposed method for enabling pulse-width limiting for drivers that need it. Now disabled by default.
-* Fixed compilation for FILTER_TYPE_ESQ1.
-`midway/sente6vb` changes:
-* Using new CEM3394 configuration interface.
-  * Verified that it produces almost the same VCO and VCF zero frequencies.
-* Reduced CEM3394->speaker gain to compensate for increased loudness of CEM3394
-  * Old range: [0, 1] nominal. New range: ~[-1, 1] x 0.5 = ~[-0.5, 0.5] nominal (can be exceeded in some cases).
-* Added AC coupling to noise output.
-  * Also changed the noise->CEM3394 gain from 0.5 to 1.0, to keep relative loudness the same.
-  * Old range: [0, 1] x 0.5 = [0, 0.5]. New range: [-0.5, 0.5] x 1
-
-14498: Add software lists for the Ensoniq VFX-SD, SD-1 and SD-1/32 keyboards. [cbrunschen]
-This PR builds on the floppy disk functionality improvements in https://github.com/mamedev/mame/pull/14444 and adds the Sequencer OS
-  floppy images for each major version, as well as some demo disks.
-Each can also use the floppy disks for its predecessor, mainly because
-there are demo songs on the earlier OS disks that are not on the later ones,
-but which still work perfectly well and sounds great.
-The SD-1/32 software list also includes four demo disks:
-1. A demo disk specifically for the SD-1/32
-2. A demo disk for the SQ-series of keyboards with 32 voices
-   This contains System Exclusive files foro use with 32-voice SQ series
-   keyboards
-3. Two multi-product demo disks
-   These contain both sequencer files for the SD-1/32 and System
-   Exclusive files for use with the SQ and KS series of keyboards.
-
-14499: as_dsk.cpp: Fix size of FLUX chunk in MOOF files [twvd]
-The previous code allocated 512 bytes to accomodate a FLUX chunk if the resulting file has flux tracks, but the actual size of a
-  FLUX chunk is 168 bytes (8 bytes header + 160 bytes chunk).
-When MAME allocated 512 bytes, this left 344 zero-bytes padding in the file that other tools would interpret as invalid chunks.
-See file format reference: https://applesaucefdc.com/moof-reference/
-
-14500: Mark the Ensoniq SD-1/32 as working. [cbrunschen]
-This PR: 
-1. removes the markers of "imperfect sound" from the es5510 (and the related " esq_5505_5510_pump that really only ensures that the
-  es5510 processes the samples generated by an es5505)
-2. updates the 21-voice VFX family of keyboards to most have "imperfect timing" markers, since they do exhibit timing strangeness;
-  but since the SD-1/32, the 32-voice variant, does not have those timing issues, marks that simply as working
-4. marks the sd1 (21 voice) as a clone of the sd132 - because the sd132 is the most complete variant, and also the one that is
-  working, so that is the one users should be guided towards
-It does these things because, in my testing, the emulated sd132 sounds completely like the real one that I have; and now that it has
-  working floppy and cartridge support, and is able to run the sequencer OS, and has layouts that give access to the full experience
-  including all buttons, sliders, wheels, and even a full working keyboard, it really is a fully usable, working emulation of an
-  Ensoniq SD-1/32 .
-(Due to the timing issues, the 21-voice keyboards of course can't be marked as working, because they're not.)
-And as it is the most complete, and working, member of the family, I think the sd132 should be marked as the "parent", and the
-  not-quite-working sd1 (21 voice) as the "clone", so that users can more easily find the better, working version.
-
-14502: Add internal layout for Access Virus A / Declare inputs for other virus synths / Misc. improvements to the driver
-  [felipesanches]
-* Declare MIDI in/out ports
-* Declare buttons and knobs for Virus C, CL, Rack and RackXL
-* Restructure the driver to avoid excessive repetition of machine config declarations
-* Declare a second version of the Virus C ROM
-
-14503: trs/coco3.cpp: Enable GIME vertical text scroll register [tlindner]
-
-14504: esq5505.cpp: Also support HFE format flopppy images. [cbrunschen]
-As discussed, HFE floppy images are often used for synthesizer floppy images. Add support for using these in esq5505.cpp
-  synthesizers.
-I verified that this works for the sd132 with an image file converted from `.img` to` .hfe` , loading the image into the HxC
-  software with _Load Raw Image_ and choosing the _Ensoniq EPS 3"5 DD Floppy Disk_  format.
-
-14506: new WORKING clones - M.I.A. - Missing in Action (Data East, 12/22/88, US, prototype?) [mamehaze]
-new WORKING clones
---------
-M.I.A. - Missing in Action (Data East, US, 12/22/88, prototype?) [Mann of Wor, RetroCJT]
-
-14508: current Plug and Play work (SPG/GPL cleanups) [mamehaze]
-- split a Generalplus Renderer off from the SunPlus renderer, and reduced the SunPlus renderer to just the features supported by the
-  SPG2xx.  While the GPL does have similar features, it makes too many small changes to cleanly implement it as a class on top of
-  the SPG renderer, and having it sitting in the same files makes the SPG code less clear.  [David Haywood]
-
-14509: sinclair/specnext.cpp: Added Kempston/MD Pad inputs [holub]
-
-14510: ibm5170_cdrom: Several new CD-ROM dumps [chungy]
-Crediting gregf for providing the discs for the last three, though I personally dumped them.  :-)
-It's not a great habit but I've been sitting on these for most of the year, haven't sat down to actually test them in MAME.
-  Nonetheless, they are good CD dumps and ought to be preserved as such.
-New software list items (ibm5170_cdrom.xml)
--------------------------------------------
-Absolute Pinball (Europe) [redump.org]
-Absolute Pinball (USA) [redump.org]
-Arcade's Greatest Hits: The Atari Collection 2 [gregf]
-Atari Arcade Hits 2 [gregf]
-Robotron X [gregf]
+- 14469: access/acvirus.cpp: Hooked up control panel LEDs for the Virus B. [Felipe Sanches]
+- 14470: philips/cdicdic.cpp: Avoid truncation decoding XA audio; philips/cdislavehle.cpp: Simplified mouse logic. [Vincent-Halver]
+- 14472: mips/mips_i2000.cpp, mips/mips_r3030.cpp: Moved I2000 and R3030 system board classes to their own files. [Chris Hanson]
+- 14475: toaplan_v25_tables.h: Corrected a RETI opcode for the DT7 sound CPU. [David Haywood]
+- 14476: sega/model2_v.cpp, sega/segaic24.cpp: Draw Model 2 tilemap B as opaque (visible in Behind Enemy Lines). [Matthew Daniels]
+- 14482: access/acvirus.cpp: Implemented RAM banking and fixed some controls. [Felipe Sanches]
+- 14483: igs/goldstar.cpp: Corrected some DIP switch settings for Cherry Master '97 V1.7. [Ioannis Bampoulas]
+- 14485: misc/paracaidista.cpp: Corrected a spelling error in a comment. [flama12333]
+- 14486: apple/apple2e.cpp: Fixed Apple IIc crashing with large RAM sizes. [arekkusu42]
+- 14487: ibm5170.xml: Added Gary Grigsby's War in Russia (not working). [FakeShemp]
+- 14489: skeleton/squale.cpp: Added monitor versions 1.2a and 1.2b as BIOS options. [Sylvain Glaize]
+- 14490: sega/model1_v.cpp, sega/segas24_v.cpp: Draw the bottom tilemap layer as opaque. [Matthew Daniels]
+- 14492: rare/kinst.cpp: Acknowledge that Nintendo was involved in development in manufacturer metadata. [cam900]
+- 14495: apple/apple2gs.cpp: Fixed inconsistent clock frequencies (fixes some beam-racing effects in demos). [arekkusu42]
+- 14496: tvgames: Added three games (not working), and replaced several hacks with better emulation. [David Haywood, TeamEurope]
+- 14497: sound/cem3394.cpp: Improved sound generation (fixes some sounds for the Bally/Sente 6VB sound board). [m1macrophage]
+- 14498: sd132_flop.xml sd132_flop.xml, vfxsd_flop.xml: Added Ensoniq floppy disk software lists. [Christian Brunschen]
+- 14499: formats/as_dsk.cpp: Fixed the size of FLUX chunks when writing FLUX chunks in MOOF files. [twvd]
+- 14500: ensoniq/esq5505.cpp: Marked the VFX, VFX-SD and SD-1 as working. [Christian Brunschen]
+- 14502: access/acvirus.cpp: Added MIDI ports, controls for more models, and a layout for the Virus A. [Felipe Sanches]
+- 14503: trs/gime.cpp: Emulated the vertical text scroll register. [Tim Lindner]
+- 14504: ensoniq/esq5505.cpp: Added support for HFE format floppy disk image files. [Christian Brunschen]
+- 14506: dataeast/battlera.cpp: Added an apparent prototype of M.I.A. - Missing in Action. [Mann of Wor, RetroCJT, David Haywood]
+- 14508: machine/gpl_renderer.cpp: Separated the GeneralPlus GPL SoC rendering code from the SPG renderer. [David Haywood]
+- 14509: sinclair/specnext.cpp: Added game controller inputs. [holub]
+- 14510: ibm5170_cdrom.xml: Added five working games. [Mike Swanson, gregf, redump.org]
 
 14511: m24_kbd.cpp: Add support for proprietary mouse [donohoe00]
 - Add support for the proprietary mouse which plugs into the M24 / 6300 keyboard.  The Logich Serial mouse, which is populated in
@@ -2266,3 +2054,5 @@ Huangpai Zuqiu Plus / Chaoji Shuangxing Plus (V103CN) [David Haywood]
  * Things that are not DIP switches should not be DIP switches and should not have DIP switch locations.
 
 -cpu/dsp563xx: This missed srcclean, do it now. [Vas Crabb]
+
+-Fixed indentation for Ensoniq software lists. [Vas Crabb]
