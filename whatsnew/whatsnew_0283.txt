@@ -286,174 +286,33 @@ Merged pull requests
 - 14508: machine/gpl_renderer.cpp: Separated the GeneralPlus GPL SoC rendering code from the SPG renderer. [David Haywood]
 - 14509: sinclair/specnext.cpp: Added game controller inputs. [holub]
 - 14510: ibm5170_cdrom.xml: Added five working games. [Mike Swanson, gregf, redump.org]
-
-14511: m24_kbd.cpp: Add support for proprietary mouse [donohoe00]
-- Add support for the proprietary mouse which plugs into the M24 / 6300 keyboard.  The Logich Serial mouse, which is populated in
-  serport1 by default, need to be removed for this to work (based this on what the Amstrad PC1512 does).
-- Make 'hdc' the default device in the first ISA slot (as per drivers for other IBM and clone machines).
-- Mark 6300 Plus as Working
-
-14513: iteagle.cpp - Add bootrom variant [FakeShemp]
-Many years ago I bought an update kit for Golden Tee Fore 2002. It came with a replacement bootrom labeled "GOLF FORE U15 V1.02". I
-  just dumped it and noticed that it was different from the one in MAME.
-Here's the thing though. When I try the 1.02 already in mame with gtfore02, it fails at bootup with checksum failures. My dump does
-  boot though. Could it be a bad dump or are there some other shenanigans?
-I've added my dump as an alt for now.
-
-14515: sega/model2: apply color table to tilemap layers; indy500 supports 16:9 [gm-matthew]
-Applying the color table to tilemap layers results in Behind Enemy Lines correctly fading to/from black when starting a game. It is
-  necessary to refresh the whole palette if the scroll (tilemap) color table is written to.
-I assume that the scroll color table is used when direct framebuffer drawing is enabled, since pixels are in 15-bit RGB format
-  without a luminance component.
-Indy 500 deluxe cabinets use 16:9 monitors:
-<img width="563" height="1000" alt="image" src="https://github.com/user-attachments/assets/49242d5a-ba5c-4561-b3fa-4cdf6e60b5ee" />
-Also the CRTC offset values when drawing directly to the framebuffer have been corrected; the title screen of Last Bronx now appears
-  exactly in the correct position.
-I'm debating whether to remove the fixed gamma adjustment in favor of letting the user use the brightness/contrast sliders, since
-  the "gamma curve" varies from game to game, however this would lead to some games looking very washed out before adjustment and
-  users who are unaware of the slider settings might be unhappy with the change. I don't think it is possible to apply custom
-  brightness/contrast values in the driver itself (if there is a way, I'd be delighting to hear it).
-We could perhaps use `PORT_ADJUSTER` to add sliders that allow users to adjust the "gamma curve" while applying settings that look
-  decent for most games out of the box.
-
-14518: esq5505 Ensoniq VFX family layouts: Specify the bounds for each group. [cbrunschen]
-Specify the bounds for each group in the Ensoniq VFX family layouts.
-This fixes an issue where the VFX (non-SD)'s button area is stretched vertically, because it does not have the "System" label at the
-  top, leaving an empty space that was not included in the bounds calculation. This resulted in the button area being stretched
-  vertically to fill the space, and the buttons being taller than they should.
-Before:
-<img width="3500" height="1286" alt="Screenshot From 2025-11-13 16-12-58"
-  src="https://github.com/user-attachments/assets/bc7d7934-0193-4bdc-a1b9-07c66148a9eb" />
-<img width="3500" height="796" alt="Screenshot From 2025-11-13 16-16-22"
-  src="https://github.com/user-attachments/assets/26bfce92-c034-4dc7-a630-44048c4c8caf" />
-After:
-<img width="3500" height="1286" alt="Screenshot From 2025-11-13 16-12-22"
-  src="https://github.com/user-attachments/assets/ab78f4d8-36d4-4d4d-8257-0321681198be" />
-<img width="3500" height="796" alt="Screenshot From 2025-11-13 16-16-00"
-  src="https://github.com/user-attachments/assets/4acd8b01-7cc3-477d-bbab-a5e24ef5692f" />
-
-14522: sharp/mz700.cpp: Enable mz700_cass software list for Sharp MZ-800 [paul75s]
-As Sharp MZ-800 is fully backwards compatible with MZ-700, change enables mz700_cass as a compatible software list for MZ-800.
-This avoids duplication in the mz800_cass software list, particularly of software that functions better on MZ-800 but is also MZ-700
-  compatible (and may over time, with fuller emulation of MZ-700 capabilities such as PCG run consistency on both machines).
-
-14526: current Plug and Play work (6 new VT sets)  [mamehaze]
-new NOT WORKING systems
--------
-G6 666 in 1 Handheld [David Haywood, Team Europe]
-G7 666 in 1 Handheld [David Haywood, Team Europe]
-Finger Dancing [Team Europe]
-S10 Handheld Game Console (520-in-1) [Team Europe]
-F5 Handheld Game Console (620-in-1) [Team Europe]
-G3 800 in 1 Handheld [Team Europe]
-
-14527: sinclair/specnext.cpp: various fixes [holub]
-sinclair/specnext.cpp: fix line interrupt offset
-sinclair/specnext_tiles.cpp: Support global transparent color for tiles mode1
-sinclair/spectrum.cpp: Re-enable extra inputs for natural keyboard mapping
-sinclair/screen_ula.cpp: Fixed alignment optimization
-
-14528: Layout for Access Virus C [felipesanches]
-
-14530: Update goldstar.cpp fb2010 correct dsw [jbtx77gr]
-- added correct fb2010 settings
-
-14531: sequential/sixtrak.cpp: Emulated audio and promoted to working. [m1macrophage]
-New functionality:
-* Wheel RC circuits.
-* Autotune circuit.
-* Audio.
-Systems promoted to working
-----------------------------
-Sequential Circuits Six-Trak (Model 610) Rev B/C
-
-14536: Update goldstar.cpp added input settings for eldoradoa [jbtx77gr]
-- added input settings for eldoradoa
-- corrected spacing
-- fixed minor input definitions
-- added ASCII info explaining how to reset fb2010
-
-14538: Layout for Access Virus Rack XL [felipesanches]
-<img width="1958" height="289" alt="image" src="https://github.com/user-attachments/assets/09e37c2b-7d55-4940-95b9-4edc13a9bb7e" />
-
-14541: Current Plug and Play additions (7 sets + changes needed to improve support for them) [mamehaze]
-new machines marked as NOT WORKING
-----------
-S5 Game Box (520-in-1) [Team Europe, David Haywood]
-500-in-1 Handheld Game [Team Europe, David Haywood]
-Retro FC 620-in-1 [Team Europe, David Haywood]
-20 SEGA Master System & Game Gear Classics - Plug & Play on TV [Team Europe, David Haywood]
-XaviX Golf (XaviXPORT) [Team Europe, David Haywood]
-new clones marked as NOT WORKING
----------
-Game Box 400 in 1 (2022 PCB) [Team Europe, David Haywood]
-XaviX Golf (XaviXPORT, Japan) [Team Europe, David Haywood]
-
-14542: Layout for Access Virus Rack (Ver. T) [felipesanches]
-<img width="1962" height="296" alt="Screenshot From 2025-11-17 10-18-24"
-  src="https://github.com/user-attachments/assets/1cd23c9b-9324-4170-a48a-c75d35f69c9d" />
-
-14543: Layout for the Patinho Feio computer [felipesanches]
-This was developed by @felipe-27 and @nicolysampaio under my guidance during the past few months.
-The driver itself can still be improved a lot, but this PR focuses mostly on adding their improved layout, which looks like this:
-<img width="957" height="891" alt="image" src="https://github.com/user-attachments/assets/6f056a86-4877-442d-9ff2-7123f63531b1" />
-While the version currently available on MAME looks like this:
-<img width="767" height="801" alt="image" src="https://github.com/user-attachments/assets/5de2afdf-7a84-4384-a14e-23fe09ca7c3c" />
-And, as a reference, an actual photo of the real computer is here:
-<img width="768" height="512" alt="image" src="https://github.com/user-attachments/assets/198334b1-0018-40e3-8424-cf8756da8028" />
-With more info available at https://forum.fiozera.com.br/t/resgate-historico-do-computador-patinho-feio-usp-1971/58
-
-14545: Layout for Access Virus Classic [felipesanches]
-<img width="1961" height="784" alt="Screenshot From 2025-11-18 01-02-13"
-  src="https://github.com/user-attachments/assets/561ccf12-5a71-4bb8-8694-03473c2f82ab" />
-
-14548: sequential/sixtrak.cpp: Added pre-initialized NVRAMs. [m1macrophage]
-The NVRAMs were initialized with factory patches using MIDI sysex files.
-
-14549: sinclair/specnext.cpp: various fixes [holub]
-* sinclair/specnext.cpp: Added second SDCARD; route mono speaker to both channels; fixed typo in joystick mapping; missing screen
-  updates
-* sinclair/screen_ula.cpp: Fixed half pixel scroll; fix bug in rendering
-* sinclair/specnext_tiles.cpp: Fixed scroll for different types of tiles
-
-14553: neogeo.xml: Added 2 working items [ArcadeShadow]
-Bang Bang Busters 2 (demo) [PixelHeart]
-Double Dragon One (beta 3, 20250916) [OzzyOuzo]
-
-14556: sequential/sixtrak.cpp: Added Rev A as a clone. [m1macrophage]
-The same firmware is also compatible with the Rev A tuning circuit.
-New working clones
-------------------
-Sequential Circuits Six-Trak (Model 610) Rev A
-
-14557: hash/apple2_flop_misc.xml: fix file name for `dos321` [SpecLad]
-This was presumably a copy-paste error from `dos32`.
-
-14558: Improved layout for Technics KN5000 [felipesanches]
-# Before
-<img width="1962" height="1043" alt="Screenshot From 2025-11-20 09-32-22"
-  src="https://github.com/user-attachments/assets/11da9bf3-f58e-4958-9ca1-1048e93f90cf" />
-# After
-## Compact view
-<img width="1962" height="1043" alt="Screenshot From 2025-11-20 09-29-38"
-  src="https://github.com/user-attachments/assets/a1eb135b-d26d-4696-a82b-fc10507b8b0e" />
-## Screen close-up view
-<img width="1440" height="941" alt="Screenshot From 2025-11-20 09-27-06"
-  src="https://github.com/user-attachments/assets/d2aed471-0d28-4bdb-a6ad-613e5e35b359" />
-
-14561: sound/cem3394.cpp: Fixed preexisting "FREQENCY" typo and updated comments. [m1macrophage]
-
-14566: sega/model2_v.cpp: shift texture parameters index right by 2 [gm-matthew]
-Fixes glitchy polygons and motion blur effect in vf2 ending
-
-14568: new NOT WORKING clones - XaviX Tennis Japan ver [mamehaze]
-new NOT WORKING clones
----------
-XaviX Tennis (XaviXPORT, Japan) [David Haywood, Team Europe]
-
-14569: Update igs_m027.cpp - fix cjsxp tile rom loading [mamehaze]
-
-14571: Update igs_m027.cpp - fix ccly tile ROM loading [mamehaze]
+- 14511: olivetti/m24_kbd.cpp: Added incremental encoder inputs for mouse axes. [donohoe00]
+- 14513: itech/iteagle.cpp: Added a Golden Tee Fore! 2002 V1.02 boot ROM as a BIOS option. [FakeShemp]
+- 14515: sega/model2.cpp, sega/model2_v.cpp: Apply the color table to tilemap layers. [Matthew Daniels]
+- 14518: sd1.lay, sd132.lay vfx.lay, vfxsd.lay: Specify explicit bounds for element groups. [Christian Brunschen]
+- 14522: sharp/mz700.cpp: Added the MZ-700 cassette software list as a compatible software list for the MZ-800. [paul75s]
+- 14526: nintendo: Added six systems based on NES-derived SoCs. [David Haywood, TeamEurope]
+- 14527: sinclair/specnext.cpp, sinclair/specnext_tiles.cpp, sinclair/specnext_ula.cpp: Fixed interrupt and graphics issues. [holub]
+- 14528: access/acvirus.cpp: Added an internal layout for the Virus C. [Felipe Sanches]
+- 14530: igs/goldstar.cpp: Corrected DIP switch settings for Fruit Bonus 2010. [Ioannis Bampoulas]
+- 14531: sequential/sixtrak.cpp: Emulated sound and promoted the system to working. [m1macrophage]
+- 14536: igs/goldstar.cpp: Corrected DIP switch settings for Dyna El Dorado. [Ioannis Bampoulas]
+- 14538: access/acvirus.cpp: Added an internal layout for the Virus Rack XL. [Felipe Sanches]
+- 14541: nintendo, sega, tvgames: Added seven TV games and handheld games (not working). [David Haywood, TeamEurope]
+- 14542: access/acvirus.cpp: Added an internal layout for the Virus Rack. [Felipe Sanches]
+- 14543: usp/patinhofeio.cpp: Improved the internal layout for the Patinho Feio. [Felipe Nascimento, Nicoly Sampaio, Felipe Sanches]
+- 14545: access/acvirus.cpp: Added an internal layout for the Virus Classic. [Felipe Sanches]
+- 14548: sequential/sixtrak.cpp: Added default non-volatile RAM content with tuning and factory patches. [m1macrophage]
+- 14549: sinclair/specnext.cpp, sinclair/specnext_tiles.cpp: Added second SD Card, and fixed sound and graphics issues. [holub]
+- 14553: neogeo.xml: Added two working items. [PixelHeart, OzzyOuzo, ArcadeShadow]
+- 14556: sequential/sixtrak.cpp: Added the Rev A version as a clone. [m1macrophage]
+- 14557: apple2_flop_misc.xml: Corrected the label for the Apple DOS 3.2.1 Standard disk image. [Roman Donchenko]
+- 14558: kn5000.lay: Improved the internal layout for the Technics KN5000. [Felipe Sanches]
+- 14561: sound/cem3394.cpp: Fixed a misspelling in a constant name and updated comments. [m1macrophage]
+- 14566: sega/model2_v.cpp: Fixed interpretation of index in texture parameters (fixes Virtua Figter 2 issues). [Matthew Daniels]
+- 14568: tvgames/xavix_2002.cpp: Added the Japanese release of XaviX Tennis (not working). [David Haywood, TeamEurope]
+- 14569: igs/igs_m027.cpp: Fixed tile ROM loading for Huangpai Zuqiu Plus / Chaoji Shuangxing Plus. [David Haywood]
+- 14571: igs/igs_m027.cpp: Fixed tile ROM loading for Chong Chong Leyuan. [David Haywood]
 
 
 Source changes
