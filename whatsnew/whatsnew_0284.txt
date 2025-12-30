@@ -12,7 +12,7 @@ MAME Testers bugs fixed
 - 09310: [Sound] (pc/ibmpcjr.cpp) ibmpcjr: The SN76496 produces an audible buzz after starting the system. (AJR)
 - 09313: [Sound] (sega/model2.cpp) vcop2: Music does not play in the beginner stage. (Matthew Daniels)
 - 09315: [Sound] (taito/superchs.cpp) superchs and clones: Some sound effects do not play. (hap)
-- 09316: [Sound] (pc/ct486.cpp) ct486 with sb16_lle: Sound eventually stops working in Wolfenstein 3D. (Angelo Salese)
+- 09316: [Sound] (pc/ct486.cpp) ct486 with sb16_lle: Sound eventually stops working properly in Wolfenstein 3D. (Angelo Salese)
 - 09323: [Documentation] (misc/unkhorse.cpp) unkhorse: The game title is actually Derby Derby. (QtQ)
 - 09326: [Graphics] (nichibutsu/armedf.cpp) terraf and clones: Tilemap graphics appear to be cropped. (hap)
 - 09327: [Graphics] (nichibutsu/armedf.cpp) terraf and clones: Some sprites are not visible. (motomachi16)
@@ -266,13 +266,13 @@ apple2_flop_orig:
   Tranquility Base, Tune It ][, U-Boat Command, Wilderness Campaign, Word Machine & Word Machine with Spelling List,
   Zoo Puppet Theater [4am, A-Noid]
 ibm5150:
-  The Norton Utilities Advanced Edition 4.01 [archive.org]
   The Norton Utilities 2.00, The Norton Utilities 2.01 (1983-07-04), The Norton Utilities 2.01 (1983-11-03),
   The Norton Utilities 3.00, The Norton Utilities 4.00, The Norton Utilities 5.00 (1990-07-17) (5.25" disk),
   The Norton Utilities 5.00 (1990-09-25) (5.25" disk), The Norton Utilities 5.00 (1990-12-11) (3.5" disk),
   The Norton Utilities 6.00 (International) (3.5" disk), The Norton Utilities 6.01 (3.5" disk),
   The Norton Utilities 6.01 (5.25" disk), The Norton Utilities Advanced Edition 4.50 (3.5" disk),
   The Norton Utilities Advanced Edition 4.51 (3.5" disk), The Norton Utilities Advanced Edition 4.51 (5.25" disk) [BetaArchive]
+  The Norton Utilities Advanced Edition 4.01 [Circuit Rewind]
   The Norton Utilities Advanced Edition 4.50 (5.25" disk) [Jeff Parsons]
 ibm5170:
   Norton Utilities for Windows 95 (version 1.0), Norton Utilities für Windows 95 (version 1.0) [archive.org]
@@ -290,13 +290,14 @@ ibm5170:
   Mitt första datorprogram (Sweden) [retrotrollet]
   Norton Utilities for Windows 95 (version 1.0, upgrade) [WinWorld]
 ibm5170_cdrom:
-  BSD on Windows (1.5), Norton Utilities 4.0, Norton Utilities 2000, Norton Utilities 2001,
-  Norton Utilities for Windows 95 (version 1.0), Norton Utilities for Windows 95 (version 2.0),
-  Norton Utilities for Windows 95 (version 3.0), Norton Utilities for Windows NT 4.0 [archive.org]
+  Norton Utilities 4.0, Norton Utilities 2000, Norton Utilities 2001, Norton Utilities for Windows 95 (version 1.0),
+  Norton Utilities for Windows 95 (version 2.0), Norton Utilities for Windows 95 (version 3.0), Norton Utilities for Windows NT 4.0
+  [archive.org]
   Norton Utilities 2002 [BetaArchive]
   Chasm: The Rift (Europe), Full Tilt! 2 Pinball (version 1.0), Full Tilt! Pinball (version 1.1),
   Full Tilt! Pinball (version 1.1) (Scholastic Edition), Full Tilt! Pinball (version 1.1) (Thrustmaster OEM), Mega Man X (USA, DOS)
   [redump.org]
+  BSD on Windows (1.5) [vic485]
 m5_cass: 3D Squash, Rainbow Block, Reflection, Sansuu Keisan, Synthesizer, Touchdown, UFO Game [bsittler]
 mac_flop_clcracked:
   Earl Weaver Baseball (version 1.5) (san inc crack), Wizardry II: The Knight of Diamonds (version 4.0) (san inc crack)
@@ -398,1003 +399,113 @@ pippin:
 
 Merged pull requests
 --------------------
-13161: New working clone [Hydreigon223]
-Hyperdrive (ver 1.31, Oct 21 1998) [Hydreigon]
-
-13833: New Working Clone [Hydreigon223]
-Gauntlet Legends (version 1.4)
-Changed warfa and nbanfl to use the different bootroms as BIOS options (in the process, this removes set warfac since the only the
-  bootrom differs from its parent set). I myself had to make changes in 2.7.u27 to reflect the changes made in its former
-  driver_init so it could be used as a BIOS option.
-
-14311: minitel2: Improved ROM list [fabio-d]
-Different revisions of the Minitel 2 came with slightly different ROMs. In addition to the ones already listed (Bv4 and Bv9), this
-  commits adds references to Bv6 and Bv7 too.
-The descriptions of the ROMs were updated to mention "France Telecom" (the "ft_" in their names), who commissioned this Minitel
-  model.
-A placeholder "Custom ROM (for homebrew development)" was added too, with the maximum possible size (64 KiB). This makes it easy use
-  precompiled MAME binaries to test/debug an homebrew ROM too, by simply copying it into the roms directory under the name
-  "devel.bin" and then booting with "-bios devel".
-cc @jfdelnero 
-
-14429: sharp/mz2000.cpp: Addition of mz2000_snap software list [paul75s]
-Introduce mz2000_snap software list containing an initial 16 working snapshots for MZ-2000/MZ-2200.
-These are all sourced from various TOSEC repositories, either in snapshot format (Binary Land and Flicky) or converted from MZT, WAV
-  or D88 cassette tape/floppy disk images which are currently unsupported in MAME, using DumpListEditor to extract the binaries.
-Everything included is supported in this format. Proposed guidelines for what should be included here (vs using original cassette
-  tape or floppy disk formats in existing software lists) included in the xml file.
-
-14443: seibu/sei25x_rise1x_spr.cpp: Merge SEI25X, RISE1X sprite hardware emulation into its own device [cam900]
-seibu/r2dx_v33.cpp, seibu/raiden2.cpp: Reduce duplicates
-seibu/feversoc.cpp: Fix notes
-
-14450: hyperscan.xml, hyperscan_card.xml, x68k_flop.xml, orina_stylish_plus_cart.xml: Normalize descriptions [ArcadeShadow]
-hyperscan.xml; Added manufacturer's name.
-hyperscan_card.xml: Fixed HyperScan word.
-x68k_flop.xml: Replaced "X68k" by the correct system name X68000. 
-orina_stylish_plus_cart.xml: Lower case on the media's description.
-
-14453: */vrender0.cpp and related drivers/devices: Cleanup and Updates [cam900]
-- Fix naming (Use snake_case as default naming convention for consistency)
-- Use shortened typename value for consistency
-- Fix spacings
-- Use lowercase hexadecimal values
-- Make some variables constant
-- Suppress side effects for debugger reads
-- Fix variable and function order in header files
-- Reduce defines
-cpu/se3208/se3208.cpp:
-- Make interrupt pin define as enum
-- Use logmacro.h for logging feature
-- Reduce duplicates
-cpu/se3208/se3208dis.cpp:
-- Fix naming for reduce confusion
-machine/vrender0.cpp:
-- Use memory_share_creator for texture/framebuffer RAM
-- Add notes for DMA increment
-sound/vrender0.cpp:
-- Update per-channel cache when texture memory pointer is changed
-- Use refefence instead pointer as possible
-video/vrender0.cpp:
-- Use template and function arrays for textured draw function
-- Use device_memory_interface for external memory space
-- Split shade and alpha function
-- Minor fixes in single color fill function
-- Use refefence instead pointer as possible
-misc/crospuzl.cpp:
-- Fix filename in comment (is_busy() is now moved into machine/nandflash.h)
-misc/crystal.cpp:
-- Add notes for flash memory emulations
-- Remove unused finder
-- Reduce literal tag usages
-misc/ddz.cpp:
-- Reduce literal tag usages
-misc/menghong.cpp:
-- Add notes for flash memory emulations
-misc/psattack.cpp:
-- Fix logging
-- Reduce literal tag usages
-misc/trivrus.cpp:
-- Add notes for flash memory emulations
-
-14529: apple2_flop_orig.xml, apple2_flop_clcracked, mac_flop_orig, mac_flop_clcracked: Added 27 dumps [A-Noid33]
-Meta data cleanups: Sir-Tech, Hayden Software / Hayden Book Company, and MindPlay
-New working software list items (apple2_flop_orig.xml) 
--------------------------------
-Cat 'n Mouse [4am, A-Noid]
-Cotton Tales (version 1987) [4am, A-Noid]
-Cotton Tales (version 1990) [4am, A-Noid]
-Dyno-Quest [4am, A-Noid]
-Easy Street [4am, A-Noid]
-Factor Blast [4am, A-Noid]
-Fraction-oids (version 1989) [4am, A-Noid]
-Jumblezzz (version 1987) [4am, A-Noid]
-Kamikaze [4am, A-Noid]
-King Cribbage [4am, A-Noid]
-Laser Bounce [4am, A-Noid]
-Match Up! [4am, A-Noid]
-Microscopic Journey [4am, A-Noid]
-Microtyping II [4am, A-Noid]
-Picture Perfect (version 1989) [4am, A-Noid]
-Qwerty's Alphabet Adventure [4am, A-Noid]
-Race the Clock [4am, A-Noid]
-RoboMath [4am, A-Noid]
-Sargon II [4am, A-Noid]
-Shuttle Intercept [4am, A-Noid]
-Story Sketcher (800K 3.5") [4am, A-Noid]
-The Great Maine to California Race [4am, A-Noid]
-New working software list items (apple2_flop_clcracked.xml)
--------------------------------
-Star Traders (4am crack) [4am, A-Noid]
-New working software list items (mac_flop_orig.xml)
--------------------------------
-Earl Weaver Baseball (version 1.5) [4am, A-Noid]
-Wizardry II: The Knight of Diamonds (version 4.0) [4am, A-Noid]
-New working software list items (mac_flop_clcracked.xml)
--------------------------------
-Earl Weaver Baseball (version 1.5) (san inc crack) [4am, a2_qkumba, A-Noid]
-Wizardry II: The Knight of Diamonds (version 4.0) (san inc crack) [4am, a2_qkumba, A-Noid]
-
-14534: ibm5170.xml - Add a few SPCS games [FakeShemp]
-## New working software list items (ibm5170.xml)
-Alfons påhittelåda (Sweden) [FakeShemp]
-Cheops pyramid (Sweden) [conradtrout @ archive.org]
-Handla med Alfons (Sweden) [FakeShemp]
-Måla med Alfons (Sweden) [Max lundell @ archive.org]
-Mitt första datorprogram (Sweden) [retrotrollet @ archive.org]
-Pussla med Alfons (Sweden) [Max lundell @ archive.org]
-Alfons på äventyr i trafiken (Swedish) [Max lundell @ archive.org]
-Kom till Alfons hemliga kalas (Sweden) [Max lundell @ archive.org]
-
-14537: spectrum_cass.xml: Added 15 working items [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Asymmetry (v1.1) [YRGB]
-Ciudades del Mundo [Spectrum Computing]
-Cindy Block (v1.1) [YRGB]
-DS. Bodyguard (v1.1) [YRGB]
-First Aid (Eastmead Computer Systems) [Planeta Sinclair, Steven Brown]
-Frostland (v1.1) [YRGB]
-How to Get the Most Out of Your Computer [Spectrum Computing]
-Kubanoid (v1.1) [YRGB]
-Letter Bomb [Planeta Sinclair, Steven Brown]
-Nightflite (ZX Data) [Spectrum Computing]
-Run Away Nose (v1.6) [YRGB]
-S.T.U.N. Runner (Erbe) [Spectrum Computing]
-Travel Unlimited (v1.1) [YRGB]
-Tunel 3D (Timex) [Spectrum Computing]
-Y.A.S.G. [Planeta Sinclair]
-Merged sets
---------------------------------------------
-The Adventures of Jane Jelly - The Treasure of Zedin (set 1, Bumfun) + The Adventures of Jane Jelly - The Treasure of Zedin -
-  Nightmare Version (set 1, Bumfun)
-The Adventures of Jane Jelly - The Treasure of Zedin (set 2, older) + The Adventures of Jane Jelly - The Treasure of Zedin -
-  Nightmare Version (set 2, older)
-The Adventures of Jane Jelly - The Treasure of Zedin (set 3, turbo loader, with trainer) + The Adventures of Jane Jelly - The
-  Treasure of Zedin - Nightmare Version (set 3, turbo loader, with trainer)
-Frostland (Party Version, English) + Frostland (Party Version, Russian)
-Run Away Nose (Party Version, English) + Run Away Nose (Party Version, Russian)
-Kubanoid (Party Version, English) + Kubanoid (Party Version, Russian)
-Adventure Builder System + Artworx (compilation)
-Cleanups and fixes: parent/clone relationships, descriptions, publishers, years and languages info.
-
-14539: pacman/pacman.cpp: DIP Switches updates [UnclePetros]
-Ref. Bug ID 09300: https://mametesters.org/view.php?id=9300
-- Added new input port configurations for _newpuc2_ and _newpuc2b_ to define specific bonus life values, different from the base
-  _pacman_ configuration
-
-14540: st_flop: Music demos from “AMJ” [chungy]
-Featuring: probably the very first "Rick Roll" on a computer ;)
-New working software list items
----------------------------------------------
-st_flop_demos: George Michael - Faith, Full Metal Jacket, Madonna - Holiday, INXS - Need You Tonight, Theme From Miami Vice, Michael
-  Jackson - The Way You Make Me Feel, Rick Astley - Never Gonna Give You Up, Yazz - The Only Way Is Up [pouet.net]
-
-14546: shared/namco_c355spr.cpp: Updates: [cam900]
-- Use callback for mixing
-- Add transparent pen config
-- Reduce duplicates
-- Remove unnecessary variables and functions
-- Move alternative precision flag into configuration
-- Fix potential crash
-- Fix naming
-dataeast/deco32,cpp: Updates
-- Fix save state support
-- Remove unnecessary variable
-- Add describe context in logging
-namco/namco_c45road.cpp, namco/namco_c169roz.cpp:
-- Allow priority/mask value writes in draw routines
-various namco/* drivers:
-- Use shortened typename values for consistency
-- Use single pass C355 draw routine
-- Fix spacing
-
-14550: rendlay.cpp: Improve accuracy and performance calculating text aspect ratio. [cbrunschen]
-Also adds another text alignment option to stretch the text to fill its bounds horizontally.
-The current code calculating the aspect ratio for text involves looping, calculating the width of text for a variety of decreasing
-  aspect ratios until the text's width is less than the available bounds. However, this string width calculation performs the same
-  loop over the text each time, finally multiplying by the candidate aspect ratio. That text width calculation thus really only
-  needs to be done once. Further, instead of trying different aspect ratios, the ratio can simply be calculated directly by dividing
-  the width of the bounds by the string's width. This also calculates a more accurate aspect ratio, rather than always resulting in
-  an aspect ratio of (0.95)^n.
-For example, when trying to fit a 101-pixel wide text into a 100-pixel wide space, the current code would result in an aspect ratio
-  of 0.95, making the text 96 pixels wide,  leaving 4 pixels unused;  the new code will instead calculate the aspect ratio as
-  100/101 == 0.9900990099... , making the text use the full 100 available pixels.
-This in turn allows us to easily calculate the ratio also if we want to not just schrink but also stretch the text to fill the
-  available space, so we add that as another text alignment option, number 3 (three).
-This PR also demonstrates this in the VFX family of layouts, where on the default Full view, the text "MUSIC PRODUCTION SYNTHESIZER"
-  ("DYNAMIC COMPONENT SYNTHESIZER" on the VFX), the logo-like text "ensoniq", and the keyboard-specific markers "VFX", "VFX-SD",
-  "SD-1" and "3 2 V O I C E" can now be made to fill their available space horizontally as they should, making it all look that much
-  more like the real thing. One example from the sd132, before:
-<img width="282" height="292" alt="Screenshot From 2025-11-19 16-34-01"
-  src="https://github.com/user-attachments/assets/995d262b-2f1f-405a-b385-29b4aa495c75" />
-after:
-<img width="282" height="292" alt="Screenshot From 2025-11-19 16-33-18"
-  src="https://github.com/user-attachments/assets/8cddfc0e-8267-4025-ba6b-d4e959e1b500" />
- 
-and the real thing:
-<img width="282" height="292" alt="image" src="https://github.com/user-attachments/assets/da00308d-b356-4bfd-85b0-7be99e7f8b9a" />
-While still not perfect, the "after" at least has the corrects widths and horizontal alignments.
-
-14554: apple2e: fix FLASH timing [arekkusu42]
-This commit fixes the FLASH timing for IIe, IIc, IIgs.
-apple2 uses a 555 timer @ ~2.182 Hz (Sather UTA2 8.6, 8.7) which alternates every ~15 frames.
-apple2e and later do not have this 555 timer on the motherboard. Sather postulates that they instead use IOU video counter overflow
-  (UTA2E fig 3.8), which alternates exactly every 16 frames (regardless of NTSC/PAL.)
-Testing:
-New FLASHHZ unit test, which shows a (_possibly seizure-inducing_) pattern of columns blinking at decreasing rates, to align with
-  real FLASH text:
-<img width="560" height="384" alt="FLASHHZ_apple2p"
-  src="https://github.com/user-attachments/assets/3a1ad672-3f05-447b-ae09-b75170246ff1" />
-FLASHHZ_251119.zip
-The test is beam-racing the flashing columns via vaporlock (or VBL on the IIgs) and is NTSC/PAL compatible.  The (D) key delays the
-  blinking one frame, so you can manually align the phase of column G (or column F on the ][+).
-After this PR, MAME now matches the behavior of a real Apple IIe:
-(_blinky video, photosensitive epilepsy warning_)
-https://github.com/user-attachments/assets/74eda815-0188-4730-a140-55bed6d2bb2b
-A real IIgs also matches this.  The IIgs can dynamically toggle between 60/50Hz, where we can see that the 50Hz display also flashes
-  exactly every 16 frames:
-(_even more blinky video_)
-https://github.com/user-attachments/assets/1e2791b0-69bd-4abc-b3c8-d7a88af3733b
-TODO:
-After #14495, apple2gs now has stable beam-racing in this test, however LANGSEL doesn't implement 50Hz in MAME yet.  I have that
-  working in another WIP PR, but there are entanglements with C02E and floating bus readback which need more testing.
-
-14562: {vfx,vfxsd,sd1,sd132}.lay: Many cosmetic updates. Show floppy and/or cartridge if loaded. [cbrunschen]
-VFX family buttons are actually 15.8mm wide, not 15mm. Regenerated all four layouts.
-Before:
-<img width="3500" height="796" alt="Screenshot From 2025-11-21 14-48-03"
-  src="https://github.com/user-attachments/assets/0d0d32ab-7916-412e-ac05-a61d98191b92" />
-Real VFX-SD:
-<img width="3815" height="718" alt="image" src="https://github.com/user-attachments/assets/6196f70b-66b1-4148-a0a6-99e0beb971eb" />
-After:
-<img width="3500" height="794" alt="Screenshot From 2025-11-21 14-47-26"
-  src="https://github.com/user-attachments/assets/0c41bfee-1e49-4db7-b13c-c36d70769a19" />
-The difference is quite small, especially if you look at the groups of buttons on the right side of the panel.
-But if you look at the space between the **Seq** and **0** buttons below the screen, the "After" picture looks a lot more like the
-  real VFX-SD than the "Before" picture.
-
-14564: xavix.cpp (audio tweaks, fix regression in rad_mtrk) [mamehaze]
-xavix.cpp (audio improvements) [ramacat]
- - remove the udance hack, it was stopping rad_mtrk going in game, and with the sample mode disabled elsewhere udance does't play
-  garbage anyway
- - provide different 'tempo' defaults depending on machine, it isn't clear what's going on here as some match closest to hardware
-  with 0x40, others with 0x80
-
-14565: esqpanel.cpp, esq5505.cpp: change VFX-family buttons from IPT_KEYBOARD to IPT_KEYPAD. [cbrunschen]
-Also removes the KEYBOARD_HACK keyboard inputs from the VFX family of keyboards, which now have all buttons (which were triggered by
-  KEYBOARD_HACK inputs) available on the built-in layout front panel.
-
-14567: msx1_cart: add 30 working items to software list [paul75s]
-Add 30 working items (2 are clones) to msx1_cart software list - all are Hudson Soft titles sourced from file-hunter.com
-
-14573: Vegas.cpp, Cart Fury Outputs [Endprodukt]
-Cart Fury Outputs
-
-14575: sequential/prophet5.cpp: Added interactive internal artwork. [m1macrophage]
-Also increased the resolution of most knob adjusters, and set reasonable defaults.
-<img width="1400" height="600" alt="0000" src="https://github.com/user-attachments/assets/e13dfb74-4cd3-4647-9a2f-57bdd191e4fd" />
-
-14576: bgareggak: added licensee names for each region [AugiteSoul]
-
-14577: att6300p.cpp: Add support for 1.2MB drive (525hd) [donohoe00]
-The standard configurations for the 6300 Plus have drive A as a 1.2MB floppy, with either a hard drive or a 360K floppy as a
-  secondary drive.  One thing that's unique to the 6300 Plus is that port 0x65 is used for data rate control.
-Since the FDC is on the motherboard, isa8_fdc_6300p_device is unique to the 6300 Plus... I'm wondering if it should go in a
-  machine-specific file, instead of in fdc.cpp?
-
-14578: Update sfbonus.cpp Verify initial hardware-board compatibility for several game sets [jbtx77gr]
-Performed a first pass of validation to confirm which game sets successfully boot on specific PCB types. This update documents the
-  initial compatibility findings and lays the groundwork for more detailed hardware-mapping in future revisions.
-
-14579: added 3 Japanese XaviX sets [mamehaze]
-new NOT WORKING clones
--------------
-XaviX Baseball (XaviXPORT, Japan) [David Haywood, TeamEurope]
-XaviX Aerostep MC (XaviXPORT, Japan) [David Haywood, TeamEurope]
-XaviX Boxing / Jackie Chan PowerBoxing (XaviXPORT, Japan) [David Haywood, TeamEurope]
-
-14580: hash: remove execute bit from ibmpcjx.xml [chungy]
-
-14581: Update sfbonus.cpp Verify initial hardware-board compatibility for several game sets [jbtx77gr]
-Performed a second pass of validation to confirm which game sets successfully boot on specific PCB types. This update documents the
-  initial compatibility findings and lays the groundwork for more detailed hardware-mapping in future revisions.
-
-14586: xavix - remove system timer disable hack, try some different logic [mamehaze]
-
-14587: current Plug and Play PR - 1 set + preparation for further ELAN cleanups [mamehaze]
-new NOT WORKING machines
--------------
-VJ Starz Dance Mat [Team Europe, David Haywood]
-- fixed a regression with qix in rad_sinv, which suggests a difference in EU3A05 and EU3A13 behavior when banking
-- use subclass for ELAN EU3A13 video as there seem to be some subtle differences, removed hacks in driver
-
-14589: Fix VFX and SD1 duart clock [giulioz]
-According to the VFX schematics the DUART clock is 5MHz, not 4. Setting it to 5 fixes the demo songs playback speed.
-<img width="736" height="440" alt="image" src="https://github.com/user-attachments/assets/e13ec8d9-7b6f-47e4-a23a-b49caebb42e2" />
-The SD-1 32 voices uses 4MHz instead.
-<img width="681" height="386" alt="image" src="https://github.com/user-attachments/assets/e485ef71-aec5-48c3-ae23-40b0164f51e7" />
-
-14590: apple2: minor video fixes [arekkusu42]
-This PR collects a few minor video fixes (separated from a larger 50Hz WIP PR):
-* apple2: read floating bus before video side-effects
-Hardware actually latches video state 1-3 cycles after touching a softswitch; this commit does not implement that, but now it will
-  appear as if the state is latched 0.5 cycles after, which is at least closer to being correct.
-This applies to `apple2/e/gs`, common clones, `tk2000` (for its singular softswitch), and `superga2` (where it is a no-op because
-  floating bus is hardcoded to 0xFF.)  I did not propagate it to `laser3k` (which inlines 0xFF) or `agat` (which notes the video
-  hardware is different.)
-My previous SWITCHES test now shows the C05X row matching hardware:
-<img width="560" height="384" alt="apple2ee_switches"
-  src="https://github.com/user-attachments/assets/a1f8f51f-c36c-41a2-9cc9-4e8480f4413a" />
-This also fixes this test by Ryandesign (who notes this is a common problem across various emulators), from "`7F   7F`" to "`A0
-  7F`".
-<br>
-* apple2video: improve beam-racing
-My previous VIDSYNC test (which is updated here with 50Hz support) now shows beam-raced MouseText in MAME.
-Also, a new LANGSEL unit test shows beam-raced MouseText on apple2ee:
-<img width="560" height="384" alt="apple2ee_langsel"
-  src="https://github.com/user-attachments/assets/e10242af-5398-4d3c-8670-5ed42482767d" />
-...and beam-raced katakana on apple2jp:
-<img width="560" height="384" alt="apple2jp_langsel"
-  src="https://github.com/user-attachments/assets/589327c8-5faf-4882-a571-2cdfd044eae1" />
-...and MouseText plus eight languages simultaneously on a real Apple IIgs:
-!HW2gs_LANGSEL_50Hz
-LANGSEL_251126.zip
-(_note_: currently, MAME must be running at 1 MHz for floating bus timing to work.  Also on apple2gs, whole-scanline partial updates
-  work for MouseText, but more complex intra-scanline updates don't work, so the bottom two rows only show the last value latched--
-  all Danish or Swedish.)
-The Apple IIgs Firmware Reference states that LANGSEL bit 3 is "0 if primary lang set selected", but this appears to be incorrect.
-  Bit 3 is set to 1 by BRAM restore during power-on (or booting GS/OS, or entering the Control Panel) and hardware testing shows
-  that the language in bits 5-7 is ignored when bit 3 is 0.
-The `apple2video` state setters now more consistently avoid unnecessary partial updates.  Eyeballing the F11 stats across a bunch of
-  games and beam-racing demos, it is difficult to find any user-visible difference.  However extra instrumentation to detect
-  redundant state setting shows that there were indeed occasional needless partial updates, when booting ProDOS, starting games,
-  etc.  A contrived example like `300:LDA $C052, JMP $300` clearly shows the difference.
-<br>
-* apple2gs: fix vertical position of 8-bit modes
-Previously, MAME was centering the 8-bit modes, so the top and bottom borders each grew by 4 scanlines when toggling from SHR.  It
-  is easy to see this is wrong, if you set the border color to something different from the text background color, and toggle from
-  the GS/OS desktop to the text Control Panel.  After this commit, MAME now matches the behavior of a real Apple IIgs:
-https://github.com/user-attachments/assets/11234dcf-5814-4d70-a660-d213e7da5cba
-(athough the 8-bit 14MHz modes are still horizontally squished inside the 16MHz framebuffer...)
-
-14592: sega/model2: Various improvements [gm-matthew]
-- I have moved `geo_parse()` and the frame number update to the start of vblank; this fixes high score scrolling in `segawski`, 2D
-  palette in `dynamcopc`, and 3D graphics in `bel` not displaying after first booting up.
-- Z-Sort mode value uses an exponent point to adjust the z-value scale. Without adjustment, some of the background objects in
-  `srallyc` exceed the maximum exponent and so are not displayed properly.
-- I have merged `model2_3d_process_quad()` and `model2_3d_process_triangle()` into a single template function, since most of the
-  code was identical.
-- Original Model 2 does have FIFO control; it uses the same 315-5673 buffer controller as Model 2A and 2C.
-- Burst stall must be cleared when resetting the i960, otherwise games can potentially hang on soft reset.
-
-14593: nwk-tr.cpp: Wheel FFB outputs for Thrill Drive, Racing Jam 1/2 [Endprodukt]
-Hooks outputs for Thrill Drive, RJ 1+2
-
-14594: tecmo/gaiden.cpp: make tile scrolling consistent with hardware [jwestfall69]
-- add missing x offset registers for the tile layers
-- use set_scrolldx/y to set the x/y offsets for the tilemaps
-- adjust x/y offset logic so it matches up with what happens on hardware
-Fixes #14585
-
-14595: zr107.cpp: Wheel FFB outputs hooked [Endprodukt]
-zr107 outputs hooked for Midnight Run and Winding Heat, original work by SailorSat, renamed by me for integration. 
-
-14596: nec/pc6001.cpp: Add cassette software lists [paul75s]
-2nd attempt - enables 2 new software lists:
-pc6001_cass, supporting all PC-6001 models (with 16 initial working software items)
-pc6001mk2_cass, supporting PC-6001mkII, PC-6001mkIISR and PC-6601 (with 18 initial working items)
-Approach of separate software lists, with each treated as original is consistent with approach for pc8001 and seems appropriate due
-  to PC-6001 software being fully supported on later versions, and PC-6001 software often having mkII modes.
-In line with the current hack to enable cassette based software, items are configured as carts, not cassettes.
-All software items sourced from TOSEC repositories.
-Revisions from initial attempt at this:
-- All items flagged as partially supported. This seems appropriate based on the software largely/fully functioning but requiring the
-  current hacks to support cassette based software. Happy to modify to not supported though if this seems more accurate.
-- Fixed missing tag in pc6001_cass.
-- Corrected a couple of game names and also amended/enhanced some metadata, including addition of alternate Japanese titles where I
-  can find these.
-Where included files are in .p6 format, these are working (along with .cas files).
-New working software list items
--------------------------------
-pc6001_cass: The Amazon, Amita, Block, Break Through, Door Door, Earthbound, Eggy, Head On, Jintori Game, Power Knight, Pro Racer,
-  Pyramid, Space Enemy, Super Ball, Trick Boy, Tiny Xevious [TOSEC]
-pc6001mk2_cass: Bokosuka Wars, Cannon Ball, Castle Excellent, Chack'n Pop, Chrith Ai no Tabidachi, Daidasso, Dig Dug, Dr. Slump
-  Bubble Daisakusen, Door Door Mk. II, Flappy, Hisya, Ice Block, Nuts & Milk, Pascom Tower, Plazma Line, Punchball Mario, Thunder
-  Force, Vegetable Crush [TOSEC]
-
-14597: Update sfbonus.cpp sfbonus.cpp Verify initial hardware-board compatibility for several game sets [jbtx77gr]
-Performed a third pass of validation to confirm which game sets successfully boot on specific PCB types. This update documents the
-  initial compatibility findings and lays the groundwork for more detailed hardware-mapping in future revisions.
-
-14598: casio/pickytlk.cpp, casio/superjr.cpp: Add 8 not working systems [qufb]
-New systems marked not working
-------------------------------
-Color Digital Diary (CSF-5550) [QUFB]
-My Magic Diary (JD-5000) [QUFB]
-Opinion (RX-850) [QUFB]
-Pet Avenue - My room fantasy [QUFB]
-Super Denshi Techou Jr. - Caricature Telepathy [QUFB]
-Super Denshi Techou Jr. - Pet Telepathy [QUFB]
-Super Denshi Techou Jr. - Puppy Telepathy [QUFB]
-Super Denshi Techou - Pet World [QUFB]
-
-14599: hp/hp620lx.cpp: Add skeleton driver [qufb]
-New systems marked not working
-------------------------------
-Hewlett-Packard HP 620LX [QUFB]
-
-14604: sd132_flop.xml, sd1_flop.xml, vfxsd_flop.xml, ibm5170_cdrom-xml: Metadata cleanings [ArcadeShadow]
-sd132_flop: Lowercase letters in words associated with storage media (in software list description).
-sd1_flop: Lowercase letters in words associated with storage media (in software list description).
-vfxsd_flop: Lowercase letters in words associated with storage media (in software list description).
-ibm5170_cdrom-xml: Fixed typo on [acatari2] set description.
-
-14606: vtech_innotab_cart.xml: Add a list of games [vtarchive]
-
-14608: Update goldstar.cpp add dsw settings for cb3c [jbtx77gr]
-- add dsw settings for cb3c
-
-14609: generalplus_gpl16250_mobigo.cpp: Fix some metadata [vtarchive]
-
-14612: Fix text clipping introduced by https://github.com/mamedev/mame/pull/14550 [cbrunschen]
-The width was used to calculate the aspect ration, but was not then updated with the calculated aspect ration
-This appears to fix that. The sample simon layout referenced here now looks much better:
-<img width="3500" height="1874" alt="Screenshot From 2025-11-30 20-42-24"
-  src="https://github.com/user-attachments/assets/401b2e2c-0214-4f57-95f1-7fd5e1b73206" />
-
-14614: sinclair/specnext.cpp: Always route regs space r/w access through specific [holub]
-
-14615: GTI Club wheel outputs hooked [Endprodukt]
-GTI Club wheel outputs hooked
-
-14617: model2.cpp: Hooked some outputs (lamps, wheel) [Endprodukt]
-hooked some outputs for model 2 based on SailorSats work. Added definitions to output names for Lamps and wheel.  
-
-14619: Namcos22 hook up outputs, name changes [Endprodukt]
-Namcos22 outputs, name changes, based on SailorSats work.  
-
-14621: mame/luaengine.cpp: Access machine.side_effects_disabled [holub]
-
-14622: m24_kbd.cpp: M24 mouse improvements [donohoe00]
-Address feedback from Vas in previously-merged PR: https://github.com/mamedev/mame/pull/14511#discussion_r2569024013
-
-14623: Fix riscv64 build [belegdol]
-This removes the first hurdle towards having mame compile on riscv64 again.
-
-14625: sharp\mz700.cpp: Enable mz80k_cass as compatible software list [paul75s]
-Enables mz80k_cass software list as a compatible list for MZ700/800/1500.
-
-14626: mame/luaengine.cpp: Refactored machine:side_effects_disabled() as a method instead of property. [holub]
-#14621 followup
-
-14627: z80dma.cpp: Relaxed fatal error which were used for unknown commands catching. [holub]
-
-14629: Reformat plrstar2 CDATA [jflatt]
-clrmame breaks on the inline CDATA
-
-14632: i86.cpp: Need different EA execution times per CPU variant (808x/80186/80286) [donohoe00]
-The 286 is running a lot slower than it should since it's being "billed" for effective address calculations at 808x rates.  A
-  benchmark I ran on att6300p (https://thandor.net/benchmark/36) shows a score increase from 29 to 46 with this change applied.
-I discovered this issue because one of the tests on the 6300 Plus diagnostics disk was failing, since the test was taking longer
-  than expected.  There's a possibility that the POST on some machines could fail in a similar way.
-
-14633: casio/superjr.cpp: Fix ROM_LOAD length to match expected jd320 ROM size [qufb]
-
-14636: sega/model2.cpp: make hpyagu98 playable [gm-matthew]
-`hpyagu98` requires certain values to be set in EEPROM and backup RAM, otherwise it fails to boot with "Error 1":
-- The values `0xfa`, `0xe3`, `0xa6` and `0x29` at addresses `0x08`, `0x09`, `0x0a` and `0x0b` respectively in the EEPROM
-- The string `"98KOREA PRO B.B."` at the start of backup RAM
-- The 32-bit magic number `0x5042c660` at address `0x398` in backup RAM
-- A 16-bit checksum at address `0x1d4` in backup RAM; with backup RAM set to default and only the above values modified, this
-  checksum is `0xf92f`
-With the above values set the game successfully boots, but the game/coin options are invalid; in my testing I was able to play
-  through a full game, but the game crashed shortly after returning to attract mode.
-The game/coin options can easily be set to valid options in the service menu; my current commit uses an EEPROM and backup RAM from
-  just after setting the game/coin options to match the defaults for `dynabb97` and clearing the backup RAM data in the service
-  menu. After doing this, the game appears to be stable.
-I shall send the EEPROM and backup RAM used in this commit to the email address listed in this page. If there is anywhere else I
-  should send these, let me know.
-I have swapped the texture ROMs as they were the wrong way round; for now I have left their names intact, but we may want to rename
-  them to `bb-tx-1.25` and `bb-tx-0.24` to reflect their actual IC numbers.
-
-14640: ibm5170: Mark Crystal Caves as a baddump; fix grdchessdx media type [chungy]
-The file dates for Crystal Caves show as 2005.  I believe this is unlikely to be original media, unless the guy mastering the disks
-  in 1991 had his clock set forward by 14 years by accident.  (Not impossible, but I doubt it.)
-Grandmaster Chess Deluxe has its entries set for a 5¼″ floppy drive. The images should be for a 3½″ drive instead.
-
-14641: Added `tag` attribute to Info XML `<device_ref>` elements [npwoods]
-
-14643: m5_cart, m5_cass: 7 additions, 4 improved dumps and enhancements [paul75s]
-Additions and enhancements to Sord M5 cassette and cart software lists:
-- 7 additions to m5_cass (all working)
-- 4 bad dumps replaced with working dumps in m5_cart (Up Up Balloon was not working, other 3 revised dumps did work with 36K on
-  older versions of MAME but not on current versions and should not require additional RAM).
-- All items in m5_cass updated with requirement for BASIC-I or BASIC-G cart, as appropriate.
-- Some minor additional tweaks to metadata.
-All files are from dumps provided by bsittler.
-
-14645: sega/model2.cpp: when writing to IRQ mask register, wait two cycles before checking for sound IRQ; fixes MT09313 [gm-matthew]
-Virtua Cop 2 runs the following code when playing a music track or some sound effects:
-```
-0005A524: 90803000 005D05FC ld      0x5d05fc,g0			; load sound buffer queue size
-0005A52C: 5CB01E01          mov     1,g6
-0005A530: 92B03000 00E80004 st      g6,0xe80004			; mask all IRQs except vblank
-0005A538: 92B03000 00E80004 st      g6,0xe80004
-0005A540: 3C7C202C          cmpibl  15,g0,0x5a56c
-0005A544: 90A03000 005D0600 ld      0x5d0600,g4
-0005A54C: 59805010          addo    g0,1,g0				; increment sound buffer queue size
-0005A550: 5CA81614          mov     g4,g5
-0005A554: 8CA52001          lda     0x1(g4),g4
-0005A558: 58A5088F          and     15,g4,g4
-0005A55C: 92203915 005D0610 st      r4,0x5d0610[g5*4]
-0005A564: 92A03000 005D0600 st      g4,0x5d0600
-0005A56C: 8CB00401          lda     0x401,g6
-0005A570: 92B03000 00E80004 st      g6,0xe80004			; unmask sound IRQ
-0005A578: 92803000 005D05FC st      g0,0x5d05fc			; save sound buffer queue size
-0005A580: 92B03000 00E80004 st      g6,0xe80004
-```
-During the sound interrupt handler, the game checks the sound buffer queue size. If it is greater than zero, it reads the next byte
-  from the sound buffer queue, transmits it to the SCSP and decrements the queue size by one; if it is zero (queue is empty), it
-  bails.
-MT09313 is caused by MAME asserting a sound interrupt the instant it is unmasked, before the game has a chance to save the
-  incremented queue size. The sound interrupt handler reads the queue size, mistakenly thinks that the queue is empty and does not
-  transmit the data to the SCSP, resulting in sound effects and/or music tracks not playing. This occurs since commit
-  99f8b5e05cc0f983a5d52f3e2bae46358e1ef789 when I rewrote the interrupt logic.
-It seems there must be a slight delay between unmasking an interrupt and the same interrupt being fired; the exact delay is unknown,
-  but it only needs to be enough for the following `st g0,0x5d05fc` instruction to be executed before the sound interrupt is
-  asserted.
-I have implemented it so that when writing to the IRQ mask register, instead of immediately checking to see if a sound interrupt
-  should be asserted, we use a timer to wait for two cycles before doing so (the `st` instruction requires two cycles to execute).
-
-14647: psx.xml: Added 6 working items [FoxhackDN]
-New working software list additions
---------------------------------------------
-Xena - Warrior Princess (Europe) [Redump]
-Xena - Warrior Princess (Europe, prototype 19990819) [Redump]
-Xena - Warrior Princess (France) [Redump]
-Xena - Warrior Princess (Germany) [Redump]
-Xena - Warrior Princess (Spain) [Redump]
-Xena - Warrior Princess (USA, prototype 19990811) [Hidden Palace]
-
-14648: Current Plug & Play PR - ELAN SoC refactoring pass 2 [mamehaze]
- - greatly refactored the ELAN EU3A05/EU3A13/EU3A14/EP3A19A code into more of a 'SoC' device
- - removed 'bankdev' stuff in favour of an additional address space
- - moved SoC implementation into machine folder, untying it mostly from the game drivers using the SoC
- - cleaned up some of the game hookups, eg. only map extra RAM for rad_sinv and buzztime, not all EU3A05 games
- 
- new NOT WORKING clones
- ----
- Family Tetris (PAL) [Team Europe]
- 
-
-14649: ibm5170: add Doom 2 Germany release [chungy]
-This is not sourced from original media.  I had copies of the files on my hard disk, and while it matches known-good checksums (eg:
-  https://doomwiki.org/wiki/DOOM2.WAD), I had to reconstruct the floppy set myself.  The set was created by running msdos622 in the
-  ct486 driver with a CD-ROM attached.  I put the loose files on an ISO image, mounted it in the DOS machine, and then formatted
-  floppies and copied the files to them just as the normal Doom installation sets work.
-Due to this nature, I am marking this as a “bad dump” in the hopes someone may be able to find and dump the original disks.
-New working software list item (ibm5170.xml)
---------------------------------------------
-DOOM II: Hell on Earth (1.666) (Germany) [chungy]
-
-14650: nes: three new working software list items [chungy]
-New working software list items (nes.xml)
------------------------------------------
-Micro Mages Second Quest [Mike Swanson]
-Roniu's Tale [Mike Swanson]
-Roniu's Tale (demo version) [Mike Swanson]
-
-14651: machine/dp8390.cpp: push CR bit 5 high on DMA complete events [angelosa]
-
-14654: neogeo.xml: Added 1 working item [ArcadeShadow]
-New working software list addition
---------------------------------------------
-Bang Bang Busters 2 (demo v2.0) [PixelHeart]
-
-14655: m5_cass: Remove incorrect alternate title [paul75s]
-Remove incorrect alternate title for UFO Game.
-
-14657: ibm5170_cdrom: new working software list title: BSD on Windows [chungy]
-Disk images were uploaded to archive.org.  The dumper did not put the floppy disk in write protect mode before dumping and thus
-  several files have 2023 access times, as well as two 2023 files being deleted in the FAT structure.
-See also, this blog: https://virtuallyfun.com/2023/12/08/bsd-on-windows-things-i-wish-i-knew-existed/
-
-14660: new WORKING machine - Jammin' (Atari prototype) [mamehaze]
-new WORKING machine 
-------
-Jammin' (prototype) [SynaMax, Dutchman2000, David Haywood]
-
-14661: goldstar.cpp: Add conditional DIP for payout rate / difficulty display (DSW1) [jbtx77gr]
-Implemented conditional DIP switch behavior for DSW1 based on DSW4:2. When "Show In Confirm Screen" (DSW4:2) is set to Percentage,
-  DSW1 now displays payout rate values (55%–90%). When set to Level of Difficulty, DSW1 instead displays levels (1–8). Both sets of
-  options use the same bitmask (0x07) and are filtered through PORT_CONDITION to match the hardware behavior.
-
-14665: src/mame/mame.lst: Sort Macs [stonedDiscord]
-Quadra comes after LC in the alphabet.
-
-14666: misc/gamtor.cpp: Improve hardware documentation [clawgrip]
-Also fix single-line comments and spacing
-
-14668: midway/omegrace.cpp: Enable cocktail mode [mdeslaur]
-This enables screen flipping when the Omega Race dip switch is set to cocktail.
-Also updates layout file as the cocktail has a blue overlay instead of the yellow one the upright has.
-
-14669: starwars, esb: settings corrected and defaults now match the operator's manuals [codefrog2002]
-starwars: default settings now match the arcade operator's manual (starting shields: 6, difficulty: Hard).
-esb: settings corrected - Difficulty and Demo Sounds can't be inherited from starwars as they are scrambled/inverted relative to
-  starwars. Difficulty default ("Hard") taken from ESB Conversion Kit manual.
-The updated ESB settings can be validated in the 2nd screen ("Game Options") of the service menu. Note that DSW changes aren't
-  immediately displayed - the menu shows the state of EEPROM settings only.
-On the "Game Options" screen, move down to "Reset Options" then left-fire to opt for YES, then right-fire to perform the options
-  reset; this latches current DSW settings into EEPROM.
-The default settings cannot be verified in emulation alone - they are now as reported in these documents:
-StarWars.pdf
-StarWarsESBAtariarcademanual.pdf
-
-14670: snk/hng64.cpp: added lamp and ffb wheel outputs [Endprodukt]
-added outputs for lamps and wheel motor. 
-
-14671: ibm5150, ibm5170, ibm5170_cdrom: Norton Utilites 1983–2002 [chungy]
-This covers basically the entire original run of the Norton Utilities as a standalone product.  Version 2002 is also pretty much the
-  last that has good functionality within MAME itself.
-While version 2002 dropped Windows 95 support, it still includes many DOS programs that run all the way back to MS-DOS 5.0.  Notably
-  the DiskEdit program supports FAT32, VFAT, and all that allows some forensics to be done to determine good/bad dumps.
-
-14673: Add known US and UK games [vtarchive]
-
-14674: zx81_cass.xml: Added 13 working items [ArcadeShadow]
-New working software list additions
---------------------------------------------
-4 Magnificent Machine Code Games [Planeta Sinclair, Mark Westmoreland, Steven Brown]
-4 Magnificent Machine Code Games (alt) [Planeta Sinclair, Mark Westmoreland, Steven Brown]
-Antiaéreo (type-in, Encliclopédia Prática de Informática - Volume 1) [datassette.org]
-Condition Red [Planeta Sinclair, Mark Westmoreland, Steven Brown]
-Greatest Games V1 [Planeta Sinclair, Mark Westmoreland, Steven Brown]
-Inheritance (alt 2) [Planeta Sinclair, Steven Brown]
-Jogo das Letras (type-in, Encliclopédia Prática de Informática - Volume 1) [datassette.org]
-O Barqueiro (type-in, Encliclopédia Prática de Informática - Volume 1) [datassette.org]
-Tabuada (type-in, Encliclopédia Prática de Informática - Volume 1) [datassette.org]
-Tempo de Reação (type-in, Encliclopédia Prática de Informática - Volume 1) [datassette.org]
-Trader Jack [Planeta Sinclair, Mark Westmoreland, Steven Brown]
-ZX81 Arcade Pack [Planeta Sinclair, Mark Westmoreland, Steven Brown]
-ZX81 Micro Computer Software [Planeta Sinclair, Mark Westmoreland, Steven Brown]
-
-14675: Add 'Progear (Europe 010117)' (missing decryption key) [clawgrip]
-New clones marked not working
------------------------------
-Progear (Europe 010117) [Eduardo Anay]
-
-14677: New Machine - Head On 2 (Sega Slimline)/Head On Part 2 (Nintendo) [SNESNESCUBE64]
-This new machine is the vertically oriented version of head on 2. As far as I can tell this was found in the Sega Slimline cabinets
-  (which is where the dump from this came from) and a single example of a Nintendo Head On Part 2 machine. The Nintendo one was
-  particularly interesting because it ran on stock Head On N hardware. The only noticeable difference I observed with it running on
-  Head On N hardware is that it cannot have six lives. This is because despite having 8 dip switch switches, only one is actually
-  hooked up on the PCB. This is acknowledged by the instruction card in the machine as the only options are 4 and 5 lives.
-  Otherwise, it plays like a hybrid of Head On N and Head On 2. It is meant to only be played on cocktail tables, the screen
-  flipping is hard coded.
-The only effected MAME driver is the vicdual driver. The machine config had to be added to the public header and the bare minimum
-  had to be added to the vicdual source file (machine config, rom config, and input ports). I did both a full build and vicdual
-  focused build, it does not seem like any additional compiler warnings were added. The game plays in MAME just like it does on a
-  real machine with the exception being the dot sound (which does not seem to be full implemented). The best way I can describe the
-  dot sound is it sounds like a quick pulse of the bonus sound. This is a per-existing condition though.
-Regarding the ROMs, the actual program ROMs are unique. However, the timing PROMs are the same as Head On.
-
-14678: cpu/z80/z80n: Skipped memory write in stackless NMI mode [holub]
-
-14679: apple2_flop_orig: Added 72 dumps. Apple2_flop_clcracked: Combined 2 cracks into 1. Metadata Cleanups [A-Noid33]
-Focused on: Learning Technologies, Panda, Merit Software, Litag, Synergistic Software, World Book, Electronic Courseware Systems
-New working software list items (apple2_flop_orig.xml)
--------------------------------
-12-Bar Tunesmith [4am, A-Noid]
-Alpine Tram Ride (revision 0) [4am, A-Noid]
-Aural Skills Trainer: Basic Chords [4am, A-Noid]
-Aural Skills Trainer: Intervals [4am, A-Noid]
-Aural Skills Trainer: Seventh Chords [4am, A-Noid]
-Balancing Act [4am, A-Noid]
-Bike Hike (revision 0) [4am, A-Noid]
-Bolo [4am, A-Noid]
-Clef Notes Drill [4am, A-Noid]
-Clowning Around (revision 1) [4am, A-Noid]
-Dinosaur's Lunch [4am, A-Noid]
-Dungeon Campaign [4am, A-Noid]
-Ear Challenger: A Music Game [4am, A-Noid]
-Early Music Skills [4am, A-Noid]
-Follow Me [4am, A-Noid]
-Functional Harmony: Basic Chords [4am, A-Noid]
-Functional Harmony: Borrowed and Altered Chords [4am, A-Noid]
-Functional Harmony: Diatonic Seventh Chords [4am, A-Noid]
-Functional Harmony: Secondary Dominants [4am, A-Noid]
-Hear Today... Play Tomorrow: Descending/Ascending Intervals [4am, A-Noid]
-Hear Today... Play Tomorrow: Ear Training Skills [4am, A-Noid]
-Hear Today... Play Tomorrow: Find That Tune [4am, A-Noid]
-Hear Today... Play Tomorrow: Melodic Dictation Beginning Level [4am, A-Noid]
-Hear Today... Play Tomorrow: Melodic Dictation Intermediate Level [4am, A-Noid]
-How to Weigh an Elephant [4am, A-Noid]
-Keyboard Arpeggios [4am, A-Noid]
-Keyboard Blues [4am, A-Noid]
-Keyboard Chords [4am, A-Noid]
-Keyboard Extended Jazz Harmonies [4am, A-Noid]
-Keyboard Fingerings [4am, A-Noid]
-Keyboard Intervals [4am, A-Noid]
-Keyboard Jazz Harmonies [4am, A-Noid]
-Keyboard Note Drill [4am, A-Noid]
-Keyboard Speed Reading [4am, A-Noid]
-Keyboard Tutor [4am, A-Noid]
-Learning to Add & Subtract (revision 1) [4am, A-Noid]
-Let's Go Fishing [4am, A-Noid]
-Listen! A Music Skills Program [4am, A-Noid]
-Math in a Nutshell [4am, A-Noid]
-Monkey Business (revision 1) [4am, A-Noid]
-Monkey Business (revision 2) [4am, A-Noid]
-Music Appreciation: A Study Guide [4am, A-Noid]
-Music Composer Quiz [4am, A-Noid]
-Music History Review: Composers [4am, A-Noid]
-Music Theory Flash Cards (version 10/2/84) [4am, A-Noid]
-Musical Stairs (version 1984) [4am, A-Noid]
-Musical Terminology [4am, A-Noid]
-Note Detective I: Elementary Level [4am, A-Noid]
-Note Detective II: Intermediate Level [4am, A-Noid]
-Note Speller [4am, A-Noid]
-Number Please: Visual and Sequential Memory Practice (release 1) [4am, A-Noid]
-Patterns in Pitch (Composition and Dictation): Level One [4am, A-Noid]
-Patterns in Pitch (Composition and Dictation): Level Two [4am, A-Noid]
-Patterns in Rhythm (Composition and Dictation): Level Two [4am, A-Noid]
-Patterns in Rhythm (Composition and Dictation): Level Three [4am, A-Noid]
-Perspectives in Music History [4am, A-Noid]
-Pipeline [4am, A-Noid]
-Race Car Keys [4am, A-Noid]
-Scrambled Eggs! (revision 1) [4am, A-Noid]
-Scrambled Eggs! (revision 2) [4am, A-Noid]
-Shutterbug's Pictures [4am, A-Noid]
-Sliding Block (revision 1) (Learning Technologies) [4am, A-Noid]
-Speedy Delivery [4am, A-Noid]
-Super Ear Challenger (version 1984) [4am, A-Noid]
-Tank Attack & Death Run [4am, A-Noid]
-Tap-It [4am, A-Noid]
-The 21st Century Music Series: Playing and Reading Music [4am, A-Noid]
-The Flying Carpet [4am, A-Noid]
-Tune It ][ [4am, A-Noid]
-U-Boat Command [4am, A-Noid]
-Wilderness Campaign [4am, A-Noid]
-Zoo Puppet Theater [4am, A-Noid]
-Combined software list items (apple2_flop_clcracked)
--------------------------------
-Music Appreciation = Music Appreciation: A Musical Language + Music Appreciation: Music History
-
-14680: sound/cem3394.cpp: implement self-oscillation when no waveforms are enabled [m1macrophage]
-Detecting the special case of a filter with high resonance and no input waveforms, and generating a sine wave to implement
-  self-oscillation.
-Fixes the regression reporter here. Also fixes patches 98 and 99 on the `sixtrak`, and enables ever more sounds in `sente6vb` .
-Finally, corrected the value of `m_pulse_width` when PW is at 100%.  Though this does not make a difference, since `m_pulse_width`
-  is not used when the PW is 100%.
-
-14681: adp/manohman.cpp: New NOT WORKING clone [stonedDiscord]
-Merkur Backgammon (Wand) [stonedDiscord]
-
-14682: ibm5150: Norton Utilities 4.01 and 4.50 5¼" [chungy]
-Just when I thought I was out, it pulls me right back in. :-)
-These images were found at
-https://www.pcjs.org/software/pcx86/util/norton/4.50/advanced/
-https://archive.org/details/norton-utilities-floppies
-New working software list items (ibm5150.xml)
----------------------------------------------
-The Norton Utilities Advanced Edition 4.01 [archive.org]
-The Norton Utilities Advanced Edition 4.50 (5.25" disk) [pcjs.org]
-
-14683: sinclair/specnext.cpp: various fixes [holub]
-sinclair/specnext.cpp:
-  * Enabled timer-based steps for SPI
-  * Fixed visarea clipping
-  * Refactored video modes with blending
-  * Fixed ULA+ pen parser - GGGRRRBB instead of RRRGGGBB
-  * Renamed "Video" Machine Configuration option to less confusing "Captured Video Resolution"
-screen_ula.cpp:
-  * ULA+ palette matches original ULA+
-specnext_layer2.cpp:
-  * Revisited blending layers processing
-  * Fixed the layer clipping
-specnext_lores.cpp:
-  * Added support of Radastan (4bpp) variant
-  * Fixed palette configured with offset parameter
-specnext_sprites.cpp:
-  * Fixed drawing of sprites from negative offset position
-specnext_tiles.cpp:
-  * Fixed "always on top" option
-  * Fixed priority in all variants of textmode
-
-14684: new WORKING software list additions (added very basic specnext / tbblue software list) [mamehaze]
-new WORKING software list additions
---------------------------
-specnext_sd.xml:
-System/Next 24.11 [SpecNext Ltd.]
-Fiona's Flight [rcallenbach]
-
-14687: msx1_cart: replace bad dump for Chick Fighter [paul75s]
-Replace working but bad dump for Chick Fighter.
-
-14691: sinclair/specnext.cpp: Various fixes [holub]
-sinclair/specnext.cpp: Deleay resolution change which simulates VGA/HDMI output
-sinclair/specnext_sprites.cpp: Fixed sprites clipping broken after refresh rate changed
-sinclair/*: Stylistic cleanups
-
-14693: spectrum_betadisc_flop.xml: Added 23 working items [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Aliens: Neoplasma 2 (demo v1.1, 50Hz)
-Aliens: Neoplasma 2 (demo v1.1, 60Hz)
-Aliens: Neoplasma 2 (demo v1.6, 50Hz)
-Aliens: Neoplasma 2 (demo v1.6, 60Hz)
-Attack (v1.0, Party Version) [YRGB]
-Attack (v1.1) [YRGB]
-Cindy Block (v1.0, Party Version) [YRGB]
-Cindy Block (v1.1) [YRGB]
-Dizzy II - Treasure Island Dizzy - Extended Edition 2023 [Virtual TR-DOS]
-Dizzy III - Fantasy World Dizzy - Extended Edition 2024 [Virtual TR-DOS]
-Final Fight (mod) [Virtual TR-DOS]
-Gremlins 2: The New Batch (mod) [Virtual TR-DOS]
-Gunrunner (mod) [Virtual TR-DOS]
-E-SWAT (mod) [Virtual TR-DOS]
-Generals (v1.0, Party Version) [YRGB]
-Generals (v1.1) [YRGB]
-Kubanoid (v1.0, Party Version) [YRGB]
-Kubanoid (v1.1) [YRGB]
-Min! [ZX Art]
-Pedro 1 + 2 + 3 (mod) [Virtual TR-DOS]
-Prince of Persia (mod) [Virtual TR-DOS]
-Rick Dangerous 1 + 2 (mod) [Virtual TR-DOS]
-Yandex Retro Games Battle 2025 [Virtual TR-DOS]
-
-14697: vtech_innotab_cart.xml: Add note about regional lockout [vtarchive]
-
-14701: CD-i: Fix Letterboxing [Vincent-Halver]
--cdicdic: Fix Letterboxing in Mystic Midway. Fixes #14694 [Vincent Halver]
-<img width="1876" height="1545" alt="image" src="https://github.com/user-attachments/assets/ed94b71b-68f8-40a0-a83e-0fe5e0f0fd46" />
-
-14704: ibm5170_cdrom: Full Tilt! Pinball [chungy]
-Tested on pcipc with win98se.
-New working software list items (ibm5170_cdrom.xml)
----------------------------------------------------
-Full Tilt! Pinball (version 1.1) [redump.org]
-Full Tilt! Pinball (version 1.1) (Scholastic Edition) [redump.org]
-Full Tilt! Pinball (version 1.1) (Thrustmaster OEM) [redump.org]
-Full Tilt! 2 Pinball (version 1.0) [redump.org]
-
-14706: apple2_flop_orig, apple2_flop_clcracked added 59, redumped 1, and metadata cleanups [A-Noid33]
-Focused on Baudville, Houghton Mifflin, Micro League Sports Association, Milliken Publishing Company, Passport Designs, Stoneware
-New working software list items (apple2_flop_orig.xml)
--------------------------------
-4-Track Editor for Soundchaser Computer Music System [4am, A-Noid]
-Algebra Action [4am, A-Noid]
-Algebra Plotter Plus [4am, A-Noid]
-Aliencounter & Face Flash (revision 1) [4am, A-Noid]
-Aliencounter & Face Flash (revision 2) [4am, A-Noid]
-Aliencounter & Face Flash (revision 3) [4am, A-Noid]
-Arithmekicks [4am, A-Noid]
-Arithmetickle [4am, A-Noid]
-Award Maker Plus (version 23611) [4am, A-Noid]
-Battling Bugs & Concentraction (revision 1) [4am, A-Noid]
-Battling Bugs & Concentraction (revision 2) [4am, A-Noid]
-Blazing Paddles (revision 0) [4am, A-Noid]
-Blazing Paddles (version 04421) [4am, A-Noid]
-Blazing Paddles (version 04431) [4am, A-Noid]
-English MicroLab: Assessment of English Skills (version A1) [4am, A-Noid]
-FourWord & WordLift [4am, A-Noid]
-Frenzy & Flip Flop [4am, A-Noid]
-Golf Classic & Compubar [4am, A-Noid]
-Guitar Wizard (version 11601) [4am, A-Noid]
-Guitar Wizard (version 11611) [4am, A-Noid]
-Gulp!! & Arrow Graphics [4am, A-Noid]
-Gulp!! & Frenzy [4am, A-Noid]
-Korg 800 4-Track MIDI Sequencer (version 1.0) [4am, A-Noid]
-Leadsheeter [4am, A-Noid]
-Master Tracks (version 1.8) [4am, A-Noid]
-Master Tracks Pro (version 1.2) [4am, A-Noid]
-Math Marvels [4am, A-Noid]
-Math Masters [4am, A-Noid]
-Micro League Baseball (Micro League Sports Association) (revision 1) [4am, A-Noid]
-Micro League Baseball (Micro League Sports Association) (revision 2) [4am, A-Noid]
-Micro League Baseball (Micro League Sports Association) (revision 3) [4am, A-Noid]
-Micro League Baseball: Box Score / Stats Compiler Disk [4am, A-Noid]
-Micro League Baseball: General Manager / Owner Disk [4am, A-Noid]
-MIDI/4 (revision 5) [4am, A-Noid]
-MIDI/8 Plus (version 1.2) [4am, A-Noid]
-MIDI/8 Plus for MPU-401 (version 1.2) [4am, A-Noid]
-Pixit (revision 0) [4am, A-Noid]
-Pixit (version 01331) [4am, A-Noid]
-Pixit Shape Library #1: Shapes & Fonts [4am, A-Noid]
-Pixit Shape Library #2: Science [4am, A-Noid]
-Pixit Shape Library #3: Kid Stuff [4am, A-Noid]
-PolyWriter (version 1.2) [4am, A-Noid]
-Pop 'R Spell & Pop 'R Spell Challenge [4am, A-Noid]
-Prince (version 15521) [4am, A-Noid]
-Prince (version 15531) [4am, A-Noid]
-Rainy Day Games (version 13501) [4am, A-Noid]
-Take 1 (version 06431) [4am, A-Noid]
-Take 1 (version 06451) [4am, A-Noid]
-Take 1 Animation Library #1: Actors & Actions [4am, A-Noid]
-Take 1 Animation Library #2: Heroes & Villians [4am, A-Noid]
-Take 1 Animation Library #3: Business [4am, A-Noid]
-Take 1 Programmer's Toolkit (version 10601-0000) [4am, A-Noid]
-The Jar Game & Chaos [4am, A-Noid]
-Tranquility Base [4am, A-Noid]
-Word Machine & Word Machine with Spelling List [4am, A-Noid]
-New working software list items (apple2_flop_clcracked.xml)
--------------------------------
-Comprehension Power Program: Level E-2 (4am crack) [4am, A-Noid]
-Math Sequences: Percents (version 1984) (4am crack) [4am, A-Noid]
-MIDI/4 Plus Enhanced Edition (version 1.1) (4am crack) [4am, A-Noid]
-MIDI/8 Plus (version 1.2) (4am and san inc crack) [4am, A-Noid]
-Redumped software list items (apple2_flop_clcracked.xml)
--------------------------------
-Math Marvels (4am crack) [4am, A-Noid]
-
-14707: 3do_m2.xml, bbc_cass.xml, electron_cass.xml, amiga_flop.xml: Metadata cleaning [ArcadeShadow]
-3do_m2.xml: Lowercase on descriptive word
-bbc_cass.xml: More accurate descriptions
-electron_cass.xml: More accurate descriptions
-amiga_flop.xml: Lowercase on descriptive words
-
-14711: vtech_eu3a12.cpp: Add list of undumped international versions [vtarchive]
-add undumped international versions
-
-14712: segach.cpp: emulate Sega Channel (US) adapter using simulated transmission [superctr]
-
-14714: seibu/sei25x_rise1x_spr.cpp: Move bitmap allocation into configuration [cam900]
-
-14715: cpu/se3208/se3208dis.cpp, */vrender0.cpp: Additional update after https://github.com/mamedev/mame/pull/14453 [cam900]
-- cpu/se3208/se3208dis.cpp: Fix typename for avoid reserved naming convention
-- sound/vrender0.cpp: Simplify casting
-- video/vrender0.cpp: Use pal*bit function for color extraction
-
-14716: Remove Alien Arena instance missing sound. [MajorHavocOnKLOV]
-I talked to Duncan Brown, the creator, and he never made a version without sound.
-Steps taken before and after changes:
-make
-mame -validate
-ran mame and started Alien Arena and verified it runs
-make DEBUG=1
-mamed -validate
-ran mamed -debug and started Alien Arena and verified it runs
-
-14718: pippin.xml: New software list items marked not working [FoxhackDN]
-New non-working software list titles (pippin.xml)
-------------------------------------------
-Compton's Interactive Encyclopedia (USA, prototype 19961028) [redump.org]
-Mr. Potato Head Saves Veggie Valley (USA, prototype 19961030) [redump.org]
-Power Rangers Zeo Vs. The Machine Empire (USA, prototype 19961023) [redump.org]
-
-14720: vtech_innotab_cart.xml: Add note about Danish, Russian, Portuguese languages [vtarchive]
-
-14723: spectrum_cass.xml: Metadata cleanings [ArcadeShadow]
-Various cleanups and fixes (parent/clone relationships, descriptions, publishers, years, part_id, and languages info).
-Merged sets
---------------------------------------------
-Space Junk (set 1, 128K) + Space Junk (set 3, 48K)
-Space Junk (set 2, 128K) + Space Junk (set 4, 48K)
-
-14726: namco/namcos2*.cpp: Optimize sprite draw routine, Split driver state class via configurations, Updates [cam900]
-namco/namcos2_roz.cpp:
-- Add priority value and mask argument in draw functions
-- Remove unused function
-- Fix spacings
-- Reduce preprocessor defines
-namco/namcos2_sprite.cpp:
-- Add callback for priority value and mixing
-- Use single pass drawing
-- Fix naming convention consistency
-- Add notes for sprite zoom LUT
-- Fix spacing
-namco/namcos2.cpp:
-- Minor oprimize screen update function
-- Split driver state classes per hardware configurations
-- Remove unused video start overrides
-- Fix ROM region naming
-- Reduce preprocessor defines
-- Add notes
-- Fix spacings
-
-14729: Rename Alien Arena clone [MajorHavocOnKLOV]
+- 13161: midway/seattle.cpp: Added an additional version of Hyperdrive. [Hydreigon]
+- 13833: midway/vegas.cpp: Added an additional version of Gauntlet Legends and cleaned up ROMs for other games. [Hydreigon]
+- 14311: philips/minitel_2_rpic.cpp: Added additional BIOS options and a media option for loading user ROMs. [Fabio D'Urso]
+- 14429: mz2000_snap.xml: Added 16 MZ-2000 software items as snapshots since proper media support is currently lacking. [paul75s]
+- 14443: seibu/sei25x_rise1x_spr.cpp: Merged SEI25X and RISE1X sprite hardware emulation into a device. [cam900]
+- 14450: hyperscan.xml, hyperscan_card.xml, x68k_flop.xml, orina_stylish_plus_cart.xml: Tidied list descriptions. [ArcadeShadow]
+- 14453: Cleaned up code in VRender0-related drivers and devices. [cam900]
+- 14529: apple2_flop_orig.xml, apple2_flop_clcracked.xml, mac_flop_orig.xml, mac_flop_clcracked.xml: Added 27 items. [A-Noid]
+- 14534: ibm5170.xml: Added eight Swedish games from Scandinavian PC Systems. [FakeShemp]
+- 14537: spectrum_cass.xml: Added fifteen working items, and improved metadata. [ArcadeShadow]
+- 14539: pacman/pacman.cpp: Corrected the bonus life DIP switch setting labels for Newpuc2 games. [UnclePetros]
+- 14540: st_flop_demos.xml: Added eight music demos from AMJ. [pouet.net, Mike Swanson]
+- 14546: shared/namco_c355spr.cpp: Improved flexibility and cleaned up code. [cam900]
+- 14550: emu/rendlay.cpp: Improved performance of text component calculations and added an alignment mode. [Christian Brunschen]
+- 14554: apple/apple2video.cpp: Improved FLASH timing. [arekkusu42]
+- 14562: Improved the appearance of various Ensoniq layouts. [Christian Brunschen]
+- 14564: tvgames/xavix_sound.cpp: Allow systems to override he default tempo. [David Haywood]
+- 14565: ensoniq/esqpanel.cpp, ensoniq/esq5505.cpp: Use keypad inputs for buttons (rather than keyboard). [Christian Brunschen]
+- 14567: msx1_cart.xml: Added thirty working items. [file-hunter, paul75s]
+- 14573: midway/vegas.cpp: Hooked up outputs for Cart Fury. [Endprodukt]
+- 14575: sequential/prophet5.cpp: Added interactive internal artwork, and increased precision of adjuster inputs. [m1macrophage]
+- 14576: toaplan/raizing.cpp: Added licensee names to region setting labels for bgareggak. [AugiteSoul]
+- 14577: olivetti/att6300p_fdc.cpp: Emulated the AT&T 6300 Plus 1.2 MB floppy drive controller. [donohoe00]
+- 14578: misc/sfbonus.cpp: Added PCB type comments for several games. [Ioannis Bampoulas]
+- 14579: tvgames/xavix_2002.cpp: Dumped three Japanese XaviXPORT games (not working). [David Haywood, TeamEurope]
+- 14580: hash/ibmpcjx.cpp: Cleared erroneously set execute bit. [Mike Swanson]
+- 14581: misc/sfbonus.cpp: Added PCB type comments for several games. [Ioannis Bampoulas]
+- 14586: tvgames/xavix_m.cpp: Adjusted the timer logic so games no longer need the timer to be disabled. [David Haywood]
+- 14587: Dumped VJ Starz Dance Mat; Split Elan 3Axx video emulation into multiple devices for variants. [TeamEurope, David Haywood]
+- 14589: ensoniq/esq5505.cpp: Fixed the VFX and SD-1 DUART clock frequency. [Giulio Zausa]
+- 14590: apple: Fixed some issues with Apple II video emulation. [arekkusu42]
+- 14592: sega/model2.cpp, cpu/i960: Fixed some video and I/O emulation issues (fixes MT09287). [Matthew Daniels]
+- 14593: konami/nwk-tr.cpp: Added the force feedback motor output for driving games. [Endprodukt]
+- 14594: tecmo/gaiden.cpp: Made tilemap scrolling behave like real hardware (GitHub #14585). [Jim Westfall]
+- 14595: konami/zr107.cpp: Added the force feedback motor output. [Endprodukt]
+- 14596: pc6001_cass.xml, pc6001mk2_cass.xml: Added software lists for PC-6001 family cassette software. [TOSEC, paul75s]
+- 14597: misc/sfbonus.cpp: Added PCB type comments for a few games. [Ioannis Bampoulas]
+- 14598: casio/pickytlk.cpp, casio/superjr.cpp: Added eight more systems (not working). [QUFB]
+- 14599: hp/hp620lx.cpp: Added a skeleton driver for the HP 620LX palmtop computer. [QUFB]
+- 14604: sd132_flop.xml, sd1_flop.xml, vfxsd_flop.xml, ibm5170_cdrom-xml: Improved some metadata. [ArcadeShadow]
+- 14606: vtech_innotab_cart.xml: Added a list of games in the header comment. [vtarchive]
+- 14608: igs/goldstar.cpp: Corrected DIP switch settings for cb3c. [Ioannis Bampoulas]
+- 14609: tvgames/generalplus_gpl16250_mobigo.cpp: Changed release years and added a list of undumped systems. [vtarchive]
+- 14612: emu/rendlay.cpp: Fixed cropped and incorrectly positioned text in some layouts. [Christian Brunschen]
+- 14614: sinclair/specnext.cpp: Always use the specific access helper for register space accesses. [holub]
+- 14615: konami/gticlub.cpp: Added the force feedback motor output. [Endprodukt]
+- 14617: sega/model2.cpp: Added lamp outputs. [Endprodukt]
+- 14619: namco/namcos22.cpp: Added LED and force feedback motor outputs for driving games. [Endprodukt]
+- 14621: frontend/mame/luaengine.cpp: Allow scripts to check whether side effects are disabled. [holub]
+- 14622: olivetti/m24_kbd.cpp: Improved mouse emulation. [donohoe00]
+- 14623: Avoid passing -m flags for pointer size to the compiler on 64-bit RISC-V Linux. [Belegdol]
+- 14625: sharp/mz700.cpp: Added the MZ-80K cassette list as a compatible software list. [paul75s]
+- 14626: frontend/mame/luaengine.cpp: Expose machine::side_effects_disabled as a method rather than a property. [holub]
+- 14627: machine/z80dma.cpp: Don’t raise a fatal error when an unknown register is accessed. [holub]
+- 14629: mz2000_cass.xml: Reformatted notes for Polar Star II. [jflatt]
+- 14632: cpu/i86: Improved effective address calculation timing. [donohoe00]
+- 14633: casio/superjr.cpp: Fixed the ROM size for jd320, and made ROM region lengths match ROM sizes. [QUFB]
+- 14636: sega/model2.cpp: Added default backup RAM and EEPROM content for Hanguk Pro Yagu 98. [Matthew Daniels]
+- 14640: ibm5170.xml: Corrected the media type for Grandmaster Chess, and marked Crystal Caves as a bad dump. [Mike Swanson]
+- 14641: frontend/mame/infoxml.cpp: Provide device tags as well as types. [Nathan Woods]
+- 14643: m5_cart.xml: Replaced four items with better dumps; m5_cass.xml: Added seven working items. [bsittler, paul75s]
+- 14645: sega/model2.cpp: Delay enabling interrupts when interrupt mask register is written (fixes MT09313). [Matthew Daniels]
+- 14647: psx.xml: Added six versions of Xena - Warrior Princess. [redump.org, Hidden Palace, David Silva]
+- 14648: Added the PAL version of Family Tetris; Moved the Elan 3Axx devices into devices/machine. [David Haywood, TeamEurope]
+- 14649: ibm5170.xml: Added a reconstructed copy of the German version of DOOM II. [Mike Swanson]
+- 14650: nes.xml: Added three working items. [Mike Swanson]
+- 14651: machine/dp8390.cpp: Set CR bit 5 on DMA completion. [Angelo Salese]
+- 14654: neogeo.xml: Added a newer demo version of Bang Bang Busters 2. [PixelHeart, ArcadeShadow]
+- 14655: m5_cass.xml: Removed incorrect Japanese title for UFO Game. [paul75s]
+- 14657: ibm5170_cdrom.xml: Added BSD on Windows. [vic485, Mike Swanson]
+- 14660: nintendo/dkong.cpp: Added the Atari prototype Jammin' built from source. [SynaMax, Dutchman2000, David Haywood]
+- 14661: igs/goldstar.cpp: Show difficulty/payout rate DIP switch setting labels to match game. [Ioannis Bampoulas]
+- 14665: Sorted Macintosh and Newton system short names in mame.lst. [stonedDiscord]
+- 14666: misc/gamtor.cpp: Corrected CPU clock frequency, added real-time clock, and improved comments. [ClawGrip]
+- 14668: midway/omegrace.cpp: Implemented screen flipping and added cocktail cabinet overlay to internal artwork. [Mark Deslauriers]
+- 14669: atari/starwars.cpp: Changed the default DIP switch settings to match the manuals. [codefrog2002]
+- 14670: snk/hng64.cpp: Added lamp and force feedback motor outputs. [Endprodukt]
+- 14671: ibm5150.xml, ibm5170.xml, ibm5170_cdrom.xml: Added 1983 to 2002 versions of Norton Utilites. [Mike Swanson]
+- 14673: vtech_innotab_cart.xml: Expanded the list of known software in the header comment. [vtarchive]
+- 14674: zx81_cass.xml: Added thirteen working items. [ArcadeShadow]
+- 14645: capcom/cps2.cpp: Added a European release of Progear (decryption key is missing). [Eduardo Anay, ClawGrip]
+- 14677: sega/vicdual.cpp: Added an additional version of Head On 2. [SNESNESCUBE64]
+- 14678: cpu/z80: Corrected Z80N non-maskable interrupt behavior in stackless mode. [holub]
+- 14679: apple2_flop_orig.xml, Apple2_flop_clcracked.xml: Added 72 original dumps and improved metadata. [A-Noid]
+- 14680: sound/cem3394.cpp: Allow self-oscillation when no waveforms are enabled. [m1macrophage]
+- 14681: adp/manohman.cpp: Added an additional version of Merkur Backgammon. [stonedDiscord]
+- 14682: ibm5150.xml: Added two additional versions of Norton Utilities. [Mike Swanson]
+- 14683: sinclair: Fixed several issues with Spectrum Next emulation. [holub]
+- 14684: specnext_sd.xml: Added a software list with two Spectrum Next SD Card images. [David Haywood]
+- 14687: msx1_cart.xml: Replaced the bad ROM dump for Chick Fighter. [paul75s]
+- 14691: sinclair: Fixed some Spectrum Next graphical issues. [holub]
+- 14693: spectrum_betadisc_flop.xml: Added 23 working items. [ArcadeShadow]
+- 14697: vtech_innotab_cart.xml: Added a note about compatibility between regional variants. [vtarchive]
+- 14701: philips/mcd212.cpp: Fixed border colors in Mystic Midway (GitHub #14694). [Vincent-Halver]
+- 14704: ibm5170_cdrom.xml: Added four versions of Full Tilt! Pinball and its sequel. [reduump.org, Mike Swanson]
+- 14706: apple2_flop_orig.xml, apple2_flop_clcracked.xml: Added 59 items and replaced one crack. [A-Noid]
+- 14707: 3do_m2.xml, bbc_cass.xml, electron_cass.xml, amiga_flop.xml: Improved descriptions. [ArcadeShadow]
+- 14711: tvgames/vtech_eu3a12.xpp: Added a list of similar undumped systems. [vtarchive]
+- 14712: bus/megadrive/cart/segach.cpp: Added a media option for loading a simulated transmission. [superctr]
+- 14714: seibu/sei25x_rise1x_spr.cpp: Added a configuration option for allocating the raw sprite graphics bitmap. [cam900]
+- 14715: cpu/se3208/se3208dis.cpp, sound/vrender0.cpp, video/vrender0.cpp: Cleaned up a few details. [cam900]
+- 14716: midway/williams.cpp: Removed the version of Alien Arena without a sound program. [MajorHavocOnKLOV]
+- 14718: pippin.xml: Added three items (not working). [redump.org, David Silva]
+- 14720: vtech_innotab_cart.xml: Expanded the list of language/region codes in part numbers. [vtarchive]
+- 14723: spectrum_cass.xml: Improved metadata. [ArcadeShadow]
+- 14726: namco/namcos2_sprite.cpp, namco/namcos2_roz.cpp: Use priority mechanism rather than multiple drawing passes. [cam900]
+- 14729: midway/williams.cpp: Renamed the Alien Arena clone to make the difference a bit more obvious. [MajorHavocOnKLOV]
 
 
 Source changes
