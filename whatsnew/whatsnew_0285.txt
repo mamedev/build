@@ -1,5 +1,5 @@
-0.285
------
+0.285 2026-01-30
+----------------
 
 
 MAME Testers bugs fixed
@@ -160,8 +160,8 @@ casio_rompack:
   Christmas Songs 2 (RO-180X) [Ian Wang]
   Animation (RO-155), Animation 2 (RO-162), Animation Themes 3 (RO-166), Animation Themes 4 (RO-169A), Animation Themes 5 (RO-170A),
   Animation Themes 6 (RO-178A), Animation Themes 7 (RO-189A), Beatles 2 (RO-182B), Comic Songs (RO-183C), Easy Listening 3 (RO-110),
-  Enka 3 (RO-108), Enka 4 (RO-111), Enka Vol.2 Karaoke Hit Shuu (RO-106), Event Songs (RO-171I),
-  Game Music: Dragon Quest III Yori (RO-172G), Hit Kayou (RO-102), Kodomo no Uta 1 (RO-158), Kodomo no Uta 3 (RO-119),
+  Enka 3 (RO-108), Enka 4 (RO-111), Enka Vol.2 Karaoke Hit-shū (RO-106), Event Songs (RO-171I),
+  Game Music: "Dragon Quest III" Yori (RO-172G), Hit Kayou (RO-102), Kodomo no Uta 1 (RO-158), Kodomo no Uta 3 (RO-119),
   New Music (RO-103), Paul Mauriat (RO-151), Screen Themes 3 (RO-118), Shougakusei no Ongaku 1 (RO-184T),
   Shougakusei no Ongaku 2 (RO-185T), Shougakusei no Ongaku 3 (RO-186T), Standards 2 (RO-181S), Young Best Hits (RO-113),
   Young Hits (RO-153) [kosei_515]
@@ -175,480 +175,58 @@ n64: Viewpoint 2064 (prototype 20000413, master 4/13 version) [Gaming Alexan
 
 Merged pull requests
 --------------------
-14634: hash/n64.xml: Add Viewpoint 2064 master dump [jflatt]
-New software list items marked not working
-------------------------------------------
-n64: Viewpoint 2064 (Japan, prototype, master 4/13 version) [archive.org] 
-
-14717: barcrest/mpu4: New NOT WORKING games [stonedDiscord]
-## New NOT WORKING games
-Roadrunner [stonedDiscord]
-## New NOT WORKING clones
-Cup Final (Nova) (MPU4) (set 3) [stonedDiscord]
-21 Club (Barcrest) (German) (MPU4) (GTW 2.7) [stonedDiscord]
-Crown Jewels Deluxe (Barcrest) (German) (MPU4) (CJG 0.4, set 2) [stonedDiscord]
-Pink Panther (German) (Maygay) (M1A/B) (set 2) [stonedDiscord]
-
-14719: gkidabc.cpp: add known undumped versions on similar hardware [vtarchive]
-i think those are on similar hardware
-
-14724: hash: Move Windows NT from ibm5170_cdrom.xml to generic_cdrom.xml [chungy]
-A replacement for PR #14713, containing only the Windows NT software.
-Compared to the previous pull request, the following changes are made:
- * The compatibility tags are lowercase.
- * `ibmpc` specifies the PC platform
- * Rather than a specific kind of machine, `mipsr4000` is used to specify the CPU type required by Windows NT. If MAME gains
-  additional MIPS workstation drivers that support NT, they could automatically use these.
-
-14731: seibu/raiden2.cpp, seibu/r2dx_v33.cpp: Updates [cam900]
-seibu/raiden2.cpp:
-- Add priority callback for xsedae
-- Use single pass draw routine for non-blendable hardware
-- Split driver state classes per hardware configurations
-- Reduce duplicates
-- Add notes
-seibu/r2dx_v33.cpp:
-- Fix spacings
-
-14733: hash/casio_rompack.xml: Some info corrections/additions [ICEknigh7]
-Corrected some titles in the list of releases, added a few years and entries. [CASIO ROM PACK @Wiki, devan_wolf]
-
-14734: sinclair/chloe,specnext,sprinter,tsconf.cpp: Added missing credits [holub]
-As far as we have "thanks-to", I'd like to credit some...
-
-14737: new NOT WORKING machine (Relief Pitcher System 1) [mamehaze]
-new NOT WORKING machines
--------------
-Relief Pitcher (System 1, prototype) [anonymous, Dutchman2000, SynaMax]
-
-14741: seibu/raiden2.h: Reduce duplicated static member [cam900]
-
-14742: sequential/prophet5.cpp: Implemented skeleton audio pipeline. [m1macrophage]
-* Emulated the CA3280. Both the linearized and non-linearized configurations, since they are both used on the `prophet5`.
-* Set up a skeleton audio pipeline for the `prophet5`, with a few working components:
-  * A440 tone.
-  * Voice gating.
-  * Noise generation, including loudness control.
-  * Master volume control.
-  * Voice mixer.  Apparently, this is the most complex component of a synth, Judging from the `prophet5` and `linndrum` :D
-
-14744: sinclair/specnext*.cpp: Added missing save states [holub]
-
-14745: new WORKING machine (Moon Raker) [mamehaze]
-new WORKING machine
-------------
-Moon Raker [Dillweed, SNESNESCUBE64]
-
-14749: apple2gs: fix 1-sec and 1/4-sec IRQs [arekkusu42]
-(More small prerequisites split out from a larger 50Hz video timing WIP PR):
-This commit fixes the 1-second and 1/4-second IRQs to match observed hardware behavior:
-* MegaII 1/4-sec IRQs (used by i.e. AppleTalk) use the same timing mechanism as the FLASH text rate, which means they are actually
-  3.75 Hz (NTSC) or 3.125 Hz (PAL), not 4.0 Hz, and always trigger on scanline 256 (wrapped to 250 or 200.) This is hinted at by the
-  Apple IIgs Firmware Reference, which says the "3.75Hz interrupt" "occurs every 0.26667 second for AppleTalk use."
-* VGC 1-sec IRQs (used by i.e. the CDA Control Panel) really trigger every second via the RTC, and are not tied to NTSC/PAL or any
-  particular scanline.  Using the C02E/2F video counters on hardware to measure the drift between IRQs relative to the video
-  scanner, we can observe `-[1319..1326]` 1 MHz cycles (about 20.3 scanlines, with 7-cycle jitter) every second.  This corresponds
-  to the difference between 60 Hz and the actual 59.92 Hz CRT refresh rate.  In another experiment (not part of this PR) which
-  changes A2GS_1M to 1020484, we can observe in MAME a very close `-[1312..1319]` cycle drift: accurate down to the precision of the
-  average frequency 32-bit integer approximation.
-<BR>
-This commit also fixes a subtle off-by-one bug in `apple2gs_state::get_vpos()`, which only affected scanlines 246-256.  The new
-  logic is NTSC/PAL-agnostic.
-<BR>
-This commit also changes C044/45 to always return zero (not floating bus).  These MMDELTAX/Y registers have some behavior described
-  in Cortland documentation, but AFAICT this is unimplemented on the MegaII as shipped in the IIgs-- no interrupts or mouse deltas
-  are generated regardless of what C041 INTEN bits 0-2 are set to.
-Before this change, AppleTalk hangs on boot; to reproduce:
-1) Set slot 1 to AppleTalk in Control Panel
-2) boot GS/OS 6.0.1 or 6.0.4 with AppleShare installed (an easy reproducer is the 6.0.4 Live.Install.po)
--> AppleTalk enables 1/4-second C041 IRQ during boot, and selects SCCAREG/DATA registers, but then spins forever polling C044
-  expecting zero, at 02/B9A4 (6.0.1), or 02/BABF (6.0.4).
-It appears that AppleTalk is setting C041 bit 0, and then using C044/45 to somehow detect activity on an SCC channel, and waiting if
-  the channel is busy.  The IIgs schematic shows that MegaII MSEX1/MSEY1 tap SCC RXDA/RXDB, but it's unclear exactly how these
-  (signed, clamped?) counters increment.
-<BR>
-Testing:
-My previous IRQTEST is updated here to carefully verify the 1-second and 1/4-second IRQ frequency, against both NTSC and PAL display
-  modes.  MAME 0.284 fails:
-<img width="704" height="462" alt="IRQTest_0284_before"
-  src="https://github.com/user-attachments/assets/ff6c546e-4a60-4e58-a492-c7536b345b2e" />
-IRQTest_251229.zip
-After this PR, 1-second IRQs match hardware behavior and pass, and 1/4-second IRQs work as expected in NTSC mode; a separate WIP PR
-  implements PAL mode.
-
-14758: Added 2 verified SEGA SC-3000 BASIC Level 2 definitions. [kerrjnr]
-Added 2 verified SEGA SC-3000 BASIC Level 2 definitions to sc3000_cart.xml.
-Six SC-3000 cart dumps supplied by Omar Cornut for analysis and testing, two were previously unknown.
- - basic2pal: basic2pal.bin, BASIC Level 2 (Export, PAL), 32KB, ram 2048
- - basic2v10b: basic2v10b.bin, BASIC Level 2 (Japan, version 1.0b), 32KB, ram 2048
-
-14760: cpu/drccache.cpp: Defer allocating to start, allow forcing W^X mode [cuavas]
-This makes a few changes to the DRC cache.  I expect this won't be contentious, but @galibert or @MooglyGuy might have something to
-  say about it.
-This adds a user-facing option to disable use of read/write/execute pages even if they're permitted on the host system
-  (-[no]drc_rwx).  This is useful for debugging or profiling W^X mode on Windows/Linux/whatever when RWX pages are permitted.
-  People may also want to use it if they want to make MAME marginally less insecure or something (it might prevent certain classes
-  of VM escape bug).
-This defers DRC cache allocation from construction to start time.  This has two main benefits right now:
-* It improves the performance of `-validate`, `-listxml`, the internal UI, etc. because it's no longer asking the virtual memory
-  system for megabytes of memory it has no need for and messing with page tables.
-* It means systems/devices can override the cache size for CPUs at configuration time, which may improve performance if they have a
-  large working set.  To this end, MIPS III and PowerPC get `set_drc_cache_size(size_t)` configuration member functions to set the
-  desired cache size.
-This adds helpers for allocating structures or objects in the DRC cache.  This makes syntax a bit prettier in CPU cores.  It prints
-  an error message if the structure/object could possibly be misaligned (changing the heap management approach to correctly align
-  things that aren't satisfied with `max_align_t` alignment is too intrusive to do in this PR).
-This adds some DRC cache stats to verbose output on destruction.  Debug builds have more counters than release builds.  This can
-  give you an idea of whether the cache is big enough.  Note that cache use will be higher with `-drc_log_uml`, and a lot higher
-  with `-drc_log_native`, especially on i686 and x86-64.
-There's also some general cleanup in some of the CPU cores, but nothing major.
-
-14761: casio_rompack.xml: Added 33 entries [ICEknigh7]
-Added new Japanese Rom Pack dumps:
-- The Hit Parade (RO-101) [Edward d-tech]
-- Hit Kayou (RO-102) [kosei_515]
-- New Music (RO-103) [kosei_515]
-- Enka Vol.2 Karaoke Hit Shuu (RO-106) [kosei_515]
-- Enka 3 (RO-108) [kosei_515]
-- Easy Listening 3 (RO-110) [kosei_515]
-- Enka 4 (RO-111) [kosei_515]
-- Young Best Hits (RO-113) [kosei_515]
-- Enka 5 (RO-114) [Edward d-tech]
-- Screen Themes 3 (RO-118) [kosei_515]
-- Kodomo no Uta 3 (RO-119) [kosei_515]
-- Enka 9 (RO-125E) [Edward d-tech]
-- Paul Mauriat (RO-151) [kosei_515]
-- Young Hits (RO-153) [kosei_515]
-- Animation (RO-155) [kosei_515]
-- Kodomo no Uta 1 (RO-158) [kosei_515]
-- Animation 2 (RO-162) [kosei_515]
-- Animation Themes 3 (RO-166) [kosei_515]
-- Animation Themes 4 (RO-169A) [kosei_515]
-- Animation Themes 5 (RO-170A) [kosei_515]
-- Event Songs (RO-171I) [kosei_515]
-- Game Music: Dragon Quest III Yori (RO-172G) [kosei_515]
-- Animation Themes 6 (RO-178A) [kosei_515]
-- Christmas Songs 2 (RO-180X) [whc2001 (Ian Wang)]
-- Standards 2 (RO-181S) [kosei_515]
-- Beatles 2 (RO-182B) [kosei_515]
-- Comic Songs (RO-183C) [kosei_515]
-- Shougakusei no Ongaku 1 (RO-184T) [kosei_515]
-- Shougakusei no Ongaku 2 (RO-185T) [kosei_515]
-- Shougakusei no Ongaku 3 (RO-186T) [kosei_515]
-- Animation Themes 7 (RO-189A) [kosei_515]
-- Young Best Hits 8 (RO-191Y) [Edward d-tech]
-- Young Best Hits 9 (RO-192Y) [Edward d-tech]
-
-14763: machine/spi_sdcard.cpp: Added configurable read/seek delays [holub]
-
-14774: DRC: Minimise the number of pages that need protection changes [cuavas]
-This changes how the misleadingly named "DRC hash table" allocates lookup table blocks.  This changes it to allocate larger blocks
-  of memory from the "permanent allocation" area at the end of the cache, rather than allocating smaller "temporary" blocks
-  intermixed with executable code.
-This has a number of effects:
-* The lookup tables are no longer marked executable while generated code is running.
-* Nothing needs to write to previously allocated "temporary" cache memory, so at most one page needs to be marked writable when
-  switching to generating code (except in the case of a cache flush, which obviously requires everything to be marked writable).
-* You may be able to get a better idea of the actual amount of generated executable code from cache statistics when the megabytes of
-  lookup tables are separate.
-I doubt this will actually have much impact on performance in practice, as even changing protection on a single page requires an
-  expensive page table flush.  But I still think it's a cleaner approach to managing memory.
-
-14775: pippin.xml, pippin_flop.xml, pc1000.xml, etc...: Various metadata cleanups [ArcadeShadow]
-pippin.xml: Removed unnecessary CHD file extension.
-pippin_flop.xml: Added manufacturer in the software list name and rename country abbreviation.
-pc1000.xml: Fixed parent/cloneof relationships
-bbc_cass.xml: Lowercase on descriptive word
-aim65_cart.xml: Fixed parent/cloneof relationships
-gba.xml: rename "Jackie Chan Adventures - Legend of the Darkhand" to "Jackie Chan Adventures - Legend of the Dark Hand" and fixed
-  parent/cloneof relationship of "Mortal Kombat Advance"
-
-14776: cpu/z80/z80.cpp: Fixed IRQ state if comes from daisy chain [holub]
-
-14782: New NOT_WORKING machines (Casio DG-10/20) [devinacker]
-New NOT_WORKING machine
-----------
-Casio DG-20 Digital Guitar [BCM, Devin Acker]
-New NOT_WORKING clone
-----------
-Casio DG-10 Digital Guitar [BCM, Devin Acker]
-
-14786: Add Revolution X revision 2 [clawgrip]
-New working systems
--------------------
-Revolution X (revision 2.0 9/8/94) [Victor Fernandez (City Game)]
-
-14787: x68k_flop: laplacec is a cracked older version [einstein95]
-No version numbers visible other than the one for the mouse driver.
-
-14789: sinclair/*.cpp Added scroll to kempston mouse input [holub]
-
-14791: psx.xml: Added 26 working items + 9 redumped items [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Advanced Dungeons & Dragons: Iron & Blood - Warriors of Ravenloft (Europe) [Redump]
-Agent Armstrong (Europe) [Redump]
-Agile Warrior (Japan) [Redump]
-Agile Warrior: F-111X (Europe) [Redump]
-Allied General (Japan) [Redump]
-Animal Football (Europe) [Redump]
-Archer Maclean's 3D Pool (Europe) [Redump]
-Asteroids (Europe) [Redump]
-Asteroids (France) [Redump]
-Asteroids (Germany) [Redump]
-Asteroids (Italy) [Redump]
-Asteroids (Japan, SuperLite 1500 Series) [Redump]
-Ayrton Senna Kart Duel (Europe) [Redump]
-Ayrton Senna Kart Duel (Japan) [Redump]
-Ayrton Senna Kart Duel 2 (Europe) [Redump]
-Ayrton Senna KartDuel 2 (Japan) [Redump]
-Ayrton Senna Kart Duel Special (Japan) [Redump]
-Baby Felix Tennis (Europe) [Redump]
-Boxer's Road (Japan) [Redump]
-Boxer's Road (Japan) (PlayStation the Best) [Redump]
-Bubble Bobble also featuring Rainbow Islands (Europe) [Redump]
-Panzer General II: Allied General (Europe) [Redump]
-Sampras Extreme Tennis (Europe) [Redump]
-Sampras Extreme Tennis (Japan) [Redump]
-Septentrion: Out of the Blue (Japan) [Redump]
-Septentrion: Out of the Blue (Japan) (Major Wave Series) [Redump]
-Redumped software list items
---------------------------------------------
-Advan Racing (Japan) [Redump]
-Advanced Dungeons & Dragons: Iron & Blood - Warriors of Ravenloft (USA) [Redump]
-Advanced Dungeons & Dragons: Iron & Blood - Warriors of Ravenloft (USA, demo) [Redump]
-Agent Armstrong: Himitsu Shirei Daisakusen (Japan) [Redump]
-Agile Warrior: F-111X (USA) [Redump]
-Allied General (USA) [Redump]
-Asteroids (USA) [Redump]
-Bubble Bobble also featuring Rainbow Islands (USA) [Redump]
-Xena - Warrior Princess (USA) [Redump]
-Promoted to working
---------------------------------------------
-Agent Armstrong: Himitsu Shirei Daisakusen (Japan)
-
-14792: namcops2.cpp: Document offline English version of Battle Gear 3 [FMecha]
-Dongle ID `B3900068A` (in this PR) was originally thought to be offline English version, but turned out to be the Betson US English
-  one (region `A` with Honda disclaimers). mokonaXVI recently pointed out about this post which has a different dongle ID
-  (`B3900071A`) for Battle Gear 3, which is likely to be the offline English version (region `E`).
-Unfortunately, the post does not include HDD ID, but much like the US version required editing for different server and
-  Honda-related disclaimers, I believe the offline one has a different HDD ID as well to replace online support with local
-  leaderboards.
-
-14793: ld50: add generic MIDI output and battery level input [devinacker]
-
-14794: Various uPD7801-related tweaks [devinacker]
-- upd7801: use 4kb internal ROM
-- upd7801, 78c0x, 781x: more accurate set of registers viewable in debugger
-- fp1100, fp1000: split up subcpu internal and external ROM regions
-- fp1000: fix ROMs for subcpu and chargen being swapped with each other
-
-14795: kaneko/suprnova.cpp: Fix metadata of bootleg set [cam900]
-
-14802: nintendo/snesb.cpp: promote piratdwb to working [devinacker]
-There's still some unknown I/O here and there but the game seems to coin up and play perfectly fine now.
-Machines promoted to working
-----------
-The Pirates of Dark Water (SNES bootleg) [Devin Acker]
-
-14804: misc/3do.cpp: split Madam and Clio into own devices [angelosa]
-
-14805: Update evolution_handheld.cpp - remove incorrectly copy+pasted comments [mamehaze]
-
-14806: Connect I8087 to GRiD Compass [vklachkov]
-The Intel 8087 FPU is a mandatory component in GRiD Compass laptops. Without it, programs typically don't work or crash the system.
-  For example, `Clock~Run~`
-Before:
-<img width="502" height="408.5" alt="Screenshot 2026-01-14 at 12 39 32"
-  src="https://github.com/user-attachments/assets/49c8fcde-a484-41e5-8711-4bec8409eb68" />
-(Random glitches and exceptions)
-After:
-<img width="625.5" height="476" alt="Screenshot 2026-01-14 at 12 59 31"
-  src="https://github.com/user-attachments/assets/bde3c721-c0e5-4725-9b14-cb8e33710172" />
-But there are still issues with the game FlakAttack. It no longer freezes, but it renders incorrectly:
-<img width="628" height="474.5" alt="Screenshot 2026-01-14 at 12 30 14"
-  src="https://github.com/user-attachments/assets/5fe855a8-8ee2-418a-81dc-c7910af36397" />
-
-14808: taitojc.cpp: add wheel_motor for sidebs and sidebs2 [Endprodukt]
-adds wheel_motor output for sidebs and sidebs2.
-
-14809: gbcolor: add South Park prototype ROM [chungy]
-ROM from here: https://archive.org/details/spgam120
-Might make sense as a child of Mary-Kate & Ashley and/or Maya the Bee, but those games already don't have a parent/child
-  relationship. Since this was first developed with the South Park IP, maybe leave it as its own thing.
-New working software list items (gbcolor.xml)
----------------------------------------------
-South Park (prototype) [DaKoolDood]
-
-14810: Update atarisy1.cpp - set reliefs1 to use atarisy1r_state so that controls work [mamehaze]
-
-14811: misc/39in1.cpp: correct CGA and VGA option text [LeWolfYT]
-This corrects a small error in the DIP switch configuration for the 39 in 1 MAME bootleg that switches the labels for CGA and VGA
-  graphics (e.g. setting the machine to VGA graphics would have the menu state that it's set to use CGA, though the switch itself is
-  correctly shown to be ON)
-
-14812: Fixed inputs for Relief Pitcher (System 1) [synamaxmusic]
-The joysticks were swapped and the buttons now have proper mapping.  Confirmed with the owner that the sound ROMs report an error
-  message in service mode but this is a false positive since the checksums match up with the PCB photo.
-
-14813: misc/3do.cpp: split BIOSes by model types, retire original 3do_ntsc / 3do_pal romsets [angelosa]
-* all new dumps provided by [3dodev]
-New clones marked not working
------------------------------
-3DO FZ-1 R.E.A.L. Interactive Multiplayer (Europe), 3DO FZ-1 R.E.A.L. Interactive Multiplayer (Japan), 3DO FZ-10 R.E.A.L.
-  Interactive Multiplayer (Europe, Anvil chipset), 3DO FZ-10 R.E.A.L. Interactive Multiplayer (Japan), 3DO FC-1 Interactive
-  Multiplayer (USA), 3DO FC-2 Interactive Multiplayer (dev kit), 3DO HC-21 Interactive Multiplayer (USA, prototype) [3dodev]
-
-14816: Relief Pitcher (System 1) promoted to WORKING [synamaxmusic]
-Game is now playable as seen in this video: https://www.youtube.com/watch?v=2yLhIFSBeJA
-<img width="336" height="240" alt="0044" src="https://github.com/user-attachments/assets/bb402a37-eb32-4dbf-b428-dba9bc64e60f" />
-<img width="336" height="240" alt="0055" src="https://github.com/user-attachments/assets/389a98b9-d720-43d2-a93e-ff22a2d3ca43" />
-<img width="336" height="240" alt="0239" src="https://github.com/user-attachments/assets/2cd6de57-6969-474a-a870-a5249d24d85f" />
-<img width="336" height="240" alt="0187" src="https://github.com/user-attachments/assets/6721c7b6-af10-4d02-95fc-8a9c09757f75" />
-
-14817: ussr/juku.cpp: Enable screen line 241, fix JBASIC dump, add new BIOS and other software [boamaod]
-* Enable screen line 241 as tested on real hardware
-* Fix byte at JBASIC dump 021A based on JMON3.3 and reread
-* Add EKTA BIOS nr 31 with Disk/Net boot
-* Fix version number for EKTA BIOS nr 32
-* Add J3K games disks 2024 and 2025 to software list
-
-14818: 2 missing save items in snk/snk.cpp driver [TheLostNinja]
-It was the _m_bg_tile_offset_ and _m_tx_tile_offset_. I hope after their saving the all games from this driver would get an all
-  rights to have save-supported status.
-
-14825: LUA:  Ensuring that `entry:default_value()` returns the correct type [npwoods]
-`entry:default_value()` was always returning string.  A consequence of this problem is that the following LUA commands would error
-```
-manager.options.entries['beam_dot_size']:value(manager.options.entries['beam_dot_size']:default_value())
-manager.options.entries['frameskip']:value(manager.options.entries['frameskip']:default_value())
-```
-With this change, `default_value()` will return objects of the correct type
-
-14826: sequential/prophet5.cpp: Incorporated the CEM3320 filter. [m1macrophage]
-sound/va_vcf.cpp:
-* va_vcf_device: Added functions for accessing frequency and resonance gain.
-* cem3320_lpf4_device: Removed feedback resistor from the constructor. Most designs use the datasheet recommendation (100K).
-* cem3320_lpf4_device: Input stream can be a current, or a voltage by using a resistor. The first configuration is used by the
-  prophet5, while the second one is used by the linndrum.
-linn/linndrum.cpp:
-* Adapted to the interface changes above.
-sequential/prophet5.cpp:
-* Incorporated CEM3320, and emulated a subset of its frequency control and trimmers.
-* Created and used enums for CV indices.
-* Renamed some inputs for better UI organization.
-------
-Next up: I will look into a proper filter implementation, as suggested here
-
-14828: apple2_flop_orig, apple2_flop_clcracked, apple2_flop_misc, apple2gs_flop_orig added 34 (33 working, 1 non-working) and
-  metadata cleanups [A-Noid33]
-Focusing on Adventure International Brøderbund Software, Electronic Arts, MicroProse Software, Microsoft
-New working software list items (apple2_flop_orig.xml)
--------------------------------
-BannerMania (800K 3.5") [4am, A-Noid]
-Conflict in Vietnam (version 331.00) [4am, A-Noid]
-Crusade in Europe (version 2) [4am, A-Noid]
-Crusade in Europe (version 321.03) [4am, A-Noid]
-Dazzle Draw (version 1984-11-15) [4am, A-Noid]
-Dazzle Draw (version 1985-09-16) [4am, A-Noid]
-Decision in the Desert [4am, A-Noid]
-F-15 Strike Eagle (revision 1) [4am, A-Noid]
-F-15 Strike Eagle (revision 2) [4am, A-Noid]
-F-15 Strike Eagle (revision 3) [4am, A-Noid]
-Microsoft Decathlon [4am, A-Noid]
-NATO Commander (revision 1) [4am, A-Noid]
-NATO Commander (version 1.1) [4am, A-Noid]
-NATO Commander (version 1.2) [4am, A-Noid]
-Olympic Decathlon [4am, A-Noid]
-Other-Venture #1: Classic Adventure [4am, A-Noid]
-Silent Service (revision 1) [4am, A-Noid]
-Silent Service (version 325.02) [4am, A-Noid]
-Silent Service (version 325.04) [4am, A-Noid]
-Solo Flight [4am, A-Noid]
-Strike Fleet [4am, A-Noid]
-The Adventures of Buckaroo Banzai: Across The 8th Dimension! [LoGo, 4am, A-Noid]
-The New Print Shop [4am, A-Noid]
-The Print Shop Companion (revision 1) [4am, A-Noid]
-The Print Shop Companion (revision 2) [4am, A-Noid]
-The Print Shop Companion (revision 3) [4am, A-Noid]
-The Treehouse (version 1.0) (800K 3.5") [4am, A-Noid]
-Where in America's Past is Carmen Sandiego? (version 1.00) (800K 3.5") [4am, A-Noid]
-New non-working software list items (apple2_flop_orig.xml)
--------------------------------
-Sid Meier's Pirates! (version 332.01) [4am, A-Noid]
-New working software list items (apple2_flop_clcracked.xml)
--------------------------------
-The Adventures of Buckaroo Banzai: Across The 8th Dimension! (4am crack) [LoGo, 4am, A-Noid]
-New working software list items (apple2_flop_misc.xml)
--------------------------------
-The Animated Software Catalog 1985 (Baudville) (version D1551) [4am, A-Noid]
-Pillage Village (One Eye crack) [asimov, Jason Dyer, A-Noid]
-New working software list items (apple2gs_flop_orig.xml)
--------------------------------
-Music Construction Set Dealer Demo [4am, A-Noid]
-Where in the World is Carmen Sandiego? (version 1.1) [4am, A-Noid]
-
-14830: skeleton/lanmao: added adpcm bank support [flama12333]
-the code was from mscbar (Currently in draft)
-https://github.com/mamedev/mame/pull/14514/
-
-14833: sega/model2.cpp: delay IRQ mask update by feeding new value to timer callback [gm-matthew]
-This is basically an update to commit 456c228869283dcca16e17d9450d76e75c505009; instead of updating the IRQ mask register straight
-  away, it feeds the new value to the timer callback as suggested by @cuavas. There should no longer be any possibility of
-  `sound_ready_w()` bypassing the 2 cycle delay and firing a sound interrupt too early.
-
-14835: capcom/cps2.cpp: Fix hardware documents [cam900]
-reference:
-- https://gitlab.com/loic.petit/cps2-reverse/-/blob/master/DLs/README.md
-- https://arcadehacker.blogspot.com/2018/01/a-journey-into-capcoms-cps2-silicon.html
-
-14838: cave/cv1k*.cpp: Fix device naming and Minor cleanups [cam900]
-cave/cv1k_v.cpp:
-- Change ep1c* files filename to cv1k_v*, because This file is emulation core for cave CV1000 hardware specific and more closer to
-  describe actual purpose, also ep1c is part family name of Altera Cyclone (1) FPGAs.
-- Use logmacro.h for replace plain logerror function
-- Use reference to replace pointers
-- Reduce some duplicates
-- Remove unnecessary device finder
-- Use util::sext for signed values
-- Suppress side effects for debugger reads
-- Make some variables constant
-- Fix spacings
-- Add notes
-cave/cv1k.cpp:
-- Fix metadata for describe region
-- Reduce unnecessary functions
-- Use shorter typename value for consistency
-- Reduce duplicates
-- Fix naming
-- Fix spacings
-- Fix loggings
-- Reduce literal tag usages
-- Add notes
-
-14839: bus/cbmiec: add Xetec C-5181 printer interface [devinacker]
-Dumped this thing a few years ago but just now decided to add support for it after identifying what printer it was actually designed
-  for.
-<img width="745" height="483" alt="image" src="https://github.com/user-attachments/assets/cbab1454-f811-4a09-aeb5-f57dbfe40c65" />
-
-14843: LUA:  Fixing an issue setting float options [npwoods]
-LUA only has a `number` type, and as such currently the handler for options of type `int` is going to intercept floating point
-  numbers, even if they can't be cast to integers.  This can be reproduced with the following command:
-```
-manager.options.entries['beam_dot_size']:value(2.5)
-```
-With this change, there is a single handler for LUA type `number` that takes a `float` and can set integer options provided that the
-  `float` can be represented as an `int` losslessly.
-
-14847: added 3 e-kara user cartridges with songs + 1 hi-kara user cart with songs [mamehaze]
-new software list additions
------------
-ekara_cart.xml
-ekaraweb28b: e-kara Web cartridge 28M (used, with 28 songs) (Japan) [David Haywood, TeamEurope]
-ekaraweb12l: e-kara Web cartridge 12M (used, with 12 songs, set 10) (Japan) [David Haywood, TeamEurope]
-ekaraweb12m: e-kara Web cartridge 12M (used, with 11 songs) (Japan) [David Haywood, TeamEurope]
-hikara.xml
-user10b: Hi-kara 10-song capacity user cartridge (used, with 9 songs) (Japan) [David Haywood, TeamEurope]
+- 14634: n64.xml: Added a newer Viewpoint 2064 prototype (not working). [Gaming Alexandria, wherewilf, jflatt]
+- 14717: barcrest: Added five gambling systems on MPU4 hardware (not working). [stonedDiscord]
+- 14719: vtech/gkidabc.cpp: Added a list of systems that may use similar hardware to the header comment. [vtarchive]
+- 14724: generic_cdrom.xml: Moved Windows NT installation media out of system-specific software lists. [Mike Swanson]
+- 14731: seibu/raiden2_v.cpp: Draw sprites using priority for X Se Dae Quiz (no blending). [cam900]
+- 14733: casio_rompack.xml: Updated the list of undumped cartridges. [ICEknight]
+- 14734: sinclair: Thank some people in header comments. [holub]
+- 14737: atari/atarisy1.cpp: Added a prototype version of Relief Pitcher. [anonymous, Dutchman2000, SynaMax, David Haywood]
+- 14741: seibu/raiden2.h: Removed unused static data members that are never instantiated. [cam900]
+- 14742: sequential/prophet5.cpp, sound/va_vca.cpp: Added a CA3280 VCA and preliminary Prophet 5 audio pipeline. [m1macrophage]
+- 14744: sinclair: Added raster offsets to saved states for several devices. [holub]
+- 14745: mw8080/8080bw.cpp: Added Nichibutsu Moon Raker. [Dillweed, SNESNESCUBE64, David Haywood]
+- 14749: apple/apple2gs.cpp: Fixed one-second and quarter-second interrupts and vertical counter. [arekkusu42]
+- 14758: sc3000_cart.xml: Added two additional versions of SC-3000 BASIC Level 2. [Omar Cornut, Andrew Kerr]
+- 14760: cpu/drccache.cpp: Defer allocating memory to start, and add an option to never use writable, executable pages. [Vas Crabb]
+- 14761: casio_rompack.xml: Added 33 items (not working). [kosei_515, Edward d-tech, Ian Want, ICEknight]
+- 14763: machine/spi_sdcard.cpp: Added configurable seek and seek delays. [holub]
+- 14774: cpu/drccache.cpp, cpu/drcbeut.cpp: Minimise the number of pages that need protection changes. [Vas Crabb]
+- 14775: Cleaned up metadata in various software lists. [ArcadeShadow]
+- 14776: cpu/z80: Fixed daisy chain interrupts being ignored when IRQ line is deasserted. [holub]
+- 14782: casio/dg20.cpp: Added the Casio DG-10 and DG-20 digital guitars (not working, missing PCM ROMs). [BCM, Devin Acker]
+- 14786: midway/midxunit.cpp: Added Revolution X revision 2.0. [Victor Fernandez (City Game), ClawGrip]
+- 14787: x68k_flop.xml: Marked the cracked version of Laplace no Ma as also being an older version. [einstein95]
+- 14789: sinclair: Added the scroll wheel axis to Kempston mouse inputs. [holub]
+- 14791: psx.xml: Added 26 working items, and replaced nine items with better dumps. [redump.org, ArcadeShadow]
+- 14792: namco/namcops2.cpp: Added the offline version of Battle Gear 3 to the list of games. [FMecha]
+- 14793: casio/ld50.cpp: Added a MIDI output port and a battery level input. [Devin Acker]
+- 14794: cpu/upd7810: Use internal 4K ROM for µPD7801, and improved debugger register display. [Devin Acker]
+- 14795: kaneko/suprnova.cpp: Improved metadata for the recently added Puzz Loop bootleg. [cam900]
+- 14802: nintendo/snesb.cpp: Promoted the bootleg of The Pirates of Dark Water to working. [Devin Acker]
+- 14804: misc/3do_clio.cpp, misc/3do_madam.cpp: Moved the 3DO Madam and Clio emulation to separate devices. [Angelo Salese]
+- 14805: handheld/evolution_handheld.cpp: Removed incorrectly copied comments. [David Haywood]
+- 14806: gridcomp/gridcomp.cpp: Added the 8087 coprocessor, which was always present. [Valera Klachkov]
+- 14808: taito/taitojc.cpp: Added a wheel motor output for the Side by Side games. [Endprodukt]
+- 14809: gbcolor.xml: Added the prototype South Park game (later reworked to use other IP). [DaKoolDood, Mike Swanson]
+- 14810: atari/atarisy1.cpp: Enable timer interrupts for Relief Pitcher (required for controls to work). [David Haywood]
+- 14811: misc/39in1.cpp: Corrected the display resolution DIP switch setting labels. [LeWolfYT]
+- 14812: atari/atarisy1.cpp: Fixed inputs for Relief Pitcher. [SynaMax]
+- 14813: misc/3do.cpp: Split systems into real-world models. [Angelo Salese, 3DO Development Repo]
+- 14816: atari/atarisy1.cpp: Marked Relief Pitcher as working. [SynaMax]
+- 14817: ussr/juku.cpp: Added/corrected ROMs and corrected vertical resolution; juku.xml: Added two Juku 3000 disks. [Märt Põder]
+- 14818: snk/snk_v.cpp: Added two data members to save states. [TheLostNinja]
+- 14825: util/options.cpp, frontend/mame/luaengine.cpp: Parse default option values. [Nathan Woods]
+- 14826: sequential/prophet5.cpp: Hooked up the CEM3320 filter. [m1macrophage]
+- 14828: Added the latest Apple II dumps and cracks to the relevant software lists. [4am,LoGo, Jason Dyer, Asimov, A-Noid]
+- 14830: skeleton/lanmao.cpp: Hooked up ADPCM sound sample ROM banking. [flama12333]
+- 14833: sega/model2.cpp: Delay interrupt mask update by two cycles (prevents premature sound interrupts). [Matthew Daniels]
+- 14835: capcom/cps2.cpp: Corrected descriptions of integrated circuits in comments. [cam900]
+- 14838: cave/cv1k.cpp, cave/cv1k_v.cpp: Fixed debugger issues, improved logging, improved naming, and cleaned up code. [cam900]
+- 14839: bus/cbmiec/c5181.cpp: Added the Xetec C-5181 serial printer interface. [Devin Acker]
+- 14843: frontend/mame/luaengine.cpp: Avoid overloading Lua functions on number types. [Nathan Woods]
+- 14847: ekara_cart.xml: Added three used user cartridges; hikara.xml: Added one used user cartridge. [David Haywood, TeamEurope]
 
 
 Source changes
@@ -1863,3 +1441,13 @@ Hi-kara 10-song capacity user cartridge (used, with 9 songs) (Japan) [David Hayw
 -windows/winmain.cpp: Suppress digit grouping.  Too many things don't take it into consideration. [Vas Crabb]
 
 -casio_rompack.xml: Added missing unsupported flag to new items. [Vas Crabb]
+
+-n64.xml: Added missing parent/clone relationship. [Vas Crabb]
+
+-casio_rompack.xml: Improved a couple of transliterations. [Vas Crabb]
+
+-Revert "machine/spi_sdcard.cpp: Added configurable read/seek delays (#14763)" [Vas Crabb]
+ * This reverts commit 6607006b583841bf20244fe1acd1c8484ac56a35.
+ * This didn't do what it purported to do, i.e. increase response delays. It actually decreased response delays in almost all cases,
+    because it replaced the default SPI_DELAY_RESPONSE argument value with configured values that default to zero.
+ * Since it's based on a misunderstanding and affects all systems using the device, I'm reverting it.  It simply doesn't make sense.
