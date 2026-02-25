@@ -115,7 +115,7 @@ For the following configurations, ensure a build compiles, links and validates:
 - [ ] Write executive summary above the `<!--more-->` tag – aim for at least three paragraphs of content, call out a few interesting or notable changes
 - [ ] Put release announcement post in a simple HTML wrapper, preview it, and check for HTML syntax/nesting errors
 - [ ] Commit changes to web site pages
-- [ ] Convert executive summary to UBB flavours for forum.mamedev.org, forums.bannister.org, and mameworld.info, and markdown flavours for reddit and GitHub, and check previews
+- [ ] Convert executive summary to UBB flavours for forum.mamedev.org and forums.bannister.org, and markdown flavours for reddit and GitHub, and check previews
 
 # Upload assets for release
 
