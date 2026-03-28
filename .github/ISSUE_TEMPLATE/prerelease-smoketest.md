@@ -105,7 +105,7 @@ assignees: ''
 - [ ] All `-video` modules (`bgfx`, `opengl`, `accel`, `soft`)
 - [ ] All `-keyboardprovider` modules (`sdl`, `dinput`)
 - [ ] All `-mouseprovider` modules (`sdl`)
-- [ ] All `-joystickprovider` modules (`sdl`, `winhybrid`, `xinput`, `dinput`)
+- [ ] All `-joystickprovider` modules (`sdlgame`, `sdljoy`, `winhybrid`, `xinput`, `dinput`)
 - [ ] Subset builds (`sdlmametinyd.exe` and `sdlmamevirtuald.exe`) more or less work
 - [ ] CHD CD read (e.g. run a Konami GV game)
 - [ ] CHD hard disk read (e.g. boot an OS on a computer)
@@ -126,7 +126,7 @@ assignees: ''
 - [ ] All `-video` modules (`bgfx`, `opengl`, `accel`, `soft`)
 - [ ] All `-keyboardprovider` modules (`sdl`, `dinput`)
 - [ ] All `-mouseprovider` modules (`sdl`)
-- [ ] All `-joystickprovider` modules (`sdl`, `winhybrid`, `xinput`, `dinput`)
+- [ ] All `-joystickprovider` modules (`sdlgame`, `sdljoy`, `winhybrid`, `xinput`, `dinput`)
 - [ ] Subset builds (`sdlmametiny.exe` and `sdlmamevirtual.exe`) more or less work
 - [ ] CHD CD read (e.g. run a Konami GV game)
 - [ ] CHD hard disk read (e.g. boot an OS on a computer)
@@ -189,7 +189,7 @@ assignees: ''
 - [ ] All `-video` modules (`opengl`, `accel`, `soft`, but not `bgfx` as ImGui has assertion failures with x87 maths)
 - [ ] All `-keyboardprovider` modules (`sdl`, `dinput`)
 - [ ] All `-mouseprovider` modules (`sdl`)
-- [ ] All `-joystickprovider` modules (`sdl`, `winhybrid`, `xinput`, `dinput`)
+- [ ] All `-joystickprovider` modules (`sdlgame`, `sdljoy`, `winhybrid`, `xinput`, `dinput`)
 - [ ] Subset builds (`sdlmametinyd.exe` and `sdlmamevirtuald.exe`) more or less work
 - [ ] CHD CD read (e.g. run a Konami GV game)
 - [ ] CHD hard disk read (e.g. boot an OS on a computer)
@@ -210,7 +210,7 @@ assignees: ''
 - [ ] All `-video` modules (`bgfx`, `opengl`, `accel`, `soft`)
 - [ ] All `-keyboardprovider` modules (`sdl`, `dinput`)
 - [ ] All `-mouseprovider` modules (`sdl`)
-- [ ] All `-joystickprovider` modules (`sdl`, `winhybrid`, `xinput`, `dinput`)
+- [ ] All `-joystickprovider` modules (`sdlgame`, `sdljoy`, `winhybrid`, `xinput`, `dinput`)
 - [ ] Subset builds (`sdlmametiny.exe` and `sdlmamevirtual.exe`) more or less work
 - [ ] CHD CD read (e.g. run a Konami GV game)
 - [ ] CHD hard disk read (e.g. boot an OS on a computer)
