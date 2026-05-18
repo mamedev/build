@@ -24,43 +24,23 @@ assignees: ''
 In addition to the basic coverage provided by GitHub Actions, MAME needs to be built and tested across a representative spectrum of configurations.
 
 For the following configurations, ensure a build compiles, links and validates, `-listxml` output validates, and basic functionality works:
-- [ ] x86-64, MinGW, GCC, debug, SDL OSD, with Qt debugger, without tools
-- [ ] x86-64, MinGW, GCC, debug, SDL OSD, with Qt debugger, with tools, `tiny` subtarget
-- [ ] x86-64, MinGW, GCC, debug, SDL OSD, with Qt debugger, with tools, `virtual` subtarget
-- [ ] x86-64, MinGW, GCC, debug, Win32 OSD, without tools
-- [ ] x86-64, MinGW, GCC, debug, Win32 OSD, with tools, `tiny` subtarget
-- [ ] x86-64, MinGW, GCC, debug, Win32 OSD, with tools, `virtual` subtarget
-- [ ] x86-64, MinGW, GCC, non-debug, SDL OSD, with Qt debugger, without tools
-- [ ] x86-64, MinGW, GCC, non-debug, SDL OSD, with Qt debugger, with tools, `tiny` subtarget
-- [ ] x86-64, MinGW, GCC, non-debug, SDL OSD, with Qt debugger, with tools, `virtual` subtarget
-- [ ] x86-64, MinGW, GCC, non-debug, Win32 OSD, without tools
-- [ ] x86-64, MinGW, GCC, non-debug, Win32 OSD, with tools, `tiny` subtarget
-- [ ] x86-64, MinGW, GCC, non-debug, Win32 OSD, with tools, `virtual` subtarget
-
-For the following configurations, ensure a build compiles, links and validates, and basic functionality works:
-- [ ] i686, MinGW, GCC, debug, SDL OSD, with Qt debugger, without tools
-- [ ] i686, MinGW, GCC, debug, SDL OSD, with Qt debugger, with tools, `tiny` subtarget
-- [ ] i686, MinGW, GCC, debug, SDL OSD, with Qt debugger, with tools, `virtual` subtarget
-- [ ] i686, MinGW, GCC, debug, Win32 OSD, without tools
-- [ ] i686, MinGW, GCC, debug, Win32 OSD, with tools, `tiny` subtarget
-- [ ] i686, MinGW, GCC, debug, Win32 OSD, with tools, `virtual` subtarget
-- [ ] i686, MinGW, GCC, non-debug, SDL OSD, with Qt debugger, without tools
-- [ ] i686, MinGW, GCC, non-debug, SDL OSD, with Qt debugger, with tools, `tiny` subtarget
-- [ ] i686, MinGW, GCC, non-debug, SDL OSD, with Qt debugger, with tools, `virtual` subtarget
-- [ ] i686, MinGW, GCC, non-debug, Win32 OSD, without tools
-- [ ] i686, MinGW, GCC, non-debug, Win32 OSD, with tools, `tiny` subtarget
-- [ ] i686, MinGW, GCC, non-debug, Win32 OSD, with tools, `virtual` subtarget
+- [ ] x86-64, MinGW, clang, debug, SDL OSD, with Qt debugger, without tools
+- [ ] x86-64, MinGW, clang, debug, SDL OSD, with Qt debugger, with tools, `tiny` subtarget
+- [ ] x86-64, MinGW, clang, debug, SDL OSD, with Qt debugger, with tools, `virtual` subtarget
+- [ ] x86-64, MinGW, clang, debug, Win32 OSD, without tools
+- [ ] x86-64, MinGW, clang, debug, Win32 OSD, with tools, `tiny` subtarget
+- [ ] x86-64, MinGW, clang, debug, Win32 OSD, with tools, `virtual` subtarget
+- [ ] x86-64, MinGW, clang, non-debug, SDL OSD, with Qt debugger, without tools
+- [ ] x86-64, MinGW, clang, non-debug, SDL OSD, with Qt debugger, with tools, `tiny` subtarget
+- [ ] x86-64, MinGW, clang, non-debug, SDL OSD, with Qt debugger, with tools, `virtual` subtarget
+- [ ] x86-64, MinGW, clang, non-debug, Win32 OSD, without tools
+- [ ] x86-64, MinGW, clang, non-debug, Win32 OSD, with tools, `tiny` subtarget
+- [ ] x86-64, MinGW, clang, non-debug, Win32 OSD, with tools, `virtual` subtarget
 
 For the following configurations, ensure a build compiles, links and validates, `-listxml` output validates, minimaws ORM check passes, and basic functionality works:
-- [ ] x86-64, Linux, clang, libc++, debug, without tools
-- [ ] x86-64, Linux, clang, libc++, debug, with tools, `tiny` subtarget
-- [ ] x86-64, Linux, clang, libc++, debug, with tools, `virtual` subtarget
 - [ ] x86-64, Linux, GCC, libstdc++, debug, with tools
 - [ ] x86-64, Linux, GCC, libstdc++, debug, without tools, `tiny` subtarget
 - [ ] x86-64, Linux, GCC, libstdc++, debug, without tools, `virtual` subtarget
-- [ ] x86-64, Linux, clang, libc++, non-debug, without tools
-- [ ] x86-64, Linux, clang, libc++, non-debug, with tools, `tiny` subtarget
-- [ ] x86-64, Linux, clang, libc++, non-debug, with tools, `virtual` subtarget
 - [ ] x86-64, Linux, GCC, libstdc++, non-debug, with tools
 - [ ] x86-64, Linux, GCC, libstdc++, non-debug, without tools, `tiny` subtarget
 - [ ] x86-64, Linux, GCC, libstdc++, non-debug, without tools, `virtual` subtarget
