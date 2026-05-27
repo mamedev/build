@@ -1,4 +1,4 @@
-0.288 2026-05-2x
+0.288 2026-05-29
 ----------------
 
 
@@ -28,6 +28,7 @@ MAME Testers bugs fixed
 - 09449: [Gameplay] (misc/ampoker2.cpp) rabbitpk: The system is marked working but does not appear to be usable. (Ivan Vangelista)
 - 09453: [Crash/Freeze] (videogames/looping.cpp) skybump, loopingu, loopingua, loopingub: The game resets unexpectedly. (hap)
 - 09458: [Crash/Freeze] (philips/cdi.cpp) cdimono2, cdi910: The emulator may crash with an access violation. (hap)
+- 09464: [Media Support] MAME no longer attempts to “create” sockets to accept connections for serial media devices. (Vas Crabb)
 
 
 New working systems
@@ -227,6 +228,7 @@ New working software list items
 apple2_rom: The Inspector, Programmer's Aid #1, Watson [AJR]
 ggm: Capablanca Edition: Master Chess Endgame (set 1) [Berger]
 jakks_gamekey_wp: Sweet as Honey [TeamEurope]
+m5_flop: Generation floppy disk CF-5/G [dlabi]
 megadriv:
   ZPF (demo) [Mega Cat Studios]
   Fight for Vengeance, Fight for Vengeance (demo), Handy Harvy, Handy Harvy (digital release),
@@ -325,6 +327,12 @@ x37_hdd: Formatted Micropolis 1325A 69MB [Curt Coder]
 
 Software list items promoted to working
 ---------------------------------------
+m5_cart:
+  64Kbf Expansion memory 64Kb, 64Krx Expansion board 64Kb, Boot for Brno ramdisk [console version],
+  Boot for Brno ramdisk [windows version], EM-5 Expansion memory 32Kb, EM-64 Expansion memory 64Kb, Space Intruders [dlabi]
+m5_cass:
+  Solar System Forces, Solar System Forces - Commando Team, Solar System Forces - Operation Maul,
+  Solar System Forces - Victory of Mars [dlabi]
 pc98: Flashback [BlueRain-debug]
 
 
@@ -365,1997 +373,184 @@ yeno_laptop_cart: Super Wissen (Germany), Wissens Tester (Germany) [TeamEurope]
 
 Merged pull requests
 --------------------
-14276: snk/hng64.cpp: Further cleanups from https://github.com/mamedev/mame/pull/14275 [cam900]
-- Fix possibly transparent pen issue
-- Make some variables constant
-- Minor optimization
-- Reduce duplicates
-- Use BIT for single bit values
-
-14491: Modernised Sord m5 driver [dlabi]
-	- fd5 floppy emulation works but only with rom hack
-	- updated Sord m5 www links
-	- added fd5 utility disk to software list - not original dump, made from program listings
-	- added support of optional sram in Basic-F and Basic-G cartridges. Works only if shortname(softlist) is used
-	- marked 32/64KB RAM expansions EM-5, 64KBI, 64KBF, 64KRX as supported in sofwarelist
-	- reenabled and refactored memory banking
-	- added support of E and F block types for cassettes
-	- brno mod: switched to rom including basic-i
-	- brno mod: reenabled and refactored memory banking 
-
-14879: rt1715w: floppy -- attach interrupt output and update GAP3 size. [shattered]
-Systems promoted to working
----------------------------
-Robotron PC-1715W [shattered]
-
-15012: taito/taitosj.cpp: Added support for Adventure Canoe (1982) [fipppi]
-Added support for Adventure Canoe from 1982 - un-emulated until now.
-Video of the game running in mame:
-https://www.youtube.com/watch?v=OA_aJ_QJGfQ
-
-15069: epson/qx10.cpp: implement semidisk battery backed ramdisk card [brijohn]
-This adds support the QX-10 semidisk card which was a battery backed 2MB RAM disk card for the QX-10 with native support in
-  TPM/Valdocs.
-
-15072: Floppy sound [mizapf]
-New proposal for an enhancement of the floppy sound feature. Different to the November version, no macros are used, instead, a
-  "floppy_sound_sample" class is introduced that encapsulates the list of sound samples. I tested on several systems that use the
-  sound feature and those that do not, and did not run into issues so far.
-
-15081: Add a new Kid Niki bootleg clone [clawgrip]
-New working clones
-------------------
-Yanjamaru [ClawGrip]
-
-15084: Add Gaelco Scalextric and clones [clawgrip]
-New systems marked not working
-------------------------------
-Scalextric (Spain, set 1) [Javier Valero, Josep Quingles, Recreativas.org]
-New clones marked not working
------------------------------
-Scalextric (America) [Javier Valero, Josep Quingles, Recreativas.org]
-Scalextric (England, set 1) [Javier Valero, Josep Quingles, Recreativas.org]
-Scalextric (England, set 2) [Javier Valero, Josep Quingles, Recreativas.org]
-Scalextric (France, set 1) [Javier Valero, Josep Quingles, Recreativas.org]
-Scalextric (France, set 2) [Javier Valero, Josep Quingles, Recreativas.org]
-Scalextric (Germany) [Javier Valero, Josep Quingles, Recreativas.org]
-Scalextric (Italy, set 1) [Javier Valero, Josep Quingles, Recreativas.org]
-Scalextric (Italy, set 2) [Javier Valero, Josep Quingles, Recreativas.org]
-Scalextric (Portugal) [Javier Valero, Josep Quingles, Recreativas.org]
-Scalextric (Spain, set 2) [Javier Valero, Josep Quingles, Recreativas.org]
-Scalextric (Spain, set 3) [Javier Valero, Josep Quingles, Recreativas.org]
-Scalextric (Spain, set 4) [Javier Valero, Josep Quingles, Recreativas.org]
-Scalextric (Spain, set 5) [Javier Valero, Josep Quingles, Recreativas.org]
-Scalextric (USA) [Javier Valero, Josep Quingles, Recreativas.org]
-
-15086: sinclair/specnext.cpp: Refactored NMI handling. [holub]
-
-15089: Add skeleton driver for Gaelco / Covielsa Super Rally and clones [clawgrip]
-New systems marked not working
-------------------------------
-Super Rally (v0204, 2-Feb-1996) [David Haywood, Javier Valero, Josep Quingles, Recreativas.org]
-New clones marked not working
------------------------------
-Super Rally (v0203, 19-Dec-1995) [David Haywood, Javier Valero, Josep Quingles, Recreativas.org]
-Super Rally (v0201, 6-Nov-1995) [David Haywood, Javier Valero, Josep Quingles, Recreativas.org]
-Super Rally (v0107) [David Haywood, Javier Valero, Josep Quingles, Recreativas.org]
-
-15095: seta/seta2.cpp: Demote gundamex as MACHINE_IMPERFECT_TIMING [cam900]
-- It displays black screen when flip screen DIP switch is on, and has overall timing issue.
-- also, this PR fixes spacing in driver definition.
-
-15096: gridcomp/gridcomp.cpp: implement RS232 [vklachkov]
-TL;DR: This PR fixes the UART i8274 chip connections to the GRiD Compass laptop.
-## GRiD Compass and Serial
-The GRiD Compass uses a proprietary 19-pin connector that provides RS232, RS422, and +10V/-10V power. The circuit uses PAL chips
-  that configure the signal source for TxC, RxC, and also SC for GPIB. There's no PAL dump available, only some circuit diagrams and
-  approximate connection descriptions from @ConventionalMemories and @JDat...
-Instead of emulating the PAL chip logic, I connected the i8274's TxC/RxC directly to 80130 baud. I also fixed the swapped `cd` `ba`
-  pins, set the correct i8274 address for the GRiD Compass II and configured interrupt.
-Additionally, I updated the device list. It now includes a simple serial printer (without software flow control) that works with the
-  `MinimumSerial~Printer~` driver, plus two mice: Microsoft Mouse and Logitech Mouse. Both mice only work in GRiDPaint. On macOS,
-  both mice behave erratically, but this appears to be a broader MAME issue on macOS rather than an emulation problem. The Mouse
-  Systems mouse is commented out because it doesn't work for some reason.
-Video showing the mouse working on this branch:
-https://github.com/user-attachments/assets/93370a89-b33d-450b-9edc-ae8ba9cc74c6
-P.S. My goal now isn't to achieve perfect Compass emulation — I just want to make GRiD OS 3.1 programs work correctly without
-  obvious artifacts in MAME.
-
-15118: atlus/sprite013.cpp: Make 013 sprite hardware to separated device [cam900]
-atlus/cave.cpp:
-- Suppress side effects for debugger reads
-- Reduce duplicates
-- Convert sprite draw routine into single pass
-- Use BIT helper for single bit values
-- Add/Fix notes
-- Make some variables constant
-
-15119: atari/atari400.cpp: Add notes for a800 right cartridge [cam900]
-reference: https://atariwiki.org/wiki/Wiki.jsp?page=Memory+Map
-
-15120: atari/irobot.cpp: Cleanups and updates [cam900]
-- Use logmacro.h for logging
-- Suppress side effects for debugger reads
-- Use switch in shared memory read/write handler
-- Reduce literal tag usage and runtime tag lookups
-- Fix save state support
-- Fix namings, spacings
-- Make some variables constant
-- Use shortened typename values for consistency
-- Convert alphanumeric tilemap layer into tilemap.h
-- Reduce duplicates
-- Reduce unnecessary pointers
-- Reduce preprocessor defines
-- Fix ROM region size (reduce unused area)
-
-15122: sinclair/specnext.cpp: Implemented mouse dpi and buttons swap configuration. [holub]
-
-15123: cirsa/miniguay.cpp: Add (not working) Cirsa Mini Bar [clawgrip]
-New systems marked not working
-----------------------------------
-Cirsa Mini Bar [jordigahan]
-
-15125: sinclair/specnext.cpp: Pulled up unmapped IO [holub]
-
-15126: moog/source.cpp: Incorporated the new OTA-based EG implementation. [m1macrophage]
-`sound/va_eg.cpp`: Implemented the scaled input variant of the OTA-based EG.
-`sound/va_ops.cpp`: Implemented a stream comparator.
-`moog/source.cpp`: Used the above to replace the local, approximate implementation of the EG.
-
-15127: atari/atarig42.cpp, atari/atarigx2.cpp: Minor optimization [cam900]
-- tileinfo.category value for playfield tilemap is controlled by overall bank: it can be optimized to single tilemap draw with
-  variable priority value controlled at bank.
-
-15128: samcoupe_flop.xml: Added 21 working items [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Arkanoid - Revenge of Doh (demo) (RetCon 2024) [World of SAM]
-Battle Zone (v1) [World of SAM]
-Battle Zone (v2) [World of SAM]
-Bubble Ghost [World of SAM]
-Dyzonium [World of SAM]
-Dyzonium (deprotected) [World of SAM]
-Plasmoid (beta / demo) [World of SAM]
-Escape from the Planet of the Robot Monsters [Spectrum Computing]
-Flappy Bird [World of SAM]
-Magic Caves 2002 [World of SAM]
-Mind Games I [World of SAM]
-Mind Games 2 [World of SAM]
-Multipack 1 [World of SAM]
-Pipe Mania [World of SAM]
-Prince of Persia HDD (mod) [World of SAM]
-Samtona - Mk1 750cc [World of SAM]
-Samoids (Sploids) [Black Jet]
-Tetris (Cooking Circle) [World of SAM]
-The Garden Centre of the Universe [wubsoft]
-The Space Adventure Simulator [wubsoft]
-XOR [World of SAM]
-samcoupe_flop.xml / samcoupe_cass.xml: Added manufacturer's name in the software list description
-
-15129: input/input_sdl3.cpp: pump CF run loop before enumerating game controllers on macOS [mfurniss]
-Fixes #15021
-On macOS, SDL3's GCController backend discovers USB game controllers
-asynchronously through the Core Foundation run loop. When
-`SDL_GetJoysticks()` is called during `input_init()`, the run loop
-hasn't had time to process, so USB controllers (e.g. Xbox Series X/S)
-are not detected.
-This adds a `CFRunLoopRunInMode()` call before enumeration to give the
-GCController backend time to discover devices, followed by
-`SDL_PumpEvents()` to process the resulting SDL events.
-Tested on macOS 15.4 (Apple M2) with SDL 3.4.2. Xbox Series X/S
-controller (VID 0x045E) connected via USB detected reliably on every
-launch (10/10).
-See also: https://github.com/libsdl-org/SDL/issues/11742
-
-15130: sinclair/specnext.cpp: Forced more screen updated where required. [holub]
-
-15132: osd/sdl: process events after raising window on macOS to ensure input focus [mfurniss]
-## Summary
-- On macOS, keyboard and mouse input is intermittently lost on startup because `m_focus_window` is not set when the input modules
-  begin polling
-- `SDL_RaiseWindow()` returns before macOS has granted input focus, so the `FOCUS_GAINED` event sits unprocessed in SDL's event
-  queue
-- Calling `process_events()` after raising the window dequeues the focus event and sets `m_focus_window` before input polling starts
-- Guarded with `#ifdef SDLMAME_MACOSX` since the race is macOS-specific
-- Applied to both `sdl/` and `sdl3/` backends
-## Test plan
-- Tested on Apple M2, macOS 26.3.1
-- Launched MAME twenty times in a loop, confirmed `has_focus()` returns true on every run with the fix
-- Manual testing confirms keyboard input works on first launch
-Fixes #10612
-
-15134: debugger/osx: add Edit menu with clipboard shortcuts [mfurniss]
-Fixes #15133
-The macOS Cocoa debugger only adds Debug and Run menus to the menu bar in `debugger_osx::build_menus()`, so standard Cmd+X/C/V
-  shortcuts are never routed through the responder chain to the command input NSTextField. This adds an Edit menu with Cut, Copy,
-  and Paste items to enable clipboard operations.
-Select All is intentionally omitted to avoid conflicting with the existing Cmd+A shortcut for "New Disassembly Window" in the Debug
-  menu.
-
-15137: [sega/model2] New set - Fighting Vipers Rev. A (fvipersa) [drojaazu]
-Child of main `fvipers` set. Dumped all chips, confirmed only the EEPROMs were different (except for the sound program).
-
-15138: gng: only first japan revision (makaimur) has the debug dipsw (invincibility) [barbudreadmon]
-
-15140: atari/a7800.cpp,atari/maria.cpp: Updates and cleanups [cam900]
-- Use bool type for boolean values
-- Correct typename for fix save state support
-- Make some variables constant
-- Use BIT helper for single bit values
-- Fix spacings, Reduce duplicates
-- Add notes
-atari/a7800.cpp:
-- Add TODOs for BIOS area, a2600 mode
-- Fix initializer
-- Use memory view for toggle BIOS mapping
-- Reduce unnecessary variables
-- Use uppercase for input port name
-atari/maria.cpp:
-- Suppress side effects for debugger reads
-- Include logmacro.h for logging
-- Add device_video_interface for screen finder
-- Use required_address_space for CPU space
-- Use callback for halt, interrupt, wait
-- Bugfix in unknown bit detection at DLL
-- Remove hardcoded line RAM size value
-- Fix variable name match to documents
-
-15141: dataeast/deco146.cpp, dataeast/deco104.cpp: Updates [cam900]
-- Move configuration parameter into initializer
-- Further suppress side effects for debugger reads
-- Make member variables private
-- Reduce unnecessary includes
-- Include logmacro.h for logging feature
-- Use m_ prefix for member variables
-- Use BIT helper for single bit values
-- Fix typename value for fix save state support
-- Fix descramble input
-- Fix spacings
-- Reduce duplicates
-
-15142: dataeast/rohga.cpp: Remove unnecessary decocomn.cpp dependency [cam900]
-Move alt sprite format config into machine_config
-Fix hangzo ROM region size (main CPU ROM is ~1MB (only first 1MB is mapped at hotb_base_map) and no second "oki1" bank)
-dataeast/dassault.cpp: Reduce unused argument
-
-15143: Kn5000 interactive control panel [felipesanches]
-This is the result of my past many weeks of reverse engineering the control panel protocol for Technics KN5000. The previous
-  kn5000/tlcs900 PRs brought us CPU support for serial port devices and micro-dma transfers and sub-cpu init, which are all somewhat
-  related to this major milestone.
-Here we finally fix the subcpu payload loading by storing the code as compressed assets (which is what the real system does) instead
-  of unpacked ones which were better for analysis, but less truthful to the system's memory layout. With this, we don't get "Sound
-  Name Error" messages anymore and, instead, we see actual instrument names in the UI.
-<img width="1503" height="855" alt="image" src="https://github.com/user-attachments/assets/bf2e65e1-3c3c-41d7-a060-3e6869d96fe9" />
-Also, this provides an HLE implementation of the control panel protocol (because the cpanel microcontrollers are currently not
-  dumped - those are maskrom chips that were not decapped yet).
-The protocol is not fully understood yet, but this initial implementation is good enough to get it to a working state in the driver.
-  There are multiple commands which are treated equally, while I suspect they were supposed to have subtle differences in their
-  behavior (otherwise why would there be more than a single command value for each of them?), so additional research will be needed.
-  But for now I think it is acceptable to at least have something that allows interactive use and which is not a hack.
-I will not mark this as a draft because I would be happy to have it merged as is. But I am also open to feedback from code-reviewers
-  and I can make additional changes if needed. Just bare in mind that HLE implementation is, by definition, speculative.
-Let me know what you think and I'll be glad to eventually make additional commits.
-A short video can also be seen at https://www.youtube.com/watch?v=gX5oR9YOMJE
-
-15145: misc/compucranes.cpp: Octopussy is not a Master Crane clone [clawgrip]
-
-15146: misc/rawthrillspc.cpp: BIOS 1 is 1.0.4, not 1.0.3 [clawgrip]
-
-15147: capcom/tigeroad.cpp: Add new Tiger Road bootleg [clawgrip]
-New working clones
-------------------
-Tiger Road (US bootleg, set 2) [Luis Arrufat]
-
-15148: x07: remove "anti bug" code from T6834 IO write [Mokona]
-Some MESS-era code was trying to circumvent unimplemented T6834 at that time, but created other problems, as the heuristic on what
-  is a new command was wrong for some cases.
-Fixes the "PRINT"A";:C=TKEY("O")" bug freezing the X07 emulation, where the T6834 issued by TKEY was mistakenly interpreted as a
-  character to print.
-
-15149: sinclair/specnext_layer2.cpp: Fixed palette index with offset wraps around. [holub]
-
-15150: sinclair/specnext.cpp: Added MIDI extension. [holub]
-
-15151: sinclair/specnext.cpp: Simulated random state of the SIMM. [holub]
-
-15152: capcom/cps1/2.cpp, capcom/kenseim.cpp, and related drivers: Cleanups [cam900]
-- Reduce duplicates, Literal tag usage, Runtime tag lookups
-- Make some variables constant
-- Add notes
-- Fix filename in comments
-- Reduce preprocessor defines
-- Use device_post_load for post load function
-- Fix typename for fix save state supports
-- Suppress side effects for debugger reads
-- Improve logging features
-- Fix spacings
-- Use BIT helper for single bit values
-- Mark BAD_DUMP for ROM not dumped by PCB
-- Use lowercase function and variable member name
-
-15153: sound/cem3340.cpp: Implemented preliminary CEM3340 and  incorporated it as an LFO on the prophet5. [m1macrophage]
-Also fixed the prophet's mod wheel range.
-Enough of the CEM3340 is implemented for the P5's LFO. Still need to implement antialising, sync, and streaming control before using
-  it for the VCOs. After all that work is complete, will look into factoring out the core VCO functionality to make it reusable.
-Newly working controls: Source Mix knob, LFO Frequency knob, all 3 LFO Shape buttons.
-Simluations:
-* LFO VCA control current generator (`lfo_vca_cc()`)
-* LFO mixing and triangle centering (`update_lfo_mix()`)
-
-15154: sound/namco.cpp: Updates [cam900]
-- Fix device/class name because sound/namco.cpp only covers namco WSG arcade sound generator family, and reduce confusion with any
-  other namco customs.
-- Use device_memory_interface for waveform memory, allow config per hardware (ex: RAM in 20pacgal.cpp)
-- Split Pole Position WSG into separated device, Add 4 output channels support
-- Add address map for common 15XX/CUS30 interface
-- Remove unnecessary configurations, Use template instead (also packed flag)
-- Add notes for polepos panning (Also add imperfect_features due to unverified panning)
-- Fix mixing
-- Use logmacro.h for logging
-- Reduce preprocessor macros
-- Split device state for per-hardware differs
-- Fix allocated size for sound register area
-- Fix namings
-- Use references to replace pointer
-- Make some variables constant
-- Fix spacings
-namco/20pacgal.cpp, namco/polepos.cpp:
-- Correct sound device type
-
-15155: vfxcart.cpp: add a timer to complete the write cycle. [cbrunschen]
-In the normal course of events, when a VFX family keyboard writes to a cartridge, each byte written is followed by some number of
-  reads to verify that the write to the cartridge's EEPROM completes. `vfxcart.cpp` currently uses this read operation as a signal
-  that the write cycle is complete.
-However, if something interrupts the emulated keyboard's write operation somehow, it is at least theoretically possible that the
-  keyboard might begin another write without an intervening read to complete the previous write cycle.
-In a real EEPROM as used in these cartridges, any write cycle is automatically completed after there have been no further writes
-  within a certain time T_BLC, on the order of 100 microseconds.
-This adds such a timer. So now a write cycle completes when either this timer expires, or a read happens.
-Also, when writing to `m_storage`, apply `MASK` to `offset`.
-
-15157: apple2video: fix IIgs monochrome confusion [arekkusu42]
-(another bug discovered while writing video timing unit tests)
-This PR corrects the IIgs monochrome registers to work like hardware:
-* C029 NEWVIDEO bit5 affects both DHGR _and_ HGR (but only if C05E 7M timing is active):
-!GS_C029_mono_hgr
-* C021 MONOCOLOR only applies to composite output, regardless of video mode:
-!GS_C021_mono_composite
-(in these photos, the IIgs is driving an AppleColor RGB monitor and an Amdek Color-1 composite CRT simultaneously)
-apple2gs currently has no video config options to select between RGB/composite displays, so C021 is unused.  Implementing it would
-  require applying NTSC luminance conversion to whatever is in the framebuffer:
-!GS_composite_out
-!GS_composite_mono
-
-15159: gridcomp/gridrom.cpp: add device for GRiD's ROMs, add Test ROM [vklachkov]
-This PR adds `gridrom_socket_device`/`GRIDROM_SOCKET` for connecting ROMs to GRiD laptops. Unlike `generic_socket_device`,
-  `gridrom_socket_device` allows to change the media name and set strict size limits for the ROM.
-To test functionality, I connected a Test ROM to the Compass at `C000:0`-`CFFF:F`. And I added application ROM slots for the Compass
-  II without connecting them to the laptop.
-<details>
-  <summary>Information about Test ROM for Compass</summary>
-We don't know anything about them, but apparently they were 64KB ROMs. The first four bytes of the ROM should be `ETPH`, followed by
-  the code. I don't know who will find this feature useful, but it was a two-line change that made testing GRIDROM_SOCKET
-  convenient.
-</details>
-List of devices for Compass 1100-1109:
-```
-SYSTEM           MEDIA NAME       (brief)    IMAGE FILE EXTENSIONS SUPPORTED
----------------- --------------------------- -------------------------------
-grid1101         bubble           (mbm)      .bubble
-grid1101         test-rom         (test-rom) .bin
-```
-List of devices for Compass II 1121-1139:
-```
-SYSTEM           MEDIA NAME       (brief)    IMAGE FILE EXTENSIONS SUPPORTED
----------------- --------------------------- -------------------------------
-grid1139         bubble           (mbm)      .bubble
-grid1139         test-rom         (test-rom) .bin  
-grid1139         app-rom1         (app-rom1) .bin  
-grid1139         app-rom2         (app-rom2) .bin  
-grid1139         app-rom3         (app-rom3) .bin  
-grid1139         app-rom4         (app-rom4) .bin  
-```
-
-15160: Fix i8251 sync [tarmooja]
-- Handle parity bits in sync mode 
-- In sync mode, when TX is empty, the Sync bytes are transmited
-
-15162: bus/centronics: add NEC PC-6022 plotter [devinacker]
-Also implemented `AS_IO` for the uPD7801 as needed.
-
-15165: {flopimg,esq16_dsk}.cpp: Allow specifying explicit start and end sectors when getting PC MFM track data. [cbrunschen]
-Ensoniq VFX and EPS family floppies use 10 sectors per track, starting at sector 0 rather than the more common sector 1. The code in
-  `esq16_dsk.cpp` handles this when loading floppy images, but not when saving them. This attempts to fix this in a way that is not
-  only specific to Ensoniq's floppy images, but to possibly other future ones as well.
-In `flopimg.cpp`, allow specifying explicit start and end sectors when getting PC MFM track data.
-In `esq16_dsk.cpp`, use this to explicitly specifying sectors 0 to 9 when getting the track data to save.
-
-15166: NES related devices: Fix dead link, Updates [cam900]
-bus/nes/disksys.cpp:
-- Suppress side effects for debugger reads
-sound/namco_163.cpp:
-- Add notes for internal RAM
-sound/rp2c33_snd.cpp:
-- Make some variables constant
-nintendo/nes_vt_soc.cpp:
-- Fix dead link
-- Add notes
-
-15167: sinclair/specnext.cpp: Duplicate palette workaround which doesn't allow color index escape (sprite) palette boundaries.
-  [holub]
-
-15170: namco/namco_c123tmap.cpp, namco/namco_c169roz.cpp, shared/namco_c355spr.cpp: Use device_delegate for callbacks [cam900]
-
-15171: namco/namco_c45road.cpp, namco/tceptor.cpp: Updates [cam900]
-namco/namco_c45road.cpp:
-- Use .m for address map instead trampolines
-- Remove device_memory_interface related stuffs (not needed due to above)
-- Make some variables constant
-- Use util::sext for sign extend
-- Fix typename values
-- Reduce literal tag usages
-namco/tceptor.cpp:
-- Fix typename for boolean variables
-- Make some variables constant
-- Reduce literal tag usages
-- Use bufsprite.h for buffered sprite RAM
-- Fix namings
-- Fix save states
-
-15172: namco/sg_vga.cpp: Add DX-101 device [cam900]
-- Add/Fix note:
-  - I don't think DX-102 is part of video hardware. (same reason as seta/seta2.cpp)
-  - X1-010 ROM is possibly bankswitched, bank method is similar as seta/seta2.cpp?
-
-15175: m68000: handle each fault within an instruction as it occurs [pmackinlay]
-This change makes Musashi-based 68k CPUs with external MMUs ignore subsequent bus errors triggered within a single instruction. The
-  change only affects systems which are using `rerun==true` (i.e., systems with external MMUs), which at time of writing in master
-  are `sgi/ip2.cpp` and `sony/news_68k_iop.cpp`. The former is unaffected, while the latter has its own logic to avoid triggering
-  such faults.
-The idea is that the first bus error (fault) should halt the instruction and be handled before the instruction is resumed
-  (restarted, in the current Musashi implementation) and any subsequent bus errors triggered. Without this change, Sun-2 code gets
-  confused and fails to handle the correct fault.
-See https://github.com/mamedev/mame/issues/9170 for some history and further details.
-
-15179: sinclair/specnext_dma.cpp: Fixed counter state returning natural value in ZXN mode. [holub]
-
-15181: Current Plug & Play / Handheld PR (mostly GeneralPlus/VT additions, 23 not working sets) [mamehaze]
-- noted that orinasp uses an MCU to drive everything, only external ROM is a settings SEEPROM
-- added SPI boot ROMs to lx_jg7420 set
-- removed some programmer specific config data from recent plug+play sets
-- a few formatting fixes
-new machines marked as NOT WORKING
--------------------
-GM-1417 - HD 360 Degrees Rocker Palm Eyecare Console - 788 in 1 [Team Europe]
-Digimon Color [Team Europe]
-Game & Watch: The Legend of Zelda Anniversary [Team Europe]
-Play Vision 95 Games in 1 [Team Europe]
-Power Console - Frozen (JCG100GFZi1, English/French) [Team Europe]
-TUI 240-in-1 [Team Europe, AJRhacker]
-198-in-1 Handheld Console [Team Europe]
-TFT Portable Player / GPDevice 230-in-1 (YJ-801) [Team Europe]
-Starbucks x Subor (OEM Q2, China) [Team Europe]
-Disney & Disney/Pixar Characters Best Friends PC (Japan) [Team Europe]
-Anpanman Chiiku Paddo (Japan) [Team Europe]
-Body Gun Game Console (Model GC05, Damcoola) [Team Europe]
-Doraemon Learning Personal Computer (Japan) [Team Europe]
-Disney Princess Learning Personal Computer (Japan) [Team Europe]
-Retro Station Pocket System GB-40 300 in 1 [Team Europe, AJRhacker]
-Double Dance Mat with HDMI (Kaximon) [Team Europe]
-100-in-1 Retro Gaming Console (SY-909) [Team Europe]
-new clones marked as NOT WORKING
------------------------------
-Pixels 246-in-1 Game Player (DH-628) [Team Europe]
-Power Console - Frozen (JCG100GFZi12, English/Czech) [Team Europe]
-My Arcade Galaga (DGUNL-7132, Pixel Pocket Pro) [Team Europe]
-My Arcade Space Invaders (DGUNL-7133, Pixel Pocket Pro) [Team Europe]
-Orb Gaming 240-in-1 Handheld [Team Europe]
-Kiratto Pri-Chan - PritamaGO: Mint Blue (Japan) [Team Europe]
-
-15182: Switch C++ language standard to C++20 [cuavas]
-* Switch C++ language standard to C++20
-* Increase GCC requirement to 11 (from 10.3)
-* Assume updated Windows 10 deployment target
-The ugly parts of this are because C++20 makes `u8"..."` a different type to `"..."` and we want to be able to continue using them
-  interchangeably in some places.
-
-15183: x28,vfxcart: make timings overrideable. [cbrunschen]
-In `x28.{h,ipp,cpp}`:
-  - remove the fake device.
-  - allow clients access to the writable / write protected state.
-  - save state.
-  - move short function bodies from x28.ipp to x28.h.
-    
-    Having these short member function definitions inline
-    removes a lot of template-parameter noise, leaving
-    only the long `read()` and `write()` member function
-    definitions out-of-line in `x28.ipp`.
-In `vfxcart.{h,cpp}`:
-  - use the real X28C256 device.
-  - add a configuration setting to vfxcart to allow adjusting the
-    timings of the X28C256 device.
-  - configure EEPROM to be write protected.
-
-15185: namco/namco_c123tmap.cpp, namco/namco_c169roz.cpp, shared/namco_c355spr.cpp: Add default callback behaviour [cam900]
-just copy directly from RAM in default
-shared/namco_c355spr.cpp: Add notes
-dataeast/deco32.cpp: Add notes of sprite flicker
-
-15186: trs80_cass.xml: Metadata completion [ArcadeShadow]
-Added missing publishers and fixed French title on "L'Invasion des Extras-terrestres"
-
-15187: esqvfd.cpp: handle single-character underline. [cbrunschen]
-This is used on the VFX family to display the cursor while editing the name of an edited sound program to write, a file to save, and
-  similar.
-Also add some logmacro-based logging of display commands to enable easier future exploration as required.
-
-15188: esqpanel.cpp: don't send certain commands to the display. [cbrunschen]
-Keyboard Calibration and Light Status commands are already handled in the `esqpanel` class, don't send them to the display which
-  will just have to ignore them.
-
-15189: adp/stellafr.cpp: Fix memory map for SuS [Styne13]
-
-15190: sinclair/specnext.cpp: Fixed CTC clock. [holub]
-
-15191: neogeo.xml: Added 5 working items [ArcadeShadow]
-New working software list additions
---------------------------------------------
-19YY - Ichikyo Wai Wai [Ekorz]
-Golden Axe [Hoffman]
-Violent Vengeance (beta 1.04) [OzzyOuzo]
-Violent Vengeance (beta 2.05) [OzzyOuzo]
-Violent Vengeance (beta 3.28) [OzzyOuzo]
-
-15192: ieee488/grid2102.cpp: fix geometry disk and support formatting [vklachkov]
-Closes #10210.
-Closes #10209.
-This PR implements `Format` and `Initialize` commands in the current HLE emulation of the 2101 and 2102. This PR also completely
-  rewrites the disk status structure and correctly returns the disk geometry.
-In the future, I will replace this code with proper emulation of the 2101, 2102/2107. But first I need to fix the DMA in the GRiD
-  Compass, so I had to fix current code. Bugs with multiple devices working, bugs with error handling still exists.
-
-15194: rm/rm380z.cpp: Added missing wait states and nmi single step debugging support [RobinSergeant]
-This pull request updates the Mame driver with a few things I've recently learnt while working on my FPGA RM380Z project.
-In particular:
-### Wait states
-One wait state should be inserted whenever MREQ goes low (excluding the refresh cycle).  See diagram on page 1.6 of the service
-  manual.  After adding these the RM Logo PAUSE command works properly.  It is supposed to pause for approximately n seconds.
-  Without wait states PAUSE 60 only pauses for around 50 seconds, but now it behaves correctly!
-### Single step debugging
-The front panel (accessed with \<Ctrl\>+F) includes a single step debugging command (z) which relies on special hardware to work.
-  When it asserts NMIEN by writing to Port 0 we need to start counting M1 cycles and then trigger a NMI after 8 of those. The NMI
-  service routine will then return to the front panel with PC pointing to the next instruction.  With my changes this now works.
-### Keyboard latch
-Very minor, but previously the logic for clearing the keyboard latch was too complicated.  The actual trigger should be when a bit
-  becomes 0 (it is active low and normally kept high).  Also this should not clear the key value itself.
-
-15195: osd/xaudio2_sound.cpp: comply with STDMETHOD function declarations [pmackinlay]
-
-15196: rm/rm380z_m.cpp: Fix keyboard regression error with older COS 3.4 hardware [RobinSergeant]
-Quick fix to undo something I unfortunately broke with my last commit yesterday (sorry).  For the older COS 3.4 firmware you do
-  actually have to clear the key code with the latch to prevent the last keypress repeating.  This is not the case with COS 4.0, but
-  I should have tested both variants.  The keyboard is handled by the VDU board which differs (COS 3.4 uses the VDU-40 board).
-Single step debugging worked on both, but I've also updated the reset method to clear the NMI counter.  It is unlikely to be nonzero
-  for more than a few cycles, but should technically be reset.
-
-15199: z8: fix disassembly of opcode D7 (LD x(r2), r1 - indexed register write) [hjanetzek]
-The register nibble roles were swapped and the operand order showed it as a read instead of a write. Both C7 and D7 encode byte 1
-  the same way (high nibble = r1, low nibble = r2). The only difference is operand order: C7 reads from indexed, D7 writes to
-  indexed.
-Before: D7 DC 01 disassembles as "LD R12, 01h(R13)"
-After:  D7 DC 01 disassembles as "LD 01h(R12), R13"
-(Note that I'm still a beginner with assembler and found this with the help of Claude - after re-assembly with asl and asz8 both
-  pointed at this issue)
-
-15200: gaelco/gaelco2.cpp: Add 'Lucky Colors' (not working, missing Dallas dump)  [clawgrip]
-New systems marked not working
-------------------------------
-Nova Desitec Lucky Colors (v1.1i) (Italy) [ClawGrip]
-
-15201: replace 2 badly dumped ROMs in the recent Plug and Play PR [mamehaze]
-
-15202: HP98x6: 98259 bubble memory module added [fulivi]
-Hi,
-this PR adds the support of HP98259 bubble memory module to HP98x6 systems.
-The driver for Intel bubble memory chip-set has been re-written from scratch wrt
-the one developed for Grid. The new driver is based on an accurate modeling of
-the inner working of Intel bubble memories and of the interface between the
-controller (i7220-1) and memory module(s).
-Thanks.
---F.Ulivi
-
-15203: galaxian/galaxian.cpp: Add a new Spanish Pac Man bootleg on Galaxian hardware [clawgrip]
-New working clones
-------------------
-Pac-Man (Cocamatic, Spanish bootleg on Galaxian hardware) [Victor Fernandez (City Game)]
-
-15205: 3rdparty/asmjit: sync with upstream version 1.21 [pmackinlay]
-From asmjit/asmjit@0bd5787b54b575ed94bf32ac452153b34385c514
-
-15206: sinclair/*: Various minor fixes [holub]
-* sinclair/screen_ula.cpp: Simplified public methods parameters (flash)
-* sinclair/specnext.cpp: Fixed video mode initialization
-* sinclair/specnext.cpp: Added notes regarding Anti-Brick core
-* sinclair/specnext_layer2.cpp: Fixed issue with scroll edge case
-* sinclair/spectrum.h: Minor comments cleanup
-
-15207: nes_vt369_vtunknown attempting to understand the extra port / protection on gtct885 a bit better [mamehaze]
-- nes_vt369_vtunknown attempt to understand the extra port / protection on gtct885 a bit better
-- hook up a protection device that allows gtct885 and rd5_240 to boot
-- hook up the device to goretro and rbbrite, but they don't work as we lack the code the device supplies
-- hook lexibook banking up to the port data write, not the direction write
-- added encryption disable for rsps300 type
-new NOT WORKING clones
---------------
-Vibes Retro Pocket Gamer 240-in-1 (set 2) [Team Europe]
-
-15208: sinclair/specnext.cpp: Simulated behaviour of Anti-Brick core working. [holub]
-I found the way to simulate flasher core bootrom. As of now if we load with Anti-Brick's bootrom it's waiting until core switch and
-  loads requested coreId (Next the one we have) with corresponting bios and reboots.
-
-15209: sinclair/*: Moved macro constants into local scope. [holub]
-
-15210: sinclair/evo,sinclair/next: Moved highly splitted drivers into dedicated folders. [holub]
-
-15211: nec/pc6001.cpp: add printer port [devinacker]
-
-15215: sound/va_vca.cpp: support for differential inputs. prophet5.cpp: VCA balance trimmers. [m1macrophage]
-`sound/va_vca.cpp`:
-* Added support for differential inputs to all VCAs.
-* Added support for asymetric input resistors in the linearized CA3280.
-`sequential/prophet5.cpp`:
-* Added balance trimmers for most VCAs.
-Additional info:
-* Good info on OTAs: http://www.openmusiclabs.com/files/otadist.pdf.
-* Analysis of a decapped CA3280 later in this thread: https://modwiggler.com/forum/viewtopic.php?t=284148. EDIT: not directly
-  related to the PR, but an interesting find.
-* The more generic `CA3280_VCA_LIN` implementation was validated with a simulation.
-  * Falstad simulates the LM13700 OTA. The CA3280 is a bit different. Changing the `_IOUT_MAX_SCALE` constant in `va_vca.cpp` to
-  0.98 (falstad LM13700) instead of 0.82 (CA3280) matches the two falstad simulations (voltage sweep and resistance sweep) to within
-  ~2% error.
-
-15216: sinclair/next/specnext_tiles.cpp: Better support edge case where tilemap or data wraps around available region. [holub]
-
-15217: sinclair/next/specnext.cpp: Fixed postponed CTC timer update. [holub]
-We update CTC from executable. Timers reconfiguration caused by this write() is postponed till the end of the timeslice.
-I feel the fix actually must be done in `z80ctc_channel_device::write`. I've tried do
-  `machine().scheduler().synchronize(timer_expired_delegate(...))` there and it didn't work as I expected.
-
-15218: netlist: Remove redundant usages of fatal logger [FlykeSpice]
-These loggers were always immediately followed by an exception throw with the very same error message, causing double logging in
-  case of errors.
-
-15219: blktiger, blktigera: Added US region description to title [JimCarlTay]
-When these games boot up, they show a region warning indicating use only in North America (US and Canada) before going to the
-  attract mode. Hence, the descriptions of these are updated to include the region.
-
-15220: pixtermu: Make the system boot and LCD/touchscreen work [gatecat]
-This doesn't get it that much further along - the next hang is waiting on the SSP - but as I haven't contributed to MAME for along
-  time, I thought I'd submit this so I can hopefully get some feedback on my code so far.
-
-15222: spectrum_cass.xml: Added 6 working items [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Frightmare (Zafiro) [Spectrum Computing]
-Hero [Planeta Sinclair]
-S.O.S. Naufrágio [Planeta Sinclair]
-Saracen (Dro Soft) [Spectrum Computing]
-Sir Loin (MCM) [Spectrum Computing]
-Unitrax (Erbe) [Spectrum Computing]
-Merged sets
---------------------------------------------
-Red Planet (English) + Red Planet (Spanish)
-Frightmare (Summit, 128K) + Frightmare (Summit, 48K)
-Cleanups and fixes: parent/clone relationships, descriptions, publishers, years and languages info.
-
-15223: adp/stella8085.cpp: deduplicate and translate service keyboard, fix disc inputs [stonedDiscord]
-I figured out the ACTIVE_LOW/HIGH settings for disc using a piece of homebrew that dumps the state of that row onto the display.
-The service keyboard is common to all machines of this type.
-
-15224: netlist: Check for mismatched number of parameters passed to device macros at compile-time  [FlykeSpice]
-According to ``nl_setup::register_dev`` rules, the device macro must either be passed with the exact number of params supported by
-  the device or no params at all.
-This PR adds some compile-time checking for that, so that when the developer forgets to fully specify all the parameters for a
-  netlist device, they can get a compile-time error rather than a runtime exception or ``validity`` fail.
-* Also this removes ``NET_REGISTER_DEVEXT`` macro, not needed anymore after the introduction of C++20 ``__VA_OPT__`` that allows
-  more flexible "overloading" with its original ``NET_REGISTER_DEV`` counterpart
-* * Consequently this also removes the ``nl_setup::register_dev`` overload that was specifically made for that macro.
-
-15225: bus/centronics/pc6022.cpp: notes about print mechanism [devinacker]
-Just a bit of extra documentation after studying what the timer interrupt does.
-Might be somewhat hookup-able to `bitmap_printer_device`, but I don't really feel like trying it at the moment.
-
-15226: adp: move glksstrn to correct file [stonedDiscord]
-This one is entirely my fault.
-Glücks-Stern is a 68000 game that I must've put in the wrong folder.
-
-15227: igs/igs023_video.cpp and related driver updates: [cam900]
-Common:
-- Use BIT helper for single bit value
-- Use screen set_raw for drivers using igs/igs023_video.cpp
-igs/igs023_video.cpp:
-- Use logmacro.h for logging feature
-- Use address map for RAM/video register area
-- Implement various feature previously unimplemented: Sprite DMA, Disable specific layer, Scanline counter (verified from hardware)
-- Minor reduce duplicates
-- Add/Fix notes
-- Expand palette area for fix possible out of bound text palette issue
-igs/pgm.cpp:
-- Add notes about Z80 control
-- Reduce literal tag usages
-igs/igs_68k_023vid.cpp:
-- Add placeholder for IGS025
-Reference: https://github.com/laoo/PGMTech
-
-15228: nes_vt: added 2 not working Go Retro sets + cleanups + lxcap research [mamehaze]
-new NOT WORKING clones
--------------
-Go Retro Portable 250+ Games (US, V1.3) [Sean Riddle, David Haywood]
-Go Retro Portable 250+ Games (US, V1.2) [Sean Riddle, David Haywood]
-these licensed devices are protected like the other 2 sets (~0x100 bytes of code read from mystery device)
-- simulated protection for lxcap, tetrtin, pactin rather than bypassing it
-- also hooked up lxcap protection device to otrail, which boots with it present
-- hooked it up to mog_m320 and pixel246, the former of which now goes to menu (pixel246 seems to ignore the results anyway)
-- hooked up seeprom to otrail, allowing for game to be loaded / saved and high score table to show correctly
-- various cleanups (ATTR_COLD, formatting)
-
-15231: igs/lordgun.cpp: Cleanups and updates [cam900]
-- Split driver state per hardware configurations
-- Reduce duplicates
-- Reduce literal tag usage and runtime tag lookups
-- Suppress side effects for debugger reads
-- Make some variables constant
-- Fix possible sprite wraparound
-- Fix spacings
-- Use lowercase hexadecimal values
-- Add/Fix notes
-- Use BIT helper for single bit values
-- Remove unused functions
-
-15232: upd7801: fix port C direction bits [devinacker]
-PC0 and PC1 are bidirectional; previously they only worked correctly when configured as inputs.
-
-15233: igs/igs011_video.cpp, igs/igs012.cpp: Make IGS011 and IGS012 as device, Update related drivers [cam900]
-igs/igs011.cpp:
-- Move IGS011 (including decryption, protection, and video), IGS012 into separated device
-- Fix relocate protection area function
-- Fix naming for per-game protection functions
-- Fix logging
-- Fix post load function
-- Add notes for dbc title screen transparency
-- Fix typename values
-igs/pgmprot*.cpp:
-- Add include guard
-- Fix spacings
-- Fix save state support
-igs/pgmprot_igs025_igs012.cpp:
-- Add notes for IGS012, Add IGS012 placeholder
-igs/igs025.cpp:
-- Fix spacing, Suppress side effect for debugger reads
-
-15234: firebeat.cpp: Add lamp output support for Pop'n Music [nutki]
-Verified the bit offsets with popn8 and then tested other popn firebeat games.
-
-15235: sequential/prophet5.cpp: routed remaining "master sum" signals. [m1macrophage]
-* Implemented pitch modulation (pitch wheel, master tune knob)
-* Routed master frequency and pulse width CVs for oscillators A and B.
-* Routed per voice osc frequency CVs.
-* Simplified routing of filter master CV.
-* Collapsed some MIXER + {other} stages into the {other} stages.
-* Collapsed some VA_CONST + MIXER stages into VA_SCALE_OFFSET stages.
-* Reordered section in `prophet5_voice_device` stream pipeline to: osc A, osc B, filter, amplifier.
-Newly emulated controls: (their effect can't be observed externally yet. Only by inspecting relevant streams)
-* Oscillator A: Frequency and Pulse width knobs.
-* Oscillator B: Frequency, Fine and Pulse width knobs, Lo freq and Keyboard buttons.
-* Wheel mod: Freq A, Freq B, PW A and PW B buttons.
-* Pitch wheel, Master Tune knob.
-Relevant simulations:
-* Osc offset.
-
-15236: x07: toward a better audio support [Mokona]
-The audio support for the Canon X07 was reading a memory location to get information on note length. That memory location is a
-  by-product of the BEEP Basic instruction interpretation, making direct programming of audio not functional.
-This change removes this memory "shortcut" and gets more close to what happens for real (ROM is counting interruptions).
-BEEP still working. Audio direct programming working better (still need more work that needs to be figured out).
-Also key press produces click, as it should + support of enabling/disabling the clicks.
-
-15237: Refactor 28-series EEPROM code [cbrunschen]
-Refactor 28-series EEPROM code:
-- Separate out a generic `eeprom28_device` template
-- Create Xicor x28 instantiations with appropriate template parameters.
-Add functionality to the `eeprom28_device` template to implement Atmel-style
-- Identification Page
-- Hardware Chip Erase
-- Software Chip Erase
-Add a templated `eeprom28_nvram_device` subclass that adds an `device_nvram_interface` implementation.
-Add `at28.{h,cpp}` specializations implementing known Atmel AT28 devices.
-Both X28 and AT28 devices are made available both with and without nvram support.
-This also replaces the existing `at28c64b` implementation. This has two current users in the codebase, both of which are Apple II
-  cards. I have very little experience with that, sadly. But with many thanks to @rb6502 I was able to test this in the `booti`
-  device, which helped me identify and fix something I had missed in the ee28 implementation: while the EEPROM is buffering data,
-  reads from the page being buffered will be sourced from the buffer, so will include whatever is currently being buffered. I've
-  gathered more detailed results of this testing and am happy to share those on request.
-I'm using C++20 concepts to elide some member functions from the templates; and macros to simplify declaring device classes and
-  types both with and without NVRAM.
-All of this works, and adds what I think is fairly complete support for a number of similar real-world devices in a way that I've
-  aimed to document reasonably well and make maintainable. I've tried to keep this in line with MAME's guidelines and coding
-  standards and what I've observed as existing practices, but I'm sure there are things I've missed or got wrong. So any feedback or
-  guidance would be greatly appreciated.
-
-15238: fix address lines of Roland PCM cards, add remaining R8 cards [ValleyBell]
-My original dumps of Roland PCM cards had address lines 8..15 reversed.
-I recently noticed this when comparing my own dumps with other dumps of Roland R8 PCM cards that were posted online about 3 years
-  ago.
-This PR fixes the dumps, as well as all descrambling code in the MAME drivers.
-The descrambling matches the CM-32P's internal ROMs now. (And the contents of the TN-SC2-04 card look sane as well.)
-I also added dumps of all the remaining Roland R8 PCM cards. Source is the R-8 wave card collection.
-After fixing the address line ordering on my side, the three R8 cards that I dumped by myself matched the dumps from the "wave card
-  collection", so I assume those dumps are good.
-
-15241: sony/smc777.cpp: 95 new dumps [angelosa]
-New working software list items
--------------------------------
-smc777: CP/M v2.2 (Version 1.1J), A.E., Hikyou Amazon no Okuchi ni .., Baikin-kun's Dental Walk, Bug Attack, Championship Lode
-  Runner, Demon Roulette, Exciting Billiard Cannon Shot, SMC Jissen Igo (I), Hanafuda, Miner 2049er, Othello, Professional Mahjong,
-  Manten-kun (Suu no Dounyuu, Keisan Ryoku 1, Keisan Ryoku 2), SMC Game Pack 1, Game Compilation (Rock Fury), Disk Filer (v1.4),
-  SMC-DOS, SMC Paint, SMC Read ROM utility [archive.org]
-New software list items marked not working
-------------------------------------------
-smc777: Aztec, Hikyou Amazon no Okuchi ni Kogane Densetsu o Mita, Baikin-kun no Gokiburi Taiji, Baikin-kun no Switch On, Uchi no
-  Tama Shirimasenka, Fire Dragon, Cookin Cat, Introductory Crosswords, Junior Crosswords, Sony Promotional Disc 1-4, Hello Basic,
-  Kanji CP/M (two versions), Houryuuji no Nazo, Hudson Best Selection Series 1-5, Lode Runner, Maboroshi no Kodai Ouchou (Asuka-hen,
-  Kyoto-hen, Yoshino-hen), Mario Bros. Special, Ougon no Haka, 777 Graphics Editor, SMC Japanese Word Processor, Graphic no Sekai,
-  Game Compilation 3, Game Compilation (Invaders), Mujintou Dasshutsu, Muu Tairiku no Nazo, Naito Kunio no Tsumeshougi, Napoleon,
-  New Adam & Eve, Nobunaga no Yabou, Penjamin, Remain's Robo, Salad no Kuni no Tomato-hime, SMC Super Golf, Nitten CAD, Rassapiator,
-  Seiko no Ototo e Nyuumon, SMC Logo no Sekai (Applications-hen, Graphics-hen), Memoland, SMC Shougi, SMC Super Golf, Star Blazer,
-  Tokugawa Fuunroku, Transitt, Tsukumo Ultra 4-nin Mahjong, Yakyuu Kyou (alt new set), Youkai no Nazo, Youkai Tantei Chima Chima,
-  Sekai no Hata, SuperCalc, Royal, Totake Shougi, Floppy Magazine 1-.8, Floppy Magazine Novelty, Floppy Magazine "Prep"
-  [archive.org]
-
-15243: kaneko/kaneko_spr.cpp: Add double buffer emulation, Updates [cam900]
-- Use static size framebuffer for fix save state support
-- Implement double buffered framebuffer emulation (fix framebuffer clear behaviour) - match as kan_pand.cpp (also double buffered)
-  and real hardware
-- Add notes
-
-15244: kaneko/kaneko_rle.cpp: Fix filename and device name, Update related drivers [cam900]
-kaneko/kaneko_rle.cpp: (former kaneko/sknsspr.cpp)
-- Used at jchan* and galpani3* before released Super Kaneko Nova System. (suprnova.cpp)
-- Reduce duplicates
-- Fix namings
-- Fix code style consistency
-- Fix spacings
-- Make bitmap as member variable (also double buffered)
-- Make some variables constant
-- Add notes
-kaneko/galpani3.cpp:
-- Fix naming
-kaneko/jchan.cpp:
-- Fix naming
-- Fix save state support
-- Fix logging in debugger reads
-kaneko/suprnova.cpp:
-- Fix save state support 
-
-15246: generalplus gpce4 refactoring [mamehaze]
-- moved GeneralPlus GPCE4 series SoC emulation from driver file into a device [David Haywood]
-- begin to flesh out GPCE4 emulation a little more [David Haywood]
-- move mapacman away from make-believe hookups to something a little more grounded in reality now that the chip has been identified
-  [David Haywood]
-- added internal ROM for digicolr set, replace with clean dump [Harold Seo]
-- removed local implementation of LCDC previously used by mapacman and replaced it with the bl_handhelds_lcdc.cpp device, which
-  looks like it's actually a ST7735SV (which is what these use) [David Haywood]
-- mapacman display is now more stable [David Haywood]
-
-15247: apple2video: improve more video timing [arekkusu42]
-(needs review, see RFC list)
-This PR fixes additional timing-sensitive video interactions and enables 50Hz support:
-* apple2video: emulate softswitch-specific delays
-* apple2video: improve `read_floatingbus()`
-* apple2gs: add 50Hz support
-<br>
-Code comments:<details>
-To implement the video softswitch delays, I have slightly changed the core's `screen().update_now()`.  The alternative is to use a
-  timer callback, and indeed for the 6502 machines this can work.  However I believe that a simple timer implementation _can not_ be
-  correct for apple2gs; consider what should happen with this 65816 instruction:
-`	LDA $C054`
-If m=0, this is a 16-bit load accessing two adjacent softswitches, and the operation of each cycle is:
-1. 	fetch opcode
-2. 	fetch address lo
-3. 	fetch address hi
-4. 	data read lo C054 (toggling PAGE1, visible on-screen two cycles later)
-5. 	data read hi C055 (toggling PAGE2, visible on-screen two cycles later)
-On hardware (with appropriate data and timing loop) this results in a one-cycle wide blip of PAGE1:
-<img width="480" height="160" alt="Calibrate_16bit"
-  src="https://github.com/user-attachments/assets/12961cfa-ce9f-4e31-bc4c-4ce2e5434a3a" />
-A single timer can't implement this, because the second read would void and replace the first read's callback before it fires.  We
-  could use two timers?  But what about more complex RMW instructions, like ASL, ROR, TRB, etc?  At that point, recognize that what
-  we are really trying to accomplish is to flush pending video changes up to a time in the near (0...3 video cycles) future, and so
-  modifying `update_now()` to allow that feels like the right approach.
-Also for the softswitch delays, I have added the notion of an `m_base_model` to `a2_video_device`.  Previously, machine-specific
-  video behavior has been either limited to the model-templated text rendering, or via one-shot accessors like `set_hgr2`.  This PR
-  uses `m_base_model` for machine-specific delays and floating bus behavior, but there are additional areas where it could be used
-  to implement currently un-emulated quirks, which I feel don't fit well into templating:
-- 	WNDW blanking at left edge of active video differs between ][+ and later
-- 	80-column video placement differs between //e and IIgs
-- 	lo-res 7M mode differs between //e and IIgs
-- 	mode-change glitches differ between ]+, //e and IIgs
-I have also re-ordered the `model` enums chronologically, which may benefit compilers' range-comparison codegen.
-About the timing of each softswitch: some transitions show glitching on hardware.  This is not emulated, so the delay implemented
-  here is only approximate.  I have assembled reference photos for many of these transitions across three classes of hardware, using
-  [my VIDSYNC test:
-<img width="900" height="1280" alt="VIDSYNC_Latency_glitches"
-  src="https://github.com/user-attachments/assets/c40ee0af-b0e2-4a52-af64-9c8a1f3a9b29" />
-(thanks to @colinleroy for //c PAL and @whscullin for ]+ hardware testing)
-<br>
-The `read_floatingbus()` changes make five improvements:
-- Replace four nearly-duplicate implementations with a shared one, which retains most of the old code, although I have cherry-picked
-  some [later cleanup.
-- The shared implementation's calling convention requires callers to pass the correct hpos/vpos and apply any machine-specific
-  masking to the resulting RAM address.  This makes the shared implementation NTSC/PAL-agnostic, and removes the incorrect
-  dependency on `m_maincpu->total_cycles()`, so now it is possible (with accelerator-aware software) for vaporlock to work on
-  machines which run at > 1 MHz, instead of the addresses irreversibly drifting out of sync when the CPU clock speed changes.
-- Making the callers correctly handle `hpos()` wrapping also fixes off-by-one bugs in the old code, so the scanned addresses during
-  HBL now match hardware (see Testing details).
-- The previous `(i + 63)` hard-coded to fix some beam-racing demos by compensating for a specific softswitch delay is no longer
-  needed, now that the softswitch-specific delays are implemented.
-- apple2gs also adds emulation of the open-bus Mega II cycles.  This breaks Lancaster-style vaporlock, matching hardware behavior.
-  Other vaporlock techniques which don't rely on UNUSED8 screen holes can still work on the IIgs.
-The g65816 core does not track the most-recent-byte-fetched, so this apple2gs open-bus code approximately reconstructs it by peeking
-  at the PC, which then has to avoid infinite loop recursion.  This is... not pretty.  But after I wrote that, I found almost
-  identical patterns in the Sega 315-5195 and the SNES (which looks broken to me? `m_maincpu->pc()` doesn't handle PB, also bank
-  wrapping?)
-<br>
-After fixing all the previous timing interactions, the 50Hz changes are straightforwards, dynamically reconfiguring the screen when
-  LANGSEL is latched (but see RFC section...)  Unlike the 8-bit PAL machines, no clock changes are needed for NTSC-50.
-</details>
-<br>
-User-visible changes:<details>
-The changes here are exemplified by Sather's "Little Text Window".  In MAME 0.286 before the HBL relative timing fixes:
-<img width="560" height="32" alt="SATHER LTW_ee_0286_clip"
-  src="https://github.com/user-attachments/assets/37d7c519-9b32-410e-ab5b-ec4d0f2eb80c" />
-In 0.287 before this PR:
-<img width="560" height="32" alt="SATHER LTW_ee_0287_before_clip"
-  src="https://github.com/user-attachments/assets/9b1bf53e-935e-4154-b70c-8732fef7bc88" />
-After this PR:
-<img width="560" height="32" alt="SATHER LTW_ee_0287_after_clip"
-  src="https://github.com/user-attachments/assets/e325e572-b235-4387-86ed-9d29a2baedeb" />
-The VIDMODES.po (in Testing details) includes a collection of these simple 3rd-party examples.
-<br>
-Similar changes are visible in real demos, like the center divider in Deater's Megademo:
-<img width="560" height="384" alt="MEGADEMO_ee_287_before"
-  src="https://github.com/user-attachments/assets/cdc2b858-9356-43cb-87ed-7c14bff73268" />
-...is now missing (matching hardware behavior):
-<img width="560" height="384" alt="MEGADEMO_ee_287_after"
-  src="https://github.com/user-attachments/assets/e54c2ed8-b584-4669-a938-f6f6b8a5ecfe" />
-...and in CRAZY CYCLES II and other demos where page flips were previously occuring a couple cycles too far to the right.
-<br>
-On apple2gs, visible changes from fixing vaporlock drift are less subtle, for example the corruption on the ending credits screen of
-  French Touch's ANSI STORY:
-<img width="704" height="462" alt="ANSI_STORY_gs_287_before"
-  src="https://github.com/user-attachments/assets/887f0c34-1b46-406c-8aac-d6e8bfd3f80e" />
-...is now fixed:
-<img width="704" height="462" alt="ANSI_STORY_gs_287_after"
-  src="https://github.com/user-attachments/assets/ea885212-d26f-4c2e-816a-fc0a71473245" />
-<br>
-With 50Hz emulation in place, the Apple IIgs "Set system standards and 50 hertz" screen via Ctrl-Option-Reset now works as expected.
-  There is apparently not much Apple IIgs software that _requires_ 50Hz, but one example is Ninjaforce's Revenge of the Bobs demo,
-  which at 2.8MHz has some missing vectorballs if run at 60Hz.
-Other IIgs-aware and Hz-aware examples are Glider and Shufflepuck Cafe.
-</details>
-<br>
-Testing:<details>
-There are two disks of focused unit tests (source included):
-VidModes_260421.zip
-FloatBus_260421.zip
-<br>
-A new VIDMODES test is a "beam-race all the things" dashboard, showing all softswitch latencies and glitches on one screen:
-<img width="1024" height="768" alt="VIDMODES_gs_rgb"
-  src="https://github.com/user-attachments/assets/87e681c4-d1d9-44ba-9ec8-ced05723cf66" />
-Before this PR without the softswitch-specific delays, the alignments are off by a cycle or two:
-<img width="420" height="260" alt="VIDMODES_ee_287_before_clip"
-  src="https://github.com/user-attachments/assets/606194fe-6527-4cd5-9f4f-6e695e5ddbb2" />
-After this PR:
-<img width="420" height="260" alt="VIDMODES_ee_287_after_clip"
-  src="https://github.com/user-attachments/assets/751a518f-60d3-4089-8f35-b5e929484793" />
-...MAME now more closely aligns with hardware:
-<img width="420" height="260" alt="VIDMODES_ee_composite_clip"
-  src="https://github.com/user-attachments/assets/bc7773d6-567d-40ec-bcab-89997d463eaf" />
-...except the transition glitches aren't emulated, and some 80-column delays are not quite right (see TODO section.)
-Results are similar for apple2p. apple2gs was very broken before this PR, since the scanner address drift was unavoidable even when
-  booting at 1 MHz.
-<br>
-Improvement is also visible in some older tests, which are included in the VIDMODES .po here:
-My previous VIDSYNC test has been updated again with support for SCBIRQ sync and apple2jp katakana:
-<img width="560" height="384" alt="VIDSYNC_2jp_katakana"
-  src="https://github.com/user-attachments/assets/60822f30-58fc-4f2e-8b4e-bf91c513906c" />
-After this PR, it now shows that previous minor alignment glitches are fixed on apple2p and apple2ee.  This test is still broken
-  (out of sync rolling video) on apple2gs, due to known g65816 timing bugs (see TODO section.)
-My previous FLASHHZ test now shows apple2gs works correctly when toggling 50Hz.
-My previous LANGSEL test now works even when not run at 1 MHz, minor alignment glitches are fixed, and apple2gs works correctly when
-  toggling 50Hz.
-My previous IRQTEST test now shows that apple2gs 1/4 second IRQs work with both 60 and 50Hz display timings.
-My previous BEAMPOS test now shows the PAL and F-BUS failures on apple2gs are fixed.  Only the 16BIT failure remains (because MAME's
-  g65816 core is not cycle-exact, it reads lo and hi bytes on the same cycle...)
-Updated versions of my previous CALIBRATE tests are also included: VPR serves as a negative test for Lancaster-style vaporlock on
-  the IIgs, and GS16BIT demonstrates the adjacent softswitch access pictured above in the code comments.
-<br>
-Also included is a 3rd-party EXAMPLES folder of classic and more recent beam-racing and floating bus tests:
-- BISHOP.SPLIT
-- SATHER.SPLIT
-- SATHER.UNDER
-- SATHER.WINDOW
-- MMPHOS.RAINBOW
-- QKUMBA.JSRC050
-- QKUMBA.JSRC000
-- ELLIOT.KILLER
-- ELLIOT.WINDOW
-These have each been modified to improve compatibility (NTSC/PAL support, VBL differences, disabling Zip Chip, etc) and to make them
-  runnable in sequence from a menu.
-<br>
-A new FLOATBUS test is a self-driving suite that iterates through every relevant video mode, and:
-* draws a test pattern designed to highlight the memory layout of that mode
-* reads the entire NTSC/PAL video scan-out via floating bus
-* spot-checks a handful of pixels in locations prone to off-by-one errors
-* compresses the snapshot and saves it to disk for offline inspection
-The snapshots can be converted to GIF on a modern machine.  Mac (fat, unsigned) snap2gif tool and (posix-y) source is included.
-The test is aware of ]+ and IIgs-specific floating bus behavior, and produces a set of 9 (or 11 on the IIgs) images, like these:
-<img width="910" height="524" alt="P4 HGR2 MIX 60_spotcheck_overlay"
-  src="https://github.com/user-attachments/assets/02487d67-fe08-407f-8ae4-53802ee8017a" />
-<img width="910" height="524" alt="P7 GR MIX 60"
-  src="https://github.com/user-attachments/assets/ba4c798b-61d0-476f-8f9b-cc137a03eb10" />
-<img width="520" height="312" alt="PB SHR DP 50"
-  src="https://github.com/user-attachments/assets/7ae0f020-0f67-4c46-b155-8b6e19ef4e36" />
-(These examples were captured from //e Enhanced and IIgs ROM3 hardware.  HBL/VBL are visualized in gray, open-bus cycles in pink.
-  Spot-checked locations are circled in yellow in the first image.)
-This allows visualization and debugging of the HBL/VBL memory layout, as described by [Bob Bishop and Jim Sather.
-Note that 80-column modes are not iterated, as testing shows Sather is correct (in UTA2e:5-42 point 10) in that AUX memory read by
-  the video scanner is never put on the data bus visible to the CPU.  There is instead some minimal negative testing to show that
-  C00D 80VID doesn't alter the floating bus behavior.  AFAICT, deciphering the floating bus behavior of IIgs SHR video (the SCB,
-  palette, and open-bus timing) is original research not implemented in any other emulator.
-Before this PR, apple2gs failed this test completely, due to the video scanner drifting out of sync.  apple2p and apple2e machines
-  mostly worked, but failed spotcheck <i>#</i>4 due to an off-by-one in the HBL: `read_floatingbus()` shifted the hpos over two
-  cycles, but didn't handle the overflow into vpos, so most of HBL was incorrectly shifted down one scanline:
-<img width="910" height="524" alt="P4 HGR2 MIX 60_ee_287_broken"
-  src="https://github.com/user-attachments/assets/900dd392-1b3d-4b3c-a33c-293e52080f7a" />
-After this PR, all spotchecks now pass except for <i>#</i>6 on apple2p/apple2e.  This is a literal corner-case, caused by a bug in
-  MAME's scheduler (see RFC section.)  Both before and after this PR, there is also a sanity-test failure reading CFFF CLRROM (see
-  TODO section.)
-More generally, even the "emulator-killer" qkumba examples executing softswitches work correctly (at least with the cycle-accurate
-  6502 core; the g65816 reads operands on the wrong cycles...)
-</details>
-<br>
-TODO:<details>
-* Certain glitch-less 80-column video transitions (C02B LANGSEL, C029 MONO bit, C00F ALTCHAR) actually occur seven 14M cycles later
-  on hardware.  This PR does not attempt to address this, as fixing it would need invasive changes to render_line* and the various
-  clipping assumptions.  Perhaps revisit this if 80-column placement (for apple2e) is fixed.
-* CFFF CLRROM has some edge-case behavior which may require a2bus changes to make it pedantically correct, so is not dealt with
-  here.
-* apple2gs now accurately implements SHR floating bus behavior, and the open-bus behavior of the Mega II memory refresh cycles.
-  However on hardware, non-SHR modes show a rolling pattern (out of sync with the video refresh) during the rest of the HBL/VBL
-  cycles.  This is not yet understood.
-* Although this collection of PRs fix many subtle video timing behaviors, apple2gs still has CPU and FPI timing problems which break
-  VIDSYNC, QKUMBA.JSRC050, the ECC demo's border effects, TextFunk, 3200 color mode, etc.
-</details>
-
-15248: identified bl_handhelds_lcdc_device as st7735 and moved to devices/video [mamehaze]
-- identified bl_handhelds_lcdc_device as st7735
-- renamed implementation and moved to devices/video/st7735.cpp / .h
-- fleshed out some logging to verify behavior so that it's easier to identify
-- fixed an out of bounds access on the video update, which now respects cliprect
-
-15249: jaleco/megasys1.cpp, jaleco/ms1_gatearray.cpp: Updates and Cleanups [cam900]
-- Add side effect check for debugger reads
-- Improve loggings
-- Reduce preprocessor defines, Literal tag usages
-- Remove unnecessary include
-- Make some variables constant
-- Fix spacings
-- Fix main CPU ROM region size for reduce unnecessary ROM_CONTINUE
-- Fix typename value for save state support
-- Minor optimization in sprite draw routine
-- Fix naming
-- Reduce unnecessary struct
-- Use BIT helper for single bit values
-jaleco/ms1_gatearray.cpp:
-- Use required_address_space for target space to install handler
-
-15250: Commodore: added machine configuration switch in C16, C64, C128 and C65 to swap joystick ports on the fly, avoiding the need
-  to reset the machine when loading a game that requires joystick to be in the opposite port to the one we plugged it in [etabeta78]
-Quality of life improvement asked by some friends
-
-15251: emu/debug/dvmemory.cpp: Recomputing memory view based on evaluated start address value. [holub]
-Memory View start address input allows to use expression (easiest to try `PC`), but content of the view is not updated if evaluated
-  value changed.
-This PR brings this updates.
-
-15252: apple2video: fix -aux std80 crash  [arekkusu42]
-This PR fixes apple2e* crashing when using `-aux std80` and displaying DGR or DHGR.
-To reproduce:
-1. `mame apple2ee -aux std80`  (no disk)
-2. Ctrl-Reset to prompt
-3. HGR  (or GR)
-4. PR#3
-5. CALL -151
-6. C05E
-apple2ee_std80_dhgr_crash.txt
-Most software will check for 128k before attempting to use DHGR, but this also reproduces when running anything that blindly
-  displays DHGR or DGR, for example the VIDMODES test on this disk image:
-VidModes_260424.zip
-...although the crash is due to OOB access, so it depends on your system malloc (and ASLR etc.)  On my system a crash in a release
-  build is rare without libgmalloc.
-A debug ASAN build (`ARCHOPTS="-fsanitize=address"`) shows the problem immediately:
-apple2ee_std80_dhgr_asan.txt
-...and similarly with DGR:
-apple2ee_std80_dgr_asan.txt
-80-column text (including page2) was not affected, because `a2_video_device::text_update()` applies `m_aux_mask`.  This commit
-  applies similar logic to `lores_update()` and `dhgr_update()`.
-I also removed `allow_dhr()` from `a2eauxslot` cards; this was unused.  `get_auxbank_mask()` fulfills the requirement well enough:
-  MAME does not emulate the early Rev-A Apple //e where C05E DHIRESON isn't functional, but if it did, that indication of DHGR
-  support belongs in the apple2e motherboard and not the auxslot card.
-
-15253: jaleco/cischeat.cpp and related drivers: Make road and sprite generator as device, Updates [cam900]
-Common:
-- Reduce preprocessor defines
-- Improve logging and save state supports
-- Reduce runtime tag lookups and literal tag usage
-- Make some variables constant
-- Minor optimizations
-- Use BIT helper for single bit values
-- Fix namings
-- Reduce duplicates
-- Use shortened typename values for consistency
-- Add notes
-jaleco/cischeat.cpp:
-- Consolidated driver into single file
-- Split scudhamm and related drivers into separate driver files
-
-15254: megadriv.xml: Added 40 working items + 2 not working [ArcadeShadow]
-New working software list additions
---------------------------------------------
-Alien Cat 2 (2025, free version) [PSCD Games]
-BattleWomen [PSCD Games]
-Bio Evil (demo 1.0) [PSCD Games]
-Bio Evil (demo v1.6) [PSCD Games]
-Bio Evil (demo v2.0) [PSCD Games]
-Bone Marrow (demo 2) [PSCD Games]
-Cyber Mission (demo 0.3) [PSCD Games]
-Cyber Mission (demo 2.0) [PSCD Games]
-Cyber Mission (demo 2.1) [PSCD Games]
-Debtor (2025, free version) [PSCD Games]
-Fight for Vengeance [No-Intro]
-Fight for Vengeance (demo) [No-Intro]
-FoxyLand (2025, free version) [PSCD Games]
-Gravibots [RetroSouls]
-Gravibots (DMA safe) [RetroSouls]
-Handy Harvy [No-Intro]
-Handy Harvy (digital release) [No-Intro]
-Hunter Girls (2023 version) [PSCD Games]
-Hunter Girls (demo) [PSCD Games]
-Irena - Genesis Metal Fury (demo 20190619) [No-Intro]
-Irena - Genesis Metal Fury (demo 20210113) [No-Intro]
-Irena - Genesis Metal Fury (demo 20210122) [No-Intro]
-Kromasphere: YAGAC MD (digital release) [No-Intro]
-L'Abbaye des Morts (physical release) [No-Intro]
-Mega Casanova (v1.2) [PSCD Games]
-Mega Casanova (v1.3) [PSCD Games]
-Mega Casanova 2: Casanova Jr. Sex Star [PSCD Games]
-Mega Casanova 3: Casanova Sex Angels [PSCD Games]
-Mega Marble World (v1.90) [No-Intro]
-Mega Marble World 2 (v1.03) [No-Intro]
-Old Towers (v1.0) [No-Intro]
-Old Towers (Mega Cat Studios) [No-Intro]
-Sumo Slam! (digital release) [No-Intro]
-Tänzer (digital release) [No-Intro]
-Tänzer (kickstarter demo) [No-Intro]
-Tänzer (Mega Cat Studios) [No-Intro]
-Tänzer (Mega Cat Studios, demo) [No-Intro]
-Thunder Paw (2025, free version) [PSCD Games]
-Yazzie (DMA safe) [RetroSouls]
-ZPF (demo) [Mega Cat Studios]
-New NOT working software list additions
---------------------------------------------
-The Curse of Illmoore Bay [No-Intro]
-The Curse of Illmoore Bay (digital release) [No-Intro]
-Added and fixed some metadata info (publisher, language, etc.)
-
-15257: mpc60, vx600: add 78C11 internal ROM [devinacker]
-Pulling up bit 7 of port C will also configure this as the (single-chip) key & wheel controller for the X7000 and possibly others. I
-  might start a skeleton driver for that later if nobody else does.
-
-15259: kaneko/suprnova.cpp: Updates and Cleanups [cam900]
-- Add side effect checks for debugger reads
-- Move palette offset and amount in tilemap into gfx decode layouts
-- Improvement logging features
-- Minor optimizations
-- Replace pointers into references
-- Reduce duplicates
-- Use shortened typename values for consistency
-- Fix code style consistency
-- Make some variables constant
-- Fix spacings
-- Fix possible bitmap out of bound errors
-- Add notes
-- Fix namings
-
-15260: emu/disound.cpp: Improved calculation of sound_requested_outputs_mask. [m1macrophage]
-Ensures `m_sound_requested_outputs_mask` is updated even if a device's `add_route(output_index, ...)` calls don't happen in the
-  order of `output_index`.
-I noticed this while working on the CEM3340, which will be the first user of `get_sound_requested_outputs_mask()` it seems.
-Before this PR, `CEM3340(...).add_route(0, ...).add_route(1, ...)` set the mask correctly, but  `CEM3340(...).add_route(1,
-  ...).add_route(0, ...)` did not. After his PR, both calls set the mask correctly.
-
-15261: psikyo/psikyosh.cpp: Updates [cam900]
-- Reduce duplicates
-- Make tilemap function into use tilemap.h
-- Remove unnecessary functions
-- Minor optimizations
-- Add/Fix notes
-- Fix namings
-- Reduce literal tag usages
-- Make some variables constant
-- Use BIT helper for single bit values
-- Fix typenames
-- Reduce preprocessor defines
-
-15263: sinclair/next/specnext.cpp: Various improvements. [holub]
-* Forced more updates on tilemap writes.
-* Better handling DivMMC CS instant switch.
-* Pulled up unmapped value on 0x2ffd & 0x3ffd reads.
-* next/specnext_layer2.cpp: Improved half-pixel rendering.
-
-15265: Sanyo phc25 - fix VBL interrupt timing and VBL polarity in port $40 [Aurelien34]
-2 fixes:
-# VBL bit polarity was wrong
-There is an inversion between the graphic chip and the processor
-Here is a program that shows loop counts waiting for the VBL bit to be 0, then 1, then 0 again..  then counts the opposite.
-On the real machine :
-<img width="1149" height="869" alt="image" src="https://github.com/user-attachments/assets/de4f8999-f787-49ac-a666-46e3dc99b8aa" />
-On MAME before the fix :
-<img width="1359" height="551" alt="image" src="https://github.com/user-attachments/assets/a3a09db6-7952-44b3-b62a-6febcb122bc8" />
-On MAME after the fix :
-<img width="1650" height="671" alt="image" src="https://github.com/user-attachments/assets/ad9c77bf-4e67-4ff8-bcc3-209681817301" />
-The timing is still not the same, but I don't know yet if it comes from a graphic chip emulation timing of graphic vs CPU speed
-  difference. It looks like things became worse in november as someone made some cleanup in the vintage graphics chips code.
-# VBL interrupt duration was wrong
-The initial interrupt duration was really wrong (100us instead of 1200ns mesured on the real hardware). I have adjusted the timing
-  so that the demo I did last year works as fast in MAME as on the original machine. It looks like 3us is a good compromise.
-Here is a capture of the sync signal coming from the graphics chip and the interrupt signal :
-<img width="800" height="480" alt="image" src="https://github.com/user-attachments/assets/a26573d9-f6a7-4e61-8d96-d30e1e4bfaa0" />
-
-15267: sound/cem3340.cpp: Anti-aliasing. Streaming frequency and PW control. [m1macrophage]
-* Used the *PolyBLEP* algorithm for the ramp and pulse waves.
-* Used the *PolyBLAMP* algorithm for the triangle wave.
-* Made waveform outputs conditional on the output actually being connected.
-* Added support for streaming control of the frequency control current and pulse width control voltage.
-Effects of anti-aliasing:
-!comparison
-* From top to bottom: ramp, pulse and triangle waveforms.
-* Each spectogram shows a sequence of notes, increasing by 1 octave per step.
-* *Before* (left column): the ramp and pulse waveforms suffered from significant aliasing. Aliasing on the triangle wave was only
-  noticeable at high frequencies.
-* *After* (right column): Significant reduction in aliasing on all waveforms. The ramp and pulse spectra look much cleaner, and the
-  triangle is missing some of the "stray" harmonics in the top octaves.
-
-15268: sega/segas32.cpp: Updates [cam900]
-- Use tilemap_h for text tilemap handling
-- Move imperfect feature warning into imperfect_features() function in header
-- Reduce literal tag usages
-- Fix color amount in gfx layout
-- Fix namings
-- Fix typename values for booleans
-- Use BIT helper for single bit values
-- Add side effect check for debugger reads
-- Make some variables constant
-- Reduce preprocessor defines
-- Add notes
-- Fix spacings
-
-15269: pacman/pacman.cpp: Add a third Ms. Pac-Man Triunvi bootleg [clawgrip]
-New working clones
-------------------
-Come-Cocos (Ms. Pac-Man) ('Made in Greece' Triunvi bootleg, set 3) [Victor Fernandez (City Game)]
-
-15270: 3rdparty: retire softfloat2 [pmackinlay]
-
-15271: toaplan/slapfght.cpp: Add a Tecfri bootleg of Tiger Heli [clawgrip]
-New working clones
-------------------
-Tiger-Heli (bootleg set 5) [hammy]
-
-15273: bishi.cpp: add lamp write handler [nutki]
-Adding lamp output for bishi.cpp using naming consistent with later game from the series (the ones using ksys573).
-Tested with "lamp check" in all 4 supported games.
-
-15275: tecmo/gaiden.cpp: Add a new "Raiga - Strato Fighter" set [clawgrip]
-New working clones
-------------------
-Raiga - Strato Fighter (Japan, set 2) [Tailsnic Retroworks]
-
-15276: tecfri/speedball.cpp: Add a new Speed Ball set [clawgrip]
-New working clones
-------------------
-Speed Ball (set 2) [hammy]
-Also renamed the current speedbala ("Speed Ball (set 2)") to speedbalb ("Speed Ball (set 3)"), so it keeps being the last set, as
-  it's the only one without the "Hard Test" test mode (as so, it seems to be the oldest one).
-
-15277: apple2video: fix -ramsize crash [arekkusu42]
-(another config-specific crash)
-This PR fixes apple2 and apple2p crashing with low-memory `-ramsize` configs
-To reproduce:
-1. `mame apple2p -ramsize 16k` <no disk>
-2. Ctrl-Reset to prompt
-3. HGR2
-or
-1. `mame apple2 -ramsize 12k` <no disk>
-2. 2000<E000.FFFFM N C053:0 N C057:0 N C050:0
-Result: OOB access, UB (MAME might crash, or show random garbage on screen.)
-On my system a crash in a release build is rare without libgmalloc.
-A debug ASAN build (`ARCHOPTS="-fsanitize=address"`) shows the problem immediately:
-apple2_12k_HGR_asan.txt
-Expected Result:
-The first apple2p case should show the screen entirely white.
-The second apple2 case should show the screen as alternating rows of colored static (copied from E000) and white (only half of the
-  HGR RAM is installed):
-<img width="560" height="384" alt="apple2_12k_HGR"
-  src="https://github.com/user-attachments/assets/32091827-fa3e-437d-8f22-1dbbed11ecc1" />
-Hardware testing (thanks to @whscullin and Tom Greene) shows that empty RAM sockets read as 0xFF both from the CPU and the video
-  scanner (probably because unconnected TTL inputs float high, similar to C06x gameio.)
-<br>
-Code comments:<details>
-I made `a2_video_device::hgr_update()` check for HGR addresses exceeding the machine's `ram_size`, mirroring the logic in
-  `apple2_state::ram_r()`.  This adds a usually-not-taken branch to every HGR line, for all machines.  An alternate implementation
-  would be to pad apple2's `m_ram` allocation up to at least 24k, and then one-time-init any excess over the requested `-ramsize` to
-  0xFF.  That would be zero overhead in `a2_video_device`, but maybe more obfuscated, re-interpreting `m_ram_size` around a
-  re-alloc.
-MAME currently doesn't support the non-contiguous 12K "HIRES" memory configuration.  To support that, range comparisons would need
-  to change to something like a 4K page bitmap mask.
-</details>
-
-15278: psikyo/psikyosh_v.cpp: Fix sprite flip and zbuffer [cam900]
-This PR fixes regression since https://github.com/mamedev/mame/pull/15261 .
-
-15279: machine/cxd1185.cpp: Ensure appropriate SCSI ID register is mapped [briceonk]
-When the save states were fixed, this mapping was not updated as well, which causes machines that use the CXD1185 to always target
-  ID 0. This commit fixes that by updating the mapping to use the ID register rather than the ID inherited from its superclass.
-
-15280: psikyo/psikyosh.cpp: Updates [cam900]
-- Fix z buffer bitmap address calculation in sprite draw routine
-- Fix save state support
-- Fix spacings
-- Add notes
-
-15282: Current Plug & Play PR (1 working system, 1 nw system, 2 nw clones, 1 working softlist entry, 2 nw softlist) [mamehaze]
-new WORKING systems
-----------
-50 in 1 Arcade Joystick [Team Europe]
-new WORKING software list entries
------------
-jakks_gamekey_wp.xml:
-Winnie the Pooh - Piglet's Special Day (3 Bonus Games) [Team Europe]
-new NOT WORKING software list entries
-----------
-telestory_cart.xml:
-Winnie the Pooh - Salta, Tigro, Salta! / Winnie the Pooh - l'orsetto goloso (Italy) [Team Europe]
-Il Re Leone / Il Re Leone II - Il Regno Di Simba (Italy) [Team Europe]
-new NOT_WORKING systems
-----------
-2 en 1 Multi'Pilote (France) [Team Europe]
-new NOT WORKING clones
-----------
-My First Dance Dance Revolution (Japan) [Team Europe, David Haywood]
-Genius TV Progress (VTech, France) [Team Europe]
-- disabled some logging by default in unsp core [David Haywood]
-- added SPI FIFO support to GPCE4 [David Haywood]
-- added some missing timers to GPCE4 [David Haywood]
-- more properly factory defaulted digicolr data [David Haywood]
-- rewrote generic_spi_flash HLE code (used for transparently byte addressed SPI flash) ensuring it still works for Monon Color
-  [David Haywood]
-- hooked up new code to st2302u_bbl_spi.cpp, removing local implementation and allowing retro150, retro150a, pg118, table108,
-  ppg118, dphh8633, dphh8661 to show correct graphics [David Haywood]
-- hooked up new code to generalplus_gpce4 allowing mapacman to correctly check the device on startup rather than bypassing it
-  [David Haywood]
-- added display on/off and sleep on/off to st7735_lcdc so that the screen will blank when requested [David Haywood]
-- added another 'inline attribute' XaviX video mode used by multiplt [David Haywood]
-
-15283: ui: Adopted deemphasize flag in Sliders and Configuration menus [holub]
-
-15285: sequential/prophet5.cpp: Added oscillators (no tuning yet). [m1macrophage]
-Also:
-* Added a missing DC-block stage after the filter.
-* Added randomness to oscillator and filter timing components.
-* Corrected calibration of the LFO balance trimmer.
-Tuning is not yet emulated, so the oscillators will be horribly out of tune, at a very low frequency.
-Newly emulated controls:
-* Oscillator A: Ramp and Pulse buttons.
-* Oscillator B: Ramp, Triangle and Pulse buttons.
-
-15286: Fix mem-mem MOV on i8089 [bytex64]
-The base register for memory operations was being fixed up to handle the PP register. But memory-to-memory MOVs act like two
-  instructions, and the second half was being decoded ad-hoc without that fixup. This adds that fixup to the second half.
-
-15287: pacman: Fix mschamp timer selection and I/O mux behavior [Liron486]
-## Summary
-This fix the `mschamp` / `mschamps` driver for **Ms. Pacman Champion Edition / Super Zola Pac Gal**.
-This is related to MAME Testers issue 05446:
-https://mametesters.org/view.php?id=5446
-That report describes two main problems:
-- Super Zola Pac Gal speed sometimes changes incorrectly/randomly after a new level or after losing a life.
-- The timer setting is missing, with MAME effectively using a fixed 60-second timer.
-## What changed
-The previous implementation used `mschamp_kludge_r()` to return an incrementing value from I/O port `$00`:
-`return m_counter++;`
-That made reads from this port depend on call order rather than on a stable emulated hardware state.
-This fix replaces that behavior with a small stateful mux model for the observed `$10/$11` write and `$00` read sequence:
-- writes to I/O ports `$10-$11` update the selected state/data
-- reads from I/O port `$00` return a deterministic value based on that state
-- `$10`-selected reads return the timer selector bits
-- `$11`-selected reads return the previously written data, matching the handshake-like behavior used by the game
-## Timer selection
-The ROM uses the low two bits of the value read through this I/O path to select the timer preset.
-This exposes the four ROM-supported timer values as a Timer DIP setting:
-- `1:30`
-- `1:00`
-- `0:45`
-- `0:30`
-The old incrementing return value usually resulted in the `1:00` timer preset, but that was an artifact of the previous kludge
-  rather than an explicit emulated setting.
-## Input label
-Super Zola Pac Gal uses the inherited cocktail P2 Left input line as Turbo, so this patch labels that shared input as `P2 Left /
-  Turbo`.
-This preserves the original cocktail P2 Left mapping while documenting the additional Super Zola function.
-## License
-I am contributing this change under the BSD-3-Clause license.
-
-15289: playmark/playmark.cpp, playmark/powerbal.cpp, playmark/sderby.cpp: Updates [cam900]
-- Split driver state class per hardware configuration
-- Add side effect checks for debugger reads
-- Use BIT helper for single bit values
-- Fix loggings
-- Reduce duplicated functions and includes
-- Use generic_latch_8_device for sound command port
-- Fix namings
-- Make some variables constant
-- Fix typename values for consistency
-- Restrict bitmap draw routine with cliprect
-- Reduce preprocessor defines
-- Fix spacings
-- Fix initializers
-
-15290: apple2video: fix ivelultr/dodo/laser2c text rendering [arekkusu42]
-(followup #14999)
-This PR fixes text rendering on ivelultr/dodo/laser2c: these clones display text characters shifted one pixel too far to the right,
-  which is mostly visible with INVERSE text:
-<img width="42" height="64" alt="ivelultr_ASCII_0287"
-  src="https://github.com/user-attachments/assets/c23c14ed-708e-4fbc-a5c6-3460f7669690" /> <img width="42" height="64"
-  alt="dodo_laser2c_0287" src="https://github.com/user-attachments/assets/853433f1-3c2f-4434-b5cd-64bb3cb6102b" />
-After this PR, text rendering aligns with other Apples and clones:
-<img width="42" height="64" alt="ivelultr_ASCII_0287_after"
-  src="https://github.com/user-attachments/assets/45d4ef24-bfb2-4e97-9339-2a43e226aa43" /> <img width="42" height="64"
-  alt="dodo_laser2c_0287_after" src="https://github.com/user-attachments/assets/c032a1b0-bf2c-44a1-8ebb-2d13766c1a38" />
-I don't have direct experience with these clones, but it also matches the references I was able to find online:
-* This video (using ASCII not YU, so C with caron "č" appears as "~") shows inverse "D" and "_" character spacing on IVEL ULTRA
-  hardware
-* The original thread dumping dodo ("GTAC Wiederbelebung" "Do-Do") contains a photo showing the cursor spacing on hardware
-* This video shows cursor spacing on Laser ]c hardware
-<img width="70" height="110" alt="ivelultr_ASCII_reference"
-  src="https://github.com/user-attachments/assets/7599d619-6028-4a2b-bd59-178bf8ce8f3f" /> <img width="70" height="110"
-  alt="dodo_reference" src="https://github.com/user-attachments/assets/467b6f39-ab44-466f-aaf0-c1be05cb718a" /> <img width="70"
-  height="110" alt="laser2c_reference" src="https://github.com/user-attachments/assets/1e50d6b1-bec2-4fbb-bfef-da8526747f77" />
-<br>
-This PR also cleans up the `screen_update()` and `text_update()` template instantiation to match what is actually used.
-<br>
-Code comments:<details>
-Auditing the various apple2 character ROMs shows there are three classes of text bitmap layout (plus inversion):
-1. **flip**:		all apple2 EXCEPT ivelultr/dodo/laser2c, and spectred/ace500/2200
-2. **shift & flip**:	ivelultr/dodo/laser2c
-3. **no flip**:		all apple2e EXCEPT spectred/ace500/2200, and apple2gs
-The **shift** case was [briefly handled by an `Invert, Flip` template combination, but this broke when apple2gs changed to use
-  `Invert`, so is now handled with explicit `a2_video_device::model`s.  That's fine.  But the shift by `>> 1` wasn't enough.
-`>> 2` works for all characters except 0xFF which fills all 7 bits in ivelultr (ASCII page) and dodo ROMs.  I don't know how IVEL
-  ULTRA hardware implements this, but based on the reverse engineering of a different GTAC clone, it's likely that the chargen
-  shifters keep all 7 bits and just swizzle the order.  So this code rotates bit 1 into bit 6, such that character 0xFF properly
-  fills all seven pixels.
-<br>
-For the instantiation cleanup, there are four fixes:
-1. `<II, true, false>` is now replaced by `<DODO, true, false>`
-2. `<II, false, false>` was only used by superga2 and tk2000, which have no text modes, so make them match apple2p and delete the
-  unused instantiation
-3. `<IVEL_ULTRA, false, true>` was briefly added for albert, but is now unused
-4. make `text_update()` match `screen_update()`
-Removing unused instantiations shrinks a clang arm64 release (O3, no LTO) binary by about 4kB.
-</details>
-<br>
-TODO:<details>
-I noticed a few other things while auditing:
-* It's unclear why craft2p is marked IMPERFECT GRAPHICS.  The char ROM has two language pages, but they are both Portuguese.  Is it
-  dumped incorrectly?
-* ivelultr is commented as "wider character cell" but the video hardware uses regular 7x8 cells, only the alignment of the ROM
-  bitmap differs, which this PR fixes
-* pravetz8m_chr has four language pages.  There is an unemulated dip switch but I haven't found documentation on it.
-* It's unclear how to toggle language pages on tk3000 or laser128*
-</details>
-
-15291: dynax/realbrk.cpp: Fix dip switch matrix read behaviour, Updates: [cam900]
-- Reduce literal tag usages
-- Fix text tilemap color handling
-- Use generic gfx decode layout
-- Fix spacings
-- Fix namings
-- Fix typename value for fix save state support
-- Use BIT helper for single bit values
-
-15292: dooyong/dooyong*.cpp: Updates [cam900]
-dooyong/dooyong_tilemap.cpp:
-- Use device_gfx_interface for gfx interface
-- Fix typename values for consistency
-dooyong/dooyong.cpp:
-- Reduce duplicates
-- Use m_palette->basemem() for banked palette RAM handler
-- Use BIT helper for single bit values
-- Fix spacings
-
-15293: dooyong/gundealr.cpp: Updates [cam900]
-- Reduce unnecessary palette RAM handler, use palette_device::write8 instead.
-- Fix palette format
-- Reduce literal tag usage
-- Make some variables constant
-- Fix spacings
-
-15294: comad/zerozone.cpp: Updates [cam900]
-- Fix notes
-- Fix ROM region size match as mapped area size
-- Use BIT helper for single bit values
-
-15296: cinematronics/leland*.cpp: Updates [cam900]
-- Add side effect check for debugger reads
-- Fix namings for consistency
-- Add notes for video RAM size and accessing (match as hardware configuration - 4 64Kx4 bit chips populated in hardware; double
-  buffered?)
-- Reduce literal tag usages
-- Fix typename for save state support
-- Make some variables constant
-- Fix spacings
-- Use memory_view for palette RAM and battery backed RAM accessing
-- Simplify main CPU bankswitch method
-- Reduce duplicates
-- Use hexadecimal masking value
-- Use BIT helper for single bit value
-- Reduce preprocessor defines
-- Correct XROM data bus to 16 bit for simplicity
-- Use reference rather than pointer
-
-15297: dataeast/bwing.cpp: Updates [cam900]
-- Use palette_ext and set_format for palette handling
-- Fix naming
-- Use single pass sprite draw routine
-- Use BIT helper for single bit values
-- Make some variables constant
-
-15298: dataeast/brkthru.cpp: Update [cam900]
-- Use single pass sprite draw routine
-- Shortened typename values for consistency
-- Make some variables constant
-- Use BIT helper for single bit values
-
-15299: video/huc6260.cpp: Split battlera specific VCE into separated device class, Updates: [cam900]
-video/huc6260.cpp:
-- Use BIT helper for single bit values (ex: data in odd address of 8 bit accessing)
-- Simplify shifting data method
-dataeast/battlera.cpp:
-- Add notes
-nec/pce.cpp, pce/pcecommn.cpp and related drivers:
-- Reduce duplicated includes
-
-15301: dataeast/dec0.cpp: Split driver state class per hardware configurations, Updates: [cam900]
-- Reduce literal tag usage and runtime tag lookups
-- Add side effect checks for debugger reads
-- Fix spacings
-- Fix value consistency
-- Use shortened typename values for consistency
-- Improve logging features
-- Make some variables constant
-- Use BIT helper for single bit values
-- Add / Fix notes
-
-15302: misc/vamphalf.cpp: Updates [cam900]
-- Add korean game titles if exists (source: Title screen, POST screen in finalgdr, Background text pattern in poosho)
-- Add side effect check for debugger reads
-- Reduce duplicates
-- Fix save state support
-- Fix initialization
-- Use BIT helper for single bit values
-- Reduce literal tag usages
-- Fix spacings
-- Add notes
-
-15306: sequential/prophet5.cpp: Added handcrafted factory patch nvram. [m1macrophage]
-This is based on the diagrams in the owner's manual. The script that generated the nvram, along with the generated file can be found
-  here.
-Also, shortened the driver name while at it. But let me know if this is not preferred.
-
-15307: philips/p2000t.cpp: initial Cassette SW list [angelosa]
-philips/p2000t.cpp: fix machine_config duplication
-New working software list items
--------------------------------
-p2000_cass: 4 x 4, Alggrot, Androiden Nim, Azuda, BABA, Beursspel, P2000 Bingo, Black Jack, Bommenwerpers, Boter-Kaas-En-Eieren,
-  Brick-Wall, Bugs From Space, Canyon Killers, Cave In, Centenkwestie, Chess, Chuckie Egg, Cijferdans, Code Kraker, Computer
-  Jackpot, Dam-Puzzel, De schat van de Inca's, Doolhof, Doolhofspel, Draaikubus, Drakendoolhof, Een-en-twintigen, Eendenjacht,
-  Elevatie, Elevator Humpie / Liftjongen, Eliza & Killer Cars, Explosie, Fantuper, Flight Simulator, Fraxxon: Space Fight II (2
-  sets), Ganzenbord, De Gebochelde / The Humpbacked Man, Geheugentest, Go Bang, Go spel, Grotvliegers, Haasje-over, Handicap Race,
-  Hexapawn, Hussel, Jackpot Rowa, Jacht op de Schat, Kanonnen, Klei-duiven Schieten, Klemvast, Klibberdrath Castle, Klimop,
-  Kogel-lawine, Koh-i-noor, Korenvliet, Kralen & Schalen, Ladders en Adders, Lazy Bug / Lady Bug, LetterReactieTest, Lucifers, Macho
-  Man, Marco Polo Jr, Mens erger je niet, Monkey Kong, Multipede, Oliedruppels, Oregon Trail, Othello-1 / Sluit-In, Overleven,
-  Pacific, Pacman, Pak de muis, Patience, Peleton verkenning, Pirate's adventure / Piraten avontuur, Qubic, Quest, Racen (3 sets),
-  Wegversmalling, Racetrack, Rijsimulator, Risk, Ruimte-mug, Schateiland, Schatzoeken, Skien, The Snakeygame, Snelletterland,
-  Snorkel, Space Attack, Space Fight, Space-Mission, Spider, Splitsen, Squadrotronie / Ufo's, StarTrek, Stock Car Race, Superbrein,
-  Superlazer, Surround, Swoppers Drag Racing, TankBattle, Tankslag, Target, Tempo Typen, Tennis, Tetris, Triffids in LA, Trucker, U
-  Hangt, Utopia, Valbal, Vier op een rij, Wurm, Zee-slag (shoot'em up), Zeeslag (tabletop, 2 sets), Zipp de rups
-  [P2000T Software Preservation]
-New software list items marked not working
-------------------------------------------
-p2000_cass: Alice's Wonderland, Battlestar, Car Race, Casino Hendriks, Ghosthunt, Jackpot: Fruitautomaat, Letterbord, Letterdans,
-  Life, Maanlander, Maanlander 2, Memory, Puzzelen , Race Circuit, Red de muis!, Schieten, Snake, Speelpaleis, Star-kwak, Toernooi,
-  P2000 Vliegroutine, War in Space, Woord-spel, Yahtzee [P2000T Software Preservation]
-
-15308: current Plug + Play PR (4 sets + 3 softlist entries) [mamehaze]
-new NOT WORKING systems
---------
-Little Tikes Cozy Coupe U-Drive [Team Europe, David Haywood]
-Mini Arcade Machine 300-in-1 (Orb Gaming) [Team Europe, David Haywood]
-Arcade Game 2.0 (model 8052C, Family Sport 176-in-1) [Team Europe, David Haywood]
-new NOT WORKING clones
---------
-EA Sports Classics: NHL 95 & FIFA Soccer 96 (JAKKS Pacific TV Game, version 11 11 A) [Team Europe, David Haywood]
-new NOT WORKING software list entries
------------
-telestory_cart.xml:
-Cendrillon - Cendrillon / Beautes en Fleur (France) [Team Europe]
-Winnie l'Ourson - Saute, Tigrou, Saute! / Winnie l'Ourson et l'arbre a miel (France) [Team Europe]
-Le Roi Lion / Le Roi Lion II - L'honneur de la Trieu (France) [Team Europe]
-
-15309: GPL951xx milestone (begin splitting from GPL162xx, hack removal in driver, cleanup) [mamehaze]
-- began splitting GPL951xx state from GPL162xx state
-- improve function naming / logging in GPL162xx / GPL951xx
-- rough/preliminary implementation of some GPL951xx features
-- removed start-up code bypass hack for bfpacman, bfdigdug, bfspyhnt etc. as they can now properly identify the SPI ROM
-- a few comment updates in GPCE4
-- use u8 / u16 / u32 in touched files rather than the uintxx_t form + other general cleanups
-
-15310: frontend/mameopts.cpp: Fall back to settings from INI files later in the search path [cuavas]
-This is a non-trivial change, so I’m opening a pull request.  The main immediately visible effect will be on MAME distributions that
-  provide system-wide defaults in /etc/mame/mame.ini or similar.
-Right now, MAME will stop looking for INI files as soon as it finds one with the name it’s looking for.  For example on Linux, the
-  default `inipath` setting is `$HOME/.mame;.;ini` so if MAME finds a mame.ini in `~/.mame`, it won’t look for one in the working
-  directory at all.
-With this change, MAME will read mame.ini (or whatever INI file it’s looking for) for all the directories in the search path.
-  Settings in files earlier in the search path will override settings in files later in the search path.
-For a practical example, supposed the `inipath` setting is set to `.;$HOME/.mame`.
-Suppose mame.ini in the working directory contains:
-```
-window 1
-```
-and suppose mame.ini in `~/.mame` contains:
-```
-window 0
-confirm_quit 1
-```
-Right now, MAME will stop after parsing the first file, so the effective options will be `-window`.  With this change, the effective
-  options will be `-window -confirm_quit` (the `window` setting from the first INI file will take precedence, but the `confirm_quit`
-  setting from the second INI file will take effect).
-This won’t affect people who use `-createconfig` or save settings from the internal UI, as that writes out *all* the settings, not
-  just settings you change.  It only affects people who create INI files with a subset of settings and have multiple similarly named
-  INI files in the search path.
-@rb6502, @galibert and @belegdol, what are your opinions on making this change?
-
-15311: added a handcrafted 'protection' data ROM to goretrop sets [mamehaze]
-
-15312: konami/nemesis.cpp: Add two Bubble System games [clawgrip]
-New working clones
-------------------
-Galactic Warriors (Bubble System) [Recreativas.org]
-Konami RF2 - Red Fighter (Bubble System) [Recreativas.org]
-Also, decapped the Bubble System controller, finding out that there's neither ROM nor execution CPU core inside, and so, changed all
-  references to "MCU" to "K005297".
-Find attached a verilog for Fujitsu K005297.
- 
-K005297 (Bubble controller verilog).zip
-
-15313: apple2common: debugger improvements [arekkusu42]
-This PR collects a series of debugger correctness and performance fixes for Apple II machines:
-* apple2e/apple2gs: prevent various debugger side-effects
-* apple2gs: make C0xx I/O visible to the debugger
-* apple2common: add/correct a few dasm symbols
-* apple2common: add dasm for some missing opcodes
-* apple2common: perf: skip slow JSL dasm indirection
-* apple2common: perf: binary search dasm symbols
-<br>
-Code comments:<details>
-The motivation here was:
-* the debugger broke machines if a Memory Window was watching Cxxx
-* the debugger didn't show apple2gs C02E/2F beam position counters
-* the debugger didn't show symbols correctly stepping through beam-racing code
-* the debugger performance overhead was very high
-Some of the side-effect breakage, like the Zip acceleration repeatedly switching off, was subtle.  But others were more serious:
-  expansion RAM would corrupt (the C40AG self-test failed), or a ComputerEyes capture would be skewed and distorted.
-<br>
-apple2gs now shows all the C0xx I/O, except for the SCC registers (the `z80scc` device isn't debugger-safe.)  The changes are
-  similar to earlier ones for apple2e, with a little more complication for keyboard GLU etc.
-<br>
-Adding the missing opcodes for simple addressing modes is a partial solution; some of these (ASL, ROR) may be rarely used in
-  practice, but the commonly used STA/X/Y LDA/X/Y are all there now.  This could be expanded to indexed etc modes (like the C64
-  disassembler), but that would effectively become a wholesale replacement of the CPU core disassemblers.  The current `didisasm`
-  delegate design makes this cumbersome: delegates can not merely symbolicate an address, they are responsible for the entire
-  instruction (mnemonic, addressing mode etc) stringification.
-Perhaps a better API design could be modeled on the tlcs900 symbolication?  Each CPU core disassembler could pass address lookups to
-  delegates, which would still need to be passed the opcode (for specialization) but would only be responsible for stringifying the
-  address...
-<br>
-For the performance, here's an example user scenario, examining 16-bit toolbox ROM:
-1) `mame apple2gs -debug`
-2) in a New Disassembly Window, examine FE8000
-3) scroll the disassembly up and down, observing performance
-Before this PR in 0.287, this performs very poorly.  On an M3 Max MacBook Pro (which I think in 2026 can still be considered "very
-  fast" hardware), in a release -O3 build, this scrolls at a few frames per second, consuming 100% of one CPU core.  In a coarse
-  high-level analysis, Instruments says all the time is in `debug_data_buffer::fill()`.
-It has been noted that MAME's `debug_data_buffer::fill()` is inefficient when two debug addresses are far apart.  In the case of JSL
-  to an inline debug address, the operand indirection can result in fetching two addresses multiple banks apart, so each JSL
-  disassembly can read hundreds of kB of buffer (and then re-read it again each time the window scrolls, even if the machine
-  execution is paused.)  The fix here is a "don't jump into that pit" band-aid.
-After skipping that JSL indirection, the performance is much better and scrolls smoothly, but there is still a few percent spent in
-  the `apple2_common_device::dasm_override()` leaf functions.  There are thousands of symbols being subjected to repeated linear
-  search, so sorting them and switching to binary search (similar to the tlcs900 disasm) is a simple algorithmic improvement.
-  `com_2byte_op()` is left linear since it requires a partial search, but it looks at fewer than 64 symbols.
-</details>
-<br>
-User-visible changes:<details>
-There should be no visible change without `-debug`.
-With `-debug`, disassembly which previously failed to show symbolicated addresses:
-<img width="420" height="768" alt="disasm_gs_287"
-  src="https://github.com/user-attachments/assets/68a55af2-fd18-4b7b-8814-b61385914a14" />
-...now works in more cases:
-<img width="420" height="768" alt="disasm_gs_287_after"
-  src="https://github.com/user-attachments/assets/d2bf5cd6-54ed-40f8-ad89-a60bb59d9c27" />
-...and performs better.  A trivial example:
-```
-]CALL-151
-*!
-!300:LDA #F0
-! INC C034
-! TRB C034
-! BRA 302
-!
-*300G
-```
-In 0.287 before this PR, with `-debug` (disassembling the current PC) this runs very erratically,  pausing every second.  After this
-  PR it runs smoothly, similar to without `-debug`.
-</details>
-<br>
-TODO:<details>
-For this PR I audited the apple2 machines and a2gameio.  I did not audit a2bus; there could be additional side-effects there.
-laser128 maps `applefdintf_device::read()` directly to C0Ex, this has the unfortunate side-effect of breaking floppy I/O if the
-  debugger simultaneously reads this range.  I think this could be trivially fixed in `iwm_device::read()`, but tracking that in a
-  separate issue.
-Except for that laser128 issue, I think all of the read handlers are now debugger-safe.  I did not touch the write handlers; there
-  are various inconsistent uses of `side_effects_disabled()` which look like copy-paste, and could probably all be deleted.
-This PR fixes `accel_slot()` to work in the debugger, but recent Zip Chip hardware testing shows that most of the call sites of this
-  are actually wrong.  I plan to address this in a separate Zip PR.
-</details>
-
-15316: sequential/prophet5.cpp: Emulated polymod and autotune, and promoted to working. [m1macrophage]
-The bulk of the changes are for autotune and polymod. 
-Other minor changes:
-* Limited logging to just calibration events.
-* Made knob max 240, so that it is a multiple of the knob resolution (120).
-* Adjusted VOLTAGE_TO_AUDIO_SCALER.
-* Corrected the pitch wheel range.
-* Remapped some key bindings. Now possible to use the bottom keyboard for chords.
-* Re-calibrated LFO balance.
-* Updated constants for triangle centering circuit, based on improved simulations (LFO, OSC B)
-* Minor layout improvements.
-Newly emulated controls:
-* *Tune* button.
-* Poly-mod: *Filt Env* and *Osc B* knobs. *Freq A*, *PW A* and *Filter A* buttons.
-Oscillator sync is the only functionality not yet emulated, along with a few trimmers.
-Systems promoted to working
-----------------------------
-Sequential Circuits Prophet 5 (Model 1000) Rev 3.0
-
-15319: namcos2.cpp: add additional Final Lap 2 set, redump tile ROMs for finalap2j [devinacker]
-Before and after:
-<img width="288" height="224" alt="0000" src="https://github.com/user-attachments/assets/3f45f988-4f64-49c2-9de0-3004c24555d0"
-  /><img width="288" height="224" alt="0002" src="https://github.com/user-attachments/assets/189cec8c-f1bd-41b7-a50d-d4ad3aa3be58"
-  />
-New working clones
-----------
-Final Lap 2 (Japan, Rev B) [Devin Acker]
-
-15320: namcos2.cpp: Fix Shared data ROMs from the new finalap2jb set for finalap2j [sjy96525] [sjy555525]
-The Japanese Versions is used fls1_dat0.13s and fls1_dat1.13p Shared data ROMs.
-
-15321: suprnova.cpp: cyvern has button 3 on real hardware [RiZeuM]
-Button 3 is functional on real Cyvern hardware for both players.
-Verified by reading register 0x00400000 on real PCB.
-Bits 0x40000000 (P1) and 0x00400000 (P2) are active.
-Removing IPT_UNUSED override from cyvern input ports.
-
-15323: Update sorcerer_cass.xml [exidyboy]
-Various updates to publisher and date metadata
-
-15326: taito/gunbustr.cpp: Fix sprite positioning [trap15]
-Y flip needs offseting according to zoom. TC0480SCP offset was also off by 1px, most obvious when playing Japanese version as
-  tilemap/sprite are used in tandem for message box filling.
-
-15327: taito/gunbustr.cpp: convert analog to ADC, remove irq 5 hack [angelosa]
-
-15329: iwm: fix debugger side-effects [arekkusu42]
-(fix #15315)
-This commit propagates an earlier debugger fix from eac5b0f.
-In swim1, that fix looks incomplete (`ism_read()` still perturbs state) but in iwm, it looks OK.
-<br>
-After this PR:
-* `laser128 -debug` works even when a Memory Window is viewing C0Ex.
-* `apple2cp/gs -debug` continue to work (reads were already safe)
-* `macplus -debug` works (viewing C00000 was not safe, but didn't obviously break?)
-<br>
-Note that laser128 still fails simple disk copies in Copy II Plus.  This happens with or without `-debug`, and is tracked in #14474
-Similarly, macplus copying disks via Finder doesn't work (it verifies, but the resulting disk System Errors during boot.)
-
-15330: sound/va_ops.cpp: Used SAMPLE_RATE_INPUT_ADAPTIVE for VA_SCALE_OFFSET. [m1macrophage]
-VA_SCALE_OFFSET is typically used to process control signals. Applying an offset to those is common. Control signals eventually make
-  their way to sound devices (e.g. filters, VCAs), some of which oversample.
-Using SAMPLE_RATE_INPUT_ADAPTIVE ensures control signals are not oversampled before they arrive to such an audio device, since this
-  is not needed.
-Benchmark results (`-window -bench 120 prophet5r30`). Before: ~1365%, after: ~1450%
-
-15332: floppy: fix oob caused by m_step_samplepos dirty trick [arekkusu42]
-(noticed during #15329)
-This commit fixes an out of bounds access which occurs rarely in `floppy_sound_device::sound_stream_update()`.
-To reproduce, do something that plays a lot of track-seeking step samples, for example:
-1) `mame laser128 -flop1 <copy II plus> -flop2 <another disk>`
-2) COPY, DISK W/ FORMAT, SLOT 6 DRIVE 1, SLOT 6 DRIVE 2, wait
-3) repeat step 2 (for me, it triggers on the second iteration)
-Result: rarely, the step sample causes out-of-bounds access (possible crash.)  It is triggered by this code (instrumentation added):
-```
-	// yep, a somewhat dirty trick; we don't have to record yet another sample
-	m_step_samplepos += 441;
-if (m_step_samplepos >= m_sample[m_step_sample-1].data.size())
-__builtin_printf("step trick + 441: %d > %ld\n", m_step_samplepos, m_sample[m_step_sample-1].data.size());
-```
-A debug ASAN build (ARCHOPTS="-fsanitize=address") catches the problem immediately:
-```
-step trick + 441: 3421 > 3292
-SUMMARY: AddressSanitizer: heap-buffer-overflow floppy.cpp:1984 in floppy_sound_device::sound_stream_update(sound_stream&)
-```
-laser128_copyiiplus_asan.txt
-
-15333: pinball/macp.cpp: Add PLD dumps for "Galaxy Play 2" [STRpinball, Recreativas.org] [clawgrip]
-Bruteforced, but tested and working OK
-
-15334: Current Plug & Play / Handhelds PR / GPL951xx milestone (9 new sets, 3 softlist entries) [mamehaze]
-- continued work on GPL951xx and GPL162xx further documenting registers / differences
-- created stub device for GPL951xx RTC allowing some sets to boot a bit further
-- added LCDC to GPL951xx based games (all of them have one) and allow bftetris to render graphics as it programs it directly
-- added 'timebase' timers to GPL951xx and GPL162xx emulation, which was also required by bftetris and others. discovered that
-  bornkidh and beijuehh have a protection function in the timebase interrupt that needs studying (disabled it in those cases for
-  now)
-- added 'scheduler' interrupt to GPL162xx instead of unknown timer hack, used by smartfp
-- moved some code out into devices
-- split GPL951xx and GPL162xx implementations as despite similarities there are many differences and sharing a base doesn't make
-  much sense
-- removed some hacks (dressmtv doesn't boot to title anymore, but that will be addressed later)
-- moved a few files around (GPL951xx has no TV out, so moved those out of tvgames)
-new WORKING machines
---------------------
-TV Joy Pro 15-in-1 (2500) [Team Europe, David Haywood]
-TV Joy Pro 30-in-1 (2501) [Team Europe, David Haywood]
-new NOT WORKING clones
---------------------
-Punirunes (HXR-1 PCB) [Team Europe]
-new NOT WORKING machines
---------------------
-Popstar Karaoke [Team Europe, David Haywood]
-Wild King (Japan) [Team Europe, David Haywood]
-Jewel Pad (Japan) [Team Europe, David Haywood]
-Kimi mo Pokemon Hakase! Rotom Pad (Japan) [Team Europe]
-Popstarz Karaoke (GK8000) [Team Europe]
-Mini Arcade Machine 240-in-1 (translucent case) [Team Europe, David Haywood]
-new NOT WORKING software list entries
---------------------
-popstar_cart.xml:
-Popstar Karaoke - 5 Songs [Team Europe, David Haywood]
-Popstar Karaoke Vol. 1 [Team Europe, David Haywood]
-Popstar Karaoke Vol. 2 [Team Europe, David Haywood]
-
-15335: apple2gs: more accurate address map [arekkusu42]
-This commit implements more accurate emulation of apple2gs memory banks, with and without a memory expansion card:
-* Banks beyond the populated expansion RAM are ghosted for reads and writes, per the Hardware Reference Figure 3-9
-* Banks 80+ (or, without expansion RAM, all unpopulated banks) read the 65816 bank register from the floating bus
-* With a memory expansion card, any missing banks in "not recommended" memory sizes (like 3MB or 768kB) and expansion ROM banks
-  F0...Fx read as FF (on ROM3) or the bank register (on ROM1)
-Previously, this was only partially implemented by bfb18d1.  Most software won't attempt to use memory beyond the installed amount,
-  so is not affected.  But the edge-case behaviors are now accurately emulated, i.e. with `-ramsize 4M`, writes to 50/0005 are
-  visible at 10/0005.
-<br>
-Testing:<details>
-A new BANKMAP test visualizes the power-on memory detection results, by drawing a grid of the first byte of each bank.  (On my
-  37-year old PCB, the bank register via the floating bus is noisy, so each byte is read 100 times to report the noise %.)  The
-  results are compared to pass/fail expectations, computed by the test according to the detected memory amount and motherboard ROM
-  version.
-BankMap_260512.zip
-Before this PR, MAME 0.287 does not implement ghosting, or handle the floating bus correctly for banks > E1:
-<img width="704" height="462" alt="BANKMAP_287_4M_before"
-  src="https://github.com/user-attachments/assets/56a4dd39-18e4-4db9-a894-c78c17de6041" />
-After this PR it matches hardware results (here, a ROM3 with an OctoRAM using jumpers set for 4MB but the last 1MB removed to create
-  a "not recommended" odd memory size):
-<img width="720" height="540" alt="BANKMAP_gs_4M"
-  src="https://github.com/user-attachments/assets/88603b79-c6a5-4776-89dc-c5f217cf58a7" />
-And similarly for all other supported `-ramsize` configurations (thanks to @jawaidbazyar2 and Kelvin Sherlock for testing ROM1
-  behavior.)
-</details>
-<br>
-Note: MAME currently does not emulate any apple2gs-specific memory cards, but there exist cards (one, two) with expansion ROM
-  sockets (for booting ROMdisk debug tools).  The way that I "unmap empty ROM banks" here might not work for those...
-
-15337: kungfub3s: replace BAD_DUMP sound ROM with one from another romset [clawgrip]
-Since there's no useful information at all
-
-15338: new WORKING machines (added Game Kid 85-in-1 to VT driver) [mamehaze]
-new WORKING machines
---------------
-Game Kid - 85 jeux pour la télévision et 1 jeu LCD inclus! / Kid Land 85 in 1 (TV part) [Team Europe]
-
-15339: new NOT WORKING systems (3 Yeno educational laptops, probably missing internal ROM) [mamehaze]
-new NOT WORKING machines
------------
-Mister X2 (Germany) [Team Europe]
-new NOT WORKING clones
-------------
-Intellectus 2 (France) [Team Europe]
-Computer Kid Personal (Italy) [Team Europe]
-new NOT WORKING software list entries
-------------
-yeno_laptop_cart.xml:
-Wissens Tester (Germany) [Team Europe]
-Super Wissen (Germany) [Team Europe]
-
-15342: gpl951xx progress - added sound to bftetris [mamehaze]
-- added CHA/CHB (tied to timers g/h) for DAC sound output on GPL951xx, which is used by bftetris
-
-15343: upd7810: fix SET_Z on OFFI/ONI instructions [goldnchild]
-According to the UPD7810 datasheet, the OFF/ON instructions are supposed to affect the Z flag.
-This will add SET_Z to the instruction opcode routine.
-I considered rewriting it as doing the SET_Z ( x & imm ); first then SKIP_Z; or SKIP_NZ;
-if you think that would be better.
-=================================
-I was also looking at the INR r2  instructions and it seems that it should affect the carry bit according to the datasheet.
-INRW_wa
-INR_A
-INR_B
-INR_C
-DCR A
-DCR_B
-DCR_C
-DCRW_wa
-I see that they restore the original carry bit but it seems to say that CY should be affected by the operation.
-
-15344: sony/news_r3k.cpp: Specify LANCE clock to fix NEWS-OS 4 and 5 [briceonk]
-NEWS-OS 4 and 5 don't boot on master at the moment due to a change in the LANCE driver that requires the clock to be set for it to
-  function correctly. With this change, the r3k driver can boot both again.
-
-15346: sound/upd931: fix key-on regression in ct8000 [devinacker]
-
-15347: Change flag MACHINE_IMPERFECT_SOUND to MACHINE_NO_SOUND [flama12333]
-lanmao, panda2 and msaiche has sound.
-except in some machine due to different memory maps.
-
-15349: trs/coco3.cpp: Fix CoCo 3 Keyboard interrupt [tlindner]
-The previous implementation only triggered an interrupt on every key-up event. The actual hardware will trigger an interrupt at two
-  specific times:
-1. Zero keys pressed to one or more keys pressed.
-2. One or more keys pressed to zero keys pressed.
-
-15356: irem/m92.cpp: Fix typo on CPU name [clawgrip]
+- 14275: snk/hng64.cpp: snk/hng64_sprite.ipp: Fixed a possible transparency issue and simplified code. [cam900]
+- 14491: sord/m5.cpp: Improved emulation. [dlabi]
+- 14879: robotron/rt1715.cpp: Hooked up DMA interrupt; formats/pk8020_dsk.cpp: Corrected gap size. [shattered]
+- 15012: taito/taitosj.cpp: Added support for Adventure Canoe. [fipppi]
+- 15069: bus/epson_qx, epxonqx10.cpp: Added support for the Semidisk non-volatile RAM card. [Brian Johnson]
+- 15072: imagedev/floppy.cpp: Improved floppy drive sound simulation. [Michael Zapf]
+- 15081: irem/m62.cpp: Added an additional Kid Niki bootleg called Yanjamaru. [ClawGrip]
+- 15084: gaelco/scalextric.cpp: Added a skeleton driver for the Gaelco Scalextric electromechanical slot car games. [ClawGrip]
+- 15086: sinclair/specnext.cpp: Improved non-maskable interrupt handling. [holub]
+- 15089: gaelco/sralslot.cpp: Added a skeleton driver for the Gaelco/Covielsa Super Rally slot machines. [David Haywood, ClawGrip]
+- 15095: seta/seta2.cpp: Marked Mobile Suit Gundam EX Revue as having imperfect timing. [cam900]
+- 15096: gridcomp/gridcomp.cpp: Hooked up the 8274 serial controller and limited the available RS-232 devices. [Valera Klachkov]
+- 15118: atlus/sprite013.cpp: Made the 013 sprite generator a separate device (previously in atlus/cave_v.cpp). [cam900]
+- 15119: atari/atari400.cpp: Added notes about where the Atari 800 right cartridge should be mapped. [cam900]
+- 15120: atari/irobot.cpp: Fixed debugger and save state issues, and updated and cleaned up code. [cam900]
+- 15186: sinclair/specnext.cpp: Implemented mouse movement resolution and button order configuration options. [holub]
+- 15123: cirsa/miniguay.cpp: Dumped Cirsa Mini Bar (not working). [jordigahan, ClawGrip]
+- 15125: sinclair/specnext.cpp: Pull up unmapped I/O reads. [holub]
+- 15126: sound/va_eg.cpp: Added an OTA with scaled input; sound/va_ops.cpp: Added a stream comparator. [m1macrophage]
+- 15127: atari/atarig42.cpp, atari/atarigx2.cpp: Optimized tile map drawing. [cam900]
+- 15128: samcoupe_flop.xml: Added 21 working items. [World of SAM, wubsoft, Black Jet, Spectrum Computing, ArcadeShadow]
+- 15129: input/input_sdl3.cpp: Briefly run CoreFoundation run loop before enumerating controllers (GitHub #15021). [Matt Furniss]
+- 15130: sinclair/specnext.cpp: Force screen updates on writing to video RAM and on acknowledging interrupts. [holub]
+- 15132: osd/sdl/video.cpp, osd/sdl3/video.cpp: Process events after initially raising window (fixes GitHub #10612). [Matt Furniss]
+- 15134: debugger/debugosx.mm: Added an Edit menu with standard text editing shortcuts (fixes GitHub #15133). [Matt Furniss]
+- 15137: sega/model2.cpp: Added Fighting Vipers Revision A. [Damian Rogers]
+- 15138: capcom/gng.cpp: Don’t show the invincibility setting for Makaimura versions that don’t implement it. [BarbuDreadMon]
+- 15140: atari/a7800.cpp, atari/maria.cpp: Fixed debugger and save state issues, and updated and cleaned up code. [cam900]
+- 15141: dataeast/deco146.cpp, dataeast/deco104.cpp: Fixed debugger issues and Cleaned up code. [cam900]
+- 15142: dataeast/rohga.cpp: Removed the unnecessary dependency on decocomn.cpp; dataeast/dassault.cpp: Cleaned up code. [cam900]
+- 15143: matsushita/kn5000_cpanel.cpp, matsushita/kn5000.cpp: Preliminary Technics KN5000 control panel simulation. [Felipe Sanches]
+- 15145: misc/compucranes.cpp: Don’t mark Octopussy as a Master Crane clone, it’s a different product. [ClawGrip]
+- 15146: misc/rawthrillspc.cpp: Corrected the BIOS option descriptions and improved the BIOS option short names. [ClawGrip]
+- 15147: capcom/tigeroad.cpp: Added an additional US bootleg of Tiger Road. [Luis Arrufat, ClawGrip]
+- 15148: canon/x07.cpp: Removed a workaround for bad T6834 emulation that creates worse problems than it solves. [Sylvain Glaize]
+- 15149: sinclair/specnext_layer2.cpp: Implemeted palette index wrapping. [holub]
+- 15150: sinclair/specnext.cpp: Added the MIDI extension. [holub]
+- 15151: sinclair/specnext.cpp: Fill RAM with pseudo-random data on start. [holub]
+- 15152: capcom/cps1.cpp, capcom/cps2.cpp, capcom/kenseim.cpp and related drivers: Fixed debugger issues, cleaned up code. [cam900]
+- 15153: sound/cem3340.cpp: Added preliminary CEM3340 emulation; sequential/prophet5.cpp: Added the CEM3340 LFO. [m1macrophage]
+- 15154: sound/namco.cpp: Split up different devices, access memory through an address space, and cleaned up code. [cam900]
+- 15155: machine/x28.cpp: Added Xircor X28-series EEPROM devices; ensoniq/vfxcart.cpp: Use new EEPROM device. [Christian Brunschen]
+- 15157: apple/apple2video.cpp: Fixed handling of Apple IIgs monochrome registers. [arekkusu42]
+- 15159: gridcomp/gridrom.cpp, gridcomp/gridcomp.cpp: Added test and application ROM sockets. [Valera Klachkov]
+- 15160: machine/i8251.cpp: Handle parity bits and idle transmit pattern in synchronous mode. [tarmooja]
+- 15162: bus/centronics: Added a skeleton NEC PC-6022 plottter device; cpu/upd7810: Added the µPD7801 I/O space. [Devin Acker]
+- 15165: formats/esq16_dsk.cpp: Fixed support for saving disk images. [Christian Brunschen]
+- 15166: Fixed debugger issues and updated URLs in comments for NES-related devices. [cam900]
+- 15167: sinclair/specnext.cpp: Duplicate sprite palette colors to simulate palette index wrapping. [holub]
+- 15170: namco/namco_c123tmap.cpp, namco/namco_c169roz.cpp, shared/namco_c355spr.cpp: Use device_delegate for callbacks. [cam900]
+- 15171: namco/namco_c45road.cpp, namco/tceptor.cpp: Cleaned up code. [cam900]
+- 15172: namco/sg_vga.cpp: Added the DX-101 video device. [cam900]
+- 15175: cpu/m68000/m68kcpu.cpp: Handle each fault as it occurs within an instruction (required for MMUs). [Patrick Mackinlay]
+- 15179: sinclair/specnext_dma.cpp: Fixed counter state returning natural value in ZXN mode. [holub]
+- 15181: Dumped 23 games and toys. [TeamEurope, David Haywood, AJR]
+- 15182: Switched the language standard to C++20 and updated the compiler and target requirements. [Vas Crabb]
+- 15183: ensoniq/vfxcart.cpp: Added a configuration option to make memory artificially fast. [Christian Brunschen]
+- 15185: namco/namco_c123tmap.cpp, namco/namco_c169roz.cpp, shared/namco_c355spr.cpp: Just copy data when callbacks unset. [cam900]
+- 15187: ensoniq/esqvfd.cpp: Implemented single-character underline commands and added debug logging. [Christian Brunschen]
+- 15188: ensoniq/esqpanel.cpp: Don’t pass commands that are handled by panel device on to the display device. [Christian Brunschen]
+- 15189: adp/stellafr.cpp: Added a machine configuration for variants with an MSM6242 real-time clock. [Styne13]
+- 15190: sinclair/specnext.cpp: Corrected the CTC clock frequency. [holub]
+- 15191: neogeo.xml: Added five working items. [OzzyOuzo, Hoffman, ekorz, ArcadeShadow]
+- 15192: bus/ieee488/grid2102.cpp: Fixed disk geometry and added formatting support. [Valera Klachkov]
+- 15194: rm/rm380z.cpp: Added wait states and NMI single step debugging support. [Robin Sergeant]
+- 15195: sound/xaudio2_sound.cpp: Added the noexcept specifier to XAudio2 engine callbacks. [Patrick Mackinlay]
+- 15196: rm/rm380z_m.cpp: Fixed a keyboard issue when using older COS 3.4 hardware (regression from GitHub #15194). [Robin Sergeant]
+- 15199: cpu/z8/z8dasm.cpp: Fixed disassembly of indexed register write instructions. [Hannes Janetzek]
+- 15200: gaelco/gaelco2.cpp: Added Nova Desitec Lucky Colors (not working, missing the DS5002FP data). [ClawGrip]
+- 15201: handheld: Replaced two badly dumped ROMs from recent additions. [David Haywood]
+- 15202: machine/i7110.cpp: Emulated Intel 7110 bubble memory controller; bus/hp_dio: Added HP98259 bubble memory. [F.Ulivi]
+- 15203: galaxian/galaxian.cpp: Added a Spanish Pac Man bootleg on Galaxian hardware. [Victor Fernandez (City Game), ClawGrip]
+- 15205: 3rdparty/asmjit: Updated to upstream version 1.21. [Patrick Mackinlay]
+- 15206: sinclair: Fixed some Spectrum Next video issues and cleaned up code. [holub]
+- 15207: nintendo/nes_vt369_vtunknown.cpp: Dumped an additional system, improved protection simulation. [David Haywood, TeamEurope]
+- 15208: sinclair/next/specnext.cpp: Allow booting with the Anti-Brick boot ROM core. [holub]
+- 15209: sinclair: Replaced preprocessor macro constants with static class members. [holub]
+- 15210: sinclair/evo, sinclair/next: Moved some drivers and associated devices into nested folders. [holub]
+- 15211: nec/pc6001.cpp: Added support for the parallel printer port. [Devin Acker]
+- 15215: sound/va_vca.cpp: Added support for differential inputs; sequential/prophet5.cpp: Added VCA trimmers. [m1macrophage]
+- 15216: sinclair/next/specnext_tiles.cpp: Improved emulation of situations where addresses wrap. [holub]
+- 15217: sinclair/next/specnext.cpp: Worked around issues with postponed CTC timer updates. [holub]
+- 15218: netlist: Removed logged error messages when an exception is thrown with the same message. [FlykeSpice]
+- 15219: capcom/blktiger.cpp: Added region to descriptions for versions that show the North America warning. [JimCarlTay]
+- 15220: mattel/pixtermu.cpp: Got the system to boot and got the LCD and touch screen working. [Myrtle Shah]
+- 15222: spectrum_cass.xml: Added six working items. [Spectrum Computing, Planeta Sinclair, ArcadeShadow]
+- 15223: adp/stella8085.cpp: De-duplicated the service keypad inputs, and fixed inputs for Disc. [stonedDiscord]
+- 15224: netlist: Validate the number of arguments passed to device macros at compile time. [FlykeSpice]
+- 15225: bus/centronics/pc6022.cpp: Added notes about how the print mechanism is controlled. [Devin Acker]
+- 15226: adp/stellafr.cpp: Moved Glücks-Stern to the correct driver. [stonedDiscord]
+- 15227: igs/igs023_video.cpp: Implemented some additional features based on hardware testing results and cleaned up code. [cam900]
+- 15228: nintendo/nes_vt369_vtunknown.cpp: Dumped two LCD games, simulated protection for some games. [Sean Riddle, David Haywood]
+- 15231: igs/lordgun.cpp: Fixed debugger issues, updated and cleaned up code, and corrected notes. [cam900]
+- 15232: cpu/upd7810/upd7810.cpp: Fixed output for bidirectional I/O pins PC0 and PC1. [Devin Acker]
+- 15233: igs/igs011_video.cpp, igs/igs012.cpp: Made the IGS011 and IGS012 chips into separate devices. [cam900]
+- 15234: konami/firebeat.cpp: Added lamp outputs for the Pop'n Music games. [Michał Szafrański]
+- 15235: sequential/prophet5.cpp: Implemented pitch modulation and routed the remaining “master sum” signals. [m1macrophage]
+- 15236: canon/x07.cpp: Improved audio output. [Sylvain Glaize]
+- 15237: machine/at28.cpp, machine/x28.cpp, machine/eeprom28.ipp: Re-worked AT28/X28-series EEPROM emulation. [Christian Brunschen]
+- 15238: r8_card.xml, roland_tnsc2.xml: Fixed address line scrambling, and added eight card dumps. [ValleyBell, KSHoOkH]
+- 15241: smc777.xml: Added 95 items (21 working). [archive.org, Angelo Salese]
+- 15243: kaneko/kaneko_spr.cpp: Implemented double buffering and made the frame buffer size fixed. [cam900]
+- 15244: kaneko/kaneko_rlespr.cpp: Renamed the Super Kaneko Nova sprite device and cleaned up code. [cam900]
+- 15246: machine/generalplus_gpce4_soc.cpp: Moved GeneralPlus GPCE4 series SoC emulation to a device. [David Haywood]
+- 15247: apple/apple2video.cpp: Added support for 50 Hz mode and improved timings. [arekkusu42]
+- 15248: video/st7735_lcdc.cpp: Identified the ST7735 LCD controller, restrict drawing to the clipping rectangle. [David Haywood]
+- 15249: jaleco/megasys1.cpp, jaleco/ms1_gatearray.cpp: Fixed debugger issues, improved logging and cleaned up code. [cam900]
+- 15250: commodore: Added a machine configuration switch to exchange the joystick ports. [etabeta]
+- 15251: emu/debug/dvmemory.cpp: Evaluate the start address when checking whether the view needs to be recomputed. [holub]
+- 15252: apple/apple2video.cpp: Fixed crashes when using double resolution graphics with a standard 80 column card. [arekkusu42]
+- 15253: jaleco/cischeat.cpp: Made road and sprite generator into devices, and separated games without road layers. [cam900]
+- 15254: megadriv.xml: Added 42 items (40 working). [No-Intro, PSCDGames, RetroSouls, Mega Cat Studios, ArcadeShadow]
+- 15257: akai/akaivx600.cpp, akai/mpc60.cpp: Dumped the internal ROMs for the µPD78C11 microcontrollers. [Devin Acker]
+- 15259: kaneko/suprnova.cpp: Fixed debugger issues and potential out-of-bounds accesses and cleaned up code. [cam900]
+- 15260: emu/disound.cpp: Improved calculation of the requested output channels mask. [m1macrophage]
+- 15261: psikyo/psikyosh.cpp: Use tilemaps to draw tile map layers. [cam900]
+- 15263: sinclair/next: Improved half-pixel drawing, and improved handling of DivMMC CS instant switch. [holub]
+- 15265: sanyo/phc25.cpp: Fixed vertical blanking interrupt timing and flag polarity. [Aurelien34]
+- 15267: sound/cem3340.cpp: Added streaming frequency and pulse width control, and anti-aliasing. [m1macrophage]
+- 15268: sega/segas32.cpp: Use a tilemap for the text layer, and cleaned up code. [cam900]
+- 15269: pacman/pacman.cpp: Added a third Triunvi bootleg of Ms. Pac-Man. [Victor Fernandez (City Game), ClawGrip]
+- 15270: 3rdparty: Retired SoftFloat 2; cpu/i386, machine/i8087.cpp: Migrated to SoftFloat 3. [Patrick Mackinlay]
+- 15271: toaplan/slapfght.cpp: Dumped a Tecfri bootleg of Tiger-Heli. [hammy, ClawGrip]
+- 15273: konami/bishi.cpp: Hooked up lamp outputs. [Michał Szafrański]
+- 15275: tecmo/gaiden.cpp: Dumped an additional Japanese version of Raiga - Strato Fighter. [Tailsnic Retroworks, ClawGrip]
+- 15276: tecfri/speedball.cpp: Dumped an additional version of Speed Ball. [hammy, ClawGrip]
+- 15277: apple/apple2video.cpp: Fixed crashes when configured with small RAM sizes. [arekkusu42]
+- 15278: psikyo/psikyosh_v.cpp: Fixed sprite flipping and Z buffering (fixes regressions after GitHub #15261). [cam900]
+- 15279: machine/cxd1185.cpp: Fixed member function name collision after recent changes to the base class. [Brice Onken]
+- 15280: psikyo/psikyosh.cpp: Fixed Z buffer address calculation for sprite drawing and fixed saved state issues. [cam900]
+- 15282: Dumped four systems and three cartridges, refactored some systems to use the SPI Flash device. [David Haywood, TeamEurope]
+- 15283: ui/confswitch.cpp, ui/sliders.cpp: De-emphasize default values. [holub]
+- 15285: sequential/prophet5.cpp: Added oscillators (no tuning yet) and corrected LFO balance trimmer calibration. [m1macrophage]
+- 15286: cpu/i8089/i8089_channel.cpp: Fixed memory-to-memory MOV instructions. [bytex64]
+- 15287: pacman/pacman.cpp: Fixed Ms. Pacman Champion Edition ROM banking, timer selection and I/O multiplexer (MT05446). [Liron486]
+- 15289: playmark/playmark.cpp, playmark/powerbal.cpp, playmark/sderby.cpp: Fixed debugger issues and cleaned up code. [cam900]
+- 15290: apple/apple2video.cpp: Fixed text rendering for the Do-Do, Ivel Ultra and Laser //c clones. [arekkusu42]
+- 15291: dynax/realbrk.cpp: Fixed DIP switch matrix read behaviour and cleaned up code. [cam900]
+- 15292: dooyong/dooyong.cpp, dooyong/dooyong_tilemap.cpp: Cleaned up code. [cam900]
+- 15293: dooyong/gundealr.cpp: Simplified palette handling and cleaned up code. [cam900]
+- 15294: comad/zerozone.cpp: Reduced the audio CPU ROM region size to match the mapped area and cleaned up code. [cam900]
+- 15296: cinematronics/leland.cpp, cinematronics/leland_a.cpp: Updated and cleaned up code, and fixed debugger issues. [cam900]
+- 15297: dataeast/bwing.cpp: Use single-pass sprite drawing and cleaned up palette handling. [cam900]
+- 15298: dataeast/brkthru.cpp: Use single-pass sprite drawing. [cam900]
+- 15299: video/huc6260.cpp: Made the Battle Rangers video color encoder a separate device class and simplified code. [cam900]
+- 15301: dataeast/dec0.cpp: Split the driver state class for different configurations and cleaned up code. [cam900]
+- 15302: misc/vamphalf.cpp: Added Korean game titles to comments and fixed debugger and saved state issues. [cam900]
+- 15306: sequential/prophet5.cpp: Added default non-volatile RAM content based on diagrams in the owner’s manual. [m1macrophage]
+- 15307: p2000_cass.xml: Added a software list with 151 items (127 working). [P2000T Preservation Project, Angelo Salese]
+- 15308: Dumped four games/toys and three Telestory cartridges. [TeamEurope, David Haywood]
+- 15309: machine/generalplus_gpl951xx_soc.cpp: Improved GeneralPlus GPL951xx SoC emulation. [David Haywood]
+- 15310: frontend/mameopts.cpp: Fall back to settings from INI files found later in the search path. [Vas Crabb]
+- 15311: nintendo/nes_vt369_vtunknown.cpp: Added hand-crafted protection data for Go Retro Portable games. [David Haywood]
+- 15312: konami/nemesis.cpp: Added Bubble System versions of Galactic Warriors and RF2 - Red Fighter. [Recreativas.org, ClawGrip]
+- 15313: apple/apple2common.cpp: Improved symbol display in disassembly and symbol lookup performance. [arekkusu42]
+- 15316: sequential/prophet5.cpp: Emulated polymod and autotune, and promoted the system to working. [m1macrophage]
+- 15319: namco/namcos2.cpp: Dumped revision B of the Japanese version of Final Lap 2. [Devin Acker]
+- 15320: namco/namcos2.cpp: Use the same shared data ROMs for both Japanese versions of Final Lap 2. [sjy96525]
+- 15321: kaneko/suprnova.cpp: Allow the undocumented third button to be used in Cyvern. [RiZeuM]
+- 15323: sorcerer_cass.xml: Filled in publishers for six items and the release year for one item. [exidyboy]
+- 15326: taito/gunbustr.cpp: Corrected vertical sprite positioning. [Alex Marshall]
+- 15329: taito/gunbustr.cpp: Converted analog inputs to use an ADC device and removed the IRQ 4 hack. [Angelo Salese]
+- 15329: machine/iwm.cpp: Suppress side effects for debugger reads (fixes GitHub #15315). [arekkusu42]
+- 15330: sound/va_ops.cpp: Run the scale/offset helper at the input sample rate. [m1macrophage]
+- 15332: imagedev/floppy.cpp: Fixed an out-of-bounds access in the floppy drive sound simulation code. [arekkusu42]
+- 15333: pinball/macp.cpp: Added reverse-engineered PLD dumps for Galaxy Play 2. [STRpinball, Recreativas.org, ClawGrip]
+- 15334: Dumped nine games/toys and three associated cartridges, and improved SoC emulation. [David Haywood, TeamEurope]
+- 15335: apple/apple2gs.cpp: Improved RAM mapping and floating bus behavior. [arekkusu42]
+- 15337: irem/m62.cpp: Replaced the bad Kung-Fu Senjyo sound ROM with one from another set. [ClawGrip]
+- 15338: nintendo/nes_vt02_vt03.cpp: Added a working 85-in-1 TV game. [TeamEurope, David Haywood]
+- 15339: tvgames/yeno_ks56c1660.cpp, yeno_laptop_cart.xml: Dumped three Yeno laptops and two cartridges. [TeamEurope, David Haywood]
+- 15342: machine/generalplus_gpl951xx_soc.cpp: Added audio DACs with FIFOs. [David Haywood]
+- 15343: cpu/upd7810: Set zero flag for ONI and OFFI instructions. [Golden Child]
+- 15344: ony/news_r3k.cpp: Specify clock frequency for LANCE device (fixes failure to boot). [Brice Onken]
+- 15346: sound/upd931.cpp: Update pitch when writing note or octave registers (fixes Casiotone 8000 regression). [Devin Acker]
+- 15347: skeleton/lanmao.cpp: Marked games on different hardware to Mali Saiche as having unemulated sound. [flama12333]
+- 15349: trc/coco3.cpp: Fixed CoCo 3 keyboard interrupt triggers. [Tim Lindner]
+- 15356: irem/m92.cpp: Corrected the CPU silkscreen label in a comment. [ClawGrip]
 
 
 Source changes
@@ -5139,27 +3334,32 @@ MPC60 Sound Library SL110 - Live Kit 4, MPC60 Sound Library SL111 - Live Kit 5 [
     changes.
  * Also improved some metadata.
 
+-taito/gunbustr_link.cpp: Actually set last sent buffer number. [Vas Crabb]
+ * Fixes a potential starvation issue.  In practice it doesn't really matter due to how the game works.
 
-m5_cart (m5_cart.xml):
-  Removed (non-working)
-    Unknown Intruder
-  Working
-    Space Intruders
-  Promoted
-    64Kbf Expansion memory 64Kb
-    64Krx Expansion board 64Kb
-    Boot for Brno ramdisk [console version]
-    Boot for Brno ramdisk [windows version]
-    EM-5 Expansion memory 32Kb
-    EM-64 Expansion memory 64Kb
+-video/st7735_lcdc.cpp: Fixed row drawing loop start. [Vas Crabb]
 
-m5_cass (m5_cass.xml):
-  Promoted
-    Solar System Forces
-    Solar System Forces - Commando Team
-    Solar System Forces - Operation Maul
-    Solar System Forces - Victory of Mars
+-Partially revert 12bfdf939eecce62a875b800b94872bd938fab0e due to MT09464. [Vas Crabb]
 
-m5_flop (m5_flop.xml):
-  Working
-    Generation floppy disk CF-5/G
+-file/posixsocket.cpp: Don't write to listening sockets, it can cause SIGPIPE. [Vas Crabb]
+
+-Try to clean up the AT28xx/X28xx EEPROM mess. [Vas Crabb]
+ * Duplicated sources in build scripts are bad.  Non-existent sources are bad (they make trouble if you use a project generator that
+    actually does something with headers, e.g. Visual Studio, CMake, etc.).  Duplicated non-existent sources are really, really bad.
+ * Including a .ipp file from the header defeats the purpose.  Also, you don't want to be rebuilding everything that uses the device
+    for any implementation change.  Virtual member function bodies should never go in the header unless there are
+    performance-critical non-virtual calls to them that can be inlined (i.e. device_start, device_reset, nvram_default are not good
+    cases for this).
+ * Inlined or defaulted virtual destructors are a bad idea as it makes it a lot harder to guess where vtables (and hence any other
+    inline virtual member functions) will be instantiated.  Unless there's a good reason or the class is a pure virtual interface,
+    it's better to use out-of-line destructors.
+
+-nintendo/vt_menu_protection.cpp: Repurposing device_t::m_clock is unacceptable. [Vas Crabb]
+ * device_t::m_clock must hold the device's current clock frequency. Repurposing it to hold a random input value is completely
+    unacceptable.
+ * nintendo/vt_menu_protection.cpp, nintendo/vt_menu_protection_lxcap.cpp: Use standard signature for "write line member" functions,
+    consistency is a good thing.  Input signal states do not magically change on reset.
+ * nintendo/vt_menu_protection_lxcap.cpp: Renamed data members to avoid shadowing base class data member, and to make it clear what
+    are input signal states.
+
+-m5_flop.xml: Marked reconstructed disk image as a bad dump. [Vas Crabb]
