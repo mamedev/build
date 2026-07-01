@@ -79,7 +79,7 @@ For the following configurations, ensure a build compiles, links and validates:
 - [ ] Create signed, annotated tag for release, e.g. `git tag -s -m"MAME 0.124" mame0124`
 - [ ] Clone `mame` repository into a clean directory and check out release tag, e.g. `git clone -b mame0124 mame mame-release`
 - [ ] In new clone, double-check that `git describe` and `git log -1` show what’s expected
-- [ ] Use commands from `build-release.bat` in `build` repository to build 64-bit release binaries, e.g. `(make TARGET=mame TOOLS=1 SEPARATE_BIN=1 PTR64=1 OPTIMIZE=3 SYMBOLS=1 SYMLEVEL=1 REGENIE=1 -j9 ARCHOPTS="-msahf -mcx16 -mpopcnt -msse4.2 -fomit-frame-pointer -fuse-ld=lld" OVERRIDE_AR=llvm-ar && make -f dist.mak PTR64=1 -j5) |& tee ../build64.log`
+- [ ] Use commands from `build-release.bat` in `build` repository to build 64-bit release binaries, e.g. `(TARGET=mame USE_SDL3=1 TOOLS=1 SEPARATE_BIN=1 PTR64=1 OPTIMIZE=3 SYMBOLS=1 SYMLEVEL=1 REGENIE=1 OVERRIDE_CC=clang OVERRIDE_CXX=clang++ OVERRIDE_AR=llvm-ar -j9 ARCHOPTS="-fuse-ld=lld -march=x86-64-v2 -fomit-frame-pointer" && make -f dist.mak PTR64=1 -j5) |& tee ../build64.log`
 - [ ] Check build log for anything suspicious
 - [ ] Double-check that `build` repository is up-to-date
 - [ ] Use `release.sh` from `build` repository to package release, e.g. `bash ../build/release.sh 0124`

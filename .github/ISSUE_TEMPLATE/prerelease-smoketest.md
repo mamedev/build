@@ -17,11 +17,11 @@ assignees: ''
 - [ ] Basic debugger functionality, mouse-driven and command interface
 - [ ] Lua scripting functionality (e.g. autofire plugin, input macro plugin, script-dependent internal layouts)
 - [ ] Recompiling CPUs (e.g. MIPS III, PowerPC, Hyperstone E1), including stepping in debugger
-- [ ] All `-sound` modules (`wasapi`, `xaudio2`, `portaudio`)
+- [ ] All `-sound` modules (`wasapi`, `xaudio2`, `sdl`, `portaudio`)
 - [ ] All `-video` modules (`d3d`, `bgfx`, `opengl`, `gdi`)
 - [ ] All `-keyboardprovider` modules (`rawinput`, `dinput`, `win32`)
 - [ ] All `-mouseprovider` modules (`rawinput`, `dinput`, `win32`)
-- [ ] All `-joystickprovider` modules (`winhybrid`, `xinput`, `dinput`)
+- [ ] All `-joystickprovider` modules (`winhybrid`, `xinput`, `dinput`, `sdljoy`)
 - [ ] Subset builds (`mametinyd.exe` and `mamevirtuald.exe`) more or less work
 - [ ] CHD CD read (e.g. run a Konami GV game)
 - [ ] CHD hard disk read (e.g. boot an OS on a computer)
@@ -38,11 +38,11 @@ assignees: ''
 - [ ] Basic debugger functionality, mouse-driven and command interface
 - [ ] Lua scripting functionality (e.g. autofire plugin, input macro plugin, script-dependent internal layouts)
 - [ ] Recompiling CPUs (e.g. MIPS III, PowerPC, Hyperstone E1), including stepping in debugger
-- [ ] All `-sound` modules (`wasapi`, `xaudio2`, `portaudio`)
+- [ ] All `-sound` modules (`wasapi`, `xaudio2`, `sdl`, `portaudio`)
 - [ ] All `-video` modules (`d3d`, `bgfx`, `opengl`, `gdi`)
 - [ ] All `-keyboardprovider` modules (`rawinput`, `dinput`, `win32`)
 - [ ] All `-mouseprovider` modules (`rawinput`, `dinput`, `win32`)
-- [ ] All `-joystickprovider` modules (`winhybrid`, `xinput`, `dinput`)
+- [ ] All `-joystickprovider` modules (`winhybrid`, `xinput`, `dinput`, `sdljoy`)
 - [ ] Subset builds (`mametiny.exe` and `mamevirtual.exe`) more or less work
 - [ ] CHD CD read (e.g. run a Konami GV game)
 - [ ] CHD hard disk read (e.g. boot an OS on a computer)
@@ -59,11 +59,11 @@ assignees: ''
 - [ ] Basic debugger functionality, mouse-driven and command interface
 - [ ] Lua scripting functionality (e.g. autofire plugin, input macro plugin, script-dependent internal layouts)
 - [ ] Recompiling CPUs (e.g. MIPS III, PowerPC, Hyperstone E1), including stepping in debugger
-- [ ] All `-sound` modules (`wasapi`, `xaudio2`, `portaudio`)
+- [ ] All `-sound` modules (`wasapi`, `xaudio2`, `sdl`, `portaudio`)
 - [ ] All `-video` modules (`d3d`, `bgfx`, `opengl`, `gdi`)
 - [ ] All `-keyboardprovider` modules (`rawinput`, `dinput`, `win32`)
 - [ ] All `-mouseprovider` modules (`rawinput`, `dinput`, `win32`)
-- [ ] All `-joystickprovider` modules (`winhybrid`, `xinput`, `dinput`)
+- [ ] All `-joystickprovider` modules (`winhybrid`, `xinput`, `dinput`, `sdljoy`)
 - [ ] Subset builds (`mametinyd.exe` and `mamevirtuald.exe`) more or less work
 - [ ] CHD CD read (e.g. run a Konami GV game)
 - [ ] CHD hard disk read (e.g. boot an OS on a computer)
@@ -80,11 +80,11 @@ assignees: ''
 - [ ] Basic debugger functionality, mouse-driven and command interface
 - [ ] Lua scripting functionality (e.g. autofire plugin, input macro plugin, script-dependent internal layouts)
 - [ ] Recompiling CPUs (e.g. MIPS III, PowerPC, Hyperstone E1), including stepping in debugger
-- [ ] All `-sound` modules (`wasapi`, `xaudio2`, `portaudio`)
+- [ ] All `-sound` modules (`wasapi`, `xaudio2`, `sdl`, `portaudio`)
 - [ ] All `-video` modules (`d3d`, `bgfx`, `opengl`, `gdi`)
 - [ ] All `-keyboardprovider` modules (`rawinput`, `dinput`, `win32`)
 - [ ] All `-mouseprovider` modules (`rawinput`, `dinput`, `win32`)
-- [ ] All `-joystickprovider` modules (`winhybrid`, `xinput`, `dinput`)
+- [ ] All `-joystickprovider` modules (`winhybrid`, `xinput`, `dinput`, `sdljoy`)
 - [ ] Subset builds (`mametiny.exe` and `mamevirtual.exe`) more or less work
 - [ ] CHD CD read (e.g. run a Konami GV game)
 - [ ] CHD hard disk read (e.g. boot an OS on a computer)
