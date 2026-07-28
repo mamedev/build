@@ -1,68 +1,444 @@
-0.289
------
+0.289 2026-07-3x
+----------------
 
 
 MAME Testers bugs fixed
 -----------------------
-- 06586: [Documentation] Various games: Games missing MACHINE_NODEVICE flags (28dd860) (JimCarlTay)
-- 06584: [Documentation] DOCUMENTATION: Noted description issues (f767605) (JimCarlTay)
-- 03342: [Gameplay] (gaelco/gaelco2.cpp) radikalb, surfplnt40, surfplnt: Some graphics are differently aligned in 32bit and 64bit (4558f87) (mourix)
-- 09480: [Documentation] 144 games described as " manufactured by Taito Corporation Japan": The notation "JAPAN" is unnecessary. (f767605) (JimCarlTay)
-- 09202: [Sound] (sega/model2.cpp) srallyc and clones: wrong sound keys played at the end of the attract sequence (458507e) (Angelo Salese)
-- 09456: [Graphics] (brother/lw840.cpp) lw840: White screen (d2b8c3d)
-- 08584: [Media Support] (commodore/c64.cpp) c64 all versions: since verson 0.243 Formatting a disk takes very long (c3dea37) (curtcoder)
-- 09492: [DIP/Input] [plugin]: lua plugin portname if enabled bombs mame at start (0826819) (cuavas)
-- 09462: [Documentation] (sega/model1.cpp) swa, swaj: wrong year (1df3c9c) (JimCarlTay)
-- 06026: [Documentation] (sega/model1.cpp) swa: " Arcade " is not necessary in the title of this game (1df3c9c) (JimCarlTay)
-- 09455: [Graphics] (apple/macquadra605.cpp) maclc575: Black screen
-- 05547: [Crash/Freeze] (pc/ct486.cpp) ct486: System locks up when attempting to boot MS-DOS 6.22 (01c1614) (Duke)
-- 09485: [Crash/Freeze] (kaneko/suprnova.cpp) vblokbrk and clones: Eventually freezes after clearing a stage in the final 10 seconds (02286a2) (Angelo Salese)
-- 09478: [Media Support] (wang/wangpc.cpp) wangpc: Won't boot floppy disk (e7ea675) (AJR)
-- 09479: [Media Support] (ampro/lb186.cpp) lb186: Unable to boot a floppy disk (fd9727d) (AJR)
-- 09477: [Media Support] (trs/dgnalpha.cpp) dgnalpha: Regressed, no longer usable (18e2c49) (AJR)
-- 09467: [Cheat System] "output" doesn't draw text (c8983ae) (cuavas)
-- 09466: [Graphics] (namco/namcos22.cpp) alpinerd and clones: When the finish line track is visible from afar, it initially appears as completely red polygons. (fa5cb63) (hap)
-- 09463: [Documentation] (seibu/deadang.cpp) popnrun, popnruna: "Yukai Tsukai" is NOT the name of the developer. (971575b) (J.J.Boy)
+- 03342: [Gameplay] (gaelco/gaelco2.cpp) radikalb, surfplnt40, surfplnt: Some graphics are misaligned. (Jos van Mourik)
+- 05547: [Crash/Freeze] (pc/ct486.cpp) ct486: The system may fail to boot from MS-DOS 6.22 installation media. (Dirk Best)
+- 06026: [Documentation] (sega/model1.cpp) swa: The game title did not include the word “Arcade” at release. (JimCarlTay)
+- 06584: [Documentation] sony/zn.cpp) raystorm and clones: The game title is usually written without a space. (JimCarlTay)
+- 06586: [Documentation] (namco/namcos23.cpp) gunwars, raceon and clones: Lack of camera emulation is not flagged. (JimCarlTay)
+- 06600: [Crash/Freeze] (sega/model1.cpp) netmerc: The emulator may crash due to memory corruption. (Francisco García)
+- 07563: [Gameplay] (sega/model1.cpp) wingwar, wingwarj, wingwaru, wingwar360: Bullet collisions don’t register. (Francisco García)
+- 07699: [Gameplay] (sega/model1.cpp) swa, swaj: The radar is not displayed correctly. (Francisco García)
+- 08584: [Media Support] (commodore/c64.cpp) c64 all versions: Formatting floppy disks is very slow. (Curt Coder)
+- 09202: [Sound] (sega/model2.cpp) srallyc and clones: Incorrect sounds are played in attract mode. (Angelo Salese)
+- 09345: [Misc.] (nec/pc9821.cpp) pc9821ap2 [Flame Zapper Kotsujin]: Fails to start with an allocation error. (Angelo Salese)
+- 09456: [Graphics] (brother/lw840.cpp) lw840: The system does not appear to boot. (Leopold)
+- 09462: [Documentation] (sega/model1.cpp) swa, swaj: The release year is incorrect. (JimCarlTay)
+- 09463: [Documentation] (seibu/deadang.cpp) popnrun, popnruna: The manufacturer is incorrect. (J.J.Boy)
+- 09466: [Graphics] (namco/namcos22.cpp) alpinerd and clones: Distant ground polygons are incorrectly drawn in red. (hap)
+- 09467: [Cheat System] Cheat output text is not displayed. (Vas Crabb)
+- 09477: [Media Support] (trs/dgnalpha.cpp) dgnalpha: The system will not boot to BASIC or from a floppy disk. (AJR)
+- 09478: [Media Support] (wang/wangpc.cpp) wangpc: The system will not boot from floppy disks. (AJR)
+- 09479: [Media Support] (ampro/lb186.cpp) lb186: The system will not boot from floppy disks. (AJR)
+- 09480: [Documentation] Taito Corporation and its subsidiaries are listed inconsistently for different games. (JimCarlTay)
+- 09485: [Crash/Freeze] (kaneko/suprnova.cpp) vblokbrk and clones: Freezes when clearing a stage in final seconds. (Angelo Salese)
+- 09492: [DIP/Input] [plugin]: The port name plugin causes a fatal error on start when enabled. (Vas Crabb)
 
 
 New working systems
 -------------------
+ADE Elettronica MK-84 [Enrico]
+Busch Microtronic 2090 [hap, Jason T. Jacques, Decle, Michael A. Wessel]
+Carnival 37 [Angelo Salese, hammy]
+Colonial Data Services SB-80 [David Rand]
+Dan Werner WE816 [Nigel Barnes, Dan Werner]
+EACA Genie III (Germany) [Dirk Best, oldcomputers-ddns.org]
+game on! TV 50 in 1 Arcade Game [TeamEurope, David Haywood]
+George Scolaro ET532 (NS32532 + Ethernet) [David Rand]
+Lexibook / JungleTac Plasma Console (IG810, 60-in-1) [TeamEurope]
+Newcrest Technology / CXG Systems / LogiSoft Chess 3008 [hap, Berger]
+Planet Patrol [Dillweed]
+Puzzle World [alfa75, nnap]
+SA.BI.NE trend Poker & More 18-in-1 (Germany) [TeamEurope]
+Siemens 97801 (terminal) [David Rand, Plamen Mihaylov]
+Toshiba T-200 [David Rand]
+Toshiba T-250 [David Rand]
 
 
 New working clones
 ------------------
+After Burner (VER 1.32, deluxe/upright) [vivacap]
+American Poker II (bootleg, set 5) [hammy, Pinballarcadedruid]
+Digital Research Computers Big Board (5.25" drives) [David Rand]
+Fancy World - Earth of Crisis (set 2) [nnap]
+Futari Mahjong Ron II (set 2) [hammy]
+Galaxian (Olympia bootleg) [IZ8DWF]
+Germ Wars (Germany) [Dillweed]
+Great Sluggers '94 (prototype?) [coolmod]
+Happy Jackie (v119U) [hammy]
+High Speed (Unidesa / Cirsa license) [Rockman i uri666arcade de l'associació ARCADE, Recreativas.org]
+JAKKS Pacific Inc / Handheld Games Dragon Ball Z (JAKKS Pacific TV Game, Game-Key Ready, set 2) [TeamEurope]
+Joker Poker With Hi-Lo Double-Up (version HL-DLX-080585) [Siftware]
+Last Bank (Japan, v1.30J) [hammy]
+Lexibook Compact Cyber Arcade - Paw Patrol (JL2365PA-A, 75-in-1) [TeamEurope]
+Mahjong Angel Kiss (ver 1.0, 92048-01 version) [hammy]
+Mahjong Diplomat (Japan) [hammy]
+Money Money (set 3) [Luis Arrufat]
+Ms. Pac-Man ('Made in Greece' Triunvi bootleg) [Davidc96]
+Ninja Ryukenden (Japan, set 3) [Patrik Styrnell]
+Phoenix (JP Leisure bootleg) [Trol]
+Play Girls 2 (Europe) [kebrank]
+Psion Series 3c (German) [repa4ok]
+Punch-Out!! (Rev A, harder) [Guru, Arcade Classics Australia]
+Robotron: 2084 (Release 3, prototype) [SynaMax]
+Street Fighter III 2nd Impact: Giant Attack (Asia 970930) [msamiullah]
+Turbo Force (Japan) [buffi, Brian Troha]
+Winners Circle (81, set 3) [hammy]
+Winners Circle (81, set 4) [hammy]
+Xerox 16/8 (5.25" floppy) [David Rand]
+Xerox 16/8 (Expansion Module II) [David Rand]
+Xerox 16/8 (SASI hard disk) [David Rand]
+Xerox 820-II (5.25" floppy) [David Rand]
+Xerox 820-II (SASI hard disk) [David Rand]
+Xerox 820-II (low profile keyboard) [David Rand]
 
 
 Systems promoted to working
 ---------------------------
+36-in-1 Classic Games phone case [Roman Kuraev]
+ADE Elettronica MK-83 [David Rand]
+Digital Research Computers Big Board [David Rand]
+Digital Research Computers Big Board II [David Rand]
+Donkey Kong / Donkey Kong Jr / Mario Bros [R. Belmont]
+dreamGEAR My Arcade Portable Gaming System with 140 Games (DGUN-2561) [Roman Kuraev, David Haywood]
+Fizz Creations Tetris Arcade in a Tin [Roman Kuraev, David Haywood]
+Flash Beats [SpiralBrad]
+George Scolaro pc532 [David Rand]
+International Superstar Soccer Deluxe (SNES bootleg) [Devin Acker]
+Jungle's Soft Mini Game Player 48-in-1 [Roman Kuraev, David Haywood]
+Lexibook Arcade Center - 30-in-1 (JL1800_01) [Roman Kuraev, David Haywood]
+Lexibook Arcade Center - 60-in-1 (JL1810GR) [Roman Kuraev, David Haywood]
+Lexibook Compact Cyber Arcade - 200 in 1 (JL2355) [Roman Kuraev, David Haywood]
+Lexibook Compact Cyber Arcade - 250 in 1 (JL2377) [Roman Kuraev, David Haywood]
+Lexibook Compact Cyber Arcade - 250-in-1 (JL2375) [Roman Kuraev, David Haywood]
+Lexibook Compact Cyber Arcade - Barbie (JL2365BB) [Roman Kuraev, David Haywood]
+Lexibook Compact Cyber Arcade - Batman (JL2367BAT) [Roman Kuraev, David Haywood]
+Lexibook Compact Cyber Arcade - Cars (JL2360DC-1, 120-in-1) [Roman Kuraev, David Haywood]
+Lexibook Compact Cyber Arcade - Cars (JL2365DC) [Roman Kuraev, David Haywood]
+Lexibook Compact Cyber Arcade - Disney Princess (120-in-1) [Roman Kuraev, David Haywood]
+Lexibook Compact Cyber Arcade - Disney Princess (JL2367DP, 150-in-1) [Roman Kuraev, David Haywood]
+Lexibook Compact Cyber Arcade - Finding Dory [Roman Kuraev, David Haywood]
+Lexibook Compact Cyber Arcade - Frozen (JL2365FZ) [Roman Kuraev, David Haywood]
+Lexibook Compact Cyber Arcade - Lilo & Stitch (JL2367D) [Roman Kuraev, David Haywood]
+Lexibook Compact Cyber Arcade - PJ Masks (JL2365PJM) [Roman Kuraev, David Haywood]
+Lexibook Compact Cyber Arcade - Paw Patrol (JL2367PA) [Roman Kuraev, David Haywood]
+Lexibook Compact Cyber Arcade - Spider-Man (JL2367SP, 150-in-1) [Roman Kuraev, David Haywood]
+Lexibook Compact Cyber Arcade - Star Wars Rebels (JL2365SW) [Roman Kuraev, David Haywood]
+Lexibook Compact Cyber Arcade TV - 120 in 1 (JL2370) [Roman Kuraev, David Haywood]
+Lexibook Console Colour - Disney's Planes (JL2800PL) [Roman Kuraev, David Haywood]
+Lexibook Console Colour - Minnie Mouse (JL2800MN) [Roman Kuraev, David Haywood]
+Lexibook Retro TV Game Console - 300 Games [Roman Kuraev, David Haywood]
+Lexibook Retro TV Game Console - Disney Cars - 300 Games (JG7800DC-1) [Roman Kuraev, David Haywood]
+Lexibook Retro TV Game Console - Frozen - 300 Games [Roman Kuraev, David Haywood]
+Lexibook Retro TV Game Console - PJ Masks - 300 Games (JG7800PJM-1) [Roman Kuraev, David Haywood]
+Luxor X37 (prototype) [Curt Coder]
+National Semiconductor ICM-3216 [David Rand]
+Sony NWS-1250 [Brice Onken]
+Ultimate Products / Jungle's Soft Zone Fusion [Roman Kuraev, David Haywood]
+Xerox 820-II (8" floppy) [David Rand]
+Yamaha TG100 [R. Belmont]
 
 
 Clones promoted to working
 --------------------------
+Lexibook / Sit Up Limited / Jungle's Soft Seal 30-in-1 (VT based, Model FN098134) [Roman Kuraev, David Haywood]
+Lexibook Compact Cyber Arcade - Frozen (JL2367FZ) [Roman Kuraev, David Haywood]
+Lexibook Compact Cyber Arcade - Frozen (JL2365FZ-6) [Roman Kuraev, David Haywood]
+Lexibook Compact Cyber Arcade - Paw Patrol (JL2365PA-5) [Roman Kuraev, David Haywood]
+Moj mikro Slovenija [David Rand]
+Scomar MK-82 [David Rand]
+Trivia Hangup (version Trivia-2-011586) [Siftware]
+Xerox 16/8 (8" floppy) [David Rand]
 
 
 New systems marked not working
 ------------------------------
+Accutime Kids Smart Watch: Barbie (Accutime, BAB4064PH) [TeamEurope]
+Accutime Kids Smart Watch: Batman (Accutime, BAT4732PH) [TeamEurope]
+Accutime Kids Smart Watch: Disney Princess (Accutime, PN425?) [TeamEurope]
+Accutime Kids Smart Watch: Encanto (Accutime, ENC4000) [TeamEurope] [TeamEurope]
+Accutime Kids Smart Watch: Frozen (Accutime, FZN4151PH) [TeamEurope]
+Accutime Kids Smart Watch: Frozen (Accutime, FZN4587) [TeamEurope]
+Accutime Kids Smart Watch: Gabby's Dollhouse (Accutime, GAB4007PH) [TeamEurope]
+Accutime Kids Smart Watch: Harry Potter (Accutime, HP4107PH) [TeamEurope]
+Accutime Kids Smart Watch: Jurassic World (Accutime, JRW4041) [TeamEurope]
+Accutime Kids Smart Watch: L.O.L. Surprise (Accutime, LOL4264PH) [TeamEurope]
+Accutime Kids Smart Watch: L.O.L. Surprise (Accutime, LOL4588TK) [TeamEurope]
+Accutime Kids Smart Watch: Lilo & Stitch (Accutime, LS4027PH) [TeamEurope]
+Accutime Kids Smart Watch: Marvel Avengers (Accutime, AVG4597) [TeamEurope]
+Accutime Kids Smart Watch: Marvel Avengers (Accutime, AVG4597PH) [TeamEurope]
+Accutime Kids Smart Watch: Marvel Avengers Black Panther (Accutime, AVG4608PH) [TeamEurope]
+Accutime Kids Smart Watch: Minecraft (Accutime, MIN4045) [TeamEurope]
+Accutime Kids Smart Watch: Paw Patrol (Accutime, PAW4275PH) [TeamEurope]
+Accutime Kids Smart Watch: Peppa Pig (Accutime, PPG4086PH) [TeamEurope]
+Accutime Kids Smart Watch: Pokemon (Accutime, POK4231PH) [TeamEurope]
+Accutime Kids Smart Watch: Rainbow High (Accutime, RNB4017PH) [TeamEurope]
+Accutime Kids Smart Watch: Ryan's World (Accutime, RYW4003AZ) [TeamEurope]
+Accutime Kids Smart Watch: Spider-Man (Accutime, SPD4588) [TeamEurope]
+Accutime Kids Smart Watch: Star Wars: Stormtropper (Accutime, STM4353PH) [TeamEurope]
+Accutime Kids Smart Watch: Star Wars: The Mandalorian (Accutime, MNL4023PH) [TeamEurope]
+Accutime Kids Smart Watch: Toy Story (Accutime, LTY4000PH) [TeamEurope]
+Akai S612 MIDI Digital Sampler [DBWBP, Devin Acker]
+Akai S900 MIDI Digital Sampler [DBWBP, Devin Acker]
+Akai S950 MIDI Digital Sampler [DBWBP, Devin Acker]
+Akai S1000 MIDI Stereo Digital Sampler [Robin Whittle, Devin Acker]
+Akai S1100 MIDI Stereo Digital Sampler [Robin Whittle, Devin Acker]
+Akai X7000 Sampling Keyboard [DBWBP, Fetaldreamcore, Devin Acker]
+Amarillo [stonedDiscord]
+Avanti [stonedDiscord]
+Ballermann 6 [stonedDiscord]
+Big Action 3000 E [stonedDiscord]
+Big Kick [stonedDiscord]
+Booster Speed [stonedDiscord]
+Blizzard [stonedDiscord]
+Capriccio Sesame [stonedDiscord]
+Capriccio Sesame 2 [stonedDiscord]
+Casio Casiotone RC-1 [Devin Acker, =CO=Windler]
+Castello II (W1) [stonedDiscord]
+City Tower [stonedDiscord]
+Colossos [stonedDiscord]
+Cool-Bi Cool-Bi [hammy, little0]
+Deep Scan / Car Hunt [Benjamin Roux]
+Disco (W1) [stonedDiscord]
+Euro Bingo 7 (V8.0, CAA) [Victor Fernandez (City Game)]
+Exciting Fever [hammy]
+Fifty Five (F1) [stonedDiscord]
+Fuxing Gaozhao [SongJi]
+Galaktica [stonedDiscord]
+Ganso Janken Man [Darksoft, TeamEurope]
+Gigabyte GA-586IP (Intel I430NX Neptune chipset) [The Retro Web]
+Giochi Preziosi / Playmates My Life - Another life in your hands (UK) [TeamEurope, David Haywood]
+Hana Awase Maihime [hammy]
+Hello Kitty no Oshiro e Iko [Darksoft, TeamEurope]
+Huanzhu Gege (set 1) [SongJi]
+Itadaki Nyandora Kids [Darksoft, TeamEurope]
+Jamaica [stonedDiscord]
+Kimme und Korn (F4) [stonedDiscord]
+Lexibook Color Console IG10 (DualMax 20 in 1 TV part) [TeamEurope, David Haywood]
+Lexibook Gameclick (JL2400) [TeamEurope]
+Lexibook Sudoku (Lexibook, LG600FR, TV part) [TeamEurope]
+Logo (W1) [stonedDiscord]
+Lucky Joker [hammy]
+Majesto [stonedDiscord]
+Manpuku Hanten (Japan, main ver. 2.00, video ver. 2.00) [hammy]
+Matrixx [stonedDiscord]
+Monopoly Tisch (F2) [stonedDiscord]
+Multi (F2) [stonedDiscord]
+Multiclassic [stonedDiscord]
+Optimus (W1) [stonedDiscord]
+Perfect Technology / Intelligent Heuristic Programming Star Sapphire [hap, Berger, Chessguru]
+Presenter 2000 [MSX’s Archeology]
+Pur Pur Royal [stonedDiscord]
+R&D Co., Ltd. GALPRO [Devin Acker]
+Robin [stonedDiscord]
+Rotamint Alpha [stonedDiscord]
+Rotamint Macao [stonedDiscord]
+Sony DPS-D7 Digital Delay Unit [DBWBP]
+Soyo SY-029C2 (Intel I430NX Neptune chipset) [The Retro Web]
+Special 8 Way (v122F) [hammy]
+Sunny Top (W1) [stonedDiscord]
+Super Pasch [stonedDiscord]
+Super Take Off E [stonedDiscord]
+Swing [stonedDiscord]
+Tango [stonedDiscord]
+Tobago [stonedDiscord]
+Unimint Arena [stonedDiscord]
+Viva [stonedDiscord]
+VTech Tivi Boo (France) [TeamEurope]
+Vulkan (F2) [stonedDiscord]
+Winner's Club - Wild Roses [hammy]
+Würfel Fix (F3) [stonedDiscord]
+Xeno [stonedDiscord]
+Xiao Mifeng [SongJi]
+Xingyun Xiaochou / Xingyun Shouji (V233CN) [little0]
+Xiyang Tianshi [SongJi]
+Zilog System 8000 [ArcLight22]
 
 
 New clones marked not working
 -----------------------------
+Akai S700 MIDI Digital Sampler [DBWBP, Devin Acker]
+Akai S950 MIDI Digital Sampler (with SCSI) [DBWBP, Devin Acker]
+Akai S1000PB MIDI Stereo Digital Sampler [Robin Whittle, Devin Acker]
+BornKid 16 Bit Handheld Games 220-in-1 [TeamEurope, David Haywood]
+Hana Awase 6 (Japan, bootleg) [hammy]
+Giochi Preziosi My Life - Un'altra vita nelle tue mani (Italy) [TeamEurope, David Haywood]
+Giochi Preziosi My Life (Spain) [TeamEurope, ClawGrip]
+Granada (F1) [stonedDiscord]
+Huanzhu Gege (set 2) [SongJi]
+JAKKS Pacific Inc / Digital Eclipse Spider-Man (JAKKS Pacific TV Game) (SPG110 hardware, new style stick, set 2) [TeamEurope]
+Jungle (USA, VA 1.05) [Ioannis Bampoulas]
+Magical Jack (VI 1.1C) [Pinballarcadedruid]
+The New 1997 Joker Master - New York (V3G) [Ioannis Bampoulas]
+Pleiads (bootleg, ManilaMatic) [Trol, hammy, Porchy]
+Psion 618C [Nigel Barnes]
+Sport of Kings (France, P436.08) [hammy]
+Turbo Sunny (W1) [stonedDiscord]
+VTech MobiGo (France) [TeamEurope]
+Würfel Fix (F2) [stonedDiscord]
+Zilog System 8000 Model 20/30 [ArcLight22]
+Zilog System 8000 Series Two [ArcLight22]
 
 
 New working software list items
 -------------------------------
+a2600: Tarzan (prototype) [Hidden Palace, AJR]
+c64_cass: Forbidden Forest, Lazy Jones [The Ultimate Tape Archive Team]
+c64_flop_orig: 1541/1571 Drive Alignment [Curt Coder]
+c64_quik: Broken Limits [Curt Coder]
+compis:
+  Användbara procedurer i Pascal 1.5 (nät/skollicens), Compis Pascal 3.12, CompisNet 2.0 (version 5314),
+  CompisNet II Plus (CPMBOOT, version 7244), Enter 1.3 (demo, nät/skollicens), HarmoniEtt 2.0 (gamma), HarmoniTvå 2.0 (alfa),
+  Skriv lätt, skriv rätt (version 6401), Spara-låna-vinna (enanvändare), Systemskiva 2.0, Systemskiva I (version 6245),
+  Systemskiva för hårdskiveenhet 1.00 (version 7242), Systemskiva för hårdskiveenhet 2.01 (version 6335), Turbo Pascal 3.01,
+  Uppgraderingspaket 1 för Compis I (version 6262) [FakeShemp]
+genie3_flop:
+  CP/M 2.2a, G-DOS 2.1, G-DOS 2.4, Genie III CP/M 2.2XV3, 1.31, NEWBASIC 2.1 and other BASIC software (NEWDOS/80 2.0A),
+  NEWDOS/80 2.0A, NEWDOS/80 2.0A (with AGCAP), NEWDOS/80 2.0A (with PELOT), NEWDOS/80 Games Disk 1, NEWDOS/80 Games Disk 2,
+  NEWDOS/80 Games Disk 3, SCRIPSIT Word Processing (NEWDOS/80 2.0A) [oldcomputers-ddns.org]
+megaduck:
+  Aerial, AntiAir, Ascend, Awass, Battlot, Bootskell, Cacorm, Cavit, Cracky, Guntus, Hopman, Impetus, Lift, Mazy, Mazy 2, Mieyen,
+  Neuras, Osotos, Ruptus, Svellas, SwordWork, Yewdow [Inufuto]
+myvision:
+  Aerial, AntiAir, Ascend, Awass, Battlot, Bootskell, Cacorm, Cavit, Cracky, Guntus, Hopman, Impetus, Lift, Mazy, Mazy 2, Mieyen,
+  Neuras, Osotos, Ruptus, Svellas, SwordWork, Yewdow [Inufuto]
+oric1_cass:
+  3K FreeCell, Stormlord (60Hz, Atmos) [Defence Force]
+  Awass [Inufuto]
+  Le Manoir du Dr. Genius (release 1) (Oric-1 only), Le Manoir du Dr. Genius (release 2) (Oric-1 only),
+  Le Manoir du Dr. Genius (release 3) (Oric-1 / Atmos), Le Mystère de Kikekankoi (Oric-1 / Atmos release),
+  Le Mystère de Kikekankoi (release 1), Le Mystère de Kikekankoi (release 2), Le Secret de Kaïpur [The Oric Site]
+  CC65 Chess, Fifteen Puzzle, Put Up [Raxiss]
+pc6001_cass:
+  3D Asteroid Fire, Asteroid Escape, AX-1, AX-10, Bound Ball, F-Dot 2, Led Zone, Magnetic Field, Miyuki the Shoubushi,
+  Nana-chan no Kinjirareta Asobi, Pack'n Boy, PC-6000 Note No. 1, PonyCa 2 Game Series: Galac Convoy & Shooting Invaders,
+  Pyramid II, Raita no Growing Up, Slender Island, Space Invaders, Star Destroyer, Tiny Golf, Ultra Yonin Mahjong, Zunou 4989
+  [Neo Kobe Collection]
+  AX-3, AX-5, AX-8, Take Off 6000 [Neo Kobe Collection, Angelo Salese]
+pc6001mk2_cass:
+  Front Line, Galaxian, Grobda, Jelda, Led Zone (mkII), Nana-chan no Kinjirareta Asobi (mkII), Professional Mahjong (v2.1),
+  Soreyuke! Kurukuru, Suidou Kozou, Vital Lamp, Yakyuu Kyou, Zunou 4989 (mkII), [Neo Kobe Collection]
+  American Truck, The Castle, Mandelbrot demo, New Fan Fun, Pac-Man, Volguard [Neo Kobe Collection, Angelo Salese]
+pc6001mk2_flop: Asalt (v1.1, prototype) [Neo Kobe Collection]
+pc8001_flop: NRTDRV88 for JMB-X1 [Bookworm]
+pc8001mk2sr_flop: Game DOS (compilation, ver 1.1, alt), Super Version (compilation, ver 1.1, alt) [Angelo Salese]
+pc98:
+  Steel Gun Nyan [danielham]
+  Wolfenstein 3D [Neo Kobe Collection]
+  Multi Paint System: Secret Fun Set Plus [Shoutmon]
+pc98_flop_orig: Multi Paint System (v1.01), Yajiuma Pennant Race 2 1991 [krugman]
+pv1000: SwordWork [Inufuto]
+saitek_schess: Hyper Modern Super Strong [Sean Riddle, Nick(spacious_mind)]
+saturn: Dezaemon 2 Save Game Manager, Dezaemon 2 Save Game Manager Vol. 2 [Madroms, satakore.com]
+sb80_flop: CP/M 2.2 (8-inch recovery image), CP/M 2.2 (CBIOS v1.22), CP/M 2.2 with utilities [David Rand]
+sega_beena_cart:
+  Doraemon Tanoshii En Seikatsu Youchien Hoikuen (Rev. T-120002-1100),
+  Doraemon Waku Waku Sekai Isshuu Game: Asonde Oboeru Chizu Kokki [TeamEurope]
+spectrum_cass:
+  Die Feuerfaust (The Fist of Fire) (The Adventure Workshop, two sided), The Fifth Quadrant (Dro Soft) Star Wars (Erbe Software)
+  [Spectrum Computing]
+vsmile_cart: Elmo's World - Elmo's Big Discoveries (USA) [Sterophonick]
+x37_hdd: D-NIX 5.12 [Curt Coder]
 
 
 Software list items promoted to working
 ---------------------------------------
+c64_cart:
+  Action Cartridge Plus 5 (Germany), Action Cartridge Plus 6.0, Action Cartridge Plus 6.0 (Germany),
+  Action Cartridge Plus v7.0 (Derko), Action Cartridge Plus v7.0 (Triumwyrat), Action Replay v4.1, Action Replay v4.2 (v1),
+  Action Replay v4.2 (v2), Action Replay v4.2 (v5.0 v1), Action Replay v4.2 (v5.0 v2), Action Replay v5.0,
+  Action Replay v5.0 (NTSC), Action Replay v5.1a, Action Replay v6.0, Action Replay v6.0 (Triad), Action Replay v7.3,
+  Action Replay v7.5, Action Replay v8.4, The Fairlight Cracking Cartridge [Curt Coder]
+c64_cass: Skyline Attack [Angelo Salese]
+c64_flop_orig: Bounty Bob Strikes Back! (v1.2), Strip Poker [Angelo Salese]
+fmtowns_cd: Pro Yakyuu Family Stadium - '90 Pennant Race-ban [Carl]
+pc8801_flop:
+  Aoki Ookami to Shiroki Mejika - Genchou Hishi, Aoki Ookami to Shiroki Mejika - Genghis Khan,
+  Aoki Ookami to Shiroki Mejika - Genghis Khan (soundware maybe), Daikoukai Jidai, Daikoukai Jidai (alt?), Europa Sensen,
+  Europa Sensen (alt?), Fantastic Eaters, Fantastic Eaters (alt), Inindou: Datou Nobunaga, Inindou: Datou Nobunaga (alt?),
+  Ishin no Arashi, Ishin no Arashi (alt User Disk), Ishin no Arashi (alt?), Nobunaga no Yabou - Bushou Fuunroku,
+  Nobunaga no Yabou - Bushou Fuunroku (alt), Nobunaga no Yabou - Sengoku Gunyuuden, Nobunaga no Yabou - Sengoku Gunyuuden (alt),
+  Nobunaga no Yabou - Sengoku Gunyuuden (alt 2), Royal Blood, Sangokushi (SR Ban), Sangokushi (SR Ban, alt),
+  Sangokushi (SR Ban, alt 2), Sangokushi II, Sangokushi II (alt), Sangokushi II (alt 2), Star Symphony, Suikoden: Tenmei no Chikai,
+  Suikoden: Tenmei no Chikai (alt), Suikoden: Tenmei no Chikai (alt 2) [Angelo Salese]
+pc8001mk2sr_flop: Mappy (PC-8001mkIISR, alt) [Angelo Salese]
+pc88va:
+  Balloon Breaker, Boomering, Fray - In Magical Adventure, Hare Hare Yukai, Hopman, Illusion City - Genei Toshi,
+  Olteus (alt disk D), PC-88VA Tentou Demo, PC-88VA Tentou Demo (alt), PC-88VA Tentou Demo (alt 2), PC-Engine (VA2 Tenpu-ban),
+  PC-Engine v1.1, R-Type, Shanghai, Shinra Bansho [Angelo Salese]
+pc88va_flop_orig: First Queen [Angelo Salese]
 
 
 New software list items marked not working
 ------------------------------------------
-
-
-Translations added or modified
-------------------------------
+c64_flop_misc:
+  Bop 'n Rumble (cracked by The Last Science and The Artworx), The Detective Game (cracked by Trianon), Rags to Riches,
+  Samurai Warrior: The Battles of... Usagi Yojimbo, Space Taxi (cracked by Exodus) [archive.org]
+compis:
+  Compis Kommunikation 1.2, CompisNet I PASBOOT med nyteknik, CompisNet IB 2.01 (version 6191), Datorn i början (enanvändare),
+  GraphMaster 2.0 (nät/skollicens), IBM DOS 3.00, Intresse-fallenhet-yrkesval (enanvändare), Kemi 1 (nät/skollicens),
+  Matematikverkstad I (beta 19860606), Mät absorption (nät/skollicens), Mät halveringstid (nät/skollicens),
+  Mät med fotoceller 1.0 (enanvändare), MätEtt (nät-skollicens), Mätvärdesinsamling 1.0 (alfa, enanvändare),
+  ProfiRange (version 6181), ProfiText: Textbehandling med Compis (version 6181), Skatteprogram S91,
+  Skriv lätt, skriv rätt (version 8101, ekonomiredaktionen), StatEtt (beta, nät/skollicens), Tabba lätt, tabba rätt (version 7235)
+  [FakeShemp]
+digiblast_cart:
+  Rayman 3, Totally Spies! 1, Winx Club + 5 Atari Games (4 language version) [anonymous]
+  Crazy Jack, Cuccioli Cerca Amici (Italy), DigiQUAD, Gormiti 2 episodi (Italy), Gormiti Lotta Oscura (Italy),
+  Gormiti Masters of the Gorm Island (Italy), Pitfall The Lost Expedition, Sonic X 1 (Italy / Spain, set 1),
+  Spider-Man Mysterio's Menace, Sponge Bob + 5 Atari Games (Italy / Spain), Superstar Chefs, Wade Hixton's Counter Punch,
+  Winx Club + 5 Atari Games (Italy / Spain, set 1) [trabantrom]
+leapfrog_leappad_cart:
+  Disney Princesse - Histoires de princesses (France), Interactif Sciences - Extraordinaires mammiferes! (France),
+  Koa fait les courses (France), Livre interactif (France), Le Monde De Nemo (France), Musique, Maestro! (France),
+  On Peut Compter Sur Flop! (France), Ratatouille (France), Le Roi Lion (France), Scooby-Doo et le mystere des beignets (France),
+  Winnie et les pots de miel (France) [TeamEurope]
+  2008 July Shimajirou to Ribby no Eigo Jiten / 2008 September Onahashi CoCoPad Time Machine de Daibouken! (Japan),
+  2008 November Shimajirou to Ribby no CoCoPad Game Party / 2009 January Shimajirou to Ribby Shougakkou Tanken (Japan),
+  Minna de tanoshiku! CoCoPad (Japan), Oshaberi CoCoPad Mic (Japan),
+  Oyako Eigo Jump 1-gatsu gou - Shimajirou to Ribby no Shougakkou Tanken (Japan),
+  Oyako Eigo Jump 5-gatsu gou - Shimajirou to ABC / 7-gatsu gou - The Three Little Pigs (Japan),
+  Oyako Eigo Jump 9-gatsu gou - Shiamjirou to Ribby no Eigo Jiten (Japan),
+  Oyako Eigo Jump 11-gatsu gou - Shimajirou to Ribby no CoCoPad Eigo party / 1-gatsu gou - Shimajirou to Ribby no Shougakkou Tanken
+  (Japan), Oyako Eigo Step - 2005-nen 3-gatsu Welcome gou (Japan), Oyako Eigo Step - 2005-nen 5, 7, 9-gatsu gou (Japan),
+  Oyako Eigo Step - 2005-nen 11-gatsu gou / 2006-nen 1, 3-gatsu gou (Japan),
+  Oyako Eigo Step 9-gatsu gou - Shimajirou no Otetsudaiyasan (Japan) [TeamEurope, David Haywood, Fujix]
+leapfrog_mfleappad_cart:
+  Disney/Pixar Cars (France), Dora the Explorer - À la rescousse (France), Les fourmis au volant! (France),
+  La journee extraordinaire de Flop (France), Koa et les chiffres fous (France), Winnie et l'arbre à miel (France) [TeamEurope]
+mylife_cart:
+  Club Disco (Italy) [TeamEurope]
+  Club Disco (Spain) [TeamEurope, ClawGrip]
+  Hannah Montana (Italy), Summer Party (Italy) [TeamEurope, David Haywood]
+oric1_cass: 2048, Fire, Flood-It, Lights Out, Line 4, Manhole, Mitosis, Neutron Star, Othello (Raxiss), SameGame [Raxiss]
+pc6001_cass:
+  1-Screen Programs, AX-2, AX-4, AX-6, AX-7, AX-9, Eformn, Fruit Panic (v1.1), Fruit Panic Append, Genma Taisen, Holy Sword,
+  Lode Runner, Mystery House, Mystery House II, Ougon no Haka, Portopia Renzoku Satsujin Jiken, Space Mouse [Neo Kobe Collection]
+pc6001mk2_cass:
+  3D Golf Simulation: Super Version, Aspic, Attack!! Hiroko-chan, The Black Onyx, Dezeni Land, Hurry Fox,
+  Hurry Fox: Yuki no Maou hen, Hydlide, Karuizawa Yuukai Annai, Kaze no Tani no Nausicaä, Lizard, Nobunaga no Yabou,
+  Salad no Kuni no Tomato-hime, Space Harrier, Star Arthur Densetsu I: Wakusei Mephius, Star Arthur Densetsu II: Ankoku Seiun,
+  Star Arthur Densetsu III: Terra 4001, Tiny Xevious II, Tritorn, Victorious Nine [Neo Kobe Collection]
+pc6001mk2_flop:
+  Colony Odyssey Bouken-hen, Hudson Soft Best Hit Game Pack 3, PC-6601 Nihongo Word Processor, PC-6601 Utility Disk,
+  Space Bluster FZ, Space Bluster FZ (preview) [Neo Kobe Collection]
+pc6001mk2sr_cass:
+  9-gyou no Michi, The Akunin, The Akunin 2, The Akunin 3, Jewels, Living Armor, Lizard Quest,
+  Lizard Quest II: Shitennou no Houfuku, Lizard Quest III: Shi no Kami Gaabarian, Lizard Quest IV: Gold Lizard, The Order,
+  Pakuridius: '88 Dragon Breath, Satan, Wu-m Wakarannou [Neo Kobe Collection]
+pc6001mk2sr_flop:
+  PC-6601SR Utility Disk [Mike Stedman]
+  Golf Island (66SR) [Neo Kobe Collection]
+pc8801_flop_orig: Mario Bros. Special [krugman, anonymous]
+px4_cart: R.I.V.M. Diagnose Terminal Rel. 1.1 [Jeff_Birt]
+sat_cart: Pseudo Saturn (v0.832 FINAL) [CyberWarriorX, Pseudo Saturn Team]
+saturn:
+  USB Cart Flasher (Revision 11) [Anders Montonen]
+  Pseudo Saturn Kai Flasher (v6.545) [cafe-alpha]
+  Pseudo Saturn Installer (v1.2) [CyberWarriorX, Pseudo Saturn Team]
+sb80_flop: CP/M 2.2 (02.15) (Colonial Data OEM) [David Rand]
+sega_beena_cart: Soreike! Anpanman Doki Doki! Rescue Drive: Car Navi-tsuki [TeamEurope]
+smarttv_cart:
+  Avventure nello Spazio (Italy), il Bosco dei Numeri (Italy), La Casa Di Topolino (Italy), Cuccioli Labrador (Italy),
+  Disney/Pixar Cars 2 (Italy), English Luna Park (Italy), i-move (Italy), Mondosauro (Italy),
+  La Scuola di Smart TV - 4 anni (Italy), La Scuola di Smart TV - 5+ anni (Italy), Smart TV Evolution (bundle cartridge, Italy),
+  Spider-Man - Spider Sense (Italy), Winnie the Pooh - Le Avventure di Winnie the Pooh (Italy), Winx Club Bloom (Italy) [TeamEurope]
+sony_news: NEWS-OS Release 4.1CA Install Kit [Bitsavers]
+tvdear: Illust-Cassette No. 1 - Pochacco [TeamEurope, QUFB]
+yeno_laptop_cart: Decouvertes 1 (France), Decouvertes 2 (France) [TeamEurope]
 
 
 Merged pull requests
@@ -7618,1496 +7994,7 @@ Ms. Pac-Man ('Made in Greece' Triunvi bootleg) [Davidc96]
 
 -srcclean across the tree. [Vas Crabb]
 
-
-New working systems
--------------------
-Planet Patrol [Dillweed]
-Microtronic 2090 [hap, Jason T. Jacques, Decle, Michael A. Wessel]
-Chess 3008 [hap, Berger]
-36-in-1 Classic Games phone case [Roman Kuraev]
-game on! TV 50 in 1 Arcade Game [Team Europe, David Haywood]
-Toshiba T-200 and T-250 [Dave Rand]
-Poker & More 18-in-1 (Germany) [Team Europe]
-Colonial Data Services SB-80 [Dave Rand]
-Plasma Console (IG810, 60-in-1) [Team Europe]
-Puzzle World [alfa75, nnap]
-WE816 [Nigel Barnes, Dan Werner]
-EACA Genie III (Germany) [Dirk Best, oldcomputers-ddns.org]
-George Scolaro ET532 [David Rand]
-ADE Elettronica MK-84 [Enrico]
-Siemens 97801 (terminal) [David Rand, Plamen Mihaylov]
-
-
-New working clones
-------------------
-Mahjong Angel Kiss (ver 1.0, 92048-01 version) [Hammy]
-Money Money (set 3) [Luis Arrufat]
-Happy Jackie (v119U) [Hammy]
-Mahjong Diplomat (Japan) [Hammy]
-Futari Mahjong Ron II (set 2) [Hammy]
-Play Girls 2 (Europe) [Kebrank]
-Ninja Ryukenden (Japan, set 3) [Patrik Styrnell]
-Punch-Out!! (Rev A, harder) [Guru, Arcade Classics Australia]
-Winners Circle (81, set 3) [Hammy]
-Winners Circle (81, set 4) [Hammy]
-Robotron: 2084 (Release 3) [SynaMax]
-Galaxian (Olympia bootleg) [IZ8DWF]
-Pleiads (bootleg, ManilaMatic) [Trol, Hammy, Porchy]
-Germ Wars (Germany) [Dillweed]
-Phoenix (JP Leisure bootleg) [Trol]
-Compact Cyber Arcade - Paw Patrol (JL2365PA-A, 75-in-1) [Team Europe]
-Joker Poker With Hi-Lo Double-Up (version HL-DLX-T-021286) [Siftware]
-Dragon Ball Z (JAKKS Pacific TV Game, Game-Key Ready, set 2) [Team Europe]
-After Burner (set 2) [vivacap]
-High Speed (Unidesa / Cirsa license) [Rockman i uri666arcade de l'associació ARCADE, Recreativas.org]
-Street Fighter III 2nd Impact: Giant Attack (Asia 970930) [msamiullah]
-Last Bank (Japan, v1.30J) [Hammy]
-Great Sluggers '94 (prototype?) [CoolMod ]
-Turbo Force (Japan) [buffi, Brian Troha]
-Series 3c (German) [repa4ok]
-American Poker II (bootleg, set 5) [Hammy , Pinballarcadedruid]
-Fancy World - Earth of Crisis (set 2) [nnap]
-Ms. Pac-Man ('Made in Greece' Triunvi bootleg) [Davidc96]
-
-
-Systems promoted to working
----------------------------
-International Superstar Soccer Deluxe (SNES bootleg) [Devin Acker]
-Arcade Center - 30-in-1 (JL1800_01) [Roman Kuraev, David Haywood]
-Arcade Center - 60-in-1 (JL1810GR) [Roman Kuraev, David Haywood]
-Compact Cyber Arcade TV - 120 in 1 (JL2370) [Roman Kuraev, David Haywood]
-Compact Cyber Arcade - Disney Princess (120-in-1) [Roman Kuraev, David Haywood]
-Compact Cyber Arcade - Cars (JL2360DC-1, 120-in-1) [Roman Kuraev, David Haywood]
-Compact Cyber Arcade - Star Wars Rebels (JL2365SW) [Roman Kuraev, David Haywood]
-Compact Cyber Arcade - Frozen (JL2365FZ) [Roman Kuraev, David Haywood]
-Compact Cyber Arcade - PJ Masks (JL2365PJM) [Roman Kuraev, David Haywood]
-Compact Cyber Arcade - Barbie (JL2365BB) [Roman Kuraev, David Haywood]
-Compact Cyber Arcade - Cars (JL2365DC) [Roman Kuraev, David Haywood]
-Compact Cyber Arcade - Finding Dory [Roman Kuraev, David Haywood]
-Compact Cyber Arcade - Paw Patrol (JL2367PA) [Roman Kuraev, David Haywood]
-Compact Cyber Arcade - Batman (JL2367BAT) [Roman Kuraev, David Haywood]
-Compact Cyber Arcade - Lilo & Stitch (JL2367D) [Roman Kuraev, David Haywood]
-Compact Cyber Arcade - Disney Princess (JL2367DP, 150-in-1) [Roman Kuraev, David Haywood]
-Compact Cyber Arcade - Spider-Man (JL2367SP, 150-in-1) [Roman Kuraev, David Haywood]
-Console Colour - Minnie Mouse (JL2800MN) [Roman Kuraev, David Haywood]
-Console Colour - Disney's Planes (JL2800PL) [Roman Kuraev, David Haywood]
-Compact Cyber Arcade - 200 in 1 (JL2355) [Roman Kuraev, David Haywood]
-My Arcade Portable Gaming System with 140 Games (DGUN-2561) [Roman Kuraev, David Haywood]
-Compact Cyber Arcade - 250-in-1 (JL2375) [Roman Kuraev, David Haywood]
-Compact Cyber Arcade - 250 in 1 (JL2377) [Roman Kuraev, David Haywood]
-Retro TV Game Console - 300 Games [Roman Kuraev, David Haywood]
-Retro TV Game Console - Frozen - 300 Games [Roman Kuraev, David Haywood]
-Retro TV Game Console - Disney Cars - 300 Games (JG7800DC-1) [Roman Kuraev, David Haywood]
-Retro TV Game Console - PJ Masks - 300 Games (JG7800PJM-1) [Roman Kuraev, David Haywood]
-Zone Fusion [Roman Kuraev, David Haywood]
-Seal 30-in-1 (VT based, Model FN098134) [Roman Kuraev, David Haywood]
-Mini Game Player 48-in-1 [Roman Kuraev, David Haywood]
-Tetris Arcade in a Tin [Roman Kuraev, David Haywood]
-Konami RF2: Red Fighter (Bubble System) [cam900]
-National Semiconductor ICM-3216 [David Rand]
-Big Board [Dave Rand]
-Carnival 37 [Angelo Salese, Hammy]
-Luxor X37 [Curt Coder]
-Yamaha TG100 [R. Belmont]
-Donkey Kong / Donkey Kong Jr. / Mario Bros. [R. Belmont]
-ADE Elettronica MK-83 [David Rand]
-Flash Beats [SpiralBrad]
-
-
-Clones promoted to working
---------------------------
-Compact Cyber Arcade - Frozen (JL2365FZ-6) [Roman Kuraev, David Haywood]
-Compact Cyber Arcade - Frozen (JL2367FZ) [Roman Kuraev, David Haywood]
-Compact Cyber Arcade - Paw Patrol (JL2365PA-5) [Roman Kuraev, David Haywood]
-Trivia Hangup (version Trivia-2-011586) [Siftware]
-MK-82 [Dave Rand]
-Moj mikro Slovenija [Dave Rand]
-
-
-New systems marked not working
-------------------------------
-Xiao Mifeng [SongJi]
-Xiyang Tianshi [SongJi]
-Xingyun Xiaochou / Xingyun Shouji (V233CN) [little0]
-Kimme und Korn [stonedDiscord]
-Ganso Janken Man [Darksoft, TeamEurope]
-Hello Kitty no Oshiro e Iko [Darksoft, TeamEurope]
-Itadaki Nyandora Kids [Darksoft, TeamEurope]
-Castello II (W1) [stonedDiscord]
-Disco (W1) [stonedDiscord]
-Fifty Five (F1) [stonedDiscord]
-Logo (W1) [stonedDiscord]
-Monopoly Tisch (F2) [stonedDiscord]
-Multi (F2) [stonedDiscord]
-Optimus (W1) [stonedDiscord]
-Sunny Top (W1) [stonedDiscord]
-Swing [stonedDiscord]
-Viva [stonedDiscord]
-Vulkan (F2) [stonedDiscord]
-Würfel Fix (F3) [stonedDiscord]
-Casiotone RC-1 [Devin Acker, =CO=Windler]
-Winner's Club - Wild Roses [Darksoft, TeamEurope]
-R&D Co., Ltd. GALPRO [Devin Acker]
-Akai S612 MIDI Digital Sampler [DBWBP, Devin Acker]
-Akai X7000 Sampling Keyboard [DBWBP, Fetaldreamcore, Devin Acker]
-Fuxing Gaozhao [SongJi]
-Huanzhu Gege (set 1) [SongJi]
-Star Sapphire [hap, Berger, Chessguru]
-Special 8 Way (v122F) [Hammy]
-My Life (UK) [Team Europe, David Haywood]
-Hana Awase Maihime [Hammy]
-Cool-Bi Cool-Bi [Hammy, little0]
-Gigabyte GA-586IP [The Retro Web]
-Soyo SY-029C2 [The Retro Web]
-Manpuku Hanten (Japan, main ver. 2.00, video ver. 2.00) [Hammy]
-Deep Scan / Car Hunt [Benjamin Roux]
-Tivi Boo (France) [Team Europe]
-Color Console IG10 (DualMax 20 in 1 TV part) [Team Europe, David Haywood]
-Sudoku (Lexibook, LG600FR, TV part) [Team Europe]
-Kids Smart Watch: Barbie (Accutime, BAB4064PH) [Team Europe]
-Kids Smart Watch: Batman (Accutime, BAT4732PH) [Team Europe]
-Kids Smart Watch: Disney Princess (Accutime, PN425?) [Team Europe]
-Kids Smart Watch: Encanto (Accutime, ENC4000) [Team Europe]
-Kids Smart Watch: Frozen (Accutime, FZN4151PH) [Team Europe]
-Kids Smart Watch: Frozen (Accutime, FZN4587) [Team Europe]
-Kids Smart Watch: Gabby's Dollhouse (Accutime, GAB4007PH) [Team Europe]
-Kids Smart Watch: Lilo & Stitch (Accutime, LS4027PH) [Team Europe]
-Kids Smart Watch: L.O.L. Surprise (Accutime, LOL4264PH) [Team Europe]
-Kids Smart Watch: Minecraft (Accutime, MIN4045) [Team Europe]
-Kids Smart Watch: Marvel Avengers (Accutime, AVG4597PH) [Team Europe]
-Kids Smart Watch: Marvel Avengers (Accutime, AVG4597) [Team Europe]
-Kids Smart Watch: Paw Patrol (Accutime, PAW4275PH) [Team Europe]
-Kids Smart Watch: Pokemon (Accutime, POK4231PH) [Team Europe]
-Kids Smart Watch: Rainbow High (Accutime, RNB4017PH) [Team Europe]
-Kids Smart Watch: Ryan's World (Accutime, RYW4003AZ) [Team Europe]
-Kids Smart Watch: Spider-Man (Accutime, SPD4588) [Team Europe]
-Kids Smart Watch: Toy Story (Accutime, LTY4000PH) [Team Europe]
-Kids Smart Watch: Marvel Avengers Black Panther (Accutime, AVG4608PH) [Team Europe]
-Kids Smart Watch: Harry Potter (Accutime, HP4107PH) [Team Europe]
-Kids Smart Watch: Jurassic World (Accutime, JRW4041) [Team Europe]
-Kids Smart Watch: L.O.L. Surprise (Accutime, LOL4588TK) [Team Europe]
-Kids Smart Watch: Peppa Pig (Accutime, PPG4086PH) [Team Europe]
-Kids Smart Watch: Star Wars: Stormtropper (Accutime, STM4353PH) [Team Europe]
-Kids Smart Watch: Star Wars: The Mandalorian (Accutime, MNL4023PH) [Team Europe]
-Gameclick (JL2400) [Team Europe]
-Akai S900 MIDI Digital Sampler [DBWBP, Devin Acker]
-Akai S950 MIDI Digital Sampler [DBWBP, Devin Acker]
-Presenter 2000 [MSX's Archeology]
-Capriccio Sesame [stonedDiscord]
-Capriccio Sesame 2 [stonedDiscord]
-Carnival 37 [Hammy]
-Exciting Fever [Hammy]
-Amarillo [stonedDiscord]
-Avanti [stonedDiscord]
-Ballermann 6 [stonedDiscord]
-Big Action 3000 E [stonedDiscord]
-Big Kick [stonedDiscord]
-Blizzard [stonedDiscord]
-Booster Speed [stonedDiscord]
-City Tower [stonedDiscord]
-Colossos [stonedDiscord]
-Galaktica [stonedDiscord]
-Jamaica [stonedDiscord]
-Majesto [stonedDiscord]
-Matrixx [stonedDiscord]
-Multiclassic [stonedDiscord]
-Pur Pur Royal [stonedDiscord]
-Robin [stonedDiscord]
-Rotamint Alpha [stonedDiscord]
-Rotamint Macao [stonedDiscord]
-Super Pasch [stonedDiscord]
-Super Take Off E [stonedDiscord]
-Tango [stonedDiscord]
-Tobago [stonedDiscord]
-Unimint Arena [stonedDiscord]
-Xeno [stonedDiscord]
-Sony DPS-D7 Digital Delay Unit [DBWBP]
-Akai S1000 MIDI Stereo Digital Sampler [Robin Whittle, Devin Acker]
-Akai S1100 MIDI Stereo Digital Sampler [Robin Whittle, Devin Acker]
-Lucky Joker [Hammy]
-Euro Bingo 7 (V8.0, CAA) [Victor Fernandez (City Game)]
-
-
-New clones marked not working
------------------------------
-Granada (W1) [stonedDiscord]
-Turbo Sunny (W1) [stonedDiscord]
-Würfel Fix (F2) [stonedDiscord]
-The New 1997 Joker Master - New York (V3G) [Ioannis Bampoulas]
-Akai S700 MIDI Digital Sampler [DBWBP, Devin Acker]
-Huanzhu Gege (set 2) [SongJi]
-My Life (Italy) [Team Europe, David Haywood]
-Hana Awase 6 (Japan, bootleg) [Hammy]
-Spider-Man (JAKKS Pacific TV Game) (SPG110 hardware, new style stick, set 2) [Team Europe]
-BornKid 16 Bit Handheld Games 220-in-1 [Team Europe, David Haywood]
-My Life (Spain) [Team Europe, Clawgrip]
-Sport of Kings (France, P436.08) [Hammy]
-Big Board (5.25" drives) [Dave Rand]
-Akai S950 MIDI Digital Sampler (with SCSI) [DBWBP, Devin Acker]
-Jungle (USA, VA 1.05) [Ioannis Bampoulas]
-MobiGo (France) [Team Europe]
-Psion 618C [Nigel Barnes]
-Akai S1000PB MIDI Stereo Digital Sampler [Robin Whittle, Devin Acker]
-Magical Jack (VI 1.1C) [Pinballarcadedruid]
-
-
-New working software list items
--------------------------------
-saturn: Dezaemon 2 Save Game Manager, Dezaemon 2 Save Game Manager Vol. 2 [Madroms, satakore.com]
-Tarzan (prototype) [Hidden Palace, AJR]
-pc98_flop_orig: Yajiuma Pennant Race 2 1991 [Krugman]
-c64_cass: Forbidden Forest, Lazy Jones [C64 Ultimate Tape Archive V5.0]
-vsmile_cart: Elmo's World - Elmo's Big Discoveries (USA) [Sterophonick]
-pc98_flop_orig: Multi Paint System [Krugman]
-pc98: Multi Paint System: Secret Fun Set Plus [Shoutmon]
-(sega_beena_cart.xml) [qufb]
-Doraemon Tanoshii En Seikatsu Youchien Hoikuen (Rev. T-120002-1100) [TeamEurope]
-Doraemon Waku Waku Sekai Isshuu Game: Asonde Oboeru Chizu Kokki [TeamEurope]
-3K FreeCell [Defence Force]
-Awass [Inufuto]
-CC65 Chess [Raxiss]
-Fifteen Puzzle [Raxiss]
-Le Manoir du Dr. Genius (release 1) (Oric-1 only) [The Oric Site]
-Le Manoir du Dr. Genius (release 2) (Oric-1 only) [The Oric Site]
-Le Manoir du Dr. Genius (release 3) (Oric-1 / Atmos) [The Oric Site]
-Le Mystère de Kikekankoi (Oric-1 / Atmos release) [The Oric Site]
-Le Mystère de Kikekankoi (release 1) [The Oric Site]
-Le Mystère de Kikekankoi (release 2) [The Oric Site]
-Le Secret de Kaïpur [The Oric Site]
-Put Up [Raxiss]
-Stormlord (60Hz, Atmos) [Defence Force]
-saitek_schess: Hyper Modern Super Strong [Sean Riddle, Nick(spacious_mind)]
-c64_flop_orig: 1541/1571 Drive Alignment [Curt Coder]
-c64_quik: Broken Limits [Curt Coder]
-pc98: Steel Gun Nyan [archive.org]
-SwordWork [Inufuto]
-Aerial [Inufuto]
-AntiAir [Inufuto]
-Ascend [Inufuto]
-Awass [Inufuto]
-Battlot [Inufuto]
-Bootskell [Inufuto]
-Cacorm [Inufuto]
-Cavit [Inufuto]
-Cracky [Inufuto]
-Guntus [Inufuto]
-Hopman [Inufuto]
-Impetus [Inufuto]
-Lift [Inufuto]
-Mazy [Inufuto]
-Mazy2 [Inufuto]
-Mieyen [Inufuto]
-Neuras [Inufuto]
-Osotos [Inufuto]
-Ruptus [Inufuto]
-Svellas [Inufuto]
-SwordWork [Inufuto]
-Yewdow [Inufuto]
-Aerial [Inufuto]
-AntiAir [Inufuto]
-Ascend [Inufuto]
-Awass [Inufuto]
-Battlot [Inufuto]
-Bootskell [Inufuto]
-Cacorm [Inufuto]
-Cavit [Inufuto]
-Cracky [Inufuto]
-Guntus [Inufuto]
-Hopman [Inufuto]
-Impetus [Inufuto]
-Lift [Inufuto]
-Mazy [Inufuto]
-Mazy2 [Inufuto]
-Mieyen [Inufuto]
-Neuras [Inufuto]
-Osotos [Inufuto]
-Ruptus [Inufuto]
-Svellas [Inufuto]
-SwordWork [Inufuto]
-Yewdow [Inufuto]
-pc6001_cass: AX-1, AX-10 [Neo Kobe]
-pc6001mk2_cass: Grobda, Vital Lamp, Yakyuu Kyou [Neo Kobe]
-pc6001mk2_flop: Asalt (v1.1) [Neo Kobe]
-pc6001_cass: F-Dot 2 [Neo Kobe]
-x37_hdd: D-NIX 5.12 [Curt Coder]
-pc6001_cass: 3D Asteroid Fire, Asteroid Escape, Bound Ball, Led Zone, Lode Runner, Magnetic Field, Miyuki the Shoubushi, Nana-chan
-  no Kinjirareta Asobi, Pack'n Boy, PC-6000 Note No. 1, PonyCa 2 Game Series: Galac Convoy & Shooting Invaders, Pyramid II, Raita no
-  Growing Up, Slender Island, Space Mouse, Star Destroyer, Tiny Golf, Ultra Yonin Mahjong, Zunou 4989 [Neo Kobe]
-pc6001mk2_cass: Front Line, Galaxian, Jelda, Led Zone (mkII), Nana-chan no Kinjirareta Asobi (mkII), Professional Mahjong, Soreyuke!
-  Kurukuru, Suidou Kozou, Zunou 4989 (mkII) [Neo Kobe]
-Genie III CP/M 2.2XV3, 1.31 [Dirk Best]
-G-DOS 2.1 [Dirk Best]
-G-DOS 2.4 [Dirk Best]
-CP/M 2.2a [Dirk Best]
-NEWDOS/80 Games Disk 1 [Dirk Best]
-NEWDOS/80 Games Disk 2 [Dirk Best]
-NEWDOS/80 Games Disk 3 [Dirk Best]
-NEWDOS/80 2.0A (with AGCAP) [Dirk Best]
-NEWDOS/80 2.0A [Dirk Best]
-NEWDOS/80 2.0A (with PELOT) [Dirk Best]
-SCRIPSIT Word Processing (NEWDOS/80 2.0A) [Dirk Best]
-NEWBASIC 2.1 and other BASIC software (NEWDOS/80 2.0A) [Dirk Best]
-pc98: Wolfenstein 3D [Neo Kobe]
-Die Feuerfaust (The Fist of Fire) (The Adventure Workshop, two sided) [Spectrum Computing]
-Star Wars (Erbe Software) [Spectrum Computing]
-The Fifth Quadrant (Dro Soft) [Spectrum Computing]
-pc8001_flop: NRTDRV88 for JMB-X1 [Bookworm]
-
-
-Software list items promoted to working
----------------------------------------
-c64_cart: [Curt Coder]
-Action Replay v4.1, Action Replay v4.2 (v1), Action Replay v4.2 (v2), Action Replay v4.2 (v5.0 v1), Action Replay v4.2 (v5.0 v2),
-  Action Cartridge Plus 5 (Germany), Action Cartridge Plus 6.0, Action Cartridge Plus 6.0 (Germany), Action Replay v7.3, Action
-  Replay v5.0, Action Replay v5.0 (NTSC), Action Replay v5.1a, Action Cartridge Plus v7.0 (Derko), Action Cartridge Plus v7.0
-  (Triumwyrat), Action Replay v7.5, Action Replay v8.4, The Fairlight Cracking Cartridge, Action Replay v6.0 (Triad), Action Replay
-  v6.0 [Curt Coder]
-fmtowns_cd: Pro Yakyuu Family Stadium - '90 Pennant Race-ban [cracyc]
-
-
-New software list items marked not working
-------------------------------------------
-saturn: Pseudo Saturn Installer [CyberWarriorX, Pseudo Saturn Team], Pseudo Saturn Kai Flasher [cafe-alpha], USB Cart Flasher
-  [andersm]
-sat_cart: Pseudo Saturn [CyberWarriorX, Pseudo Saturn Team]
-digiblast_cart.xml: [mamehaze]
-Sonic X 1 (Italy / Spain, set 1) [trabantrom]
-Totally Spies! 1 [anonymous]
-Winx Club + 5 Atari Games (Italy / Spain, set 1) [trabantrom]
-Winx Club + 5 Atari Games (4 language version) [anonymous]
-Crazy Jack [trabantrom]
-Cuccioli Cerca Amici (Italy) [trabantrom]
-DigiQUAD [trabantrom]
-Gormiti 2 episodi (Italy) [trabantrom]
-Gormiti Lotta Oscura (Italy) [trabantrom]
-Gormiti Masters of the Gorm Island (Italy) [trabantrom]
-Pitfall The Lost Expedition [trabantrom]
-Rayman 3 [anonymous]
-Spider-Man Mysterio's Menace [trabantrom]
-Sponge Bob + 5 Atari Games (Italy / Spain) [trabantrom]
-Superstar Chefs [trabantrom]
-Wade Hixton's Counter Punch [trabantrom]
-smarttv_cart.xml: [mamehaze]
-Avventure nello Spazio (Italy) [TeamEurope]
-La Scuola di Smart TV - 4 anni (Italy) [TeamEurope]
-La Scuola di Smart TV - 5+ anni (Italy) [TeamEurope]
-Mondosauro (Italy) [TeamEurope]
-Cuccioli Labrador (Italy) [TeamEurope]
-Winx Club Bloom (Italy) [TeamEurope]
-i-move (Italy) [TeamEurope]
-c64_flop_misc: Rags to Riches, Space Taxi [archive.org]
-c64_flop_misc: Bop 'n Rumble, The Detective Game, Samurai Warrior: The Battles of... Usagi Yojimbo [archive.org]
-smarttv_cart.xml: [mamehaze]
-English Luna Park (Italy) [TeamEurope]
-Winnie the Pooh - Le Avventure di Winnie the Pooh (Italy) [TeamEurope]
-Spider-Man - Spider Sense (Italy) [TeamEurope]
-il Bosco dei Numeri (Italy) [TeamEurope]
-mart TV Evolution (bundle cartridge, Italy) [TeamEurope]
-yeno_laptop_cart.xml: [mamehaze]
-Decouvertes 1 (France) [TeamEurope]
-Decouvertes 2 (France) [TeamEurope]
-mylife_cart.xml: [mamehaze]
-Hannah Montana (Italy) [Team Europe, David Haywood]
-Summer Party (Italy) [Team Europe, David Haywood]
-leapfrog_leappad_cart.xml: [Ivan Vangelista]
-Minna de tanoshiku! CoCoPad (Japan) [TeamEurope, David Haywood, Fujix]
-Oshaberi CoCoPad Mic (Japan) [TeamEurope, David Haywood, Fujix]
-Oyako Eigo Step 9-gatsu gou - Shimajirou no Otetsudaiyasan (Japan) [TeamEurope, David Haywood, Fujix]
-Oyako Eigo Step - 2005 nen 5, 7, 9 gatsu gou (Japan) [TeamEurope, David Haywood, Fujix]
-Oyako Eigo Step - 2005 nen 11 gatsu gou / 2006 nen 1, 3 gatsu gou (Japan) [TeamEurope, David Haywood, Fujix]
-Oyako Eigo Step - 2005 nen 3 gatsu Welcome gou (Japan) [TeamEurope, David Haywood, Fujix]
-Oyako Eigo Jump 5-gatsu gou - Shimajirou to ABC / 7 gatsu gou - The Three Little Pigs (Japan) [TeamEurope, David Haywood, Fujix]
-Oyako Eigo Jump 9-gatsu gou - Shiamjirou to Ribby no Eigo Jiten (Japan) [TeamEurope, David Haywood, Fujix]
-Oyako Eigo Jump 11-gatsu gou - Shimajirou to Ribby no CoCoPad Eigo party / 1-gatsu gou - Shimajirou to Ribby no Shougakkou Tanken
-  (Japan) [TeamEurope, David Haywood, Fujix]
-Oyako Eigo Jump 1 gatsu gou - Shimajirou to Ribby no Shougakkou Tanken (Japan) [TeamEurope, David Haywood, Fujix]
-2008 July Shimajirou to Ribby no Eigo Jiten / 2008 September Onahashi CoCoPad Time Machine de Daibouken! (Japan)
-  [TeamEurope, David Haywood, Fujix]
-2008 November Shimajirou to Ribby no CoCoPad Game Party / 2009 January Shimajirou to Ribby Shougakkou Tanken (Japan)
-  [TeamEurope, David Haywood, Fujix]
-pc8801_flop_orig: Mario Bros. Special [Krugman, anonymous]
-mylife_cart.xml: [mamehaze]
-Club Disco (Italy) [Team Europe]
-(sega_beena_cart.xml) Soreike! Anpanman Doki Doki! Rescue Drive: Car Navi-tsuki [TeamEurope]
-(tvdear.xml) Illust-Cassette No. 1 - Pochacco [TeamEurope, QUFB]
-smarttv_cart.xml: La Casa Di Topolino (Italy) [Team Europe]
-mylife_cart.xml: Club Disco (Spain) [Team Europe, Clawgrip]
-2048 [Raxiss]
-Fire [Raxiss]
-Flood-It [Raxiss]
-Lights Out [Raxiss]
-Line 4 [Raxiss]
-Manhole [Raxiss]
-Mitosis [Raxiss]
-Neutron Star [Raxiss]
-Othello (Raxiss) [Raxiss]
-SameGame [Raxiss]
-leapfrog_mfleappad_cart.xml: [mamehaze]
-La journee extraordinaire de Flop (France) [Team Europe]
-Winnie et l'arbre à miel (France) [Team Europe]
-Koa et les chiffres fous (France) [Team Europe]
-Disney/Pixar Cars (France) [Team Europe]
-Dora the Explorer - À la rescousse (France) [Team Europe]
-Les fourmis au volant! (France) [Team Europe]
-leapfrog_leappad_cart.xml: [mamehaze]
-Musique, Maestro! (France) [Team Europe]
-Livre interactif (France) [Team Europe]
-Ratatouille (France) [Team Europe]
-Interactif Sciences - Extraordinaires mammiferes! (France) [Team Europe]
-Le Roi Lion (France) [Team Europe]
-Disney Princesse - Histoires de princesses (France) [Team Europe]
-Scooby-Doo et le mystere des beignets (France) [Team Europe]
-Winnie et les pots de miel (France) [Team Europe]
-Le Monde De Nemo (France) [Team Europe]
-Koa fait les courses (France) [Team Europe]
-On Peut Compter Sur Flop! (France) [Team Europe]
-pc6001_cass: AX-2, AX-3, AX-4, AX-5, AX-6, AX-7, AX-8, AX-9, Space Harrier, Tiny Xevious 2 [Neo Kobe]
-pc6001mk2_cass: 3D Golf Simulation: Super Version, American Truck, Attack!! Hiroko-chan, The Black Onyx, Dezeni Land, Hurry Fox,
-  Hurry Fox: Yuki no Maou hen, Hydlide, New Fan Fun, Pac-Man, Salad no Kuni no Tomato-hime [Neo Kobe]
-pc6001mk2sr_cass: Jewels, Living Armor, Pakuridius: '88 Dragon Breath, Satan [Neo Kobe]
-px4_cart: R.I.V.M. Diagnose Terminal Rel. 1.1 [Jeff_Birt]
-pc6001_cass: Take Off 6000 [Neo Kobe]
-pc6001mk2_cass: The Castle, Mandelbrot demo, Volguard [Neo Kobe]
-pc6001mk2sr_flop: PC-6601SR Utility Disk [Mike Stedman]
-pc6001mk2sr_cass: 9-gyou no Michi, The Akunin, The Akunin 2, The Akunin 3, Lizard Quest, Lizard Quest II: Shitennou no Houfuku,
-  Lizard Quest III: Shi no Kami Gaabarian, Lizard Quest IV: Gold Lizard, The Order, Wu-m Wakarannou [Neo Kobe]
-pc6001mk2_flop: Hudson Soft Best Hit Game Pack 3 [Neo Kobe]
-pc6001_cass: 1-Screen Programs, Eformn, Fruit Panic (v1.1), Fruit Panic Append, Genma Taisen, Holy Sword, Mystery House, Mystery
-  House II, Ougon no Haka, Portopia Renzoku Satsujin Jiken [Neo Kobe]
-pc6001mk2_cass: Aspic, Karuizawa Yuukai Annai, Kaze no Tani no Nausicaa, Lizard, Nobunaga no Yabou, Star Arthur Densetsu I: Wakusei
-  Mephius, Star Arthur Densetsu II: Ankoku Seiun, Star Arthur Densetsu III: Terra 4001, Tritorn, Victorious Nine [Neo Kobe]
-pc6001mk2_flop: Colony Odyssey Bouken-hen, Space Bluster FZ [Neo Kobe]
-pc6001mk2sr_flop: Golf Island (66SR) [Neo Kobe]
-pc6001mk2_flop: PC-6601 Nihongo Word Processor, PC-6601 Utility Disk [Neo Kobe]
-
-
-a2600 (a2600.xml):
-  Working
-    Tarzan (prototype)
-
-c64_cart (c64_cart.xml):
-  Demoted
-    Fast Load Cartridge v1
-    Fast Load Cartridge v2
-    Pang
-  Promoted
-    Action Cartridge Plus 5 (Germany)
-    Action Cartridge Plus 6.0
-    Action Cartridge Plus 6.0 (Germany)
-    Action Cartridge Plus v7.0 (Derko)
-    Action Cartridge Plus v7.0 (Triumwyrat)
-    Action Replay v4.1
-    Action Replay v4.2 (v1)
-    Action Replay v4.2 (v2)
-    Action Replay v4.2 (v5.0 v1)
-    Action Replay v4.2 (v5.0 v2)
-    Action Replay v5.0
-    Action Replay v5.0 (NTSC)
-    Action Replay v5.1a
-    Action Replay v6.0
-    Action Replay v6.0 (Triad)
-    Action Replay v7.3
-    Action Replay v7.5
-    Action Replay v8.4
-    The Fairlight Cracking Cartridge
-
-c64_cass (c64_cass.xml):
-  Demoted
-    Freddy Hardest
-    Los Angeles SWAT
-    Strip Poker (CDS)
-    Strip Poker II
-    TRAZ: Transformable Arcade Zone
-    The CF Power Pack Tape 5
-    The CF Power Pack Tape 6
-    The CF Power Pack Tape 9
-    Zorro
-  Working
-    Forbidden Forest
-    Lazy Jones
-  Promoted
-    Skyline Attack
-
-c64_flop_misc (c64_flop_misc.xml):
-  Demoted
-    Second Reality
-  Non-working
-    Bop 'n Rumble (cracked by The Last Science and The Artworx)
-    Rags to Riches
-    Samurai Warrior: The Battles of... Usagi Yojimbo
-    Space Taxi (cracked by Exodus)
-    The Detective Game (cracked by Trianon)
-
-c64_flop_orig (c64_flop_orig.xml):
-  Working
-    1541/1571 Drive Alignment
-  Promoted
-    Bounty Bob Strikes Back! (v1.2)
-    Strip Poker
-
-c64_quik (c64_quik.xml):
-  Working
-    Broken Limits
-
-compis (compis.xml):
-  Renames
-    kommunik -> datakom Datorn i kommunikation (enanvändare)
-    matett -> matettenanv MätEtt (enanvändare)
-    skriv -> skriv7532 Skriv lätt, skriv rätt (version 7532)
-  Removed (working)
-    PI HarmoniEtt (Delta, enanvändare)
-  Demoted
-    Action1 Glosprogram (nät/skollicens)
-    Datorn i kommunikation (enanvändare)
-    Distributionskunskap (version 8014)
-    Får dataregister skvallra? (enanvändare)
-  Working
-    Användbara procedurer i Pascal 1.5 (nät/skollicens)
-    Compis Pascal 3.12
-    CompisNet 2.0 (version 5314)
-    CompisNet I PASBOOT med nyteknik
-    CompisNet II Plus (CPMBOOT, version 7244)
-    Enter 1.3 (demo, nät/skollicens)
-    HarmoniEtt 2.0 (gamma)
-    HarmoniTvå 2.0 (alfa)
-    Kemi 1 (nät/skollicens)
-    PI HarmoniEtt (delta, enanvändare)
-    ProfiText: Textbehandling med Compis (version 6181)
-    Skriv lätt, skriv rätt (version 6401)
-    Spara-låna-vinna (enanvändare)
-    Systemskiva 2.0
-    Systemskiva I (version 6245)
-    Systemskiva för hårdskiveenhet 1.00 (version 7242)
-    Systemskiva för hårdskiveenhet 2.01 (version 6335)
-    Turbo Pascal 3.01
-    Uppgraderingspaket 1 för Compis I (version 6262)
-  Non-working
-    Compis Kommunikation 1.2
-    CompisNet IB 2.01 (version 6191)
-    Datorn i början (enanvändare)
-    GraphMaster 2.0 (nät/skollicens)
-    IBM DOS 3.00
-    Intresse-fallenhet-yrkesval (enanvändare)
-    Matematikverkstad I (beta 19860606)
-    Mät absorption (nät/skollicens)
-    Mät halveringstid (nät/skollicens)
-    Mät med fotoceller 1.0 (enanvändare)
-    MätEtt (nät-skollicens)
-    Mätvärdesinsamling 1.0 (alfa, enanvändare)
-    ProfiRange (version 6181)
-    Skatteprogram S91
-    Skriv lätt, skriv rätt (version 8101, ekonomiredaktionen)
-    StatEtt (beta, nät/skollicens)
-    Tabba lätt, tabba rätt (version 7235)
-
-digiblast_cart (digiblast_cart.xml):
-  Renames
-    totsp1 -> totsp1i Totally Spies! 1 (Italy)
-  Non-working
-    Crazy Jack
-    Cuccioli Cerca Amici (Italy)
-    DigiQUAD
-    Gormiti 2 episodi (Italy)
-    Gormiti Lotta Oscura (Italy)
-    Gormiti Masters of the Gorm Island (Italy)
-    Pitfall The Lost Expedition
-    Rayman 3
-    Sonic X 1 (Italy / Spain, set 2)
-    Spider-Man Mysterio's Menace
-    Sponge Bob + 5 Atari Games (Italy / Spain)
-    Superstar Chefs
-    Totally Spies! 1
-    Wade Hixton's Counter Punch
-    Winx Club + 5 Atari Games (4 language version)
-    Winx Club + 5 Atari Games (Italy / Spain, set 2)
-
-fmtowns_cd (fmtowns_cd.xml):
-  Promoted
-    Pro Yakyuu Family Stadium - '90 Pennant Race-ban
-
-genie3_flop (genie3_flop.xml):
-  Working
-    CP/M 2.2a
-    G-DOS 2.1
-    G-DOS 2.4
-    Genie III CP/M 2.2XV3, 1.31
-    NEWBASIC 2.1 and other BASIC software (NEWDOS/80 2.0A)
-    NEWDOS/80 2.0A
-    NEWDOS/80 2.0A (with AGCAP)
-    NEWDOS/80 2.0A (with PELOT)
-    NEWDOS/80 Games Disk 1
-    NEWDOS/80 Games Disk 2
-    NEWDOS/80 Games Disk 3
-    SCRIPSIT Word Processing (NEWDOS/80 2.0A)
-
-leapfrog_leappad_cart (leapfrog_leappad_cart.xml):
-  Non-working
-    2008 July Shimajirou to Ribby no Eigo Jiten / 2008 September Onahashi CoCoPad Time Machine de Daibouken! (Japan)
-    2008 November Shimajirou to Ribby no CoCoPad Game Party / 2009 January Shimajirou to Ribby Shougakkou Tanken (Japan)
-    Disney Princesse - Histoires de princesses (France)
-    Interactif Sciences - Extraordinaires mammiferes! (France)
-    Koa fait les courses (France)
-    Le Monde De Nemo (France)
-    Le Roi Lion (France)
-    Livre interactif (France)
-    Minna de tanoshiku! CoCoPad (Japan)
-    Musique, Maestro! (France)
-    On Peut Compter Sur Flop! (France)
-    Oshaberi CoCoPad Mic (Japan)
-    Oyako Eigo Jump 1 gatsu gou - Shimajirou to Ribby no Shougakkou Tanken (Japan)
-    Oyako Eigo Jump 11-gatsu gou - Shimajirou to Ribby no CoCoPad Eigo party / 1-gatsu gou - Shimajirou to Ribby no Shougakkou Tanken (Japan)
-    Oyako Eigo Jump 5-gatsu gou - Shimajirou to ABC / 7 gatsu gou - The Three Little Pigs (Japan)
-    Oyako Eigo Jump 9-gatsu gou - Shiamjirou to Ribby no Eigo Jiten (Japan)
-    Oyako Eigo Step - 2005 nen 11 gatsu gou / 2006 nen 1, 3 gatsu gou (Japan)
-    Oyako Eigo Step - 2005 nen 3 gatsu Welcome gou (Japan)
-    Oyako Eigo Step - 2005 nen 5, 7, 9 gatsu gou (Japan)
-    Oyako Eigo Step 9-gatsu gou - Shimajirou no Otetsudaiyasan (Japan)
-    Ratatouille (France)
-    Scooby-Doo et le mystere des beignets (France)
-    Winnie et les pots de miel (France)
-
-leapfrog_mfleappad_cart (leapfrog_mfleappad_cart.xml):
-  Non-working
-    Disney/Pixar Cars (France)
-    Dora the Explorer - À la rescousse (France)
-    Koa et les chiffres fous (France)
-    La journee extraordinaire de Flop (France)
-    Les fourmis au volant! (France)
-    Winnie et l'arbre à miel (France)
-
-m5_cass (m5_cass.xml):
-  Demoted
-    Solar System Forces
-    Solar System Forces - Commando Team
-    Solar System Forces - Operation Maul
-    Solar System Forces - Victory of Mars
-
-megaduck (megaduck.xml):
-  Working
-    Aerial
-    AntiAir
-    Ascend
-    Awass
-    Battlot
-    Bootskell
-    Cacorm
-    Cavit
-    Cracky
-    Guntus
-    Hopman
-    Impetus
-    Lift
-    Mazy
-    Mazy 2
-    Mieyen
-    Neuras
-    Osotos
-    Ruptus
-    Svellas
-    SwordWork
-    Yewdow
-
-mylife_cart (mylife_cart.xml):
-  Non-working
-    Club Disco (Italy)
-    Club Disco (Spain)
-    Hannah Montana (Italy)
-    Summer Party (Italy)
-
-myvision (myvision.xml):
-  Working
-    Aerial
-    AntiAir
-    Ascend
-    Awass
-    Battlot
-    Bootskell
-    Cacorm
-    Cavit
-    Cracky
-    Guntus
-    Hopman
-    Impetus
-    Lift
-    Mazy
-    Mazy 2
-    Mieyen
-    Neuras
-    Osotos
-    Ruptus
-    Svellas
-    SwordWork
-    Yewdow
-
-oric1_cass (oric1_cass.xml):
-  Working
-    3K FreeCell
-    Awass
-    CC65 Chess
-    Fifteen Puzzle
-    Le Manoir du Dr. Genius (alt)
-    Le Manoir du Dr. Genius (release 1) (Oric-1 only)
-    Le Manoir du Dr. Genius (release 2) (Oric-1 only)
-    Le Mystère de Kikekankoi (Oric-1 / Atmos release)
-    Le Mystère de Kikekankoi (alt)
-    Le Mystère de Kikekankoi (release 1)
-    Le Secret de Kaïpur
-    Put Up
-    Stormlord (60Hz, Atmos)
-  Non-working
-    2048
-    Fire
-    Flood-It
-    Lights Out
-    Line 4
-    Manhole
-    Mitosis
-    Neutron Star
-    Othello (Raxiss)
-    SameGame
-
-pc6001_cass (pc6001_cass.xml):
-  Removed (working)
-    Amita
-    Block
-    Head On
-    Power Knight
-  Working
-    3D Asteroid Fire
-    AX-1
-    AX-10
-    AX-3
-    AX-5
-    AX-8
-    Amida Mushi
-    Asteroid Escape
-    Bound Ball
-    F-Dot 2
-    Led Zone
-    Magnetic Field
-    Miyuki the Shoubushi
-    Nana-chan no Kinjirareta Asobi
-    PC-6000 Note No. 1
-    Pack'n Boy
-    PonyCa 2 Game Series: Galac Convoy & Shooting Invaders
-    Pyramid II
-    Raita no Growing Up
-    Slender Island
-    Space Invaders
-    Star Destroyer
-    Take Off 6000
-    Tiny Golf
-    Ultra Yonin Mahjong
-    Zunou 4989
-  Non-working
-    1-Screen Programs
-    AX-2
-    AX-4
-    AX-6
-    AX-7
-    AX-9
-    Eformn
-    Fruit Panic (v1.1)
-    Fruit Panic Append
-    Genma Taisen
-    Holy Sword
-    Lode Runner
-    Mystery House
-    Mystery House II
-    Ougon no Haka
-    Portopia Renzoku Satsujin Jiken
-    Space Mouse
-
-pc6001mk2_cass (pc6001mk2_cass.xml):
-  Renames
-    thunder -> tforce Thunder Force
-  Removed (working)
-    Hisya
-    Punchball Mario
-  Demoted
-    Castle Excellent
-    Plazma Line
-  Working
-    American Truck
-    Front Line
-    Galaxian
-    Grobda
-    Hisha
-    Jelda
-    Led Zone (mkII)
-    Mandelbrot demo
-    Nana-chan no Kinjirareta Asobi (mkII)
-    New Fan Fun
-    Pac-Man
-    Professional Mahjong (v2.1)
-    Punch Ball Mario Bros.
-    Soreyuke! Kurukuru
-    Suidou Kozou
-    The Castle
-    Vital Lamp
-    Volguard
-    Yakyuu Kyou
-    Zunou 4989 (mkII)
-  Non-working
-    3D Golf Simulation: Super Version
-    Aspic
-    Attack!! Hiroko-chan
-    Dezeni Land
-    Hurry Fox
-    Hurry Fox: Yuki no Maou hen
-    Hydlide
-    Karuizawa Yuukai Annai
-    Kaze no Tani no Nausicaä
-    Lizard
-    Nobunaga no Yabou
-    Salad no Kuni no Tomato-hime
-    Space Harrier
-    Star Arthur Densetsu I: Wakusei Mephius
-    Star Arthur Densetsu II: Ankoku Seiun
-    Star Arthur Densetsu III: Terra 4001
-    The Black Onyx
-    Tiny Xevious II
-    Tritorn
-    Victorious Nine
-
-pc6001mk2_flop (pc6001mk2_flop.xml):
-  Working
-    Asalt (v1.1, prototype)
-  Non-working
-    Colony Odyssey Bouken-hen
-    Hudson Soft Best Hit Game Pack 3
-    PC-6601 Nihongo Word Processor
-    PC-6601 Utility Disk
-    Space Bluster FZ
-    Space Bluster FZ (preview)
-
-pc6001mk2sr_cass (pc6001mk2sr_cass.xml):
-  Non-working
-    9-gyou no Michi
-    Jewels
-    Living Armor
-    Lizard Quest
-    Lizard Quest II: Shitennou no Houfuku
-    Lizard Quest III: Shi no Kami Gaabarian
-    Lizard Quest IV: Gold Lizard
-    Pakuridius: '88 Dragon Breath
-    Satan
-    The Akunin
-    The Akunin 2
-    The Akunin 3
-    The Order
-    Wu-m Wakarannou
-
-pc6001mk2sr_flop (pc6001mk2sr_flop.xml):
-  Non-working
-    Golf Island (66SR)
-    PC-6601SR Utility Disk
-
-pc8001_flop (pc8001_flop.xml):
-  Working
-    <Unknown> Foresight (demo, alt)
-    AY-2 Orion80 (alt 2)
-    Adventure 1 (ver 1.0)
-    Akazukin-chan (N-BASIC doujin demo)
-    Emmy (alt 5)
-    Emmy (alt 6)
-    Fu no Kokoro
-    Ken to Mahou (alt 2)
-    Micro Disk Basic Game Compilation 1
-    Micro Disk Basic Game Compilation 2
-    Micro Disk Basic Game Compilation 3
-    Micro Disk Basic Game Compilation 4
-    Micro Disk Basic Game Compilation 5
-    Micro Disk Basic Game Compilation 6
-    NRTDRV88 for JMB-X1
-    PC-8001 Micro Disk Basic 2W (ver 1.2, alt)
-    Sento Mecha Xabungle - Blue Gale (PC-8001)
-    The Farway (alt)
-
-pc8001mk2_flop (pc8001mk2_flop.xml):
-  Demoted
-    Cranston Manor
-    Game-PC (Collection)
-    N80 and N88 Disk BASIC Utility Collection
-    Ulysses and the Golden Fleece
-  Non-working
-    Ulysses and the Golden Fleece (alt 2)
-    Ulysses and the Golden Fleece (alt)
-
-pc8001mk2sr_flop (pc8001mk2sr_flop.xml):
-  Removed (working)
-    PC-8001mkIISR Game Pack (Compilation)
-  Demoted
-    Xanadu (mkIISR)
-  Working
-    Game DOS (compilation, ver 1.0)
-    Game DOS (compilation, ver 1.1)
-    Game DOS (compilation, ver 1.1, alt)
-    Mappy (PC-8001mkIISR, alt)
-    N80SR BASIC system disk (PC-8037SR, alt)
-    Super Version (compilation, ver 1.1)
-    Super Version (compilation, ver 1.1, alt)
-  Non-working
-    Game DOS (compilation, ver 1.0, alt)
-
-pc8801_flop (pc8801_flop.xml):
-  Renames
-    grodba -> grobda Grobda
-    grodbaa -> grobdaa Grobda (alt)
-  Removed (working)
-    Adventure 1
-    Akazukin-chan (Demo)
-    Dig Dug / Xevious / Nintendo no Golf / Nuts & Milk
-    Dragon Slayer / Burger Time / Excite Bike / Dig Dug / Xevious
-    Emmy
-    Emmy (alt)
-    Fu no Kokoro
-    Game Pack 20
-    JET-8801A v1 10 Dictionary
-    Ken to Maho
-    MDB 1
-    MDB 2
-    MDB 3
-    MDB 4
-    MDB 5
-    MDB 6
-    Micro Disk Basic
-    Olion80
-    PC-8037SR
-    Sento Mecha Xabungle - Blue Gale (alt)
-    The Farway
-    Ulysses (alt BASIC Disk)
-    Ulysses and the Golden Fleece (8001mkII)
-    Video-kun / F2 Grand Prix / Eggy
-    Vogue(Pascal)
-  Removed (non-working)
-    Mappy (alt?)
-  Demoted
-    Agni no Ishi - The Stone of Agni
-    Agni no Ishi - The Stone of Agni (Mad?)
-    Dragon Slayer - Eiyuu Densetsu 2 (alt Program Disk)
-    PACK14
-    Teitoku no Ketsudan (alt)
-    The Sword of Legend
-  Promoted
-    Aoki Ookami to Shiroki Mejika - Genchou Hishi
-    Aoki Ookami to Shiroki Mejika - Genghis Khan
-    Aoki Ookami to Shiroki Mejika - Genghis Khan (soundware maybe)
-    Daikoukai Jidai
-    Daikoukai Jidai (alt?)
-    Europa Sensen
-    Europa Sensen (alt?)
-    Fantastic Eaters
-    Fantastic Eaters (alt)
-    Inindou: Datou Nobunaga
-    Inindou: Datou Nobunaga (alt?)
-    Ishin no Arashi
-    Ishin no Arashi (alt User Disk)
-    Ishin no Arashi (alt?)
-    Nobunaga no Yabou - Bushou Fuunroku
-    Nobunaga no Yabou - Bushou Fuunroku (alt)
-    Nobunaga no Yabou - Sengoku Gunyuuden
-    Nobunaga no Yabou - Sengoku Gunyuuden (alt 2)
-    Nobunaga no Yabou - Sengoku Gunyuuden (alt)
-    Royal Blood
-    Sangokushi (SR Ban)
-    Sangokushi (SR Ban, alt 2)
-    Sangokushi (SR Ban, alt)
-    Sangokushi II
-    Sangokushi II (alt 2)
-    Sangokushi II (alt)
-    Star Symphony
-    Suikoden: Tenmei no Chikai
-    Suikoden: Tenmei no Chikai (alt 2)
-    Suikoden: Tenmei no Chikai (alt)
-
-pc8801_flop_orig (pc8801_flop_orig.xml):
-  Non-working
-    Mario Bros. Special
-
-pc88va (pc88va.xml):
-  Promoted
-    Balloon Breaker
-    Boomering
-    Fray - In Magical Adventure
-    Hare Hare Yukai
-    Hopman
-    Illusion City - Genei Toshi
-    Olteus (alt disk D)
-    PC-88VA Tentou Demo
-    PC-88VA Tentou Demo (alt 2)
-    PC-88VA Tentou Demo (alt)
-    PC-Engine (VA2 Tenpu-ban)
-    PC-Engine v1.1
-    R-Type
-    Shanghai
-    Shinra Bansho
-
-pc88va_flop_orig (pc88va_flop_orig.xml):
-  Promoted
-    First Queen
-
-pc98 (pc98.xml):
-  Demoted
-    The Black Onyx
-  Working
-    Multi Paint System: Secret Fun Set Plus
-    Steel Gun Nyan
-    Wolfenstein 3D
-
-pc98_flop_orig (pc98_flop_orig.xml):
-  Working
-    Multi Paint System (v1.01)
-    Yajiuma Pennant Race 2 1991
-
-pv1000 (pv1000.xml):
-  Working
-    SwordWork
-
-px4_cart (px4_cart.xml):
-  Non-working
-    R.I.V.M. Diagnose Terminal Rel. 1.1
-
-saitek_schess (saitek_schess.xml):
-  Renames
-    csss -> classic Classical Style Super Strong
-  Working
-    Hyper Modern Super Strong
-
-sat_cart (sat_cart.xml):
-  Demoted
-    Action Replay
-  Non-working
-    Pseudo Saturn (v0.832 FINAL)
-
-saturn (saturn.xml):
-  Working
-    Dezaemon 2 Save Game Manager
-    Dezaemon 2 Save Game Manager Vol. 2
-  Non-working
-    Pseudo Saturn Installer (v1.2)
-    Pseudo Saturn Kai Flasher (v6.545)
-    USB Cart Flasher (Revision 11)
-
-sb80_flop (sb80_flop.xml):
-  Working
-    CP/M 2.2 (8-inch recovery image)
-    CP/M 2.2 (CBIOS v1.22)
-    CP/M 2.2 with utilities
-  Non-working
-    CP/M 2.2 (02.15) (Colonial Data OEM)
-
-sega_beena_cart (sega_beena_cart.xml):
-  Working
-    Doraemon Tanoshii En Seikatsu Youchien Hoikuen (Rev. T-120002-1100)
-    Doraemon Waku Waku Sekai Isshuu Game: Asonde Oboeru Chizu Kokki
-  Non-working
-    Soreike! Anpanman Doki Doki! Rescue Drive: Car Navi-tsuki
-
-smarttv_cart (smarttv_cart.xml):
-  Non-working
-    Avventure nello Spazio (Italy)
-    Cuccioli Labrador (Italy)
-    Disney/Pixar Cars 2 (Italy)
-    English Luna Park (Italy)
-    La Casa Di Topolino (Italy)
-    La Scuola di Smart TV - 4 anni (Italy)
-    La Scuola di Smart TV - 5+ anni (Italy)
-    Mondosauro (Italy)
-    Smart TV Evolution (bundle cartridge, Italy)
-    Spider-Man - Spider Sense (Italy)
-    Winnie the Pooh - Le Avventure di Winnie the Pooh (Italy)
-    Winx Club Bloom (Italy)
-    i-move (Italy)
-    il Bosco dei Numeri (Italy)
-
-sony_news (sony_news.xml):
-  Non-working
-    NEWS-OS Release 4.1CA Install Kit
-
-spectrum_cass (spectrum_cass.xml):
-  Renames
-    starwarshs -> starwars_hs Star Wars (The Hit Squad)
-    diefeuer_a -> diefeuer Die Feuerfaust
-    diefeuer -> diefeuer_ap Die Feuerfaust (Adventure Probe)
-    dildoand_a -> dildoand Dildo and The Dark Lord
-    dildoand -> dildoand_a Dildo and The Dark Lord (set 2)
-    thefifth_b -> thefifth The Fifth Quadrant
-    thefifth_a -> thefifth_s4 The Fifth Quadrant (System 4)
-    thefifth -> thefifth_ric The Fifth Quadrant (Ricochet)
-    thefours_a -> thefours The Four Symbols
-    thegirlw_a -> thegirlw The Girl Who Was Death
-    thegrowi_a -> thegrowi The Growing Pains of Adrian Mole
-    thegrowi -> thegrowi_a The Growing Pains of Adrian Mole (Ricochet)
-    thehalls_b -> thehalls The Halls of Doom
-    thehermi_d -> thehermi The Hermitage
-    thehermi -> thehermi_fsf The Hermitage (FSF Adventures)
-    theicete_b -> theicete The Ice Temple
-    theicete_a -> theicete_ed The Ice Temple (EDOS)
-    theicete -> theicete_br The Ice Temple (Blue Ribbon)
-    theicicl_a -> theicicl The Icicle Works
-    theicicl -> theicicl_px The Icicle Works (Paxman)
-    theinfer_a -> theinfer The Inferno
-    theinfil_a -> theinfil The Infiltrator (Zenobi)
-    theinter -> intercit The Inter City
-    lineoffi -> linefire Line of Fire
-    lineoffi_d -> linefire_m1 Line of Fire (Musical 1)
-    thelastm_b -> lmohican The Last Mohican
-    thelastm_a -> lmohican_zf The Last Mohican (Zafiro)
-    thelegen -> craldons The Legend of Craldons Creek
-    thelegen_b -> craldons_12 The Legend of Craldons Creek (v1.2)
-    thelimeh_d -> limehous The Limehouse Mystery
-    nightbre_a -> nightbre Night Breed
-    nightbre -> nightbre_hs Night Breed (The Hit Squad)
-  Removed (working)
-    Championship Jet Ski Simulator - Hard
-    TNT (compilation)
-    TNT (compilation) (Dro Soft)
-    TNT 2 - Double Dynamite (compilation)
-    The Four Symbols (set 2)
-    The Girl Who Was Death (set 2)
-    The Gold Collection III (set 2)
-    The Great Peepingham Train Robbery (set 2)
-    The Great Peepingham Train Robbery (set 3)
-    The Halls of Doom - Development Tape
-    The Helm (set 2)
-    The Hollow - Text Version
-    The Hollow - Text Version (set 2)
-    The House
-    The Inferno (set 2)
-    The Infiltrator (Zenobi) (set 2)
-    The Last Believer (set 2, Adventure Workshop)
-    The Last Believer (set 3)
-    The Legacy
-    The Limehouse Mystery (set 2)
-    The Limehouse Mystery (set 3)
-  Working
-    Die Feuerfaust (The Fist of Fire) (The Adventure Workshop, two sided)
-    Star Wars (Erbe Software)
-    TNT
-    TNT (Dro Soft)
-    TNT 2 - Double Dynamite
-    The Fifth Quadrant (Dro Soft)
-    The Four Symbols (alt)
-    The Girl Who Was Death (alt)
-    The Gold Collection III (alt)
-    The Great Peepingham Train Robbery (alt 2)
-    The Great Peepingham Train Robbery (alt)
-    The Halls of Doom (development tape)
-    The Helm (alt)
-    The House (preliminary release)
-    The Inferno (alt)
-    The Infiltrator (Zenobi) (alt)
-    The Last Believer (Adventure Workshop)
-    The Last Believer (alt)
-    The Legacy (Zenobi)
-    The Limehouse Mystery (alt 2)
-    The Limehouse Mystery (alt)
-
-tvdear (tvdear.xml):
-  Non-working
-    Illust-Cassette No. 1 - Pochacco
-
-vsmile_cart (vsmile_cart.xml):
-  Working
-    Elmo's World - Elmo's Big Discoveries (USA)
-
-x37_hdd (x37_hdd.xml):
-  Removed (working)
-    Formatted Micropolis 1325A 69MB
-  Working
-    D-NIX 5.12
-
-yeno_laptop_cart (yeno_laptop_cart.xml):
-  Non-working
-    Decouvertes 1 (France)
-    Decouvertes 2 (France)
-
-Comparing 0.288 (mame0288) to 0.288 (mame0288-813-g887d44cb63e)
-
-Renames
-  gradiusb -> bs_gradius Gradius (Bubble System)
-  gwarriorb -> bs_gwarrior Galactic Warriors (Bubble System)
-  twinbeeb -> bs_twinbee TwinBee (Bubble System)
-  jackie -> jackiea Happy Jackie (v110U)
-  mjdiplob -> mjdiploba Mahjong Diplomat (Japan)
-  sailormnj -> sailormn Bishoujo Senshi Sailor Moon (Version 95/03/22B, Japan)
-  sailormn -> sailormne Pretty Soldier Sailor Moon (Version 95/03/22B, Europe)
-  sailormnn -> sailormnne Pretty Soldier Sailor Moon (Version 95/03/22, Europe)
-  sailormno -> sailormnoe Pretty Soldier Sailor Moon (Version 95/03/21, Europe)
-
-Removed (working)
-  Konami RF2 - Red Fighter (Bubble System)
-
-Removed (non-working)
-  Action
-  Granada
-  Hana no Ren-Chan II (Japan)
-  PK Turbo (Ver 2.3B2, encrypted)
-  Punirunes (PUNIRUNZU_MAIN_DICE_V1, pink, Japan)
-  Sonic the Hedgehog Kids Smart Watch
-  Turbo Sunny
-  unknown Alba game
-  unknown Amstar cards game (set 1)
-  unknown Amstar cards game (set 2)
-
-New working systems
--------------------
-97801 (terminal)
-Carnival 37
-Chess 3008
-ET532 (NS32532 + Ethernet)
-Genie III (Germany)
-Germ Wars (Germany)
-Konami RF2: Red Fighter (Bubble System)
-MK-84
-Microtronic 2090
-Planet Patrol
-Plasma Console (IG810, 60-in-1)
-Poker & More 18-in-1 (Germany)
-Puzzle World
-SB-80
-T-200
-T-250
-WE816
-game on! TV 50 in 1 Arcade Game
-
-New working clones
-------------------
-After Burner (VER 1.31, deluxe/upright)
-American Poker II (bootleg, set 5)
-Big Board (5.25" drives)
-Compact Cyber Arcade - Paw Patrol (JL2365PA-A, 75-in-1)
-Dragon Ball Z (JAKKS Pacific TV Game, Game-Key Ready, set 2)
-Fancy World - Earth of Crisis (set 2)
-Futari Mahjong Ron II (set 2)
-Galaxian (Olympia bootleg)
-Great Sluggers '94 (prototype?)
-Happy Jackie (v119U)
-High Speed (Unidesa / Cirsa license)
-Joker Poker With Hi-Lo Double-Up (version HL-DLX-080585)
-Last Bank (Japan, v1.30J)
-Mahjong Angel Kiss (ver 1.0, 92048-01 version)
-Mahjong Diplomat (Japan, V2)
-Money Money (set 3)
-Ms. Pac-Man ('Made in Greece' Triunvi bootleg)
-Ninja Ryukenden (Japan, set 3)
-Phoenix (JP Leisure bootleg)
-Play Girls 2 (Japan)
-Punch-Out!! (Rev A, harder)
-Robotron: 2084 (Release 3, prototype)
-Series 3c (German)
-Street Fighter III 2nd Impact: Giant Attack (Asia 970930)
-Turbo Force (Japan)
-Winners Circle (81, set 3)
-Winners Circle (81, set 4)
-Xerox 16/8 (5.25" floppy)
-Xerox 16/8 (Expansion Module II)
-Xerox 16/8 (SASI hard disk)
-Xerox 820-II (5.25" floppy)
-Xerox 820-II (SASI hard disk)
-Xerox 820-II (low profile keyboard)
-
-Systems promoted to working
----------------------------
-36-in-1 Classic Games phone case
-Arcade Center - 30-in-1 (JL1800_01)
-Arcade Center - 60-in-1 (JL1810GR)
-Big Board
-Big Board II
-Compact Cyber Arcade - 200 in 1 (JL2355)
-Compact Cyber Arcade - 250 in 1 (JL2377)
-Compact Cyber Arcade - 250-in-1 (JL2375)
-Compact Cyber Arcade - Barbie (JL2365BB)
-Compact Cyber Arcade - Batman (JL2367BAT)
-Compact Cyber Arcade - Cars (JL2360DC-1, 120-in-1)
-Compact Cyber Arcade - Cars (JL2365DC)
-Compact Cyber Arcade - Disney Princess (120-in-1)
-Compact Cyber Arcade - Disney Princess (JL2367DP, 150-in-1)
-Compact Cyber Arcade - Finding Dory
-Compact Cyber Arcade - Frozen (JL2365FZ)
-Compact Cyber Arcade - Lilo & Stitch (JL2367D)
-Compact Cyber Arcade - PJ Masks (JL2365PJM)
-Compact Cyber Arcade - Paw Patrol (JL2367PA)
-Compact Cyber Arcade - Spider-Man (JL2367SP, 150-in-1)
-Compact Cyber Arcade - Star Wars Rebels (JL2365SW)
-Compact Cyber Arcade TV - 120 in 1 (JL2370)
-Console Colour - Disney's Planes (JL2800PL)
-Console Colour - Minnie Mouse (JL2800MN)
-Donkey Kong / Donkey Kong Jr / Mario Bros
-Flash Beats
-ICM-3216
-International Superstar Soccer Deluxe (SNES bootleg)
-MK-83
-Mini Game Player 48-in-1
-My Arcade Portable Gaming System with 140 Games (DGUN-2561)
-NWS-1250
-Retro TV Game Console - 300 Games
-Retro TV Game Console - Disney Cars - 300 Games (JG7800DC-1)
-Retro TV Game Console - Frozen - 300 Games
-Retro TV Game Console - PJ Masks - 300 Games (JG7800PJM-1)
-TG100
-Tetris Arcade in a Tin
-X37 (prototype)
-Xerox 820-II (8" floppy)
-Zone Fusion
-pc532
-
-Clones promoted to working
---------------------------
-Compact Cyber Arcade - Frozen (JL2365FZ-6)
-Compact Cyber Arcade - Frozen (JL2367FZ)
-Compact Cyber Arcade - Paw Patrol (JL2365PA-5)
-MK-82
-Moj mikro Slovenija
-Seal 30-in-1 (VT based, Model FN098134)
-Trivia Hangup (version Trivia-2-011586)
-Xerox 16/8 (8" floppy)
-
-New systems marked not working
-------------------------------
-Action (F2)
-Amarillo
-Avanti
-Ballermann 6
-Big Action 3000 E
-Big Kick
-Blizzard
-Booster Speed
-Capriccio Sesame
-Capriccio Sesame 2
-Casiotone RC-1
-Castello II (W1)
-City Tower
-Color Console IG10 (DualMax 20 in 1 TV part)
-Colossos
-Cool-Bi Cool-Bi
-DPS-D7 Digital Delay Unit
-Deep Scan / Car Hunt
-Disco (W1)
-Euro Bingo 7 (V8.0, CAA)
-Exciting Fever
-Fifty Five (F1)
-Fuxing Gaozhao
-GA-586IP (Intel I430NX Neptune chipset)
-GALPRO
-Galaktica
-Gameclick (JL2400)
-Ganso Janken Man
-Granada (W1)
-Hana Awase 6 (Japan)
-Hana Awase Maihime
-Hana Ren-Chan (Japan, bootleg)
-Hello Kitty no Oshiro e Iko
-Huanzhu Gege (set 1)
-Itadaki Nyandora Kids
-Jamaica
-Kids Smart Watch: Barbie (Accutime, BAB4064PH)
-Kids Smart Watch: Batman (Accutime, BAT4732PH)
-Kids Smart Watch: Disney Princess (Accutime, PN425?)
-Kids Smart Watch: Encanto (Accutime, ENC4000)
-Kids Smart Watch: Frozen (Accutime, FZN4151PH)
-Kids Smart Watch: Frozen (Accutime, FZN4587)
-Kids Smart Watch: Gabby's Dollhouse (Accutime, GAB4007PH)
-Kids Smart Watch: Harry Potter (Accutime, HP4107PH)
-Kids Smart Watch: Jurassic World (Accutime, JRW4041)
-Kids Smart Watch: L.O.L. Surprise (Accutime, LOL4264PH)
-Kids Smart Watch: L.O.L. Surprise (Accutime, LOL4588TK)
-Kids Smart Watch: Lilo & Stitch (Accutime, LS4027PH)
-Kids Smart Watch: Marvel Avengers (Accutime, AVG4597)
-Kids Smart Watch: Marvel Avengers (Accutime, AVG4597PH)
-Kids Smart Watch: Marvel Avengers Black Panther (Accutime, AVG4608PH)
-Kids Smart Watch: Minecraft (Accutime, MIN4045)
-Kids Smart Watch: Paw Patrol (Accutime, PAW4275PH)
-Kids Smart Watch: Peppa Pig (Accutime, PPG4086PH)
-Kids Smart Watch: Pokemon (Accutime, POK4231PH)
-Kids Smart Watch: Rainbow High (Accutime, RNB4017PH)
-Kids Smart Watch: Ryan's World (Accutime, RYW4003AZ)
-Kids Smart Watch: Sonic the Hedgehog (Accutime, SNC4055)
-Kids Smart Watch: Spider-Man (Accutime, SPD4588)
-Kids Smart Watch: Star Wars: Stormtropper (Accutime, STM4353PH)
-Kids Smart Watch: Star Wars: The Mandalorian (Accutime, MNL4023PH)
-Kids Smart Watch: Toy Story (Accutime, LTY4000PH)
-Kimme und Korn (F4)
-Logo (W1)
-Lucky Joker
-Majesto
-Manpuku Hanten (Japan, main ver. 2.00, video ver. 2.00)
-Matrixx
-Monopoly Tisch (F2)
-Multi (F2)
-Multiclassic
-My Life - Another life in your hands (UK)
-Optimus (W1)
-Presenter 2000
-Pur Pur Royal
-Robin
-Rotamint Alpha
-Rotamint Macao
-S1000 MIDI Stereo Digital Sampler
-S1100 MIDI Stereo Digital Sampler
-S612 MIDI Digital Sampler
-S900 MIDI Digital Sampler
-S950 MIDI Digital Sampler
-SY-029C2 (Intel I430NX Neptune chipset)
-Special 8 Way (v122F)
-Star Sapphire
-Sudoku (Lexibook, LG600FR, TV part)
-Sunny Top (W1)
-Super Pasch
-Super Take Off E
-Swing
-System 8000
-Tango
-Tivi Boo (France)
-Tobago
-Turbo Sunny (W1)
-Unimint Arena
-Viva
-Vulkan (F2)
-Winner's Club - Wild Roses
-Würfel Fix (F3)
-X7000 Sampling Keyboard
-Xeno
-Xiao Mifeng
-Xingyun Xiaochou / Xingyun Shouji (V233CN)
-Xiyang Tianshi
-
-New clones marked not working
------------------------------
-BornKid 16 Bit Handheld Games 220-in-1
-Granada (F1)
-Hana Awase 6 (Japan, bootleg)
-Hold & Draw (Amidon, set 1)
-Hold & Draw (Amidon, set 2)
-Huanzhu Gege (set 2)
-Jungle (USA, VA 1.05)
-Magical Jack (VI 1.1C)
-MobiGo (France)
-My Life (Spain)
-My Life - Un'altra vita nelle tue mani (Italy)
-Pleiads (bootleg, ManilaMatic)
-Psion 618C
-S1000PB MIDI Stereo Digital Sampler
-S700 MIDI Digital Sampler
-S950 MIDI Digital Sampler (with SCSI)
-Spider-Man (JAKKS Pacific TV Game) (SPG110 hardware, new style stick, set 2)
-Sport of Kings (France, P436.08)
-System 8000 Model 20/30
-System 8000 Series Two
-The New 1997 Joker Master - New York (V3G)
-Turbo Sunny (F1)
-Würfel Fix (F2)
-unknown DEP 9801 poker game
-
-Systems demoted to not working
-------------------------------
-Dragon World II (ver. 110X, Export)
-
-Clones demoted to not working
------------------------------
-Chuugokuryuu II (ver. 100J, Japan)
-Dragon World II (ver. 100X, Export)
-Zhongguo Long II (ver. 100C, China)
-Zhongguo Long II (ver. 101C, China)
-
+-Adjust some software lists: [Vas Crabb]
+ * compis.xml: Demoted various items due to undumped keys or being listed as not working.
+ * a7800.xml: Be consistent with other software lists for "Mazy 2".
+ * leapfrog_leappad_cart.xml: More consistent transliteration of Japanese dates.
